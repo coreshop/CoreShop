@@ -244,11 +244,11 @@
     background: url(..//img/flat/product-list.svg) center center no-repeat !important;
 }
 
-.coreshop_product_filters_preconditions {
+.coreshop_product_filters_preConditions {
     background: url(..//img/flat/search.svg) center center no-repeat !important;
 }
 
-.coreshop_product_filters_filters {
+.coreshop_product_filters_conditions {
     background: url(..//img/flat/filter-empty.svg) center center no-repeat !important;
 }
 

@@ -68,15 +68,17 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             items: [{
                 xtype: 'textfield',
                 name: 'name',
-                fieldLabel: t('coreshop_carrier_name'),
+                fieldLabel: t('name'),
                 width: 250,
-                value: this.data.name
+                value: this.data.name,
+                required: true
             }, {
                 xtype: 'textfield',
                 name: 'label',
                 fieldLabel: t('coreshop_carrier_label'),
                 width: 250,
-                value: this.data.label
+                value: this.data.label,
+                required: true
             }, {
                 xtype: 'textfield',
                 name: 'trackingUrl',
@@ -110,7 +112,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                         store: pimcore.globalmanager.get('coreshop_carrier_shipping_rules'),
                         valueField: 'id',
                         displayField: 'name',
-                        queryMode : 'local'
+                        queryMode : 'local',
+                        required: true
                     }),
                     renderer: function (shippingRule) {
                         var store = pimcore.globalmanager.get('coreshop_carrier_shipping_rules');
@@ -128,7 +131,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                     dataIndex: 'priority',
                     editor : {
                         xtype : 'numberfield',
-                        decimalPrecision : 0
+                        decimalPrecision : 0,
+                        required: true
                     }
                 },
                 {

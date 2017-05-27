@@ -42,7 +42,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     },
 
     getItems : function () {
-        this.preConditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'preConditions');
+        this.preConditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'preConditions', 'pre_conditions');
         this.conditions = new pimcore.plugin.coreshop.filters.condition(this, this.parentPanel.conditions, 'conditions');
         //this.similarities = new pimcore.plugin.coreshop.filters.similarity(this, this.parentPanel.similarities);
 
@@ -133,12 +133,12 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
                 change : function (combo, value) {
                     if (value) {
                         this.conditions.enable();
-                        this.filters.enable();
+                        this.preConditions.enable();
 
                         this.getFieldsForIndex();
                     } else {
                         this.conditions.disable();
-                        this.filters.disable();
+                        this.preConditions.disable();
                     }
                 }.bind(this)
             }

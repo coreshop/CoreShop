@@ -16,10 +16,11 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
 
     type : null,
 
-    initialize : function (parent, conditions, type) {
+    initialize : function (parent, conditions, type, label) {
         this.parent = parent;
         this.conditions = conditions;
         this.type = type;
+        this.label = label ? label : type;
     },
 
     getFieldsStore : function () {
@@ -43,7 +44,7 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
 
         this.fieldsContainer = new Ext.Panel({
             iconCls: 'coreshop_product_filters_' + this.type,
-            title: t('coreshop_product_filters_' + this.type),
+            title: t('coreshop_product_filters_' + this.label),
             autoScroll: true,
             style : 'padding: 10px',
             forceLayout: true,
