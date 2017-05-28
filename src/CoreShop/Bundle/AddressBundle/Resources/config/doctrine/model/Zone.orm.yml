@@ -21,5 +21,3 @@ CoreShop\Component\Address\Model\Zone:
       orphanRemoval: true
       cascade:
         - all
-      orderBy:
-        name: ASC
