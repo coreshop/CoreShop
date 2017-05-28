@@ -74,6 +74,10 @@ abstract class Select extends Model\Object\ClassDefinition\Data\Select
             $tmpData = $this->getRepository()->find($data->getId());
 
             if ($tmpData instanceof ResourceInterface) {
+                //Dirty Fix, Pimcore sometimes calls properties without getter
+                //This could cause Problems with translations, therefore, we need to set
+                //the value here
+                $object->setValue($this->getName(), $tmpData);
                 return $tmpData;
             }
         }
