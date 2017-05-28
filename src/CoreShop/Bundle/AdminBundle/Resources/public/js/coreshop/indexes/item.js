@@ -76,7 +76,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
                             items :[
                                 {
                                     xtype : 'textfield',
-                                    fieldLabel:t('coreshop_indexes_name'),
+                                    fieldLabel:t('name'),
                                     name : 'name',
                                     value : this.data.name,
                                     regex: /^[a-z0-9]+$/i

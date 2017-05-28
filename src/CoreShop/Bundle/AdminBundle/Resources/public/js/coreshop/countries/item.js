@@ -62,7 +62,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
             },
             {
                 xtype: 'checkbox',
-                fieldLabel: t('coreshop_country_active'),
+                fieldLabel: t('active'),
                 name: 'active',
             },
             {

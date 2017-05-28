@@ -94,7 +94,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                         }, {
                             xtype: 'checkbox',
                             name: 'active',
-                            fieldLabel: t('coreshop_tax_active'),
+                            fieldLabel: t('active'),
                             width: 250,
                             checked: data.active
                         }

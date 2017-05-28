@@ -49,7 +49,7 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
                     defaults: { width: 300 },
                     items :[
                         {
-                            fieldLabel: t('coreshop_currency_name'),
+                            fieldLabel: t('name'),
                             name: 'name',
                             value: this.data.name
                         },

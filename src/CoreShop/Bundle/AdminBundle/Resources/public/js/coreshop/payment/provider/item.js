@@ -69,7 +69,7 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
             },
             {
                 xtype : 'checkbox',
-                fieldLabel: t('coreshop_active'),
+                fieldLabel: t('active'),
                 name: 'active',
                 checked: this.data.active
             },

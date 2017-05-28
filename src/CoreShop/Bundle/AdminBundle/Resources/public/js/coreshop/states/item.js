@@ -85,7 +85,7 @@ pimcore.plugin.coreshop.states.item = Class.create(pimcore.plugin.coreshop.abstr
                         },
                         {
                             xtype: 'checkbox',
-                            fieldLabel: t('coreshop_state_active'),
+                            fieldLabel: t('active'),
                             name: 'active',
                             checked: data.active
                         },

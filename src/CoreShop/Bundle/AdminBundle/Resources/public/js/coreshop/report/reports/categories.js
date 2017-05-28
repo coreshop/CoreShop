@@ -39,7 +39,7 @@ pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.
                 store: this.getStore(),
                 columns : [
                     {
-                        text: t('coreshop_report_categories_name'),
+                        text: t('name'),
                         dataIndex : 'name',
                         flex : 1
                     },

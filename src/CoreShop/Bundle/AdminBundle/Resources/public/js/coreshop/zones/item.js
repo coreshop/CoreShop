@@ -51,13 +51,13 @@ pimcore.plugin.coreshop.zones.item = Class.create(pimcore.plugin.coreshop.abstra
                     defaults: { width: 300 },
                     items :[
                         {
-                            fieldLabel: t('coreshop_zone_name'),
+                            fieldLabel: t('name'),
                             name: 'name',
                             value: this.data.name
                         },
                         {
                             xtype : 'checkbox',
-                            fieldLabel: t('coreshop_zone_active'),
+                            fieldLabel: t('active'),
                             name: 'active',
                             checked: this.data.active
                         }

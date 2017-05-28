@@ -96,7 +96,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
                 filter: 'number'
             },
             {
-                text: t('coreshop_product_name'),
+                text: t('name'),
                 dataIndex: 'name',
                 filter: {
                     type: 'string'
