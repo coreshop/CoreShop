@@ -127,7 +127,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
                 return true;
             } else {
-                throw new CheckoutException('Address Form is invalid', 'coreshop_checkout_shipping_form_invalid');
+                throw new CheckoutException('Shipping Form is invalid', 'coreshop_checkout_shipping_form_invalid');
             }
         }
 
