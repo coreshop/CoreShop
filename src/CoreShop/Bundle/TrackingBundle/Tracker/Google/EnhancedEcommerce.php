@@ -7,7 +7,7 @@ use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractClientTracker;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Google\Analytics;

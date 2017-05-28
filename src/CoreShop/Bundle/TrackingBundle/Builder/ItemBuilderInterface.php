@@ -5,7 +5,7 @@ namespace CoreShop\Bundle\TrackingBundle\Builder;
 use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
