@@ -306,13 +306,17 @@ class OrderController extends AdminController
             $value = '';
 
             if ($address instanceof AddressInterface && $address instanceof Concrete) {
-                $value = $address->getValueForFieldName($fieldDefinition->getName());
+                $getter = "get" . ucfirst($fieldDefinition->getName());
 
-                if ($value instanceof ResourceInterface) {
-                    $value = $value->getName();
+                if (method_exists($address, $getter)) {
+                    $value = $address->$getter();
+
+                    if ($value instanceof ResourceInterface) {
+                        $value = $value->getName();
+                    }
+
+                    $fullAddress[] = $value;
                 }
-
-                $fullAddress[] = $value;
             }
 
             $values[$prefix.ucfirst($fieldDefinition->getName())] = $value;
