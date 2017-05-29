@@ -12,10 +12,11 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface CartPriceRuleInterface extends RuleInterface
+interface CartPriceRuleInterface extends RuleInterface, ToggleableInterface
 {
     /**
      * @return string
@@ -28,18 +29,6 @@ interface CartPriceRuleInterface extends RuleInterface
      * @return static
      */
     public function setDescription($description);
-
-    /**
-     * @return bool
-     */
-    public function getActive();
-
-    /**
-     * @param bool $active
-     *
-     * @return static
-     */
-    public function setActive($active);
 
     /**
      * @return bool

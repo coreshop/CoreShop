@@ -14,10 +14,12 @@ namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class TaxRate extends AbstractResource implements TaxRateInterface
 {
+    use ToggleableTrait;
     use TimestampableTrait;
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
@@ -32,11 +34,6 @@ class TaxRate extends AbstractResource implements TaxRateInterface
      * @var float
      */
     protected $rate = 0;
-
-    /**
-     * @var bool
-     */
-    protected $active = false;
 
     public function __construct()
     {
@@ -91,24 +88,6 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     public function setRate($rate)
     {
         $this->rate = $rate;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
 
         return $this;
     }

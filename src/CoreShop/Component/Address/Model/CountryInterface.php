@@ -14,9 +14,10 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface CountryInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface
+interface CountryInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface, ToggleableInterface
 {
     /**
      * @return string
@@ -44,18 +45,6 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
      * @return mixed
      */
     public function setName($name, $language = null);
-
-    /**
-     * @return bool
-     */
-    public function getActive();
-
-    /**
-     * @param bool $active
-     *
-     * @return static
-     */
-    public function setActive($active);
 
     /**
      * @return ZoneInterface

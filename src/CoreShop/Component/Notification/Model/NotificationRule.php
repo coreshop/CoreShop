@@ -12,10 +12,12 @@
 
 namespace CoreShop\Component\Notification\Model;
 
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 
 class NotificationRule implements NotificationRuleInterface
 {
+    use ToggleableTrait;
     use RuleTrait;
 
     /**
@@ -34,34 +36,11 @@ class NotificationRule implements NotificationRuleInterface
     protected $sort;
 
     /**
-     * @var bool
-     */
-    protected $active = false;
-
-    /**
      * {@inheritdoc}
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-
-        return $this;
     }
 
     /**

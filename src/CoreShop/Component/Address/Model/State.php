@@ -14,10 +14,12 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class State extends AbstractResource implements StateInterface
 {
+    use ToggleableTrait;
     use TimestampableTrait;
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
@@ -32,11 +34,6 @@ class State extends AbstractResource implements StateInterface
      * @var string
      */
     protected $isoCode;
-
-    /**
-     * @var int
-     */
-    protected $active = false;
 
     /**
      * @var CountryInterface
@@ -98,22 +95,6 @@ class State extends AbstractResource implements StateInterface
         $this->getTranslation($language, false)->setName($name);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
     }
 
     /**

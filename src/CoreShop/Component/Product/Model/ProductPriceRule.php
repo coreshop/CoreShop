@@ -12,10 +12,12 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 
 class ProductPriceRule implements ProductPriceRuleInterface
 {
+    use ToggleableTrait;
     use RuleTrait;
 
     /**
@@ -27,11 +29,6 @@ class ProductPriceRule implements ProductPriceRuleInterface
      * @var string
      */
     protected $description;
-
-    /**
-     * @var bool
-     */
-    protected $active = false;
 
     /**
      * {@inheritdoc}
@@ -55,24 +52,6 @@ class ProductPriceRule implements ProductPriceRuleInterface
     public function setDescription($description)
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
 
         return $this;
     }

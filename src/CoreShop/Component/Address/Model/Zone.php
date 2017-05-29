@@ -14,11 +14,13 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Zone extends AbstractResource implements ZoneInterface
 {
+    use ToggleableTrait;
     use TimestampableTrait;
 
     /**
@@ -30,11 +32,6 @@ class Zone extends AbstractResource implements ZoneInterface
      * @var string
      */
     protected $name;
-
-    /**
-     * @var boolean
-     */
-    protected $active = true;
 
     /**
      * @var Collection|CountryInterface[]
@@ -78,26 +75,6 @@ class Zone extends AbstractResource implements ZoneInterface
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param boolean $active
-     *
-     * @return static
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
 
         return $this;
     }

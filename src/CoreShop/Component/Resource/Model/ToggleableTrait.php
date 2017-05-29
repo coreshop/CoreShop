@@ -17,7 +17,7 @@ trait ToggleableTrait
     /**
      * @var bool
      */
-    protected $active = true;
+    protected $active = false;
 
     /**
      * @return bool

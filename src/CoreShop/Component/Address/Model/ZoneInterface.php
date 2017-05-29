@@ -14,9 +14,10 @@ namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface ZoneInterface extends ResourceInterface, TimestampableInterface
+interface ZoneInterface extends ResourceInterface, TimestampableInterface, ToggleableInterface
 {
     /**
      * @return string
@@ -29,18 +30,6 @@ interface ZoneInterface extends ResourceInterface, TimestampableInterface
      * @return static
      */
     public function setName($name);
-
-    /**
-     * @return bool
-     */
-    public function getActive();
-
-    /**
-     * @param bool $active
-     *
-     * @return static
-     */
-    public function setActive($active);
 
     /**
      * @return Collection|CountryInterface[]

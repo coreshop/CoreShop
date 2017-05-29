@@ -12,12 +12,14 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class CartPriceRule implements CartPriceRuleInterface
 {
+    use ToggleableTrait;
     use RuleTrait {
         __construct as private initializeRuleTrait;
     }
@@ -31,11 +33,6 @@ class CartPriceRule implements CartPriceRuleInterface
      * @var string
      */
     protected $description;
-
-    /**
-     * @var bool
-     */
-    protected $active = false;
 
     /**
      * @var bool
@@ -81,24 +78,6 @@ class CartPriceRule implements CartPriceRuleInterface
     public function setDescription($description)
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
 
         return $this;
     }

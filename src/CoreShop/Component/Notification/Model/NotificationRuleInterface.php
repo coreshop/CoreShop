@@ -12,22 +12,11 @@
 
 namespace CoreShop\Component\Notification\Model;
 
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface NotificationRuleInterface extends RuleInterface
+interface NotificationRuleInterface extends RuleInterface, ToggleableInterface
 {
-    /**
-     * @return bool
-     */
-    public function getActive();
-
-    /**
-     * @param bool $active
-     *
-     * @return static
-     */
-    public function setActive($active);
-
     /**
      * @return string
      */

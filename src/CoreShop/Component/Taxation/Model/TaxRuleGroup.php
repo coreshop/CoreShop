@@ -14,11 +14,13 @@ namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
 {
+    use ToggleableTrait;
     use TimestampableTrait;
 
     /**
@@ -30,11 +32,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
      * @var string
      */
     protected $name;
-
-    /**
-     * @var bool
-     */
-    protected $active = true;
 
     /**
      * @var Collection|TaxRuleInterface[]
@@ -78,26 +75,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param bool $active
-     *
-     * @return static
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
 
         return $this;
     }

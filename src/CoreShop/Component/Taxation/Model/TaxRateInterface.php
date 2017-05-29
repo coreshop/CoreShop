@@ -14,9 +14,10 @@ namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface TaxRateInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface
+interface TaxRateInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface, ToggleableInterface
 {
     /**
      * @param $language
@@ -44,16 +45,4 @@ interface TaxRateInterface extends ResourceInterface, TranslatableInterface, Tim
      * @return static
      */
     public function setRate($rate);
-
-    /**
-     * @return bool
-     */
-    public function getActive();
-
-    /**
-     * @param bool $active
-     *
-     * @return static
-     */
-    public function setActive($active);
 }
