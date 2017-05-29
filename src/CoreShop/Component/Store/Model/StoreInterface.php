@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Store\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface StoreInterface extends ResourceInterface
+interface StoreInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return string

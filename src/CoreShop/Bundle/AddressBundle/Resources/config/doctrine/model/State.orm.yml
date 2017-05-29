@@ -16,6 +16,17 @@ CoreShop\Component\Address\Model\State:
     active:
       column: active
       type: boolean
+    creationDate:
+      type: date
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     country:
       targetEntity: CoreShop\Component\Address\Model\CountryInterface

@@ -36,6 +36,12 @@ doctrine_cache:
           type: file_system
           namespace: coreshop
 
+stof_doctrine_extensions:
+    default_locale: "%locale%"
+    orm:
+        default:
+            timestampable: true
+
 jms_serializer:
   metadata:
     directories:

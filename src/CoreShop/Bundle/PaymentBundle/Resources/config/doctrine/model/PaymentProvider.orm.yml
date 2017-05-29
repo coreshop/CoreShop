@@ -19,3 +19,14 @@ CoreShop\Component\Payment\Model\PaymentProvider:
     position:
       column: position
       type: integer
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

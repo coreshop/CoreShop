@@ -22,6 +22,17 @@ CoreShop\Component\Address\Model\Country:
     addressFormat:
       column: addressFormat
       type: string
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     zone:
       targetEntity: CoreShop\Component\Address\Model\ZoneInterface

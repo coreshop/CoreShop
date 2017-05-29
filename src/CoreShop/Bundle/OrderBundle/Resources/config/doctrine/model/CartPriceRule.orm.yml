@@ -21,6 +21,17 @@ CoreShop\Component\Order\Model\CartPriceRule:
     active:
       column: active
       type: boolean
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   oneToMany:
     voucherCodes:
       targetEntity: CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface

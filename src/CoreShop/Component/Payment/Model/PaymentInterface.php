@@ -14,8 +14,9 @@ namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceInterface
+interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceInterface, TimestampableInterface
 {
     const STATE_NEW = 'new';
     const STATE_PROCESSING = 'processing';

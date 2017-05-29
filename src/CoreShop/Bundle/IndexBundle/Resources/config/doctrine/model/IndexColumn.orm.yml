@@ -47,6 +47,17 @@ CoreShop\Component\Index\Model\IndexColumn:
       column: configuration
       type: array
       nullable: true
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     index:
       targetEntity: CoreShop\Component\Index\Model\IndexInterface

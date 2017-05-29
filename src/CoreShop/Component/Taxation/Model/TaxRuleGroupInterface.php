@@ -13,9 +13,10 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface TaxRuleGroupInterface extends ResourceInterface
+interface TaxRuleGroupInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return string

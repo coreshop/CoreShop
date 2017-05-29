@@ -13,9 +13,10 @@
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface StateInterface extends ResourceInterface, TranslatableInterface
+interface StateInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface
 {
     /**
      * @return string

@@ -14,6 +14,17 @@ CoreShop\Component\Taxation\Model\TaxRuleGroup:
     active:
       type: boolean
       column: active
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   oneToMany:
     taxRules:
       targetEntity: CoreShop\Component\Taxation\Model\TaxRuleInterface

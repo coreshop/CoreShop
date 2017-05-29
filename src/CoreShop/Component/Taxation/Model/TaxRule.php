@@ -13,12 +13,12 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
-/**
- * Class TaxRule.
- */
 class TaxRule extends AbstractResource implements TaxRuleInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      */

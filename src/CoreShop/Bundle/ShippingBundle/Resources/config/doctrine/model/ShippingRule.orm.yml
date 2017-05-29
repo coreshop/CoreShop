@@ -11,6 +11,17 @@ CoreShop\Component\Shipping\Model\ShippingRule:
     name:
       column: name
       type: string
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToMany:
     conditions:
       targetEntity: CoreShop\Component\Rule\Model\ConditionInterface

@@ -13,9 +13,12 @@
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
 class IndexColumn extends AbstractResource implements IndexColumnInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      */

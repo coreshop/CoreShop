@@ -19,3 +19,14 @@ CoreShop\Component\Payment\Model\PaymentProviderTranslation:
       type: text
       column: instructions
       nullable: true
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

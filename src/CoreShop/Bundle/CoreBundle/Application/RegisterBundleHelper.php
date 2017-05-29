@@ -48,7 +48,8 @@ class RegisterBundleHelper
             new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
             new \FOS\RestBundle\FOSRestBundle(),
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new \Payum\Bundle\PayumBundle\PayumBundle()
+            new \Payum\Bundle\PayumBundle\PayumBundle(),
+            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         ], 120);
     }
 }

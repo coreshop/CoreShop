@@ -11,6 +11,17 @@ CoreShop\Component\Taxation\Model\TaxRule:
     behavior:
       type: integer
       column: behavior
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     taxRuleGroup:
       targetEntity: CoreShop\Component\Taxation\Model\TaxRuleGroupInterface

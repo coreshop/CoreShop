@@ -16,3 +16,14 @@ CoreShop\Component\Configuration\Model\Configuration:
     data:
       column: data
       type: object
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

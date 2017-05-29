@@ -13,9 +13,10 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface TaxRateInterface extends ResourceInterface, TranslatableInterface
+interface TaxRateInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface
 {
     /**
      * @param $language

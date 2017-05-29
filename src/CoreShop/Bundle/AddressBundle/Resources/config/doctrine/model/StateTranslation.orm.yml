@@ -11,3 +11,14 @@ CoreShop\Component\Address\Model\StateTranslation:
     name:
       type: string
       column: name
+    creationDate:
+      type: date
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Currency\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface CurrencyInterface extends ResourceInterface
+interface CurrencyInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return string

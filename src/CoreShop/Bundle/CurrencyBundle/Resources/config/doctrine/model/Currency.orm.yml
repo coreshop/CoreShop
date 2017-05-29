@@ -30,3 +30,14 @@ CoreShop\Component\Currency\Model\Currency:
     exchangeRate:
       column: exchangeRate
       type: float
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

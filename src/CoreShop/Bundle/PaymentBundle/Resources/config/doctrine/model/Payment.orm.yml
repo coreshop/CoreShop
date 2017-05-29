@@ -17,6 +17,17 @@ CoreShop\Component\Payment\Model\Payment:
     datePayment:
       column: datePayment
       type: datetime
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     paymentProvider:
       targetEntity: CoreShop\Component\Payment\Model\PaymentProviderInterface

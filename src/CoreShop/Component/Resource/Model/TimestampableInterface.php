@@ -10,20 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Taxation\Model;
+namespace CoreShop\Component\Resource\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Resource\Model\TimestampableInterface;
-
-interface TaxRateTranslationInterface extends ResourceInterface, TimestampableInterface
+interface TimestampableInterface
 {
     /**
-     * @return string
+     * @return \DateTime
      */
-    public function getName();
+    public function getCreationDate();
 
     /**
-     * @param string $name
+     * @param \DateTime $creationDate
      */
-    public function setName($name);
+    public function setCreationDate(\DateTime $creationDate);
+
+    /**
+     * @return \DateTime
+     */
+    public function getModificationdate();
+
+    /**
+     * @param \DateTime $modificationDate
+     */
+    public function setModificationDate(\DateTime $modificationDate);
 }

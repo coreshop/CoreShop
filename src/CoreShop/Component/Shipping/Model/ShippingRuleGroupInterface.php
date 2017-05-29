@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface ShippingRuleGroupInterface extends ResourceInterface
+interface ShippingRuleGroupInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return CarrierInterface

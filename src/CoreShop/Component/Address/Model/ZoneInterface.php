@@ -13,12 +13,10 @@
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 use Doctrine\Common\Collections\Collection;
 
-/**
- * Interface ZoneInterface.
- */
-interface ZoneInterface extends ResourceInterface
+interface ZoneInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return string

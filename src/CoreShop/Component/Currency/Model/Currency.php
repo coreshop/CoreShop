@@ -13,9 +13,12 @@
 namespace CoreShop\Component\Currency\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
 class Currency extends AbstractResource implements CurrencyInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      */

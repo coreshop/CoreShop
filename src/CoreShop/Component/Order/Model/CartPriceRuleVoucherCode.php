@@ -13,9 +13,11 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
 class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
 {
+    use TimestampableTrait;
     use SetValuesTrait;
 
     /**
@@ -27,11 +29,6 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
      * @var string
      */
     protected $code;
-
-    /**
-     * @var \DateTime
-     */
-    protected $creationDate;
 
     /**
      * @var bool
@@ -70,22 +67,6 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
     public function setCode($code)
     {
         $this->code = $code;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCreationDate()
-    {
-        return $this->creationDate;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCreationDate($creationDate)
-    {
-        $this->creationDate = $creationDate;
     }
 
     /**

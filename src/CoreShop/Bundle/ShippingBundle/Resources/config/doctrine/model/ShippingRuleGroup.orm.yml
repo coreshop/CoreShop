@@ -11,6 +11,17 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
     priority:
       type: integer
       column: priority
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     carrier:
       targetEntity: CoreShop\Component\Shipping\Model\CarrierInterface

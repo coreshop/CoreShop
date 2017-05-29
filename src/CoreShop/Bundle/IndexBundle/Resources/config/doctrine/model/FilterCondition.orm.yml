@@ -28,3 +28,14 @@ CoreShop\Component\Index\Model\FilterCondition:
       column: configuration
       type: array
       nullable: true
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

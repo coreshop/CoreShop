@@ -13,9 +13,12 @@
 namespace CoreShop\Component\Store\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
 class Store extends AbstractResource implements StoreInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      */

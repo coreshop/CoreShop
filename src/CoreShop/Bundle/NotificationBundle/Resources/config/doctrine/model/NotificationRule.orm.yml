@@ -21,6 +21,17 @@ CoreShop\Component\Notification\Model\NotificationRule:
     sort:
       column: sort
       type: integer
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToMany:
     conditions:
       targetEntity: CoreShop\Component\Rule\Model\ConditionInterface

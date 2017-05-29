@@ -13,9 +13,11 @@
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
 class ShippingRuleGroup implements ShippingRuleGroupInterface
 {
+    use TimestampableTrait;
     use SetValuesTrait;
 
     /**

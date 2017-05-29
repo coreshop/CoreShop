@@ -13,9 +13,10 @@
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface IndexInterface extends ResourceInterface
+interface IndexInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return string

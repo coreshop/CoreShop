@@ -11,15 +11,23 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
     code:
       column: code
       type: string
-    creationDate:
-      column: creationDate
-      type: datetime
     used:
       column: used
       type: boolean
     uses:
       column: uses
       type: integer
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     cartPriceRule:
       targetEntity: CoreShop\Component\Order\Model\CartPriceRuleInterface

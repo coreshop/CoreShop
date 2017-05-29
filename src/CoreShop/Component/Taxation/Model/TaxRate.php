@@ -13,10 +13,12 @@
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class TaxRate extends AbstractResource implements TaxRateInterface
 {
+    use TimestampableTrait;
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
     }

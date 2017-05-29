@@ -14,10 +14,12 @@ namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
 class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
 {
     use SetValuesTrait;
+    use TimestampableTrait;
 
     /**
      * @var mixed

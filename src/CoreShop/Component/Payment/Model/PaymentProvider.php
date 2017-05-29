@@ -13,11 +13,13 @@
 namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class PaymentProvider extends AbstractResource implements PaymentProviderInterface
 {
+    use TimestampableTrait;
     use ToggleableTrait;
     use TranslatableTrait {
         __construct as initializeTranslationsCollection;

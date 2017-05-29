@@ -13,9 +13,12 @@
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\AbstractTranslation;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
 
 class CountryTranslation extends AbstractTranslation implements CountryTranslationInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var mixed
      */

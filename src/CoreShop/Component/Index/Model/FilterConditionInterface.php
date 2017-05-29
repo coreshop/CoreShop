@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface FilterConditionInterface extends ResourceInterface
+interface FilterConditionInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return string

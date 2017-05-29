@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface CartPriceRuleVoucherCodeInterface extends ResourceInterface
+interface CartPriceRuleVoucherCodeInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * @return string
@@ -25,16 +26,6 @@ interface CartPriceRuleVoucherCodeInterface extends ResourceInterface
      * @param string $code
      */
     public function setCode($code);
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreationDate();
-
-    /**
-     * @param \DateTime $creationDate
-     */
-    public function setCreationDate($creationDate);
 
     /**
      * @return bool

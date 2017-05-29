@@ -20,3 +20,14 @@ CoreShop\Component\Store\Model\Store:
     siteId:
       column: siteId
       type: integer
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

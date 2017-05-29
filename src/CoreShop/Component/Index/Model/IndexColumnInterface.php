@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface IndexColumnInterface extends ResourceInterface
+interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * Field Type Integer for Index.

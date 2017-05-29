@@ -14,3 +14,14 @@ CoreShop\Component\Taxation\Model\TaxRate:
     rate:
       column: rate
       type: float
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update

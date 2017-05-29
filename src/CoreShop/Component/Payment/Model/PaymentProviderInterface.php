@@ -12,13 +12,11 @@
 
 namespace CoreShop\Component\Payment\Model;
 
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface PaymentProviderInterface extends
-    PaymentProviderTranslationInterface,
-    ToggleableInterface,
-    TranslatableInterface
+interface PaymentProviderInterface extends ToggleableInterface, TranslatableInterface, TimestampableInterface
 {
     /**
      * @return mixed

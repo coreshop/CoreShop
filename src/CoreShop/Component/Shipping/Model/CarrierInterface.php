@@ -13,9 +13,10 @@
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface CarrierInterface extends ResourceInterface
+interface CarrierInterface extends ResourceInterface, TimestampableInterface
 {
     /**
      * Range Behaviour Deactivate.

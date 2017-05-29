@@ -25,6 +25,17 @@ CoreShop\Component\Shipping\Model\Carrier:
     rangeBehaviour:
       column: rangeBehaviour
       type: string
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   oneToMany:
     shippingRules:
       targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleGroup

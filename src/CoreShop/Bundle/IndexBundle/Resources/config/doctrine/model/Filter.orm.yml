@@ -22,6 +22,17 @@ CoreShop\Component\Index\Model\Filter:
     orderKey:
       column: orderKey
       type: string
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToOne:
     index:
       targetEntity: CoreShop\Component\Index\Model\IndexInterface

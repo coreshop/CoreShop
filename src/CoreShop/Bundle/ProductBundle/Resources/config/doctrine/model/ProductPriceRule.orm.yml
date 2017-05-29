@@ -18,6 +18,17 @@ CoreShop\Component\Product\Model\ProductPriceRule:
     active:
       column: active
       type: boolean
+    creationDate:
+      type: datetime
+      gedmo:
+        timestampable:
+          on: create
+    modificationDate:
+      type: datetime
+      nullable: true
+      gedmo:
+        timestampable:
+          on: update
   manyToMany:
     conditions:
       targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
