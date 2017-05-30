@@ -23,9 +23,9 @@ pimcore.plugin.coreshop.carriers.panel = Class.create(pimcore.plugin.coreshop.ab
     type : 'carriers',
 
     url : {
-        add : '/admin/CoreShop/carriers/add',
-        delete : '/admin/CoreShop/carriers/delete',
-        get : '/admin/CoreShop/carriers/get',
-        list : '/admin/CoreShop/carriers/list'
+        add : '/admin/coreshop/carriers/add',
+        delete : '/admin/coreshop/carriers/delete',
+        get : '/admin/coreshop/carriers/get',
+        list : '/admin/coreshop/carriers/list'
     }
 });

@@ -22,10 +22,10 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
     type: 'countries',
 
     url: {
-        add: '/admin/CoreShop/countries/add',
-        delete: '/admin/CoreShop/countries/delete',
-        get: '/admin/CoreShop/countries/get',
-        list: '/admin/CoreShop/countries/list'
+        add: '/admin/coreshop/countries/add',
+        delete: '/admin/coreshop/countries/delete',
+        get: '/admin/coreshop/countries/get',
+        list: '/admin/coreshop/countries/list'
     },
 
     getNavigation: function () {

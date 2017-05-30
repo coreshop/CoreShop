@@ -22,9 +22,9 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
     type : 'thread',
 
     url : {
-        delete : '/admin/CoreShop/messaging-thread/delete',
-        get : '/admin/CoreShop/messaging-thread/get',
-        list : '/admin/CoreShop/messaging-thread/list'
+        delete : '/admin/coreshop/messaging-thread/delete',
+        get : '/admin/coreshop/messaging-thread/get',
+        list : '/admin/coreshop/messaging-thread/list'
     },
 
     initialize : function () {
@@ -92,7 +92,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
                 pageSize: pimcore.helpers.grid.getDefaultPageSize(),
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/messaging-thread/list',
+                    url: '/admin/coreshop/messaging-thread/list',
                     reader: {
                         type: 'json',
                         rootProperty: 'data',
@@ -268,7 +268,7 @@ pimcore.plugin.coreshop.messaging.thread.panel = Class.create(pimcore.plugin.cor
         var me = this;
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/messaging-thread/get-contacts-with-message-count',
+            url: '/admin/coreshop/messaging-thread/get-contacts-with-message-count',
             success: function (response) {
                 var res = Ext.decode(response.responseText);
                 if (res.success) {

@@ -20,7 +20,7 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
         this.cb = cb;
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/order-shipment/get-ship-able-items',
+            url: '/admin/coreshop/order-shipment/get-ship-able-items',
             params: {
                 id : this.order.o_id
             },
@@ -169,7 +169,7 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
                         window.setLoading(t('loading'));
 
                         Ext.Ajax.request({
-                            url: '/admin/CoreShop/order-shipment/create-shipment',
+                            url: '/admin/coreshop/order-shipment/create-shipment',
                             method : 'post',
                             params: {
                                 'items' : Ext.encode(itemsToShip),

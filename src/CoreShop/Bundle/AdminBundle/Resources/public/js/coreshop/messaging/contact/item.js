@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.messaging.contact.item = Class.create(pimcore.plugin.cor
     iconCls : 'coreshop_icon_messaging_contact',
 
     url : {
-        save : '/admin/CoreShop/messaging-contact/save'
+        save : '/admin/coreshop/messaging-contact/save'
     },
 
     getItems : function () {

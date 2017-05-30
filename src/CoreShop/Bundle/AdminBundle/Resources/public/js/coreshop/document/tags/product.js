@@ -127,7 +127,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
 
         Ext.Ajax.request({
             method: 'get',
-            url: '/admin/CoreShop/product/preview',
+            url: '/admin/coreshop/product/preview',
             success: function (response) {
                 this.getBody().dom.innerHTML = response.responseText;
                 this.getBody().insertHtml('beforeEnd', '<div class="pimcore_tag_droptarget"></div>');

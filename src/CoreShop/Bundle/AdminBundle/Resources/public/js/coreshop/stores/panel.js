@@ -22,9 +22,9 @@ pimcore.plugin.coreshop.stores.panel = Class.create(pimcore.plugin.coreshop.abst
     type : 'stores',
 
     url : {
-        add : '/admin/CoreShop/stores/add',
-        delete : '/admin/CoreShop/stores/delete',
-        get : '/admin/CoreShop/stores/get',
-        list : '/admin/CoreShop/stores/list'
+        add : '/admin/coreshop/stores/add',
+        delete : '/admin/coreshop/stores/delete',
+        get : '/admin/coreshop/stores/get',
+        list : '/admin/coreshop/stores/list'
     }
 });

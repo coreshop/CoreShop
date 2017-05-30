@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     iconCls : 'coreshop_icon_product_filters',
 
     url : {
-        save : '/admin/CoreShop/filters/save'
+        save : '/admin/coreshop/filters/save'
     },
 
     indexFieldsStore : null,
@@ -86,7 +86,7 @@ pimcore.plugin.coreshop.filters.item = Class.create(pimcore.plugin.coreshop.abst
     getFieldsForIndex : function (forceReload) {
         if (!this.indexFieldsStore) {
             var proxy = new Ext.data.HttpProxy({
-                url : '/admin/CoreShop/filters/get-fields-for-index'
+                url : '/admin/coreshop/filters/get-fields-for-index'
             });
 
             var reader = new Ext.data.JsonReader({}, [

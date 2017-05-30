@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.messaging.threadstate.item = Class.create(pimcore.plugin
     iconCls : 'coreshop_icon_messaging_thread_state',
 
     url : {
-        save : '/admin/CoreShop/messaging-thread-state/save'
+        save : '/admin/coreshop/messaging-thread-state/save'
     },
 
     getItems : function () {

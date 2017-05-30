@@ -23,9 +23,9 @@ pimcore.plugin.coreshop.currencies.panel = Class.create(pimcore.plugin.coreshop.
     type : 'currencies',
 
     url : {
-        add : '/admin/CoreShop/currencies/add',
-        delete : '/admin/CoreShop/currencies/delete',
-        get : '/admin/CoreShop/currencies/get',
-        list : '/admin/CoreShop/currencies/list'
+        add : '/admin/coreshop/currencies/add',
+        delete : '/admin/coreshop/currencies/delete',
+        get : '/admin/coreshop/currencies/get',
+        list : '/admin/coreshop/currencies/list'
     }
 });

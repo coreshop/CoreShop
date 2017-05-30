@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.notification.rules.item = Class.create(pimcore.plugin.co
     iconCls: 'coreshop_icon_notification_rule',
 
     url: {
-        save: '/admin/CoreShop/notification_rules/save'
+        save: '/admin/coreshop/notification_rules/save'
     },
 
     getPanel: function () {

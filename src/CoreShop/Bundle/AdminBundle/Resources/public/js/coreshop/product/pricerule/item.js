@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.cor
     iconCls : 'coreshop_icon_price_rule',
 
     url : {
-        save : '/admin/CoreShop/product_price_rules/save'
+        save : '/admin/coreshop/product_price_rules/save'
     },
 
     getSettings: function () {

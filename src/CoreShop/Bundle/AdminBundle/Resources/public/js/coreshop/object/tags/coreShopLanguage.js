@@ -25,7 +25,7 @@ pimcore.object.tags.coreShopLanguage = Class.create(pimcore.object.tags.select, 
         var store = new Ext.data.JsonStore({
             autoDestroy: true,
             proxy : new Ext.data.HttpProxy({
-                url : '/admin/CoreShop/helper/get-languages',
+                url : '/admin/coreshop/helper/get-languages',
                 reader: {
                     rootProperty: 'languages'
                 }

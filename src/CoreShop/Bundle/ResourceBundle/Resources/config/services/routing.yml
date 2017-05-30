@@ -6,6 +6,6 @@ services:
   coreshop.routing.loader.resource:
     class: CoreShop\Bundle\ResourceBundle\Routing\ResourceLoader
     public: false
-    arguments: ['@coreshop.resource_registry', '@coreshop.routing.route.factory', '%coreshop.admin.route.base%']
+    arguments: ['@coreshop.resource_registry', '@coreshop.routing.route.factory']
     tags:
       - { name: routing.loader }

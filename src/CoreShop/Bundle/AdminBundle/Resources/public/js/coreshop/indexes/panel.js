@@ -20,12 +20,12 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
     type : 'indexes',
 
     url : {
-        add : '/admin/CoreShop/indices/add',
-        delete : '/admin/CoreShop/indices/delete',
-        get : '/admin/CoreShop/indices/get',
-        list : '/admin/CoreShop/indices/list',
-        config: '/admin/CoreShop/indices/get-config',
-        types : '/admin/CoreShop/indices/get-types'
+        add : '/admin/coreshop/indices/add',
+        delete : '/admin/coreshop/indices/delete',
+        get : '/admin/coreshop/indices/get',
+        list : '/admin/coreshop/indices/list',
+        config: '/admin/coreshop/indices/get-config',
+        types : '/admin/coreshop/indices/get-types'
     },
 
     typesStore : null,

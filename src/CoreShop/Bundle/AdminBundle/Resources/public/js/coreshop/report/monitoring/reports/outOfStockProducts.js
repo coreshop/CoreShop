@@ -13,7 +13,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.reports.outOfStockProducts');
 pimcore.plugin.coreshop.report.monitoring.reports.outOfStockProducts = Class.create(pimcore.plugin.coreshop.report.monitoring.abstract, {
 
-    url : '/admin/CoreShop/reports/get-out-of-stock-products-monitoring',
+    url : '/admin/coreshop/reports/get-out-of-stock-products-monitoring',
 
     getName: function () {
         return t('coreshop_monitoring_outOfStockProducts');

@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.countries.item = Class.create(pimcore.plugin.coreshop.ab
     iconCls: 'coreshop_icon_country',
 
     url: {
-        save: '/admin/CoreShop/countries/save'
+        save: '/admin/coreshop/countries/save'
     },
 
     getItems: function () {

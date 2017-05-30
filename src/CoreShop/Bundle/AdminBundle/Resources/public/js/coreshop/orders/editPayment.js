@@ -40,7 +40,7 @@ pimcore.plugin.coreshop.orders.editPayment = {
                                 formValues['id'] = payment.getId();
 
                                 Ext.Ajax.request({
-                                    url: '/admin/CoreShop/order/update-payment',
+                                    url: '/admin/coreshop/order/update-payment',
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {

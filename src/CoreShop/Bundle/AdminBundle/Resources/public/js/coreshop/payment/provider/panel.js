@@ -22,11 +22,11 @@ pimcore.plugin.coreshop.payment.provider.panel = Class.create(pimcore.plugin.cor
     type : 'payment_provider',
 
     url : {
-        add : '/admin/CoreShop/payment_providers/add',
-        delete : '/admin/CoreShop/payment_providers/delete',
-        get : '/admin/CoreShop/payment_providers/get',
-        list : '/admin/CoreShop/payment_providers/list',
-        config : '/admin/CoreShop/payment_providers/get-config'
+        add : '/admin/coreshop/payment_providers/add',
+        delete : '/admin/coreshop/payment_providers/delete',
+        get : '/admin/coreshop/payment_providers/get',
+        list : '/admin/coreshop/payment_providers/list',
+        config : '/admin/coreshop/payment_providers/get-config'
     },
 
     factoryTypes : null,

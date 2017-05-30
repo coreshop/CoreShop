@@ -13,7 +13,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.categories');
 pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/CoreShop/reports/get-categories-report',
+    url : '/admin/coreshop/reports/get-categories-report',
 
     getName: function () {
         return t('coreshop_report_categories');

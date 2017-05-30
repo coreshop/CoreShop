@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
     iconCls : 'coreshop_icon_messaging_thread',
 
     url : {
-        save : '/admin/CoreShop/messaging-thread/save'
+        save : '/admin/coreshop/messaging-thread/save'
     },
 
     initPanel: function () {
@@ -133,7 +133,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
         this.panel.mask(t('loading'));
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/messaging-thread/change-status',
+            url: '/admin/coreshop/messaging-thread/change-status',
             params: {
                 thread: this.data.thread.id,
                 status : newStatus
@@ -275,7 +275,7 @@ pimcore.plugin.coreshop.messaging.thread.item = Class.create(pimcore.plugin.core
             return;
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/messaging-thread/send-message',
+            url: '/admin/coreshop/messaging-thread/send-message',
             params: {
                 thread: this.data.thread.id,
                 message : content

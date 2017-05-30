@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
     iconCls: 'coreshop_icon_tax_rule_groups',
 
     url: {
-        save: '/admin/CoreShop/tax_rule_groups/save'
+        save: '/admin/coreshop/tax_rule_groups/save'
     },
 
     getItems: function () {
@@ -103,7 +103,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         var statesStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/CoreShop/state/country'
+                url: '/admin/coreshop/state/country'
             }),
             reader: new Ext.data.JsonReader({}, [
                 {name: 'id'},
@@ -130,7 +130,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
         var countryStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/CoreShop/countries/list'
+                url: '/admin/coreshop/countries/list'
             }),
             autoLoad: true,
             reader: new Ext.data.JsonReader({

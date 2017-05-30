@@ -20,7 +20,7 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
         this.cb = cb;
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/order-invoice/get-invoice-able-items',
+            url: '/admin/coreshop/order-invoice/get-invoice-able-items',
             params: {
                 id : this.order.o_id
             },
@@ -153,7 +153,7 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
                         window.setLoading(t('loading'));
 
                         Ext.Ajax.request({
-                            url: '/admin/CoreShop/order-invoice/create-invoice',
+                            url: '/admin/coreshop/order-invoice/create-invoice',
                             method : 'post',
                             params: {
                                 'items' : Ext.encode(itemsToInvoice),

@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
     iconCls : 'coreshop_icon_payment_provider',
 
     url : {
-        save : '/admin/CoreShop/payment_providers/save'
+        save : '/admin/coreshop/payment_providers/save'
     },
 
     getItems : function () {

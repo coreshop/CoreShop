@@ -20,7 +20,7 @@ pimcore.plugin.coreshop.install = Class.create({
                 pimcore.helpers.loadingShow();
 
                 Ext.Ajax.request({
-                    url: '/admin/CoreShop/install/install',
+                    url: '/admin/coreshop/install/install',
                     method: 'post',
                     success: function (response) {
                         var data = Ext.decode(response.responseText);

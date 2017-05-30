@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstr
     iconCls : 'coreshop_icon_store',
 
     url : {
-        save : '/admin/CoreShop/stores/save'
+        save : '/admin/coreshop/stores/save'
     },
 
     getItems : function () {
@@ -30,7 +30,7 @@ pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstr
             remoteSort: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/CoreShop/stores/list-sites',
+                url: '/admin/coreshop/stores/list-sites',
                 reader: {
                     type: 'json'
                 }

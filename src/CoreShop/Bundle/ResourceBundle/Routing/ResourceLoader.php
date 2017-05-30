@@ -33,20 +33,13 @@ final class ResourceLoader implements LoaderInterface
     private $routeFactory;
 
     /**
-     * @var string
-     */
-    private $urlBase;
-
-    /**
      * @param RegistryInterface     $modelRegistry
      * @param RouteFactoryInterface $routeFactory
-     * @param string                $urlBase
      */
-    public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory, $urlBase)
+    public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
     {
         $this->modelRegistry = $modelRegistry;
         $this->routeFactory = $routeFactory;
-        $this->urlBase = $urlBase;
     }
 
     /**
@@ -92,7 +85,7 @@ final class ResourceLoader implements LoaderInterface
         //$rootPath = sprintf('/%s/', isset($configuration['path']) ? $configuration['path'] : Urlizer::urlize($metadata->getPluralName()));
         //$identifier = sprintf('{%s}', $configuration['identifier']);
 
-        $rootPath = $this->urlBase;
+        $rootPath = '/admin/' . $metadata->getApplicationName();
         $rootPath .= '/'.$metadata->getPluralName().'/';
 
         foreach ($routesToGenerate as $route) {

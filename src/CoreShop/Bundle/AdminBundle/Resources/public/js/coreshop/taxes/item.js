@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
     iconCls : 'coreshop_icon_taxes',
 
     url : {
-        save : '/admin/CoreShop/tax_rates/save'
+        save : '/admin/coreshop/tax_rates/save'
     },
 
     getItems : function () {

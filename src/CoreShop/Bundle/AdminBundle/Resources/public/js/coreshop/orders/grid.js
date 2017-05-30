@@ -26,7 +26,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         this.panels = [];
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/order/get-order-grid-configuration',
+            url: '/admin/coreshop/order/get-order-grid-configuration',
             method: 'GET',
             success: function (result) {
                 var columnConfig = Ext.decode(result.responseText);
@@ -180,7 +180,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             pageSize: pimcore.helpers.grid.getDefaultPageSize(),
             proxy: {
                 type: 'ajax',
-                url: '/admin/CoreShop/order/get-orders',
+                url: '/admin/coreshop/order/get-orders',
                 reader: {
                     type: 'json',
                     rootProperty: 'data',

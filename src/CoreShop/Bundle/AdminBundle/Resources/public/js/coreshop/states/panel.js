@@ -22,10 +22,10 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
     type: 'states',
 
     url: {
-        add: '/admin/CoreShop/states/add',
-        delete: '/admin/CoreShop/states/delete',
-        get: '/admin/CoreShop/states/get',
-        list: '/admin/CoreShop/states/list'
+        add: '/admin/coreshop/states/add',
+        delete: '/admin/coreshop/states/delete',
+        get: '/admin/coreshop/states/get',
+        list: '/admin/coreshop/states/list'
     },
 
     getNavigation: function () {

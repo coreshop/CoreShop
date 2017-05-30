@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
     iconCls : 'coreshop_icon_carrier_shipping_rule',
 
     url : {
-        save : '/admin/CoreShop/shipping_rules/save'
+        save : '/admin/coreshop/shipping_rules/save'
     },
 
     getPanel: function () {
@@ -72,7 +72,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
             ],
             proxy: {
                 type: 'ajax',
-                url: '/admin/CoreShop/carrier-shipping-rule/get-used-by-carriers',
+                url: '/admin/coreshop/carrier-shipping-rule/get-used-by-carriers',
                 reader: {
                     type: 'json',
                     rootProperty: 'carriers'

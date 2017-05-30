@@ -22,7 +22,7 @@ pimcore.plugin.coreshop.settings = Class.create({
 
     getData: function () {
         Ext.Ajax.request({
-            url: '/admin/CoreShop/configurations/get-all',
+            url: '/admin/coreshop/configurations/get-all',
             success: function (response) {
 
                 this.data = Ext.decode(response.responseText).data;
@@ -121,7 +121,7 @@ pimcore.plugin.coreshop.settings = Class.create({
             /*this.exchangeRatesStore = new Ext.data.Store({
                 proxy: {
                     type: 'ajax',
-                    url : '/admin/CoreShop/currency/get-exchange-rate-providers',
+                    url : '/admin/coreshop/currency/get-exchange-rate-providers',
                     reader: {
                         type: 'json',
                         rootProperty : 'data'
@@ -185,7 +185,7 @@ pimcore.plugin.coreshop.settings = Class.create({
         }
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/configurations/save-all',
+            url: '/admin/coreshop/configurations/save-all',
             method: 'post',
             params: {
                 values: Ext.encode(values),

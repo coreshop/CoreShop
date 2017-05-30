@@ -68,7 +68,7 @@ pimcore.plugin.coreshop.global = {
 
     _createStore : function (name, url, fields) {
         var proxy = new Ext.data.HttpProxy({
-            url : '/admin/CoreShop/' + url + '/list'
+            url : '/admin/coreshop/' + url + '/list'
         });
 
         if (!fields) {

@@ -38,7 +38,7 @@ pimcore.plugin.coreshop.invoice.render = Class.create({
     },
 
     loadDocument : function (invoiceId) {
-        var frameUrl = '/admin/CoreShop/order-invoice/render?id=' + invoiceId;
+        var frameUrl = '/admin/coreshop/order-invoice/render?id=' + invoiceId;
 
         //check for native/plugin PDF viewer
         if (this.hasNativePDFViewer()) {

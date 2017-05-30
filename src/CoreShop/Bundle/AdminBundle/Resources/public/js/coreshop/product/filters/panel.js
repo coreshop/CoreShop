@@ -23,10 +23,10 @@ pimcore.plugin.coreshop.filters.panel = Class.create(pimcore.plugin.coreshop.abs
     type : 'filters',
 
     url : {
-        add : '/admin/CoreShop/filters/add',
-        delete : '/admin/CoreShop/filters/delete',
-        get : '/admin/CoreShop/filters/get',
-        list : '/admin/CoreShop/filters/list'
+        add : '/admin/coreshop/filters/add',
+        delete : '/admin/coreshop/filters/delete',
+        get : '/admin/coreshop/filters/get',
+        list : '/admin/coreshop/filters/list'
     },
 
     /**
@@ -43,7 +43,7 @@ pimcore.plugin.coreshop.filters.panel = Class.create(pimcore.plugin.coreshop.abs
         pimcore.globalmanager.get('coreshop_indexes').load();
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/filters/get-config',
+            url: '/admin/coreshop/filters/get-config',
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);

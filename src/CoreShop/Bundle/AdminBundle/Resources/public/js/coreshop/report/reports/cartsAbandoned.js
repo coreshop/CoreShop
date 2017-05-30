@@ -13,7 +13,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.cartsAbandoned');
 pimcore.plugin.coreshop.report.reports.cartsAbandoned = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/CoreShop/reports/get-orders-carts-abandoned-report',
+    url : '/admin/coreshop/reports/get-orders-carts-abandoned-report',
 
     getName: function () {
         return t('coreshop_report_carts_abandoned');

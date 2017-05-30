@@ -51,7 +51,7 @@ pimcore.plugin.coreshop.orders.message = {
                                 formValues['o_id'] = orderId;
 
                                 Ext.Ajax.request({
-                                    url : '/admin/CoreShop/order/send-message',
+                                    url : '/admin/coreshop/order/send-message',
                                     method : 'post',
                                     params : formValues,
                                     callback: function (request, success, response) {

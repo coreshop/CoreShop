@@ -17,7 +17,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
     iconCls : 'coreshop_icon_price_rule',
 
     url : {
-        save : '/admin/CoreShop/cart_price_rules/save'
+        save : '/admin/coreshop/cart_price_rules/save'
     },
 
     getPanel: function () {
@@ -100,7 +100,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                 pageSize: pimcore.helpers.grid.getDefaultPageSize(),
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/cart_price_rules/get-voucher-codes',
+                    url: '/admin/coreshop/cart_price_rules/get-voucher-codes',
                     reader: {
                         type: 'json',
                         rootProperty: 'data',
@@ -180,7 +180,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler : function () {
-                                pimcore.helpers.download('/admin/CoreShop/cart_price_rules/export-voucher-codes?id=' + this.data.id);
+                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?id=' + this.data.id);
                             }.bind(this)
                         }
                     ]
@@ -252,7 +252,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                         params['id'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/CoreShop/cart_price_rules/generate-voucher-codes',
+                            url: '/admin/coreshop/cart_price_rules/generate-voucher-codes',
                             method: 'post',
                             params : params,
                             success: function (response) {

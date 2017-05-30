@@ -34,7 +34,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         Ext.get('pimcore_status').insertHtml('beforeEnd', '<div id="coreshop_status" class="loading" data-menu-tooltip="' + t('coreshop_loading') + '"></div>');
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/settings/get-settings',
+            url: '/admin/coreshop/settings/get-settings',
             success: function (response)
             {
                 resp = Ext.decode(response.responseText);

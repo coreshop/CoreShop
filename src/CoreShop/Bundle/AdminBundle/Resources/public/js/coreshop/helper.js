@@ -38,7 +38,7 @@ coreshop.helpers.openOrderByNumberDialog = function (keyCode, e) {
 
 coreshop.helpers.openOrderByNumber = function (orderNumber) {
     Ext.Ajax.request({
-        url: '/admin/CoreShop/helper/get-order',
+        url: '/admin/coreshop/helper/get-order',
         params: {
             orderNumber: orderNumber
         },
@@ -128,7 +128,7 @@ coreshop.helpers.openOrder = function (id, callback) {
         pimcore.globalmanager.add('coreshop_order_' + id, true);
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/order/detail',
+            url: '/admin/coreshop/order/detail',
             params: {
                 id: id
             },
@@ -168,7 +168,7 @@ coreshop.helpers.openMessagingThread = function(id) {
         pimcore.globalmanager.add(panelKey, true);
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/messaging-thread/get',
+            url: '/admin/coreshop/messaging-thread/get',
             params: {
                 id: id
             },
@@ -197,7 +197,7 @@ coreshop.helpers.requestNicePathData = function(targets, responseHandler) {
 
     Ext.Ajax.request({
         method: 'POST',
-        url: "/admin/CoreShop/helper/get-nice-path",
+        url: "/admin/coreshop/helper/get-nice-path",
         params: {
             targets: elementData
         },

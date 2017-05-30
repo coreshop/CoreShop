@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.notification.rules.conditions.payment = Class.create(pim
         var paymentProvidersStore = new Ext.data.Store({
             proxy : {
                 type : 'ajax',
-                url : '/admin/CoreShop/order/get-payment-providers',
+                url : '/admin/coreshop/order/get-payment-providers',
                 reader : {
                     type : 'json',
                     rootProperty : 'data'

@@ -38,7 +38,7 @@ pimcore.plugin.coreshop.shipment.render = Class.create({
     },
 
     loadDocument : function (shipmentId) {
-        var frameUrl = '/admin/CoreShop/order-shipment/render?id=' + shipmentId;
+        var frameUrl = '/admin/coreshop/order-shipment/render?id=' + shipmentId;
 
         //check for native/plugin PDF viewer
         if (this.hasNativePDFViewer()) {

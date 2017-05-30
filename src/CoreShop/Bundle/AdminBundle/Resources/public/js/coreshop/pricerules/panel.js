@@ -23,11 +23,11 @@ pimcore.plugin.coreshop.pricerules.panel = Class.create(pimcore.plugin.coreshop.
     type : 'cart_pricerules',
 
     url : {
-        add : '/admin/CoreShop/cart_price_rules/add',
-        delete : '/admin/CoreShop/cart_price_rules/delete',
-        get : '/admin/CoreShop/cart_price_rules/get',
-        list : '/admin/CoreShop/cart_price_rules/list',
-        config : '/admin/CoreShop/cart_price_rules/get-config'
+        add : '/admin/coreshop/cart_price_rules/add',
+        delete : '/admin/coreshop/cart_price_rules/delete',
+        get : '/admin/coreshop/cart_price_rules/get',
+        list : '/admin/coreshop/cart_price_rules/list',
+        config : '/admin/coreshop/cart_price_rules/get-config'
     },
 
     getItemClass : function () {

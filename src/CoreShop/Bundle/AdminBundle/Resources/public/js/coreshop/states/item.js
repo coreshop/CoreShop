@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.states.item = Class.create(pimcore.plugin.coreshop.abstr
     iconCls: 'coreshop_icon_state',
 
     url: {
-        save: '/admin/CoreShop/states/save'
+        save: '/admin/coreshop/states/save'
     },
 
     getItems: function () {

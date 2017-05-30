@@ -13,7 +13,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.reports.disabledProducts');
 pimcore.plugin.coreshop.report.monitoring.reports.disabledProducts = Class.create(pimcore.plugin.coreshop.report.monitoring.abstract, {
 
-    url : '/admin/CoreShop/reports/get-disabled-products-monitoring',
+    url : '/admin/coreshop/reports/get-disabled-products-monitoring',
 
     getName: function () {
         return t('coreshop_monitoring_disableProducts');

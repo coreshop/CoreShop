@@ -41,7 +41,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
             this.currency = this.currencies[0];
 
             Ext.Ajax.request({
-                url: '/admin/CoreShop/order/get-customer-details',
+                url: '/admin/coreshop/order/get-customer-details',
                 method: 'post',
                 params: {
                     customerId: customerId
@@ -167,7 +167,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
             this.customerCartGridStore = new Ext.data.JsonStore({
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/order/get-customer-carts',
+                    url: '/admin/coreshop/order/get-customer-carts',
                     reader: {
                         type: 'json',
                         rootProperty: 'carts'
@@ -239,7 +239,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
             this.customerOrdersGridStore = new Ext.data.JsonStore({
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/order/get-customer-orders',
+                    url: '/admin/coreshop/order/get-customer-orders',
                     reader: {
                         type: 'json',
                         rootProperty: 'orders'
@@ -493,7 +493,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
         this.cartPanel.setLoading(t("loading"));
 
         Ext.Ajax.request({
-            url : '/admin/CoreShop/order/get-product-details',
+            url : '/admin/coreshop/order/get-product-details',
             method : 'post',
             params : {
                 'products' : Ext.JSON.encode(products),
@@ -728,7 +728,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
             this.deliveryPanel.setLoading(t("loading"));
 
             Ext.Ajax.request({
-                url: '/admin/CoreShop/order/get-carriers-details',
+                url: '/admin/coreshop/order/get-carriers-details',
                 method: 'post',
                 params: {
                     customerId: this.customerId,
@@ -769,7 +769,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
             var paymentProvidersStore = new Ext.data.Store({
                 proxy : {
                     type : 'ajax',
-                    url : '/admin/CoreShop/order/get-payment-providers',
+                    url : '/admin/coreshop/order/get-payment-providers',
                     reader : {
                         type : 'json',
                         rootProperty : 'data'
@@ -868,7 +868,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
             this.totalPanel.setLoading(t("loading"));
 
             Ext.Ajax.request({
-                url: '/admin/CoreShop/order/get-order-total',
+                url: '/admin/coreshop/order/get-order-total',
                 method: 'post',
                 params: {
                     customerId: this.customerId,
@@ -909,7 +909,7 @@ pimcore.plugin.coreshop.orders.create.order = Class.create({
         this.layout.setLoading(t("coreshop_creating_order"));
 
         Ext.Ajax.request({
-            url: '/admin/CoreShop/order/create-order',
+            url: '/admin/coreshop/order/create-order',
             method: 'post',
             params: this.getParams(),
             callback: function (request, success, response) {

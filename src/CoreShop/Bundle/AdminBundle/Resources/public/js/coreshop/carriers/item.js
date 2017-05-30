@@ -16,7 +16,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
     iconCls : 'coreshop_icon_carrier',
 
     url : {
-        save : '/admin/CoreShop/carriers/save'
+        save : '/admin/coreshop/carriers/save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {

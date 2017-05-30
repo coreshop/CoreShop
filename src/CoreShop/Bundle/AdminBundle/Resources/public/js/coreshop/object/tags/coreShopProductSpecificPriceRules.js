@@ -86,7 +86,7 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
             });
 
             Ext.Ajax.request({
-                url: '/admin/CoreShop/product_specific_price_rules/get-config',
+                url: '/admin/coreshop/product_specific_price_rules/get-config',
                 method: 'GET',
                 success: function (result) {
                     var config = Ext.decode(result.responseText);

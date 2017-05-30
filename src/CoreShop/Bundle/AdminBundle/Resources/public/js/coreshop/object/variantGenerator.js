@@ -38,7 +38,7 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
             this.brickTypeStore = new Ext.data.JsonStore({
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/object/get-variant-bricks',
+                    url: '/admin/coreshop/object/get-variant-bricks',
                     extraParams : {
                         id : this.object.id
                     },
@@ -53,7 +53,7 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
             this.brickFieldStore = new Ext.data.JsonStore({
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/CoreShop/object/get-brick-fields',
+                    url: '/admin/coreshop/object/get-brick-fields',
                     reader: {
                         type: 'json',
                         rootProperty: 'data'
@@ -116,7 +116,7 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
                     iconCls: 'pimcore_icon_apply',
                     handler: function () {
                         Ext.Ajax.request({
-                            url: '/admin/CoreShop/object/generate-variants',
+                            url: '/admin/coreshop/object/generate-variants',
                             method: 'post',
                             params: {
                                 objectId : this.object.id,

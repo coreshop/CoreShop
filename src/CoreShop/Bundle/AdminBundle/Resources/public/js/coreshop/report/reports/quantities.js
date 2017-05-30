@@ -13,7 +13,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.quantities');
 pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/CoreShop/reports/get-quantities-report',
+    url : '/admin/coreshop/reports/get-quantities-report',
     remoteSort : true,
 
     getName: function () {

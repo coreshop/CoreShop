@@ -23,12 +23,12 @@ pimcore.plugin.coreshop.notification.rules.panel = Class.create(pimcore.plugin.c
     type : 'notification_rule',
 
     url : {
-        add : '/admin/CoreShop/notification_rules/add',
-        delete : '/admin/CoreShop/notification_rules/delete',
-        get : '/admin/CoreShop/notification_rules/get',
-        list : '/admin/CoreShop/notification_rules/list',
-        config : '/admin/CoreShop/notification_rules/get-config',
-        sort : '/admin/CoreShop/notification_rules/sort'
+        add : '/admin/coreshop/notification_rules/add',
+        delete : '/admin/coreshop/notification_rules/delete',
+        get : '/admin/coreshop/notification_rules/get',
+        list : '/admin/coreshop/notification_rules/list',
+        config : '/admin/coreshop/notification_rules/get-config',
+        sort : '/admin/coreshop/notification_rules/sort'
     },
 
     getItemClass : function () {

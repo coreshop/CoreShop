@@ -409,7 +409,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         scale : 'small',
                         handler : function () {
                             Ext.Ajax.request({
-                                url: '/admin/CoreShop/order/get-address-fields',
+                                url: '/admin/coreshop/order/get-address-fields',
                                 params: {
                                     id: this.order.o_id,
                                     type : type
@@ -538,7 +538,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         var trackingCode = context.record.get('trackingCode');
 
                         Ext.Ajax.request({
-                            url: '/admin/CoreShop/order-shipment/change-tracking-code',
+                            url: '/admin/coreshop/order-shipment/change-tracking-code',
                             params: {
                                 shipmentId : context.record.get("o_id"),
                                 trackingCode : trackingCode
@@ -1062,7 +1062,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                         formValues['o_id'] = this.order.o_id;
 
                                         Ext.Ajax.request({
-                                            url : '/admin/CoreShop/order/send-message',
+                                            url : '/admin/coreshop/order/send-message',
                                             method : 'post',
                                             params : formValues,
                                             callback: function (request, success, response) {
@@ -1188,7 +1188,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     edit : function (editor, context, eOpts) {
                         if (context.originalValue !== context.value) {
                             Ext.Ajax.request({
-                                url: '/admin/CoreShop/order/change-order-item',
+                                url: '/admin/coreshop/order/change-order-item',
                                 params: {
                                     id: this.order.o_id,
                                     orderItemId : context.record.get('o_id'),

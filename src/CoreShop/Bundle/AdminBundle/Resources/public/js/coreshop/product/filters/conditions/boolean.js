@@ -19,7 +19,7 @@ pimcore.plugin.coreshop.filters.conditions.boolean = Class.create(pimcore.plugin
     getDefaultItems : function () {
         this.valueStore = new Ext.data.ArrayStore({
             proxy: new Ext.data.HttpProxy({
-                url : '/admin/CoreShop/filters/get-values-for-filter-field'
+                url : '/admin/coreshop/filters/get-values-for-filter-field'
             }),
             reader: new Ext.data.JsonReader({}, [
                 { name:'value' }

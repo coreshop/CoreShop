@@ -52,7 +52,7 @@ jms_serializer:
 fos_rest:
   format_listener:
     rules:
-      - { path: '^/admin/CoreShop', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: true }
+      - { path: '^/admin/coreshop', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: true }
       - { path: '^/', stop: true }
 
 twig:

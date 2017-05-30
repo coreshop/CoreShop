@@ -55,7 +55,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
                             window.setLoading(t('loading'));
 
                             Ext.Ajax.request({
-                                url: '/admin/CoreShop/order/change-address',
+                                url: '/admin/coreshop/order/change-address',
                                 params: params,
                                 success: function (response) {
                                     var res = Ext.decode(response.responseText);

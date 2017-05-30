@@ -13,7 +13,7 @@
 pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.reports.emptyCategories');
 pimcore.plugin.coreshop.report.monitoring.reports.emptyCategories = Class.create(pimcore.plugin.coreshop.report.monitoring.abstract, {
 
-    url : '/admin/CoreShop/reports/get-empty-categories-monitoring',
+    url : '/admin/coreshop/reports/get-empty-categories-monitoring',
 
     getName: function () {
         return t('coreshop_monitoring_emptyCategories');
