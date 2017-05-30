@@ -10,17 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Product\Model;
+namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Customer\Model\CustomerGroup as BaseCustomerGroup;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
-class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
+class CustomerGroup extends BaseCustomerGroup implements CustomerGroupInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getShops()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -28,7 +28,7 @@ class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setShops($shops)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

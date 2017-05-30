@@ -17,6 +17,19 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CartInterface extends BaseCartInterface, ShippableInterface
 {
+
+    /**
+     * @return mixed
+     */
+    public function getCarrier();
+
+    /**
+     * @param $carrier
+     *
+     * @return mixed
+     */
+    public function setCarrier($carrier);
+
     /**
      * @param CurrencyInterface $currency
      */

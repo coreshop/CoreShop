@@ -101,8 +101,9 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
      * @param array           $commands
      * @param OutputInterface $output
      * @param bool            $displayProgress
+     * @param bool            $passOutput
      */
-    protected function runCommands(array $commands, OutputInterface $output, $displayProgress = true)
+    protected function runCommands(array $commands, OutputInterface $output, $displayProgress = true, $passOutput = false)
     {
         $progress = null;
 
@@ -119,7 +120,7 @@ abstract class AbstractInstallCommand extends ContainerAwareCommand
                 $parameters = [];
             }
 
-            $this->commandExecutor->runCommand($command, $parameters);
+            $this->commandExecutor->runCommand($command, $parameters, $passOutput ? $output : null);
 
             // PDO does not always close the connection after Doctrine commands.
             // See https://github.com/symfony/symfony/issues/11750.

@@ -1,0 +1,5 @@
+core_shop_customer:
+  pimcore:
+    customer_group:
+      classes:
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomerGroup.json'

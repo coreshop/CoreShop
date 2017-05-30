@@ -1,6 +1,6 @@
 {
     "description": null,
-    "parentClass": "CoreShop\\Component\\Order\\Model\\Order",
+    "parentClass": "CoreShop\\Component\\Core\\Model\\Order",
     "useTraits": null,
     "allowInherit": false,
     "allowVariants": false,

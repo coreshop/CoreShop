@@ -23,6 +23,10 @@ final class CoreShopResourceBundle extends Bundle
     const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
     const DRIVER_DOCTRINE_PIMCORE = 'pimcore';
 
+    const PIMCORE_MODEL_TYPE_OBJECT = 'object';
+    const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
+    const PIMCORE_MODEL_TYPE_BRICK = 'brick';
+
     /**
      * {@inheritdoc}
      */

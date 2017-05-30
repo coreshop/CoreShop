@@ -27,16 +27,4 @@ interface CustomerGroupInterface extends ResourceInterface
      * @return static
      */
     public function setName($name);
-
-    /**
-     * @return mixed
-     */
-    public function getShops();
-
-    /**
-     * @param $shops
-     *
-     * @return mixed
-     */
-    public function setShops($shops);
 }

@@ -1,11 +1,16 @@
 core_shop_order:
   pimcore:
+    cart:
+      classes:
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json'
     order:
       classes:
         admin_controller: CoreShop\Bundle\CoreBundle\Controller\OrderController
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrder.json'
     order_invoice:
       classes:
         admin_controller: CoreShop\Bundle\CoreBundle\Controller\OrderInvoiceController
     order_shipment:
       classes:
         admin_controller: CoreShop\Bundle\CoreBundle\Controller\OrderShipmentController
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipment.json'

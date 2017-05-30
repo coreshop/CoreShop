@@ -10,20 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Product\Model;
+namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface as BaseCustomerGroupInterface;
 
-interface ManufacturerInterface extends PimcoreModelInterface
+interface CustomerGroupInterface extends BaseCustomerGroupInterface
 {
     /**
      * @return mixed
      */
-    public function getName();
+    public function getShops();
 
     /**
-     * @param $name
+     * @param $shops
+     *
      * @return mixed
      */
-    public function setName($name);
+    public function setShops($shops);
 }

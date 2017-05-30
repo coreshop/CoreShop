@@ -35,18 +35,6 @@ interface OrderShipmentInterface extends OrderDocumentInterface
     public function setShipmentNumber($shipmentNumber);
 
     /**
-     * @return mixed
-     */
-    public function getCarrier();
-
-    /**
-     * @param $carrier
-     *
-     * @return mixed
-     */
-    public function setCarrier($carrier);
-
-    /**
      * @return string
      */
     public function getTrackingCode();

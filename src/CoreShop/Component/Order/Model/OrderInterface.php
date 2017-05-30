@@ -146,18 +146,6 @@ interface OrderInterface extends ProposalInterface, PimcoreModelInterface
     public function setOrderNumber($orderNumber);
 
     /**
-     * @return mixed
-     */
-    public function getCarrier();
-
-    /**
-     * @param $carrier
-     *
-     * @return mixed
-     */
-    public function setCarrier($carrier);
-
-    /**
      * @return array
      */
     public function getPriceRules();

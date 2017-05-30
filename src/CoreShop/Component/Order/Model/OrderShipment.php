@@ -140,22 +140,6 @@ class OrderShipment extends AbstractPimcoreModel implements OrderShipmentInterfa
     /**
      * {@inheritdoc}
      */
-    public function getCarrier()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCarrier($carrier)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTrackingCode()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

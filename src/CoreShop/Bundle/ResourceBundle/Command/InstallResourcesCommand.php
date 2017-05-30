@@ -8,15 +8,16 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Bundle\CoreBundle\Command;
+namespace CoreShop\Bundle\ResourceBundle\Command;
 
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class InstallClassesCommand extends AbstractInstallCommand
+final class InstallResourcesCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -24,13 +25,12 @@ final class InstallClassesCommand extends AbstractInstallCommand
     protected function configure()
     {
         $this
-            ->setName('coreshop:install:classes')
-            ->setDescription('Install CoreShop Classes.')
+            ->setName('coreshop:resources:install')
+            ->setDescription('Install Resource registered Pimcore Classes.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> command creates CoreShop Classes.
+The <info>%command.name%</info> command creates Pimcore Classes.
 EOT
-            )
-        ;
+            );
     }
 
     /**
@@ -38,7 +38,15 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->runCommands(['coreshop:resources:install'], $output, false, true);
+        $outputStyle = new SymfonyStyle($input, $output);
+        $outputStyle->writeln(sprintf(
+            'Creating Pimcore classes <info>%s</info>.',
+            $this->getContainer()->get('kernel')->getEnvironment()
+        ));
+
+        $this
+            ->getContainer()->get('coreshop.resource.installer.classes')
+            ->installResources($output);
 
         return 0;
     }

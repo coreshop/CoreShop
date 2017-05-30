@@ -3,6 +3,8 @@ core_shop_product:
     category:
       classes:
         repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\CategoryRepository
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopCategory.json'
     product:
       classes:
         repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\ProductRepository
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopProduct.json'

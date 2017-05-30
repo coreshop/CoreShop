@@ -28,18 +28,6 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Checko
     public function getOrder();
 
     /**
-     * @return mixed
-     */
-    public function getCarrier();
-
-    /**
-     * @param $carrier
-     *
-     * @return mixed
-     */
-    public function setCarrier($carrier);
-
-    /**
      * @return array
      */
     public function getPriceRuleItems();

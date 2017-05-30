@@ -20,6 +20,22 @@ class Cart extends BaseCart implements CartInterface
 {
     /**
      * {@inheritdoc}
+     */
+    public function getCarrier()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCarrier($carrier)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * TODO: Do we actually need the container here?
      * Can't we just save shipping via shipping step?

@@ -33,3 +33,7 @@ services:
     decorates: form.type_extension.form.request_handler
     decoration_priority: 256
     public: false
+
+  coreshop.resource.installer.classes:
+    class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller
+    arguments: ['%coreshop.pimcore%', '@kernel']

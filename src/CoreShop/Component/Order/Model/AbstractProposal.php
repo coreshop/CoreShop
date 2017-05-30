@@ -221,22 +221,6 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     /**
      * {@inheritdoc}
      */
-    public function getCarrier()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCarrier($carrier)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

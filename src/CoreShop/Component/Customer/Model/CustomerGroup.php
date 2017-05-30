@@ -33,20 +33,4 @@ class CustomerGroup extends AbstractPimcoreModel implements CustomerGroupInterfa
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShops()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShops($shops)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 }

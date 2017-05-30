@@ -10,17 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Product\Model;
+namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Order\Model\Order as BaseOrder;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
-class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
+class Order extends BaseOrder implements OrderInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getCarrier()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -28,7 +28,7 @@ class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setCarrier($carrier)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

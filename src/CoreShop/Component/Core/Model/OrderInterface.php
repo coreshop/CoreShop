@@ -8,22 +8,22 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Product\Model;
+namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Order\Model\OrderInterface as BaseOrderInterface;
 
-interface ManufacturerInterface extends PimcoreModelInterface
+interface OrderInterface extends BaseOrderInterface
 {
     /**
-     * @return mixed
+     * @return CarrierInterface
      */
-    public function getName();
+    public function getCarrier();
 
     /**
-     * @param $name
+     * @param CarrierInterface $carrier
      * @return mixed
      */
-    public function setName($name);
+    public function setCarrier($carrier);
 }
