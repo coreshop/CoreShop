@@ -1,5 +1,4 @@
-# CoreShop Localization
+# CoreShop Order
 
- * [Order States](./01_Order_States.md)
- * [Orders](./02_Orders.md)
- * [Order Detail](./03_Order_Detail.md)
+ * [Orders](./01_Orders.md)
+ * [Order Detail](./02_Order_Detail.md)

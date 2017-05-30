@@ -1,3 +1,0 @@
-# CoreShop Events
-
-# TODO

@@ -1,8 +1,79 @@
-# CoreShop Order Bundle
+## Installation
+```
+composer require coreshop/order-bundle dev-master
+```
 
-    - Cart Price Calculators
-    - Pimcore Core Extensions
-    - Doctrine Mappings
-    - Symfony Forms
-    - Cart Price Rules
-    - Cart Manager
+### Adding required bundles to kernel
+You need to enable the bundle inside the kernel
+
+If you're not using CoreShop bundles, you will also need to add CoreShopResourceBundle, CoreShopRuleBundle and CoreShopProductBundle and its dependencies
+to kernel. Don’t worry, everything was automatically installed via Composer.
+
+```php
+<?php
+
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+        new \JMS\SerializerBundle\JMSSerializerBundle(),
+        new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
+
+        new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),
+        new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
+        new \CoreShop\Bundle\ProductBundle\CoreShopProductBundle(),
+        new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
+
+
+        new \FOS\RestBundle\FOSRestBundle(),
+        new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+        new \Payum\Bundle\PayumBundle\PayumBundle(),
+        new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+    );
+}
+```
+
+### Updating database schema
+Run the following command.
+
+```
+php bin/console doctrine:schema:update --force
+```
+
+### Install Pimcore Entities
+
+```
+php bin/console coreshop:resources:install
+```
+
+Learn more about overriding Pimcore Classes [here](../03_Development/12_Override_CoreShop_Classes.md)
+
+## Usage
+
+This Bundle integrates Order Component into Symfony and Doctrine
+
+The Order Bundle provides you with basic information needed for ordering: Orders, Invoices, Shipments and Cart Rules
+
+## Doctrine Entities
+ - CartPriceRule
+ - CartPriceRuleVoucherCode
+ - State
+
+## Pimcore Entities
+ - Cart (CoreShopCart)
+ - CartItem (CoreShopCartItem)
+ - Order (CoreShopOrder)
+ - OrderItem (CoreShopOrderItem)
+ - OrderInvoice (CoreShopOrderInvoice)
+ - OrderInvoiceItem (CoreShopOrderInvoiceItem)
+ - OrderShipment (CoreShopOrderShipment)
+ - OrderShipmentItem (CoreShopOrderShipmentItem)
+
+## Cart Price Rule
+
+### Conditions
+Learn more about adding new Conditions [here](../03_Development/14_Price_Rules/02_Custom_Conditions.md)
+
+### Actions
+Learn more about adding new Actions [here](../03_Development/14_Price_Rules/02_Custom_Actions.md)

@@ -7,7 +7,7 @@ services:
     coreshop.frontend.controller.category:
         class: AcmeBundle\Controller\CategoryController
 
-paramters:
+parameters:
     coreshop:
         model:
             order:

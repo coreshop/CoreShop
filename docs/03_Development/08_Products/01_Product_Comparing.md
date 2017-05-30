@@ -1,0 +1,2 @@
+# CoreShop Product Compare
+# TODO

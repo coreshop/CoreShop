@@ -2,16 +2,12 @@ CoreShop's Settings are divided into each "sub"-shop and some system settings.
 
 ### Shop-Settings
 
-Shop Settings can be different for each sub-shop.
+Settings can be different for each Store.
 
-![Sales Report](img/settings-shop.png)
-
-#### Debug
-- Display Debug Helper: Shows the debug helper on the website-frontend. The debug helper shows some interesting informations like current country or currency.
+![Settings](img/settings-shop.png)
 
 #### Base
 
-- Base - Country: Defines your "home" country. This is also the fallback country if CoreShop can't determine the country.
 - Catalog-Mode: With catalog-mode enabled, the cart and checkout are disabled. Products can only be viewed.
 - Guest-Checkout: Enables or disables guest-checkout feature
 
@@ -29,9 +25,6 @@ Shop Settings can be different for each sub-shop.
  - Validate VAT: Describes if the VAT-Number for European Countries should be validated
  - Disable VAT for Base Country: Disable VAT-Free Shopping for Customers, with valid Vat-Number, in Base Country
  - Taxation Address: Describes witch address is responsibly for taxation
-
-#### Currency
- - Base Currency: Describes your base countries currencies (also default currency)
 
 #### Prices
  - Prices are gross prices: Determines if entered prices in CoreShop are with or without tax included.
@@ -65,10 +58,7 @@ Shop Settings can be different for each sub-shop.
 
 System Settings are defined one time for all shops.
 
-![Sales Report](img/settings-system.png)
-
-#### Multishop
- - Multishop enabled: Enable CoreShop's multishop feature and allow multiple shops
+![System Settings](img/settings-system.png)
 
 #### System Settings
  - Send Usagelog to CoreShop: Sends an anonymous usagelog to CoreShop Developer
