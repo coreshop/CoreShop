@@ -2,11 +2,12 @@ coreshop_admin_notification_rule:
   type: coreshop.resources
   resource: |
     alias: coreshop.notification_rule
-
-coreshop_admin_notification_rule_types:
-  path: /%coreshop.admin.route.base%/notification_rules/get-config
-  defaults: { _controller: 'coreshop.admin_controller.notification_rule:getConfigAction'}
-
-coreshop_admin_notification_rule_sort:
-  path: /%coreshop.admin.route.base%/notification_rules/sort
-  defaults: { _controller: 'coreshop.admin_controller.notification_rule:sortAction'}
+    additional_routes:
+      config:
+        path: get-config
+        action: getConfig
+        methods: [GET]
+      sort:
+        path: sort
+        action: sort
+        methods: [POST]

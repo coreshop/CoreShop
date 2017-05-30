@@ -7,7 +7,8 @@ coreshop_admin_tax_rule_group:
   type: coreshop.resources
   resource: |
     alias: coreshop.tax_rule_group
-
-coreshop_admin_tax_rule_group_list_rules:
-  path: /%coreshop.admin.route.base%/tax_rule_groups/list-rules
-  defaults: { _controller: 'coreshop.admin_controller.tax_rule_groups:listRulesAction'}
+    additional_routes:
+      listRules:
+        path: list-rules
+        action: listRules
+        methods: [GET]

@@ -2,19 +2,20 @@ coreshop_admin_cart_price_rule:
   type: coreshop.resources
   resource: |
     alias: coreshop.cart_price_rule
-
-coreshop_admin_cart_price_rule_types:
-  path: /%coreshop.admin.route.base%/cart_price_rules/get-config
-  defaults: { _controller: 'coreshop.admin_controller.cart_price_rule:getConfigAction'}
-
-coreshop_admin_cart_price_rule_voucher_codes:
-  path: /%coreshop.admin.route.base%/cart_price_rules/get-voucher-codes
-  defaults: { _controller: 'coreshop.admin_controller.cart_price_rule:getVoucherCodesAction'}
-
-coreshop_admin_cart_price_rule_generate_voucher_codes:
-  path: /%coreshop.admin.route.base%/cart_price_rules/generate-voucher-codes
-  defaults: { _controller: 'coreshop.admin_controller.cart_price_rule:generateVoucherCodesAction'}
-
-coreshop_admin_cart_price_rule_export_voucher_codes:
-  path: /%coreshop.admin.route.base%/cart_price_rules/export-voucher-codes
-  defaults: { _controller: 'coreshop.admin_controller.cart_price_rule:exportVoucherCodesAction'}
+    additional_routes:
+      config:
+        path: get-config
+        action: getConfig
+        methods: [GET]
+      getVoucherCodes:
+        path: get-voucher-codes
+        action: getVoucherCodes
+        methods: [GET]
+      getVoucherCodes:
+        path: generate-voucher-codes
+        action: generateVoucherCodes
+        methods: [POST]
+      exportVoucherCodes:
+        path: export-voucher-codes
+        action: exportVoucherCodes
+        methods: [GET, POST]
