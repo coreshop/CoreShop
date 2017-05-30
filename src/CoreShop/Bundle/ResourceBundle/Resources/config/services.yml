@@ -12,7 +12,6 @@ services:
 
   coreshop.resource_registry:
     class: CoreShop\Component\Resource\Metadata\Registry
-    public: false
 
   coreshop.jms_serializer.handler.relation:
       class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
