@@ -4,5 +4,5 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
       - NotBlank: { groups: [coreshop] }
     active:
       - Type:
-          type: integer
+          type: boolean
           groups: [coreshop]

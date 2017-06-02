@@ -17,15 +17,5 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface PriceRuleInterface extends RuleInterface, ToggleableInterface
 {
-    /**
-     * @return string
-     */
-    public function getDescription();
 
-    /**
-     * @param string $description
-     *
-     * @return static
-     */
-    public function setDescription($description);
 }

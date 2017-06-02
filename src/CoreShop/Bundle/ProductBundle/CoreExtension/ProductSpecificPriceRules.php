@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
@@ -89,7 +89,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null  $object
+     * @param null $object
      * @param array $params
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -115,7 +115,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null  $object
+     * @param null $object
      * @param array $params
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -135,6 +135,17 @@ class ProductSpecificPriceRules extends Data
                     $formData->setProduct($object->getId());
 
                     $prices[] = $formData;
+                } else {
+                    foreach ($form->getErrors(true, true) as $e) {
+                        $errorMessageTemplate = $e->getMessageTemplate();
+                        foreach ($e->getMessageParameters() as $key => $value) {
+                            $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
+                        }
+
+                        $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+                    }
+
+                    throw new \Exception(implode(PHP_EOL, $errors));
                 }
             }
         }
@@ -144,7 +155,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param Concrete $object
-     * @param array    $params
+     * @param array $params
      */
     public function save($object, $params = [])
     {
@@ -203,9 +214,9 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null  $relatedObject
+     * @param null $relatedObject
      * @param mixed $params
-     * @param null  $idMapper
+     * @param null $idMapper
      *
      * @return ProductSpecificPriceRuleInterface[]
      *
@@ -229,12 +240,12 @@ class ProductSpecificPriceRules extends Data
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array) $value);
+                    $array[$key] = $this->arrayCastRecursive((array)$value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array) $array);
+            return $this->arrayCastRecursive((array)$array);
         }
 
         return $array;

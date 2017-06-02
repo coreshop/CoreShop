@@ -14,4 +14,15 @@ namespace CoreShop\Component\Product\Model;
 
 interface ProductPriceRuleInterface extends PriceRuleInterface
 {
+    /**
+     * @return string
+     */
+    public function getDescription();
+
+    /**
+     * @param string $description
+     *
+     * @return static
+     */
+    public function setDescription($description);
 }

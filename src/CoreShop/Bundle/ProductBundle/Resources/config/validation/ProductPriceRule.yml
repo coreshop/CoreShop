@@ -4,5 +4,5 @@ CoreShop\Component\Product\Model\ProductPriceRule:
       - NotBlank: { groups: [coreshop] }
     active:
       - Type:
-          type: integer
+          type: boolean
           groups: [coreshop]

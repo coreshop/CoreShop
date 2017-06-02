@@ -62,6 +62,11 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
                 name: 'inherit',
                 fieldLabel: t('coreshop_inherit'),
                 checked: this.data.inherit == '1'
+            }, , {
+                xtype: 'checkbox',
+                name: 'active',
+                fieldLabel: t('active'),
+                checked: this.data.active
             }]
         });
 

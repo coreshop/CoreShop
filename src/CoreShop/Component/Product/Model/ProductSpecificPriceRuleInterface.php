@@ -12,9 +12,10 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface ProductSpecificPriceRuleInterface extends RuleInterface
+interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
 {
     /**
      * @return bool

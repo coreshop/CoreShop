@@ -15,6 +15,10 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
       expose: true
       type: boolean
       groups: [Detailed]
+    active:
+      expose: true
+      type: boolean
+      groups: [Detailed]
     priority:
       expose: true
       type: integer

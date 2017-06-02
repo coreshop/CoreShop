@@ -11,6 +11,9 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
     name:
       column: name
       type: string
+    active:
+      column: active
+      type: boolean
     inherit:
       column: inherit
       type: boolean

@@ -28,6 +28,7 @@ final class ProductSpecificPriceRuleType extends RuleType
         $builder
             ->add('name', TextareaType::class)
             ->add('inherit', CheckboxType::class)
+            ->add('active', CheckboxType::class)
             ->add('priority', NumberType::class)
             ->add('conditions', ProductSpecificPriceRuleConditionCollectionType::class)
             ->add('actions', ProductSpecificPriceRuleActionCollectionType::class)
