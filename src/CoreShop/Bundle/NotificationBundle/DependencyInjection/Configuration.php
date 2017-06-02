@@ -65,7 +65,6 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(NotificationRuleInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(NotificationRuleRepository::class)->end()
-                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(NotificationRuleController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(NotificationRuleType::class)->cannotBeEmpty()->end()
                                     ->end()

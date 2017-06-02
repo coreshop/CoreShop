@@ -63,7 +63,6 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('admin_controller')->defaultValue(ConfigurationController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ConfigurationRepository::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(ConfigurationType::class)->end()
                                     ->end()
                                 ->end()

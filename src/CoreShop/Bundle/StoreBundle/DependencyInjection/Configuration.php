@@ -64,7 +64,6 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('admin_controller')->defaultValue(StoreController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('is_pimcore_class')->defaultValue(false)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(StoreType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
