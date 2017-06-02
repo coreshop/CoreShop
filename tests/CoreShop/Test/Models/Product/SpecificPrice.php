@@ -120,6 +120,7 @@ class SpecificPrice extends RuleTest
          */
         $priceRule = $this->getFactory('product_specific_price_rule')->createNew();
         $priceRule->setName('test-rule');
+        $priceRule->setActive(true);
         $priceRule->setProduct($this->product->getId());
 
         return $priceRule;
