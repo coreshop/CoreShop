@@ -62,8 +62,8 @@ install:
   # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
   # this test is kinda stupid
   - composer require coreshop/core-shop dev-master#$TRAVIS_COMMIT --dev
-  - composer remove codeception/codeception
-  - composer require symfony/phpunit-bridge:3.3 phpunit/phpunit:6.2.1
+  - composer require symfony/phpunit-bridge:3.2
+  - composer update
 
 script:
   - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/phpunit.xml --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
