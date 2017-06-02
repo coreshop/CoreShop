@@ -31,7 +31,8 @@
     "okvpn/migration-bundle": "^1.0",
     "rinvex/country": "^3.1",
     "gedmo/doctrine-extensions": "^2.4.12",
-    "stof/doctrine-extensions-bundle": "^1.2"
+    "stof/doctrine-extensions-bundle": "^1.2",
+    "fzaninotto/faker": "^1.6"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.0",
