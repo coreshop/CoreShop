@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface as BaseCategoryInterface;
+use CoreShop\Component\Store\Model\StoresAwareInterface;
 
 interface CategoryInterface extends BaseCategoryInterface
 {
@@ -26,4 +27,14 @@ interface CategoryInterface extends BaseCategoryInterface
      * @param FilterInterface $filter
      */
     public function setFilter($filter);
+
+    /**
+     * @return StoreInterface[]
+     */
+    public function getStores();
+
+    /**
+     * @param StoreInterface[] $stores
+     */
+    public function setStores($stores);
 }
