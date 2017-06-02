@@ -58,7 +58,7 @@
                 <li>
                     <span>{{ 'availability'|trans }}:</span>
                     {%  if product.getQuantity > 0 %}
-                        <strong class="label label-success"> <?=$this->translate("In Stock")?></strong>
+                        <strong class="label label-success"> {{ 'in_stock'|trans }}</strong>
                     {% elseif product.getIsAvailableWhenOutOfStock %}
                         <div class="label label-warning">
                             {{ 'out_of_stock_but_on_backorder'|trans }}
