@@ -82,7 +82,7 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
         $progress->start(count($this->pimcoreModels));
 
         foreach ($fieldCollections as $fc) {
-            $progress->setMessage(sprintf('<error>Install Fieldcolelction %s (%s)</error>', $fc['model'], $fc['file']));
+            $progress->setMessage(sprintf('<error>Install Fieldcollection %s (%s)</error>', $fc['model'], $fc['file']));
 
             $this->createFieldCollection($fc['file'], $fc['model']);
 
