@@ -8,5 +8,3 @@ CoreShop\Component\Core\Model\Currency:
       orphanRemoval: true
       cascade:
         - all
-      orderBy:
-        name: ASC
