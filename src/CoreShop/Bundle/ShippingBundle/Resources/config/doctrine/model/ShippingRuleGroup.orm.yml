@@ -37,5 +37,6 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
       joinColumn:
         name: shippingRuleId
         referencedColumnName: id
+        onDelete: cascade
       cascade:
         - persist

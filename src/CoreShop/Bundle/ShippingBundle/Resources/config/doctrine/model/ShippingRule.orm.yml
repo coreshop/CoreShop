@@ -33,10 +33,12 @@ CoreShop\Component\Shipping\Model\ShippingRule:
           shipping_rule_id:
             referencedColumnName: id
             nullable: false
+            onDelete: cascade
         inverseJoinColumns:
           condition_id:
             referencedColumnName: id
             nullable: false
+            onDelete: cascade
 
     actions:
       targetEntity: CoreShop\Component\Rule\Model\ActionInterface
@@ -48,7 +50,9 @@ CoreShop\Component\Shipping\Model\ShippingRule:
           shipping_rule_id:
             referencedColumnName: id
             nullable: false
+            onDelete: cascade
         inverseJoinColumns:
           action_id:
             referencedColumnName: id
             nullable: false
+            onDelete: cascade
