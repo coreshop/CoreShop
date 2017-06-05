@@ -20,7 +20,7 @@ trait StoreAwareTrait
     /**
      * {@inheritdoc}
      */
-    public function setStore(StoreInterface $store)
+    public function setStore($store)
     {
         $this->store = $store;
     }

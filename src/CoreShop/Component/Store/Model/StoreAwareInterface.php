@@ -12,5 +12,5 @@ interface StoreAwareInterface
     /**
      * @param StoreInterface $store
      */
-    public function setStore(StoreInterface $store);
+    public function setStore($store);
 }

@@ -17,13 +17,5 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 interface ConfigurationInterface extends BaseConfigurationInterface, StoreAwareInterface
 {
-    /**
-     * @return \CoreShop\Component\Store\Model\StoreInterface
-     */
-    public function getStore();
 
-    /**
-     * @param \CoreShop\Component\Store\Model\StoreInterface $store
-     */
-    public function setStore(\CoreShop\Component\Store\Model\StoreInterface $store);
 }
