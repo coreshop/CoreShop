@@ -97,7 +97,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get list of keys.
      *
-     * @return array<integer|string>
+     * @return integer[]|string[]
      */
     public function getKeys()
     {
