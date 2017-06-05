@@ -8,23 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Order\Model\OrderInterface as BaseOrderInterface;
-use CoreShop\Component\Store\Model\StoreAwareInterface;
-
-interface OrderInterface extends BaseOrderInterface, StoreAwareInterface
+interface QuoteItemInterface extends SaleItemInterface
 {
     /**
-     * @return CarrierInterface
+     * @return QuoteInterface
      */
-    public function getCarrier();
-
-    /**
-     * @param CarrierInterface $carrier
-     * @return mixed
-     */
-    public function setCarrier($carrier);
+    public function getQuote();
 }

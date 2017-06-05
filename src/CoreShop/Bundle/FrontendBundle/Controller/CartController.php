@@ -165,6 +165,28 @@ class CartController extends FrontendController
     }
 
     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createQuoteAction(Request $request) {
+        $quote = $this->getQuoteFactory()->createNew();
+        $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
+
+        return $this->redirectToRoute('coreshop_shop_quote', ["quoteId" => $quote->getId()]);
+    }
+
+    /**
+     * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
+     */
+    protected function getQuoteFactory() {
+        return $this->get('coreshop.factory.quote');
+    }
+
+    protected function getCartToQuoteTransformer() {
+        return $this->get('coreshop.order.transformer.cart_to_quote');
+    }
+
+    /**
      * @return CartPriceRuleProcessorInterface
      */
     protected function getCartPriceRuleProcessor()

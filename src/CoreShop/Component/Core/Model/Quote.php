@@ -12,11 +12,11 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\Order as BaseOrder;
+use CoreShop\Component\Order\Model\Quote as BaseQuote;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 
-class Order extends BaseOrder implements OrderInterface
+class Quote extends BaseQuote implements QuoteInterface
 {
     use StoreAwareTrait;
 

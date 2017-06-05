@@ -19,61 +19,35 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\Object\Fieldcollection;
 
-interface OrderInterface extends SaleInterface
+interface QuoteInterface extends SaleInterface
 {
     /**
      * @return string
      */
-    public function getOrderLanguage();
+    public function getQuoteLanguage();
 
     /**
-     * @param $orderLanguage
+     * @param $quoteLanguage
      */
-    public function setOrderLanguage($orderLanguage);
+    public function setQuoteLanguage($quoteLanguage);
 
     /**
      * @return Carbon
      */
-    public function getOrderDate();
+    public function getQuoteDate();
 
     /**
-     * @param Carbon $orderDate
+     * @param Carbon $quoteDate
      */
-    public function setOrderDate($orderDate);
+    public function setQuoteDate($quoteDate);
 
     /**
      * @return string
      */
-    public function getOrderNumber();
+    public function getQuoteNumber();
 
     /**
-     * @param string $orderNumber
+     * @param string $quoteNumber
      */
-    public function setOrderNumber($orderNumber);
-
-    /**
-     * @return PaymentInterface[]
-     */
-    public function getPayments();
-
-    /**
-     * @return float
-     */
-    public function getTotalPayed();
-
-    /**
-     * @return bool
-     */
-    public function getIsPayed();
-
-    /**
-     * @param $paymentFee
-     * @param bool $withTax
-     */
-    public function setPaymentFee($paymentFee, $withTax = true);
-
-    /**
-     * @param $taxRate
-     */
-    public function setPaymentFeeTaxRate($taxRate);
+    public function setQuoteNumber($quoteNumber);
 }

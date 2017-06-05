@@ -33,6 +33,7 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\Models\\Currency',
             '\\CoreShop\\Test\\Models\\CustomerGroup',
             '\\CoreShop\\Test\\Models\\Order',
+            '\\CoreShop\\Test\\Models\\Quote',
             '\\CoreShop\\Test\\Models\\OrderInvoice',
             '\\CoreShop\\Test\\Models\\OrderShipment',
             '\\CoreShop\\Test\\Models\\Taxation',

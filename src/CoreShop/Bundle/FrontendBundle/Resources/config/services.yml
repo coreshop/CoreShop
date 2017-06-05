@@ -44,6 +44,11 @@ services:
     calls:
       - [setContainer, ['@service_container']]
 
+  coreshop.frontend.controller.quote:
+    class: CoreShop\Bundle\FrontendBundle\Controller\QuoteController
+    calls:
+      - [setContainer, ['@service_container']]
+
   coreshop.frontend.controller.security:
     class: CoreShop\Bundle\FrontendBundle\Controller\SecurityController
     arguments:

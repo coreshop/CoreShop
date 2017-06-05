@@ -10,29 +10,35 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Order\Model\Order as BaseOrder;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Store\Model\StoreAwareTrait;
+use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
-class Order extends BaseOrder implements OrderInterface
+class QuoteItem extends SaleItem implements QuoteItemInterface
 {
-    use StoreAwareTrait;
-
     /**
      * {@inheritdoc}
      */
-    public function getCarrier()
+    public function getSaleDocument()
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $this->getQuote();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setCarrier($carrier)
+    public function getQuote()
     {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        $parent = $this->getParent();
+
+        do {
+            if (is_subclass_of($parent, QuoteInterface::class)) {
+                return $parent;
+            }
+            $parent = $parent->getParent();
+        } while ($parent != null);
+
+        throw new \InvalidArgumentException("Quote could not be found!");
     }
 }

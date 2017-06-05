@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
@@ -17,6 +17,8 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\Sale;
+use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -47,16 +49,17 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
 
     /**
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-     * @param EntityManagerInterface                  $entityManager
-     * @param ServiceRegistryInterface                $actionServiceRegistry
-     * @param FactoryInterface                        $cartPriceRuleItemFactory
+     * @param EntityManagerInterface $entityManager
+     * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param FactoryInterface $cartPriceRuleItemFactory
      */
     public function __construct(
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
         EntityManagerInterface $entityManager,
         ServiceRegistryInterface $actionServiceRegistry,
         FactoryInterface $cartPriceRuleItemFactory
-    ) {
+    )
+    {
         $this->voucherCodeRepository = $voucherCodeRepository;
         $this->entityManager = $entityManager;
         $this->actionServiceRegistry = $actionServiceRegistry;
@@ -66,7 +69,7 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart, OrderInterface $order)
+    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart, SaleInterface $sale)
     {
         $voucherCode = $this->voucherCodeRepository->findByCode($usedCode);
 
@@ -101,7 +104,7 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
             $priceRuleItem->setDiscount($discountNet, false);
             $priceRuleItem->setDiscount($discountGross, true);
 
-            $order->addPriceRule($priceRuleItem);
+            $sale->addPriceRule($priceRuleItem);
 
             return true;
         }

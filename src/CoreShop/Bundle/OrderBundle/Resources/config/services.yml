@@ -10,6 +10,8 @@ parameters:
   coreshop.folder.cart: /%coreshop.folder.objects%/cart
   coreshop.folder.order: /%coreshop.folder.objects%/order
   coreshop.folder.order_item: items
+  coreshop.folder.quote: /%coreshop.folder.objects%/quote
+  coreshop.folder.quote_item: items
   coreshop.folder.invoice: invoices
   coreshop.folder.invoice_item: items
   coreshop.folder.shipment: shipments

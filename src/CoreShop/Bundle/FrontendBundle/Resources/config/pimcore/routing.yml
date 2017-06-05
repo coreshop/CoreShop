@@ -65,6 +65,18 @@ coreshop_shop_login_check:
   defaults:
     _controller: coreshop.frontend.controller.security:checkAction
 
+coreshop_shop_cart_quote_create:
+  path: "%coreshop.frontend.base.url%/cart/quote"
+  methods: [GET,POST]
+  defaults:
+    _controller: coreshop.frontend.controller.cart:createQuoteAction
+
+coreshop_shop_quote:
+  path: "%coreshop.frontend.base.url%/quote~q{quoteId}"
+  defaults: { _controller: coreshop.frontend.controller.quote:showAction }
+  requirements:
+    quoteId: \d+
+
 coreshop_shop_checkout:
   path: "%coreshop.frontend.base.url%/checkout/{stepIdentifier}"
   methods: [GET,POST]

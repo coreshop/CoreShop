@@ -27,6 +27,30 @@ services:
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.order.taxation.collector.cart'
 
+  coreshop.order.transformer.cart_item_to_quote_item:
+    class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToQuoteItemTransformer
+    arguments:
+      - '@coreshop.object_service'
+      - '%coreshop.folder.quote_item%'
+      - '@coreshop.order.taxation.collector.cart_item'
+      - '@coreshop.transformer.event_dispatcher'
+
+  coreshop.order.transformer.cart_to_quote:
+    class: CoreShop\Bundle\OrderBundle\Transformer\CartToQuoteTransformer
+    arguments:
+      - '@coreshop.order.transformer.cart_item_to_quote_item'
+      - '@coreshop.core.key_transformer'
+      - '@coreshop.order.number_generator.default'
+      - '%coreshop.folder.quote%'
+      - '@coreshop.object_service'
+      - '@coreshop.context.locale'
+      - '@coreshop.factory.quote_item'
+      - '@coreshop.context.currency'
+      - '@coreshop.context.store'
+      - '@coreshop.cart_price_rule.order.processor'
+      - '@coreshop.transformer.event_dispatcher'
+      - '@coreshop.order.taxation.collector.cart'
+
   coreshop.factory.cart:
     class: CoreShop\Bundle\CoreBundle\Factory\CartFactory
     arguments:

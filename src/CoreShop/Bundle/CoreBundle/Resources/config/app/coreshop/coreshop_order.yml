@@ -14,3 +14,6 @@ core_shop_order:
       classes:
         admin_controller: CoreShop\Bundle\CoreBundle\Controller\OrderShipmentController
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipment.json'
+    quote:
+      classes:
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuote.json'

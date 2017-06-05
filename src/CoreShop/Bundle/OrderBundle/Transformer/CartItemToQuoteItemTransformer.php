@@ -12,33 +12,29 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
-use CoreShop\Component\Order\Taxation\ProposalItemTaxCollectorInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Order\Model\QuoteInterface;
+use CoreShop\Component\Order\Model\QuoteItemInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
-use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
-use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
-class CartItemToOrderItemTransformer extends AbstractCartItemToSaleItemTransformer
+class CartItemToQuoteItemTransformer extends AbstractCartItemToSaleItemTransformer
 {
     /**
      * {@inheritdoc}
      */
-    public function transform(ProposalInterface $order, ProposalItemInterface $cartItem, ProposalItemInterface $orderItem)
+    public function transform(ProposalInterface $quote, ProposalItemInterface $cartItem, ProposalItemInterface $quoteItem)
     {
         /**
-         * @var $order OrderInterface
+         * @var $quote QuoteInterface
          * @var $cartItem CartItemInterface
-         * @var $orderItem OrderItemInterface
+         * @var $quoteItem QuoteItemInterface
          */
         Assert::isInstanceOf($cartItem, CartItemInterface::class);
-        Assert::isInstanceOf($orderItem, OrderItemInterface::class);
-        Assert::isInstanceOf($order, OrderInterface::class);
+        Assert::isInstanceOf($quoteItem, QuoteItemInterface::class);
+        Assert::isInstanceOf($quote, QuoteInterface::class);
 
-        return $this->transformSaleItem($order, $cartItem, $orderItem, 'order_item');
+        return $this->transformSaleItem($quote, $cartItem, $quoteItem, 'quote_item');
     }
 }
