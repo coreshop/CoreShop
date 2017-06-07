@@ -34,6 +34,23 @@ class ShippingRule extends AbstractAction
      */
     public $shippingRule;
 
+    /**
+     * get price for shipping
+     *
+     * @param Model\Carrier $carrier
+     * @param Cart $cart
+     * @param Model\User\Address $address
+     *
+     * @return float|boolean $price
+     */
+    public function getPrice(Model\Carrier $carrier, Cart $cart, Model\User\Address $address)
+    {
+        $carrierShippingRule = CarrierShippingRule::getById($this->getShippingRule());
+
+        if ($carrierShippingRule instanceof CarrierShippingRule) {
+            return $carrierShippingRule->getPrice($carrier, $cart, $address);
+        }
+    }
 
     /**
      * get addition/discount for shipping
@@ -50,7 +67,7 @@ class ShippingRule extends AbstractAction
         $carrierShippingRule = CarrierShippingRule::getById($this->getShippingRule());
 
         if ($carrierShippingRule instanceof CarrierShippingRule) {
-            return $carrierShippingRule->getPrice($carrier, $cart, $address);
+            return $carrierShippingRule->getPriceModification($carrier, $cart, $address, $price);
         }
 
         return 0;
