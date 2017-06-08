@@ -18,6 +18,11 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 interface PurchasableInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @param string|null $language
      * @return string
      */
