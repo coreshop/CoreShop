@@ -54,9 +54,12 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder
 
         $item->setId($product->getId());
         $item->setName($product->getName());
-        $item->setCategory($product->getCategories()[0]->getName());
         $item->setQuantity($quantity);
-        $item->setPrice($product->getPrice(true));
+        $item->setPrice(\CoreShop::getTools()->roundPrice($product->getPrice(true)));
+
+        if (count($product->getCategories()) > 0) {
+            $item->setCategory($product->getCategories()[0]->getName());
+        }
 
         return $item;
     }
@@ -72,8 +75,11 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder
         $item = new ImpressionData();
         $item->setId($product->getId());
         $item->setName($product->getName());
-        $item->setCategory($product->getCategories()[0]->getName());
-        $item->setPrice($product->getPrice(true));
+        $item->setPrice(\CoreShop::getTools()->roundPrice($product->getPrice(true)));
+
+        if (count($product->getCategories()) > 0) {
+            $item->setCategory($product->getCategories()[0]->getName());
+        }
 
         return $item;
     }
@@ -154,9 +160,12 @@ class ItemBuilder extends \CoreShop\Tracking\ItemBuilder
         $item = new ProductData();
         $item->setId($orderItem->getId());
         $item->setName($orderItem->getProduct()->getName());
-        $item->setCategory($orderItem->getProduct()->getCategories()[0]->getName());
-        $item->setPrice($orderItem->getPrice());
+        $item->setPrice(\CoreShop::getTools()->roundPrice($orderItem->getPrice()));
         $item->setQuantity($orderItem->getAmount());
+
+        if (count($orderItem->getProduct()->getCategories()) > 0) {
+            $item->setCategory($orderItem->getProduct()->getCategories()[0]->getName());
+        }
 
         return $item;
     }
