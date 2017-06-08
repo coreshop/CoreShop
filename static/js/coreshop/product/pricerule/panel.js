@@ -111,8 +111,25 @@ pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.co
                         }
                     ]
                 },
+                bbar: {
+                    items: [{
+                        xtype: 'label',
+                        text: '',
+                        itemId: 'totalLabel'
+                    }, '->', {
+                        iconCls: 'pimcore_icon_reload',
+                        scale: 'small',
+                        handler: function () {
+                            this.grid.getStore().load();
+                        }.bind(this)
+                    }]
+                },
                 hideHeaders: true
             });
+
+            this.grid.getStore().on("load", function (store, records) {
+                this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length))
+            }.bind(this));
 
             this.grid.on('beforerender', function () {
                 this.getStore().load();

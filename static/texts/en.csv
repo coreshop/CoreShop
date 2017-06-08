@@ -552,3 +552,4 @@
 "coreshop_condition_paymentState","Payment State"
 "coreshop_payment_partial","Partial Payment done"
 "coreshop_payment_full","Full Payment done"
+"coreshop_total_items","Total {0}"

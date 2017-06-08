@@ -19,38 +19,38 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
      * @var string
      */
     layoutId: 'coreshop_mail_rule_panel',
-    storeId : 'coreshop_mail_rules',
-    iconCls : 'coreshop_icon_mail_rule',
-    type : 'mail_rule',
+    storeId: 'coreshop_mail_rules',
+    iconCls: 'coreshop_icon_mail_rule',
+    type: 'mail_rule',
 
-    url : {
-        add : '/plugin/CoreShop/admin_mail-rule/add',
-        delete : '/plugin/CoreShop/admin_mail-rule/delete',
-        get : '/plugin/CoreShop/admin_mail-rule/get',
-        list : '/plugin/CoreShop/admin_mail-rule/list',
-        config : '/plugin/CoreShop/admin_mail-rule/get-config',
-        sort : '/plugin/CoreShop/admin_mail-rule/sort'
+    url: {
+        add: '/plugin/CoreShop/admin_mail-rule/add',
+        delete: '/plugin/CoreShop/admin_mail-rule/delete',
+        get: '/plugin/CoreShop/admin_mail-rule/get',
+        list: '/plugin/CoreShop/admin_mail-rule/list',
+        config: '/plugin/CoreShop/admin_mail-rule/get-config',
+        sort: '/plugin/CoreShop/admin_mail-rule/sort'
     },
 
-    getItemClass : function () {
+    getItemClass: function () {
         return pimcore.plugin.coreshop.mail.rules.item;
     },
 
-    getActionsForType : function(allowedType) {
+    getActionsForType: function (allowedType) {
         var actions = this.getActions();
 
-        if(actions.hasOwnProperty(allowedType)) {
+        if (actions.hasOwnProperty(allowedType)) {
             return actions[allowedType];
         }
 
         return [];
     },
 
-    getConditionsForType : function(allowedType) {
+    getConditionsForType: function (allowedType) {
         var conditions = this.getConditions();
         var allowedConditions = [];
 
-        if(conditions.hasOwnProperty(allowedType)) {
+        if (conditions.hasOwnProperty(allowedType)) {
             return conditions[allowedType];
         }
 
@@ -67,16 +67,15 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
                     {
                         text: '',
                         dataIndex: 'text',
-                        flex : 1,
-                        renderer: function (value, metadata, record)
-                        {
+                        flex: 1,
+                        renderer: function (value, metadata, record) {
                             metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
 
                             return value;
                         }
                     }
                 ],
-                listeners : this.getTreeNodeListeners(),
+                listeners: this.getTreeNodeListeners(),
                 useArrows: true,
                 autoScroll: true,
                 animate: true,
@@ -93,11 +92,15 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
                         }
                     ]
                 },
-                bbar : {
-                    items : ['->', {
+                bbar: {
+                    items: [{
+                        xtype: 'label',
+                        text: '',
+                        itemId: 'totalLabel'
+                    }, '->', {
                         iconCls: 'pimcore_icon_reload',
-                        scale : 'small',
-                        handler: function() {
+                        scale: 'small',
+                        handler: function () {
                             this.grid.getStore().load();
                         }.bind(this)
                     }]
@@ -109,7 +112,7 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
                         dragText: t('coreshop_grid_reorder')
                     },
                     listeners: {
-                        drop: function(node, data, dropRec, dropPosition) {
+                        drop: function (node, data, dropRec, dropPosition) {
                             this.grid.setLoading(t('loading'));
 
                             Ext.Ajax.request({
@@ -128,6 +131,10 @@ pimcore.plugin.coreshop.mail.rules.panel = Class.create(pimcore.plugin.coreshop.
                     }
                 }
             });
+
+            this.grid.getStore().on("load", function (store, records) {
+                this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length))
+            }.bind(this));
 
             this.grid.on('beforerender', function () {
                 this.getStore().load();

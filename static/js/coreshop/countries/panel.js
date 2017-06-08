@@ -90,7 +90,11 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
                     ]
                 },
                 bbar : {
-                    items : ['->', {
+                    items : [{
+                        xtype: 'label',
+                        text: '',
+                        itemId: 'totalLabel'
+                    }, '->', {
                         iconCls: 'pimcore_icon_reload',
                         scale : 'small',
                         handler: function() {
@@ -100,6 +104,10 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
                 },
                 hideHeaders: true
             });
+
+            this.grid.getStore().on("load", function(store, records) {
+                this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length))
+            }.bind(this));
 
             this.grid.on('beforerender', function () {
                 this.getStore().load();
