@@ -39,7 +39,6 @@ class ItemBuilder implements ItemBuilderInterface
 
         $item->setId($product->getId());
         $item->setName($product->getName());
-        $item->setCategory($product->getCategories()[0]->getName());
         $item->setQuantity($quantity);
         $item->setPrice($product->getPrice(true));
 
@@ -57,7 +56,6 @@ class ItemBuilder implements ItemBuilderInterface
         $item = new ImpressionData();
         $item->setId($product->getId());
         $item->setName($product->getName());
-        $item->setCategory($product->getCategories()[0]->getName());
         $item->setPrice($product->getPrice(true));
 
         return $item;
@@ -76,7 +74,6 @@ class ItemBuilder implements ItemBuilderInterface
         $item->setRevenue($order->getTotal());
         $item->setShipping($order->getShipping());
         $item->setTax($order->getTotalTax());
-        $item->setAffiliation($order->getStore()->getName());
 
         if ($order->getPriceRuleItems() instanceof Fieldcollection) {
             if ($order->getPriceRuleItems()->getCount() > 0) {
@@ -104,7 +101,9 @@ class ItemBuilder implements ItemBuilderInterface
         $items = [];
 
         foreach ($order->getItems() as $item) {
-            $items[] = $this->buildCheckoutItem($order, $item);
+            if ($item instanceof OrderItemInterface) {
+                $items[] = $this->buildCheckoutItem($order, $item);
+            }
         }
 
         return $items;
@@ -139,7 +138,6 @@ class ItemBuilder implements ItemBuilderInterface
         $item = new ProductData();
         $item->setId($orderItem->getId());
         $item->setName($orderItem->getProduct()->getName());
-        $item->setCategory($orderItem->getProduct()->getCategories()[0]->getName());
         $item->setPrice($orderItem->getItemPrice());
         $item->setQuantity($orderItem->getQuantity());
 

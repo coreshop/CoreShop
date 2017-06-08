@@ -12,6 +12,7 @@ imports:
   - { resource: "services/cart-price-rules.yml" }
   - { resource: "services/profiler.yml" }
   - { resource: "services/order.yml" }
+  - { resource: "services/tracking.yml" }
 
 parameters:
   coreshop.folder.objects: '/coreshop'

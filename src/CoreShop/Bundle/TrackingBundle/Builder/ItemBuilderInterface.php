@@ -24,9 +24,10 @@ interface ItemBuilderInterface
      * Build a product action item object
      *
      * @param PurchasableInterface $product
+     * @param int $quantity
      * @return ProductData
      */
-    public function buildPurchasableActionItem(PurchasableInterface $product);
+    public function buildPurchasableActionItem(PurchasableInterface $product, $quantity = 1);
 
     /**
      * Build a product impression object

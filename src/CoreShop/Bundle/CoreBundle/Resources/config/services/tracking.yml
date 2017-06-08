@@ -1,0 +1,5 @@
+services:
+  coreshop.tracking.item_builder.decorated:
+    class: CoreShop\Bundle\CoreBundle\Tracking\Builder\ItemBuilder
+    decorates: coreshop.tracking.item_builder
+    arguments: ['@coreshop.tracking.item_builder.decorated.inner']
