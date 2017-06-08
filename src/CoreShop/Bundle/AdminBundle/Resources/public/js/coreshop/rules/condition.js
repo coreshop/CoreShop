@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.condition');
 
 pimcore.plugin.coreshop.rules.condition = Class.create({
-    initialize : function (conditions) {
+    initialize: function (conditions) {
         this.conditions = conditions;
     },
 
@@ -40,7 +40,7 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
             iconCls: 'coreshop_rule_conditions',
             title: t('conditions'),
             autoScroll: true,
-            style : 'padding: 10px',
+            style: 'padding: 10px',
             forceLayout: true,
             tbar: [{
                 iconCls: 'pimcore_icon_add',
@@ -52,29 +52,29 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         return this.conditionsContainer;
     },
 
-    destroy : function() {
-        if(this.conditionsContainer) {
+    destroy: function () {
+        if (this.conditionsContainer) {
             this.conditionsContainer.destroy();
         }
     },
 
-    getConditionStyleClass: function(condition) {
+    getConditionStyleClass: function (condition) {
         return 'coreshop_rule_icon_condition_' + condition;
     },
 
-    getConditionClassItem : function (type) {
-        if(Object.keys(this.getConditionClassNamespace()).indexOf(type) >= 0) {
+    getConditionClassItem: function (type) {
+        if (Object.keys(this.getConditionClassNamespace()).indexOf(type) >= 0) {
             return this.getConditionClassNamespace()[type];
         }
 
         return this.getDefaultConditionClassItem();
     },
 
-    getConditionClassNamespace : function() {
+    getConditionClassNamespace: function () {
         return pimcore.plugin.coreshop.rules.conditions;
     },
 
-    getDefaultConditionClassItem : function() {
+    getDefaultConditionClassItem: function () {
         return pimcore.plugin.coreshop.rules.conditions.abstract;
     },
 
@@ -90,7 +90,7 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         this.conditionsContainer.updateLayout();
     },
 
-    getConditionsData : function () {
+    getConditionsData: function () {
         // get defined conditions
         var conditionsData = [];
         var conditions = this.conditionsContainer.items.getRange();
@@ -102,12 +102,12 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
             var conditionClass = conditionItem.xparent;
 
             if (Ext.isFunction(conditionClass['getValues'])) {
-                configuration  = conditionClass.getValues();
+                configuration = conditionClass.getValues();
             } else {
                 var form = conditionClass.form;
 
-                if(Ext.isFunction(form.getValues)) {
-                    configuration  = form.getValues();
+                if (Ext.isFunction(form.getValues)) {
+                    configuration = form.getValues();
                 }
                 else {
                     for (var c = 0; c < form.items.length; c++) {
@@ -140,8 +140,8 @@ pimcore.plugin.coreshop.rules.condition = Class.create({
         return conditionsData;
     },
 
-    isDirty : function() {
-        if(this.conditionsContainer.items) {
+    isDirty: function () {
+        if (this.conditionsContainer.items) {
             var conditions = this.conditionsContainer.items.getRange();
             for (var i = 0; i < conditions.length; i++) {
                 var conditionItem = conditions[i];

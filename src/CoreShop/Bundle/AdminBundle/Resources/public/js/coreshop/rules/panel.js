@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.panel');
 
@@ -27,7 +27,7 @@ pimcore.plugin.coreshop.rules.panel = Class.create(pimcore.plugin.coreshop.abstr
     /**
      * @var object
      */
-    config : {},
+    config: {},
 
     /**
      * constructor
@@ -53,19 +53,19 @@ pimcore.plugin.coreshop.rules.panel = Class.create(pimcore.plugin.coreshop.abstr
         this.panels = [];
     },
 
-    getItemClass : function () {
+    getItemClass: function () {
         return pimcore.plugin.coreshop.rules.item;
     },
 
-    getActions : function() {
+    getActions: function () {
         return this.actions;
     },
 
-    getConfig : function() {
+    getConfig: function () {
         return this.config;
     },
 
-    getConditions : function() {
+    getConditions: function () {
         return this.conditions;
     }
 });

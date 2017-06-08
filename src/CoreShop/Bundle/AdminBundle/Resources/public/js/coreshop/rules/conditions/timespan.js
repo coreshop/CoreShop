@@ -8,38 +8,38 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.timespan');
 
 pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'timespan',
+    type: 'timespan',
 
-    getForm : function () {
+    getForm: function () {
 
         var me = this;
 
         var dateFrom = {
-            itemCls:'object_field',
-            width:160
+            itemCls: 'object_field',
+            width: 160
         };
 
         var dateTo = {
-            itemCls:'object_field',
-            width:160
+            itemCls: 'object_field',
+            width: 160
         };
 
         var timeFrom = {
-            format:'H:i',
-            emptyText:'',
-            width:120
+            format: 'H:i',
+            emptyText: '',
+            width: 120
         };
 
         var timeTo = {
-            format:'H:i',
-            emptyText:'',
-            width:120
+            format: 'H:i',
+            emptyText: '',
+            width: 120
         };
 
         if (this.data) {
@@ -59,14 +59,14 @@ pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.
         this.timeToField = new Ext.form.TimeField(timeTo);
 
         this.dateFromFieldContainer = new Ext.form.FieldContainer({
-            xtype:'fieldcontainer',
+            xtype: 'fieldcontainer',
             fieldLabel: t('coreshop_condition_timespan_dateFrom'),
-            combineErrors:true,
+            combineErrors: true,
             layout: 'hbox',
-            items:[this.dateFromField, this.timeFromField],
-            itemCls:'object_field',
-            name : 'dateFrom',
-            getValue : function () {
+            items: [this.dateFromField, this.timeFromField],
+            itemCls: 'object_field',
+            name: 'dateFrom',
+            getValue: function () {
                 if (me.dateFromField.getValue()) {
                     var date = new Date(me.dateFromField.getValue());
                     var dateString = Ext.Date.format(date, 'Y-m-d');
@@ -80,7 +80,7 @@ pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.
                     return Ext.Date.parseDate(dateString, 'Y-m-d H:i').getTime();
                 }
             }.bind(this),
-            getName : function () {
+            getName: function () {
                 return 'dateFrom';
             }
         });
@@ -92,8 +92,8 @@ pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.
             layout: 'hbox',
             items: [this.dateToField, this.timeToField],
             itemCls: 'object_field',
-            name : 'dateTo',
-            getValue : function () {
+            name: 'dateTo',
+            getValue: function () {
                 if (me.dateToField.getValue()) {
                     var date = new Date(me.dateToField.getValue());
                     var dateString = Ext.Date.format(date, 'Y-m-d');
@@ -107,13 +107,13 @@ pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.
                     return Ext.Date.parseDate(dateString, 'Y-m-d H:i').getTime();
                 }
             }.bind(this),
-            getName : function () {
+            getName: function () {
                 return 'dateTo';
             }
         });
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 this.dateFromFieldContainer, this.dateToFieldContainer
             ]
         });
@@ -121,9 +121,9 @@ pimcore.plugin.coreshop.rules.conditions.timespan = Class.create(pimcore.plugin.
         return this.form;
     },
 
-    getValues : function() {
+    getValues: function () {
         return {
-            dateTo  : this.dateToFieldContainer.getValue(),
+            dateTo: this.dateToFieldContainer.getValue(),
             dateFrom: this.dateFromFieldContainer.getValue()
         };
     }

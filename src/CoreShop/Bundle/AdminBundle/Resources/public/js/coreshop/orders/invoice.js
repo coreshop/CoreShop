@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.invoice');
 pimcore.plugin.coreshop.orders.invoice = Class.create({
-    order : null,
-    cb : null,
+    order: null,
+    cb: null,
 
     initialize: function (order, cb) {
         this.order = order;
@@ -22,13 +22,13 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
         Ext.Ajax.request({
             url: '/admin/coreshop/order-invoice/get-invoice-able-items',
             params: {
-                id : this.order.o_id
+                id: this.order.o_id
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);
 
-                if(res.success) {
-                    if(res.items.length > 0) {
+                if (res.success) {
+                    if (res.items.length > 0) {
                         this.show(res.items);
                     }
                     else {
@@ -42,98 +42,98 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
         });
     },
 
-    show : function (invoiceAbleItems) {
+    show: function (invoiceAbleItems) {
         var positionStore = new Ext.data.JsonStore({
-            data : invoiceAbleItems
+            data: invoiceAbleItems
         });
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing');
 
         var itemsGrid = {
-            xtype : 'grid',
-            padding : 10,
-            cls : 'coreshop-order-detail-grid',
-            store :  positionStore,
+            xtype: 'grid',
+            padding: 10,
+            cls: 'coreshop-order-detail-grid',
+            store: positionStore,
             plugins: [cellEditing],
-            listeners : {
-                validateedit : function(editor, context) {
+            listeners: {
+                validateedit: function (editor, context) {
                     return context.value <= context.record.data.maxToInvoice;
                 }
             },
-            columns : [
+            columns: [
                 {
-                    xtype : 'gridcolumn',
-                    flex : 1,
-                    dataIndex : 'name',
-                    text : t('coreshop_product')
+                    xtype: 'gridcolumn',
+                    flex: 1,
+                    dataIndex: 'name',
+                    text: t('coreshop_product')
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'price',
-                    text : t('coreshop_price'),
-                    width : 100,
-                    align : 'right',
+                    xtype: 'gridcolumn',
+                    dataIndex: 'price',
+                    text: t('coreshop_price'),
+                    width: 100,
+                    align: 'right',
                     renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'quantity',
-                    text : t('coreshop_quantity'),
-                    width : 100,
-                    align : 'right'
+                    xtype: 'gridcolumn',
+                    dataIndex: 'quantity',
+                    text: t('coreshop_quantity'),
+                    width: 100,
+                    align: 'right'
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'quantityInvoiced',
-                    text : t('coreshop_invoiced_quantity'),
-                    width : 120,
-                    align : 'right'
+                    xtype: 'gridcolumn',
+                    dataIndex: 'quantityInvoiced',
+                    text: t('coreshop_invoiced_quantity'),
+                    width: 120,
+                    align: 'right'
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'toInvoice',
-                    text : t('coreshop_quantity_to_invoice'),
-                    width : 100,
-                    align : 'right',
-                    field : {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'toInvoice',
+                    text: t('coreshop_quantity_to_invoice'),
+                    width: 100,
+                    align: 'right',
+                    field: {
                         xtype: 'numberfield',
-                        decimalPrecision : 0
+                        decimalPrecision: 0
                     }
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'tax',
-                    text : t('coreshop_tax'),
-                    width : 100,
-                    align : 'right',
+                    xtype: 'gridcolumn',
+                    dataIndex: 'tax',
+                    text: t('coreshop_tax'),
+                    width: 100,
+                    align: 'right',
                     renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'total',
-                    text : t('coreshop_total'),
-                    width : 100,
-                    align : 'right',
+                    xtype: 'gridcolumn',
+                    dataIndex: 'total',
+                    text: t('coreshop_total'),
+                    width: 100,
+                    align: 'right',
                     renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                 }
             ]
         };
 
         var panel = Ext.create('Ext.panel.Panel', {
-            title : t('coreshop_products'),
-            border : true,
-            iconCls : 'coreshop_icon_product',
-            items : itemsGrid
+            title: t('coreshop_products'),
+            border: true,
+            iconCls: 'coreshop_icon_product',
+            items: itemsGrid
         });
 
         var window = new Ext.window.Window({
             width: 800,
             height: 300,
             resizeable: true,
-            modal : true,
-            layout : 'fit',
-            title : t('coreshop_invoice_create_new') + ' (' + this.order.o_id + ')',
-            items : [panel],
+            modal: true,
+            layout: 'fit',
+            title: t('coreshop_invoice_create_new') + ' (' + this.order.o_id + ')',
+            items: [panel],
             buttons: [
                 {
                     text: t('save'),
@@ -141,11 +141,11 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
                     handler: function (btn) {
                         var itemsToInvoice = [];
 
-                        positionStore.getRange().forEach(function(item) {
-                            if(item.get("toInvoice") > 0) {
+                        positionStore.getRange().forEach(function (item) {
+                            if (item.get("toInvoice") > 0) {
                                 itemsToInvoice.push({
-                                    orderItemId : item.get("orderItemId"),
-                                    quantity : item.get("toInvoice")
+                                    orderItemId: item.get("orderItemId"),
+                                    quantity: item.get("toInvoice")
                                 });
                             }
                         });
@@ -154,10 +154,10 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
 
                         Ext.Ajax.request({
                             url: '/admin/coreshop/order-invoice/create-invoice',
-                            method : 'post',
+                            method: 'post',
                             params: {
-                                'items' : Ext.encode(itemsToInvoice),
-                                'id' : this.order.o_id
+                                'items': Ext.encode(itemsToInvoice),
+                                'id': this.order.o_id
                             },
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
@@ -167,7 +167,7 @@ pimcore.plugin.coreshop.orders.invoice = Class.create({
 
                                     pimcore.helpers.openObject(res.invoiceId, 'object');
 
-                                    if(Ext.isFunction(this.cb)) {
+                                    if (Ext.isFunction(this.cb)) {
                                         this.cb();
                                     }
                                 } else {

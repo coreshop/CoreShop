@@ -8,19 +8,19 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.grid');
 pimcore.plugin.coreshop.orders.grid = Class.create({
 
-    layoutId : 'coreshop_orders',
+    layoutId: 'coreshop_orders',
 
-    grid : null,
+    grid: null,
 
-    store : null,
+    store: null,
 
-    columns : [],
-    storeFields : [],
+    columns: [],
+    storeFields: [],
 
     initialize: function () {
         this.panels = [];
@@ -44,43 +44,43 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
     },
 
 
-    prepareConfig : function(columnConfig) {
+    prepareConfig: function (columnConfig) {
         var gridColumns = [];
         var storeModelFields = [];
 
-        Ext.each(columnConfig, function(column) {
+        Ext.each(columnConfig, function (column) {
             var newColumn = column;
             var storeModelField = {
-                name : column.dataIndex,
-                type : column.type
+                name: column.dataIndex,
+                type: column.type
             };
 
             newColumn.id = newColumn.dataIndex;
-            newColumn.text = newColumn.text.split('|').map(function(string) {
+            newColumn.text = newColumn.text.split('|').map(function (string) {
                 //text like [foo bar] won't be translated. just remove brackets.
                 return string.match(/\[([^)]+)]/) ? string.replace(/\[|]/gi, '') : t(string);
             }).join(' ');
 
-            if(newColumn.hasOwnProperty('renderAs')) {
-                if(newColumn.renderAs === 'currency') {
+            if (newColumn.hasOwnProperty('renderAs')) {
+                if (newColumn.renderAs === 'currency') {
                     newColumn.renderer = this.currencyRenderer;
                 }
-                else if(newColumn.renderAs === 'orderState') {
+                else if (newColumn.renderAs === 'orderState') {
                     newColumn.renderer = this.orderStateRenderer;
                 }
-                else if(newColumn.renderAs === 'shop') {
+                else if (newColumn.renderAs === 'shop') {
                     newColumn.renderer = this.shopRenderer;
                 }
             }
 
-            if(newColumn.type === 'date') {
+            if (newColumn.type === 'date') {
                 newColumn.xtype = 'datecolumn';
                 newColumn.format = t('coreshop_date_time_format');
 
                 storeModelField.dateFormat = 'timestamp';
             }
 
-            if(newColumn.type === 'integer' || newColumn.type === 'float') {
+            if (newColumn.type === 'integer' || newColumn.type === 'float') {
                 newColumn.xtype = 'numbercolumn';
             }
 
@@ -92,13 +92,13 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         this.storeFields = storeModelFields;
     },
 
-    currencyRenderer : function(value, metaData, record) {
+    currencyRenderer: function (value, metaData, record) {
         var currency = record.get('currency').symbol;
 
         return coreshop.util.format.currency(currency, value);
     },
 
-    orderStateRenderer : function (orderStateInfo) {
+    orderStateRenderer: function (orderStateInfo) {
         if (orderStateInfo.state) {
             var bgColor = orderStateInfo.state.color,
                 textColor = coreshop.helpers.constrastColor(bgColor);
@@ -109,7 +109,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         return null;
     },
 
-    shopRenderer : function (val) {
+    shopRenderer: function (val) {
         var store = pimcore.globalmanager.get('coreshop_stores');
         var pos = store.findExact('id', String(val));
         if (pos >= 0) {
@@ -138,9 +138,9 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                     dock: 'top',
                     items: [
                         {
-                            iconCls : 'coreshop_icon_order_create',
-                            text : t('coreshop_order_create'),
-                            handler : function () {
+                            iconCls: 'coreshop_icon_order_create',
+                            text: t('coreshop_order_create'),
+                            handler: function () {
                                 coreshop.helpers.createOrder();
                             }.bind(this)
                         }
@@ -170,7 +170,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         return [this.getGrid()];
     },
 
-    getGrid : function () {
+    getGrid: function () {
 
         this.store = new Ext.data.JsonStore({
             remoteSort: true,
@@ -184,7 +184,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
                 reader: {
                     type: 'json',
                     rootProperty: 'data',
-                    totalProperty : 'total'
+                    totalProperty: 'total'
                 }
             },
 
@@ -198,15 +198,15 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
             plugins: 'gridfilters',
             columns: this.columns,
             region: 'center',
-            stateful:true,
-            stateId:'coreshop_order_grid',
+            stateful: true,
+            stateId: 'coreshop_order_grid',
             // paging bar on the bottom
             bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
-            listeners : {
-                itemclick : function (grid, record) {
+            listeners: {
+                itemclick: function (grid, record) {
                     grid.setLoading(t('loading'));
 
-                    this.openOrder(record, function() {
+                    this.openOrder(record, function () {
                         grid.setLoading(false);
                     }.bind(this));
                 }.bind(this)
@@ -216,7 +216,7 @@ pimcore.plugin.coreshop.orders.grid = Class.create({
         return this.grid;
     },
 
-    openOrder : function (record, callback) {
+    openOrder: function (record, callback) {
         coreshop.helpers.openOrder(record.get('o_id'), callback);
     }
 });

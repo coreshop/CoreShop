@@ -8,11 +8,11 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.object.tags.coreShopPaymentProvider');
 pimcore.object.tags.coreShopPaymentProvider = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
     type: 'coreShopPaymentProvider',
-    storeName : 'payment_provider'
+    storeName: 'payment_provider'
 });

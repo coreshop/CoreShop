@@ -8,17 +8,17 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.address');
 pimcore.plugin.coreshop.orders.address = Class.create({
 
-    data : [],
-    objectLayout : {},
-    orderId : null,
-    type : null,
-    cb : null,
-    title : null,
+    data: [],
+    objectLayout: {},
+    orderId: null,
+    type: null,
+    cb: null,
+    title: null,
 
     initialize: function (data, layout, orderId, type, title, cb) {
         this.data = data;
@@ -30,7 +30,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
         this.title = title;
     },
 
-    show : function () {
+    show: function () {
         var layout = this.getLayout(this.objectLayout);
         layout.region = 'center';
 
@@ -38,10 +38,10 @@ pimcore.plugin.coreshop.orders.address = Class.create({
             width: 500,
             height: 700,
             resizeable: true,
-            modal : true,
+            modal: true,
             layout: 'border',
-            title : t('coreshop_edit_address') + ': ' + this.title,
-            items : layout,
+            title: t('coreshop_edit_address') + ': ' + this.title,
+            items: layout,
             buttons: [
                 {
                     text: t('save'),
@@ -161,7 +161,7 @@ pimcore.plugin.coreshop.orders.address = Class.create({
 
                     //only include changed values in save response.
                     if (currentField.isDirty()) {
-                        values[currentField.getName()] =  currentField.getValue();
+                        values[currentField.getName()] = currentField.getValue();
                     }
                 }
             }

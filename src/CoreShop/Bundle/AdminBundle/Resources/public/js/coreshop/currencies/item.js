@@ -8,26 +8,26 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.currencies.item');
 pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_currency',
+    iconCls: 'coreshop_icon_currency',
 
-    url : {
-        save : '/admin/coreshop/currencies/save'
+    url: {
+        save: '/admin/coreshop/currencies/save'
     },
 
-    getItems : function () {
+    getItems: function () {
         return [this.getFormPanel()];
     },
 
-    getFormPanel : function () {
+    getFormPanel: function () {
         this.formPanel = new Ext.form.Panel({
-            bodyStyle:'padding:20px 5px 20px 5px;',
+            bodyStyle: 'padding:20px 5px 20px 5px;',
             border: false,
-            region : 'center',
+            region: 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -42,12 +42,12 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
             ],
             items: [
                 {
-                    xtype:'fieldset',
-                    autoHeight:true,
+                    xtype: 'fieldset',
+                    autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: { width: 300 },
-                    items :[
+                    defaults: {width: 300},
+                    items: [
                         {
                             fieldLabel: t('name'),
                             name: 'name',
@@ -72,7 +72,7 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
                             fieldLabel: t('coreshop_currency_exchangeRate'),
                             name: 'exchangeRate',
                             value: this.data.exchangeRate,
-                            xtype : 'spinnerfield'
+                            xtype: 'spinnerfield'
                         }
                     ]
                 }
@@ -82,7 +82,7 @@ pimcore.plugin.coreshop.currencies.item = Class.create(pimcore.plugin.coreshop.a
         return this.formPanel;
     },
 
-    getSaveData : function () {
+    getSaveData: function () {
         return this.formPanel.getForm().getFieldValues();
     }
 });

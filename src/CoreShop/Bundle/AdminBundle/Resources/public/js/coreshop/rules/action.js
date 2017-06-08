@@ -8,13 +8,13 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.action');
 
 pimcore.plugin.coreshop.rules.action = Class.create({
 
-    initialize : function (actions) {
+    initialize: function (actions) {
         this.actions = actions;
     },
 
@@ -41,7 +41,7 @@ pimcore.plugin.coreshop.rules.action = Class.create({
             title: t('actions'),
             autoScroll: true,
             forceLayout: true,
-            style : 'padding: 10px',
+            style: 'padding: 10px',
             tbar: [{
                 iconCls: 'pimcore_icon_add',
                 menu: addMenu
@@ -52,8 +52,8 @@ pimcore.plugin.coreshop.rules.action = Class.create({
         return this.actionsContainer;
     },
 
-    destroy : function() {
-        if(this.actionsContainer) {
+    destroy: function () {
+        if (this.actionsContainer) {
             this.actionsContainer.destroy();
         }
     },
@@ -66,28 +66,27 @@ pimcore.plugin.coreshop.rules.action = Class.create({
         this.actionsContainer.updateLayout();
     },
 
-    getActionClassItem : function (type) {
-        if(Object.keys(this.getActionClassNamespace()).indexOf(type) >= 0) {
+    getActionClassItem: function (type) {
+        if (Object.keys(this.getActionClassNamespace()).indexOf(type) >= 0) {
             return this.getActionClassNamespace()[type];
         }
 
         return this.getDefaultActionClassItem();
     },
 
-    getActionClassNamespace : function() {
+    getActionClassNamespace: function () {
         return pimcore.plugin.coreshop.rules.actions;
     },
 
-    getDefaultActionClassItem : function() {
+    getDefaultActionClassItem: function () {
         return pimcore.plugin.coreshop.rules.actions.abstract;
     },
 
-    getActionsData : function () {
+    getActionsData: function () {
         // get defined actions
         var actionData = [];
         var actions = this.actionsContainer.items.getRange();
-        for (var i = 0; i < actions.length; i++)
-        {
+        for (var i = 0; i < actions.length; i++) {
             var action = {};
             var configuration = {};
 
@@ -132,8 +131,8 @@ pimcore.plugin.coreshop.rules.action = Class.create({
         return actionData;
     },
 
-    isDirty : function() {
-        if(this.actionsContainer.items) {
+    isDirty: function () {
+        if (this.actionsContainer.items) {
             var actions = this.actionsContainer.items.getRange();
             for (var i = 0; i < actions.length; i++) {
                 var actionsItem = actions[i];

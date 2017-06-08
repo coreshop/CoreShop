@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.product.grid');
 pimcore.plugin.coreshop.product.grid = Class.create({
 
-    layoutId : 'coreshop_products',
+    layoutId: 'coreshop_products',
 
     initialize: function () {
         // create layout
@@ -63,7 +63,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
         return [this.getGrid()];
     },
 
-    getGrid : function () {
+    getGrid: function () {
         this.store = new Ext.data.JsonStore({
             remoteSort: true,
             remoteFilter: true,
@@ -76,7 +76,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
                 reader: {
                     type: 'json',
                     rootProperty: 'data',
-                    totalProperty : 'total'
+                    totalProperty: 'total'
                 }
             },
 
@@ -85,7 +85,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
                 'o_id',
                 'name',
                 'quantity',
-                { name : 'price', type : 'float' }
+                {name: 'price', type: 'float'}
             ]
         });
 
@@ -101,7 +101,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
                 filter: {
                     type: 'string'
                 },
-                flex : 1
+                flex: 1
             },
             {
                 text: t('coreshop_product_quantity'),
@@ -109,8 +109,8 @@ pimcore.plugin.coreshop.product.grid = Class.create({
                 filter: 'number'
             },
             {
-                xtype : 'numbercolumn',
-                align : 'right',
+                xtype: 'numbercolumn',
+                align: 'right',
                 text: t('coreshop_product_price'),
                 dataIndex: 'price',
                 renderer: coreshop.util.format.currency.bind(this, '€'),
@@ -123,10 +123,10 @@ pimcore.plugin.coreshop.product.grid = Class.create({
                 text: t('coreshop_shop'),
                 dataIndex: 'shops',
                 filter: {
-                    type : 'list',
-                    store : pimcore.globalmanager.get('coreshop_stores')
+                    type: 'list',
+                    store: pimcore.globalmanager.get('coreshop_stores')
                 },
-                renderer : function (val) {
+                renderer: function (val) {
                     var store = pimcore.globalmanager.get('coreshop_stores');
                     var storeString = '';
 
@@ -155,8 +155,8 @@ pimcore.plugin.coreshop.product.grid = Class.create({
 
             // paging bar on the bottom
             bbar: this.pagingtoolbar,
-            listeners : {
-                itemclick : this.openProduct
+            listeners: {
+                itemclick: this.openProduct
             }
         });
 
@@ -165,7 +165,7 @@ pimcore.plugin.coreshop.product.grid = Class.create({
         return this.grid;
     },
 
-    openProduct : function (grid, record, item, index, e, eOpts) {
+    openProduct: function (grid, record, item, index, e, eOpts) {
         pimcore.helpers.openObject(record.get('o_id'));
     }
 });

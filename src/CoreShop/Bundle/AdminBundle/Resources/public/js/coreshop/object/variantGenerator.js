@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.object.variantGenerator');
 
@@ -39,8 +39,8 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
                 proxy: {
                     type: 'ajax',
                     url: '/admin/coreshop/object/get-variant-bricks',
-                    extraParams : {
-                        id : this.object.id
+                    extraParams: {
+                        id: this.object.id
                     },
                     reader: {
                         type: 'json',
@@ -63,7 +63,7 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
             });
 
             this.brickSelector = new Ext.form.ComboBox({
-                xtype : 'combo',
+                xtype: 'combo',
                 name: 'brickType',
                 width: 350,
                 autoSelect: true,
@@ -74,12 +74,12 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
                 valueField: 'name',
                 displayField: 'name',
                 listeners: {
-                    select : function (combo, newValue, oldValue) {
+                    select: function (combo, newValue, oldValue) {
                         this.brickFieldStore.load({
-                            params : {
-                                key : newValue.get('name')
+                            params: {
+                                key: newValue.get('name')
                             },
-                            callback : function () {
+                            callback: function () {
                                 this.brickFieldSelector.setDisabled(false);
                             }.bind(this)
                         });
@@ -88,8 +88,8 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
             });
 
             this.brickFieldSelector = new Ext.form.ComboBox({
-                xtype : 'combo',
-                disabled : true,
+                xtype: 'combo',
+                disabled: true,
                 name: 'brickField',
                 width: 350,
                 queryMode: 'local',
@@ -103,8 +103,8 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
             });
 
             this.inputValues = new Ext.form.TextField({
-                name : 'input',
-                fieldLabel : t('coreshop_variant_generator_input')
+                name: 'input',
+                fieldLabel: t('coreshop_variant_generator_input')
             });
 
             this.inputPanel = new Ext.form.FormPanel({
@@ -119,10 +119,10 @@ pimcore.plugin.coreshop.object.variantGenerator = Class.create({
                             url: '/admin/coreshop/object/generate-variants',
                             method: 'post',
                             params: {
-                                objectId : this.object.id,
-                                brickType : this.brickSelector.getValue(),
-                                field : this.brickFieldSelector.getValue(),
-                                values : this.inputValues.getValue()
+                                objectId: this.object.id,
+                                brickType: this.brickSelector.getValue(),
+                                field: this.brickFieldSelector.getValue(),
+                                values: this.inputValues.getValue()
                             },
                             success: function (response) {
                                 this.window.close();

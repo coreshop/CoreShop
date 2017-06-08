@@ -8,13 +8,13 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS("pimcore.object.tags.coreShopProductSpecificPriceRules");
 pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.object.tags.abstract, {
 
     type: "coreShopProductSpecificPriceRules",
-    panels : [],
+    panels: [],
 
     /**
      * @var array
@@ -26,7 +26,7 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
      */
     actions: [],
 
-    dirty : false,
+    dirty: false,
 
     initialize: function (data, fieldConfig) {
         this.data = data;
@@ -34,13 +34,15 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         this.panels = [];
     },
 
-    getGridColumnConfig: function(field) {
-        return {header: ts(field.label), width: 150, sortable: false, dataIndex: field.key,
+    getGridColumnConfig: function (field) {
+        return {
+            header: ts(field.label), width: 150, sortable: false, dataIndex: field.key,
             renderer: function (key, value, metaData, record) {
                 this.applyPermissionStyle(key, value, metaData, record);
 
                 return t("not_supported");
-            }.bind(this, field.key)};
+            }.bind(this, field.key)
+        };
     },
 
     getLayoutEdit: function () {
@@ -65,20 +67,20 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         return this.fieldConfig.name;
     },
 
-    getEditLayout : function() {
+    getEditLayout: function () {
         if (!this.layout) {
             // create new panel
             this.layout = new Ext.Panel({
                 //id: this.layoutId,
                 title: this.getTitle(),
                 //iconCls: this.iconCls,
-                layout : 'fit',
+                layout: 'fit',
                 items: [this.getTabPanel()],
-                tools : [
+                tools: [
                     {
                         type: 'coreshop-add',
                         tooltip: t('add'),
-                        handler : function () {
+                        handler: function () {
                             this.panels.push(new pimcore.plugin.coreshop.product.specificprice.object.item(this, {}, -1, 'productSpecificPriceRule'));
                         }.bind(this)
                     }
@@ -102,8 +104,8 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         return this.layout;
     },
 
-    showPriceRules : function() {
-        Ext.each(this.data, function(data) {
+    showPriceRules: function () {
+        Ext.each(this.data, function (data) {
             var panel = new pimcore.plugin.coreshop.product.specificprice.object.item(this, data, data.id, 'productSpecificPriceRule');
 
             this.panels.push(panel);
@@ -116,13 +118,13 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
             }.bind(this));
         }.bind(this));
 
-        if(this.panels.length > 0) {
+        if (this.panels.length > 0) {
             this.getTabPanel().setActiveItem(this.panels[0].panel);
         }
     },
 
-    getTabPanel : function() {
-        if(!this.panel) {
+    getTabPanel: function () {
+        if (!this.panel) {
             this.panel = new Ext.TabPanel({
                 region: 'center',
                 border: false
@@ -133,10 +135,10 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
     },
 
     getValue: function () {
-        if(this.isRendered()) {
+        if (this.isRendered()) {
             var data = [];
 
-            Ext.each(this.panels, function(panel) {
+            Ext.each(this.panels, function (panel) {
                 data.push(panel.getSaveData());
             });
 
@@ -144,9 +146,9 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         }
     },
 
-    isDirty:function () {
-        for(var i = 0; i < this.panels.length; i++) {
-            if(this.panels[i].isDirty()) {
+    isDirty: function () {
+        for (var i = 0; i < this.panels.length; i++) {
+            if (this.panels[i].isDirty()) {
                 return true;
             }
         }
@@ -154,15 +156,15 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         return this.dirty;
     },
 
-    getActions : function() {
+    getActions: function () {
         return this.actions;
     },
 
-    getConfig : function() {
+    getConfig: function () {
         return this.config;
     },
 
-    getConditions : function() {
+    getConditions: function () {
         return this.conditions;
     }
 });

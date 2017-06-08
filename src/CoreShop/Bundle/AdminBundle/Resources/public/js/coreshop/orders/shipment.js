@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.shipment');
 pimcore.plugin.coreshop.orders.shipment = Class.create({
-    order : null,
-    cb : null,
+    order: null,
+    cb: null,
 
     initialize: function (order, cb) {
         this.order = order;
@@ -22,13 +22,13 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
         Ext.Ajax.request({
             url: '/admin/coreshop/order-shipment/get-ship-able-items',
             params: {
-                id : this.order.o_id
+                id: this.order.o_id
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);
 
-                if(res.success) {
-                    if(res.items.length > 0) {
+                if (res.success) {
+                    if (res.items.length > 0) {
                         this.show(res.items);
                     }
                     else {
@@ -41,103 +41,102 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
         });
     },
 
-    show : function (shipAbleItems) {
+    show: function (shipAbleItems) {
         var positionStore = new Ext.data.JsonStore({
-            data : shipAbleItems
+            data: shipAbleItems
         });
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing');
 
 
-
         var itemsGrid = {
-            xtype : 'grid',
-            cls : 'coreshop-order-detail-grid',
-            store :  positionStore,
+            xtype: 'grid',
+            cls: 'coreshop-order-detail-grid',
+            store: positionStore,
             plugins: [cellEditing],
-            listeners : {
-                validateedit : function(editor, context) {
+            listeners: {
+                validateedit: function (editor, context) {
                     return context.value <= context.record.data.maxToShip;
                 }
             },
-            columns : [
+            columns: [
                 {
-                    xtype : 'gridcolumn',
-                    flex : 1,
-                    dataIndex : 'name',
-                    text : t('coreshop_product')
+                    xtype: 'gridcolumn',
+                    flex: 1,
+                    dataIndex: 'name',
+                    text: t('coreshop_product')
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'price',
-                    text : t('coreshop_price'),
-                    width : 100,
-                    align : 'right',
+                    xtype: 'gridcolumn',
+                    dataIndex: 'price',
+                    text: t('coreshop_price'),
+                    width: 100,
+                    align: 'right',
                     renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'quantity',
-                    text : t('coreshop_quantity'),
-                    width : 100,
-                    align : 'right'
+                    xtype: 'gridcolumn',
+                    dataIndex: 'quantity',
+                    text: t('coreshop_quantity'),
+                    width: 100,
+                    align: 'right'
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'quantityShipped',
-                    text : t('coreshop_shipped_quantity'),
-                    width : 120,
-                    align : 'right'
+                    xtype: 'gridcolumn',
+                    dataIndex: 'quantityShipped',
+                    text: t('coreshop_shipped_quantity'),
+                    width: 120,
+                    align: 'right'
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'toShip',
-                    text : t('coreshop_quantity_to_ship'),
-                    width : 100,
-                    align : 'right',
-                    field : {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'toShip',
+                    text: t('coreshop_quantity_to_ship'),
+                    width: 100,
+                    align: 'right',
+                    field: {
                         xtype: 'numberfield',
-                        decimalPrecision : 0
+                        decimalPrecision: 0
                     }
                 }
             ]
         };
 
         var trackingCode = Ext.create('Ext.form.TextField', {
-            fieldLabel:t('coreshop_tracking_code'),
-            name : 'trackingCode'
+            fieldLabel: t('coreshop_tracking_code'),
+            name: 'trackingCode'
         });
 
         pimcore.globalmanager.get("coreshop_carriers").load();
 
         var carrier = Ext.create('Ext.form.ComboBox', {
-            xtype:'combo',
-            fieldLabel:t('coreshop_carrier'),
+            xtype: 'combo',
+            fieldLabel: t('coreshop_carrier'),
             mode: 'local',
             store: pimcore.globalmanager.get("coreshop_carriers"),
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
             triggerAction: 'all',
-            name:'carrierId',
-            value : parseInt(this.order.carrier),
+            name: 'carrierId',
+            value: parseInt(this.order.carrier),
             afterLabelTextTpl: [
                 '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
             ],
             allowBlank: false,
-            required : true
+            required: true
         });
 
         var panel = Ext.create('Ext.panel.Panel', {
-            title : t('coreshop_products'),
-            border : true,
-            iconCls : 'coreshop_icon_product',
-            items : [
+            title: t('coreshop_products'),
+            border: true,
+            iconCls: 'coreshop_icon_product',
+            items: [
                 {
-                    xtype : 'panel',
-                    border :false,
-                    padding : 10,
-                    items : [carrier, trackingCode, itemsGrid]
+                    xtype: 'panel',
+                    border: false,
+                    padding: 10,
+                    items: [carrier, trackingCode, itemsGrid]
                 }
             ]
         });
@@ -146,10 +145,10 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
             width: 800,
             height: 400,
             resizeable: true,
-            modal : true,
-            layout : 'fit',
-            title : t('coreshop_shipment_create_new') + ' (' + this.order.o_id + ')',
-            items : [panel],
+            modal: true,
+            layout: 'fit',
+            title: t('coreshop_shipment_create_new') + ' (' + this.order.o_id + ')',
+            items: [panel],
             buttons: [
                 {
                     text: t('save'),
@@ -157,11 +156,11 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
                     handler: function (btn) {
                         var itemsToShip = [];
 
-                        positionStore.getRange().forEach(function(item) {
-                            if(item.get("toShip") > 0) {
+                        positionStore.getRange().forEach(function (item) {
+                            if (item.get("toShip") > 0) {
                                 itemsToShip.push({
-                                    orderItemId : item.get("orderItemId"),
-                                    quantity : item.get("toShip")
+                                    orderItemId: item.get("orderItemId"),
+                                    quantity: item.get("toShip")
                                 });
                             }
                         });
@@ -170,12 +169,12 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
 
                         Ext.Ajax.request({
                             url: '/admin/coreshop/order-shipment/create-shipment',
-                            method : 'post',
+                            method: 'post',
                             params: {
-                                'items' : Ext.encode(itemsToShip),
-                                'id' : this.order.o_id,
-                                'carrier' : carrier.getValue(),
-                                'trackingCode' : trackingCode.getValue()
+                                'items': Ext.encode(itemsToShip),
+                                'id': this.order.o_id,
+                                'carrier': carrier.getValue(),
+                                'trackingCode': trackingCode.getValue()
                             },
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
@@ -185,7 +184,7 @@ pimcore.plugin.coreshop.orders.shipment = Class.create({
 
                                     pimcore.helpers.openObject(res.shipmentId, 'object');
 
-                                    if(Ext.isFunction(this.cb)) {
+                                    if (Ext.isFunction(this.cb)) {
                                         this.cb();
                                     }
                                 } else {

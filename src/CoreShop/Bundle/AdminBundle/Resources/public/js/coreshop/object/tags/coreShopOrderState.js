@@ -8,11 +8,11 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.object.tags.coreShopOrderState');
 pimcore.object.tags.coreShopOrderState = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
     type: 'coreShopOrderState',
-    storeName : 'orderstates'
+    storeName: 'orderstates'
 });

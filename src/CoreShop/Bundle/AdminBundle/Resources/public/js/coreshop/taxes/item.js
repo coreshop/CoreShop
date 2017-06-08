@@ -8,28 +8,27 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.taxes.item');
 
 pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_taxes',
+    iconCls: 'coreshop_icon_taxes',
 
-    url : {
-        save : '/admin/coreshop/tax_rates/save'
+    url: {
+        save: '/admin/coreshop/tax_rates/save'
     },
 
-    getItems : function () {
+    getItems: function () {
         return [this.getFormPanel()];
     },
 
-    getTitleText : function () {
+    getTitleText: function () {
         return this.data.name;
     },
 
-    getFormPanel : function ()
-    {
+    getFormPanel: function () {
         var data = this.data;
 
         var langTabs = [];
@@ -37,10 +36,10 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
             var tab = {
                 title: pimcore.available_languages[lang],
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
-                layout:'form',
+                layout: 'form',
                 items: [{
                     xtype: 'textfield',
-                    name: 'translations.'+lang+'.name',
+                    name: 'translations.' + lang + '.name',
                     fieldLabel: t('name'),
                     width: 400,
                     value: data.translations[lang] ? data.translations[lang].name : ''
@@ -51,9 +50,9 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
         });
 
         this.formPanel = new Ext.form.Panel({
-            bodyStyle:'padding:20px 5px 20px 5px;',
+            bodyStyle: 'padding:20px 5px 20px 5px;',
             border: false,
-            region : 'center',
+            region: 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -68,18 +67,18 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
             ],
             items: [
                 {
-                    xtype:'fieldset',
-                    autoHeight:true,
+                    xtype: 'fieldset',
+                    autoHeight: true,
                     labelWidth: 350,
                     defaultType: 'textfield',
-                    defaults: { width: '100%' },
-                    items :[
+                    defaults: {width: '100%'},
+                    items: [
                         {
                             xtype: 'tabpanel',
                             activeTab: 0,
                             defaults: {
-                                autoHeight:true,
-                                bodyStyle:'padding:10px;'
+                                autoHeight: true,
+                                bodyStyle: 'padding:10px;'
                             },
                             items: langTabs
                         },
@@ -89,8 +88,8 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
                             fieldLabel: t('coreshop_tax_rate'),
                             width: 400,
                             value: data.rate,
-                            decimalPrecision : 2,
-                            step : 1
+                            decimalPrecision: 2,
+                            step: 1
                         }, {
                             xtype: 'checkbox',
                             name: 'active',
@@ -106,7 +105,7 @@ pimcore.plugin.coreshop.taxes.item = Class.create(pimcore.plugin.coreshop.abstra
         return this.formPanel;
     },
 
-    getSaveData : function () {
+    getSaveData: function () {
         var values = this.formPanel.getForm().getFieldValues();
 
         if (!values['active']) {

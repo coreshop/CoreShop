@@ -8,20 +8,20 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.order');
 pimcore.plugin.coreshop.orders.order = Class.create({
 
-    order : null,
-    objectData : null,
-    layoutId : null,
+    order: null,
+    objectData: null,
+    layoutId: null,
 
-    borderStyle : {
+    borderStyle: {
         borderStyle: 'solid',
         borderColor: '#ccc',
         borderRadius: '5px',
-        borderWidth : '1px'
+        borderWidth: '1px'
     },
 
     initialize: function (order) {
@@ -37,22 +37,23 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         tabPanel.setActiveItem(this.layoutId);
     },
 
-    reload : function () {
+    reload: function () {
         this.layout.destroy();
         coreshop.helpers.openOrder(this.order.o_id);
     },
 
-    getObjectInfo : function () {
+    getObjectInfo: function () {
 
         Ext.Ajax.request({
             url: '/admin/object/get',
             params: {id: this.order.o_id},
-            success: function(response) {
+            success: function (response) {
                 try {
                     this.objectData = Ext.decode(response.responseText);
                     this.setWorkflowInfo();
 
-                } catch (e) { }
+                } catch (e) {
+                }
             }.bind(this)
         });
     },
@@ -61,28 +62,28 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         if (!this.layout) {
 
             var buttons = [{
-                iconCls : 'pimcore_icon_reload',
-                text : t('reload'),
-                handler : function () {
+                iconCls: 'pimcore_icon_reload',
+                text: t('reload'),
+                handler: function () {
                     this.reload();
                 }.bind(this)
             }];
 
-            if(this.order.invoiceCreationAllowed) {
+            if (this.order.invoiceCreationAllowed) {
                 buttons.push({
-                    iconCls : 'coreshop_icon_orders_invoice',
-                    text : t('coreshop_invoice_create_short'),
-                    handler : function () {
+                    iconCls: 'coreshop_icon_orders_invoice',
+                    text: t('coreshop_invoice_create_short'),
+                    handler: function () {
                         this.createInvoice();
                     }.bind(this)
                 });
             }
 
-            if(this.order.shipmentCreationAllowed) {
+            if (this.order.shipmentCreationAllowed) {
                 buttons.push({
-                    iconCls : 'coreshop_icon_orders_shipment',
-                    text : t('coreshop_shipment_create_short'),
-                    handler : function () {
+                    iconCls: 'coreshop_icon_orders_shipment',
+                    text: t('coreshop_shipment_create_short'),
+                    handler: function () {
                         this.createShipment();
                     }.bind(this)
                 });
@@ -126,11 +127,11 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return [this.getPanel()];
     },
 
-    getPanel : function () {
+    getPanel: function () {
         var defaults = {
             style: this.borderStyle,
-            cls : 'coreshop-panel',
-            bodyPadding : 5
+            cls: 'coreshop-panel',
+            bodyPadding: 5
         };
 
         var leftItems = [
@@ -144,7 +145,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
         var visitorInfo = this.getVisitorInfo();
 
-        if(visitorInfo) {
+        if (visitorInfo) {
             leftItems.push(visitorInfo);
         }
 
@@ -155,38 +156,38 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
         var contentItems = [
             {
-                xtype : 'container',
-                border : 0,
-                style : {
-                    border : 0
+                xtype: 'container',
+                border: 0,
+                style: {
+                    border: 0
                 },
-                flex : 7,
-                defaults : defaults,
-                items : leftItems
+                flex: 7,
+                defaults: defaults,
+                items: leftItems
             },
             {
-                xtype : 'container',
-                border : 0,
-                style : {
-                    border : 0
+                xtype: 'container',
+                border: 0,
+                style: {
+                    border: 0
                 },
-                flex : 5,
-                defaults : defaults,
-                items : rightItems
+                flex: 5,
+                defaults: defaults,
+                items: rightItems
             }
         ];
 
         var items = [
             this.getHeader(),
             {
-                xtype : 'container',
-                layout : 'hbox',
-                margin : '0 0 20 0',
-                border : 0,
+                xtype: 'container',
+                layout: 'hbox',
+                margin: '0 0 20 0',
+                border: 0,
                 style: {
-                    border : 0
+                    border: 0
                 },
-                items : contentItems
+                items: contentItems
             }
         ];
 
@@ -204,98 +205,98 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         items.push(this.getDetailInfo());
 
         this.panel = Ext.create('Ext.container.Container', {
-            border : false,
-            items : items,
-            padding : 20,
-            region : 'center',
-            defaults : defaults
+            border: false,
+            items: items,
+            padding: 20,
+            region: 'center',
+            defaults: defaults
         });
 
         return this.panel;
     },
 
-    getHeader : function () {
+    getHeader: function () {
         if (!this.headerPanel) {
             var items = [
                 {
-                    xtype : 'panel',
-                    html : t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.orderDate * 1000), t('coreshop_date_time_format')) + '</span>',
-                    bodyPadding : 20,
-                    flex : 1
+                    xtype: 'panel',
+                    html: t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.orderDate * 1000), t('coreshop_date_time_format')) + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
                 },
                 {
-                    xtype : 'panel',
-                    html : t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.totalGross) + '</span>',
-                    bodyPadding : 20,
-                    flex : 1
+                    xtype: 'panel',
+                    html: t('coreshop_orders_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.totalGross) + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
                 },
                 {
-                    xtype : 'panel',
-                    html : t('coreshop_messaging_messages') + '<br/><span class="coreshop_order_big">' + this.order.unreadMessages + '</span>', //TODO: Add Messages
-                    bodyPadding : 20,
-                    flex : 1
+                    xtype: 'panel',
+                    html: t('coreshop_messaging_messages') + '<br/><span class="coreshop_order_big">' + this.order.unreadMessages + '</span>', //TODO: Add Messages
+                    bodyPadding: 20,
+                    flex: 1
                 },
                 {
-                    xtype : 'panel',
-                    html : t('coreshop_product_count') + '<br/><span class="coreshop_order_big">' + this.order.items.length + '</span>',
-                    bodyPadding : 20,
-                    flex : 1
+                    xtype: 'panel',
+                    html: t('coreshop_product_count') + '<br/><span class="coreshop_order_big">' + this.order.items.length + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
                 }
             ];
 
             if (coreshop.settings.multishop) {
                 items.push({
-                    xtype : 'panel',
-                    html : t('coreshop_shop') + '<br/><span class="coreshop_order_big">' + this.order.shop.name + '</span>',
-                    bodyPadding : 20,
-                    flex : 1
+                    xtype: 'panel',
+                    html: t('coreshop_shop') + '<br/><span class="coreshop_order_big">' + this.order.shop.name + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
                 });
             }
 
             this.headerPanel = Ext.create('Ext.panel.Panel', {
-                layout : 'hbox',
-                margin : '0 0 20 0',
-                items : items
+                layout: 'hbox',
+                margin: '0 0 20 0',
+                items: items
             });
         }
 
         return this.headerPanel;
     },
 
-    getOrderInfo : function () {
+    getOrderInfo: function () {
         if (!this.orderInfo) {
             this.orderStatesStore = new Ext.data.JsonStore({
-                data : this.order.statesHistory
+                data: this.order.statesHistory
             });
 
             this.orderInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
-                margin : '0 20 20 0',
-                border : true,
-                flex : 8,
-                iconCls : 'coreshop_icon_orders',
-                tools : [
+                title: t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
+                margin: '0 20 20 0',
+                border: true,
+                flex: 8,
+                iconCls: 'coreshop_icon_orders',
+                tools: [
                     {
                         type: 'coreshop-open',
                         tooltip: t('open'),
-                        handler : function () {
+                        handler: function () {
                             pimcore.helpers.openObject(this.order.o_id);
                         }.bind(this)
                     }
                 ],
-                items : [
+                items: [
                     {
-                        xtype : 'grid',
+                        xtype: 'grid',
                         margin: '0 0 15 0',
-                        cls : 'coreshop-detail-grid',
-                        store : this.orderStatesStore,
-                        columns : [
+                        cls: 'coreshop-detail-grid',
+                        store: this.orderStatesStore,
+                        columns: [
                             {
-                                xtype : 'gridcolumn',
-                                flex : 1,
-                                dataIndex : 'title',
-                                text : t('coreshop_orderstate'),
-                                renderer : function (value, metaData) {
+                                xtype: 'gridcolumn',
+                                flex: 1,
+                                dataIndex: 'title',
+                                text: t('coreshop_orderstate'),
+                                renderer: function (value, metaData) {
 
                                     if (value) {
                                         var bgColor = '';
@@ -307,10 +308,10 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 }
                             },
                             {
-                                xtype : 'gridcolumn',
-                                width : 250,
-                                dataIndex : 'date',
-                                text : t('date')
+                                xtype: 'gridcolumn',
+                                width: 250,
+                                dataIndex: 'date',
+                                text: t('date')
                             }
                         ]
                     }
@@ -321,13 +322,11 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.orderInfo;
     },
 
-    getCustomerInfo : function () {
+    getCustomerInfo: function () {
         if (!this.customerInfo) {
-            var items = [
+            var items = [];
 
-            ];
-
-            if(this.order.customer) {
+            if (this.order.customer) {
                 if (!this.order.customer.isGuest) {
 
                     items.push({
@@ -371,30 +370,30 @@ pimcore.plugin.coreshop.orders.order = Class.create({
 
             var guestStr = this.order.customer.isGuest ? ' –  ' + t('coreshop_order_is_guest') : '';
             this.customerInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_customer') + ': ' + (this.order.customer ? this.order.customer.firstname + ' (' + this.order.customer.o_id + ')' : t('unknown')) + guestStr,
-                margin : '0 0 20 0',
-                border : true,
-                flex : 6,
-                iconCls : 'coreshop_icon_customer',
-                tools : [
+                title: t('coreshop_customer') + ': ' + (this.order.customer ? this.order.customer.firstname + ' (' + this.order.customer.o_id + ')' : t('unknown')) + guestStr,
+                margin: '0 0 20 0',
+                border: true,
+                flex: 6,
+                iconCls: 'coreshop_icon_customer',
+                tools: [
                     {
                         type: 'coreshop-open',
                         tooltip: t('open'),
-                        handler : function () {
-                            if(this.order.customer) {
+                        handler: function () {
+                            if (this.order.customer) {
                                 pimcore.helpers.openObject(this.order.customer.o_id);
                             }
                         }.bind(this)
                     }
                 ],
-                items : items
+                items: items
             });
         }
 
         return this.customerInfo;
     },
 
-    getAddressPanelForAddress : function (address, title, type) {
+    getAddressPanelForAddress: function (address, title, type) {
         var country = pimcore.globalmanager.get("coreshop_countries").getById(address.country);
 
         var panel = {
@@ -404,15 +403,15 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 dock: 'top',
                 items: [
                     {
-                        iconCls : 'pimcore_icon_edit',
-                        text : t('edit'),
-                        scale : 'small',
-                        handler : function () {
+                        iconCls: 'pimcore_icon_edit',
+                        text: t('edit'),
+                        scale: 'small',
+                        handler: function () {
                             Ext.Ajax.request({
                                 url: '/admin/coreshop/order/get-address-fields',
                                 params: {
                                     id: this.order.o_id,
-                                    type : type
+                                    type: type
                                 },
                                 success: function (response) {
                                     var res = Ext.decode(response.responseText);
@@ -430,7 +429,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     {
                         iconCls: 'coreshop_icon_open',
                         text: t('open'),
-                        handler : function () {
+                        handler: function () {
                             pimcore.helpers.openObject(address.o_id);
                         }.bind(this)
                     }
@@ -438,79 +437,77 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             }],
             title: title,
             layout: {
-                type : 'hbox',
-                align : 'stretch'
+                type: 'hbox',
+                align: 'stretch'
             },
-            height : 220,
+            height: 220,
             items: [
                 {
                     xtype: 'panel',
-                    bodyPadding : 5,
-                    html : address.formatted,
-                    flex : 1
+                    bodyPadding: 5,
+                    html: address.formatted,
+                    flex: 1
                 }
             ]
         };
 
-        if(pimcore.settings.google_maps_api_key) {
+        if (pimcore.settings.google_maps_api_key) {
             panel.items.push({
                 xtype: 'panel',
-                html : '<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x200&maptype=roadmap'
+                html: '<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=200x200&maptype=roadmap'
                 + '&center=' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + country.get("name")
                 + '&markers=color:blue|' + address.street + '+' + address.nr + '+' + address.zip + '+' + address.city + '+' + country.get("name")
                 + '&key=' + pimcore.settings.google_maps_api_key
                 + '" />',
-                flex : 1,
-                bodyPadding : 5
+                flex: 1,
+                bodyPadding: 5
             });
         }
 
         return panel;
     },
 
-    getCarrierDetails : function() {
+    getCarrierDetails: function () {
         if (!this.carrierDetails) {
-            var items = [
-
-            ];
+            var items = [];
 
             items.push({
-                xtype : 'panel',
-                layout : 'hbox',
-                items : [
+                xtype: 'panel',
+                layout: 'hbox',
+                items: [
                     {
-                        xtype : 'panel',
-                        flex : 1,
-                        items : [
+                        xtype: 'panel',
+                        flex: 1,
+                        items: [
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_currency'),
-                                html : '<span style="font-weight:bold;">'+t('coreshop_currency')+': </span>' + this.order.currency.name
+                                html: '<span style="font-weight:bold;">' + t('coreshop_currency') + ': </span>' + this.order.currency.name
                             },
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_weight'),
-                                html: '<span style="font-weight:bold;">'+t('coreshop_weight')+': </span>' + (this.order.shippingPayment.weight ? this.order.shippingPayment.weight : 0)
+                                html: '<span style="font-weight:bold;">' + t('coreshop_weight') + ': </span>' + (this.order.shippingPayment.weight ? this.order.shippingPayment.weight : 0)
                             }
                         ]
                     },
                     {
-                        xtype : 'panel',
-                        flex : 1,
-                        items : [
+                        xtype: 'panel',
+                        flex: 1,
+                        items: [
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_carrier'),
-                                html : '<span style="font-weight:bold;">'+t('coreshop_carrier')+': </span>' + this.order.shippingPayment.carrier
+                                html: '<span style="font-weight:bold;">' + t('coreshop_carrier') + ': </span>' + this.order.shippingPayment.carrier
                             },
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_carrier_price'),
-                                html : '<span style="font-weight:bold;">'+t('coreshop_carrier_price')+': </span>' + coreshop.util.format.currency(this.order.currency.symbol, this.order.shippingPayment.cost)
+                                html: '<span style="font-weight:bold;">' + t('coreshop_carrier_price') + ': </span>' + coreshop.util.format.currency(this.order.currency.symbol, this.order.shippingPayment.cost)
                             }
                         ]
                     }
@@ -518,30 +515,30 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             });
 
             this.carrierDetails = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_carrier') + '/' + t('coreshop_paymentProvider'),
-                margin : '0 20 20 0',
-                border : true,
-                flex : 6,
-                iconCls : 'coreshop_icon_carrier',
-                items : items
+                title: t('coreshop_carrier') + '/' + t('coreshop_paymentProvider'),
+                margin: '0 20 20 0',
+                border: true,
+                flex: 6,
+                iconCls: 'coreshop_icon_carrier',
+                items: items
             });
         }
 
         return this.carrierDetails;
     },
 
-    getShipmentDetails : function () {
+    getShipmentDetails: function () {
         if (!this.shippingInfo) {
             var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-                listeners : {
-                    edit : function (editor, context, eOpts) {
+                listeners: {
+                    edit: function (editor, context, eOpts) {
                         var trackingCode = context.record.get('trackingCode');
 
                         Ext.Ajax.request({
                             url: '/admin/coreshop/order-shipment/change-tracking-code',
                             params: {
-                                shipmentId : context.record.get("o_id"),
-                                trackingCode : trackingCode
+                                shipmentId: context.record.get("o_id"),
+                                trackingCode: trackingCode
                             },
                             success: function (response) {
                                 context.record.commit();
@@ -553,30 +550,30 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             });
 
             this.shipmentsStore = new Ext.data.JsonStore({
-                data : this.order.shipments
+                data: this.order.shipments
             });
 
             this.shippingInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_shipments'),
-                border : true,
-                margin : '0 20 20 0',
-                iconCls : 'coreshop_icon_orders_shipment',
-                items : [
+                title: t('coreshop_shipments'),
+                border: true,
+                margin: '0 20 20 0',
+                iconCls: 'coreshop_icon_orders_shipment',
+                items: [
                     {
-                        xtype : 'grid',
+                        xtype: 'grid',
                         margin: '0 0 15 0',
-                        cls : 'coreshop-detail-grid',
-                        store :  this.shipmentsStore,
+                        cls: 'coreshop-detail-grid',
+                        store: this.shipmentsStore,
                         plugins: [
                             cellEditing
                         ],
-                        columns : [
+                        columns: [
                             {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'carrier',
-                                text : t('coreshop_carrier'),
-                                flex : 3,
-                                renderer : function (value) {
+                                xtype: 'gridcolumn',
+                                dataIndex: 'carrier',
+                                text: t('coreshop_carrier'),
+                                flex: 3,
+                                renderer: function (value) {
                                     var store = pimcore.globalmanager.get('coreshop_carriers');
                                     var carrier = store.getById(value);
 
@@ -588,16 +585,16 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 }
                             },
                             {
-                                xtype : 'gridcolumn',
-                                flex : 1,
-                                dataIndex : 'weight',
-                                text : t('coreshop_weight')
+                                xtype: 'gridcolumn',
+                                flex: 1,
+                                dataIndex: 'weight',
+                                text: t('coreshop_weight')
                             },
                             {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'trackingCode',
-                                text : t('coreshop_tracking_code'),
-                                flex : 2,
+                                xtype: 'gridcolumn',
+                                dataIndex: 'trackingCode',
+                                text: t('coreshop_tracking_code'),
+                                flex: 2,
                                 field: {
                                     xtype: 'textfield'
                                 }
@@ -613,29 +610,29 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                     handler: function (grid, rowIndex, colIndex) {
                                         cellEditing.startEditByPosition({
                                             row: rowIndex,
-                                            column : colIndex - 1
+                                            column: colIndex - 1
                                         });
                                     }.bind(this)
                                 }]
                             },
                             {
                                 xtype: 'widgetcolumn',
-                                flex : 2,
+                                flex: 2,
                                 widget: {
                                     xtype: 'button',
-                                    margin : '5 0 5 0',
+                                    margin: '5 0 5 0',
                                     padding: '3 4 3 4',
                                     _btnText: '',
-                                    tooltip : t('open'),
+                                    tooltip: t('open'),
                                     defaultBindProperty: null,
-                                    handler: function(widgetColumn) {
+                                    handler: function (widgetColumn) {
                                         var record = widgetColumn.getWidgetRecord();
                                         pimcore.helpers.openObject(record.data.o_id, 'object');
                                     },
                                     listeners: {
-                                        beforerender: function(widgetColumn){
+                                        beforerender: function (widgetColumn) {
                                             var record = widgetColumn.getWidgetRecord();
-                                            widgetColumn.setText( Ext.String.format(t('coreshop_shipment_order'), record.data.shipmentNumber) );
+                                            widgetColumn.setText(Ext.String.format(t('coreshop_shipment_order'), record.data.shipmentNumber));
                                         }
                                     }
                                 }
@@ -643,11 +640,11 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         ]
                     }
                 ],
-                tools : [
+                tools: [
                     {
                         type: 'coreshop-add',
                         tooltip: t('add'),
-                        handler : function () {
+                        handler: function () {
                             this.createShipment();
                         }.bind(this)
                     }
@@ -658,36 +655,36 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.shippingInfo;
     },
 
-    getInvoiceDetails : function () {
+    getInvoiceDetails: function () {
         if (!this.invoiceDetails) {
             this.invoicesStore = new Ext.data.JsonStore({
-                data : this.order.invoices
+                data: this.order.invoices
             });
 
             this.invoiceDetails = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_invoices'),
-                border : true,
-                margin : '0 20 20 0',
-                iconCls : 'coreshop_icon_orders_invoice',
-                items : [
+                title: t('coreshop_invoices'),
+                border: true,
+                margin: '0 20 20 0',
+                iconCls: 'coreshop_icon_orders_invoice',
+                items: [
                     {
-                        xtype : 'grid',
+                        xtype: 'grid',
                         margin: '5 0 15 0',
-                        cls : 'coreshop-detail-grid',
-                        store : this.invoicesStore,
-                        columns : [
+                        cls: 'coreshop-detail-grid',
+                        store: this.invoicesStore,
+                        columns: [
                             {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'invoiceNumber',
-                                text : t('coreshop_invoice_number'),
-                                flex : 1
+                                xtype: 'gridcolumn',
+                                dataIndex: 'invoiceNumber',
+                                text: t('coreshop_invoice_number'),
+                                flex: 1
                             },
                             {
-                                xtype : 'gridcolumn',
-                                flex : 2,
-                                dataIndex : 'invoiceDate',
-                                text : t('coreshop_invoice_date'),
-                                renderer : function (val) {
+                                xtype: 'gridcolumn',
+                                flex: 2,
+                                dataIndex: 'invoiceDate',
+                                text: t('coreshop_invoice_date'),
+                                renderer: function (val) {
                                     if (val) {
                                         return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
                                     }
@@ -696,36 +693,36 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 }
                             },
                             {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'totalNet',
-                                text : t('coreshop_total_without_tax'),
-                                flex : 2,
-                                align : 'right',
+                                xtype: 'gridcolumn',
+                                dataIndex: 'totalNet',
+                                text: t('coreshop_total_without_tax'),
+                                flex: 2,
+                                align: 'right',
                                 renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                             },
                             {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'totalGross',
-                                text : t('coreshop_total'),
-                                flex : 2,
-                                align : 'right',
+                                xtype: 'gridcolumn',
+                                dataIndex: 'totalGross',
+                                text: t('coreshop_total'),
+                                flex: 2,
+                                align: 'right',
                                 renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                             },
                             {
                                 xtype: 'widgetcolumn',
-                                flex : 2,
+                                flex: 2,
                                 widget: {
                                     xtype: 'button',
-                                    margin : '5 0 5 0',
+                                    margin: '5 0 5 0',
                                     padding: '3 4 3 4',
                                     _btnText: '',
                                     defaultBindProperty: null,
-                                    handler: function(widgetColumn) {
+                                    handler: function (widgetColumn) {
                                         var record = widgetColumn.getWidgetRecord();
                                         pimcore.helpers.openObject(record.data.o_id, 'object');
                                     },
                                     listeners: {
-                                        beforerender: function(widgetColumn){
+                                        beforerender: function (widgetColumn) {
                                             var record = widgetColumn.getWidgetRecord();
                                             widgetColumn.setText(Ext.String.format(t('coreshop_invoice_order'), record.data.invoiceNumber));
                                         }
@@ -735,11 +732,11 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         ]
                     }
                 ],
-                tools : [
+                tools: [
                     {
                         type: 'coreshop-add',
                         tooltip: t('add'),
-                        handler : function () {
+                        handler: function () {
                             this.createInvoice();
                         }.bind(this)
                     }
@@ -750,32 +747,32 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.invoiceDetails;
     },
 
-    getMailDetails : function () {
+    getMailDetails: function () {
         if (!this.mailCorrespondence) {
             this.mailCorrespondenceStore = new Ext.data.JsonStore({
-                data : this.order.mailCorrespondence
+                data: this.order.mailCorrespondence
             });
 
             this.mailCorrespondence = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_mail_correspondence'),
-                border : true,
+                title: t('coreshop_mail_correspondence'),
+                border: true,
                 scrollable: 'y',
-                maxHeight:360,
-                margin : '0 20 20 0',
-                iconCls : 'coreshop_icon_mail',
-                items : [
+                maxHeight: 360,
+                margin: '0 20 20 0',
+                iconCls: 'coreshop_icon_mail',
+                items: [
                     {
-                        xtype : 'grid',
+                        xtype: 'grid',
                         margin: '5 0 15 0',
-                        cls : 'coreshop-detail-grid',
-                        store : this.mailCorrespondenceStore,
-                        columns : [
+                        cls: 'coreshop-detail-grid',
+                        store: this.mailCorrespondenceStore,
+                        columns: [
                             {
-                                xtype : 'gridcolumn',
-                                flex : 1,
-                                dataIndex : 'date',
-                                text : t('coreshop_date'),
-                                renderer : function (val) {
+                                xtype: 'gridcolumn',
+                                flex: 1,
+                                dataIndex: 'date',
+                                text: t('coreshop_date'),
+                                renderer: function (val) {
                                     if (val) {
                                         return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
                                     }
@@ -783,23 +780,23 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 }
                             },
                             {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'subject',
-                                text : t('coreshop_mail_correspondence_subject'),
-                                flex : 2
+                                xtype: 'gridcolumn',
+                                dataIndex: 'subject',
+                                text: t('coreshop_mail_correspondence_subject'),
+                                flex: 2
                             },
                             {
-                                xtype : 'gridcolumn',
-                                dataIndex : 'recipient',
-                                text : t('coreshop_mail_correspondence_recipient'),
-                                flex : 2
+                                xtype: 'gridcolumn',
+                                dataIndex: 'recipient',
+                                text: t('coreshop_mail_correspondence_recipient'),
+                                flex: 2
                             },
                             {
-                                xtype : 'gridcolumn',
-                                text : t('coreshop_messaging_message_read'),
-                                width : 100,
-                                renderer : function(value, metaData, rec) {
-                                    if(Ext.isDefined(rec.get('read'))) {
+                                xtype: 'gridcolumn',
+                                text: t('coreshop_messaging_message_read'),
+                                width: 100,
+                                renderer: function (value, metaData, rec) {
+                                    if (Ext.isDefined(rec.get('read'))) {
                                         return rec.get('read') ? t('yes') : t('no');
                                     }
 
@@ -814,29 +811,30 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 header: t('email_log_html'),
                                 items: [{
                                     tooltip: t('email_log_show_html_email'),
-                                    handler: function(grid, rowIndex){
+                                    handler: function (grid, rowIndex) {
                                         var rec = grid.getStore().getAt(rowIndex),
-                                            iFrameSettings = { width : 700, height : 500},
+                                            iFrameSettings = {width: 700, height: 500},
                                             iFrame = new Ext.Window(
                                                 {
                                                     title: t('email_log_iframe_title_html'),
                                                     width: iFrameSettings.width,
                                                     height: iFrameSettings.height,
                                                     layout: 'fit',
-                                                    items : [
+                                                    items: [
                                                         {
-                                                            xtype : 'box',
+                                                            xtype: 'box',
                                                             autoEl: {
                                                                 tag: 'iframe',
-                                                                src: '/admin/email/show-email-log/?id=' + rec.get('email-log') + '&type=html'}
+                                                                src: '/admin/email/show-email-log/?id=' + rec.get('email-log') + '&type=html'
+                                                            }
                                                         }
                                                     ]
                                                 }
                                             );
                                         iFrame.show();
                                     },
-                                    getClass: function(v, meta, rec) {
-                                        if(!Ext.isDefined(rec.get('email-log')) || rec.get('email-log') === null) {
+                                    getClass: function (v, meta, rec) {
+                                        if (!Ext.isDefined(rec.get('email-log')) || rec.get('email-log') === null) {
                                             return 'pimcore_hidden';
                                         }
 
@@ -852,7 +850,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 items: [{
                                     iconCls: 'pimcore_icon_open',
                                     tooltip: t('open'),
-                                    handler : function (grid, rowIndex) {
+                                    handler: function (grid, rowIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
                                         pimcore.helpers.openDocument(record.get('emailId'), 'email');
                                     }
@@ -864,17 +862,17 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 sortable: false,
                                 items: [{
                                     tooltip: t('open'),
-                                    handler: function(grid, rowIndex){
+                                    handler: function (grid, rowIndex) {
                                         var rec = grid.getStore().getAt(rowIndex);
                                         var threadId = rec.get("threadId");
 
-                                        if(threadId) {
+                                        if (threadId) {
                                             coreshop.helpers.openMessagingThread(threadId);
                                         }
 
                                     },
-                                    getClass: function(v, meta, rec) {
-                                        if(!Ext.isDefined(rec.get('threadId')) || rec.get('threadId') === null) {
+                                    getClass: function (v, meta, rec) {
+                                        if (!Ext.isDefined(rec.get('threadId')) || rec.get('threadId') === null) {
                                             return 'pimcore_hidden';
                                         }
 
@@ -891,7 +889,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.mailCorrespondence;
     },
 
-    updatePaymentInfoAlert : function () {
+    updatePaymentInfoAlert: function () {
         if (this.paymentInfoAlert) {
             if (this.order.totalPayed < this.order.total || this.order.totalPayed > this.order.total) {
                 this.paymentInfoAlert.update(t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(this.order.currency.symbol, this.order.totalPayed), coreshop.util.format.currency(this.order.currency.symbol, this.order.totalGross)));
@@ -903,17 +901,17 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         }
     },
 
-    getPaymentDetails : function () {
+    getPaymentDetails: function () {
         if (!this.paymentInfo) {
             this.paymentsStore = new Ext.data.JsonStore({
-                data : this.order.payments
+                data: this.order.payments
             });
 
             this.paymentInfoAlert = Ext.create('Ext.panel.Panel', {
-                xtype : 'panel',
-                cls : 'x-coreshop-alert',
-                bodyPadding : 5,
-                hidden : true
+                xtype: 'panel',
+                cls: 'x-coreshop-alert',
+                bodyPadding: 5,
+                hidden: true
             });
             this.updatePaymentInfoAlert();
 
@@ -922,17 +920,17 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             ];
 
             items.push({
-                xtype : 'grid',
+                xtype: 'grid',
                 margin: '0 0 15 0',
-                cls : 'coreshop-detail-grid',
-                store :  this.paymentsStore,
-                columns : [
+                cls: 'coreshop-detail-grid',
+                store: this.paymentsStore,
+                columns: [
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'datePayment',
-                        text : t('date'),
-                        flex : 1,
-                        renderer : function (val) {
+                        xtype: 'gridcolumn',
+                        dataIndex: 'datePayment',
+                        text: t('date'),
+                        flex: 1,
+                        renderer: function (val) {
                             if (val) {
                                 return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
                             }
@@ -941,17 +939,17 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         }
                     },
                     {
-                        xtype : 'gridcolumn',
-                        flex : 1,
-                        dataIndex : 'provider',
-                        text : t('coreshop_paymentProvider')
+                        xtype: 'gridcolumn',
+                        flex: 1,
+                        dataIndex: 'provider',
+                        text: t('coreshop_paymentProvider')
                     },
                     {
-                        xtype : 'gridcolumn',
-                        flex : 1,
-                        dataIndex : 'state',
-                        text : t('state'),
-                        renderer : function (val) {
+                        xtype: 'gridcolumn',
+                        flex: 1,
+                        dataIndex: 'state',
+                        text: t('state'),
+                        renderer: function (val) {
                             if (val) {
                                 return t('coreshop_payment_state_' + val);
                             }
@@ -960,33 +958,33 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         }
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'transactionIdentifier',
-                        text : t('coreshop_transactionNumber'),
-                        flex : 1,
-                        align : 'right'
+                        xtype: 'gridcolumn',
+                        dataIndex: 'transactionIdentifier',
+                        text: t('coreshop_transactionNumber'),
+                        flex: 1,
+                        align: 'right'
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'amount',
-                        text : t('coreshop_amount'),
-                        flex : 1,
+                        xtype: 'gridcolumn',
+                        dataIndex: 'amount',
+                        text: t('coreshop_amount'),
+                        flex: 1,
                         renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                     },
                     /*{
-                        menuDisabled: true,
-                        sortable: false,
-                        xtype: 'actioncolumn',
-                        width: 32,
-                        items: [{
-                            iconCls: 'pimcore_icon_object',
-                            tooltip: t('coreshop_show_transaction_notes'),
-                            handler : function (grid, rowIndex) {
-                                var record = grid.getStore().getAt(rowIndex);
-                                this.showPaymentTransactions(record.get('transactionNotes'));
-                            }.bind(this)
-                        }]
-                    },*/
+                     menuDisabled: true,
+                     sortable: false,
+                     xtype: 'actioncolumn',
+                     width: 32,
+                     items: [{
+                     iconCls: 'pimcore_icon_object',
+                     tooltip: t('coreshop_show_transaction_notes'),
+                     handler : function (grid, rowIndex) {
+                     var record = grid.getStore().getAt(rowIndex);
+                     this.showPaymentTransactions(record.get('transactionNotes'));
+                     }.bind(this)
+                     }]
+                     },*/
                     {
                         menuDisabled: true,
                         sortable: false,
@@ -995,7 +993,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         items: [{
                             iconCls: 'pimcore_icon_open',
                             tooltip: t('open'),
-                            handler : function (grid, rowIndex) {
+                            handler: function (grid, rowIndex) {
                                 pimcore.plugin.coreshop.orders.editPayment.showWindow(grid.getStore().getAt(rowIndex), function (result) {
                                     if (result.success) {
                                         this.reload();
@@ -1008,15 +1006,15 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             });
 
             this.paymentInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_payments'),
-                border : true,
-                margin : '0 20 20 0',
-                iconCls : 'coreshop_icon_payment',
-                tools : [
+                title: t('coreshop_payments'),
+                border: true,
+                margin: '0 20 20 0',
+                iconCls: 'coreshop_icon_payment',
+                tools: [
                     {
                         type: 'coreshop-add',
                         tooltip: t('add'),
-                        handler : function () {
+                        handler: function () {
                             pimcore.plugin.coreshop.orders.createPayment.showWindow(this.order.o_id, this.order, function (result) {
                                 if (result.success) {
                                     this.reload();
@@ -1025,24 +1023,24 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         }.bind(this)
                     }
                 ],
-                items : items
+                items: items
             });
         }
 
         return this.paymentInfo;
     },
 
-    getMessagesInfo : function () {
+    getMessagesInfo: function () {
         if (!this.messagesInfo) {
             this.messagesInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_messaging_messages'),
-                border : true,
-                margin : '0 0 20 0',
-                iconCls : 'coreshop_icon_messaging',
-                items : [
+                title: t('coreshop_messaging_messages'),
+                border: true,
+                margin: '0 0 20 0',
+                iconCls: 'coreshop_icon_messaging',
+                items: [
                     {
-                        xtype : 'form',
-                        bodyStyle:'padding:20px 5px 20px 5px;',
+                        xtype: 'form',
+                        bodyStyle: 'padding:20px 5px 20px 5px;',
                         border: false,
                         autoScroll: true,
                         forceLayout: true,
@@ -1062,9 +1060,9 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                         formValues['o_id'] = this.order.o_id;
 
                                         Ext.Ajax.request({
-                                            url : '/admin/coreshop/order/send-message',
-                                            method : 'post',
-                                            params : formValues,
+                                            url: '/admin/coreshop/order/send-message',
+                                            method: 'post',
+                                            params: formValues,
                                             callback: function (request, success, response) {
                                                 try {
                                                     response = Ext.decode(response.responseText);
@@ -1087,13 +1085,13 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                                 iconCls: 'pimcore_icon_apply'
                             }
                         ],
-                        items : [
+                        items: [
                             {
                                 xtype: 'textarea',
                                 name: 'message',
                                 style: "font-family: 'Courier New', Courier, monospace;",
-                                width : '100%',
-                                height : '100%'
+                                width: '100%',
+                                height: '100%'
                             }
                         ]
                     }
@@ -1104,7 +1102,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return this.messagesInfo;
     },
 
-    getPluginInfo : function () {
+    getPluginInfo: function () {
         var pluginInfo = coreshop.plugin.broker.fireEvent('orderDetail', this);
 
         if (pluginInfo.length > 0) {
@@ -1124,76 +1122,76 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         return null;
     },
 
-    getPaymentPluginInfo : function () {
+    getPaymentPluginInfo: function () {
         /*var pluginInfo = coreshop.plugin.broker.fireEvent('orderDetailPayment' + this.order.paymentProvider.ucfirst(), this);
 
-        if (pluginInfo) {
-            return {
-                xtype: 'container',
-                layout: 'hbox',
-                margin: '0 0 20 0',
-                border: 0,
-                style: {
-                    border: 0
-                },
-                items: pluginInfo
-            };
-        }*/
+         if (pluginInfo) {
+         return {
+         xtype: 'container',
+         layout: 'hbox',
+         margin: '0 0 20 0',
+         border: 0,
+         style: {
+         border: 0
+         },
+         items: pluginInfo
+         };
+         }*/
 
         return null;
     },
 
-    getVisitorInfo : function() {
+    getVisitorInfo: function () {
         /*if(this.order.visitor) {
-            if (!this.visitorInfo) {
-                var visitor = this.order.visitor;
+         if (!this.visitorInfo) {
+         var visitor = this.order.visitor;
 
-                this.visitorInfo = Ext.create('Ext.panel.Panel', {
-                    title : t('coreshop_visitor'),
-                    border : true,
-                    margin : '0 20 20 0',
-                    iconCls : 'coreshop_icon_visitor',
-                    items : [
-                        {
-                            xtype: 'panel',
-                            bodyPadding : 5,
-                            html :
-                            ('<strong>' + t('coreshop_visitor_ip') + '</strong>: ' + coreshop.helpers.long2ip(visitor.ip))  + '<br/>' +
-                            ('<strong>' + t('coreshop_visitor_referrer') + '</strong>: ' + visitor.referrer) + '<br/>' +
-                            ('<strong>' + t('coreshop_visitor_date')+ '</strong>: ' + Ext.Date.format(new Date(visitor.creationDate * 1000), t('coreshop_date_time_format'))) + '<br/>',
-                            flex : 1
-                        }
-                    ]
-                });
-            }
+         this.visitorInfo = Ext.create('Ext.panel.Panel', {
+         title : t('coreshop_visitor'),
+         border : true,
+         margin : '0 20 20 0',
+         iconCls : 'coreshop_icon_visitor',
+         items : [
+         {
+         xtype: 'panel',
+         bodyPadding : 5,
+         html :
+         ('<strong>' + t('coreshop_visitor_ip') + '</strong>: ' + coreshop.helpers.long2ip(visitor.ip))  + '<br/>' +
+         ('<strong>' + t('coreshop_visitor_referrer') + '</strong>: ' + visitor.referrer) + '<br/>' +
+         ('<strong>' + t('coreshop_visitor_date')+ '</strong>: ' + Ext.Date.format(new Date(visitor.creationDate * 1000), t('coreshop_date_time_format'))) + '<br/>',
+         flex : 1
+         }
+         ]
+         });
+         }
 
-            return this.visitorInfo;
-        }*/
+         return this.visitorInfo;
+         }*/
 
         return false;
     },
 
-    getDetailInfo : function () {
+    getDetailInfo: function () {
         if (!this.detailsInfo) {
             this.detailsStore = new Ext.data.JsonStore({
-                data : this.order.details
+                data: this.order.details
             });
 
             this.summaryStore = new Ext.data.JsonStore({
-                data : this.order.summary
+                data: this.order.summary
             });
 
             var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-                listeners : {
-                    edit : function (editor, context, eOpts) {
+                listeners: {
+                    edit: function (editor, context, eOpts) {
                         if (context.originalValue !== context.value) {
                             Ext.Ajax.request({
                                 url: '/admin/coreshop/order/change-order-item',
                                 params: {
                                     id: this.order.o_id,
-                                    orderItemId : context.record.get('o_id'),
-                                    amount : context.record.get('amount'),
-                                    price : context.record.get('price_without_tax')
+                                    orderItemId: context.record.get('o_id'),
+                                    amount: context.record.get('amount'),
+                                    price: context.record.get('price_without_tax')
                                 },
                                 success: function (response) {
                                     var res = Ext.decode(response.responseText);
@@ -1224,8 +1222,8 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             var actions = [
                 {
                     iconCls: 'pimcore_icon_open',
-                    tooltip : t('open'),
-                    handler : function (grid, rowIndex) {
+                    tooltip: t('open'),
+                    handler: function (grid, rowIndex) {
                         var record = grid.getStore().getAt(rowIndex);
 
                         pimcore.helpers.openObject(record.get('o_id'));
@@ -1233,7 +1231,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                 }
             ];
 
-            if(this.order.editable) {
+            if (this.order.editable) {
                 plugins.push(cellEditing);
                 actions.push({
                     iconCls: 'pimcore_icon_edit',
@@ -1241,70 +1239,70 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     handler: function (grid, rowIndex, colIndex) {
                         cellEditing.startEditByPosition({
                             row: rowIndex,
-                            column : 4
+                            column: 4
                         });
                     }.bind(this)
                 });
             }
 
             var itemsGrid = {
-                xtype : 'grid',
+                xtype: 'grid',
                 margin: '0 0 15 0',
-                cls : 'coreshop-detail-grid',
-                store :  this.detailsStore,
+                cls: 'coreshop-detail-grid',
+                store: this.detailsStore,
                 plugins: plugins,
-                columns : [
+                columns: [
                     {
-                        xtype : 'gridcolumn',
-                        flex : 1,
-                        dataIndex : 'product_name',
-                        text : t('coreshop_product')
+                        xtype: 'gridcolumn',
+                        flex: 1,
+                        dataIndex: 'product_name',
+                        text: t('coreshop_product')
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'wholesale_price',
-                        text : t('coreshop_wholesale_price'),
-                        width : 150,
-                        align : 'right',
+                        xtype: 'gridcolumn',
+                        dataIndex: 'wholesale_price',
+                        text: t('coreshop_wholesale_price'),
+                        width: 150,
+                        align: 'right',
                         renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'price_without_tax',
-                        text : t('coreshop_price_without_tax'),
-                        width : 150,
-                        align : 'right',
+                        xtype: 'gridcolumn',
+                        dataIndex: 'price_without_tax',
+                        text: t('coreshop_price_without_tax'),
+                        width: 150,
+                        align: 'right',
                         renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol),
-                        field : {
+                        field: {
                             xtype: 'numberfield',
-                            decimalPrecision : 4
+                            decimalPrecision: 4
                         }
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'price',
-                        text : t('coreshop_price_with_tax'),
-                        width : 150,
-                        align : 'right',
+                        xtype: 'gridcolumn',
+                        dataIndex: 'price',
+                        text: t('coreshop_price_with_tax'),
+                        width: 150,
+                        align: 'right',
                         renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'amount',
-                        text : t('coreshop_amount'),
-                        width : 150,
-                        align : 'right',
-                        field : {
+                        xtype: 'gridcolumn',
+                        dataIndex: 'amount',
+                        text: t('coreshop_amount'),
+                        width: 150,
+                        align: 'right',
+                        field: {
                             xtype: 'numberfield',
-                            decimalPrecision : 0
+                            decimalPrecision: 0
                         }
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'total',
-                        text : t('coreshop_total'),
-                        width : 150,
-                        align : 'right',
+                        xtype: 'gridcolumn',
+                        dataIndex: 'total',
+                        text: t('coreshop_total'),
+                        width: 150,
+                        align: 'right',
                         renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
                     },
                     {
@@ -1318,19 +1316,19 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             };
 
             var summaryGrid = {
-                xtype : 'grid',
+                xtype: 'grid',
                 margin: '0 0 15 0',
-                cls : 'coreshop-detail-grid',
-                store :  this.summaryStore,
-                hideHeaders : true,
-                columns : [
+                cls: 'coreshop-detail-grid',
+                store: this.summaryStore,
+                hideHeaders: true,
+                columns: [
                     {
-                        xtype : 'gridcolumn',
-                        flex : 1,
+                        xtype: 'gridcolumn',
+                        flex: 1,
                         align: 'right',
-                        dataIndex : 'key',
-                        renderer : function (value, metaData, record) {
-                            if(record.get("text")) {
+                        dataIndex: 'key',
+                        renderer: function (value, metaData, record) {
+                            if (record.get("text")) {
                                 return '<span style="font-weight:bold">' + record.get("text") + '</span>';
                             }
 
@@ -1338,11 +1336,11 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         }
                     },
                     {
-                        xtype : 'gridcolumn',
-                        dataIndex : 'value',
-                        width : 150,
-                        align : 'right',
-                        renderer : function (value, metaData, record) {
+                        xtype: 'gridcolumn',
+                        dataIndex: 'value',
+                        width: 150,
+                        align: 'right',
+                        renderer: function (value, metaData, record) {
                             return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
                         }.bind(this)
                     }
@@ -1354,29 +1352,29 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             if (this.order.priceRule) {
 
                 var priceRuleStore = new Ext.data.JsonStore({
-                    data : this.order.priceRule
+                    data: this.order.priceRule
                 });
 
-                var priceRuleItem =  {
-                    xtype : 'grid',
+                var priceRuleItem = {
+                    xtype: 'grid',
                     margin: '0 0 15 0',
-                    cls : 'coreshop-detail-grid',
-                    store :  priceRuleStore,
-                    hideHeaders : true,
-                    title : t('coreshop_pricerules'),
-                    columns : [
+                    cls: 'coreshop-detail-grid',
+                    store: priceRuleStore,
+                    hideHeaders: true,
+                    title: t('coreshop_pricerules'),
+                    columns: [
                         {
-                            xtype : 'gridcolumn',
-                            flex : 1,
+                            xtype: 'gridcolumn',
+                            flex: 1,
                             align: 'right',
-                            dataIndex : 'name'
+                            dataIndex: 'name'
                         },
                         {
-                            xtype : 'gridcolumn',
-                            dataIndex : 'discount',
-                            width : 150,
-                            align : 'right',
-                            renderer : function (value, metaData, record) {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'discount',
+                            width: 150,
+                            align: 'right',
+                            renderer: function (value, metaData, record) {
                                 return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
                             }.bind(this)
                         }
@@ -1387,18 +1385,18 @@ pimcore.plugin.coreshop.orders.order = Class.create({
             }
 
             this.detailsInfo = Ext.create('Ext.panel.Panel', {
-                title : t('coreshop_products'),
-                border : true,
-                margin : '0 0 20 0',
-                iconCls : 'coreshop_icon_product',
-                items : detailItems
+                title: t('coreshop_products'),
+                border: true,
+                margin: '0 0 20 0',
+                iconCls: 'coreshop_icon_product',
+                items: detailItems
             });
         }
 
         return this.detailsInfo;
     },
 
-    setWorkflowInfo : function() {
+    setWorkflowInfo: function () {
 
         var buttons = [],
             toolbar;
@@ -1406,7 +1404,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         //add reload function for worfklow manager!
         this.objectData.reload = this.reload.bind(this);
 
-        if( this.objectData.workflowManagement) {
+        if (this.objectData.workflowManagement) {
             this.objectData.data.workflowManagement = this.objectData.workflowManagement;
         }
 
@@ -1421,40 +1419,40 @@ pimcore.plugin.coreshop.orders.order = Class.create({
         this.orderInfo.insert(0, toolbar);
     },
 
-    createInvoice : function() {
-        new pimcore.plugin.coreshop.orders.invoice(this.order, function() {
+    createInvoice: function () {
+        new pimcore.plugin.coreshop.orders.invoice(this.order, function () {
             this.reload();
         }.bind(this));
     },
 
-    createShipment : function() {
-        new pimcore.plugin.coreshop.orders.shipment(this.order, function() {
+    createShipment: function () {
+        new pimcore.plugin.coreshop.orders.shipment(this.order, function () {
             this.reload();
         }.bind(this));
     },
 
-    showPaymentTransactions: function(paymentTransactions) {
+    showPaymentTransactions: function (paymentTransactions) {
         if (paymentTransactions.length === 0) {
             Ext.Msg.alert(t('error'), t('coreshop_no_payment_transactions'));
             return false;
         }
 
         var transactionStore = new Ext.data.JsonStore({
-            data : paymentTransactions
+            data: paymentTransactions
         });
 
         var itemsGrid = {
-            xtype : 'grid',
+            xtype: 'grid',
             margin: '0 0 15 0',
-            cls : 'coreshop-detail-grid',
-            store : transactionStore,
-            columns : [
+            cls: 'coreshop-detail-grid',
+            store: transactionStore,
+            columns: [
                 {
-                    xtype : 'gridcolumn',
-                    flex : 1,
-                    dataIndex : 'date',
-                    text : t('date'),
-                    renderer : function (val) {
+                    xtype: 'gridcolumn',
+                    flex: 1,
+                    dataIndex: 'date',
+                    text: t('date'),
+                    renderer: function (val) {
                         if (val) {
                             return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
                         }
@@ -1462,28 +1460,28 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                     }
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'title',
-                    text : t('coreshop_transaction_id'),
+                    xtype: 'gridcolumn',
+                    dataIndex: 'title',
+                    text: t('coreshop_transaction_id'),
                     flex: 1
                 },
                 {
-                    xtype : 'gridcolumn',
-                    dataIndex : 'description',
-                    text : t('description'),
+                    xtype: 'gridcolumn',
+                    dataIndex: 'description',
+                    text: t('description'),
                     flex: 1
                 }
             ]
         };
 
         var window = new Ext.window.Window({
-            width : 600,
-            height : 300,
-            resizeable : false,
-            layout : 'fit',
-            items : [{
-                xtype : 'form',
-                bodyStyle:'padding:20px 5px 20px 5px;',
+            width: 600,
+            height: 300,
+            resizeable: false,
+            layout: 'fit',
+            items: [{
+                xtype: 'form',
+                bodyStyle: 'padding:20px 5px 20px 5px;',
                 border: false,
                 autoScroll: true,
                 forceLayout: true,
@@ -1501,7 +1499,7 @@ pimcore.plugin.coreshop.orders.order = Class.create({
                         iconCls: 'pimcore_icon_accept'
                     }
                 ],
-                items : itemsGrid
+                items: itemsGrid
             }]
         });
 

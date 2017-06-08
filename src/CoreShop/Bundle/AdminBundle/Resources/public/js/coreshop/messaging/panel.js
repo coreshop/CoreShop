@@ -8,16 +8,16 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.messaging.abstractItem');
 pimcore.plugin.coreshop.messaging.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
-    getItemClass : function () {
+    getItemClass: function () {
         return pimcore.plugin.coreshop.messaging[this.type].item;
     },
 
-    getTitle : function () {
+    getTitle: function () {
         return t('coreshop_messaging_' + this.type);
     }
 });

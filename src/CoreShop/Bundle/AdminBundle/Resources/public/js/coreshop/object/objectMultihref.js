@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.object.objectMultihref');
 pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
@@ -26,7 +26,7 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
 
         this.store = new Ext.data.ArrayStore({
             listeners: {
-                add:function () {
+                add: function () {
                     this.dataChanged = true;
                 }.bind(this),
                 remove: function () {
@@ -58,12 +58,12 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
             {
                 header: 'ID',
                 dataIndex: 'id',
-                width : 50
+                width: 50
             },
             {
                 header: t("reference"),
                 dataIndex: 'path',
-                flex : 1,
+                flex: 1,
                 sortable: false
             },
             {
@@ -148,7 +148,7 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
 
                 var dropTargetEl = this.component.getEl();
                 var gridDropTarget = new Ext.dd.DropZone(dropTargetEl, {
-                    ddGroup    : 'element',
+                    ddGroup: 'element',
                     getTargetFromEvent: function (e) {
                         return this.component.getEl().dom;
 
@@ -166,7 +166,7 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
                         }
 
                     }.bind(this),
-                    onNodeDrop : function (target, ddSource, e, data) {
+                    onNodeDrop: function (target, ddSource, e, data) {
                         var record = data.records[0];
                         var data = record.data;
                         var fromTree = this.isFromTree(ddSource);
@@ -246,15 +246,15 @@ pimcore.plugin.coreshop.object.objectMultihref = Class.create(pimcore.object.tag
         return tmData;
     },
 
-    requestNicePathData : function(targets) {
+    requestNicePathData: function (targets) {
         var elementData = [];
 
-        targets.each(function(record){
+        targets.each(function (record) {
             elementData.push({
-                type : 'object',
-                id : record.get("id")
+                type: 'object',
+                id: record.get("id")
             });
-        },this);
+        }, this);
 
         coreshop.helpers.requestNicePathData(elementData, pimcore.helpers.getNicePathHandlerStore.bind(this, this.store, {}, this.component.getView()));
     }

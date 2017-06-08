@@ -8,45 +8,45 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.panel');
 
 pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
 
     layoutId: 'coreshop_indexes_panel',
-    storeId : 'coreshop_indexes',
-    iconCls : 'coreshop_icon_indexes',
-    type : 'indexes',
+    storeId: 'coreshop_indexes',
+    iconCls: 'coreshop_icon_indexes',
+    type: 'indexes',
 
-    url : {
-        add : '/admin/coreshop/indices/add',
-        delete : '/admin/coreshop/indices/delete',
-        get : '/admin/coreshop/indices/get',
-        list : '/admin/coreshop/indices/list',
+    url: {
+        add: '/admin/coreshop/indices/add',
+        delete: '/admin/coreshop/indices/delete',
+        get: '/admin/coreshop/indices/get',
+        list: '/admin/coreshop/indices/list',
         config: '/admin/coreshop/indices/get-config',
-        types : '/admin/coreshop/indices/get-types'
+        types: '/admin/coreshop/indices/get-types'
     },
 
-    typesStore : null,
+    typesStore: null,
 
     /**
      * constructor
      */
     initialize: function () {
         var proxy = new Ext.data.HttpProxy({
-            url : this.url.types
+            url: this.url.types
         });
 
         var reader = new Ext.data.JsonReader({}, [
-            { name:'name' }
+            {name: 'name'}
         ]);
 
         this.typesStore = new Ext.data.Store({
-            restful:    false,
-            proxy:      proxy,
-            reader:     reader,
-            autoload:   true
+            restful: false,
+            proxy: proxy,
+            reader: reader,
+            autoload: true
         });
         this.typesStore.load();
 
@@ -55,17 +55,17 @@ pimcore.plugin.coreshop.indexes.panel = Class.create(pimcore.plugin.coreshop.abs
         this.panels = [];
     },
 
-    getConfig : function() {
+    getConfig: function () {
         this.getterStore = new Ext.data.JsonStore({
-            data : []
+            data: []
         });
 
         this.interpreterStore = new Ext.data.JsonStore({
-            data : []
+            data: []
         });
 
         this.fieldTypeStore = new Ext.data.JsonStore({
-            data : []
+            data: []
         });
 
         pimcore.globalmanager.add('coreshop_index_getters', this.getterStore);

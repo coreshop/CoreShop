@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.currencies');
 
 pimcore.plugin.coreshop.rules.conditions.currencies = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'currencies',
+    type: 'currencies',
 
-    getForm : function () {
+    getForm: function () {
         var me = this;
         var store = pimcore.globalmanager.get('coreshop_currencies');
 
@@ -24,16 +24,16 @@ pimcore.plugin.coreshop.rules.conditions.currencies = Class.create(pimcore.plugi
             fieldLabel: t('coreshop_condition_currencies'),
             typeAhead: true,
             listWidth: 100,
-            width : 500,
+            width: 500,
             store: store,
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
-            multiselect : true,
+            multiselect: true,
             triggerAction: 'all',
-            name:'currencies',
-            maxHeight : 400,
-            delimiter : false,
+            name: 'currencies',
+            maxHeight: 400,
+            delimiter: false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
@@ -52,7 +52,7 @@ pimcore.plugin.coreshop.rules.conditions.currencies = Class.create(pimcore.plugi
         currencies = new Ext.ux.form.MultiSelect(currencies);
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 currencies
             ]
         });

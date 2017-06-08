@@ -133,8 +133,7 @@ pimcore.plugin.coreshop.taxrulegroups.item = Class.create(pimcore.plugin.coresho
                 url: '/admin/coreshop/countries/list'
             }),
             autoLoad: true,
-            reader: new Ext.data.JsonReader({
-            }, [
+            reader: new Ext.data.JsonReader({}, [
                 {name: 'id'},
                 {name: 'text'}
             ]),

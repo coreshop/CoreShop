@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.stores.panel');
 pimcore.plugin.coreshop.stores.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
@@ -17,14 +17,14 @@ pimcore.plugin.coreshop.stores.panel = Class.create(pimcore.plugin.coreshop.abst
      * @var string
      */
     layoutId: 'coreshop_stores_panel',
-    storeId : 'coreshop_stores',
-    iconCls : 'coreshop_icon_store',
-    type : 'stores',
+    storeId: 'coreshop_stores',
+    iconCls: 'coreshop_icon_store',
+    type: 'stores',
 
-    url : {
-        add : '/admin/coreshop/stores/add',
-        delete : '/admin/coreshop/stores/delete',
-        get : '/admin/coreshop/stores/get',
-        list : '/admin/coreshop/stores/list'
+    url: {
+        add: '/admin/coreshop/stores/add',
+        delete: '/admin/coreshop/stores/delete',
+        get: '/admin/coreshop/stores/get',
+        list: '/admin/coreshop/stores/list'
     }
 });

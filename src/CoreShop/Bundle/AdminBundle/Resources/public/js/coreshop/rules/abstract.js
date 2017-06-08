@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.abstract');
 
@@ -19,33 +19,33 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
      */
     parent: {},
 
-    data : {},
+    data: {},
 
-    type : 'abstract',
-    elementType : 'abstract',
+    type: 'abstract',
+    elementType: 'abstract',
 
-    form : null,
+    form: null,
 
-    initialize : function (parent, type, data) {
+    initialize: function (parent, type, data) {
         this.parent = parent;
         this.type = type;
         this.id = data && data.hasOwnProperty('id') ? data.id : data;
         this.data = data && data.hasOwnProperty('configuration') ? data.configuration : {};
     },
 
-    getLayout : function () {
+    getLayout: function () {
         var myId = Ext.id();
 
         this.layout = new Ext.panel.Panel({
-            xparent : this,
-            id : myId,
+            xparent: this,
+            id: myId,
             style: 'margin: 10px 0 0 0',
-            border : true,
-            scrollable : true,
-            bodyPadding : 10,
-            maxHeight : 500,
-            tbar : this.getTopBar(t('coreshop_' + this.elementType +  '_' + this.type), myId, this.parent, this.data, this.getTopBarIconClass()),
-            items : [
+            border: true,
+            scrollable: true,
+            bodyPadding: 10,
+            maxHeight: 500,
+            tbar: this.getTopBar(t('coreshop_' + this.elementType + '_' + this.type), myId, this.parent, this.data, this.getTopBarIconClass()),
+            items: [
                 this.getForm()
             ]
         });
@@ -53,11 +53,11 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
         return this.layout;
     },
 
-    getTopBarIconClass: function() {
+    getTopBarIconClass: function () {
         return 'coreshop_rule_icon_' + this.elementType + '_' + this.type;
     },
 
-    getForm : function() {
+    getForm: function () {
         return {};
     },
 
@@ -98,7 +98,7 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
         var items = [{
             iconCls: iconCls,
             disabled: true,
-            xtype : 'button'
+            xtype: 'button'
         }, {
             xtype: 'tbtext',
             text: '<b>' + name + '</b>'
@@ -129,7 +129,7 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
 
                 pimcore.layout.refresh();
             }.bind(window, index, parent, container, namespace),
-            xtype : 'button'
+            xtype: 'button'
         }, {
             iconCls: 'pimcore_icon_down',
             handler: function (blockId, parent, container, namespace) {
@@ -154,11 +154,11 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
                 pimcore.layout.refresh();
 
             }.bind(window, index, parent, container, namespace),
-            xtype : 'button'
+            xtype: 'button'
         }];
 
 
-        if(Ext.isFunction(this.getTopBarItems)) {
+        if (Ext.isFunction(this.getTopBarItems)) {
             items.push.apply(items, this.getTopBarItems());
         }
 
@@ -168,7 +168,7 @@ pimcore.plugin.coreshop.rules.abstract = Class.create({
                 handler: function (index, parent, container, namespace) {
                     container.remove(Ext.getCmp(index));
                 }.bind(window, index, parent, container, namespace),
-                xtype : 'button'
+                xtype: 'button'
             }
         ]);
 

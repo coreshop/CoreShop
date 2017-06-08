@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.products');
 pimcore.plugin.coreshop.report.reports.products = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/coreshop/reports/get-products-report',
+    url: '/admin/coreshop/reports/get-products-report',
 
     getName: function () {
         return t('coreshop_report_products');
@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.report.reports.products = Class.create(pimcore.plugin.co
         return 'coreshop_icon_product';
     },
 
-    getStoreFields : function() {
+    getStoreFields: function () {
         return [
             {name: 'sales', type: 'number'},
             {name: 'salesPrice', type: 'number'},
@@ -32,49 +32,49 @@ pimcore.plugin.coreshop.report.reports.products = Class.create(pimcore.plugin.co
         ];
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
-                xtype : 'grid',
+                xtype: 'grid',
                 store: this.getStore(),
-                columns : [
+                columns: [
                     {
                         text: t('name'),
-                        dataIndex : 'name',
-                        flex : 1
+                        dataIndex: 'name',
+                        flex: 1
                     },
                     {
                         text: t('coreshop_report_products_count'),
-                        dataIndex : 'count',
-                        width : 50,
-                        align : 'right'
+                        dataIndex: 'count',
+                        width: 50,
+                        align: 'right'
                     },
                     {
                         text: t('coreshop_report_products_salesPrice'),
-                        dataIndex : 'salesPrice',
-                        width : 100,
-                        align : 'right',
-                        renderer : function(value, metadata, record) {
+                        dataIndex: 'salesPrice',
+                        width: 100,
+                        align: 'right',
+                        renderer: function (value, metadata, record) {
                             return record.get('salesPriceFormatted');
                         }
                     },
                     {
                         text: t('coreshop_report_products_sales'),
-                        dataIndex : 'sales',
-                        width : 100,
-                        align : 'right',
-                        renderer : function(value, metadata, record) {
+                        dataIndex: 'sales',
+                        width: 100,
+                        align: 'right',
+                        renderer: function (value, metadata, record) {
                             return record.get('salesFormatted');
                         }
                     },
                     {
                         text: t('coreshop_report_products_profit'),
-                        dataIndex : 'profit',
-                        width : 100,
-                        align : 'right',
-                        renderer : function(value, metadata, record) {
+                        dataIndex: 'profit',
+                        width: 100,
+                        align: 'right',
+                        renderer: function (value, metadata, record) {
                             return record.get('profitFormatted');
                         }
                     }

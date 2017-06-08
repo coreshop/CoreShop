@@ -8,33 +8,33 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.totalPerCustomer');
 
 pimcore.plugin.coreshop.rules.conditions.totalPerCustomer = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'totalPerCustomer',
+    type: 'totalPerCustomer',
 
-    getForm : function () {
+    getForm: function () {
 
-        var totalValue  = 0;
+        var totalValue = 0;
 
         if (this.data) {
             totalValue = this.data.total;
         }
 
         var total = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_totalPerCustomer_total'),
-            name:'total',
-            value : totalValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_totalPerCustomer_total'),
+            name: 'total',
+            value: totalValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 total
             ]
         });

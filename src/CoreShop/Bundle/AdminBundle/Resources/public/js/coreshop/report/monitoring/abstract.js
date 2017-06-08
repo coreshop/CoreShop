@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.abstract');
 pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '',
+    url: '',
 
     getName: function () {
         return 'coreshop_monitoring';
@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin
         return 'coreshop_icon_monitoring';
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return false;
     },
 
@@ -35,7 +35,7 @@ pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin
                 layout: 'fit',
                 border: false,
                 items: [],
-                dockedItems : {
+                dockedItems: {
                     xtype: 'toolbar',
                     dock: 'top',
                     items: this.getFilterFields()
@@ -54,21 +54,19 @@ pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin
         return this.panel;
     },
 
-    getFilterFields : function () {
-        return [
-
-        ];
+    getFilterFields: function () {
+        return [];
     },
 
-    getStore : function () {
+    getStore: function () {
         if (!this.store) {
             this.store = new Ext.data.Store({
                 autoDestroy: true,
                 proxy: {
                     type: 'ajax',
                     url: this.url,
-                    actionMethods : {
-                        read : 'POST'
+                    actionMethods: {
+                        read: 'POST'
                     },
                     reader: {
                         type: 'json',
@@ -82,15 +80,13 @@ pimcore.plugin.coreshop.report.monitoring.abstract = Class.create(pimcore.plugin
         return this.store;
     },
 
-    filter : function () {
+    filter: function () {
         this.getStore().load({
-            params : this.getFilterParams()
+            params: this.getFilterParams()
         });
     },
 
-    getFilterParams : function () {
-        return {
-
-        };
+    getFilterParams: function () {
+        return {};
     }
 });

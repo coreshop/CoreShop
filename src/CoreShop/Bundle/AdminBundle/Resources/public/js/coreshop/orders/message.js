@@ -8,31 +8,31 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.message');
 pimcore.plugin.coreshop.orders.message = {
 
-    showWindow : function (tab) {
+    showWindow: function (tab) {
         var orderId = tab.id;
 
         var message = new Ext.form.TextArea({
             xtype: 'textarea',
             name: 'message',
             style: "font-family: 'Courier New', Courier, monospace;",
-            width : '100%',
-            height : '100%'
+            width: '100%',
+            height: '100%'
         });
 
         var window = new Ext.window.Window({
-            width : 380,
-            height : 300,
-            resizeable : false,
-            layout : 'fit',
-            title : t('coreshop_order_new_message'),
-            items : [{
-                xtype : 'form',
-                bodyStyle:'padding:20px 5px 20px 5px;',
+            width: 380,
+            height: 300,
+            resizeable: false,
+            layout: 'fit',
+            title: t('coreshop_order_new_message'),
+            items: [{
+                xtype: 'form',
+                bodyStyle: 'padding:20px 5px 20px 5px;',
                 border: false,
                 autoScroll: true,
                 forceLayout: true,
@@ -51,9 +51,9 @@ pimcore.plugin.coreshop.orders.message = {
                                 formValues['o_id'] = orderId;
 
                                 Ext.Ajax.request({
-                                    url : '/admin/coreshop/order/send-message',
-                                    method : 'post',
-                                    params : formValues,
+                                    url: '/admin/coreshop/order/send-message',
+                                    method: 'post',
+                                    params: formValues,
                                     callback: function (request, success, response) {
                                         try {
                                             response = Ext.decode(response.responseText);
@@ -76,7 +76,7 @@ pimcore.plugin.coreshop.orders.message = {
                         iconCls: 'pimcore_icon_apply'
                     }
                 ],
-                items : [
+                items: [
                     message
                 ]
             }]

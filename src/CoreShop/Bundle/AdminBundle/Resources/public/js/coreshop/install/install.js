@@ -8,15 +8,14 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.install');
 pimcore.plugin.coreshop.install = Class.create({
 
     initialize: function () {
         Ext.MessageBox.confirm(t('info'), t('coreshop_install_confirm'), function (buttonValue) {
-            if (buttonValue == 'yes')
-            {
+            if (buttonValue == 'yes') {
                 pimcore.helpers.loadingShow();
 
                 Ext.Ajax.request({

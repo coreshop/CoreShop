@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.cartsAbandoned');
 pimcore.plugin.coreshop.report.reports.cartsAbandoned = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/coreshop/reports/get-orders-carts-abandoned-report',
+    url: '/admin/coreshop/reports/get-orders-carts-abandoned-report',
 
     getName: function () {
         return t('coreshop_report_carts_abandoned');
@@ -23,15 +23,15 @@ pimcore.plugin.coreshop.report.reports.cartsAbandoned = Class.create(pimcore.plu
         return 'coreshop_icon_report_carts_abandoned';
     },
 
-    getFromStartDate : function() {
+    getFromStartDate: function () {
         var d = new Date();
-        d.setMonth(d.getMonth()-2);
+        d.setMonth(d.getMonth() - 2);
         return d;
     },
 
-    getToStartDate : function() {
+    getToStartDate: function () {
         var d = new Date();
-        d.setDate(d.getDate()-2);
+        d.setDate(d.getDate() - 2);
         return d;
     },
 
@@ -39,34 +39,34 @@ pimcore.plugin.coreshop.report.reports.cartsAbandoned = Class.create(pimcore.plu
         return true;
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
-                xtype : 'grid',
+                xtype: 'grid',
                 store: this.getStore(),
-                columns : [
+                columns: [
                     {
                         text: t('coreshop_report_user_name'),
-                        dataIndex : 'userName',
-                        flex : 1
+                        dataIndex: 'userName',
+                        flex: 1
                     },
                     {
                         text: t('coreshop_report_user_email'),
-                        dataIndex : 'email',
+                        dataIndex: 'email',
                         flex: 1
                     },
                     {
                         text: t('coreshop_report_selected_payment'),
-                        dataIndex : 'selectedPayment',
+                        dataIndex: 'selectedPayment',
                         flex: 1
                     },
                     {
                         text: t('coreshop_report_creation_date'),
-                        dataIndex : 'creationDate',
+                        dataIndex: 'creationDate',
                         flex: 1,
-                        renderer : function (val) {
+                        renderer: function (val) {
                             if (val) {
                                 return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
                             }
@@ -75,9 +75,9 @@ pimcore.plugin.coreshop.report.reports.cartsAbandoned = Class.create(pimcore.plu
                     },
                     {
                         text: t('coreshop_report_modifiction_date'),
-                        dataIndex : 'modificationDate',
+                        dataIndex: 'modificationDate',
                         flex: 1,
-                        renderer : function (val) {
+                        renderer: function (val) {
                             if (val) {
                                 return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
                             }
@@ -86,7 +86,7 @@ pimcore.plugin.coreshop.report.reports.cartsAbandoned = Class.create(pimcore.plu
                     },
                     {
                         text: t('coreshop_report_items_in_cart'),
-                        dataIndex : 'itemsInCart',
+                        dataIndex: 'itemsInCart',
                         flex: 1
                     },
                     {
@@ -97,7 +97,7 @@ pimcore.plugin.coreshop.report.reports.cartsAbandoned = Class.create(pimcore.plu
                         items: [{
                             iconCls: 'pimcore_icon_open',
                             tooltip: t('open'),
-                            handler : function (grid, rowIndex) {
+                            handler: function (grid, rowIndex) {
                                 var record = grid.getStore().getAt(rowIndex);
                                 pimcore.helpers.openObject(record.get('cartId'));
                             }

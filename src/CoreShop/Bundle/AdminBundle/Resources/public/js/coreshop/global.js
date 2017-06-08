@@ -8,32 +8,31 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.global');
 pimcore.plugin.coreshop.global = {
 
-    settings : {},
+    settings: {},
 
-    initialize : function (settings)
-    {
+    initialize: function (settings) {
         this.settings = settings;
 
         this._initStores();
     },
 
-    _initStores : function () {
+    _initStores: function () {
         this._createStore('coreshop_currencies', 'currencies');
         this._createStore('coreshop_zones', 'zones', [
-            { name:'id' },
-            { name:'name' },
-            { name:'active' }
+            {name: 'id'},
+            {name: 'name'},
+            {name: 'active'}
         ]);
         this._createStore('coreshop_countries', 'countries');
         this._createStore('coreshop_tax_rates', 'tax_rates', [
-            { name:'id' },
-            { name:'name' },
-            { name:'rate' }
+            {name: 'id'},
+            {name: 'name'},
+            {name: 'rate'}
         ]);
         this._createStore('coreshop_taxrulegroups', 'tax_rule_groups');
         this._createStore('coreshop_customergroups', 'customer-groups');
@@ -60,31 +59,31 @@ pimcore.plugin.coreshop.global = {
         //pimcore.globalmanager.get('coreshop_messaging_thread_states').load();
 
         pimcore.globalmanager.add('coreshop_order_states', new Ext.data.JsonStore({
-            data : this.settings.orderStates,
+            data: this.settings.orderStates,
             fields: ['name', 'label', 'color'],
-            idProperty : 'name'
+            idProperty: 'name'
         }));
     },
 
-    _createStore : function (name, url, fields) {
+    _createStore: function (name, url, fields) {
         var proxy = new Ext.data.HttpProxy({
-            url : '/admin/coreshop/' + url + '/list'
+            url: '/admin/coreshop/' + url + '/list'
         });
 
         if (!fields) {
             fields = [
-                { name:'id' },
-                { name:'name' }
+                {name: 'id'},
+                {name: 'name'}
             ];
         }
 
         var reader = new Ext.data.JsonReader({}, fields);
 
         var store = new Ext.data.Store({
-            restful:    false,
-            proxy:      proxy,
-            reader:     reader,
-            autoload:   true
+            restful: false,
+            proxy: proxy,
+            reader: reader,
+            autoload: true
         });
 
         pimcore.globalmanager.add(name, store);

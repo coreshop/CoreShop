@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.layout.portlets.salesFromLastDays');
 pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets.abstract, {
@@ -32,21 +32,22 @@ pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets
             proxy: {
                 type: 'ajax',
                 url: '/admin/coreshop/reports/get-sales-report',
-                extraParams : {
+                extraParams: {
                     'filters[from]': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
                     'filters[to]': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000
                 },
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
-                } },
+                }
+            },
             fields: ['timestamp', 'datetext', 'sales']
         });
 
         store.load();
 
         var panel = new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
                 xtype: 'cartesian',
@@ -67,15 +68,15 @@ pimcore.layout.portlets.salesFromLastDays = Class.create(pimcore.layout.portlets
                     grid: true,
                     minimum: 0
                 }, {
-                        type: 'category',
-                        fields: 'datetext',
-                        position: 'bottom'
-                    }
+                    type: 'category',
+                    fields: 'datetext',
+                    position: 'bottom'
+                }
                 ],
                 series: [
                     {
                         type: 'line',
-                        axis:' left',
+                        axis: ' left',
                         title: t('coreshop_sales'),
                         xField: 'datetext',
                         yField: 'sales',

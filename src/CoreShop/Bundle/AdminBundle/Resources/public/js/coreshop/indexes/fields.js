@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.fields');
 
@@ -21,7 +21,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         this.class = klass;
     },
 
-    getLayout : function () {
+    getLayout: function () {
         this.configPanel = new Ext.Panel({
             layout: 'border',
             items: [this.getSelectionPanel(), this.getClassDefinitionTreePanel()]
@@ -46,12 +46,12 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                     objectKey: child.data.key
                 };
 
-                Ext.Object.each(Ext.Object.merge(child.data, {}), function(key, value) {
+                Ext.Object.each(Ext.Object.merge(child.data, {}), function (key, value) {
 
                     if (key === 'configuration') {
                         var configuration = {};
 
-                        Ext.Object.each(value, function(ckey, cvalue) {
+                        Ext.Object.each(value, function (ckey, cvalue) {
                             if (cvalue) {
                                 configuration[ckey] = cvalue;
                             }
@@ -141,13 +141,13 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
                         }
                     }
                 },
-                region:'east',
+                region: 'east',
                 title: t('coreshop_indexes_selected_fields'),
-                layout:'fit',
+                layout: 'fit',
                 width: 428,
-                split:true,
+                split: true,
                 autoScroll: true,
-                listeners:{
+                listeners: {
                     itemcontextmenu: this.onTreeNodeContextmenu.bind(this)
                 }
             });
@@ -193,9 +193,9 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
     },
 
     /*
-    *       FIELD-TREE
-    *
-    **/    getClassDefinitionTreePanel: function () {
+     *       FIELD-TREE
+     *
+     **/    getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
             this.classDefinitionTreePanel = this.getClassTree('/admin/coreshop/indices/get-class-definition-for-field-selection', this.class);
@@ -258,7 +258,7 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
         return tree;
     },
 
-    initLayoutFields : function (tree, response) {
+    initLayoutFields: function (tree, response) {
         var data = Ext.decode(response.responseText);
 
         var keys = Object.keys(data);
@@ -312,18 +312,18 @@ pimcore.plugin.coreshop.indexes.fields = Class.create({
             var key = initData.name;
 
             var newNode = Ext.Object.merge(initData, {
-                text :  key,
-                objectKey : initData.name,
+                text: key,
+                objectKey: initData.name,
                 key: initData.name,
-                type : 'data',
-                layout : initData,
-                leaf : isLeaf,
-                allowDrag : draggable,
-                dataType : type,
+                type: 'data',
+                layout: initData,
+                leaf: isLeaf,
+                allowDrag: draggable,
+                dataType: type,
                 iconCls: 'pimcore_icon_' + type,
                 expanded: true,
-                objectType : objectType,
-                className : className,
+                objectType: objectType,
+                className: className,
                 configuration: {
                     className: className
                 }

@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carriers.panel');
 
@@ -18,14 +18,14 @@ pimcore.plugin.coreshop.carriers.panel = Class.create(pimcore.plugin.coreshop.ab
      * @var string
      */
     layoutId: 'coreshop_carriers_panel',
-    storeId : 'coreshop_carriers',
-    iconCls : 'coreshop_icon_carriers',
-    type : 'carriers',
+    storeId: 'coreshop_carriers',
+    iconCls: 'coreshop_icon_carriers',
+    type: 'carriers',
 
-    url : {
-        add : '/admin/coreshop/carriers/add',
-        delete : '/admin/coreshop/carriers/delete',
-        get : '/admin/coreshop/carriers/get',
-        list : '/admin/coreshop/carriers/list'
+    url: {
+        add: '/admin/coreshop/carriers/add',
+        delete: '/admin/coreshop/carriers/delete',
+        get: '/admin/coreshop/carriers/get',
+        list: '/admin/coreshop/carriers/list'
     }
 });

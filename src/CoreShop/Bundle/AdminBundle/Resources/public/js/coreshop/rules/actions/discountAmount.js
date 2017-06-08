@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.actions.discountAmount');
 
 pimcore.plugin.coreshop.rules.actions.discountAmount = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
-    type : 'discountAmount',
+    type: 'discountAmount',
 
-    getForm : function () {
+    getForm: function () {
         var amountValue = 0;
         var me = this;
 
@@ -25,14 +25,14 @@ pimcore.plugin.coreshop.rules.actions.discountAmount = Class.create(pimcore.plug
         }
 
         var amount = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_action_discountAmount_amount'),
-            name:'amount',
-            value : amountValue,
-            decimalPrecision : 2
+            fieldLabel: t('coreshop_action_discountAmount_amount'),
+            name: 'amount',
+            value: amountValue,
+            decimalPrecision: 2
         });
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 amount
             ]
         });

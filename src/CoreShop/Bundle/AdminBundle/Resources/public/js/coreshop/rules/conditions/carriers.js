@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.carriers');
 
 pimcore.plugin.coreshop.rules.conditions.carriers = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'carriers',
+    type: 'carriers',
 
-    getForm : function () {
+    getForm: function () {
         var me = this;
         var store = pimcore.globalmanager.get('coreshop_carriers');
 
@@ -24,16 +24,16 @@ pimcore.plugin.coreshop.rules.conditions.carriers = Class.create(pimcore.plugin.
             fieldLabel: t('coreshop_carrier'),
             typeAhead: true,
             listWidth: 100,
-            width : 500,
+            width: 500,
             store: store,
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
-            multiSelect : true,
+            multiSelect: true,
             triggerAction: 'all',
-            name:'carriers',
-            maxHeight : 400,
-            delimiter : false,
+            name: 'carriers',
+            maxHeight: 400,
+            delimiter: false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
@@ -52,7 +52,7 @@ pimcore.plugin.coreshop.rules.conditions.carriers = Class.create(pimcore.plugin.
         carriers = new Ext.ux.form.MultiSelect(carriers);
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 carriers
             ]
         });

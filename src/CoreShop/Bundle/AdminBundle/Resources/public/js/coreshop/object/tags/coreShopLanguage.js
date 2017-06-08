@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.object.tags.coreShopLanguage');
 pimcore.object.tags.coreShopLanguage = Class.create(pimcore.object.tags.select, {
 
-    allowEmpty : false,
+    allowEmpty: false,
 
     initialize: function (data, fieldConfig) {
         this.data = data;
@@ -24,8 +24,8 @@ pimcore.object.tags.coreShopLanguage = Class.create(pimcore.object.tags.select, 
     getLayoutEdit: function () {
         var store = new Ext.data.JsonStore({
             autoDestroy: true,
-            proxy : new Ext.data.HttpProxy({
-                url : '/admin/coreshop/helper/get-languages',
+            proxy: new Ext.data.HttpProxy({
+                url: '/admin/coreshop/helper/get-languages',
                 reader: {
                     rootProperty: 'languages'
                 }
@@ -44,12 +44,12 @@ pimcore.object.tags.coreShopLanguage = Class.create(pimcore.object.tags.select, 
             componentCls: 'object_field',
             width: 250,
             labelWidth: 100,
-            displayField:'display',
-            valueField:'language',
-            queryMode : 'local',
-            value:this.data ? this.data : null,
-            listeners : {
-                beforerender : function () {
+            displayField: 'display',
+            valueField: 'language',
+            queryMode: 'local',
+            value: this.data ? this.data : null,
+            listeners: {
+                beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
                         store.load();
                 }

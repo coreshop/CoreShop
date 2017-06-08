@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.zones.panel');
 
@@ -18,14 +18,14 @@ pimcore.plugin.coreshop.zones.panel = Class.create(pimcore.plugin.coreshop.abstr
      * @var string
      */
     layoutId: 'coreshop_zones_panel',
-    storeId : 'coreshop_zones',
-    iconCls : 'coreshop_icon_zone',
-    type : 'zones',
+    storeId: 'coreshop_zones',
+    iconCls: 'coreshop_icon_zone',
+    type: 'zones',
 
-    url : {
-        add : '/admin/coreshop/zones/add',
-        delete : '/admin/coreshop/zones/delete',
-        get : '/admin/coreshop/zones/get',
-        list : '/admin/coreshop/zones/list'
+    url: {
+        add: '/admin/coreshop/zones/add',
+        delete: '/admin/coreshop/zones/delete',
+        get: '/admin/coreshop/zones/get',
+        list: '/admin/coreshop/zones/list'
     }
 });

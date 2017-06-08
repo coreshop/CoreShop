@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.object.tags.multiselect');
 pimcore.plugin.coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect, {
@@ -31,12 +31,12 @@ pimcore.plugin.coreshop.object.tags.multiselect = Class.create(pimcore.object.ta
             fieldLabel: this.fieldConfig.title,
             store: store,
             itemCls: 'object_field',
-            maxHeight : 400,
-            queryMode : 'local',
+            maxHeight: 400,
+            queryMode: 'local',
             displayField: 'name',
             valueField: 'id',
-            listeners : {
-                beforerender : function () {
+            listeners: {
+                beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
                         store.load();
                 }

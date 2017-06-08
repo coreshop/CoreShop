@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.taxrulegroups.panel');
 
@@ -18,14 +18,14 @@ pimcore.plugin.coreshop.taxrulegroups.panel = Class.create(pimcore.plugin.coresh
      * @var string
      */
     layoutId: 'coreshop_tax_rule_groups_panel',
-    storeId : 'coreshop_taxrulegroups',
-    iconCls : 'coreshop_icon_tax_rule_groups',
-    type : 'taxrulegroups',
+    storeId: 'coreshop_taxrulegroups',
+    iconCls: 'coreshop_icon_tax_rule_groups',
+    type: 'taxrulegroups',
 
-    url : {
-        add : '/admin/coreshop/tax_rule_groups/add',
-        delete : '/admin/coreshop/tax_rule_groups/delete',
-        get : '/admin/coreshop/tax_rule_groups/get',
-        list : '/admin/coreshop/tax_rule_groups/list'
+    url: {
+        add: '/admin/coreshop/tax_rule_groups/add',
+        delete: '/admin/coreshop/tax_rule_groups/delete',
+        get: '/admin/coreshop/tax_rule_groups/get',
+        list: '/admin/coreshop/tax_rule_groups/list'
     }
 });

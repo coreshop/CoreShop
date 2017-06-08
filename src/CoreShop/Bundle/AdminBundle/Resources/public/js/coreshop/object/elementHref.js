@@ -8,11 +8,11 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.object.elementHref');
 pimcore.plugin.coreshop.object.elementHref = Class.create(pimcore.object.tags.href, {
-    getLayoutEdit : function($super) {
+    getLayoutEdit: function ($super) {
         var me = this,
             element = $super();
 
@@ -24,8 +24,8 @@ pimcore.plugin.coreshop.object.elementHref = Class.create(pimcore.object.tags.hr
 
         this.component.setReadOnly(true);
 
-        this.component.getModelData = function(includeEmptyText, /*private*/
-                                               isSubmitting) {
+        this.component.getModelData = function (includeEmptyText, /*private*/
+                                                isSubmitting) {
             var data = null;
             // Note that we need to check if this operation is being called from a Submit action because displayfields aren't
             // to be submitted,  but they can call this to get their model data.
@@ -39,7 +39,7 @@ pimcore.plugin.coreshop.object.elementHref = Class.create(pimcore.object.tags.hr
         return element;
     },
 
-    requestNicePathData : function() {
+    requestNicePathData: function () {
         if (this.data.id) {
             coreshop.helpers.requestNicePathData([this.data], function (responseData) {
                 if (typeof responseData[this.data.id] !== "undefined") {

@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.actions.discountPercent');
 
 pimcore.plugin.coreshop.rules.actions.discountPercent = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
-    type : 'discountPercent',
+    type: 'discountPercent',
 
-    getForm : function () {
+    getForm: function () {
         var percentValue = 0;
         var me = this;
 
@@ -25,15 +25,15 @@ pimcore.plugin.coreshop.rules.actions.discountPercent = Class.create(pimcore.plu
         }
 
         var percent = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_action_discountPercent_percent'),
-            name:'percent',
-            value : percentValue,
-            minValue : 0,
-            maxValue : 100,
-            decimalPrecision : 0
+            fieldLabel: t('coreshop_action_discountPercent_percent'),
+            name: 'percent',
+            value: percentValue,
+            minValue: 0,
+            maxValue: 100,
+            decimalPrecision: 0
         });
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 percent
             ]
         });

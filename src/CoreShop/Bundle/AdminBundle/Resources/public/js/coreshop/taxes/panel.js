@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.taxes.panel');
 
@@ -18,14 +18,14 @@ pimcore.plugin.coreshop.taxes.panel = Class.create(pimcore.plugin.coreshop.abstr
      * @var string
      */
     layoutId: 'coreshop_taxes_panel',
-    storeId : 'coreshop_tax_rates',
-    iconCls : 'coreshop_icon_taxes',
-    type : 'taxes',
+    storeId: 'coreshop_tax_rates',
+    iconCls: 'coreshop_icon_taxes',
+    type: 'taxes',
 
-    url : {
-        add : '/admin/coreshop/tax_rates/add',
-        delete : '/admin/coreshop/tax_rates/delete',
-        get : '/admin/coreshop/tax_rates/get',
-        list : '/admin/coreshop/tax_rates/list'
+    url: {
+        add: '/admin/coreshop/tax_rates/add',
+        delete: '/admin/coreshop/tax_rates/delete',
+        get: '/admin/coreshop/tax_rates/get',
+        list: '/admin/coreshop/tax_rates/list'
     }
 });

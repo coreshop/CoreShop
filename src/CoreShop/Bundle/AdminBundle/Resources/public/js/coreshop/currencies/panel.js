@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.currencies.panel');
 
@@ -18,14 +18,14 @@ pimcore.plugin.coreshop.currencies.panel = Class.create(pimcore.plugin.coreshop.
      * @var string
      */
     layoutId: 'coreshop_currencies_panel',
-    storeId : 'coreshop_currencies',
-    iconCls : 'coreshop_icon_currency',
-    type : 'currencies',
+    storeId: 'coreshop_currencies',
+    iconCls: 'coreshop_icon_currency',
+    type: 'currencies',
 
-    url : {
-        add : '/admin/coreshop/currencies/add',
-        delete : '/admin/coreshop/currencies/delete',
-        get : '/admin/coreshop/currencies/get',
-        list : '/admin/coreshop/currencies/list'
+    url: {
+        add: '/admin/coreshop/currencies/add',
+        delete: '/admin/coreshop/currencies/delete',
+        get: '/admin/coreshop/currencies/get',
+        list: '/admin/coreshop/currencies/list'
     }
 });

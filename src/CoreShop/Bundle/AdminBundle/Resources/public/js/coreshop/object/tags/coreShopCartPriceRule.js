@@ -8,11 +8,11 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.object.tags.coreShopCartPriceRule');
 pimcore.object.tags.coreShopCartPriceRule = Class.create(pimcore.plugin.coreshop.object.tags.select, {
 
     type: 'coreShopCartPriceRule',
-    storeName : 'cart_price_rules'
+    storeName: 'cart_price_rules'
 });

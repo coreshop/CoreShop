@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.object.tags.select');
 pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
 
-    allowEmpty : false,
+    allowEmpty: false,
 
     initialize: function (data, fieldConfig) {
         this.data = data;
@@ -33,8 +33,8 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
         }
 
         var comboBoxStore = new Ext.data.Store({
-            proxy:      store.proxy,
-            reader:     store.reader
+            proxy: store.proxy,
+            reader: store.reader
         });
 
         if (store.isLoaded()) {
@@ -68,12 +68,12 @@ pimcore.plugin.coreshop.object.tags.select = Class.create(pimcore.object.tags.se
             componentCls: 'object_field',
             width: 250,
             labelWidth: 100,
-            displayField:'name',
-            valueField:'id',
-            queryMode : 'local',
-            value:this.data ? parseInt(this.data) : null,
-            listeners : {
-                beforerender : function () {
+            displayField: 'name',
+            valueField: 'id',
+            queryMode: 'local',
+            value: this.data ? parseInt(this.data) : null,
+            listeners: {
+                beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
                         store.load();
                 },

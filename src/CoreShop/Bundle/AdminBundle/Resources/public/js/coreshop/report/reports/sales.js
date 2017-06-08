@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.sales');
 pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/coreshop/reports/get-sales-report',
+    url: '/admin/coreshop/reports/get-sales-report',
 
     getName: function () {
         return t('coreshop_report_sales');
@@ -33,7 +33,7 @@ pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.cores
         return fields;
     },
 
-    getDocketItemsForPanel: function($super) {
+    getDocketItemsForPanel: function ($super) {
 
         var fields = $super();
 
@@ -49,7 +49,7 @@ pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.cores
 
     },
 
-    getAdditionalFilterFields : function () {
+    getAdditionalFilterFields: function () {
 
         var fields = [];
 
@@ -72,9 +72,9 @@ pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.cores
         return fields;
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
                 xtype: 'cartesian',
@@ -103,7 +103,7 @@ pimcore.plugin.coreshop.report.reports.sales = Class.create(pimcore.plugin.cores
                 series: [
                     {
                         type: 'line',
-                        axis:' left',
+                        axis: ' left',
                         title: t('coreshop_sales'),
                         xField: 'datetext',
                         yField: 'sales',

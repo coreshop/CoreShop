@@ -8,13 +8,13 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 //pimcore.helpers.openElement = function (id, type, subtype) {
 
 pimcore.registerNS('coreshop.helpers.x');
 pimcore.registerNS('coreshop.util.format.currency');
 
-coreshop.helpers.long2ip = function(ip) {
+coreshop.helpers.long2ip = function (ip) {
     if (!isFinite(ip)) {
         return false
     }
@@ -53,19 +53,19 @@ coreshop.helpers.openOrderByNumber = function (orderNumber) {
     });
 };
 
-coreshop.helpers.createOrder = function() {
+coreshop.helpers.createOrder = function () {
     pimcore.helpers.itemselector(
         false,
-        function(customer) {
+        function (customer) {
             new pimcore.plugin.coreshop.orders.create.order(customer.id);
         }.bind(this),
         {
             type: ['object'],
             subtype: {
-                object : ['object']
+                object: ['object']
             },
             specific: {
-                classes : [coreshop.settings.classMapping.customer]
+                classes: [coreshop.settings.classMapping.customer]
             }
         }
     );
@@ -108,7 +108,7 @@ coreshop.helpers.showAbout = function () {
 
     var win = new Ext.Window({
         title: t('about'),
-        width:500,
+        width: 500,
         height: 300,
         bodyStyle: 'padding: 10px;',
         modal: true,
@@ -142,7 +142,7 @@ coreshop.helpers.openOrder = function (id, callback) {
                     Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
                 }
 
-                if(Ext.isFunction(callback)) {
+                if (Ext.isFunction(callback)) {
                     callback();
                 }
             }.bind(this)
@@ -150,17 +150,17 @@ coreshop.helpers.openOrder = function (id, callback) {
     } else {
         var tab = pimcore.globalmanager.get('coreshop_order_' + id);
 
-        if(Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
+        if (Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
             tab.activate();
         }
 
-        if(Ext.isFunction(callback)) {
+        if (Ext.isFunction(callback)) {
             callback();
         }
     }
 };
 
-coreshop.helpers.openMessagingThread = function(id) {
+coreshop.helpers.openMessagingThread = function (id) {
     var panelKey = 'coreshop_messaging_thread_' + id;
 
     if (pimcore.globalmanager.exists(panelKey) == false) {
@@ -186,13 +186,13 @@ coreshop.helpers.openMessagingThread = function(id) {
     } else {
         var tab = pimcore.globalmanager.get('coreshop_messaging_thread_' + id);
 
-        if(Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
+        if (Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
             tab.activate();
         }
     }
 };
 
-coreshop.helpers.requestNicePathData = function(targets, responseHandler) {
+coreshop.helpers.requestNicePathData = function (targets, responseHandler) {
     var elementData = Ext.encode(targets);
 
     Ext.Ajax.request({

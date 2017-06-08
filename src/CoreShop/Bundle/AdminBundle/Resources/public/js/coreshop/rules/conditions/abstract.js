@@ -8,27 +8,27 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions');
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.abstract');
 
 pimcore.plugin.coreshop.rules.conditions.abstract = Class.create(pimcore.plugin.coreshop.rules.abstract, {
-    elementType : 'condition',
+    elementType: 'condition',
 
-    getForm : function () {
+    getForm: function () {
 
         this.form = Ext.create('Ext.form.FieldContainer', {
-            items : [
+            items: [
                 {
-                    xtype:'displayfield',
-                    submitValue : false,
-                    value:t('coreshop_condition_no_configuration'),
+                    xtype: 'displayfield',
+                    submitValue: false,
+                    value: t('coreshop_condition_no_configuration'),
                     cls: 'description',
-                    anchor:'100%',
-                    width:'100%',
+                    anchor: '100%',
+                    width: '100%',
                     style: 'font-style:italic;background:#f5f5f5;padding:0 10px;',
-                    getValue: function() {
+                    getValue: function () {
                         return undefined;
                     }
                 }

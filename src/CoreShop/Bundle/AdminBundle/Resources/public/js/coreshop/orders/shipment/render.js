@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.shipment.render');
 pimcore.plugin.coreshop.shipment.render = Class.create({
@@ -17,8 +17,7 @@ pimcore.plugin.coreshop.shipment.render = Class.create({
         this.element = element;
     },
 
-    getLayout: function ()
-    {
+    getLayout: function () {
         if (!this.layout) {
             // create new panel
             this.layout = new Ext.Panel({
@@ -26,18 +25,18 @@ pimcore.plugin.coreshop.shipment.render = Class.create({
                 iconCls: 'coreshop_icon_orders_shipment_pdf',
                 border: false,
                 layout: 'border',
-                items : []
+                items: []
             });
         }
 
         return this.layout;
     },
 
-    reload : function () {
+    reload: function () {
         this.layout.add(this.loadDocument(this.element.id));
     },
 
-    loadDocument : function (shipmentId) {
+    loadDocument: function (shipmentId) {
         var frameUrl = '/admin/coreshop/order-shipment/render?id=' + shipmentId;
 
         //check for native/plugin PDF viewer
@@ -48,7 +47,7 @@ pimcore.plugin.coreshop.shipment.render = Class.create({
         var editPanel = new Ext.Panel({
             bodyCls: 'pimcore_overflow_scrolling',
             html: '<iframe src="' + frameUrl + '" frameborder="0" id="coreshop_shipment_preview_' + shipmentId + '"></iframe>',
-            region : 'center'
+            region: 'center'
         });
         editPanel.on('resize', function (el, width, height, rWidth, rHeight) {
             Ext.get('coreshop_shipment_preview_' + shipmentId).setStyle({
@@ -63,7 +62,10 @@ pimcore.plugin.coreshop.shipment.render = Class.create({
     hasNativePDFViewer: function () {
 
         var getActiveXObject = function (name) {
-            try { return new ActiveXObject(name); } catch (e) {}
+            try {
+                return new ActiveXObject(name);
+            } catch (e) {
+            }
         };
 
         var getNavigatorPlugin = function (name) {

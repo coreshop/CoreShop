@@ -8,20 +8,20 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.item');
 
 pimcore.plugin.coreshop.rules.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
-    getActionContainerClass : function () {
+    getActionContainerClass: function () {
         return pimcore.plugin.coreshop.rules.action;
     },
 
-    getConditionContainerClass : function () {
+    getConditionContainerClass: function () {
         return pimcore.plugin.coreshop.rules.condition;
     },
 
-    getItems : function () {
+    getItems: function () {
         var actionContainerClass = this.getActionContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
@@ -35,16 +35,14 @@ pimcore.plugin.coreshop.rules.item = Class.create(pimcore.plugin.coreshop.abstra
         ];
 
         // add saved conditions
-        if (this.data.conditions)
-        {
+        if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
         }
 
         // add saved actions
-        if (this.data.actions)
-        {
+        if (this.data.actions) {
             Ext.each(this.data.actions, function (action) {
                 this.actions.addAction(action.type, action);
             }.bind(this));
@@ -53,7 +51,7 @@ pimcore.plugin.coreshop.rules.item = Class.create(pimcore.plugin.coreshop.abstra
         return items;
     },
 
-    getSaveData : function () {
+    getSaveData: function () {
         saveData = this.settingsForm.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getConditionsData();
         saveData['actions'] = this.actions.getActionsData();

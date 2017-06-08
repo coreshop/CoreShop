@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.carts');
 pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/coreshop/reports/get-orders-carts-report',
+    url: '/admin/coreshop/reports/get-orders-carts-report',
 
     getName: function () {
         return t('coreshop_report_carts');
@@ -23,9 +23,9 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
         return 'coreshop_icon_report_carts';
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
                 xtype: 'cartesian',
@@ -46,15 +46,15 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                     grid: true,
                     minimum: 0
                 }, {
-                        type: 'category',
-                        fields: 'timestamp',
-                        position: 'bottom'
-                    }
+                    type: 'category',
+                    fields: 'timestamp',
+                    position: 'bottom'
+                }
                 ],
                 series: [
                     {
                         type: 'line',
-                        axis:' left',
+                        axis: ' left',
                         title: t('coreshop_cart'),
                         xField: 'timestamp',
                         yField: 'carts',
@@ -83,8 +83,8 @@ pimcore.plugin.coreshop.report.reports.carts = Class.create(pimcore.plugin.cores
                         }
                     },
                     {
-                        type:'line',
-                        axis:' left',
+                        type: 'line',
+                        axis: ' left',
                         title: t('coreshop_order'),
                         xField: 'timestamp',
                         yField: 'orders',

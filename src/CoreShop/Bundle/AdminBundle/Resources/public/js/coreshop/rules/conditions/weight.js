@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.weight');
 
 pimcore.plugin.coreshop.rules.conditions.weight = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'weight',
+    type: 'weight',
 
-    getForm : function () {
+    getForm: function () {
         var minWeightValue = null;
         var maxWeightValue = 0;
 
@@ -29,25 +29,25 @@ pimcore.plugin.coreshop.rules.conditions.weight = Class.create(pimcore.plugin.co
         }
 
         var minWeight = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_weight_minWeight'),
-            name:'minWeight',
-            value : minWeightValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_weight_minWeight'),
+            name: 'minWeight',
+            value: minWeightValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         var maxWeight = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_weight_maxWeight'),
-            name:'maxWeight',
-            value : maxWeightValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_weight_maxWeight'),
+            name: 'maxWeight',
+            value: maxWeightValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         this.form = Ext.create('Ext.form.Panel', {
-            items : [
+            items: [
                 minWeight, maxWeight
             ]
         });

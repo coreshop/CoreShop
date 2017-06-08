@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop');
 pimcore.registerNS('coreshop.settings');
 
 pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
-    isInitialized : false,
-    settings : {},
+    isInitialized: false,
+    settings: {},
 
     getClassName: function () {
         return 'pimcore.plugin.coreshop';
@@ -35,8 +35,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
 
         Ext.Ajax.request({
             url: '/admin/coreshop/settings/get-settings',
-            success: function (response)
-            {
+            success: function (response) {
                 resp = Ext.decode(response.responseText);
 
                 this.settings = resp;
@@ -47,7 +46,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         });
     },
 
-    initializeCoreShop: function() {
+    initializeCoreShop: function () {
         var self = this;
         var coreShopMenuItems = [];
         var user = pimcore.globalmanager.get('user');
@@ -173,7 +172,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         ordersMenu.push({
             text: t('coreshop_order_create'),
             iconCls: 'coreshop_icon_order_create',
-            handler: function() {
+            handler: function () {
                 coreshop.helpers.createOrder();
             }.bind(this)
         });
@@ -333,7 +332,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         Ext.get('coreshop_status').set(
             {
                 'data-menu-tooltip': t('coreshop_loaded').format('2.0 ALPHA'), //TODO: VERSION
-                class : ''
+                class: ''
             }
         );
 
@@ -348,7 +347,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
             var top = offset.top;
             top = top + ($(e.target).height() / 2);
 
-            $('#pimcore_menu_tooltip').css({ top: top });
+            $('#pimcore_menu_tooltip').css({top: top});
         });
 
         $('[data-menu-tooltip]').mouseleave(function () {
@@ -386,16 +385,16 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         });
     },
 
-    addPluginMenu : function (menu) {
+    addPluginMenu: function (menu) {
         if (!this._pluginsMenu) {
             this._pluginsMenu = this._menu.add({
                 text: t('coreshop_plugins'),
                 iconCls: 'coreshop_icon_plugins',
                 hideOnClick: false,
-                menu : {
+                menu: {
                     shadow: false,
                     cls: 'pimcore_navigation_flyout',
-                    items : []
+                    items: []
                 }
             });
         }
@@ -403,10 +402,8 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         this._pluginsMenu.menu.add(menu);
     },
 
-    postOpenObject : function (tab, type)
-    {
-        if (tab.data.general.o_className == coreshop.settings.classMapping.cart)
-        {
+    postOpenObject: function (tab, type) {
+        if (tab.data.general.o_className == coreshop.settings.classMapping.cart) {
             tab.toolbar.insert(tab.toolbar.items.length,
                 '-'
             );
@@ -439,13 +436,13 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
             //tab.tabbar.add(new pimcore.plugin.coreshop.product.specificprice.panel(tab).getLayout());
 
             /*tab.tab.items.items[0].add({
-                text: t('generate_variants'),
-                iconCls: 'pimcore_icon_tab_variants',
-                scale: 'medium',
-                handler: function(obj){
-                    //new pimcore.plugin.VariantGenerator.VariantGeneratorDialog(obj);
-                }.bind(this, tab)
-            });*/
+             text: t('generate_variants'),
+             iconCls: 'pimcore_icon_tab_variants',
+             scale: 'medium',
+             handler: function(obj){
+             //new pimcore.plugin.VariantGenerator.VariantGeneratorDialog(obj);
+             }.bind(this, tab)
+             });*/
         } else if (tab.data.general.o_className === coreshop.settings.classMapping.order) {
             var orderMoreButtons = [];
 
@@ -492,7 +489,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
                         text: t('coreshop_more'),
                         scale: 'medium',
                         iconCls: 'coreshop_icon_logo',
-                        menu : orderMoreButtons
+                        menu: orderMoreButtons
                     }
                 );
             }
@@ -525,8 +522,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         pimcore.layout.refresh();
     },
 
-    openSettings : function ()
-    {
+    openSettings: function () {
         try {
             pimcore.globalmanager.get('coreshop_settings').activate();
         }
@@ -536,8 +532,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openPriceRules : function ()
-    {
+    openPriceRules: function () {
         try {
             pimcore.globalmanager.get('coreshop_price_rules_panel').activate();
         }
@@ -547,7 +542,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openCurrencyList : function () {
+    openCurrencyList: function () {
         try {
             pimcore.globalmanager.get('coreshop_currencies_panel').activate();
         }
@@ -556,7 +551,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openZoneList : function () {
+    openZoneList: function () {
         try {
             pimcore.globalmanager.get('coreshop_zones_panel').activate();
         }
@@ -565,7 +560,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openCountryList : function () {
+    openCountryList: function () {
         try {
             pimcore.globalmanager.get('coreshop_countries_panel').activate();
         }
@@ -574,7 +569,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openCarriersList : function () {
+    openCarriersList: function () {
         try {
             pimcore.globalmanager.get('coreshop_carriers_panel').activate();
         }
@@ -583,7 +578,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openSetup : function () {
+    openSetup: function () {
         try {
             pimcore.globalmanager.get('coreshop_install').activate();
         }
@@ -592,7 +587,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openTaxes : function () {
+    openTaxes: function () {
         try {
             pimcore.globalmanager.get('coreshop_taxes_panel').activate();
         }
@@ -601,7 +596,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openTaxRuleGroups : function () {
+    openTaxRuleGroups: function () {
         try {
             pimcore.globalmanager.get('coreshop_tax_rule_groups_panel').activate();
         }
@@ -610,7 +605,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openOrders : function () {
+    openOrders: function () {
         try {
             pimcore.globalmanager.get('coreshop_orders').activate();
         }
@@ -619,7 +614,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openIndexes : function () {
+    openIndexes: function () {
         try {
             pimcore.globalmanager.get('coreshop_indexes_panel').activate();
         }
@@ -628,7 +623,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openProductFilters : function () {
+    openProductFilters: function () {
         try {
             pimcore.globalmanager.get('coreshop_product_filters_panel').activate();
         }
@@ -637,7 +632,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openStateList : function () {
+    openStateList: function () {
         try {
             pimcore.globalmanager.get('coreshop_states_panel').activate();
         }
@@ -646,7 +641,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openProducts : function () {
+    openProducts: function () {
         try {
             pimcore.globalmanager.get('coreshop_products').activate();
         }
@@ -655,7 +650,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openMessagingContact : function () {
+    openMessagingContact: function () {
         try {
             pimcore.globalmanager.get('coreshop_messaging_contacts_panel').activate();
         }
@@ -664,7 +659,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openMessagingThreadState : function () {
+    openMessagingThreadState: function () {
         try {
             pimcore.globalmanager.get('coreshop_messaging_thread_state_panel').activate();
         }
@@ -673,7 +668,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openMessagingThread : function () {
+    openMessagingThread: function () {
         try {
             pimcore.globalmanager.get('coreshop_messaging_thread_panel').activate();
         }
@@ -682,7 +677,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openProductPriceRules : function () {
+    openProductPriceRules: function () {
         try {
             pimcore.globalmanager.get('coreshop_product_price_rule_panel').activate();
         }
@@ -691,7 +686,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openStores : function () {
+    openStores: function () {
         try {
             pimcore.globalmanager.get('coreshop_stores_panel').activate();
         }
@@ -700,7 +695,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openCarriersShippingRules : function () {
+    openCarriersShippingRules: function () {
         try {
             pimcore.globalmanager.get('coreshop_carrier_shipping_rule_panel').activate();
         }
@@ -709,7 +704,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openNotificationRules : function () {
+    openNotificationRules: function () {
         try {
             pimcore.globalmanager.get('coreshop_notification_rule_panel').activate();
         }
@@ -718,7 +713,7 @@ pimcore.plugin.coreshop = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openPaymentProviders: function() {
+    openPaymentProviders: function () {
         try {
             pimcore.globalmanager.get('coreshop_payment_providers_panel').activate();
         }

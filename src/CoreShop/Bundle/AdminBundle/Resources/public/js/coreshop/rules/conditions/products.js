@@ -8,34 +8,34 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.products');
 
 pimcore.plugin.coreshop.rules.conditions.products = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'products',
+    type: 'products',
 
-    products : null,
+    products: null,
 
-    getForm : function () {
+    getForm: function () {
         this.products = new pimcore.plugin.coreshop.object.objectMultihref(this.data ? this.data.products : [], {
-                classes: [
-                     { classes: coreshop.settings.classMapping.product }
-                ],
-                name: 'products',
-                title: '',
-                height: 200,
-                width: 500,
-                columns: [],
+            classes: [
+                {classes: coreshop.settings.classMapping.product}
+            ],
+            name: 'products',
+            title: '',
+            height: 200,
+            width: 500,
+            columns: [],
 
-                columnType: null,
-                datatype: 'data',
-                fieldtype: 'objects'
-            });
+            columnType: null,
+            datatype: 'data',
+            fieldtype: 'objects'
+        });
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 this.products.getLayoutEdit()
             ]
         });
@@ -43,9 +43,9 @@ pimcore.plugin.coreshop.rules.conditions.products = Class.create(pimcore.plugin.
         return this.form;
     },
 
-    getValues : function () {
+    getValues: function () {
         return {
-            products : this.products.getValue()
+            products: this.products.getValue()
         };
     }
 });

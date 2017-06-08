@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.categories');
 pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/coreshop/reports/get-categories-report',
+    url: '/admin/coreshop/reports/get-categories-report',
 
     getName: function () {
         return t('coreshop_report_categories');
@@ -23,47 +23,47 @@ pimcore.plugin.coreshop.report.reports.categories = Class.create(pimcore.plugin.
         return 'coreshop_icon_category';
     },
 
-    getStoreFields : function() {
+    getStoreFields: function () {
         return [
             {name: 'sales', type: 'number'},
             {name: 'profit', type: 'number'}
         ];
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
-                xtype : 'grid',
+                xtype: 'grid',
                 store: this.getStore(),
-                columns : [
+                columns: [
                     {
                         text: t('name'),
-                        dataIndex : 'name',
-                        flex : 1
+                        dataIndex: 'name',
+                        flex: 1
                     },
                     {
                         text: t('coreshop_report_categories_count'),
-                        dataIndex : 'count',
-                        width : 50,
-                        align : 'right'
+                        dataIndex: 'count',
+                        width: 50,
+                        align: 'right'
                     },
                     {
                         text: t('coreshop_report_categories_sales'),
-                        dataIndex : 'sales',
-                        width : 100,
-                        align : 'right',
-                        renderer : function(value, metadata, record) {
+                        dataIndex: 'sales',
+                        width: 100,
+                        align: 'right',
+                        renderer: function (value, metadata, record) {
                             return record.get('salesFormatted');
                         }
                     },
                     {
                         text: t('coreshop_report_categories_profit'),
-                        dataIndex : 'profit',
-                        width : 100,
-                        align : 'right',
-                        renderer : function(value, metadata, record) {
+                        dataIndex: 'profit',
+                        width: 100,
+                        align: 'right',
+                        renderer: function (value, metadata, record) {
                             return record.get('profitFormatted');
                         }
                     }

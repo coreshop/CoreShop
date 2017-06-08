@@ -8,16 +8,16 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.pricerules.item');
 
 pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.rules.item, {
 
-    iconCls : 'coreshop_icon_price_rule',
+    iconCls: 'coreshop_icon_price_rule',
 
-    url : {
-        save : '/admin/coreshop/cart_price_rules/save'
+    url: {
+        save: '/admin/coreshop/cart_price_rules/save'
     },
 
     getPanel: function () {
@@ -27,7 +27,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
             closable: true,
             deferredRender: false,
             forceLayout: true,
-            iconCls : this.iconCls,
+            iconCls: this.iconCls,
             buttons: [{
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
@@ -49,7 +49,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
-            border:false,
+            border: false,
             items: [{
                 xtype: 'textfield',
                 name: 'name',
@@ -79,18 +79,18 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
         return this.settingsForm;
     },
 
-    addVoucherCodes : function () {
+    addVoucherCodes: function () {
         this.panel.add(this.getVoucherCodes());
     },
 
-    destroyVoucherCodes : function () {
+    destroyVoucherCodes: function () {
         if (this.voucherCodesPanel) {
             this.getVoucherCodes().destroy();
             this.voucherCodesPanel = null;
         }
     },
 
-    getVoucherCodes : function () {
+    getVoucherCodes: function () {
         if (!this.voucherCodesPanel) {
             var store = new Ext.data.JsonStore({
                 remoteSort: true,
@@ -104,50 +104,50 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                     reader: {
                         type: 'json',
                         rootProperty: 'data',
-                        totalProperty : 'total'
+                        totalProperty: 'total'
                     },
-                    extraParams : {
-                        id : this.data.id
+                    extraParams: {
+                        id: this.data.id
                     }
                 },
                 fields: [
-                    { name:'id', type:'int' },
-                    { name:'used', type:'boolean' },
-                    { name:'uses', type:'int' },
-                    { name:'code', type:'string' }
+                    {name: 'id', type: 'int'},
+                    {name: 'used', type: 'boolean'},
+                    {name: 'uses', type: 'int'},
+                    {name: 'code', type: 'string'}
                 ]
             });
 
             var grid = new Ext.grid.Panel({
-                store : store,
+                store: store,
                 plugins: {
-                    ptype : 'pimcore.gridfilters',
-                    pluginId : 'filter',
+                    ptype: 'pimcore.gridfilters',
+                    pluginId: 'filter',
                     encode: true,
                     local: false
                 },
                 columns: [
                     {
                         text: t('code'),
-                        dataIndex : 'code',
-                        flex : 1
+                        dataIndex: 'code',
+                        flex: 1
                     },
                     {
                         xtype: 'booleancolumn',
                         text: t('coreshop_cart_pricerule_used'),
-                        dataIndex : 'used',
-                        flex : 1,
+                        dataIndex: 'used',
+                        flex: 1,
                         trueText: t('yes'),
                         falseText: t('no')
                     },
                     {
                         text: t('coreshop_cart_pricerule_uses'),
-                        dataIndex : 'uses',
-                        flex : 1
+                        dataIndex: 'uses',
+                        flex: 1
                     }
                 ],
-                region : 'center',
-                flex : 1,
+                region: 'center',
+                flex: 1,
                 bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store)
             });
 
@@ -160,9 +160,9 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                 title: t('coreshop_cart_pricerule_voucherCodes'),
                 autoScroll: true,
                 forceLayout: true,
-                style : 'padding: 10px',
-                layout : 'border',
-                items : [
+                style: 'padding: 10px',
+                layout: 'border',
+                items: [
                     grid
                 ],
                 dockedItems: [{
@@ -172,14 +172,14 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_generate_vouchers'),
-                            handler : function () {
+                            handler: function () {
                                 this.openVoucherGenerationDialog();
                             }.bind(this)
                         },
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
-                            handler : function () {
+                            handler: function () {
                                 pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?id=' + this.data.id);
                             }.bind(this)
                         }
@@ -192,7 +192,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
         return this.voucherCodesPanel;
     },
 
-    openVoucherGenerationDialog : function () {
+    openVoucherGenerationDialog: function () {
         var window = new Ext.Window({
             width: 330,
             height: 420,
@@ -201,19 +201,19 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
             title: t('coreshop_cart_pricerule_generate_vouchers'),
             layout: 'fit',
             items: [{
-                xtype : 'form',
+                xtype: 'form',
                 region: 'center',
                 bodyPadding: 20,
                 items: [
                     {
-                        xtype : 'numberfield',
-                        name : 'amount',
-                        fieldLabel : t('coreshop_cart_pricerule_amount')
+                        xtype: 'numberfield',
+                        name: 'amount',
+                        fieldLabel: t('coreshop_cart_pricerule_amount')
                     },
                     {
-                        xtype : 'numberfield',
-                        name : 'length',
-                        fieldLabel : t('coreshop_cart_pricerule_length')
+                        xtype: 'numberfield',
+                        name: 'length',
+                        fieldLabel: t('coreshop_cart_pricerule_length')
                     },
                     {
                         xtype: 'combo',
@@ -225,22 +225,22 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                         queryMode: 'local',
                         fieldLabel: t('coreshop_cart_pricerule_format'),
                         name: 'format',
-                        value : 'alphanumeric'
+                        value: 'alphanumeric'
                     },
                     {
-                        xtype : 'textfield',
-                        name : 'prefix',
-                        fieldLabel : t('coreshop_cart_pricerule_prefix')
+                        xtype: 'textfield',
+                        name: 'prefix',
+                        fieldLabel: t('coreshop_cart_pricerule_prefix')
                     },
                     {
-                        xtype : 'textfield',
-                        name : 'suffix',
-                        fieldLabel : t('coreshop_cart_pricerule_suffix')
+                        xtype: 'textfield',
+                        name: 'suffix',
+                        fieldLabel: t('coreshop_cart_pricerule_suffix')
                     },
                     {
-                        xtype : 'numberfield',
-                        name : 'hyphensOn',
-                        fieldLabel : t('coreshop_cart_pricerule_hyphensOn')
+                        xtype: 'numberfield',
+                        name: 'hyphensOn',
+                        fieldLabel: t('coreshop_cart_pricerule_hyphensOn')
                     }
                 ],
                 buttons: [{
@@ -254,7 +254,7 @@ pimcore.plugin.coreshop.pricerules.item = Class.create(pimcore.plugin.coreshop.r
                         Ext.Ajax.request({
                             url: '/admin/coreshop/cart_price_rules/generate-voucher-codes',
                             method: 'post',
-                            params : params,
+                            params: params,
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
 

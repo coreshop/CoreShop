@@ -8,11 +8,11 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.actions');
 pimcore.registerNS('pimcore.plugin.coreshop.rules.actions.abstract');
 
 pimcore.plugin.coreshop.rules.actions.abstract = Class.create(pimcore.plugin.coreshop.rules.abstract, {
-    elementType : 'action'
+    elementType: 'action'
 });

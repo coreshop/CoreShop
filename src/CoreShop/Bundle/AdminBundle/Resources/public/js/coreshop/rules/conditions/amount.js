@@ -8,16 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.amount');
 
 pimcore.plugin.coreshop.rules.conditions.amount = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'amount',
+    type: 'amount',
 
-    getForm : function ()
-    {
+    getForm: function () {
         var minAmountValue = 0;
         var maxAmountValue = 0;
         var me = this;
@@ -31,25 +30,25 @@ pimcore.plugin.coreshop.rules.conditions.amount = Class.create(pimcore.plugin.co
         }
 
         var minAmount = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_amount_minAmount'),
-            name:'minAmount',
-            value : minAmountValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_amount_minAmount'),
+            name: 'minAmount',
+            value: minAmountValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         var maxAmount = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_amount_maxAmount'),
-            name:'maxAmount',
-            value : maxAmountValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_amount_maxAmount'),
+            name: 'maxAmount',
+            value: maxAmountValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         this.form = Ext.create('Ext.form.Panel', {
-            items : [
+            items: [
                 minAmount, maxAmount
             ]
         });

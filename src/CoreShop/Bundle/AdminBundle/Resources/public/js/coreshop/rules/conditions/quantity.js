@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.quantity');
 
 pimcore.plugin.coreshop.rules.conditions.quantity = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'quantity',
+    type: 'quantity',
 
-    getForm : function () {
+    getForm: function () {
 
         var minQuantityValue = null;
         var maxQuantityValue = 0;
@@ -32,25 +32,25 @@ pimcore.plugin.coreshop.rules.conditions.quantity = Class.create(pimcore.plugin.
         }
 
         var minQuantity = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_quantity_minQuantity'),
-            name:'minQuantity',
-            value : minQuantityValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_quantity_minQuantity'),
+            name: 'minQuantity',
+            value: minQuantityValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         var maxQuantity = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_quantity_maxQuantity'),
-            name:'maxQuantity',
-            value : maxQuantityValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_quantity_maxQuantity'),
+            name: 'maxQuantity',
+            value: maxQuantityValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         this.form = Ext.create('Ext.form.Panel', {
-            items : [
+            items: [
                 minQuantity, maxQuantity
             ]
         });

@@ -8,13 +8,13 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.reports.quantities');
 pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.coreshop.report.abstract, {
 
-    url : '/admin/coreshop/reports/get-quantities-report',
-    remoteSort : true,
+    url: '/admin/coreshop/reports/get-quantities-report',
+    remoteSort: true,
 
     getName: function () {
         return t('coreshop_report_quantities');
@@ -24,7 +24,7 @@ pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.
         return 'coreshop_icon_quantity';
     },
 
-    getStoreFields : function() {
+    getStoreFields: function () {
         return [
             {name: 'retailPrice', type: 'number'},
             {name: 'totalPrice', type: 'number'},
@@ -32,42 +32,42 @@ pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.
         ];
     },
 
-    getGrid : function () {
+    getGrid: function () {
 
 
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
-                xtype : 'grid',
+                xtype: 'grid',
                 store: this.getStore(),
-                columns : [
+                columns: [
                     {
                         text: t('name'),
-                        dataIndex : 'name',
-                        flex : 1
+                        dataIndex: 'name',
+                        flex: 1
                     },
                     {
                         text: t('coreshop_report_quantities_quantity'),
-                        dataIndex : 'quantity',
-                        width : 100,
-                        align : 'right'
+                        dataIndex: 'quantity',
+                        width: 100,
+                        align: 'right'
                     },
                     {
                         text: t('coreshop_report_quantities_price'),
-                        dataIndex : 'retailPrice',
-                        width : 100,
-                        align : 'right',
-                        renderer : function(value, metadata, record) {
+                        dataIndex: 'retailPrice',
+                        width: 100,
+                        align: 'right',
+                        renderer: function (value, metadata, record) {
                             return record.get('retailPriceFormatted');
                         }
                     },
                     {
                         text: t('coreshop_report_quantities_totalPrice'),
-                        dataIndex : 'totalPrice',
-                        width : 100,
-                        align : 'right',
-                        renderer : function(value, metadata, record) {
+                        dataIndex: 'totalPrice',
+                        width: 100,
+                        align: 'right',
+                        renderer: function (value, metadata, record) {
                             return record.get('totalPriceFormatted');
                         }
                     }
@@ -77,11 +77,11 @@ pimcore.plugin.coreshop.report.reports.quantities = Class.create(pimcore.plugin.
         });
     },
 
-    getFilterFields : function () {
+    getFilterFields: function () {
         return [];
     },
 
-    getFilterParams : function () {
+    getFilterParams: function () {
         return {};
     }
 });

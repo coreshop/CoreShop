@@ -8,20 +8,20 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.categories');
 
 pimcore.plugin.coreshop.rules.conditions.categories = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'categories',
+    type: 'categories',
 
-    categories : null,
+    categories: null,
 
-    getForm : function () {
+    getForm: function () {
         this.categories = new pimcore.plugin.coreshop.object.objectMultihref(this.data ? this.data.categories : [], {
             classes: [
-                { classes: coreshop.settings.classMapping.category }
+                {classes: coreshop.settings.classMapping.category}
             ],
             name: 'categories',
             title: '',
@@ -35,7 +35,7 @@ pimcore.plugin.coreshop.rules.conditions.categories = Class.create(pimcore.plugi
         });
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 this.categories.getLayoutEdit()
             ]
         });
@@ -43,9 +43,9 @@ pimcore.plugin.coreshop.rules.conditions.categories = Class.create(pimcore.plugi
         return this.form;
     },
 
-    getValues : function () {
+    getValues: function () {
         return {
-            categories : this.categories.getValue()
+            categories: this.categories.getValue()
         };
     }
 });

@@ -8,16 +8,16 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.item');
 
 pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_indexes',
+    iconCls: 'coreshop_icon_indexes',
 
-    url : {
-        save : '/admin/coreshop/indices/save'
+    url: {
+        save: '/admin/coreshop/indices/save'
     },
 
     getPanel: function () {
@@ -27,7 +27,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
             closable: true,
             deferredRender: false,
             forceLayout: true,
-            iconCls : this.iconCls,
+            iconCls: this.iconCls,
             buttons: [{
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
@@ -37,64 +37,63 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         });
     },
 
-    getItems : function () {
+    getItems: function () {
         return [
             this.getSettings(),
             this.getIndexFields()
         ];
     },
 
-    getSettings : function ()
-    {
+    getSettings: function () {
         this.indexTypeSettings = new Ext.form.Panel({});
 
-        if(this.data.type) {
+        if (this.data.type) {
             this.getIndexTypeConfig(this.data.type);
         }
 
         this.formPanel = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_settings',
             title: t('settings'),
-            bodyStyle:'padding:20px 5px 20px 5px;',
+            bodyStyle: 'padding:20px 5px 20px 5px;',
             border: false,
-            region : 'center',
+            region: 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
                 forceLayout: true
             },
-            items : [
+            items: [
                 {
-                    xtype : 'form',
+                    xtype: 'form',
                     items: [
                         {
-                            xtype:'fieldset',
-                            autoHeight:true,
+                            xtype: 'fieldset',
+                            autoHeight: true,
                             labelWidth: 350,
                             defaultType: 'textfield',
-                            defaults: { width: '100%' },
-                            items :[
+                            defaults: {width: '100%'},
+                            items: [
                                 {
-                                    xtype : 'textfield',
-                                    fieldLabel:t('name'),
-                                    name : 'name',
-                                    value : this.data.name,
+                                    xtype: 'textfield',
+                                    fieldLabel: t('name'),
+                                    name: 'name',
+                                    value: this.data.name,
                                     regex: /^[a-z0-9]+$/i
                                 },
                                 {
-                                    xtype:'combo',
-                                    fieldLabel:t('coreshop_indexes_type'),
-                                    typeAhead:true,
-                                    value:this.data.worker,
-                                    mode:'local',
-                                    listWidth:100,
+                                    xtype: 'combo',
+                                    fieldLabel: t('coreshop_indexes_type'),
+                                    typeAhead: true,
+                                    value: this.data.worker,
+                                    mode: 'local',
+                                    listWidth: 100,
                                     store: this.parentPanel.typesStore,
-                                    displayField:'name',
-                                    valueField:'name',
-                                    forceSelection:true,
-                                    triggerAction:'all',
-                                    name:'worker',
-                                    listeners : {
+                                    displayField: 'name',
+                                    valueField: 'name',
+                                    forceSelection: true,
+                                    triggerAction: 'all',
+                                    name: 'worker',
+                                    listeners: {
                                         change: function (combo, value) {
                                             this.getIndexTypeConfig(value);
                                         }.bind(this)
@@ -111,7 +110,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return this.formPanel;
     },
 
-    getIndexFields : function () {
+    getIndexFields: function () {
         this.fieldsPanel = new pimcore.plugin.coreshop.indexes.fields(this.data, this.parentPanel.class);
 
         this.indexFields = new Ext.panel.Panel({
@@ -119,7 +118,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
             title: t('coreshop_indexes_fields'),
             border: false,
             layout: 'fit',
-            region : 'center',
+            region: 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -133,7 +132,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return this.indexFields;
     },
 
-    getIndexTypeConfig : function(worker) {
+    getIndexTypeConfig: function (worker) {
         if (this.indexTypeSettings) {
             this.indexTypeSettings.removeAll();
 
@@ -143,7 +142,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
                 this.indexTypeSettings.add(workerSettings.getFields(this.data.config));
             }
 
-            if(this.indexTypeSettings.items.items.length === 0) {
+            if (this.indexTypeSettings.items.items.length === 0) {
                 this.indexTypeSettings.hide();
             }
             else {
@@ -152,7 +151,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         }
     },
 
-    getSaveData : function () {
+    getSaveData: function () {
         var saveData = this.formPanel.down("form").getForm().getFieldValues();
 
         saveData['class'] = this.parentPanel.class;
@@ -162,7 +161,7 @@ pimcore.plugin.coreshop.indexes.item = Class.create(pimcore.plugin.coreshop.abst
         return saveData;
     },
 
-    isValid : function() {
+    isValid: function () {
         return this.formPanel.down("form").isValid();
     }
 });

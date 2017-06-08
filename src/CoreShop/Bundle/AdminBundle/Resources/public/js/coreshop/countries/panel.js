@@ -45,7 +45,7 @@ pimcore.plugin.coreshop.countries.panel = Class.create(pimcore.plugin.coreshop.a
             groupField: 'zoneName',
             groupDir: 'ASC'
         });
-        
+
         $super();
     },
 

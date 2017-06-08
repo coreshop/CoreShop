@@ -8,19 +8,19 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.abstract.item');
 
 pimcore.plugin.coreshop.abstract.item = Class.create({
 
-    iconCls : '',
+    iconCls: '',
 
-    url : {
-        save : ''
+    url: {
+        save: ''
     },
 
-    multiShopSettings : false,
+    multiShopSettings: false,
 
     initialize: function (parentPanel, data, panelKey, type) {
         this.parentPanel = parentPanel;
@@ -42,7 +42,7 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         this.parentPanel.getTabPanel().setActiveItem(this.panel);
     },
 
-    destroy : function () {
+    destroy: function () {
         if (this.panel) {
             this.panel.destroy();
         }
@@ -56,30 +56,29 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
             closable: true,
             iconCls: this.iconCls,
             layout: 'border',
-            items : items
+            items: items
         });
 
         return panel;
     },
 
-    getTitleText : function () {
+    getTitleText: function () {
         return this.data.name;
     },
 
-    activate : function () {
+    activate: function () {
         this.parentPanel.getTabPanel().setActiveItem(this.panel);
     },
 
-    getItems : function () {
+    getItems: function () {
         return [];
     },
 
-    getSaveData : function () {
+    getSaveData: function () {
         return {};
     },
 
-    getMultishopSettings : function ()
-    {
+    getMultishopSettings: function () {
         if (!this.multiShopSettings) {
             this.multiShopSettings = Ext.create({
                 xtype: 'combo',
@@ -102,12 +101,11 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         return this.multiShopSettings;
     },
 
-    save: function ()
-    {
+    save: function () {
         var me = this,
             data;
 
-        if(this.isValid()) {
+        if (this.isValid()) {
             var saveData = this.getSaveData();
 
             saveData['id'] = this.data.id;
@@ -116,7 +114,7 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
             if (saveData.hasOwnProperty('stores')) {
                 var stores = [];
 
-                saveData.stores.forEach(function(store) {
+                saveData.stores.forEach(function (store) {
                     stores.push(store + "");
                 });
 
@@ -157,29 +155,29 @@ pimcore.plugin.coreshop.abstract.item = Class.create({
         }
     },
 
-    postSave : function (result) {
+    postSave: function (result) {
 
     },
 
-    isValid : function() {
+    isValid: function () {
         return true;
     },
 
     convertDotNotationToObject: function (data) {
         var obj = {};
 
-        Object.keys(data).forEach( function (key) {  //loop through the keys in the object
+        Object.keys(data).forEach(function (key) {  //loop through the keys in the object
             var val = data[key];  //grab the value of this key
             var step = obj;  //reference the object that holds the values
-            key.split(".").forEach(function(part, index, arr){   //split the parts and loop
-                if(index === arr.length-1){  //If we are at the last index, than we set the value
+            key.split(".").forEach(function (part, index, arr) {   //split the parts and loop
+                if (index === arr.length - 1) {  //If we are at the last index, than we set the value
                     step[part] = val;
-                } else if(step[part]===undefined) {  //If we have not seen this key before, create an object
+                } else if (step[part] === undefined) {  //If we have not seen this key before, create an object
                     step[part] = {};
                 }
                 step = step[part];  //Step up the object we are referencing
             });
-        } );
+        });
 
         return obj;
     }

@@ -8,35 +8,35 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.orders.createPayment');
 pimcore.plugin.coreshop.orders.createPayment = {
 
-    showWindow : function (id, order, callback) {
+    showWindow: function (id, order, callback) {
         var orderId = id;
 
         var paymentProvidersStore = new Ext.data.Store({
-            proxy : {
-                type : 'ajax',
-                url : '/admin/coreshop/order/get-payment-providers',
-                reader : {
-                    type : 'json',
-                    rootProperty : 'data'
+            proxy: {
+                type: 'ajax',
+                url: '/admin/coreshop/order/get-payment-providers',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
                 }
             },
-            fields : ['id', 'name']
+            fields: ['id', 'name']
         });
         paymentProvidersStore.load();
 
         var window = new Ext.window.Window({
-            width : 380,
-            height : 380,
-            resizeable : false,
-            layout : 'fit',
-            items : [{
-                xtype : 'form',
-                bodyStyle:'padding:20px 5px 20px 5px;',
+            width: 380,
+            height: 380,
+            resizeable: false,
+            layout: 'fit',
+            items: [{
+                xtype: 'form',
+                bodyStyle: 'padding:20px 5px 20px 5px;',
                 border: false,
                 autoScroll: true,
                 forceLayout: true,
@@ -55,9 +55,9 @@ pimcore.plugin.coreshop.orders.createPayment = {
                                 formValues['o_id'] = orderId;
 
                                 Ext.Ajax.request({
-                                    url : '/admin/coreshop/order/add-payment',
-                                    method : 'post',
-                                    params : formValues,
+                                    url: '/admin/coreshop/order/add-payment',
+                                    method: 'post',
+                                    params: formValues,
                                     callback: function (request, success, response) {
                                         try {
                                             response = Ext.decode(response.responseText);
@@ -86,9 +86,9 @@ pimcore.plugin.coreshop.orders.createPayment = {
                         iconCls: 'pimcore_icon_apply'
                     }
                 ],
-                items : [
+                items: [
                     {
-                        xtype : 'datefield',
+                        xtype: 'datefield',
                         fieldLabel: t('coreshop_date'),
                         name: 'date',
                         value: new Date(),
@@ -98,26 +98,26 @@ pimcore.plugin.coreshop.orders.createPayment = {
                         allowBlank: false
                     },
                     {
-                        xtype:'combo',
-                        fieldLabel:t('coreshop_paymentProvider'),
-                        typeAhead:true,
-                        mode:'local',
-                        listWidth:100,
-                        store:paymentProvidersStore,
-                        displayField:'name',
-                        valueField:'id',
-                        forceSelection:true,
-                        triggerAction:'all',
-                        name:'paymentProvider',
+                        xtype: 'combo',
+                        fieldLabel: t('coreshop_paymentProvider'),
+                        typeAhead: true,
+                        mode: 'local',
+                        listWidth: 100,
+                        store: paymentProvidersStore,
+                        displayField: 'name',
+                        valueField: 'id',
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        name: 'paymentProvider',
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],
                         allowBlank: false
                     },
                     {
-                        xtype : 'textfield',
-                        name : 'transactionNumber',
-                        fieldLabel : t('coreshop_transactionNumber'),
+                        xtype: 'textfield',
+                        name: 'transactionNumber',
+                        fieldLabel: t('coreshop_transactionNumber'),
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],
@@ -148,11 +148,11 @@ pimcore.plugin.coreshop.orders.createPayment = {
                         ]
                     },
                     {
-                        xtype : 'numberfield',
-                        name : 'amount',
-                        fieldLabel : t('coreshop_amount'),
-                        decimalPrecision : 4,
-                        value : order.total - order.totalPayed,
+                        xtype: 'numberfield',
+                        name: 'amount',
+                        fieldLabel: t('coreshop_amount'),
+                        decimalPrecision: 4,
+                        value: order.total - order.totalPayed,
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],

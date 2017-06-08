@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carriers.item');
 pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_carrier',
+    iconCls: 'coreshop_icon_carrier',
 
-    url : {
-        save : '/admin/coreshop/carriers/save'
+    url: {
+        save: '/admin/coreshop/carriers/save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {
@@ -37,7 +37,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             closable: true,
             deferredRender: false,
             forceLayout: true,
-            iconCls : this.iconCls,
+            iconCls: this.iconCls,
             buttons: [{
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
@@ -47,7 +47,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         });
     },
 
-    getItems : function () {
+    getItems: function () {
         return [
             this.getSettings(),
             this.getShippingLocationsAndCosts()
@@ -64,7 +64,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
-            border:false,
+            border: false,
             items: [{
                 xtype: 'textfield',
                 name: 'name',
@@ -93,11 +93,11 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.settingsForm;
     },
 
-    getShippingRulesGrid : function () {
+    getShippingRulesGrid: function () {
         this.shippingRuleGroupsStore = new Ext.data.Store({
             restful: false,
             idProperty: 'id',
-            sorters : 'priority',
+            sorters: 'priority',
             data: this.data.shippingRules
         });
 
@@ -112,7 +112,7 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                         store: pimcore.globalmanager.get('coreshop_carrier_shipping_rules'),
                         valueField: 'id',
                         displayField: 'name',
-                        queryMode : 'local',
+                        queryMode: 'local',
                         required: true
                     }),
                     renderer: function (shippingRule) {
@@ -129,9 +129,9 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                     header: t('priority'),
                     width: 200,
                     dataIndex: 'priority',
-                    editor : {
-                        xtype : 'numberfield',
-                        decimalPrecision : 0,
+                    editor: {
+                        xtype: 'numberfield',
+                        decimalPrecision: 0,
                         required: true
                     }
                 },
@@ -154,10 +154,10 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                     text: t('add'),
                     handler: function () {
                         this.shippingRuleGroupsStore.add({
-                            id : null,
-                            carrier : this.data.id,
-                            shippingRule : null,
-                            priority : 100
+                            id: null,
+                            carrier: this.data.id,
+                            shippingRule: null,
+                            priority: 100
                         });
                     }.bind(this),
                     iconCls: 'pimcore_icon_add'
@@ -173,14 +173,14 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.shippingRuleGroupsGrid;
     },
 
-    getShippingLocationsAndCosts : function () {
+    getShippingLocationsAndCosts: function () {
         //Shipping locations and costs
         this.shippingLocationAndCosts = new Ext.form.Panel({
             iconCls: 'coreshop_carrier_costs_icon',
             title: t('coreshop_carrier_shipping_locations_and_costs'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
-            border:false,
+            border: false,
             items: [{
                 xtype: 'checkbox',
                 name: 'isFree',
@@ -188,20 +188,20 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
                 width: 250,
                 value: parseInt(this.data.isFree)
             }, {
-                xtype:'combo',
-                fieldLabel:t('coreshop_carrier_tax_rule'),
-                typeAhead:true,
-                value:this.data.taxRule,
-                mode:'local',
-                listWidth:100,
-                store:pimcore.globalmanager.get('coreshop_taxrulegroups'),
-                displayField:'name',
-                valueField:'id',
-                forceSelection:true,
-                triggerAction:'all',
-                name:'taxRule',
-                listeners : {
-                    beforerender : function () {
+                xtype: 'combo',
+                fieldLabel: t('coreshop_carrier_tax_rule'),
+                typeAhead: true,
+                value: this.data.taxRule,
+                mode: 'local',
+                listWidth: 100,
+                store: pimcore.globalmanager.get('coreshop_taxrulegroups'),
+                displayField: 'name',
+                valueField: 'id',
+                forceSelection: true,
+                triggerAction: 'all',
+                name: 'taxRule',
+                listeners: {
+                    beforerender: function () {
                         if (!this.getStore().isLoaded() && !this.getStore().isLoading())
                             this.getStore().load();
                     }
@@ -224,9 +224,9 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
         return this.shippingLocationAndCosts;
     },
 
-    getSaveData : function () {
+    getSaveData: function () {
         var data = {
-            shippingRules : []
+            shippingRules: []
         };
 
         Ext.apply(data, this.settingsForm.getForm().getFieldValues());
@@ -236,8 +236,8 @@ pimcore.plugin.coreshop.carriers.item = Class.create(pimcore.plugin.coreshop.abs
 
         Ext.each(ruleGroups, function (group) {
             var rule = {
-                priority : group.get('priority'),
-                shippingRule : group.get('shippingRule'),
+                priority: group.get('priority'),
+                shippingRule: group.get('shippingRule'),
                 carrier: this.data.id
             };
 

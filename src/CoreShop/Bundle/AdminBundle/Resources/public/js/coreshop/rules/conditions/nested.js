@@ -8,18 +8,18 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.rules.conditions.nested');
 
 pimcore.plugin.coreshop.rules.conditions.nested = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
 
-    type : 'nested',
+    type: 'nested',
 
-    operatorCombo : null,
-    conditions : null,
+    operatorCombo: null,
+    conditions: null,
 
-    getForm : function () {
+    getForm: function () {
         var me = this;
 
         this.conditions = new this.parent.__proto__.constructor(this.parent.conditions);
@@ -27,8 +27,7 @@ pimcore.plugin.coreshop.rules.conditions.nested = Class.create(pimcore.plugin.co
         var layout = this.conditions.getLayout();
 
         // add saved conditions
-        if (this.data && this.data.conditions)
-        {
+        if (this.data && this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
@@ -36,7 +35,7 @@ pimcore.plugin.coreshop.rules.conditions.nested = Class.create(pimcore.plugin.co
 
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 layout
             ]
         });
@@ -44,8 +43,8 @@ pimcore.plugin.coreshop.rules.conditions.nested = Class.create(pimcore.plugin.co
         return this.form;
     },
 
-    getTopBarItems : function() {
-        if(!this.operatorCombo) {
+    getTopBarItems: function () {
+        if (!this.operatorCombo) {
             this.operatorCombo = Ext.create(
                 {
                     xtype: 'combo',
@@ -58,7 +57,7 @@ pimcore.plugin.coreshop.rules.conditions.nested = Class.create(pimcore.plugin.co
                     editable: false,
                     forceSelection: true,
                     queryMode: 'local',
-                    value : this.data ? this.data.operator : 'and'
+                    value: this.data ? this.data.operator : 'and'
                 }
             );
         }
@@ -66,10 +65,10 @@ pimcore.plugin.coreshop.rules.conditions.nested = Class.create(pimcore.plugin.co
         return ['-', this.operatorCombo];
     },
 
-    getValues : function() {
+    getValues: function () {
         return {
-            operator : this.operatorCombo.getValue(),
-            conditions : this.conditions.getConditionsData()
+            operator: this.operatorCombo.getValue(),
+            conditions: this.conditions.getConditionsData()
         };
     }
 });

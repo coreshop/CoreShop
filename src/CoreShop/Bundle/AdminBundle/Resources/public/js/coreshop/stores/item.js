@@ -8,22 +8,22 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.stores.item');
 pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_store',
+    iconCls: 'coreshop_icon_store',
 
-    url : {
-        save : '/admin/coreshop/stores/save'
+    url: {
+        save: '/admin/coreshop/stores/save'
     },
 
-    getItems : function () {
+    getItems: function () {
         return [this.getFormPanel()];
     },
 
-    getFormPanel : function () {
+    getFormPanel: function () {
         this.store = new Ext.data.Store({
             restful: false,
             idProperty: 'id',
@@ -40,9 +40,9 @@ pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstr
         this.store.load();
 
         this.formPanel = new Ext.form.Panel({
-            bodyStyle:'padding:20px 5px 20px 5px;',
+            bodyStyle: 'padding:20px 5px 20px 5px;',
             border: false,
-            region : 'center',
+            region: 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -57,12 +57,12 @@ pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstr
             ],
             items: [
                 {
-                    xtype:'fieldset',
-                    autoHeight:true,
+                    xtype: 'fieldset',
+                    autoHeight: true,
                     labelWidth: 250,
                     defaultType: 'textfield',
-                    defaults: { width: 300 },
-                    items :[
+                    defaults: {width: 300},
+                    items: [
                         {
                             fieldLabel: t('name'),
                             name: 'name',
@@ -124,8 +124,8 @@ pimcore.plugin.coreshop.stores.item = Class.create(pimcore.plugin.coreshop.abstr
         return this.formPanel;
     },
 
-    getSaveData : function () {
-         var values = this.formPanel.getForm().getFieldValues();
+    getSaveData: function () {
+        var values = this.formPanel.getForm().getFieldValues();
 
         return values;
     }
