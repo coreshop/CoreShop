@@ -28,83 +28,38 @@ pimcore.plugin.coreshop.states.panel = Class.create(pimcore.plugin.coreshop.abst
         list: '/admin/coreshop/states/list'
     },
 
-    getNavigation: function () {
-        if (!this.grid) {
-            this.store = new Ext.data.Store({
-                restful: false,
-                proxy: new Ext.data.HttpProxy({
-                    url: this.url.list
-                }),
-                reader: new Ext.data.JsonReader({}, [
-                    {name: 'id'},
-                    {name: 'name'},
-                    {name: 'countryName'}
-                ]),
-                autoload: true,
-                groupField: 'countryName',
-                groupDir: 'ASC'
-            });
+    initialize: function ($super) {
+        this.store = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: this.url.list
+            }),
+            reader: new Ext.data.JsonReader({}, [
+                {name: 'id'},
+                {name: 'name'},
+                {name: 'countryName'}
+            ]),
+            autoload: true,
+            groupField: 'countryName',
+            groupDir: 'ASC'
+        });
 
-            this.grid = Ext.create('Ext.grid.Panel', {
-                region: 'west',
-                store: this.store,
-                columns: [
-                    {
-                        text: '',
-                        dataIndex: 'name',
-                        flex: 1,
-                        renderer: function (value, metadata, record) {
-                            metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
+        $super();
+    },
 
-                            return value;
-                        }
-                    }
-                ],
-                listeners: this.getTreeNodeListeners(),
-                useArrows: true,
-                autoScroll: true,
-                animate: true,
-                containerScroll: true,
-                width: 200,
-                split: true,
-                groupField: 'countryName',
-                groupDir: 'ASC',
-                features: [{
-                    ftype: 'grouping',
+    getGridConfiguration: function () {
+        return {
+            store: this.store,
+            groupField: 'zoneName',
+            groupDir: 'ASC',
+            features: [{
+                ftype: 'grouping',
 
-                    // You can customize the group's header.
-                    groupHeaderTpl: '{name} ({children.length})',
-                    enableNoGroups: true,
-                    startCollapsed: true
-                }],
-                tbar: {
-                    items: [
-                        {
-                            // add button
-                            text: t('add'),
-                            iconCls: 'pimcore_icon_add',
-                            handler: this.addItem.bind(this)
-                        }
-                    ]
-                },
-                bbar: {
-                    items: ['->', {
-                        iconCls: 'pimcore_icon_reload',
-                        scale: 'small',
-                        handler: function () {
-                            this.grid.getStore().load();
-                        }.bind(this)
-                    }]
-                },
-                hideHeaders: true
-            });
-
-            this.grid.on('beforerender', function () {
-                this.getStore().load();
-            });
-
-        }
-
-        return this.grid;
+                // You can customize the group's header.
+                groupHeaderTpl: '{name} ({children.length})',
+                enableNoGroups: true,
+                startCollapsed: true
+            }]
+        };
     }
 });

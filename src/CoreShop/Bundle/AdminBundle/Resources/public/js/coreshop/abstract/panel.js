@@ -8,22 +8,22 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
 
-    pimcore.plugin.coreshop.abstract.panel = Class.create({
+pimcore.plugin.coreshop.abstract.panel = Class.create({
 
     layoutId: 'abstract_layout',
-    storeId : 'abstract_store',
-    iconCls : 'coreshop_abstract_icon',
-    type : 'abstract',
+    storeId: 'abstract_store',
+    iconCls: 'coreshop_abstract_icon',
+    type: 'abstract',
 
-    url : {
-        add : '',
-        delete : '',
-        get : '',
-        list : ''
+    url: {
+        add: '',
+        delete: '',
+        get: '',
+        list: ''
     },
 
     initialize: function () {
@@ -70,58 +70,78 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         return this.layout;
     },
 
-    getTitle : function () {
+    getTitle: function () {
         return t('coreshop_' + this.type);
     },
 
-    refresh : function () {
+    refresh: function () {
         if (pimcore.globalmanager.exists(this.storeId)) {
             pimcore.globalmanager.get(this.storeId).load();
         }
     },
 
-    getItems : function () {
+    getItems: function () {
         return [this.getNavigation(), this.getTabPanel()];
+    },
+
+    getDefaultGridConfiguration: function () {
+        return {
+            region: 'west',
+            store: pimcore.globalmanager.get(this.storeId),
+            columns: [
+                {
+                    text: '',
+                    dataIndex: 'name',
+                    flex: 1,
+                    renderer: function (value, metadata, record) {
+                        metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
+
+                        return value;
+                    }
+                }
+            ],
+            listeners: this.getTreeNodeListeners(),
+            useArrows: true,
+            autoScroll: true,
+            animate: true,
+            containerScroll: true,
+            width: 200,
+            split: true,
+            tbar: this.getTopBar(),
+            bbar: {
+                items: [{
+                    xtype: 'label',
+                    text: '',
+                    itemId: 'totalLabel'
+                }, '->', {
+                    iconCls: 'pimcore_icon_reload',
+                    scale: 'small',
+                    handler: function () {
+                        this.grid.getStore().load();
+                    }.bind(this)
+                }]
+            },
+            hideHeaders: true
+        };
+    },
+
+    getGridConfiguration: function () {
+        return [];
     },
 
     getNavigation: function () {
         if (!this.grid) {
 
-            this.grid = Ext.create('Ext.grid.Panel', {
-                region: 'west',
-                store: pimcore.globalmanager.get(this.storeId),
-                columns: [
-                    {
-                        text: '',
-                        dataIndex: 'name',
-                        flex : 1,
-                        renderer: function (value, metadata, record)
-                        {
-                            metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
+            this.grid = Ext.create('Ext.grid.Panel',
+                Ext.apply({},
+                    this.getGridConfiguration(),
+                    this.getDefaultGridConfiguration()
+                )
+            );
 
-                            return value;
-                        }
-                    }
-                ],
-                listeners : this.getTreeNodeListeners(),
-                useArrows: true,
-                autoScroll: true,
-                animate: true,
-                containerScroll: true,
-                width: 200,
-                split: true,
-                tbar: this.getTopBar(),
-                bbar : {
-                    items : ['->', {
-                        iconCls: 'pimcore_icon_reload',
-                        scale : 'small',
-                        handler: function() {
-                            this.grid.getStore().load();
-                        }.bind(this)
-                    }]
-                },
-                hideHeaders: true
-            });
+            this.grid.getStore().on("load", function (store, records) {
+                this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length))
+            }.bind(this));
 
             this.grid.on('beforerender', function () {
                 this.getStore().load();
@@ -132,7 +152,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         return this.grid;
     },
 
-    getTopBar : function() {
+    getTopBar: function () {
         return [
             {
                 // add button
@@ -146,7 +166,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
     getTreeNodeListeners: function () {
 
         return {
-            itemclick : this.onTreeNodeClick.bind(this),
+            itemclick: this.onTreeNodeClick.bind(this),
             itemcontextmenu: this.onTreeNodeContextmenu.bind(this)
         };
     },
@@ -186,7 +206,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
             Ext.Ajax.request({
                 url: this.url.add,
                 jsonData: jsonData,
-                method : 'post',
+                method: 'post',
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
 
@@ -230,19 +250,17 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         });
     },
 
-    getPanelKey : function (record) {
+    getPanelKey: function (record) {
         return this.layoutId + record.id;
     },
 
     openItem: function (record) {
         var panelKey = this.getPanelKey(record);
 
-        if (this.panels[panelKey])
-        {
+        if (this.panels[panelKey]) {
             this.panels[panelKey].activate();
         }
-        else
-        {
+        else {
             Ext.Ajax.request({
                 url: this.url.get,
                 params: {
@@ -264,7 +282,7 @@ pimcore.registerNS('pimcore.plugin.coreshop.abstract.panel');
         }
     },
 
-    getItemClass : function () {
+    getItemClass: function () {
         return pimcore.plugin.coreshop[this.type].item;
     },
 

@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.payment.provider.panel');
 pimcore.plugin.coreshop.payment.provider.panel = Class.create(pimcore.plugin.coreshop.abstract.panel, {
@@ -17,19 +17,19 @@ pimcore.plugin.coreshop.payment.provider.panel = Class.create(pimcore.plugin.cor
      * @var string
      */
     layoutId: 'coreshop_payment_providers_panel',
-    storeId : 'coreshop_payment_providers',
-    iconCls : 'coreshop_icon_payment_provider',
-    type : 'payment_provider',
+    storeId: 'coreshop_payment_providers',
+    iconCls: 'coreshop_icon_payment_provider',
+    type: 'payment_provider',
 
-    url : {
-        add : '/admin/coreshop/payment_providers/add',
-        delete : '/admin/coreshop/payment_providers/delete',
-        get : '/admin/coreshop/payment_providers/get',
-        list : '/admin/coreshop/payment_providers/list',
-        config : '/admin/coreshop/payment_providers/get-config'
+    url: {
+        add: '/admin/coreshop/payment_providers/add',
+        delete: '/admin/coreshop/payment_providers/delete',
+        get: '/admin/coreshop/payment_providers/get',
+        list: '/admin/coreshop/payment_providers/list',
+        config: '/admin/coreshop/payment_providers/get-config'
     },
 
-    factoryTypes : null,
+    factoryTypes: null,
 
     /**
      * constructor
@@ -38,11 +38,25 @@ pimcore.plugin.coreshop.payment.provider.panel = Class.create(pimcore.plugin.cor
         this.getConfig();
 
         this.panels = [];
+
+        this.store = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: this.url.list
+            }),
+            reader: new Ext.data.JsonReader({
+                rootProperty: 'data'
+            }, [
+                {name: 'id'},
+                {name: 'identifier'}
+            ]),
+            autoload: true
+        });
     },
 
-    getConfig : function() {
+    getConfig: function () {
         this.factoryTypes = new Ext.data.ArrayStore({
-            data : [],
+            data: [],
             expandedData: true
         });
 
@@ -65,91 +79,17 @@ pimcore.plugin.coreshop.payment.provider.panel = Class.create(pimcore.plugin.cor
         });
     },
 
-    getItemClass : function () {
+    getItemClass: function () {
         return pimcore.plugin.coreshop.payment.provider.item;
     },
 
-    getNavigation: function () {
-        if (!this.grid) {
-            this.store = new Ext.data.Store({
-                restful:    false,
-                proxy:      new Ext.data.HttpProxy({
-                    url : this.url.list
-                }),
-                reader:     new Ext.data.JsonReader({
-                    rootProperty: 'data'
-                }, [
-                    { name:'id' },
-                    { name:'identifier' }
-                ]),
-                autoload:   true
-            });
-
-            this.grid = Ext.create('Ext.grid.Panel', {
-                region: 'west',
-                store: this.store,
-                columns: [
-                    {
-                        text: '',
-                        dataIndex: 'identifier',
-                        flex : 1,
-                        renderer: function (value, metadata, record)
-                        {
-                            metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
-
-                            return value;
-                        }
-                    }
-                ],
-                listeners : this.getTreeNodeListeners(),
-                useArrows: true,
-                autoScroll: true,
-                animate: true,
-                containerScroll: true,
-                width: 200,
-                split: true,
-                groupField: 'zoneName',
-                groupDir: 'ASC',
-                features: [{
-                    ftype: 'grouping',
-
-                    // You can customize the group's header.
-                    groupHeaderTpl: '{name} ({children.length})',
-                    enableNoGroups:true,
-                    startCollapsed : true
-                }],
-                tbar: {
-                    items: [
-                        {
-                            // add button
-                            text: t('add'),
-                            iconCls: 'pimcore_icon_add',
-                            handler: this.addItem.bind(this)
-                        }
-                    ]
-                },
-                bbar : {
-                    items : ['->', {
-                        iconCls: 'pimcore_icon_reload',
-                        scale : 'small',
-                        handler: function() {
-                            this.grid.getStore().load();
-                        }.bind(this)
-                    }]
-                },
-                hideHeaders: true
-            });
-
-            this.grid.on('beforerender', function () {
-                this.getStore().load();
-            });
-
-        }
-
-        return this.grid;
+    getGridConfiguration: function () {
+        return {
+            store: this.store
+        };
     },
 
-    prepareAdd : function(object) {
+    prepareAdd: function (object) {
 
         object['identifier'] = object.name;
 

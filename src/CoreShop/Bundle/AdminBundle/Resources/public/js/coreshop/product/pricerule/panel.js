@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.product.pricerule.panel');
 pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.coreshop.pricerules.panel, {
@@ -16,9 +16,9 @@ pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.co
      * @var string
      */
     layoutId: 'coreshop_product_price_rule_panel',
-    storeId : 'coreshop_product_price_rule',
-    iconCls : 'coreshop_icon_price_rule',
-    type : 'product_pricerules',
+    storeId: 'coreshop_product_price_rule',
+    iconCls: 'coreshop_icon_price_rule',
+    type: 'product_pricerules',
 
     /**
      * @var array
@@ -47,82 +47,39 @@ pimcore.plugin.coreshop.product.pricerule.panel = Class.create(pimcore.plugin.co
         });
 
         this.url = {
-            add : '/admin/coreshop/product_price_rules/add',
-            delete : '/admin/coreshop/product_price_rules/delete',
-            get : '/admin/coreshop/product_price_rules/get',
-            list : '/admin/coreshop/product_price_rules/list'
+            add: '/admin/coreshop/product_price_rules/add',
+            delete: '/admin/coreshop/product_price_rules/delete',
+            get: '/admin/coreshop/product_price_rules/get',
+            list: '/admin/coreshop/product_price_rules/list'
         };
 
         this.panels = [];
+        this.store = new Ext.data.Store({
+            idProperty: 'id',
+            fields: [
+                {name: 'id'},
+                {name: 'name'}
+            ],
+            proxy: {
+                type: 'ajax',
+                url: this.url.list,
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
+                }
+            }
+        });
 
         this.getLayout();
     },
 
-    getNavigation: function () {
-        if (!this.grid) {
-
-            this.store = new Ext.data.Store({
-                idProperty: 'id',
-                fields : [
-                    { name:'id' },
-                    { name:'name' }
-                ],
-                proxy: {
-                    type: 'ajax',
-                    url: this.url.list,
-                    reader: {
-                        type: 'json',
-                        rootProperty : 'data'
-                    }
-                }
-            });
-
-            this.grid = Ext.create('Ext.grid.Panel', {
-                region: 'west',
-                store: this.store,
-                columns: [
-                    {
-                        text: '',
-                        dataIndex: 'name',
-                        flex : 1,
-                        renderer: function (value, metadata, record)
-                        {
-                            metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
-
-                            return value;
-                        }
-                    }
-                ],
-                listeners : this.getTreeNodeListeners(),
-                useArrows: true,
-                autoScroll: true,
-                animate: true,
-                containerScroll: true,
-                width: 200,
-                split: true,
-                tbar: {
-                    items: [
-                        {
-                            // add button
-                            text: t('add'),
-                            iconCls: 'pimcore_icon_add',
-                            handler: this.addItem.bind(this)
-                        }
-                    ]
-                },
-                hideHeaders: true
-            });
-
-            this.grid.on('beforerender', function () {
-                this.getStore().load();
-            });
-
-        }
-
-        return this.grid;
+    getGridConfiguration: function () {
+        return {
+            store: this.store
+        };
     },
 
-    getItemClass : function () {
+    getItemClass: function () {
         return pimcore.plugin.coreshop.product.pricerule.item;
     }
 });

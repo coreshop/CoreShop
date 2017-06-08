@@ -19,14 +19,14 @@
 
         <div class="col-sm-5 images-block">
              {% if product.getImage %}
-                 {{ product.getImage().getThumbnail("coreshop_productList").getHtml({"class": "img-responsive"})|raw }}
+                 {{ product.getImage().getThumbnail("coreshop_productDetail").getHtml({"class": "img-responsive thumbnail"})|raw }}
             {% endif %}
 
             {% if product.getImages|length > 0 %}
                 <ul class="list-unstyled list-inline">
                     {% for image in product.getImages %}
                         <li>
-                            {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive"})|raw }}
+                            {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive thumbnail"})|raw }}
                         </li>
                     {% endfor %}
                 </ul>
