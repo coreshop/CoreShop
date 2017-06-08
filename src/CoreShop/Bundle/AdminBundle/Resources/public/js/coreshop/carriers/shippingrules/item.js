@@ -8,16 +8,16 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.item');
 
 pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin.coreshop.rules.item, {
 
-    iconCls : 'coreshop_icon_carrier_shipping_rule',
+    iconCls: 'coreshop_icon_carrier_shipping_rule',
 
-    url : {
-        save : '/admin/coreshop/shipping_rules/save'
+    url: {
+        save: '/admin/coreshop/shipping_rules/save'
     },
 
     getPanel: function () {
@@ -31,7 +31,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
             closable: true,
             deferredRender: false,
             forceLayout: true,
-            iconCls : this.iconCls,
+            iconCls: this.iconCls,
             buttons: [{
                 text: t('save'),
                 iconCls: 'pimcore_icon_apply',
@@ -51,7 +51,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
-            border:false,
+            border: false,
             items: [{
                 xtype: 'textfield',
                 name: 'name',
@@ -64,7 +64,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
         return this.settingsForm;
     },
 
-    getUsedByPanel : function() {
+    getUsedByPanel: function () {
         this.store = new Ext.data.JsonStore({
             fields: [
                 'id',
@@ -91,7 +91,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
             {
                 text: t('coreshop_carrier'),
                 dataIndex: 'name',
-                flex : 1
+                flex: 1
             }
         ];
 
@@ -108,11 +108,11 @@ pimcore.plugin.coreshop.carrier.shippingrules.item = Class.create(pimcore.plugin
         return this.grid;
     },
 
-    getActionContainerClass : function () {
+    getActionContainerClass: function () {
         return pimcore.plugin.coreshop.carrier.shippingrules.action;
     },
 
-    getConditionContainerClass : function () {
+    getConditionContainerClass: function () {
         return pimcore.plugin.coreshop.carrier.shippingrules.condition;
     }
 });

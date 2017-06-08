@@ -8,17 +8,17 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.actions.orderMail');
 
 pimcore.plugin.coreshop.notification.rules.actions.orderMail = Class.create(pimcore.plugin.coreshop.notification.rules.actions.mail, {
 
-    type : 'orderMail',
+    type: 'orderMail',
 
-    fields : {},
+    fields: {},
 
-    getForm : function ($super) {
+    getForm: function ($super) {
         var form = $super(),
             me = this;
 
@@ -41,12 +41,12 @@ pimcore.plugin.coreshop.notification.rules.actions.orderMail = Class.create(pimc
         return form;
     },
 
-    getValues : function($super) {
+    getValues: function ($super) {
         var values = $super();
 
         values = Ext.applyIf({
-            'sendInvoices' : this.sendInvoices.getValue(),
-            'sendShipments' : this.sendShipments.getValue()
+            'sendInvoices': this.sendInvoices.getValue(),
+            'sendShipments': this.sendShipments.getValue()
         }, values);
 
         return values;

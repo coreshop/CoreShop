@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.action');
 
 pimcore.plugin.coreshop.carrier.shippingrules.action = Class.create(pimcore.plugin.coreshop.rules.action, {
-    getActionClassNamespace : function() {
+    getActionClassNamespace: function () {
         return pimcore.plugin.coreshop.carrier.shippingrules.actions;
     }
 });

@@ -8,16 +8,16 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.conditions.orderState');
 
 pimcore.plugin.coreshop.notification.rules.conditions.orderState = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'orderState',
+    type: 'orderState',
 
-    getForm : function () {
+    getForm: function () {
         this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
+            items: [
                 {
                     xtype: 'combo',
                     fieldLabel: t('coreshop_transition_direction_mode'),
@@ -43,9 +43,9 @@ pimcore.plugin.coreshop.notification.rules.conditions.orderState = Class.create(
                     editable: false,
                     forceSelection: true,
                     queryMode: 'local',
-                    multiSelect : true,
-                    displayField : 'label',
-                    valueField : 'name'
+                    multiSelect: true,
+                    displayField: 'label',
+                    valueField: 'name'
                 }
             ]
         });

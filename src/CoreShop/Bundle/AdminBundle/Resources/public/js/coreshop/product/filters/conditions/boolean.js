@@ -8,21 +8,21 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.boolean');
 
 pimcore.plugin.coreshop.filters.conditions.boolean = Class.create(pimcore.plugin.coreshop.filters.conditions.abstract, {
 
-    type : 'boolean',
+    type: 'boolean',
 
-    getDefaultItems : function () {
+    getDefaultItems: function () {
         this.valueStore = new Ext.data.ArrayStore({
             proxy: new Ext.data.HttpProxy({
-                url : '/admin/coreshop/filters/get-values-for-filter-field'
+                url: '/admin/coreshop/filters/get-values-for-filter-field'
             }),
             reader: new Ext.data.JsonReader({}, [
-                { name:'value' }
+                {name: 'value'}
             ])
         });
 
@@ -32,17 +32,17 @@ pimcore.plugin.coreshop.filters.conditions.boolean = Class.create(pimcore.plugin
             name: 'field',
             width: 400,
             store: this.parent.getFieldsStore(),
-            displayField : 'name',
-            valueField : 'name',
+            displayField: 'name',
+            valueField: 'name',
             triggerAction: 'all',
-            multiSelect:true,
+            multiSelect: true,
             typeAhead: false,
             editable: false,
             forceSelection: true,
             queryMode: 'local',
-            value : this.data.field,
-            listeners : {
-                change : function (combo, newValue) {
+            value: this.data.field,
+            listeners: {
+                change: function (combo, newValue) {
                     this.onFieldChange.call(this, combo, newValue);
                 }.bind(this)
             }
@@ -54,18 +54,17 @@ pimcore.plugin.coreshop.filters.conditions.boolean = Class.create(pimcore.plugin
 
         return [
             {
-                xtype : 'textfield',
-                name : 'label',
-                width : 400,
-                fieldLabel : t('label'),
-                value : this.data.label
+                xtype: 'textfield',
+                name: 'label',
+                width: 400,
+                fieldLabel: t('label'),
+                value: this.data.label
             },
             this.fieldsCombo
         ];
     },
 
-    getItems : function ()
-    {
+    getItems: function () {
         return [
             {
                 xtype: 'combo',
@@ -73,15 +72,15 @@ pimcore.plugin.coreshop.filters.conditions.boolean = Class.create(pimcore.plugin
                 name: 'preSelects',
                 width: 400,
                 store: this.parent.getFieldsStore(),
-                displayField : 'name',
-                multiSelect:true,
-                valueField : 'name',
+                displayField: 'name',
+                multiSelect: true,
+                valueField: 'name',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value : this.data.preSelects
+                value: this.data.preSelects
             }
         ];
     }

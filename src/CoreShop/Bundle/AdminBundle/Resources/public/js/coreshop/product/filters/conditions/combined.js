@@ -8,21 +8,21 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.combined');
 
 pimcore.plugin.coreshop.filters.conditions.combined = Class.create(pimcore.plugin.coreshop.filters.conditions.abstract, {
 
-    type : 'combined',
+    type: 'combined',
 
-    getDefaultItems : function() {
+    getDefaultItems: function () {
         this.label = Ext.create({
-            xtype : 'textfield',
-            name : 'label',
-            width : 400,
-            fieldLabel : t('label'),
-            value : this.data.label
+            xtype: 'textfield',
+            name: 'label',
+            width: 400,
+            fieldLabel: t('label'),
+            value: this.data.label
         });
 
         return [
@@ -30,8 +30,7 @@ pimcore.plugin.coreshop.filters.conditions.combined = Class.create(pimcore.plugi
         ];
     },
 
-    getItems : function ()
-    {
+    getItems: function () {
         this.conditions = new this.parent.__proto__.constructor(this.parent.parent, this.parent.conditions, 'combined');
 
         var layout = this.conditions.getLayout();
@@ -39,15 +38,14 @@ pimcore.plugin.coreshop.filters.conditions.combined = Class.create(pimcore.plugi
         layout.setIconCls(null);
 
         // add saved conditions
-        if (this.data && this.data.conditions)
-        {
+        if (this.data && this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
         }
 
         this.form = new Ext.panel.Panel({
-            items : [
+            items: [
                 layout
             ]
         });
@@ -55,10 +53,10 @@ pimcore.plugin.coreshop.filters.conditions.combined = Class.create(pimcore.plugi
         return [this.form];
     },
 
-    getData : function() {
+    getData: function () {
         return {
-            conditions : this.conditions.getData(),
-            label : this.label.getValue()
+            conditions: this.conditions.getData(),
+            label: this.label.getValue()
         };
     }
 });

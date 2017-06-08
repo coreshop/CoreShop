@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.reports.outOfStockProducts');
 pimcore.plugin.coreshop.report.monitoring.reports.outOfStockProducts = Class.create(pimcore.plugin.coreshop.report.monitoring.abstract, {
 
-    url : '/admin/coreshop/reports/get-out-of-stock-products-monitoring',
+    url: '/admin/coreshop/reports/get-out-of-stock-products-monitoring',
 
     getName: function () {
         return t('coreshop_monitoring_outOfStockProducts');
@@ -23,40 +23,40 @@ pimcore.plugin.coreshop.report.monitoring.reports.outOfStockProducts = Class.cre
         return 'coreshop_icon_product';
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
-                xtype : 'grid',
+                xtype: 'grid',
                 store: this.getStore(),
-                columns : [
+                columns: [
                     {
                         text: t('id'),
-                        dataIndex : 'id',
-                        width : 100
+                        dataIndex: 'id',
+                        width: 100
                     },
                     {
                         text: t('name'),
-                        dataIndex : 'name',
-                        flex : 1
+                        dataIndex: 'name',
+                        flex: 1
                     },
                     {
                         text: t('coreshop_monitoring_outOfStockProducts_quantity'),
-                        dataIndex : 'quantity',
-                        width : 100
+                        dataIndex: 'quantity',
+                        width: 100
                     },
                     {
                         text: t('coreshop_monitoring_outOfStockProducts_out_of_stock_behaviour'),
-                        dataIndex : 'outOfStockBehaviour',
-                        width : 100,
-                        renderer : function (value) {
+                        dataIndex: 'outOfStockBehaviour',
+                        width: 100,
+                        renderer: function (value) {
                             return t('coreshop_stock_' + value + '_order');
                         }
                     }
                 ],
-                listeners : {
-                    rowclick : function (grid, record) {
+                listeners: {
+                    rowclick: function (grid, record) {
                         var d = record.data;
 
                         pimcore.helpers.openObject(d.id, 'object');

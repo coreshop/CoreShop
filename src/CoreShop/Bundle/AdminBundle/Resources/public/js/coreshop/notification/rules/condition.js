@@ -8,25 +8,25 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.condition');
 
 pimcore.plugin.coreshop.notification.rules.condition = Class.create(pimcore.plugin.coreshop.rules.condition, {
-    initialize : function (conditions, type) {
+    initialize: function (conditions, type) {
         this.conditions = conditions;
         this.type = type;
     },
 
-    getConditionStyleClass: function(condition) {
+    getConditionStyleClass: function (condition) {
         return 'coreshop_rule_icon_condition_' + condition;
     },
 
-    getConditionClassNamespace : function() {
+    getConditionClassNamespace: function () {
         return pimcore.plugin.coreshop.notification.rules.conditions;
     },
 
-    prepareCondition : function(condition) {
+    prepareCondition: function (condition) {
         condition['type'] = this.type + '.' + condition['type'];
 
         return condition;

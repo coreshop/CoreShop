@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.objecttype.abstract');
 
@@ -17,50 +17,50 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
 
     },
 
-    getObjectTypeItems : function (record) {
+    getObjectTypeItems: function (record) {
         return [new Ext.form.ComboBox({
-            fieldLabel : t('coreshop_index_field_type'),
-            name : 'columnType',
-            length : 255,
-            value : record.data.columnType,
-            store : pimcore.globalmanager.get('coreshop_index_fieldTypes'),
-            valueField : 'type',
-            displayField : 'name',
-            queryMode : 'local'
+            fieldLabel: t('coreshop_index_field_type'),
+            name: 'columnType',
+            length: 255,
+            value: record.data.columnType,
+            store: pimcore.globalmanager.get('coreshop_index_fieldTypes'),
+            valueField: 'type',
+            displayField: 'name',
+            queryMode: 'local'
         })];
     },
 
-    getConfigDialog : function (record) {
+    getConfigDialog: function (record) {
         this.record = record;
 
         var fieldSetItems = [];
 
         fieldSetItems.push(new Ext.form.TextField({
-            fieldLabel : t('key'),
-            name : 'key',
-            length : 255,
-            value : record.data.key,
-            disabled : true
+            fieldLabel: t('key'),
+            name: 'key',
+            length: 255,
+            value: record.data.key,
+            disabled: true
         }));
 
         fieldSetItems.push(new Ext.form.TextField({
-            fieldLabel : t('name'),
-            name : 'name',
-            length : 255,
-            value : record.data.name ? record.data.name : record.data.key
+            fieldLabel: t('name'),
+            name: 'name',
+            length: 255,
+            value: record.data.name ? record.data.name : record.data.key
         }));
 
         fieldSetItems.push(new Ext.form.ComboBox({
-            fieldLabel : t('coreshop_index_field_getter'),
-            name : 'getter',
-            length : 255,
-            value : record.data.getter,
-            store : pimcore.globalmanager.get('coreshop_index_getters'),
-            valueField : 'type',
-            displayField : 'name',
-            queryMode : 'local',
-            listeners : {
-                change : function (combo, newValue) {
+            fieldLabel: t('coreshop_index_field_getter'),
+            name: 'getter',
+            length: 255,
+            value: record.data.getter,
+            store: pimcore.globalmanager.get('coreshop_index_getters'),
+            valueField: 'type',
+            displayField: 'name',
+            queryMode: 'local',
+            listeners: {
+                change: function (combo, newValue) {
                     this.getGetterPanel().removeAll();
 
                     this.getGetterPanelLayout(newValue);
@@ -69,16 +69,16 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         }));
 
         fieldSetItems.push(new Ext.form.ComboBox({
-            fieldLabel : t('coreshop_index_field_interpreter'),
-            name : 'interpreter',
-            length : 255,
-            value : record.data.interpreter,
-            store : pimcore.globalmanager.get('coreshop_index_interpreters'),
-            valueField : 'type',
-            displayField : 'name',
-            queryMode : 'local',
-            listeners : {
-                change : function (combo, newValue) {
+            fieldLabel: t('coreshop_index_field_interpreter'),
+            name: 'interpreter',
+            length: 255,
+            value: record.data.interpreter,
+            store: pimcore.globalmanager.get('coreshop_index_interpreters'),
+            valueField: 'type',
+            displayField: 'name',
+            queryMode: 'local',
+            listeners: {
+                change: function (combo, newValue) {
                     this.getInterpreterPanel().removeAll();
 
                     this.getInterpreterPanelLayout(newValue);
@@ -95,21 +95,20 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         }
 
         this.configForm = new Ext.form.FormPanel({
-            items : fieldSetItems,
+            items: fieldSetItems,
             layout: 'form',
-            defaults: { anchor: '90%' },
-            title : t('coreshop_index_field_settings')
+            defaults: {anchor: '90%'},
+            title: t('coreshop_index_field_settings')
         });
 
         this.configPanel = new Ext.panel.Panel({
             layout: 'form',
-            scrollable : true,
-            items:
-                [
-                    this.configForm,
-                    this.getGetterPanel(),
-                    this.getInterpreterPanel()
-                ],
+            scrollable: true,
+            items: [
+                this.configForm,
+                this.getGetterPanel(),
+                this.getInterpreterPanel()
+            ],
             buttons: [{
                 text: t('apply'),
                 iconCls: 'pimcore_icon_apply',
@@ -122,7 +121,7 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         this.window = new Ext.Window({
             width: 400,
             height: 400,
-            resizeable : true,
+            resizeable: true,
             modal: true,
             title: t('coreshop_index_field') + ' (' + this.record.data.key + ')',
             layout: 'fit',
@@ -159,19 +158,19 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         this.window.close();
     },
 
-    getGetterPanel : function () {
+    getGetterPanel: function () {
         if (!this.getterPanel) {
             this.getterPanel = new Ext.form.FormPanel({
-                defaults: { anchor: '90%' },
+                defaults: {anchor: '90%'},
                 layout: 'form',
-                title : t('coreshop_index_getter_settings')
+                title: t('coreshop_index_getter_settings')
             });
         }
 
         return this.getterPanel;
     },
 
-    getGetterPanelLayout : function (type) {
+    getGetterPanelLayout: function (type) {
         if (type) {
             type = type.toLowerCase();
 
@@ -189,19 +188,19 @@ pimcore.plugin.coreshop.indexes.objecttype.abstract = Class.create({
         }
     },
 
-    getInterpreterPanel : function () {
+    getInterpreterPanel: function () {
         if (!this.interpreterPanel) {
             this.interpreterPanel = new Ext.form.FormPanel({
-                defaults: { anchor: '90%' },
+                defaults: {anchor: '90%'},
                 layout: 'form',
-                title : t('coreshop_index_interpreter_settings')
+                title: t('coreshop_index_interpreter_settings')
             });
         }
 
         return this.interpreterPanel;
     },
 
-    getInterpreterPanelLayout : function (type) {
+    getInterpreterPanelLayout: function (type) {
         if (type) {
             type = type.toLowerCase();
 

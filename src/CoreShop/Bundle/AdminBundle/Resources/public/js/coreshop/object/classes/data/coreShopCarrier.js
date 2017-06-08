@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.object.classes.data.coreShopCarrier');
 pimcore.object.classes.data.coreShopCarrier = Class.create(pimcore.plugin.coreshop.object.classes.data.select, {

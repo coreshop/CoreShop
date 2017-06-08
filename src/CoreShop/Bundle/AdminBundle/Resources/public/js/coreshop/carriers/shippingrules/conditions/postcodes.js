@@ -8,14 +8,14 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.postcodes');
 
 pimcore.plugin.coreshop.carrier.shippingrules.conditions.postcodes = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'postcodes',
+    type: 'postcodes',
 
-    getForm : function () {
+    getForm: function () {
 
         var postCodesValues = '';
         var exclusionValue = false;
@@ -25,31 +25,31 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.postcodes = Class.creat
                 postCodesValues = this.data.postcodes;
             }
 
-            if(this.data.exclusion) {
+            if (this.data.exclusion) {
                 exclusionValue = this.data.exclusion;
             }
         }
 
         var info = new Ext.panel.Panel({
-            border : false,
-            html : t('coreshop_condition_postcodes_info'),
+            border: false,
+            html: t('coreshop_condition_postcodes_info'),
             bodyPadding: '0 0 20px 0'
         });
 
         var exclusion = new Ext.form.Checkbox({
-            fieldLabel:t('coreshop_condition_postcodes_exclusion'),
-            name:'exclusion',
-            checked : exclusionValue
+            fieldLabel: t('coreshop_condition_postcodes_exclusion'),
+            name: 'exclusion',
+            checked: exclusionValue
         });
 
         var postcodes = new Ext.form.TextArea({
-            fieldLabel:t('coreshop_condition_postcodes'),
-            name:'postcodes',
-            value : postCodesValues
+            fieldLabel: t('coreshop_condition_postcodes'),
+            name: 'postcodes',
+            value: postCodesValues
         });
 
         this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
+            items: [
                 info, postcodes, exclusion
             ]
         });

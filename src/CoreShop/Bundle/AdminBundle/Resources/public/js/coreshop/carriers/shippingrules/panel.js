@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.panel');
 pimcore.plugin.coreshop.carrier.shippingrules.panel = Class.create(pimcore.plugin.coreshop.rules.panel, {
@@ -16,19 +16,19 @@ pimcore.plugin.coreshop.carrier.shippingrules.panel = Class.create(pimcore.plugi
      * @var string
      */
     layoutId: 'coreshop_carrier_shipping_rule_panel',
-    storeId : 'coreshop_carrier_shipping_rules',
-    iconCls : 'coreshop_icon_carrier_shipping_rule',
-    type : 'carriers_shipping_rules',
+    storeId: 'coreshop_carrier_shipping_rules',
+    iconCls: 'coreshop_icon_carrier_shipping_rule',
+    type: 'carriers_shipping_rules',
 
-    url : {
-        add : '/admin/coreshop/shipping_rules/add',
-        delete : '/admin/coreshop/shipping_rules/delete',
-        get : '/admin/coreshop/shipping_rules/get',
-        list : '/admin/coreshop/shipping_rules/list',
-        config : '/admin/coreshop/shipping_rules/get-config'
+    url: {
+        add: '/admin/coreshop/shipping_rules/add',
+        delete: '/admin/coreshop/shipping_rules/delete',
+        get: '/admin/coreshop/shipping_rules/get',
+        list: '/admin/coreshop/shipping_rules/list',
+        config: '/admin/coreshop/shipping_rules/get-config'
     },
 
-    getItemClass : function () {
+    getItemClass: function () {
         return pimcore.plugin.coreshop.carrier.shippingrules.item;
     }
 });

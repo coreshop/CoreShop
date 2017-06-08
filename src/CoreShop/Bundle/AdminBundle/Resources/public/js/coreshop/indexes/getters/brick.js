@@ -8,20 +8,20 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.getters.brick');
 
 pimcore.plugin.coreshop.indexes.getters.brick = Class.create(pimcore.plugin.coreshop.indexes.getters.abstract, {
 
-    getLayout : function (record) {
+    getLayout: function (record) {
         return [
             {
-                xtype : 'textfield',
-                fieldLabel : t('coreshop_index_field_brickfield'),
-                name : 'brickField',
-                length : 255,
-                value : record.data.getterConfig ? record.data.getterConfig.brickField : null
+                xtype: 'textfield',
+                fieldLabel: t('coreshop_index_field_brickfield'),
+                name: 'brickField',
+                length: 255,
+                value: record.data.getterConfig ? record.data.getterConfig.brickField : null
             }
         ];
     }

@@ -8,16 +8,16 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.conditions.messageType');
 
 pimcore.plugin.coreshop.notification.rules.conditions.messageType = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'messageType',
+    type: 'messageType',
 
-    getForm : function () {
+    getForm: function () {
         this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
+            items: [
                 {
                     xtype: 'combo',
                     fieldLabel: t('coreshop_condition_messageType'),

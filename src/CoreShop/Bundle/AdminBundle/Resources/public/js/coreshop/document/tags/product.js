@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.document.tags.product');
 pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
@@ -71,8 +71,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
         }
     },
 
-    onNodeDrop: function (target, dd, e, data)
-    {
+    onNodeDrop: function (target, dd, e, data) {
         var record = data.records[0];
 
         // get path from nodes data
@@ -93,8 +92,7 @@ pimcore.document.tags.product = Class.create(pimcore.document.tags.renderlet, {
         return data.records[0].get('className') === coreshop.settings.classMapping.product;
     },
 
-    onNodeOver: function (target, dd, e, data)
-    {
+    onNodeOver: function (target, dd, e, data) {
         if (this.dndAllowed(data)) {
             return Ext.dd.DropZone.prototype.dropAllowed;
         } else {

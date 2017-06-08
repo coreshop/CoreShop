@@ -8,20 +8,20 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.similarity');
 
 pimcore.plugin.coreshop.filters.similarity = Class.create({
 
-    type : null,
+    type: null,
 
-    initialize : function (parent, similarities) {
+    initialize: function (parent, similarities) {
         this.parent = parent;
         this.similarities = similarities;
     },
 
-    getFieldsStore : function () {
+    getFieldsStore: function () {
         return this.parent.getFieldsForIndex();
     },
 
@@ -47,7 +47,7 @@ pimcore.plugin.coreshop.filters.similarity = Class.create({
             iconCls: 'coreshop_product_similarity',
             title: t('coreshop_product_similarity'),
             autoScroll: true,
-            style : 'padding: 10px',
+            style: 'padding: 10px',
             forceLayout: true,
             tbar: [{
                 iconCls: 'pimcore_icon_add',
@@ -59,16 +59,16 @@ pimcore.plugin.coreshop.filters.similarity = Class.create({
         return this.fieldsContainer;
     },
 
-    disable : function () {
+    disable: function () {
         this.fieldsContainer.disable();
     },
 
-    enable : function () {
+    enable: function () {
         this.fieldsContainer.enable();
     },
 
     addSimilarity: function (type, data) {
-        if(Object.keys(pimcore.plugin.coreshop.filters.similarities).indexOf(type) >= 0) {
+        if (Object.keys(pimcore.plugin.coreshop.filters.similarities).indexOf(type) >= 0) {
             // create similarity
             var item = new pimcore.plugin.coreshop.filters.similarities[type](this, data);
 
@@ -80,7 +80,7 @@ pimcore.plugin.coreshop.filters.similarity = Class.create({
         }
     },
 
-    getData : function () {
+    getData: function () {
         // get defined similarities
         var similarityData = [];
         var similarities = this.fieldsContainer.items.getRange();

@@ -8,14 +8,14 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.dimension');
 
 pimcore.plugin.coreshop.carrier.shippingrules.conditions.dimension = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'dimension',
+    type: 'dimension',
 
-    getForm : function () {
+    getForm: function () {
 
         var heightValue = 0;
         var widthValue = 0;
@@ -37,34 +37,34 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.dimension = Class.creat
         }
 
         var height = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_dimension_height'),
-            name:'height',
-            value : heightValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_dimension_height'),
+            name: 'height',
+            value: heightValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         var width = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_dimension_width'),
-            name:'width',
-            value : widthValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_dimension_width'),
+            name: 'width',
+            value: widthValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         var depth = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_condition_dimension_depth'),
-            name:'depth',
-            value : depthValue,
-            minValue : 0,
-            decimalPrecision : 0,
-            step : 1
+            fieldLabel: t('coreshop_condition_dimension_depth'),
+            name: 'depth',
+            value: depthValue,
+            minValue: 0,
+            decimalPrecision: 0,
+            step: 1
         });
 
         this.form = Ext.create('Ext.form.FieldSet', {
-            items : [
+            items: [
                 height, width, depth
             ]
         });

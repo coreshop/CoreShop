@@ -8,16 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.select');
 
 pimcore.plugin.coreshop.filters.conditions.select = Class.create(pimcore.plugin.coreshop.filters.conditions.abstract, {
 
-    type : 'select',
+    type: 'select',
 
-    getItems : function ()
-    {
+    getItems: function () {
         return [
             {
                 xtype: 'combo',
@@ -25,14 +24,14 @@ pimcore.plugin.coreshop.filters.conditions.select = Class.create(pimcore.plugin.
                 name: 'preSelect',
                 width: 400,
                 store: this.valueStore,
-                displayField : 'key',
-                valueField : 'value',
+                displayField: 'key',
+                valueField: 'value',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value : this.data.preSelect
+                value: this.data.preSelect
             }
         ];
     }

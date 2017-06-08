@@ -8,21 +8,21 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.action');
 
 pimcore.plugin.coreshop.notification.rules.action = Class.create(pimcore.plugin.coreshop.rules.action, {
-    initialize : function (actions, type) {
+    initialize: function (actions, type) {
         this.actions = actions;
         this.type = type;
     },
 
-    getActionClassNamespace : function () {
+    getActionClassNamespace: function () {
         return pimcore.plugin.coreshop.notification.rules.actions;
     },
 
-    prepareAction : function(action) {
+    prepareAction: function (action) {
         action['type'] = this.type + '.' + action['type'];
 
         return action;

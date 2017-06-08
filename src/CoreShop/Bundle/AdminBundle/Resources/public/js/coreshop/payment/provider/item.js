@@ -8,22 +8,22 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.payment.provider.item');
 pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.coreshop.abstract.item, {
 
-    iconCls : 'coreshop_icon_payment_provider',
+    iconCls: 'coreshop_icon_payment_provider',
 
-    url : {
-        save : '/admin/coreshop/payment_providers/save'
+    url: {
+        save: '/admin/coreshop/payment_providers/save'
     },
 
-    getItems : function () {
+    getItems: function () {
         return [this.getFormPanel()];
     },
 
-    getFormPanel : function () {
+    getFormPanel: function () {
         var data = this.data,
             langTabs = [];
 
@@ -31,22 +31,22 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
             var tab = {
                 title: pimcore.available_languages[lang],
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
-                layout:'form',
+                layout: 'form',
                 items: [{
                     xtype: 'textfield',
-                    name: 'translations.'+lang+'.name',
+                    name: 'translations.' + lang + '.name',
                     fieldLabel: t('name'),
                     width: 400,
                     value: data.translations[lang] ? data.translations[lang].name : ''
                 }, {
                     xtype: 'textarea',
-                    name: 'translations.'+lang+'.description',
+                    name: 'translations.' + lang + '.description',
                     fieldLabel: t('description'),
                     width: 400,
                     value: data.translations[lang] ? data.translations[lang].name : ''
                 }, {
                     xtype: 'textarea',
-                    name: 'translations.'+lang+'.instructions',
+                    name: 'translations.' + lang + '.instructions',
                     fieldLabel: t('coreshop_instructions'),
                     width: 400,
                     value: data.translations[lang] ? data.translations[lang].name : ''
@@ -68,23 +68,23 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
                 value: this.data.position
             },
             {
-                xtype : 'checkbox',
+                xtype: 'checkbox',
                 fieldLabel: t('active'),
                 name: 'active',
                 checked: this.data.active
             },
             {
                 xtype: 'combobox',
-                fieldLabel : t('coreshop_payment_provider_factory'),
-                name : 'gatewayConfig.factoryName',
-                length : 255,
-                value : this.data.gatewayConfig ? this.data.gatewayConfig.factoryName : '',
-                store : pimcore.globalmanager.get('coreshop_payment_provider_factories'),
-                valueField : 'type',
-                displayField : 'name',
-                queryMode : 'local',
-                listeners : {
-                    change : function (combo, newValue) {
+                fieldLabel: t('coreshop_payment_provider_factory'),
+                name: 'gatewayConfig.factoryName',
+                length: 255,
+                value: this.data.gatewayConfig ? this.data.gatewayConfig.factoryName : '',
+                store: pimcore.globalmanager.get('coreshop_payment_provider_factories'),
+                valueField: 'type',
+                displayField: 'name',
+                queryMode: 'local',
+                listeners: {
+                    change: function (combo, newValue) {
                         this.getGatewayConfigPanel().removeAll();
 
                         this.getGatewayConfigPanelLayout(newValue);
@@ -96,17 +96,17 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
                 xtype: 'tabpanel',
                 activeTab: 0,
                 defaults: {
-                    autoHeight:true,
-                    bodyStyle:'padding:10px;'
+                    autoHeight: true,
+                    bodyStyle: 'padding:10px;'
                 },
                 items: langTabs
             }
         ];
 
         this.formPanel = new Ext.form.Panel({
-            bodyStyle:'padding:20px 5px 20px 5px;',
+            bodyStyle: 'padding:20px 5px 20px 5px;',
             border: false,
-            region : 'center',
+            region: 'center',
             autoScroll: true,
             forceLayout: true,
             defaults: {
@@ -121,12 +121,12 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
             ],
             items: [
                 {
-                    xtype:'fieldset',
-                    autoHeight:true,
+                    xtype: 'fieldset',
+                    autoHeight: true,
                     labelWidth: 350,
                     defaultType: 'textfield',
-                    defaults: { width: '100%' },
-                    items : items
+                    defaults: {width: '100%'},
+                    items: items
                 },
                 this.getGatewayConfigPanel()
             ]
@@ -139,17 +139,17 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
         return this.formPanel;
     },
 
-    getGatewayConfigPanel : function () {
+    getGatewayConfigPanel: function () {
         if (!this.gatewayConfigPanel) {
             this.gatewayConfigPanel = new Ext.form.FieldSet({
-                defaults: { anchor: '90%' }
+                defaults: {anchor: '90%'}
             });
         }
 
         return this.gatewayConfigPanel;
     },
 
-    getGatewayConfigPanelLayout : function (type) {
+    getGatewayConfigPanelLayout: function (type) {
         if (type) {
             type = type.toLowerCase();
 
@@ -167,7 +167,7 @@ pimcore.plugin.coreshop.payment.provider.item = Class.create(pimcore.plugin.core
         }
     },
 
-    getSaveData : function () {
+    getSaveData: function () {
         var values = this.formPanel.getForm().getFieldValues();
 
         if (!values['active']) {

@@ -8,20 +8,20 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.getters.classificationstore');
 
 pimcore.plugin.coreshop.indexes.getters.classificationstore = Class.create(pimcore.plugin.coreshop.indexes.getters.abstract, {
 
-    getLayout : function (record) {
+    getLayout: function (record) {
         return [
             {
-                xtype : 'textfield',
-                fieldLabel : t('coreshop_index_field_classificationstore'),
-                name : 'classificationStoreField',
-                length : 255,
-                value : record.data.getterConfig ? record.data.getterConfig.classificationStoreField : null
+                xtype: 'textfield',
+                fieldLabel: t('coreshop_index_field_classificationstore'),
+                name: 'classificationStoreField',
+                length: 255,
+                value: record.data.getterConfig ? record.data.getterConfig.classificationStoreField : null
             }
         ];
     }

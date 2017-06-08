@@ -8,32 +8,32 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.conditions.shippingRule');
 
 pimcore.plugin.coreshop.carrier.shippingrules.conditions.shippingRule = Class.create(pimcore.plugin.coreshop.rules.conditions.abstract, {
-    type : 'shippingRule',
+    type: 'shippingRule',
 
-    getForm : function () {
+    getForm: function () {
         var me = this;
         var store = pimcore.globalmanager.get('coreshop_carrier_shipping_rules');
 
         var rule = {
-            xtype : 'combo',
+            xtype: 'combo',
             fieldLabel: t('coreshop_condition_shippingRule'),
             typeAhead: true,
             listWidth: 100,
-            width : 500,
+            width: 500,
             store: store,
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
-            multiselect : true,
+            multiselect: true,
             triggerAction: 'all',
-            name:'shippingRule',
-            maxHeight : 400,
-            delimiter : false,
+            name: 'shippingRule',
+            maxHeight: 400,
+            delimiter: false,
             listeners: {
                 beforerender: function () {
                     if (!store.isLoaded() && !store.isLoading())
@@ -50,7 +50,7 @@ pimcore.plugin.coreshop.carrier.shippingrules.conditions.shippingRule = Class.cr
         }
 
         this.form = new Ext.form.Panel({
-            items : [
+            items: [
                 rule
             ]
         });

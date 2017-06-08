@@ -8,13 +8,13 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.product.specificprice.object');
 pimcore.registerNS('pimcore.plugin.coreshop.product.specificprice.object.item');
 pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore.plugin.coreshop.rules.item, {
 
-    iconCls : 'coreshop_icon_price_rule',
+    iconCls: 'coreshop_icon_price_rule',
 
     getPanel: function () {
         this.panel = new Ext.TabPanel({
@@ -23,7 +23,7 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
             closable: true,
             deferredRender: false,
             forceLayout: true,
-            iconCls : this.iconCls,
+            iconCls: this.iconCls,
             items: this.getItems()
         });
 
@@ -44,7 +44,7 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
-            border:false,
+            border: false,
             items: [{
                 xtype: 'textfield',
                 name: 'name',
@@ -56,7 +56,7 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
                 name: 'priority',
                 fieldLabel: t('coreshop_priority'),
                 value: this.data.priority ? this.data.priority : 0,
-                width : 250
+                width: 250
             }, {
                 xtype: 'checkbox',
                 name: 'inherit',
@@ -73,8 +73,8 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
         return this.settingsForm;
     },
 
-    getSaveData : function () {
-        if(this.settingsForm.getEl()) {
+    getSaveData: function () {
+        if (this.settingsForm.getEl()) {
             saveData = this.settingsForm.getForm().getFieldValues();
             saveData['conditions'] = this.conditions.getConditionsData();
             saveData['actions'] = this.actions.getActionsData();
@@ -89,12 +89,12 @@ pimcore.plugin.coreshop.product.specificprice.object.item = Class.create(pimcore
         return {};
     },
 
-    isDirty : function() {
-        if(this.settingsForm.form.monitor && this.settingsForm.getForm().isDirty()) {
+    isDirty: function () {
+        if (this.settingsForm.form.monitor && this.settingsForm.getForm().isDirty()) {
             return true;
         }
 
-        if(this.conditions.isDirty()) {
+        if (this.conditions.isDirty()) {
             return true;
         }
 

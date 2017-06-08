@@ -8,20 +8,20 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.indexes.interpreters.objectproperty');
 
 pimcore.plugin.coreshop.indexes.interpreters.objectproperty = Class.create(pimcore.plugin.coreshop.indexes.interpreters.abstract, {
 
-    getLayout : function (record) {
+    getLayout: function (record) {
         return [
             {
-                xtype : 'textfield',
-                fieldLabel : t('coreshop_index_interpreter_property'),
-                name : 'property',
-                length : 255,
-                value : record.data.interpreterConfig ? record.data.interpreterConfig.property : null
+                xtype: 'textfield',
+                fieldLabel: t('coreshop_index_interpreter_property'),
+                name: 'property',
+                length: 255,
+                value: record.data.interpreterConfig ? record.data.interpreterConfig.property : null
             }
         ];
     }

@@ -8,16 +8,16 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.product.pricerule.item');
 
 pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.coreshop.pricerules.item, {
 
-    iconCls : 'coreshop_icon_price_rule',
+    iconCls: 'coreshop_icon_price_rule',
 
-    url : {
-        save : '/admin/coreshop/product_price_rules/save'
+    url: {
+        save: '/admin/coreshop/product_price_rules/save'
     },
 
     getSettings: function () {
@@ -28,7 +28,7 @@ pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.cor
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
-            border:false,
+            border: false,
             items: [{
                 xtype: 'textfield',
                 name: 'name',
@@ -46,5 +46,6 @@ pimcore.plugin.coreshop.product.pricerule.item = Class.create(pimcore.plugin.cor
         return this.settingsForm;
     },
 
-    addVoucherCodes : function () {}
+    addVoucherCodes: function () {
+    }
 });

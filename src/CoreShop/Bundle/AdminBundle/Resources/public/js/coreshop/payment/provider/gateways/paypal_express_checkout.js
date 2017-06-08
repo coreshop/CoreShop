@@ -8,34 +8,34 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.payment.provider.gateways.paypal_express_checkout');
 
 pimcore.plugin.coreshop.payment.provider.gateways.paypal_express_checkout = Class.create(pimcore.plugin.coreshop.payment.provider.gateways.abstract, {
 
-    getLayout : function (config) {
+    getLayout: function (config) {
         return [
             {
-                xtype : 'textfield',
-                fieldLabel : t('coreshop_username'),
-                name : 'gatewayConfig.config.username',
-                length : 255,
-                value : config.username ? config.username : ""
+                xtype: 'textfield',
+                fieldLabel: t('coreshop_username'),
+                name: 'gatewayConfig.config.username',
+                length: 255,
+                value: config.username ? config.username : ""
             },
             {
-                xtype : 'textfield',
-                fieldLabel : t('coreshop_password'),
-                name : 'gatewayConfig.config.password',
-                length : 255,
-                value : config.password
+                xtype: 'textfield',
+                fieldLabel: t('coreshop_password'),
+                name: 'gatewayConfig.config.password',
+                length: 255,
+                value: config.password
             },
             {
-                xtype : 'textfield',
-                fieldLabel : t('coreshop_signature'),
-                name : 'gatewayConfig.config.signature',
-                length : 255,
-                value : config.signature
+                xtype: 'textfield',
+                fieldLabel: t('coreshop_signature'),
+                name: 'gatewayConfig.config.signature',
+                length: 255,
+                value: config.signature
             }
         ];
     }

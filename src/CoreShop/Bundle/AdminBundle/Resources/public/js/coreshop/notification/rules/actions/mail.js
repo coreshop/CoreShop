@@ -8,17 +8,17 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.notification.rules.actions.mail');
 
 pimcore.plugin.coreshop.notification.rules.actions.mail = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
-    type : 'mail',
+    type: 'mail',
 
-    fields : {},
+    fields: {},
 
-    getForm : function () {
+    getForm: function () {
         var me = this,
             tabs = [];
 
@@ -26,13 +26,13 @@ pimcore.plugin.coreshop.notification.rules.actions.mail = Class.create(pimcore.p
             var value = this.data && this.data.mails && this.data.mails.hasOwnProperty(lang) ? this.data.mails[lang] : '';
 
             this.fields[lang] = new pimcore.plugin.coreshop.object.elementHref({
-                id : value,
-                type : 'document',
-                subtype : 'email'
+                id: value,
+                type: 'document',
+                subtype: 'email'
             }, {
-                documentsAllowed : true,
-                documentTypes : [{
-                    documentTypes : 'email'
+                documentsAllowed: true,
+                documentTypes: [{
+                    documentTypes: 'email'
                 }],
                 name: 'mails[' + lang + ']',
                 title: t('coreshop_email_document')
@@ -50,7 +50,7 @@ pimcore.plugin.coreshop.notification.rules.actions.mail = Class.create(pimcore.p
         }.bind(this));
 
         this.form = new Ext.form.FieldSet({
-            items : [
+            items: [
                 {
                     xtype: 'tabpanel',
                     activeTab: 0,
@@ -62,21 +62,21 @@ pimcore.plugin.coreshop.notification.rules.actions.mail = Class.create(pimcore.p
                     items: tabs
                 }
             ],
-            getValues : this.getValues.bind(this)
+            getValues: this.getValues.bind(this)
         });
 
         return this.form;
     },
 
-    getValues : function() {
+    getValues: function () {
         var values = {};
 
-        Ext.Object.each(this.fields, function(key, elementHref) {
+        Ext.Object.each(this.fields, function (key, elementHref) {
             values[key] = elementHref.getValue();
         });
 
         return {
-            mails : values
+            mails: values
         };
     }
 });

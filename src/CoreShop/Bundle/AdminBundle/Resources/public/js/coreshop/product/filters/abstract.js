@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.abstract');
 
@@ -19,19 +19,19 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
      */
     parent: {},
 
-    data : {},
+    data: {},
 
-    type : 'abstract',
-    elementType : 'abstract',
+    type: 'abstract',
+    elementType: 'abstract',
 
-    form : null,
+    form: null,
 
-    initialize : function (parent, data) {
+    initialize: function (parent, data) {
         this.parent = parent;
         this.data = data;
     },
 
-    getLayout : function () {
+    getLayout: function () {
         var myId = Ext.id();
 
         var items = this.getDefaultItems();
@@ -39,14 +39,14 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         items.push.apply(items, this.getItems());
 
         this.form = new Ext.form.Panel({
-            xparent : this,
-            id : myId,
+            xparent: this,
+            id: myId,
             style: 'margin: 10px 0 0 0',
-            tbar : this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_' + this.elementType + '_' + this.type),
-            items : [
+            tbar: this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_' + this.elementType + '_' + this.type),
+            items: [
                 {
-                    xtype : 'fieldset',
-                    items : items
+                    xtype: 'fieldset',
+                    items: items
                 }
             ]
         });
@@ -54,7 +54,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         return this.form;
     },
 
-    getFieldsComboBox : function () {
+    getFieldsComboBox: function () {
         if (!this.fieldsCombo) {
 
             this.valueStore = new Ext.data.ArrayStore({
@@ -62,7 +62,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
                     url: '/admin/coreshop/filters/get-values-for-filter-field'
                 }),
                 reader: new Ext.data.JsonReader({}, [
-                    { name: 'value' }
+                    {name: 'value'}
                 ])
             });
 
@@ -95,14 +95,14 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         return this.fieldsCombo;
     },
 
-    onFieldChange : function (combo, newValue) {
+    onFieldChange: function (combo, newValue) {
         this.valueStore.proxy.extraParams = {
-            field : newValue,
-            index : combo.getStore().proxy.extraParams['index']
+            field: newValue,
+            index: combo.getStore().proxy.extraParams['index']
         };
 
         this.valueStore.load({
-            params : this.valueStore.proxy.extraParams
+            params: this.valueStore.proxy.extraParams
         });
     },
 
@@ -134,7 +134,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
         return [{
             iconCls: iconCls,
             disabled: true,
-            xtype : 'button'
+            xtype: 'button'
         }, {
             xtype: 'tbtext',
             text: '<b>' + name + '</b>'
@@ -165,7 +165,7 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
 
                 pimcore.layout.refresh();
             }.bind(this, index, parent, container),
-            xtype : 'button'
+            xtype: 'button'
         }, {
             iconCls: 'pimcore_icon_down',
             handler: function (blockId, parent, container) {
@@ -190,13 +190,13 @@ pimcore.plugin.coreshop.filters.abstract = Class.create({
                 pimcore.layout.refresh();
 
             }.bind(this, index, parent, container),
-            xtype : 'button'
+            xtype: 'button'
         }, '->', {
             iconCls: 'pimcore_icon_delete',
             handler: function (index, parent, container) {
                 container.remove(Ext.getCmp(index));
             }.bind(this, index, parent, container),
-            xtype : 'button'
+            xtype: 'button'
         }];
     }
 });

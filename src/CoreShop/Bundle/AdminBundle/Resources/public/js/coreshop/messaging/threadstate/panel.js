@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.messaging.threadstate.panel');
 pimcore.plugin.coreshop.messaging.threadstate.panel = Class.create(pimcore.plugin.coreshop.messaging.panel, {
@@ -17,14 +17,14 @@ pimcore.plugin.coreshop.messaging.threadstate.panel = Class.create(pimcore.plugi
      * @var string
      */
     layoutId: 'coreshop_messaging_thread_state_panel',
-    storeId : 'coreshop_messaging_thread_states',
-    iconCls : 'coreshop_icon_messaging_thread_state',
-    type : 'threadstate',
+    storeId: 'coreshop_messaging_thread_states',
+    iconCls: 'coreshop_icon_messaging_thread_state',
+    type: 'threadstate',
 
-    url : {
-        add : '/admin/coreshop/messaging-thread-state/add',
-        delete : '/admin/coreshop/messaging-thread-state/delete',
-        get : '/admin/coreshop/messaging-thread-state/get',
-        list : '/admin/coreshop/messaging-thread-state/list'
+    url: {
+        add: '/admin/coreshop/messaging-thread-state/add',
+        delete: '/admin/coreshop/messaging-thread-state/delete',
+        get: '/admin/coreshop/messaging-thread-state/get',
+        list: '/admin/coreshop/messaging-thread-state/list'
     }
 });

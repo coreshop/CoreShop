@@ -8,42 +8,42 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions');
 pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.abstract');
 
 pimcore.plugin.coreshop.filters.conditions.abstract = Class.create(pimcore.plugin.coreshop.filters.abstract, {
-    elementType : 'conditions',
+    elementType: 'conditions',
 
-    getDefaultItems : function () {
+    getDefaultItems: function () {
         var quantityUnitStore = pimcore.helpers.quantityValue.getClassDefinitionStore();
-        quantityUnitStore.on("load", function(store) {
+        quantityUnitStore.on("load", function (store) {
             store.insert(0,
                 {
-                    'abbreviation' : t('empty'),
-                    'id' : 0
+                    'abbreviation': t('empty'),
+                    'id': 0
                 }
             )
         });
 
         return [
             {
-                xtype : 'textfield',
-                name : 'label',
-                width : 400,
-                fieldLabel : t('label'),
-                value : this.data.label
+                xtype: 'textfield',
+                name: 'label',
+                width: 400,
+                fieldLabel: t('label'),
+                value: this.data.label
             },
             {
                 xtype: 'combobox',
                 name: 'quantityUnit',
                 triggerAction: "all",
                 editable: false,
-                width : 400,
+                width: 400,
                 fieldLabel: t('coreshop_product_filters_quantityUnit'),
                 store: quantityUnitStore,
-                value:  this.data.quantityUnit ? this.data.quantityUnit : 0,
+                value: this.data.quantityUnit ? this.data.quantityUnit : 0,
                 displayField: 'abbreviation',
                 valueField: 'id'
             },

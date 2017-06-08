@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.panel');
 
@@ -18,15 +18,15 @@ pimcore.plugin.coreshop.filters.panel = Class.create(pimcore.plugin.coreshop.abs
      * @var string
      */
     layoutId: 'coreshop_product_filters_panel',
-    storeId : 'coreshop_product_filters',
-    iconCls : 'coreshop_icon_product_filters',
-    type : 'filters',
+    storeId: 'coreshop_product_filters',
+    iconCls: 'coreshop_icon_product_filters',
+    type: 'filters',
 
-    url : {
-        add : '/admin/coreshop/filters/add',
-        delete : '/admin/coreshop/filters/delete',
-        get : '/admin/coreshop/filters/get',
-        list : '/admin/coreshop/filters/list'
+    url: {
+        add: '/admin/coreshop/filters/add',
+        delete: '/admin/coreshop/filters/delete',
+        get: '/admin/coreshop/filters/get',
+        list: '/admin/coreshop/filters/list'
     },
 
     /**

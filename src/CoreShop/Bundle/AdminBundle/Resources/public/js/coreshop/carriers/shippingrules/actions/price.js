@@ -8,15 +8,15 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.carrier.shippingrules.actions.price');
 
 pimcore.plugin.coreshop.carrier.shippingrules.actions.price = Class.create(pimcore.plugin.coreshop.rules.actions.abstract, {
 
-    type : 'price',
+    type: 'price',
 
-    getForm : function () {
+    getForm: function () {
         var priceValue = 0;
         var me = this;
 
@@ -25,14 +25,14 @@ pimcore.plugin.coreshop.carrier.shippingrules.actions.price = Class.create(pimco
         }
 
         var price = new Ext.form.NumberField({
-            fieldLabel:t('coreshop_action_price'),
-            name:'price',
-            value : priceValue,
-            decimalPrecision : 2
+            fieldLabel: t('coreshop_action_price'),
+            name: 'price',
+            value: priceValue,
+            decimalPrecision: 2
         });
 
         this.form = new Ext.form.FieldSet({
-            items : [
+            items: [
                 price
             ]
         });

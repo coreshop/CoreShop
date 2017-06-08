@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.object.classes.data.coreShopCountryMultiselect');
 pimcore.object.classes.data.coreShopCountryMultiselect = Class.create(pimcore.plugin.coreshop.object.classes.data.dataMultiselect, {

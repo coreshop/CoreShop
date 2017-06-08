@@ -8,22 +8,21 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.conditions.range');
 
 pimcore.plugin.coreshop.filters.conditions.range = Class.create(pimcore.plugin.coreshop.filters.conditions.abstract, {
 
-    type : 'range',
+    type: 'range',
 
-    getItems : function ()
-    {
+    getItems: function () {
         return [
             {
                 fieldLabel: t('coreshop_product_filters_step_count'),
-                xtype : 'numberfield',
-                name : 'stepCount',
-                value : this.data.stepCount,
+                xtype: 'numberfield',
+                name: 'stepCount',
+                value: this.data.stepCount,
                 width: 400,
                 decimalPrecision: 2
             },
@@ -33,14 +32,14 @@ pimcore.plugin.coreshop.filters.conditions.range = Class.create(pimcore.plugin.c
                 name: 'preSelectMin',
                 width: 400,
                 store: this.valueStore,
-                displayField : 'key',
-                valueField : 'value',
+                displayField: 'key',
+                valueField: 'value',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value : this.data.preSelectMin
+                value: this.data.preSelectMin
             },
             {
                 xtype: 'combo',
@@ -48,14 +47,14 @@ pimcore.plugin.coreshop.filters.conditions.range = Class.create(pimcore.plugin.c
                 name: 'preSelectMax',
                 width: 400,
                 store: this.valueStore,
-                displayField : 'key',
-                valueField : 'value',
+                displayField: 'key',
+                valueField: 'value',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value : this.data.preSelectMax
+                value: this.data.preSelectMax
             }
         ];
     }

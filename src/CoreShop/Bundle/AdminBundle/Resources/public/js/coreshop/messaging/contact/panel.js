@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.messaging.contact.panel');
 pimcore.plugin.coreshop.messaging.contact.panel = Class.create(pimcore.plugin.coreshop.messaging.panel, {
@@ -17,14 +17,14 @@ pimcore.plugin.coreshop.messaging.contact.panel = Class.create(pimcore.plugin.co
      * @var string
      */
     layoutId: 'coreshop_messaging_contacts_panel',
-    storeId : 'coreshop_messaging_contacts',
-    iconCls : 'coreshop_icon_messaging_contact',
-    type : 'contact',
+    storeId: 'coreshop_messaging_contacts',
+    iconCls: 'coreshop_icon_messaging_contact',
+    type: 'contact',
 
-    url : {
-        add : '/admin/coreshop/messaging-contact/add',
-        delete : '/admin/coreshop/messaging-contact/delete',
-        get : '/admin/coreshop/messaging-contact/get',
-        list : '/admin/coreshop/messaging-contact/list'
+    url: {
+        add: '/admin/coreshop/messaging-contact/add',
+        delete: '/admin/coreshop/messaging-contact/delete',
+        get: '/admin/coreshop/messaging-contact/get',
+        list: '/admin/coreshop/messaging-contact/list'
     }
 });

@@ -8,12 +8,12 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.report.monitoring.reports.emptyCategories');
 pimcore.plugin.coreshop.report.monitoring.reports.emptyCategories = Class.create(pimcore.plugin.coreshop.report.monitoring.abstract, {
 
-    url : '/admin/coreshop/reports/get-empty-categories-monitoring',
+    url: '/admin/coreshop/reports/get-empty-categories-monitoring',
 
     getName: function () {
         return t('coreshop_monitoring_emptyCategories');
@@ -23,27 +23,27 @@ pimcore.plugin.coreshop.report.monitoring.reports.emptyCategories = Class.create
         return 'coreshop_icon_category';
     },
 
-    getGrid : function () {
+    getGrid: function () {
         return new Ext.Panel({
-            layout:'fit',
+            layout: 'fit',
             height: 275,
             items: {
-                xtype : 'grid',
+                xtype: 'grid',
                 store: this.getStore(),
-                columns : [
+                columns: [
                     {
                         text: t('id'),
-                        dataIndex : 'id',
-                        width : 100
+                        dataIndex: 'id',
+                        width: 100
                     },
                     {
                         text: t('name'),
-                        dataIndex : 'name',
-                        flex : 1
+                        dataIndex: 'name',
+                        flex: 1
                     }
                 ],
-                listeners : {
-                    rowclick : function (grid, record) {
+                listeners: {
+                    rowclick: function (grid, record) {
                         var d = record.data;
 
                         pimcore.helpers.openObject(d.id, 'object');

@@ -8,22 +8,22 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.condition');
 
 pimcore.plugin.coreshop.filters.condition = Class.create({
 
-    type : null,
+    type: null,
 
-    initialize : function (parent, conditions, type, label) {
+    initialize: function (parent, conditions, type, label) {
         this.parent = parent;
         this.conditions = conditions;
         this.type = type;
         this.label = label ? label : type;
     },
 
-    getFieldsStore : function () {
+    getFieldsStore: function () {
         return this.parent.getFieldsForIndex();
     },
 
@@ -46,7 +46,7 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
             iconCls: 'coreshop_product_filters_' + this.type,
             title: t('coreshop_product_filters_' + this.label),
             autoScroll: true,
-            style : 'padding: 10px',
+            style: 'padding: 10px',
             forceLayout: true,
             tbar: [{
                 iconCls: 'pimcore_icon_add',
@@ -58,16 +58,16 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
         return this.fieldsContainer;
     },
 
-    disable : function () {
+    disable: function () {
         this.fieldsContainer.disable();
     },
 
-    enable : function () {
+    enable: function () {
         this.fieldsContainer.enable();
     },
 
     addCondition: function (type, data) {
-        if(Object.keys(pimcore.plugin.coreshop.filters.conditions).indexOf(type) >= 0) {
+        if (Object.keys(pimcore.plugin.coreshop.filters.conditions).indexOf(type) >= 0) {
             // create condition
             var item = new pimcore.plugin.coreshop.filters.conditions[type](this, data);
 
@@ -79,7 +79,7 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
         }
     },
 
-    getData : function () {
+    getData: function () {
         // get defined conditions
         var conditionsData = [];
         var conditions = this.fieldsContainer.items.getRange();
@@ -90,7 +90,7 @@ pimcore.plugin.coreshop.filters.condition = Class.create({
 
             var condition = {};
 
-            if(Ext.isFunction(conditionClass.getData)) {
+            if (Ext.isFunction(conditionClass.getData)) {
                 condition = conditionClass.getData();
             }
             else {

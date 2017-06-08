@@ -8,29 +8,28 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*/
+ */
 
 pimcore.registerNS('pimcore.plugin.coreshop.filters.similarities');
 pimcore.registerNS('pimcore.plugin.coreshop.filters.similarities.abstract');
 
 pimcore.plugin.coreshop.filters.similarities.abstract = Class.create(pimcore.plugin.coreshop.filters.abstract, {
-    elementType : 'similarities',
+    elementType: 'similarities',
 
-    getDefaultItems : function () {
+    getDefaultItems: function () {
         return [
             this.getFieldsComboBox()
         ];
     },
 
-    getItems : function ()
-    {
+    getItems: function () {
         return [
             {
                 xtype: 'numberfield',
                 fieldLabel: t('coreshop_product_filters_similarity_weight'),
                 name: 'weight',
                 width: 400,
-                value : this.data.weight
+                value: this.data.weight
             }
         ];
     }
