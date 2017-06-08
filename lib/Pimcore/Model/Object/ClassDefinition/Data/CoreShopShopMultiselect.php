@@ -39,6 +39,10 @@ class CoreShopShopMultiselect extends CoreShopMultiselect
             return true;
         }
 
+        if (count($data) === 0) {
+            return true;
+        }
+
         return false;
     }
 }
