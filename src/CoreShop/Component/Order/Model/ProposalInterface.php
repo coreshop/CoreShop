@@ -79,7 +79,7 @@ interface ProposalInterface extends ResourceInterface
     public function getPaymentFeeTaxRate();
 
     /**
-     * @return ProposalItemInterface[]
+     * @return CartItemInterface[]
      */
     public function getItems();
 
