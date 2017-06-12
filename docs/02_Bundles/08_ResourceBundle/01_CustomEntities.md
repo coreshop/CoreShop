@@ -1,42 +1,6 @@
-# CoreShop Resource Bundle
+# Adding a new custom entity
 
-Resource Bundle is the Heart of CoreShops Model. It handles saving/deleting/updating/creating of CoreShop Models. It handles
-Doctrine ORM Mappings and Translations. As well as Routing, Event Dispatching, Serialization and ORM.
-
-You can use Resource Bundle as base for all your Custom Pimcore Entities.
-
-## Installation
-```
-composer require coreshop/resource-bundle dev-master
-```
-
-### Adding required bundles to kernel
-You need to enable the bundle inside the kernel
-
-```php
-<?php
-
-// app/AppKernel.php
-
-public function registerBundles()
-{
-    $bundles = array(
-        new \JMS\SerializerBundle\JMSSerializerBundle(),
-        new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
-
-        new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-
-
-        new \FOS\RestBundle\FOSRestBundle(),
-        new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-        new \Payum\Bundle\PayumBundle\PayumBundle(),
-        new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-    );
-}
-```
-## Adding a new custom entity
-
-### Create Translatable Entity
+## Create Translatable Entity
 
 First of all, we need to create our Entity Class. In this case, we create a Translatable Entity.
 
@@ -142,7 +106,7 @@ class CustomEntityTranslation extends AbstractTranslation implements CountryTran
 }
 ```
 
-### Create Doctrine Configuration
+## Create Doctrine Configuration
 
 ```yml
 # AcmeBundle/Resources/config/doctrine/model/CustomEntity.orm.yml
@@ -179,7 +143,7 @@ AcmeBundle\Model\CustomEntityTranslation:
       column: name
 ```
 
-### Create DI Configuration
+## Create DI Configuration
 
 ```php
 <?php
@@ -303,7 +267,7 @@ final class AcmeBundle extends AbstractResourceBundle
 ```
 
 
-### Create Serialization Definition if you want to serialize your Entity
+## Create Serialization Definition if you want to serialize your Entity
 
 ```yml
 # AcmeBundle/Resources/config/serializer/Model.CustomEntity.yml
@@ -339,7 +303,7 @@ AcmeBundle\Model\CustomEntityTranslation:
       groups: [Detailed]
 ```
 
-### Create Routes to ResourceController
+## Create Routes to ResourceController
 ```yml
 # AcmeBundle/Resources/config/pimcore/routing.yml
 
