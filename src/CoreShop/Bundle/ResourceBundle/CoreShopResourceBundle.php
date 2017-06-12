@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterResourcesPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,6 +38,7 @@ final class CoreShopResourceBundle extends Bundle
         $container->addCompilerPass(new RegisterResourcesPass());
         $container->addCompilerPass(new RegisterPimcoreResourcesPass());
         $container->addCompilerPass(new DoctrineTargetEntitiesResolverPass());
+        $container->addCompilerPass(new RegisterInstallersPass());
     }
 
     /**

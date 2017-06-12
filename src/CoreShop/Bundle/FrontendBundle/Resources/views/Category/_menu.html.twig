@@ -14,7 +14,7 @@
 
                     <li class="{% if dropdown %} dropdown {% endif %}">
                         <!-- TODO: URL -->
-                        <a href="{{ path('coreshop_shop_category_index', {name: category.getName, categoryId: category.getId}) }}" {% if dropdown %} class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10" {%  endif %}>
+                        <a href="{{ path('coreshop_category_list', {name: category.getName, category: category.getId}) }}" {% if dropdown %} class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10" {%  endif %}>
                             {{ category.getName() }}
                         </a>
 

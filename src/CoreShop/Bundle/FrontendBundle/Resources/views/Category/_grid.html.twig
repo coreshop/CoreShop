@@ -4,13 +4,13 @@
     <div class="product-col">
         <div class="image">
             {% if product.getImage() %}
-                <a href="{{ path('coreshop_shop_product_detail', {name: product.getName, productId: product.getId}) }}">
+                <a href="{{ path('coreshop_product_detail', {name: product.getName, product: product.getId}) }}">
                     {{ product.getImage().getThumbnail("coreshop_productList").getHtml({"class": "img-responsive"})|raw }}
                 </a>
             {% endif %}
         </div>
         <div class="caption">
-            <h4><a href="{{ path('coreshop_shop_product_detail', {name: product.getName, productId: product.getId}) }}">{{ product.getName }}</a></h4>
+            <h4><a href="{{ path('coreshop_product_detail', {name: product.getName, product: product.getId}) }}">{{ product.getName }}</a></h4>
             <div class="description">
                 {{ product.getShortDescription }}
             </div>
@@ -26,7 +26,7 @@
                     <i class="fa fa-bar-chart-o"></i>
                 </button>
 
-                <a href="{{ path('coreshop_shop_add_cart_item', {'productId': product.id}) }}" type="button" class="btn btn-cart">
+                <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart">
                     {{ 'add_to_cart'|trans }}
                     <i class="fa fa-shopping-cart"></i>
                 </a>

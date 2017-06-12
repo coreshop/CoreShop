@@ -26,9 +26,9 @@ final class InstallResourcesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('coreshop:resources:install')
-            ->setDescription('Install Resource registered Pimcore Classes.')
+            ->setDescription('Install Resources.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> command creates Pimcore Classes.
+The <info>%command.name%</info> command install Resources. (Like Static Routes or Pimcore Classes)
 EOT
             );
     }
@@ -40,12 +40,12 @@ EOT
     {
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln(sprintf(
-            'Creating Pimcore classes <info>%s</info>.',
+            'Install Resources for Environment <info>%s</info>.',
             $this->getContainer()->get('kernel')->getEnvironment()
         ));
 
         $this
-            ->getContainer()->get('coreshop.resource.installer.classes')
+            ->getContainer()->get('coreshop.resource.installer')
             ->installResources($output);
 
         return 0;

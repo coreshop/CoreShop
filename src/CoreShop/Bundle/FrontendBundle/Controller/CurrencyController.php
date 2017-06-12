@@ -34,12 +34,12 @@ class CurrencyController extends FrontendController
 
     /**
      * @param Request $request
-     * @param $currencyCode
      *
      * @return RedirectResponse
      */
-    public function switchAction(Request $request, $currencyCode)
+    public function switchAction(Request $request)
     {
+        $currencyCode = $request->get('currencyCode');
         $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
 
         $store = $this->get('coreshop.context.store')->getStore();

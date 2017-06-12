@@ -19,21 +19,20 @@ class ProductController extends FrontendController
 {
     public function latestAction(Request $request)
     {
-        $storeRepository = $this->get('coreshop.repository.store');
         $productRepository = $this->get('coreshop.repository.product');
 
         return $this->render('CoreShopFrontendBundle:Product:_latest.html.twig', [
-            'products' => $productRepository->getLatestByShop($storeRepository->find(1)),
+            'products' => $productRepository->getLatestByShop($this->get('coreshop.context.store')->getStore()),
         ]);
     }
 
-    public function detailAction(Request $request, $name, $productId)
+    public function detailAction(Request $request)
     {
         $productRepository = $this->get('coreshop.repository.product');
-        $product = $productRepository->find($productId);
+        $product = $productRepository->find($request->get('product'));
 
         if (!$product instanceof ProductInterface) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);

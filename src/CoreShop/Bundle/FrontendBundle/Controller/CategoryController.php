@@ -51,11 +51,9 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
-     * @param $name
-     * @param $categoryId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request, $name, $categoryId)
+    public function indexAction(Request $request)
     {
         //TODO: add some of the old configurations
 
@@ -65,10 +63,10 @@ class CategoryController extends FrontendController
         $type = $request->get('type', 'list');
         $perPage = $request->get('perPage', 20);
 
-        $category = $this->getRepository()->find($categoryId);
+        $category = $this->getRepository()->find($request->get("category"));
 
         if (!$category instanceof CategoryInterface) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         //if (!in_array($this->shopperContext->getStore()->getId())) TODO: Check for allowed Stores

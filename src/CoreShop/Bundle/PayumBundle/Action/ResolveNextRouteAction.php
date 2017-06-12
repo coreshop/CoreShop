@@ -30,7 +30,7 @@ final class ResolveNextRouteAction implements ActionInterface
 
         if ($payment->getState() === 'complete') {
             $request->setRouteName(
-                'coreshop_shop_order_thank_you'
+                'coreshop_checkout_confirmation'
             );
 
             return;
@@ -39,7 +39,7 @@ final class ResolveNextRouteAction implements ActionInterface
         /*
          * We could return the Customer to the last checkout page as well?
          */
-        $request->setRouteName('coreshop_shop_checkout_error');
+        $request->setRouteName('coreshop_checkout_error');
     }
 
     /**

@@ -1,0 +1,170 @@
+coreshop_index:
+  pattern: "/(\\w+)\\/shop(\\/?)$/"
+  reverse: "/%_locale/shop"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.index"
+  action: index
+  variables: _locale
+  priority: 1
+
+coreshop_category_list:
+  pattern: "/(\\w+)\\/shop\\/(.*?)\\~c([0-9]+)/"
+  reverse: "/%_locale/shop/%name~cÊtegory"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.category"
+  action: index
+  variables: _locale,name,category
+  priority: 2
+
+coreshop_product_detail:
+  pattern: "/(\\w+)\\/shop\\/(.*?)\\~p([0-9]+)/"
+  reverse: "/%_locale/shop/%name~p%product"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.product"
+  action: detail
+  variables: _locale,name,product
+  priority: 2
+
+coreshop_cart_summary:
+  pattern: "/(\\w+)\\/shop\\/cart/"
+  reverse: "/%_locale/shop/cart"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.cart"
+  action: summary
+  variables: _locale
+  priority: 2
+
+coreshop_cart_add:
+  pattern: "/(\\w+)\\/shop\\/cart\\/add\\/([0-9]+)/"
+  reverse: "/%_locale/shop/cart/add/%product"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.cart"
+  action: addItem
+  variables: _locale,product
+  priority: 3
+
+coreshop_cart_remove:
+  pattern: "/(\\w+)\\/shop\\/cart\\/remove\\/([0-9]+)/"
+  reverse: "/%_locale/shop/cart/remove/ÊrtItem"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.cart"
+  action: removeItem
+  variables: _locale,cartItem
+  priority: 3
+
+coreshop_cart_add_price_rule:
+  pattern: "/(\\w+)\\/shop\\/cart\\/add-price-rule/"
+  reverse: "/%_locale/shop/cart/add-price-rule"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.cart"
+  action: addPriceRule
+  variables: _locale
+  priority: 3
+
+coreshop_cart_remove_price_rule:
+  pattern: "/(\\w+)\\/shop\\/cart\\/remove-price-rule/"
+  reverse: "/%_locale/shop/cart/remove-price-rule"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.cart"
+  action: removePriceRule
+  variables: _locale
+  priority: 3
+
+coreshop_login:
+  pattern: "/(\\w+)\\/shop\\/login/"
+  reverse: "/%_locale/shop/login"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.security"
+  action: login
+  variables: _locale
+  priority: 2
+
+coreshop_login_check:
+  pattern: "/(\\w+)\\/shop\\/login-check/"
+  reverse: "/%_locale/shop/login-check"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.security"
+  action: check
+  variables: _locale
+  priority: 3
+
+coreshop_logout:
+  pattern: "/(\\w+)\\/shop\\/logout/"
+  reverse: "/%_locale/shop/logout"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.security"
+  action: logout
+  variables: _locale
+  priority: 2
+
+coreshop_cart_create_qoute:
+  pattern: "/(\\w+)\\/shop\\/cart\\/quote/"
+  reverse: "/%_locale/shop/cart/quote"
+  module: FrontendBundke
+  controller: "@coreshop.frontend.controller.cart"
+  action: createQuote
+  variables: _locale
+  priority: 3
+
+coreshop_quote_detail:
+  pattern: "/(\\w+)\\/shop\\/quote\\~q([0-9]+)/"
+  reverse: "/%_locale/shop/quote~q%quote"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.quote"
+  action: show
+  variables: _locale,quote
+  priority: 2
+
+coreshop_checkout:
+  pattern: "/(\\w+)\\/shop\\/checkout\\/(.*)/"
+  reverse: "/%_locale/shop/checkout/%stepIdentifier"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.checkout"
+  action: process
+  variables: _locale,stepIdentifier
+  priority: 2
+
+coreshop_checkout_do:
+  pattern: "/(\\w+)\\/shop\\/checkout-do/"
+  reverse: "/%_locale/shop/checkout-do"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.checkout"
+  action: doCheckout
+  variables: _locale
+  priority: 2
+
+coreshop_checkout_confirmation:
+  pattern: "/(\\w+)\\/shop\\/checkout-thank-you/"
+  reverse: "/%_locale/shop/checkout-thank-you"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.checkout"
+  action: thankYou
+  variables: _locale
+  priority: 2
+
+coreshop_payment:
+  pattern: "/(\\w+)\\/shop\\/pay\\/([0-9]+)/"
+  reverse: "/%_locale/shop/pay/%order"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.payment"
+  action: prepareCapture
+  variables: _locale,order
+  priority: 2
+
+coreshop_checkout_error:
+  pattern: "/(\\w+)\\/shop\\/checkout-error/"
+  reverse: "/%_locale/shop/checkout-error"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.checkout"
+  action: error
+  variables: _locale
+  priority: 2
+
+coreshop_switch_currency:
+  pattern: "/(\\w+)\\/shop\\/switch-currency\\/(.*?)/"
+  reverse: "/%_locale/shop/switch-currency/%currencyCode"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.currency"
+  action: switch
+  variables: _locale,currencyCode
+  priority: 2

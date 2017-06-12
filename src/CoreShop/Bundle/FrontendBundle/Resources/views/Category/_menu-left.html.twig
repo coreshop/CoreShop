@@ -3,7 +3,7 @@
 <div class="list-group categories">
     {% for category in categories %}
         {# TODO: URL, ACTIVE #}
-        <a href="{{ path('coreshop_shop_category_index', {name: category.getName, categoryId: category.getId}) }}" class="list-group-item">
+        <a href="{{ path('coreshop_category_list', {name: category.getName, category: category.getId}) }}" class="list-group-item">
             <i class="fa fa-chevron-right"></i>
             {{ category.getName }}
         </a>

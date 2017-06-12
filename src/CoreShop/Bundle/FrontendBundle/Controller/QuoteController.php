@@ -19,27 +19,27 @@ use Symfony\Component\HttpFoundation\Request;
 
 class QuoteController extends FrontendController
 {
-    public function showAction(Request $request, $quoteId)
+    public function showAction(Request $request)
     {
-        $quote = $this->get('coreshop.repository.quote')->find($quoteId);
+        $quote = $this->get('coreshop.repository.quote')->find($request->get('quote'));
 
         try {
             $currentCustomer = $this->get('coreshop.context.customer')->getCustomer();
         }
         catch (CustomerNotFoundException $ex) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         if (!$quote instanceof QuoteInterface) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         if (!$quote->getCustomer() instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         if ($quote->getCustomer()->getId() !== $currentCustomer->getId()) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         return $this->render('CoreShopFrontendBundle:Quote:show.html.twig', [

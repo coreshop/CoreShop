@@ -1,5 +1,5 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
-{% set href = path('coreshop_shop_product_detail', {name: product.getName, productId: product.getId}) %}
+{% set href = path('coreshop_product_detail', {name: product.getName, product: product.getId}) %}
 
 <div class="product-col">
     <div class="image">
@@ -20,7 +20,7 @@
         </div>
 
         <div class="cart-button">
-            <a href="{{ path('coreshop_shop_add_cart_item', {'productId': product.id}) }}" type="button" class="btn btn-cart">
+            <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart">
                 {{ 'add_to_cart'|trans }}
                 <i class="fa fa-shopping-cart"></i>
             </a>

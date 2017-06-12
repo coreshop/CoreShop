@@ -4,9 +4,9 @@
 
 {% block center %}
     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_shop_index') }}">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
         {% for cat in category.getHierarchy() %}
-            <li class="active"><a href="{{ path('coreshop_shop_category_index', {name: cat.getName, categoryId: cat.getId}) }}">{{ cat.getName }}</a></li>
+            <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
         {% endfor %}
     </ol>
 

@@ -4,14 +4,14 @@
 
 {% block center %}
     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_shop_index') }}">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
         {% if product.getCategories|length > 0 %}
             {% for cat in product.getCategories|first.getHierarchy() %}
-                <li class="active"><a href="{{ path('coreshop_shop_category_index', {name: cat.getName, categoryId: cat.getId}) }}">{{ cat.getName }}</a></li>
+                <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
             {% endfor %}
         {% endif %}
 
-        <li class="active"><a href="{{ path('coreshop_shop_product_detail', {name: product.getName, productId: product.getId}) }}">{{ product.getName }}</a></li>
+        <li class="active"><a href="{{ path('coreshop_product_detail', {name: product.getName, product: product.getId}) }}">{{ product.getName }}</a></li>
     </ol>
 
 
@@ -81,7 +81,7 @@
                     <div class="form-group">
                         <select name="variant" class="form-control selectpicker btn-white">
                             {% for variantValue in variant['variantValues'] %}
-                                <option data-href="{{ path('coreshop_shop_product_detail', {name: variant['variantName'], productId: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
+                                <option data-href="{{ path('coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -111,7 +111,7 @@
                     </button>
 
 
-                    <a href="{{ path('coreshop_shop_add_cart_item', {'productId': product.id}) }}" type="button" class="btn btn-cart">
+                    <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart">
                         {{ 'add_to_cart'|trans }}
                         <i class="fa fa-shopping-cart"></i>
                     </a>

@@ -13,11 +13,11 @@ security:
             anonymous: ~
             context: shop
             form_login:
-                login_path: coreshop_shop_login
-                check_path: coreshop_shop_login_check
+                login_path: coreshop_login
+                check_path: coreshop_login_check
                 provider: coreshop_customer
-                failure_path: coreshop_shop_login
-                default_target_path: coreshop_shop_index
+                failure_path: coreshop_login
+                default_target_path: coreshop_index
                 use_forward: false
                 use_referer: true
             remember_me:
@@ -26,8 +26,8 @@ security:
                 lifetime: 31536000
                 remember_me_parameter: _remember_me
             logout:
-                path: coreshop_shop_logout
-                target: coreshop_shop_login
+                path: coreshop_logout
+                target: coreshop_login
                 invalidate_session: false
 
 

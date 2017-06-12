@@ -80,11 +80,12 @@ class PaymentController extends Controller
         $this->entityManager = $entityManager;
     }
 
-    public function prepareCaptureAction(Request $request, $orderId)
+    public function prepareCaptureAction(Request $request)
     {
         /**
          * @var OrderInterface
          */
+        $orderId = $request->get("order");
         $order = $this->orderRepository->find($orderId);
 
         if (null === $order) {
@@ -115,7 +116,7 @@ class PaymentController extends Controller
         $captureToken = $this->getPayum()->getTokenFactory()->createCaptureToken(
             $payment->getPaymentProvider()->getGatewayConfig()->getGatewayName(),
             $payment,
-            'coreshop_shop_payment_after_pay',
+            'coreshop_payment_after',
             []
         );
 

@@ -25,7 +25,7 @@ final class ResolveNextRouteAction implements ActionInterface
      */
     public function execute($request)
     {
-        $request->setRouteName('coreshop_shop_order_thank_you');
+        $request->setRouteName('coreshop_checkout_confirmation');
     }
 
     /**

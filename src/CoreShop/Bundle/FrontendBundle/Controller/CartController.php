@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -50,45 +51,48 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
-     * @param $productId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addItemAction(Request $request, $productId)
+    public function addItemAction(Request $request)
     {
-        $product = $this->get('coreshop.repository.product')->find($productId);
+        $product = $this->get('coreshop.repository.product')->find($request->get('product'));
+
+        if (!$product instanceof ProductInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
         $quantity = 1;
 
         $this->getCartModifier()->addCartItem($this->getCart(), $product, $quantity);
 
         //TODO: Flashes
 
-        return $this->redirectToRoute('coreshop_shop_cart_summary');
+        return $this->redirectToRoute('coreshop_cart_summary');
     }
 
     /**
      * @param Request $request
-     * @param $cartItemId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeItemAction(Request $request, $cartItemId)
+    public function removeItemAction(Request $request)
     {
-        $cartItem = $this->get('coreshop.repository.cart_item')->find($cartItemId);
+        $cartItem = $this->get('coreshop.repository.cart_item')->find($this->get('cartItem'));
 
         if (!$cartItem instanceof CartItemInterface) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         if ($cartItem->getCart()->getId() !== $this->getCart()->getId()) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         //TODO: add flash
 
         $this->getCartModifier()->removeCartItem($this->getCart(), $cartItem);
 
-        return $this->redirectToRoute('coreshop_shop_cart_summary');
+        return $this->redirectToRoute('coreshop_cart_summary');
     }
 
     /**
@@ -116,7 +120,7 @@ class CartController extends FrontendController
         $cart = $this->getCartManager()->getCart();
 
         if (!$cart->hasItems()) {
-            return $this->redirectToRoute('coreshop_shop_cart_summary');
+            return $this->redirectToRoute('coreshop_cart_summary');
         }
 
         /**
@@ -138,7 +142,7 @@ class CartController extends FrontendController
             $this->addFlash('cart_price_rule_error', 'error');
         }
 
-        return $this->redirectToRoute('coreshop_shop_cart_summary');
+        return $this->redirectToRoute('coreshop_cart_summary');
     }
 
     /**
@@ -154,14 +158,14 @@ class CartController extends FrontendController
         $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
         if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-            return $this->redirectToRoute('coreshop_shop_cart_summary');
+            return $this->redirectToRoute('coreshop_cart_summary');
         }
 
         $priceRule = $voucherCode->getCartPriceRule();
 
         $this->getCartPriceRuleUnProcessor()->unProcess($priceRule, $code, $cart);
 
-        return $this->redirectToRoute('coreshop_shop_cart_summary');
+        return $this->redirectToRoute('coreshop_cart_summary');
     }
 
     /**
@@ -172,7 +176,7 @@ class CartController extends FrontendController
         $quote = $this->getQuoteFactory()->createNew();
         $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
 
-        return $this->redirectToRoute('coreshop_shop_quote', ["quoteId" => $quote->getId()]);
+        return $this->redirectToRoute('coreshop_quote_detail', ["quote" => $quote->getId()]);
     }
 
     /**

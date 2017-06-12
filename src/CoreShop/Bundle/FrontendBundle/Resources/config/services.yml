@@ -2,6 +2,11 @@ parameters:
   coreshop.frontend.base.url: /test/shop
 
 services:
+  coreshop.frontend.controller.index:
+    class: CoreShop\Bundle\FrontendBundle\Controller\IndexController
+    calls:
+      - [setContainer, ['@service_container']]
+
   coreshop.frontend.controller.customer:
     class: CoreShop\Bundle\FrontendBundle\Controller\CustomerController
     calls:

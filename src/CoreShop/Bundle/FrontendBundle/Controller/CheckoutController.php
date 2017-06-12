@@ -36,25 +36,25 @@ class CheckoutController extends FrontendController
 
     /**
      * @param Request $request
-     * @param $stepIdentifier
      *
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function processAction(Request $request, $stepIdentifier)
+    public function processAction(Request $request)
     {
         /**
          * @var CheckoutStepInterface
          */
+        $stepIdentifier = $request->get('stepIdentifier');
         $step = $this->checkoutManager->getStep($stepIdentifier);
 
         if (!$step instanceof CheckoutStepInterface) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         //Check all previous steps if they are valid, if not, redirect back
         foreach ($this->checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
             if (!$previousStep->validate($this->getCart())) {
-                return $this->redirectToRoute('coreshop_shop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
             }
         }
 
@@ -62,7 +62,7 @@ class CheckoutController extends FrontendController
             $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
 
             if ($nextStep) {
-                return $this->redirectToRoute('coreshop_shop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
             }
         }
 
@@ -71,7 +71,7 @@ class CheckoutController extends FrontendController
                 $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
 
                 if ($nextStep) {
-                    return $this->redirectToRoute('coreshop_shop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                    return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
                 }
             }
         }
@@ -114,7 +114,7 @@ class CheckoutController extends FrontendController
             $step = $this->checkoutManager->getStep($stepIdentifier);
 
             if (!$step->validate($this->getCart())) {
-                return $this->redirectToRoute('coreshop_shop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
 
@@ -129,7 +129,7 @@ class CheckoutController extends FrontendController
         /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
         */
-        return $this->redirectToRoute('coreshop_shop_payment', ['orderId' => $order->getId()]);
+        return $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
     }
 
     /**
@@ -142,7 +142,7 @@ class CheckoutController extends FrontendController
         $orderId = $request->getSession()->get('coreshop_order_id', null);
 
         if (null === $orderId) {
-            return $this->redirectToRoute('coreshop_shop_index');
+            return $this->redirectToRoute('coreshop_index');
         }
 
         $request->getSession()->remove('coreshop_order_id');
