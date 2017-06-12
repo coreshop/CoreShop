@@ -1,0 +1,36 @@
+{
+  "name": "coreshop/address",
+  "type": "library",
+  "description": "CoreShop Address Component.",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce",
+    "address"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "coreshop/resource": "dev-master",
+    "symfony/http-foundation": "^3.3"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Component\\Address\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

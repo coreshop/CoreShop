@@ -1,0 +1,34 @@
+{
+  "name": "coreshop/store",
+  "type": "library",
+  "description": "CoreShop Store Component.",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "coreshop/resource": "dev-master"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Component\\Store\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

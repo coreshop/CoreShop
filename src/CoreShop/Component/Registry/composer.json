@@ -1,0 +1,33 @@
+{
+  "name": "coreshop/registry",
+  "type": "library",
+  "description": "CoreShop Registry Component.",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Component\\Registry\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

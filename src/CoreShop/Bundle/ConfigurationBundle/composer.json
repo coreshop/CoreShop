@@ -1,0 +1,36 @@
+{
+  "name": "coreshop/configuration-bundle",
+  "type": "symfony-bundle",
+  "description": "CoreShop - Configuration Bundle",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "coreshop/configuration": "dev-master",
+    "coreshop/resource-bundle": "dev-master",
+    "pimcore/core-version": "^5.0"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Bundle\\ConfigurationBundle\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

@@ -1,0 +1,42 @@
+{
+  "name": "coreshop/order",
+  "type": "library",
+  "description": "CoreShop Order Component.",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "coreshop/rule": "dev-master",
+    "coreshop/registry": "dev-master",
+    "coreshop/resource": "dev-master",
+    "coreshop/store": "dev-master",
+    "coreshop/currency": "dev-master",
+    "coreshop/taxation": "dev-master",
+    "coreshop/payment": "dev-master",
+    "coreshop/address": "dev-master",
+    "coreshop/customer": "dev-master"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Component\\Order\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

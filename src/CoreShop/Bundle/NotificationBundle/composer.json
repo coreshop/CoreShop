@@ -1,0 +1,36 @@
+{
+  "name": "coreshop/notification-bundle",
+  "type": "symfony-bundle",
+  "description": "CoreShop - Notification Bundle",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "coreshop/notification": "dev-master",
+    "coreshop/registry": "dev-master",
+    "coreshop/rule-bundle": "dev-master"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Bundle\\NotificationBundle\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

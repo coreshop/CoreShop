@@ -1,0 +1,49 @@
+{
+  "name": "coreshop/resource-bundle",
+  "type": "symfony-bundle",
+  "description": "CoreShop - Resource Bundle",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "doctrine/doctrine-bundle": "^1.6",
+    "friendsofsymfony/rest-bundle": "^2.1",
+    "jms/serializer-bundle": "^1.1",
+    "stof/doctrine-extensions-bundle": "^1.2",
+    "coreshop/registry": "dev-master",
+    "coreshop/resource": "dev-master",
+    "symfony/config": "^3.2",
+    "symfony/expression-language": "^3.2",
+    "symfony/form": "^3.2",
+    "symfony/framework-bundle": "^3.2",
+    "symfony/security-csrf": "^3.2",
+    "symfony/templating": "^3.2",
+    "symfony/twig-bundle": "^3.2",
+    "symfony/validator": "^3.2",
+    "symfony/yaml": "^3.2",
+    "gedmo/doctrine-extensions": "^2.4.12"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Bundle\\ResourceBundle\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
