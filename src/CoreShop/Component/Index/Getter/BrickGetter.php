@@ -12,15 +12,15 @@
 
 namespace CoreShop\Component\Index\Getter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 class BrickGetter implements GetterInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function get(PimcoreModelInterface $object, IndexColumnInterface $config)
+    public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
         $columnConfig = $config->getConfiguration();
         $getterConfig = $config->getGetterConfig();

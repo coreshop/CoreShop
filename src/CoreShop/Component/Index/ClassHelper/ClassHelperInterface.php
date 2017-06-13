@@ -8,20 +8,27 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Index\Getter;
+namespace CoreShop\Component\Index\ClassHelper;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
 
-interface GetterInterface
+interface ClassHelperInterface
 {
     /**
-     * @param IndexableInterface $object
-     * @param IndexColumnInterface  $column
-     *
-     * @return mixed
+     * @return array
      */
-    public function get(IndexableInterface $object, IndexColumnInterface $column);
+    public function getSystemColumns();
+
+    /**
+     * @return array
+     */
+    public function getLocalizedSystemColumns();
+
+    /**
+     * @param IndexableInterface $indexable
+     * @return array
+     */
+    public function getIndexColumns(IndexableInterface $indexable);
 }

@@ -13,7 +13,7 @@ coreshop_admin_index:
         methods: [GET]
       classDefinition:
         path: get-class-definition-for-field-selection
-        action: getClassDefinitionForFieldSelectionAction
+        action: getClassDefinitionForFieldSelection
         methods: [GET]
 
 coreshop_admin_filter:

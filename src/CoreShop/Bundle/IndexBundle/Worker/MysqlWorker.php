@@ -8,12 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
+use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -31,10 +33,12 @@ class MysqlWorker extends AbstractWorker
     protected $database;
 
     public function __construct(
+        ServiceRegistryInterface $classHelperRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry
-    ) {
-        parent::__construct($getterServiceRegistry, $interpreterServiceRegistry);
+    )
+    {
+        parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry);
 
         $this->database = \Pimcore\Db::get();
     }
@@ -57,6 +61,8 @@ class MysqlWorker extends AbstractWorker
      */
     protected function processTable(IndexInterface $index)
     {
+        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+
         $columns = $this->getTableColumns($this->getTablename($index));
         $columnsToDelete = $columns;
         $columnsToAdd = [];
@@ -78,6 +84,17 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
+        if ($classHelper instanceof ClassHelperInterface) {
+            foreach ($classHelper->getSystemColumns() as $name => $type) {
+                if (!array_key_exists($name, $columns)) {
+                    $columnTypeForIndex = $this->renderFieldType($type);
+                    $columnsToAdd[$name] = $columnTypeForIndex;
+                }
+
+                unset($columnsToDelete[$name]);
+            }
+        }
+
         $this->dropColumns($this->getTablename($index), $columnsToDelete);
         $this->addColumns($this->getTablename($index), $columnsToAdd);
     }
@@ -89,6 +106,8 @@ class MysqlWorker extends AbstractWorker
      */
     protected function processLocalizedTable(IndexInterface $index)
     {
+        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+
         $localizedColumns = $this->getTableColumns($this->getLocalizedTablename($index));
         $localizedColumnsToAdd = [];
         $localizedColumnsToDelete = $localizedColumns;
@@ -109,6 +128,17 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
+        if ($classHelper instanceof ClassHelperInterface) {
+            foreach ($classHelper->getLocalizedSystemColumns() as $name => $type) {
+                if (!array_key_exists($name, $localizedColumns)) {
+                    $columnTypeForIndex = $this->renderFieldType($type);
+                    $localizedColumnsToAdd[$name] = $columnTypeForIndex;
+                }
+
+                unset($localizedColumnsToDelete[$name]);
+            }
+        }
+
         $this->dropColumns($this->getLocalizedTablename($index), $localizedColumnsToDelete);
         $this->addColumns($this->getLocalizedTablename($index), $localizedColumnsToAdd);
     }
@@ -122,7 +152,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function getTableColumns($table)
     {
-        $data = $this->database->fetchAll('SHOW COLUMNS FROM '.$table);
+        $data = $this->database->fetchAll('SHOW COLUMNS FROM ' . $table);
 
         $columns = [];
 
@@ -151,9 +181,10 @@ class MysqlWorker extends AbstractWorker
     protected function dropColumns($table, $columns)
     {
         $systemColumns = $this->getSystemAttributes();
+        $systemLocalizedColumns = $this->getLocalizedSystemAttributes();
 
         foreach ($columns as $c) {
-            if (!array_key_exists($c, $systemColumns)) {
+            if (!array_key_exists($c, $systemColumns) && !array_key_exists($c, $systemLocalizedColumns)) {
                 $this->dropColumn($table, $c);
             }
         }
@@ -165,7 +196,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function dropColumn($table, $column)
     {
-        $this->database->query('ALTER TABLE `'.$table.'` DROP COLUMN `'.$column.'`;');
+        $this->database->query('ALTER TABLE `' . $table . '` DROP COLUMN `' . $column . '`;');
     }
 
     /**
@@ -175,7 +206,7 @@ class MysqlWorker extends AbstractWorker
      */
     protected function addColumn($table, $column, $type)
     {
-        $this->database->query('ALTER TABLE `'.$table.'` ADD `'.$column.'` '.$type.';');
+        $this->database->query('ALTER TABLE `' . $table . '` ADD `' . $column . '` ' . $type . ';');
     }
 
     /**
@@ -185,37 +216,33 @@ class MysqlWorker extends AbstractWorker
      */
     protected function createTables(IndexInterface $index)
     {
-        $this->database->query('CREATE TABLE IF NOT EXISTS `'.$this->getTablename($index)."` (
-          `o_id` int(11) NOT NULL default '0',
-          `o_key` varchar(255) NOT NULL,
-          `o_virtualProductId` int(11) NOT NULL,
+        $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getTablename($index) . "` (
+          `o_id` INT(11) NOT NULL DEFAULT '0',
+          `o_key` VARCHAR(255) NOT NULL,
+          `o_virtualProductId` INT(11) NOT NULL,
           `o_virtualProductActive` TINYINT(1) NOT NULL,
-          `o_classId` int(11) NOT NULL,
-          `o_type` varchar(20) NOT NULL,
-          `categoryIds` varchar(255) NOT NULL,
-          `parentCategoryIds` varchar(255) NOT NULL,
+          `o_classId` INT(11) NOT NULL,
+          `o_className` VARCHAR(255) NOT NULL,
+          `o_type` VARCHAR(20) NOT NULL,
           `active` TINYINT(1) NOT NULL,
-          `shops` varchar(255) NOT NULL,
-          `minPrice` double NOT NULL,
-          `maxPrice` double NOT NULL,
           PRIMARY KEY  (`o_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-        $this->database->query('CREATE TABLE IF NOT EXISTS `'.$this->getLocalizedTablename($index)."` (
-		  `oo_id` int(11) NOT NULL default '0',
-		  `language` varchar(10) NOT NULL DEFAULT '',
-		  `name` varchar(255) NOT NULL,
+        $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getLocalizedTablename($index) . "` (
+		  `oo_id` INT(11) NOT NULL DEFAULT '0',
+		  `language` VARCHAR(10) NOT NULL DEFAULT '',
+		  `name` VARCHAR(255) NULL,
 		  PRIMARY KEY (`oo_id`,`language`),
           INDEX `ooo_id` (`oo_id`),
           INDEX `language` (`language`)
 		) DEFAULT CHARSET=utf8;");
 
-        $this->database->query('CREATE TABLE IF NOT EXISTS `'.$this->getRelationTablename($index)."` (
-          `src` int(11) NOT NULL default '0',
-          `src_virtualProductId` int(11) NOT NULL,
-          `dest` int(11) NOT NULL,
-          `fieldname` varchar(255) COLLATE utf8_bin NOT NULL,
-          `type` varchar(20) COLLATE utf8_bin NOT NULL,
+        $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getRelationTablename($index) . "` (
+          `src` INT(11) NOT NULL DEFAULT '0',
+          `src_virtualProductId` INT(11) NOT NULL,
+          `dest` INT(11) NOT NULL,
+          `fieldname` VARCHAR(255) COLLATE utf8_bin NOT NULL,
+          `type` VARCHAR(20) COLLATE utf8_bin NOT NULL,
           PRIMARY KEY (`src`,`dest`,`fieldname`,`type`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;");
     }
@@ -265,12 +292,12 @@ QUERY;
             $languages = Tool::getValidLanguages();
 
             foreach ($languages as $language) {
-                $this->database->query('DROP VIEW IF EXISTS `'.$this->getLocalizedViewName($index, $language).'`');
+                $this->database->query('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index, $language) . '`');
             }
 
-            $this->database->query('DROP TABLE IF EXISTS `'.$this->getTablename($index).'`');
-            $this->database->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index).'`');
-            $this->database->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `' . $this->getTablename($index) . '`');
+            $this->database->query('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
+            $this->database->query('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
         } catch (\Exception $e) {
             Logger::error($e);
         }
@@ -279,23 +306,19 @@ QUERY;
     /**
      * {@inheritdoc}
      */
-    public function deleteFromIndex(IndexInterface $index, PimcoreModelInterface $object)
+    public function deleteFromIndex(IndexInterface $index, IndexableInterface $object)
     {
-        $this->database->delete($this->getTablename($index), 'o_id = '.$this->database->quote($object->getId()));
-        $this->database->delete($this->getLocalizedTablename($index), 'o_id = '.$this->database->quote($object->getId()));
-        $this->database->delete($this->getRelationTablename($index), 'src = '.$this->database->quote($object->getId()));
+        $this->database->delete($this->getTablename($index), 'o_id = ' . $this->database->quote($object->getId()));
+        $this->database->delete($this->getLocalizedTablename($index), 'o_id = ' . $this->database->quote($object->getId()));
+        $this->database->delete($this->getRelationTablename($index), 'src = ' . $this->database->quote($object->getId()));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function updateIndex(IndexInterface $index, PimcoreModelInterface $object)
+    public function updateIndex(IndexInterface $index, IndexableInterface $object)
     {
-        $doIndex = true; //TODO: Refactor, implement IndexableInterface?
-
-        if (method_exists($object, 'getDoIndex')) {
-            $doIndex = $object->getDoIndex();
-        }
+        $doIndex = $object->getIndexable();
 
         if ($doIndex) {
             $preparedData = $this->prepareData($index, $object);
@@ -303,13 +326,13 @@ QUERY;
             try {
                 $this->doInsertData($index, $preparedData['data']);
             } catch (\Exception $e) {
-                Logger::warn('Error during updating index table: '.$e);
+                Logger::warn('Error during updating index table: ' . $e);
             }
 
             try {
                 $this->doInsertLocalizedData($index, $preparedData['localizedData']);
             } catch (\Exception $e) {
-                Logger::warn('Error during updating index table: '.$e);
+                Logger::warn('Error during updating index table: ' . $e);
             }
 
             try {
@@ -318,10 +341,10 @@ QUERY;
                     $this->database->insert($this->getRelationTablename($index), $rd);
                 }
             } catch (\Exception $e) {
-                Logger::warn('Error during updating index relation table: '.$e->getMessage(), $e);
+                Logger::warn('Error during updating index relation table: ' . $e->getMessage(), $e);
             }
         } else {
-            Logger::info("Don't adding product ".$object->getId().' to index.');
+            Logger::info("Don't adding product " . $object->getId() . ' to index.');
 
             $this->deleteFromIndex($index, $object);
         }
@@ -344,12 +367,12 @@ QUERY;
         foreach ($data as $key => $d) {
             $dataKeys[$this->database->quoteIdentifier($key)] = '?';
             $updateData[] = $d;
-            $insertStatement[] = $this->database->quoteIdentifier($key).' = ?';
+            $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
             $insertData[] = $d;
         }
 
-        $insert = 'INSERT INTO '.$this->getTablename($index).' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
-            .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
+        $insert = 'INSERT INTO ' . $this->getTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
+            . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
         $this->database->query($insert, array_merge($updateData, $insertData));
     }
@@ -384,12 +407,12 @@ QUERY;
                 $dataKeys[$this->database->quoteIdentifier($key)] = '?';
                 $updateData[] = $d;
 
-                $insertStatement[] = $this->database->quoteIdentifier($key).' = ?';
+                $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
                 $insertData[] = $d;
             }
 
-            $insert = 'INSERT INTO '.$this->getLocalizedTablename($index).' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
-                .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
+            $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
+                . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
             $this->database->query($insert, array_merge($updateData, $insertData));
         }
@@ -430,7 +453,7 @@ QUERY;
                 return 'TEXT';
         }
 
-        throw new \Exception($type.' is not supported by MySQL Index');
+        throw new \Exception($type . ' is not supported by MySQL Index');
     }
 
     /**
@@ -450,7 +473,7 @@ QUERY;
      */
     public function getTablename(IndexInterface $index)
     {
-        return 'coreshop_index_mysql_'.$index->getName();
+        return 'coreshop_index_mysql_' . $index->getName();
     }
 
     /**
@@ -462,7 +485,7 @@ QUERY;
      */
     public function getLocalizedTablename(IndexInterface $index)
     {
-        return 'coreshop_index_mysql_localized_'.$index->getName();
+        return 'coreshop_index_mysql_localized_' . $index->getName();
     }
 
     /**
@@ -475,7 +498,7 @@ QUERY;
      */
     public function getLocalizedViewName(IndexInterface $index, $language)
     {
-        return $this->getLocalizedTablename($index).'_'.$language;
+        return $this->getLocalizedTablename($index) . '_' . $language;
     }
 
     /**
@@ -487,6 +510,6 @@ QUERY;
      */
     public function getRelationTablename(IndexInterface $index)
     {
-        return 'coreshop_index_mysql_relations_'.$index->getName();
+        return 'coreshop_index_mysql_relations_' . $index->getName();
     }
 }

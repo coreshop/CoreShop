@@ -23,4 +23,20 @@ class Product extends BaseProduct implements PurchasableInterface, ProductInterf
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEnabled()
+    {
+        return $this->getPublished();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexable()
+    {
+        return true;
+    }
 }

@@ -12,16 +12,17 @@
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
+use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Logger;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;
@@ -29,6 +30,11 @@ use Pimcore\Tool;
 
 abstract class AbstractWorker implements WorkerInterface
 {
+    /**
+     * @var ServiceRegistryInterface
+     */
+    protected $classHelperRegistry;
+
     /**
      * @var ServiceRegistryInterface
      */
@@ -40,23 +46,19 @@ abstract class AbstractWorker implements WorkerInterface
     protected $interpreterServiceRegistry;
 
     public function __construct(
+        ServiceRegistryInterface $classHelperRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry
     ) {
+        $this->classHelperRegistry = $classHelperRegistry;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
     }
 
     /**
-     * prepares Data for index.
-     *
-     * @param IndexInterface        $index
-     * @param PimcoreModelInterface $object
-     * @param bool                  $convertArrayToString
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function prepareData(IndexInterface $index, PimcoreModelInterface $object, $convertArrayToString = true)
+    protected function prepareData(IndexInterface $index, IndexableInterface $object)
     {
         $inAdmin = \Pimcore::inAdmin();
         $backupInheritedValues = AbstractObject::doGetInheritedValues();
@@ -65,37 +67,10 @@ abstract class AbstractWorker implements WorkerInterface
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
         AbstractObject::setHideUnpublished(false);
 
-        $categoryIds = [];
-        $parentCategoryIds = [];
-
-        //TODO: Should be refactored?
-        if (method_exists($object, 'getCategories')) {
-            $categories = $object->getCategories();
-
-            if ($categories) {
-                foreach ($categories as $c) {
-                    $categoryIds[$c->getId()] = $c->getId();
-
-                    if (method_exists($c, 'getHierarchy')) {
-                        $parents = $c->getHierarchy();
-
-                        foreach ($parents as $p) {
-                            $parentCategoryIds[] = $p->getId();
-                        }
-                    }
-                }
-            }
-        }
-
-        ksort($categoryIds);
-        $categoryIds = array_values($categoryIds);
+        $classHelper = $this->classHelperRegistry->has($object->getClassName()) ? $this->classHelperRegistry->get($object->getClassName()) : null;
 
         $virtualProductId = $object->getId();
-        $virtualProductActive = false;
-
-        if (method_exists($object, 'getEnabled')) {
-            $virtualProductActive = $object->getEnabled();
-        }
+        $virtualProductActive = $object->getEnabled();
 
         if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
             $parent = $object->getParent();
@@ -105,10 +80,7 @@ abstract class AbstractWorker implements WorkerInterface
             }
 
             $virtualProductId = $parent->getId();
-
-            if (method_exists($object, 'getEnabled')) {
-                $virtualProductActive = $object->getEnabled();
-            }
+            $virtualProductActive = $object->getEnabled();
         }
 
         $validLanguages = Tool::getValidLanguages();
@@ -117,20 +89,17 @@ abstract class AbstractWorker implements WorkerInterface
             'o_id' => $object->getId(),
             'o_key' => $object->getKey(),
             'o_classId' => $object->getClassId(),
+            'o_className' => $object->getClassName(),
             'o_virtualProductId' => $virtualProductId,
             'o_virtualProductActive' => $virtualProductActive === null ? false : $virtualProductActive,
-            'o_type' => $object->getType(),
-            'categoryIds' => $convertArrayToString ? ','.implode(',', $categoryIds).',' : $categoryIds,
-            'parentCategoryIds' => $convertArrayToString ? ','.implode(',', $parentCategoryIds).',' : $parentCategoryIds,
+            'o_type' => $object->getType()
         ];
 
-        if (method_exists($object, 'getEnabled')) {
-            $data['active'] = $object->getEnabled();
+        if ($classHelper instanceof ClassHelperInterface) {
+            $data = array_merge($data, $classHelper->getIndexColumns($object));
         }
 
-        if (method_exists($object, 'getShops')) {//TODO: nope
-            $data['shops'] = $convertArrayToString ? ','.@implode(',', $object->getShops()).',' : $object->getShops();
-        }
+        $data['active'] = $object->getEnabled();
 
         $localizedData = [
             'oo_id' => $object->getId(),
@@ -175,7 +144,7 @@ abstract class AbstractWorker implements WorkerInterface
                                     }
                                 }
 
-                                if (is_array($value) && $convertArrayToString) {
+                                if (is_array($value)) {
                                     $value = ','.implode($value, ',').',';
                                 }
 
@@ -231,7 +200,7 @@ abstract class AbstractWorker implements WorkerInterface
                         }
 
                         if ($value) {
-                            if (is_array($value) && $convertArrayToString) {
+                            if (is_array($value)) {
                                 $value = ','.implode($value, ',').',';
                             }
 
@@ -301,12 +270,12 @@ abstract class AbstractWorker implements WorkerInterface
    /**
     * {@inheritdoc}
     */
-   abstract public function deleteFromIndex(IndexInterface $index, PimcoreModelInterface $object);
+   abstract public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * {@inheritdoc}
      */
-    abstract public function updateIndex(IndexInterface $index, PimcoreModelInterface $object);
+    abstract public function updateIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * {@inheritdoc}
@@ -333,19 +302,27 @@ abstract class AbstractWorker implements WorkerInterface
         return [
             'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'oo_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
-            'name' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'language' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_key' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_classId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'o_className' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_virtualProductId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'o_virtualProductActive' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
             'o_type' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'parentCategoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'active' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
-            'shops' => IndexColumnInterface::FIELD_TYPE_STRING,//TODO: NOPE!
-            'minPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
-            'maxPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
+            'active' => IndexColumnInterface::FIELD_TYPE_BOOLEAN
+        ];
+    }
+
+    /**
+     * Get System Attributes.
+     *
+     * @return array
+     */
+    protected function getLocalizedSystemAttributes()
+    {
+        return [
+            'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'language' => IndexColumnInterface::FIELD_TYPE_STRING,
+            'name' => IndexColumnInterface::FIELD_TYPE_STRING
         ];
     }
 }

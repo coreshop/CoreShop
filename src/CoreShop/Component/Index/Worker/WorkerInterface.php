@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Index\Worker;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\Listing\AbstractListing;
@@ -39,17 +40,17 @@ interface WorkerInterface
     * deletes given element from index.
     *
     * @param IndexInterface $index
-    * @param PimcoreModelInterface $object
+    * @param IndexableInterface $object
     */
-   public function deleteFromIndex(IndexInterface $index, PimcoreModelInterface $object);
+   public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * updates given element in index.
      *
      * @param IndexInterface        $index
-     * @param PimcoreModelInterface $object
+     * @param IndexableInterface $object
      */
-    public function updateIndex(IndexInterface $index, PimcoreModelInterface $object);
+    public function updateIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * returns product list implementation valid and configured for this worker/tenant.
