@@ -1,0 +1,30 @@
+{% extends '@CoreShopFrontend/layout-full.html.twig' %}
+
+{% block center %}
+<div id="main-container" class="container">
+
+    <ol class="breadcrumb">
+        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+        <li class="active"><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
+    </ol>
+
+    <h2 class="main-heading text-center">
+        {{ 'my_account'|trans }}
+    </h2>
+
+    <div class="list-group">
+        <a href="{{ path('coreshop_customer_orders') }}" title="{{ 'orders'|trans }}" class="list-group-item">
+            <i class="fa fa-list-ol"></i>
+            <span>{{ 'order_history_and_details'|trans }}</span>
+        </a>
+        <a href="{{ path('coreshop_customer_addresses') }}" title="{{ 'addresses'|trans }}" class="list-group-item">
+            <i class="fa fa-building"></i>
+            <span>{{ 'my_addresses'|trans }}</span>
+        </a>
+        <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'settings'|trans }}" class="list-group-item">
+            <i class="fa fa-user"></i>
+            <span>{{ 'my_personal_information'|trans }}</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

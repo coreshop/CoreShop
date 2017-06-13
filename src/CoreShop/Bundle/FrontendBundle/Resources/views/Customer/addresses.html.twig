@@ -1,0 +1,44 @@
+{% extends '@CoreShopFrontend/layout-full.html.twig' %}
+
+{% block center %}
+<div id="main-container" class="container">
+
+    <ol class="breadcrumb">
+        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
+        <li class="active"><a href="{{ path('coreshop_customer_addresses') }}">{{ 'addresses'|trans }}</a></li>
+    </ol>
+
+    <h2 class="main-heading text-center">
+        {{ 'addresses'|trans }}
+    </h2>
+
+    <section class="addresses-area">
+        <div class="row">
+            {% for address in customer.getAddresses %}
+            <div class="col-xs-6">
+                <div class="panel panel-smart">
+                    <div class="panel-body">
+                        {{ address|coreshop_format_address }}
+                        <br/>
+                        <a href="{{ path('coreshop_customer_address_edit', {name: address.getStreet, address: address.getId}) }}" class="btn btn-default">
+                            {{ 'edit'|trans }}
+                        </a>
+                        <a href="{{ path('coreshop_customer_address_delete', {address: address.getId}) }}" class="btn btn-default">
+                            {{ 'delete'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="{{ path('coreshop_customer_address_new') }}" class="btn btn-default">
+                    {{ 'add_new'|trans }}
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

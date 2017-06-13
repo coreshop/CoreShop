@@ -1,0 +1,52 @@
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% extends '@CoreShopFrontend/layout-full.html.twig' %}
+
+{% block center %}
+    <div id="main-container" class="container">
+
+        <ol class="breadcrumb">
+            <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
+            <li class="active"><a href="{{ path('coreshop_customer_orders') }}">{{ 'orders'|trans }}</a></li>
+        </ol>
+
+        <h2 class="main-heading text-center">
+            {{ 'orders'|trans }}
+        </h2>
+
+        <div class="table-responsive compare-table">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>{{ 'order_number'|trans }}</td>
+                    <td>{{ 'date'|trans }}</td>
+                    <td>{{ 'total'|trans }}</td>
+                    <td>{{ 'state'|trans }}</td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.getOrderNumber }}</td>
+                    <td>
+                        {{ order.getOrderDate|date("d.m.Y") }}
+                    </td>
+                    <td>
+                        {{ currency.format(order.getTotal, order.getCurrency.getIsoCode) }}
+                    </td>
+                    <td>
+                        TODO. But how? I need to access the workflow manager
+                    </td>
+                    <td>
+                        <a class="btn btn-black" href="{{ path('coreshop_customer_order_detail', {order: order.getId}) }}">
+                            {{ 'show_detail'|trans }}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

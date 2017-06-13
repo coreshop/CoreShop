@@ -184,7 +184,7 @@
                 ?>#}
             </td>
             <td class="text-right">
-                <strong>{{ 'subtota_inc'|trans }}:</strong>
+                <strong>{{ 'subtotal_inc'|trans }}:</strong>
             </td>
             <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-sub-total">
                 {{ currency.convertAndFormat(cart.getSubtotal(true)) }}
@@ -254,18 +254,6 @@
                 </td>
             </tr>
         {% endfor %}
-        {#TODO
-        <?php foreach($taxes as $tax) { ?>
-            <tr>
-                <td class="text-right cart-tax-detail">
-                    <strong><?=$this->translate(sprintf("Tax (%s)", $tax['tax']->getName()))?>:</strong>
-                </td>
-                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-tax-detail">
-                    <?=$this->cart->formatPrice($tax['amount'])?>
-                </td>
-            </tr>
-        <?php } ?>
-        #}
        <tr>
             <td class="text-right">
                 <strong>{{ 'total_tax'|trans }}:</strong>

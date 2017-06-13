@@ -8,7 +8,7 @@ coreshop_index:
   priority: 1
 
 coreshop_category_list:
-  pattern: "/(\\w+)\\/shop\\/(.*?)\\~c([0-9]+)/"
+  pattern: "/(\\w+)\\/shop\\/(.*?)~\\~c([0-9]+)/"
   reverse: "/%_locale/shop/%name~cÊtegory"
   module: FrontendBundle
   controller: "@coreshop.frontend.controller.category"
@@ -161,10 +161,91 @@ coreshop_checkout_error:
   priority: 2
 
 coreshop_switch_currency:
-  pattern: "/(\\w+)\\/shop\\/switch-currency\\/(.*?)/"
+  pattern: "/(\\w+)\\/shop\\/switch-currency\\/(.*)/"
   reverse: "/%_locale/shop/switch-currency/%currencyCode"
   module: FrontendBundle
   controller: "@coreshop.frontend.controller.currency"
   action: switch
   variables: _locale,currencyCode
+  priority: 2
+
+coreshop_register:
+  pattern: "/(\\w+)\\/shop\\/register/"
+  reverse: "/%_locale/shop/register"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.register"
+  action: register
+  variables: _locale
+  priority: 2
+
+coreshop_customer_profile:
+  pattern: "/(\\w+)\\/shop\\/customer\\/profile/"
+  reverse: "/%_locale/shop/customer/profile"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: profile
+  variables: _locale
+  priority: 2
+
+coreshop_customer_orders:
+  pattern: "/(\\w+)\\/shop\\/customer\\/orders/"
+  reverse: "/%_locale/shop/customer/orders"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: orders
+  variables: _locale
+  priority: 2
+
+coreshop_customer_order_detail:
+  pattern: "/(\\w+)\\/shop\\/customer\\/order\\/([0-9]+)/"
+  reverse: "/%_locale/shop/customer/order/%order"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: orderDetail
+  variables: _locale,order
+  priority: 2
+
+coreshop_customer_addresses:
+  pattern: "/(\\w+)\\/shop\\/customer\\/addresses/"
+  reverse: "/%_locale/shop/customer/addresses"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: addresses
+  variables: _locale
+  priority: 2
+
+coreshop_customer_address_edit:
+  pattern: "/(\\w+)\\/shop\\/customer\\/addresses\\/(.*?)\\~c([0-9]+)/"
+  reverse: "/%_locale/shop/customer/addresses/%name~%address"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: address
+  variables: _locale,name,address
+  priority: 2
+
+coreshop_customer_address_new:
+  pattern: "/(\\w+)\\/shop\\/customer\\/addresses\\/new"
+  reverse: "/%_locale/shop/customer/addresses/new"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: address
+  variables: _locale
+  priority: 3
+
+coreshop_customer_address_delete:
+  pattern: "/(\\w+)\\/shop\\/customer\\/addresses\\/delete\\/([0-9]+)/"
+  reverse: "/%_locale/shop/customer/addresses/delete/%address"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: addressDelete
+  variables: _locale,address
+  priority: 2
+
+coreshop_customer_settings:
+  pattern: "/(\\w+)\\/shop\\/customer\\/settings/"
+  reverse: "/%_locale/shop/customer/settings"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.customer"
+  action: settings
+  variables: _locale
   priority: 2
