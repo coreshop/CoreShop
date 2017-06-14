@@ -75,7 +75,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             ],
             'street' => [
                 '%Text(street);',
-                '%Text(nr);',
+                '%Text(number);',
             ],
             'postalcode' => ' %Text(postcode); ',
             'city' => '%Text(city);',
