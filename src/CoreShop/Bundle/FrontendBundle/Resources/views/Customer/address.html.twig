@@ -1,0 +1,55 @@
+{% extends '@CoreShopFrontend/layout-full.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block center %}
+    <div id="main-container" class="container">
+
+        <ol class="breadcrumb">
+            <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_addresses') }}">{{ 'addresses'|trans }}</a></li>
+            <li class="active">{{ 'addresses'|trans }}</li>
+        </ol>
+
+        <h2 class="main-heading text-center">
+            {{ 'address'|trans }} <br/>
+            {% if not address.getId %}
+                <span>{{ 'add_new_address'|trans }}</span>
+            {% endif %}
+        </h2>
+
+        <section class="registration-area">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-smart">
+                        <div class="panel-body">
+                            {{ form_start(form) }}
+                                {{ form_errors(form) }}
+
+                                {{ form_row(form.company) }}
+                                {{ form_row(form.firstname) }}
+                                {{ form_row(form.lastname) }}
+                                {{ form_row(form.street) }}
+                                {{ form_row(form.number) }}
+                                {{ form_row(form.postcode) }}
+                                {{ form_row(form.city) }}
+                                {{ form_row(form.country) }}
+                                {{ form_row(form.phoneNumber) }}
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-black">
+                                        {% if not address.getId %}
+                                            {{ 'add'|trans }}
+                                        {% else %}
+                                            {{ 'save'|trans }}
+                                        {% endif %}
+                                    </button>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

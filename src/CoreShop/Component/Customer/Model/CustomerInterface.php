@@ -78,6 +78,17 @@ interface CustomerInterface extends ResourceInterface
     public function setPassword($password);
 
     /**
+     * @param AddressInterface $address
+     */
+    public function addAddress(AddressInterface $address);
+
+    /**
+     * @param AddressInterface $address
+     * @return boolean
+     */
+    public function hasAddress(AddressInterface $address);
+
+    /**
      * @return AddressInterface[]
      */
     public function getAddresses();

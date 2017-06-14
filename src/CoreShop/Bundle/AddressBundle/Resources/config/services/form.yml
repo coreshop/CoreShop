@@ -4,6 +4,7 @@ parameters:
   coreshop.form.type.country_translation.validation_groups: [coreshop]
   coreshop.form.type.state.validation_groups: [coreshop]
   coreshop.form.type.state_translation.validation_groups: [coreshop]
+  coreshop.form.type.address.validation_groups: [coreshop]
 
 services:
   coreshop.form.type.country_choice:
@@ -65,5 +66,13 @@ services:
     arguments:
       - '%coreshop.model.zone.class%'
       - '%coreshop.form.type.zone.validation_groups%'
+    tags:
+      -  { name: form.type }
+
+  coreshop.form.type.address:
+    class: CoreShop\Bundle\AddressBundle\Form\Type\AddressType
+    arguments:
+      - '%coreshop.model.address.class%'
+      - '%coreshop.form.type.address.validation_groups%'
     tags:
       -  { name: form.type }

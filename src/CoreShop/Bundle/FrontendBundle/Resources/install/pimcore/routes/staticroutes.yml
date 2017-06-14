@@ -215,8 +215,8 @@ coreshop_customer_addresses:
   priority: 2
 
 coreshop_customer_address_edit:
-  pattern: "/(\\w+)\\/shop\\/customer\\/addresses\\/(.*?)\\~c([0-9]+)/"
-  reverse: "/%_locale/shop/customer/addresses/%name~%address"
+  pattern: "/(\\w+)\\/shop\\/customer\\/address\\/(.*?)\\~a([0-9]+)/"
+  reverse: "/%_locale/shop/customer/address/%name~a%address"
   module: FrontendBundle
   controller: "@coreshop.frontend.controller.customer"
   action: address
@@ -224,8 +224,8 @@ coreshop_customer_address_edit:
   priority: 2
 
 coreshop_customer_address_new:
-  pattern: "/(\\w+)\\/shop\\/customer\\/addresses\\/new"
-  reverse: "/%_locale/shop/customer/addresses/new"
+  pattern: "/(\\w+)\\/shop\\/customer\\/address\\/new/"
+  reverse: "/%_locale/shop/customer/address/new"
   module: FrontendBundle
   controller: "@coreshop.frontend.controller.customer"
   action: address

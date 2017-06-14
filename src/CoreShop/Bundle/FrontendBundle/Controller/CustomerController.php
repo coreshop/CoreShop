@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,6 +99,78 @@ class CustomerController extends FrontendController
         return $this->render('CoreShopFrontendBundle:Customer:addresses.html.twig', [
             'customer' => $customer,
         ]);
+    }
+
+    public function addressAction(Request $request)
+    {
+        $customer = $this->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $addressId = $request->get('address');
+        $address = $this->get('coreshop.repository.address')->find($addressId);
+
+        if (!$address instanceof AddressInterface) {
+            $address = $this->get('coreshop.factory.address')->createNew();
+        }
+        else {
+            if (!$customer->hasAddress($address)) {
+                return $this->redirectToRoute('coreshop_customer_addresses');
+            }
+        }
+
+        $form = $this->get('form.factory')->createNamed('', AddressType::class, $address);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+            $handledForm = $form->handleRequest($request);
+
+            if ($handledForm->isValid()) {
+                $address = $handledForm->getData();
+
+                $address->setPublished(true);
+                $address->setKey(uniqid());
+                $address->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), 'addresses')));
+                $address->save();
+
+                $customer->addAddress($address);
+                $customer->save();
+
+                return $this->redirectToRoute('coreshop_customer_addresses');
+            }
+        }
+
+        return $this->render('CoreShopFrontendBundle:Customer:address.html.twig', [
+            'address' => $address,
+            'customer' => $customer,
+            'form' => $form->createView()
+        ]);
+    }
+
+    public function addressDeleteAction(Request $request)
+    {
+        $customer = $this->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $addressId = $request->get('address');
+        $address = $this->get('coreshop.repository.address')->find($addressId);
+
+        if (!$address instanceof AddressInterface) {
+            return $this->redirectToRoute('coreshop_customer_addresses');
+        }
+        else {
+            if (!$customer->hasAddress($address)) {
+                return $this->redirectToRoute('coreshop_customer_addresses');
+            }
+        }
+
+        $address->delete();
+
+        return $this->redirectToRoute('coreshop_customer_addresses');
     }
 
     protected function getCustomer()
