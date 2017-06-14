@@ -13,23 +13,9 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Customer\Model\CustomerGroup as BaseCustomerGroup;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Store\Model\StoresAwareTrait;
 
 class CustomerGroup extends BaseCustomerGroup implements CustomerGroupInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getShops()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShops($shops)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
+    use StoresAwareTrait;
 }

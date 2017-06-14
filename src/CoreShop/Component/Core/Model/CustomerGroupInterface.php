@@ -13,18 +13,9 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Customer\Model\CustomerGroupInterface as BaseCustomerGroupInterface;
+use CoreShop\Component\Store\Model\StoresAwareInterface;
 
-interface CustomerGroupInterface extends BaseCustomerGroupInterface
+interface CustomerGroupInterface extends BaseCustomerGroupInterface, StoresAwareInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getShops();
 
-    /**
-     * @param $shops
-     *
-     * @return mixed
-     */
-    public function setShops($shops);
 }
