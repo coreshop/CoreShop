@@ -3,3 +3,6 @@ core_shop_customer:
     customer_group:
       classes:
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomerGroup.json'
+    customer:
+      classes:
+        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomer.json'

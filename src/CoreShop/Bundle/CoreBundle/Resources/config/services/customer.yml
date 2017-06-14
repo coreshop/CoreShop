@@ -1,0 +1,2 @@
+parameters:
+  coreshop.customer_address.folder_path: addresses

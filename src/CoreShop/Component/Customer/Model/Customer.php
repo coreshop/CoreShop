@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Customer\Model;
 
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
@@ -21,42 +20,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class Customer extends AbstractPimcoreModel implements CustomerInterface, PimcoreModelInterface, UserInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function hasAddress(AddressInterface $address) {
-        $addresses = $this->getAddresses();
-
-        if (!is_array($addresses)) {
-            return false;
-        }
-
-        foreach ($addresses as $existingAddress) {
-            if ($existingAddress instanceof AddressInterface && $existingAddress->getId() === $address->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAddress(AddressInterface $address)
-    {
-        $addresses = $this->getAddresses();
-
-        if (!is_array($addresses)) {
-            $addresses = [];
-        }
-
-        if (!$this->hasAddress($address)) {
-            $addresses[] = $address;
-            $this->setAddresses($addresses);
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -133,22 +96,6 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, Pimcor
      * {@inheritdoc}
      */
     public function setPassword($password)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAddresses()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAddresses($addresses)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

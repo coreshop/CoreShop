@@ -3,7 +3,6 @@ imports:
 
 parameters:
   coreshop.folder.customer: /%coreshop.folder.objects%/customers
-  coreshop.address.folder_path: addresses
   coreshop.folder.customer_groups: /%coreshop.folder.objects%/customer-groups
 
 services:

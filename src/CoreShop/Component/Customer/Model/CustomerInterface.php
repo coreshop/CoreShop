@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Customer\Model;
 
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface CustomerInterface extends ResourceInterface
@@ -76,29 +75,6 @@ interface CustomerInterface extends ResourceInterface
      * @return static
      */
     public function setPassword($password);
-
-    /**
-     * @param AddressInterface $address
-     */
-    public function addAddress(AddressInterface $address);
-
-    /**
-     * @param AddressInterface $address
-     * @return boolean
-     */
-    public function hasAddress(AddressInterface $address);
-
-    /**
-     * @return AddressInterface[]
-     */
-    public function getAddresses();
-
-    /**
-     * @param AddressInterface[] $addresses
-     *
-     * @return static
-     */
-    public function setAddresses($addresses);
 
     /**
      * @return bool

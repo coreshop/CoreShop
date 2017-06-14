@@ -13,6 +13,7 @@ imports:
   - { resource: "services/profiler.yml" }
   - { resource: "services/order.yml" }
   - { resource: "services/tracking.yml" }
+  - { resource: "services/customer.yml" }
 
 parameters:
   coreshop.folder.objects: '/coreshop'

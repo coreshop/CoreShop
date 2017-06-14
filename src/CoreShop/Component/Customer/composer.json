@@ -19,7 +19,6 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/address": "dev-master",
     "coreshop/resource": "dev-master"
   },
   "config": {
