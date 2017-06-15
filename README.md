@@ -21,7 +21,7 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
         \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
     ```
  - Import ```"@CoreShopCoreBundle/Resources/config/app/config.yml"``` in your app/config/config.yml
- - Activate Admin Bundle in Pimcore Extension Manager
+ - Activate CoreBundle in Pimcore Extension Manager
  - Run Install from Pimcore Extension Manager or from CLI
     ```php bin/console coreshop:install```
 
