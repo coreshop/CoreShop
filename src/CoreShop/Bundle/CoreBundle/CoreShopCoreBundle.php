@@ -13,16 +13,13 @@
 namespace CoreShop\Bundle\CoreBundle;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
-use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\CompositeLocaleContextPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCheckoutStepPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
-use CoreShop\Bundle\CoreBundle\Pimcore\Install;
+use CoreShop\Bundle\CoreBundle\Pimcore\PimcoreInstaller;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
-use Pimcore\Routing\RouteReferenceInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
@@ -86,7 +83,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
      */
     public function getInstaller()
     {
-        return new Install();
+        return new PimcoreInstaller();
     }
 
     /**
