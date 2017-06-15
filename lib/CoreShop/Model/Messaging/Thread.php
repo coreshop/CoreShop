@@ -137,7 +137,7 @@ class Thread extends AbstractModel
         $list = $list->load();
 
         if ($getAll) {
-            return $list->getData();
+            return $list;
         }
 
         foreach ($list as $thread) {
