@@ -16,7 +16,7 @@ use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCheckoutStepPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
-use CoreShop\Bundle\CoreBundle\Pimcore\PimcoreInstaller;
+use CoreShop\Bundle\CoreBundle\Installer\PimcoreInstaller;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
