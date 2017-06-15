@@ -1,0 +1,8 @@
+.pimcore_icon_coreShopPaymentProvider,
+.coreshop_icon_payment_provider {
+    background: url(../img/payment-provider.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_report_payments, .coreshop_icon_payment {
+    background: url(../img/payments.svg) center center no-repeat !important;
+}

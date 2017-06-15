@@ -32,7 +32,7 @@ final class Configuration implements ConfigurationInterface
         $this->addResourcesSection($rootNode);
         $this->addTranslationsSection($rootNode);
         $this->addDriversSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -119,7 +119,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')

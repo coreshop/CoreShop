@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -26,6 +25,7 @@ use CoreShop\Component\Order\Model\SaleItemInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\Object;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -33,7 +33,7 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('send_usage_log')->defaultValue(true)->end()
             ->end()
         ;
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -41,7 +41,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -108,6 +108,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('helpers')->defaultValue('/bundles/coreshopcore/pimcore/js/helpers.js')->end()
                             ->scalarNode('global')->defaultValue('/bundles/coreshopcore/pimcore/js/global.js')->end()
                             ->scalarNode('coreshop')->defaultValue('/bundles/coreshopcore/pimcore/js/coreshop.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('core')->defaultValue('/bundles/coreshopcore/pimcore/css/core.css')->end()
                         ->end()
                     ->end()
                 ->end()

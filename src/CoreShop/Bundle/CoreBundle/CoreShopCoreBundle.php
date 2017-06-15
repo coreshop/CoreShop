@@ -113,9 +113,15 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
      */
     public function getCssPaths()
     {
-        return [
-            '/bundles/coreshopcore/pimcore/css/coreshop.css',
-        ];
+        $cssFiles = [];
+
+        if ($this->container->hasParameter('coreshop.pimcore.admin.css')) {
+            $cssFiles = $this->container->getParameter('coreshop.pimcore.admin.css');
+        }
+
+        $cssFiles[] = '/bundles/coreshopcore/pimcore/css/coreshop.css';
+
+        return $cssFiles;
     }
 
     /**

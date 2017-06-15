@@ -51,7 +51,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -166,7 +166,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -181,6 +181,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('taxrulegroup_panel')->defaultValue('/bundles/coreshoptaxation/pimcore/js/taxrulegroup/panel.js')->end()
                             ->scalarNode('core_extension_data_tax_rule_group')->defaultValue('/bundles/coreshoptaxation/pimcore/js/coreExtension/data/coreShopTaxRuleGroup.js')->end()
                             ->scalarNode('core_extension_tag_tax_rule_group')->defaultValue('/bundles/coreshoptaxation/pimcore/js/coreExtension/tags/coreShopTaxRuleGroup.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('tax_item')->defaultValue('/bundles/coreshoptaxation/pimcore/css/taxation.css')->end()
                         ->end()
                     ->end()
                 ->end()

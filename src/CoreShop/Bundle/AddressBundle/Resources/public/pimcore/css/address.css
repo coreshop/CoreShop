@@ -1,0 +1,15 @@
+.coreshop_icon_country, .pimcore_icon_coreShopCountryMultiselect, .pimcore_icon_coreShopCountry{
+    background: url(../img/countries.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_zone, .coreshop_rule_icon_condition_zones {
+    background: url(../img/zones.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_state, .pimcore_icon_coreShopState {
+    background: url(../img/state.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_address {
+    background: url(../img/address.svg) center center no-repeat !important;
+}

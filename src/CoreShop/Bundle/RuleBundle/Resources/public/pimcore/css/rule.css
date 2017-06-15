@@ -1,0 +1,12 @@
+
+[class*=coreshop_rule_icon_condition] {
+    background: url(../img/api.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_conditions {
+    background: url(../img/search.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_actions {
+    background: url(../img/lightning.svg) center center no-repeat !important;
+}

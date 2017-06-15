@@ -54,7 +54,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -186,7 +186,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -207,6 +207,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_tag_country_multiselect')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopCountryMultiselect.js')->end()
                             ->scalarNode('core_extension_data_state')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopState.js')->end()
                             ->scalarNode('core_extension_tag_state')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopState.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('address')->defaultValue('/bundles/coreshopaddress/pimcore/css/address.css')->end()
                         ->end()
                     ->end()
                 ->end()

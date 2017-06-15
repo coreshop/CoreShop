@@ -49,7 +49,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -123,7 +123,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -138,6 +138,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('payment_gateway_paypal')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/gateways/paypal_express_checkout.js')->end()
                             ->scalarNode('core_extension_data_provider')->defaultValue('/bundles/coreshoppayment/pimcore/js/coreExtension/data/coreShopPaymentProvider.js')->end()
                             ->scalarNode('core_extension_tag_provider')->defaultValue('/bundles/coreshoppayment/pimcore/js/coreExtension/tags/coreShopPaymentProvider.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('payment')->defaultValue('/bundles/coreshoppayment/pimcore/css/payment.css')->end()
                         ->end()
                     ->end()
                 ->end()

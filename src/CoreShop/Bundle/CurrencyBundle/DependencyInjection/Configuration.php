@@ -39,7 +39,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -80,7 +80,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -95,6 +95,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_tag_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/tags/coreShopCurrency.js')->end()
                             ->scalarNode('core_extension_data_currency_multiselect')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/data/coreShopCurrencyMultiselect.js')->end()
                             ->scalarNode('core_extension_tag_currency_multiselect')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/tags/coreShopCurrencyMultiselect.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('currency')->defaultValue('/bundles/coreshopcurrency/pimcore/css/currency.css')->end()
                         ->end()
                     ->end()
                 ->end()

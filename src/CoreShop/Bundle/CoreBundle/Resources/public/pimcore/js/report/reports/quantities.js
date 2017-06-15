@@ -21,7 +21,7 @@ coreshop.report.reports.quantities = Class.create(coreshop.report.abstract, {
     },
 
     getIconCls: function () {
-        return 'coreshop_icon_quantity';
+        return 'coreshop_icon_report_quantity';
     },
 
     getStoreFields: function () {

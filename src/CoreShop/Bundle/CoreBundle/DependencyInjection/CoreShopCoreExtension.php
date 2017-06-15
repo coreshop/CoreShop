@@ -51,7 +51,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         $this->registerResources('coreshop', $config['driver'], [], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreJsResources('coreshop', $config['pimcore_admin'], $container);
+            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
         $loader->load('services.yml');

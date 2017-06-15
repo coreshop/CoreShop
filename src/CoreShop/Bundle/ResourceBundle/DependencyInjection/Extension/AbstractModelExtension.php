@@ -77,7 +77,7 @@ abstract class AbstractModelExtension extends Extension
         }
     }
 
-    protected function registerPimcoreJsResources($applicationName, $bundleResources, ContainerBuilder $container) {
+    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container) {
         if (array_key_exists('js', $bundleResources)) {
             $resources = [];
             $parameter = sprintf('%s.pimcore.admin.js', $applicationName);
@@ -87,6 +87,17 @@ abstract class AbstractModelExtension extends Extension
             }
 
             $container->setParameter($parameter, array_merge($resources, array_values($bundleResources['js'])));
+        }
+
+        if (array_key_exists('css', $bundleResources)) {
+            $resources = [];
+            $parameter = sprintf('%s.pimcore.admin.css', $applicationName);
+
+            if ($container->hasParameter($parameter)) {
+                $resources = $container->getParameter($parameter);
+            }
+
+            $container->setParameter($parameter, array_merge($resources, array_values($bundleResources['css'])));
         }
     }
 }

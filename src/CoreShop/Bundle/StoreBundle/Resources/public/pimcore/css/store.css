@@ -1,0 +1,3 @@
+.coreshop_icon_store, .pimcore_icon_coreShopStoreMultiselect, .pimcore_icon_coreShopStore, .coreshop_rule_icon_condition_stores {
+    background: url(../img/store.svg) center center no-repeat !important;
+}

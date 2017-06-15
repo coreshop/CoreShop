@@ -609,7 +609,7 @@ coreshop.order.sale.detail = Class.create({
     },
 
     getPluginInfo: function () {
-        var pluginInfo = coreshop.plugin.broker.fireEvent(this.type + 'Detail', this);
+        /*var pluginInfo = coreshop.plugin.broker.fireEvent(this.type + 'Detail', this);
 
         if (pluginInfo.length > 0) {
 
@@ -623,7 +623,7 @@ coreshop.order.sale.detail = Class.create({
                 },
                 items: pluginInfo
             };
-        }
+        }*/
 
         return null;
     },

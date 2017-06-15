@@ -1,0 +1,43 @@
+.coreshop_icon_indexes, .coreshop_icon_indexes_fields {
+    background: url(../img/indexes.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_product_filters, .pimcore_icon_coreShopFilter {
+    background: url(../img/filters.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_conditions {
+    background: url(../img/filter-empty.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_icon_conditions_select {
+    background: url(../img/filter-select.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_icon_conditions_multiselect {
+    background: url(../img/filter-multiselect.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_icon_conditions_range {
+    background: url(../img/filter-range.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_icon_conditions_boolean {
+    background: url(../img/filter-boolean.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_icon_conditions_nested {
+    background: url(../img/filter-combined.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_preConditions {
+    background: url(../img/search.svg) center center no-repeat !important;
+}
+
+.coreshop_product_similarity {
+    background: url(../img/similarity.svg) center center no-repeat !important;
+}
+
+.coreshop_product_filters_icon_similarities_field {
+    background: url(../img/similarities-field.svg) center center no-repeat !important;
+}

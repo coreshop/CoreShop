@@ -38,7 +38,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
         }
 
         if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreJsResources('coreshop', $config['pimcore_admin'], $container);
+            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);

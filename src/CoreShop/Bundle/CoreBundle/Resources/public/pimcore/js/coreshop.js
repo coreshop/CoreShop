@@ -11,8 +11,6 @@
  */
 
 pimcore.registerNS('coreshop.plugin');
-pimcore.registerNS('coreshop.settings');
-
 coreshop.plugin = Class.create(pimcore.plugin.admin, {
     settings: {},
 
@@ -401,7 +399,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     },
 
     postOpenObject: function (tab, type) {
-        if (tab.data.general.o_className == coreshop.settings.classMapping.cart) {
+        if (tab.data.general.o_className === coreshop.settings.classMapping.cart) {
             tab.toolbar.insert(tab.toolbar.items.length,
                 '-'
             );
@@ -415,7 +413,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                     }
                 }
             );
-        } else if (tab.data.general.o_className == coreshop.settings.classMapping.product) {
+        } else if (tab.data.general.o_className === coreshop.settings.classMapping.product) {
 
             tab.toolbar.insert(tab.toolbar.items.length,
                 '-'
@@ -526,7 +524,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             //console.log(e);
-            pimcore.globalmanager.add('coreshop_settings', new coreshop.settings());
+            pimcore.globalmanager.add('coreshop_settings', new coreshop.core.settings());
         }
     },
 

@@ -36,6 +36,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -90,5 +91,25 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+
+     /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('notification_rule')->defaultValue('/bundles/coreshopnotification/pimcore/css/notification.css')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

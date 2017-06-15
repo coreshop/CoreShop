@@ -60,7 +60,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -322,7 +322,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -356,6 +356,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order_shipment_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment/render.js')->end()
                             ->scalarNode('core_extension_data_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/data/coreShopCartPriceRule.js')->end()
                             ->scalarNode('core_extension_tag_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/tags/coreShopCartPriceRule.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('order')->defaultValue('/bundles/coreshoporder/pimcore/css/order.css')->end()
                         ->end()
                     ->end()
                 ->end()

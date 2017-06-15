@@ -39,7 +39,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -97,7 +97,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -113,6 +113,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('rule_action')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/action.js')->end()
                             ->scalarNode('rule_action_abstract')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/actions/abstract.js')->end()
                             ->scalarNode('rule_condition_abstract')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/conditions/abstract.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('rule')->defaultValue('/bundles/coreshoprule/pimcore/css/rule.css')->end()
                         ->end()
                     ->end()
                 ->end()

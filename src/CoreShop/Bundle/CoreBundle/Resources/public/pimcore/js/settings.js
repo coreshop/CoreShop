@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.settings');
-coreshop.settings = Class.create({
+pimcore.registerNS('coreshop.core.settings');
+coreshop.core.settings = Class.create({
 
     shopPanels: {},
 

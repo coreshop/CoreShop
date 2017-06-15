@@ -1,0 +1,100 @@
+
+.td-icon {
+}
+
+.td-icon .x-grid-cell-inner {
+    padding-left:25px;
+}
+
+#coreshop_status {
+    background-image: url(../img/logo-fill.svg)
+}
+
+#pimcore_menu_coreshop {
+    background-image: url(../img/logo-fill.svg) !important;
+    width:100%;
+    height:100%;
+}
+
+.icon-coreshop-shop:before { content: '\e800'; } /* '' */
+
+.coreshop_icon_logo {
+    background-image: url(../img/logo-fill.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
+.coreshop_icon_settings {
+    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important;
+}
+.coreshop_icon_localization {
+    background: url(/pimcore/static6/img/flat-color-icons/collaboration.svg) center center no-repeat !important;
+}
+
+.pimcore_icon_data_group_coreshop {
+    background: url(../img/logo.svg) center center no-repeat !important;
+}
+
+
+.coreshop_settings_inherited {
+    background:#dad9d9 !important;
+    filter: Alpha(opacity=60) !important;
+    opacity: 0.6 !important;
+}
+
+.coreshop_rule_icon_condition_categories {
+    background: url(../img/icons/category.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_customers, .coreshop_rule_icon_condition_userType {
+    background: url(../img/icons/customer.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_countries {
+    background: url(../img/icons/countries.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_products {
+    background: url(../img/icons/product.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_action_freeShipping {
+    background: url(../img/icons/free-shipping.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_currencies {
+    background: url(../img/icons/currencies.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_action_giftProduct {
+    background: url(../img/icons/gift.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_customerGroup, .coreshop_rule_icon_condition_customerGroups {
+    background: url(../img/icons/customer-group.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_report {
+    background: url(../img/icons/charts.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_report_carts {
+    background: url(../img/icons/cart.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_report_carts_abandoned {
+    background: url(../img/icons/cart-abandoned.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_report_sales {
+    background: url(../img/icons/sales.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_report_quantity {
+    background: url(../img/icons/stock.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_monitoring {
+    background: url(../img/icons/monitor.svg) center center no-repeat !important;
+}

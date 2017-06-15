@@ -45,7 +45,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -120,7 +120,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -151,6 +151,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_tag_carrier')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/tags/coreShopCarrier.js')->end()
                             ->scalarNode('core_extension_data_carrier_multiselect')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/data/coreShopCarrierMultiselect.js')->end()
                             ->scalarNode('core_extension_tag_carrier_multiselect')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/tags/coreShopCarrierMultiselect.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('shipping')->defaultValue('/bundles/coreshopshipping/pimcore/css/shipping.css')->end()
                         ->end()
                     ->end()
                 ->end()

@@ -40,7 +40,7 @@ final class Configuration implements ConfigurationInterface
         ;
 
         $this->addModelsSection($rootNode);
-        $this->addPimcoreJsSection($rootNode);
+        $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
     }
@@ -81,7 +81,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -104,6 +104,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule_condition_payment_paymentstate')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/conditions/payment/paymentState.js')->end()
                             ->scalarNode('notification_rule_condition_shipment_shipmentstate')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/conditions/shipment/shipmentState.js')->end()
                             ->scalarNode('notification_rule_condition_user_usertype')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/conditions/user/userType.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('notification_rule')->defaultValue('/bundles/coreshopnotification/pimcore/css/notification.css')->end()
                         ->end()
                     ->end()
                 ->end()

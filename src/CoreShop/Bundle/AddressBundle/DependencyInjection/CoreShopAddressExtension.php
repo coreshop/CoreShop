@@ -31,7 +31,7 @@ final class CoreShopAddressExtension extends AbstractModelExtension
         $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreJsResources('coreshop', $config['pimcore_admin'], $container);
+            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
         $loader->load('services.yml');
