@@ -49,6 +49,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -117,5 +118,30 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('payment_item')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/item.js')->end()
+                            ->scalarNode('payment_panel')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/panel.js')->end()
+                            ->scalarNode('payment_gateway_abstract')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/gateways/abstract.js')->end()
+                            ->scalarNode('payment_gateway_paypal')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/gateways/paypal_express_checkout.js')->end()
+                            ->scalarNode('core_extension_data_provider')->defaultValue('/bundles/coreshoppayment/pimcore/js/coreExtension/data/coreShopPaymentProvider.js')->end()
+                            ->scalarNode('core_extension_tag_provider')->defaultValue('/bundles/coreshoppayment/pimcore/js/coreExtension/tags/coreShopPaymentProvider.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

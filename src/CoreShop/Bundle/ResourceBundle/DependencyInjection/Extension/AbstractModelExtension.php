@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
 use CoreShop\Component\Resource\Metadata\Metadata;
+use Pimcore\Navigation\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -73,6 +74,19 @@ abstract class AbstractModelExtension extends Extension
             $metadata = Metadata::fromAliasAndConfiguration($alias, $modelConfig);
 
             DriverProvider::get($metadata)->load($container, $metadata);
+        }
+    }
+
+    protected function registerPimcoreJsResources($applicationName, $bundleResources, ContainerBuilder $container) {
+        if (array_key_exists('js', $bundleResources)) {
+            $resources = [];
+            $parameter = sprintf('%s.pimcore.admin.js', $applicationName);
+
+            if ($container->hasParameter($parameter)) {
+                $resources = $container->getParameter($parameter);
+            }
+
+            $container->setParameter($parameter, array_merge($resources, array_values($bundleResources['js'])));
         }
     }
 }

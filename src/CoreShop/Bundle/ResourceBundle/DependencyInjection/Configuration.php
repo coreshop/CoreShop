@@ -32,6 +32,7 @@ final class Configuration implements ConfigurationInterface
         $this->addResourcesSection($rootNode);
         $this->addTranslationsSection($rootNode);
         $this->addDriversSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -113,5 +114,33 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('resource_panel')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/panel.js')->end()
+                            ->scalarNode('resource_item')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/item.js')->end()
+                            ->scalarNode('object_element_href')->defaultValue('/bundles/coreshopresource/pimcore/js/object/elementHref.js')->end()
+                            ->scalarNode('object_object_multihref')->defaultValue('/bundles/coreshopresource/pimcore/js/object/objectMultihref.js')->end()
+                            ->scalarNode('core_extension_data_data')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/data.js')->end()
+                            ->scalarNode('core_extension_data_data_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/dataMultiselect.js')->end()
+                            ->scalarNode('core_extension_data_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/select.js')->end()
+                            ->scalarNode('core_extension_tag_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/select.js')->end()
+                            ->scalarNode('core_extension_tag_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

@@ -30,6 +30,10 @@ final class CoreShopPaymentExtension extends AbstractModelExtension
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
         //$this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
 
+        if (array_key_exists('pimcore_admin', $config)) {
+            $this->registerPimcoreJsResources('coreshop', $config['pimcore_admin'], $container);
+        }
+
         $loader->load('services.yml');
 
         $container->setParameter('coreshop.payment_gateways', $config['gateways']);

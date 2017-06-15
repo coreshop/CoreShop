@@ -14,6 +14,7 @@ imports:
   - { resource: "services/order.yml" }
   - { resource: "services/tracking.yml" }
   - { resource: "services/customer.yml" }
+  - { resource: "services/settings.yml" }
 
 parameters:
   coreshop.folder.objects: '/coreshop'
@@ -43,11 +44,6 @@ services:
       - '@coreshop.repository.configuration'
       - '@coreshop.factory.configuration'
       - '@coreshop.context.store'
-
-  coreshop.admin_controller.helper:
-    class: CoreShop\Bundle\CoreBundle\Controller\HelperController
-    calls:
-      - [setContainer, ['@service_container']]
 
   coreshop.renderer.pdf:
     class: CoreShop\Bundle\CoreBundle\Renderer\Pdf\WkHtmlToPdf

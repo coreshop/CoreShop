@@ -1,0 +1,3 @@
+coreshop_helper_get_nice_path:
+  path: /%coreshop.admin.route.base%/helper/get-nice-path
+  defaults: { _controller: 'coreshop.admin_controller.helper:getNicePathAction'}

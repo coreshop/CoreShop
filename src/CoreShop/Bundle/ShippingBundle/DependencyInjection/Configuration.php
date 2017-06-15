@@ -45,6 +45,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -114,5 +115,46 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('carrier_item')->defaultValue('/bundles/coreshopshipping/pimcore/js/carrier/item.js')->end()
+                            ->scalarNode('carrier_panel')->defaultValue('/bundles/coreshopshipping/pimcore/js/carrier/panel.js')->end()
+                            ->scalarNode('shipping_rule_item')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/item.js')->end()
+                            ->scalarNode('shipping_rule_panel')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/panel.js')->end()
+                            ->scalarNode('shipping_rule_action')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/action.js')->end()
+                            ->scalarNode('shipping_rule_condition')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/condition.js')->end()
+                            ->scalarNode('shipping_rule_actions_addition_amount')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/actions/additionAmount.js')->end()
+                            ->scalarNode('shipping_rule_actions_addition_percent')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/actions/additionPercent.js')->end()
+                            ->scalarNode('shipping_rule_actions_discount_amount')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/actions/discountAmount.js')->end()
+                            ->scalarNode('shipping_rule_actions_discount_percent')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/actions/discountPercent.js')->end()
+                            ->scalarNode('shipping_rule_actions_price')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/actions/price.js')->end()
+                            ->scalarNode('shipping_rule_actions_shipping_rule')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/actions/shippingRule.js')->end()
+                            ->scalarNode('shipping_rule_conditions_amount')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/amount.js')->end()
+                            ->scalarNode('shipping_rule_conditions_dimension')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/dimension.js')->end()
+                            ->scalarNode('shipping_rule_conditions_nested')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/nested.js')->end()
+                            ->scalarNode('shipping_rule_conditions_postcodes')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/postcodes.js')->end()
+                            ->scalarNode('shipping_rule_conditions_shippingRule')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/shippingRule.js')->end()
+                            ->scalarNode('shipping_rule_conditions_weight')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/weight.js')->end()
+                            ->scalarNode('core_extension_data_carrier')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/data/coreShopCarrier.js')->end()
+                            ->scalarNode('core_extension_tag_carrier')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/tags/coreShopCarrier.js')->end()
+                            ->scalarNode('core_extension_data_carrier_multiselect')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/data/coreShopCarrierMultiselect.js')->end()
+                            ->scalarNode('core_extension_tag_carrier_multiselect')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/tags/coreShopCarrierMultiselect.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

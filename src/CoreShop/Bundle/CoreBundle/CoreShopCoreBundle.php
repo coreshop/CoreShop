@@ -12,15 +12,20 @@
 
 namespace CoreShop\Bundle\CoreBundle;
 
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\CompositeLocaleContextPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCheckoutStepPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
+use CoreShop\Bundle\CoreBundle\Pimcore\Install;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\Extension\Bundle\Installer\InstallerInterface;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use Pimcore\Routing\RouteReferenceInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopCoreBundle extends AbstractResourceBundle
+final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
     /**
      * {@inheritdoc}
@@ -50,5 +55,85 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Core\Model';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNiceName()
+    {
+        return 'CoreShop';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'CoreShop - Pimcore eCommerce';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersion()
+    {
+        return Version::getVersion();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInstaller()
+    {
+        return new Install();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdminIframePath()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJsPaths()
+    {
+        $jsFiles = [];
+
+        if ($this->container->hasParameter('coreshop.pimcore.admin.js')) {
+            $jsFiles = $this->container->getParameter('coreshop.pimcore.admin.js');
+        }
+
+        return $jsFiles;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCssPaths()
+    {
+        return [
+            '/bundles/coreshopcore/pimcore/css/coreshop.css',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeCssPaths()
+    {
+        return [];
     }
 }

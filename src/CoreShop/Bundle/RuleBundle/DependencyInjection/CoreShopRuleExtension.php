@@ -29,6 +29,10 @@ final class CoreShopRuleExtension extends AbstractModelExtension
 
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
+        if (array_key_exists('pimcore_admin', $config)) {
+            $this->registerPimcoreJsResources('coreshop', $config['pimcore_admin'], $container);
+        }
+        
         $loader->load('services.yml');
     }
 }

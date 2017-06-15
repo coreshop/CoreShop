@@ -39,6 +39,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -91,5 +92,31 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+    
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('rule_panel')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/panel.js')->end()
+                            ->scalarNode('rule_item')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/item.js')->end()
+                            ->scalarNode('rule_abstract')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/abstract.js')->end()
+                            ->scalarNode('rule_condition')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/condition.js')->end()
+                            ->scalarNode('rule_action')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/action.js')->end()
+                            ->scalarNode('rule_action_abstract')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/actions/abstract.js')->end()
+                            ->scalarNode('rule_condition_abstract')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/conditions/abstract.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

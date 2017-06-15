@@ -54,6 +54,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -180,5 +181,36 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('country_item')->defaultValue('/bundles/coreshopaddress/pimcore/js/country/item.js')->end()
+                            ->scalarNode('country_panel')->defaultValue('/bundles/coreshopaddress/pimcore/js/country/panel.js')->end()
+                            ->scalarNode('state_item')->defaultValue('/bundles/coreshopaddress/pimcore/js/state/item.js')->end()
+                            ->scalarNode('state_panel')->defaultValue('/bundles/coreshopaddress/pimcore/js/state/panel.js')->end()
+                            ->scalarNode('zone_item')->defaultValue('/bundles/coreshopaddress/pimcore/js/zone/item.js')->end()
+                            ->scalarNode('zone_panel')->defaultValue('/bundles/coreshopaddress/pimcore/js/zone/panel.js')->end()
+                            ->scalarNode('core_extension_data_country')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopCountry.js')->end()
+                            ->scalarNode('core_extension_tag_country')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopCountry.js')->end()
+                            ->scalarNode('core_extension_data_country_multiselect')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopCountryMultiselect.js')->end()
+                            ->scalarNode('core_extension_tag_country_multiselect')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopCountryMultiselect.js')->end()
+                            ->scalarNode('core_extension_data_state')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopState.js')->end()
+                            ->scalarNode('core_extension_tag_state')->defaultValue('/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopState.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

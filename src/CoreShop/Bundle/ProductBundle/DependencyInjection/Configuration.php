@@ -51,6 +51,7 @@ final class Configuration implements ConfigurationInterface
         ;
 
         $this->addModelsSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -162,5 +163,47 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('product_grid')->defaultValue('/bundles/coreshopproduct/pimcore/js/grid.js')->end()
+                            ->scalarNode('product_price_rule_panel')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/panel.js')->end()
+                            ->scalarNode('product_price_rule_item')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/item.js')->end()
+                            ->scalarNode('product_price_rule_action')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/action.js')->end()
+                            ->scalarNode('product_price_rule_condition')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/condition.js')->end()
+                            ->scalarNode('product_price_rule_condition_categories')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/categories.js')->end()
+                            ->scalarNode('product_price_rule_condition_nested')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/nested.js')->end()
+                            ->scalarNode('product_price_rule_condition_products')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/products.js')->end()
+                            ->scalarNode('product_price_rule_condition_timespan')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/timespan.js')->end()
+                            ->scalarNode('product_price_rule_condition_weight')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/weight.js')->end()
+                            ->scalarNode('product_price_rule_action_discount_amount')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/discountAmount.js')->end()
+                            ->scalarNode('product_price_rule_action_discount_percent')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/discountPercent.js')->end()
+                            ->scalarNode('product_price_rule_action_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/price.js')->end()
+                            ->scalarNode('product_specific_price_rule_action')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/action.js')->end()
+                            ->scalarNode('product_specific_price_rule_condition')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice//condition.js')->end()
+                            ->scalarNode('product_specific_price_action_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/actions/price.js')->end()
+                            ->scalarNode('product_specific_price_action_discount_amount')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/actions/discountAmount.js')->end()
+                            ->scalarNode('product_specific_price_action_discount_percent')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/actions/discountPercent.js')->end()
+                            ->scalarNode('product_specific_price_condition_nested')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/conditions/nested.js')->end()
+                            ->scalarNode('product_specific_price_condition_timespan')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/conditions/timespan.js')->end()
+                            ->scalarNode('product_specific_price_object_item')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/object/item.js')->end()
+                            ->scalarNode('core_extension_data_specific_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/coreExtension/data/coreShopProductSpecificPriceRules.js')->end()
+                            ->scalarNode('core_extension_tag_specific_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/coreExtension/tags/coreShopProductSpecificPriceRules.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

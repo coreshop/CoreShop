@@ -39,6 +39,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -74,5 +75,30 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('currency_item')->defaultValue('/bundles/coreshopcurrency/pimcore/js/item.js')->end()
+                            ->scalarNode('currency_panel')->defaultValue('/bundles/coreshopcurrency/pimcore/js/panel.js')->end()
+                            ->scalarNode('core_extension_data_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/data/coreShopCurrency.js')->end()
+                            ->scalarNode('core_extension_tag_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/tags/coreShopCurrency.js')->end()
+                            ->scalarNode('core_extension_data_currency_multiselect')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/data/coreShopCurrencyMultiselect.js')->end()
+                            ->scalarNode('core_extension_tag_currency_multiselect')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/tags/coreShopCurrencyMultiselect.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

@@ -24,11 +24,13 @@ class RegisterBundleHelper
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
+            new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
+
+            new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
             new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(),
             new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(),
             new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),
             new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(),
-            new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
             new \CoreShop\Bundle\ProductBundle\CoreShopProductBundle(),
             new \CoreShop\Bundle\AddressBundle\CoreShopAddressBundle(),
             new \CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle(),
@@ -44,8 +46,6 @@ class RegisterBundleHelper
             new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(),
             new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(),
 
-            new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(),
-            new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
             new \FOS\RestBundle\FOSRestBundle(),
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new \Payum\Bundle\PayumBundle\PayumBundle(),

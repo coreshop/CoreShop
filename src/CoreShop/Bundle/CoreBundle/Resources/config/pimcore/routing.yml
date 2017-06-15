@@ -5,30 +5,6 @@ coreshop_admin_payment_provider_config:
   path: /%coreshop.admin.route.base%/payment_providers/get-config
   defaults: { _controller: 'coreshop.admin_controller.payment_provider:getConfigAction'}
 
-coreshop_order_get_grid_configuration:
-  path: /%coreshop.admin.route.base%/order/get-order-grid-configuration
-  defaults: { _controller: 'coreshop.admin_controller.order:getOrderGridConfigurationAction'}
-
-coreshop_order_get_orders:
-  path: /%coreshop.admin.route.base%/order/get-orders
-  defaults: { _controller: 'coreshop.admin_controller.order:getOrders'}
-
-coreshop_order_get_order:
-  path: /%coreshop.admin.route.base%/order/detail
-  defaults: { _controller: 'coreshop.admin_controller.order:detailAction'}
-
-coreshop_order_update_payment:
-  path: /%coreshop.admin.route.base%/order/update-payment
-  defaults: { _controller: 'coreshop.admin_controller.order:updatePaymentAction'}
-
-coreshop_order_add_payment:
-  path: /%coreshop.admin.route.base%/order/update-payment
-  defaults: { _controller: 'coreshop.admin_controller.order:addPaymentAction'}
-
-coreshop_order_get_payment_providres:
-  path: /%coreshop.admin.route.base%/order/get-payment-providers
-  defaults: { _controller: 'coreshop.admin_controller.order:getPaymentProvidersAction'}
-
 coreshop_admin_configuration_save_all:
   path: /%coreshop.admin.route.base%/configurations/save-all
   defaults: { _controller: 'coreshop.admin_controller.configuration:saveAllAction'}
@@ -37,30 +13,17 @@ coreshop_admin_configuration_get_all:
   path: /%coreshop.admin.route.base%/configurations/get-all
   defaults: { _controller: 'coreshop.admin_controller.configuration:getAllAction'}
 
-coreshop_order_invoice_get_processable_items:
-  path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
-  defaults: { _controller: 'coreshop.admin_controller.order_invoice:getInvoiceAbleItemsAction'}
+coreshop_admin_settings_get_settings:
+  path: /%coreshop.admin.route.base%/settings/get-settings
+  methods: [GET]
+  defaults:  { _controller: coreshop.admin_controller.settings:getSettingsAction }
 
-coreshop_order_invoice_create:
-  path: /%coreshop.admin.route.base%/order-invoice/create-invoice
-  defaults: { _controller: 'coreshop.admin_controller.order_invoice:createInvoiceAction'}
+coreshop_admin_settings_get:
+  path: /%coreshop.admin.route.base%/settings/get
+  methods: [GET]
+  defaults:  { _controller: coreshop.admin_controller.settings:getAction }
 
-coreshop_order_invoice_render:
-  path: /%coreshop.admin.route.base%/order-invoice/render
-  defaults: { _controller: 'coreshop.admin_controller.order_invoice:renderAction'}
-
-coreshop_order_shipment_get_processable_items:
-  path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
-  defaults: { _controller: 'coreshop.admin_controller.order_shipment:getShipAbleItemsAction'}
-
-coreshop_order_shipment_create:
-  path: /%coreshop.admin.route.base%/order-shipment/create-shipment
-  defaults: { _controller: 'coreshop.admin_controller.order_shipment:createShipmentAction'}
-
-coreshop_order_shipment_render:
-  path: /%coreshop.admin.route.base%/order-shipment/render
-  defaults: { _controller: 'coreshop.admin_controller.order_shipment:renderAction'}
-
-coreshop_helper_get_nice_path:
-  path: /%coreshop.admin.route.base%/helper/get-nice-path
-  defaults: { _controller: 'coreshop.admin_controller.helper:getNicePathAction'}
+coreshop_admin_settings_set:
+  path: /%coreshop.admin.route.base%/settings/set
+  methods: [POST]
+  defaults:  { _controller: coreshop.admin_controller.settings:setAction }

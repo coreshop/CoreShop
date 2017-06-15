@@ -21,6 +21,7 @@
     "php": "^7.0",
     "coreshop/currency-bundle": "dev-master",
     "coreshop/customer-bundle": "dev-master",
+    "coreshop/payment-bundle": "dev-master",
     "coreshop/locale-bundle": "dev-master",
     "coreshop/registry": "dev-master",
     "coreshop/rule-bundle": "dev-master",

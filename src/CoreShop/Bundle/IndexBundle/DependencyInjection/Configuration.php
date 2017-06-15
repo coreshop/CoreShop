@@ -49,6 +49,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addModelsSection($rootNode);
+        $this->addPimcoreJsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -135,5 +136,52 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+    }
+    
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addPimcoreJsSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('pimcore_admin')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('index_item')->defaultValue('/bundles/coreshopindex/pimcore/js/index/item.js')->end()
+                            ->scalarNode('index_panel')->defaultValue('/bundles/coreshopindex/pimcore/js/index/panel.js')->end()
+                            ->scalarNode('index_fields')->defaultValue('/bundles/coreshopindex/pimcore/js/index/fields.js')->end()
+                            ->scalarNode('index_getter_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/abstract.js')->end()
+                            ->scalarNode('index_getter_brick')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/brick.js')->end()
+                            ->scalarNode('index_getter_classificationstore')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/classificationstore.js')->end()
+                            ->scalarNode('index_getter_fieldcollection')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/fieldcollection.js')->end()
+                            ->scalarNode('index_getter_localizedfield')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/localizedfield.js')->end()
+                            ->scalarNode('index_interpreter_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/abstract.js')->end()
+                            ->scalarNode('index_interpreter_objectproperty')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/objectproperty.js')->end()
+                            ->scalarNode('index_interpreter_objecttype')->defaultValue('/bundles/coreshopindex/pimcore/js/index/objecttype/abstract.js')->end()
+                            ->scalarNode('index_type_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/index/type/abstract.js')->end()
+                            ->scalarNode('index_type_elasticsearch')->defaultValue('/bundles/coreshopindex/pimcore/js/index/type/elasticsearch.js')->end()
+                            ->scalarNode('filter_item')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/item.js')->end()
+                            ->scalarNode('filter_panel')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/panel.js')->end()
+                            ->scalarNode('filter_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/abstract.js')->end()
+                            ->scalarNode('filter_condition')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/condition.js')->end()
+                            ->scalarNode('filter_similarity')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/similarity.js')->end()
+                            ->scalarNode('filter_condition_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/abstract.js')->end()
+                            ->scalarNode('filter_condition_boolean')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/boolean.js')->end()
+                            ->scalarNode('filter_condition_combined')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/combined.js')->end()
+                            ->scalarNode('filter_condition_multiselect')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/multiselect.js')->end()
+                            ->scalarNode('filter_condition_range')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/range.js')->end()
+                            ->scalarNode('filter_condition_select')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/select.js')->end()
+                            ->scalarNode('filter_similarity_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/similarities/abstract.js')->end()
+                            ->scalarNode('filter_similarity_field')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/similarities/field.js')->end()
+                            ->scalarNode('core_extension_data_filter')->defaultValue('/bundles/coreshopindex/pimcore/js/coreExtension/data/coreShopFilter.js')->end()
+                            ->scalarNode('core_extension_tag_filter')->defaultValue('/bundles/coreshopindex/pimcore/js/coreExtension/tags/coreShopFilter.js')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }
