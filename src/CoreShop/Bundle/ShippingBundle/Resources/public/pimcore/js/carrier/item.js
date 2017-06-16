@@ -66,29 +66,33 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             autoScroll: true,
             border: false,
             items: [{
-                xtype: 'textfield',
-                name: 'name',
-                fieldLabel: t('name'),
-                width: 250,
-                value: this.data.name,
-                required: true
-            }, {
-                xtype: 'textfield',
-                name: 'label',
-                fieldLabel: t('coreshop_carrier_label'),
-                width: 250,
-                value: this.data.label,
-                required: true
-            }, {
-                xtype: 'textfield',
-                name: 'trackingUrl',
-                fieldLabel: t('coreshop_carrier_trackingUrl'),
-                width: 250,
-                value: this.data.trackingUrl
+                xtype: 'fieldset',
+                autoHeight: true,
+                labelWidth: 350,
+                defaultType: 'textfield',
+                defaults: {width: 300},
+                items: [
+                    {
+                        xtype: 'textfield',
+                        name: 'name',
+                        fieldLabel: t('name'),
+                        value: this.data.name,
+                        required: true
+                    }, {
+                        xtype: 'textfield',
+                        name: 'label',
+                        fieldLabel: t('coreshop_carrier_label'),
+                        value: this.data.label,
+                        required: true
+                    }, {
+                        xtype: 'textfield',
+                        name: 'trackingUrl',
+                        fieldLabel: t('coreshop_carrier_trackingUrl'),
+                        value: this.data.trackingUrl
+                    }
+                ]
             }]
         });
-
-        this.settingsForm.add(this.getMultishopSettings());
 
         return this.settingsForm;
     },
@@ -187,25 +191,6 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
                 value: parseInt(this.data.isFree)
-            }, {
-                xtype: 'combo',
-                fieldLabel: t('coreshop_carrier_tax_rule'),
-                typeAhead: true,
-                value: this.data.taxRule,
-                mode: 'local',
-                listWidth: 100,
-                store: pimcore.globalmanager.get('coreshop_taxrulegroups'),
-                displayField: 'name',
-                valueField: 'id',
-                forceSelection: true,
-                triggerAction: 'all',
-                name: 'taxRule',
-                listeners: {
-                    beforerender: function () {
-                        if (!this.getStore().isLoaded() && !this.getStore().isLoading())
-                            this.getStore().load();
-                    }
-                }
             }, {
                 fieldLabel: t('coreshop_carrier_rangeBehaviour'),
                 name: 'rangeBehaviour',

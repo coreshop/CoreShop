@@ -22,6 +22,62 @@ coreshop.helpers.long2ip = function (ip) {
     return [ip >>> 24, ip >>> 16 & 0xFF, ip >>> 8 & 0xFF, ip & 0xFF].join('.')
 };
 
+coreshop.helpers.getCurrencySelect = function (values) {
+    return {
+        xtype: 'combo',
+        fieldLabel: t('coreshop_currency'),
+        typeAhead: true,
+        value: values,
+        mode: 'local',
+        store: pimcore.globalmanager.get('coreshop_currencies'),
+        displayField: 'name',
+        valueField: 'id',
+        forceSelection: true,
+        triggerAction: 'all',
+        name: 'currency'
+    };
+};
+
+coreshop.helpers.getMultiStoreSelect = function (values) {
+    return {
+        xtype: 'combo',
+        fieldLabel: t('coreshop_multistore'),
+        name: 'stores',
+        store: pimcore.globalmanager.get('coreshop_stores'),
+        displayField: 'name',
+        multiSelect: true,
+        valueField: 'id',
+        triggerAction: 'all',
+        typeAhead: false,
+        editable: false,
+        forceSelection: true,
+        queryMode: 'local',
+        value: values
+    };
+};
+
+coreshop.helpers.getTaxRuleGroupSelect = function (value) {
+    return {
+        xtype: 'combo',
+        fieldLabel: t('coreshop_tax_rule_group'),
+        typeAhead: true,
+        value: value,
+        mode: 'local',
+        store: pimcore.globalmanager.get('coreshop_taxrulegroups'),
+        displayField: 'name',
+        valueField: 'id',
+        forceSelection: true,
+        triggerAction: 'all',
+        name: 'taxRule',
+        listeners: {
+            beforerender: function () {
+                if (!this.getStore().isLoaded() && !this.getStore().isLoading())
+                    this.getStore().load();
+            }
+        }
+    };
+};
+
 coreshop.helpers.openOrderByNumberDialog = function (keyCode, e) {
 
     if (e['stopEvent']) {

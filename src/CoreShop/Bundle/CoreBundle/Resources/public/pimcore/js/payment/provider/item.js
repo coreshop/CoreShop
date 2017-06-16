@@ -10,13 +10,12 @@
  *
  */
 
-coreshop.country.item = Class.create(coreshop.country.item, {
+coreshop.provider.item = Class.create(coreshop.provider.item, {
     getFormPanel: function ($super) {
         var panel = $super(),
             data = this.data;
 
         panel.down("fieldset").add([
-            coreshop.helpers.getCurrencySelect(data.currency),
             coreshop.helpers.getMultiStoreSelect(data.stores)
         ]);
 

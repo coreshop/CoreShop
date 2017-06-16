@@ -10,14 +10,14 @@
  *
  */
 
-coreshop.country.item = Class.create(coreshop.country.item, {
-    getFormPanel: function ($super) {
+coreshop.carrier.item  = Class.create(coreshop.carrier.item , {
+    getSettings: function ($super) {
         var panel = $super(),
             data = this.data;
 
         panel.down("fieldset").add([
-            coreshop.helpers.getCurrencySelect(data.currency),
-            coreshop.helpers.getMultiStoreSelect(data.stores)
+            coreshop.helpers.getMultiStoreSelect(data.stores),
+            coreshop.helpers.getTaxRuleGroupSelect(data.taxRule)
         ]);
 
         this.formPanel = panel;

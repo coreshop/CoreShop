@@ -67,28 +67,6 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
             },
             {
                 xtype: 'combo',
-                fieldLabel: t('coreshop_country_currency'),
-                typeAhead: true,
-                value: data.currency,
-                mode: 'local',
-                listWidth: 100,
-                store: pimcore.globalmanager.get('coreshop_currencies'),
-                displayField: 'name',
-                valueField: 'id',
-                forceSelection: true,
-                triggerAction: 'all',
-                name: 'currency',
-                listeners: {
-                    change: function () {
-                        this.forceReloadOnSave = true;
-                    }.bind(this),
-                    select: function () {
-                        this.forceReloadOnSave = true;
-                    }.bind(this)
-                }
-            },
-            {
-                xtype: 'combo',
                 fieldLabel: t('coreshop_country_zone'),
                 typeAhead: true,
                 value: data.zone,

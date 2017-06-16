@@ -12,4 +12,3 @@ coreshop_admin_state:
   type: coreshop.resources
   resource: |
     alias: coreshop.state
-

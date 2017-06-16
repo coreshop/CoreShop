@@ -91,7 +91,6 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                     }.bind(this)
                 }
             },
-            this.getMultishopSettings(),
             {
                 xtype: 'tabpanel',
                 activeTab: 0,

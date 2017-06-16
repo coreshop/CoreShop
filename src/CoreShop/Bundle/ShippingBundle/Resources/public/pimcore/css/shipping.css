@@ -34,6 +34,7 @@
 .coreshop_rule_icon_action_discountPercent,
 .coreshop_rule_icon_action_price,
 .coreshop_rule_icon_action_additionAmount,
-.coreshop_rule_icon_action_additionPercent {
+.coreshop_rule_icon_action_additionPercent,
+.coreshop_carrier_costs_icon {
     background: url(../img/currencies.svg) center center no-repeat !important;
 }

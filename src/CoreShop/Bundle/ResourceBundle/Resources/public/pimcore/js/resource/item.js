@@ -77,29 +77,6 @@ coreshop.resource.item = Class.create({
         return {};
     },
 
-    getMultishopSettings: function () {
-        if (!this.multiShopSettings) {
-            this.multiShopSettings = Ext.create({
-                xtype: 'combo',
-                fieldLabel: t('coreshop_multistore'),
-                name: 'stores',
-                width: 400,
-                store: pimcore.globalmanager.get('coreshop_stores'),
-                displayField: 'name',
-                multiSelect: true,
-                valueField: 'id',
-                triggerAction: 'all',
-                typeAhead: false,
-                editable: false,
-                forceSelection: true,
-                queryMode: 'local',
-                value: this.data.stores
-            });
-        }
-
-        return this.multiShopSettings;
-    },
-
     save: function () {
         var me = this,
             data;
