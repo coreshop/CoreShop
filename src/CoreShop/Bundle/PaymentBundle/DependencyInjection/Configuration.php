@@ -132,6 +132,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('js')
                         ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshoppayment/pimcore/js/resource.js')->end()
                             ->scalarNode('payment_item')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/item.js')->end()
                             ->scalarNode('payment_panel')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/panel.js')->end()
                             ->scalarNode('payment_gateway_abstract')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/gateways/abstract.js')->end()

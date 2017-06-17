@@ -90,6 +90,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('js')
                         ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopnotification/pimcore/js/resource.js')->end()
                             ->scalarNode('notification_rule_item')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/item.js')->end()
                             ->scalarNode('notification_rule_panel')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/panel.js')->end()
                             ->scalarNode('notification_rule_action')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/action.js')->end()

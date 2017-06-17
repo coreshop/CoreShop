@@ -150,6 +150,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('js')
                         ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopindex/pimcore/js/resource.js')->end()
                             ->scalarNode('index_item')->defaultValue('/bundles/coreshopindex/pimcore/js/index/item.js')->end()
                             ->scalarNode('index_panel')->defaultValue('/bundles/coreshopindex/pimcore/js/index/panel.js')->end()
                             ->scalarNode('index_fields')->defaultValue('/bundles/coreshopindex/pimcore/js/index/fields.js')->end()

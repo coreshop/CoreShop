@@ -89,6 +89,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('js')
                         ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopcurrency/pimcore/js/resource.js')->end()
                             ->scalarNode('currency_item')->defaultValue('/bundles/coreshopcurrency/pimcore/js/item.js')->end()
                             ->scalarNode('currency_panel')->defaultValue('/bundles/coreshopcurrency/pimcore/js/panel.js')->end()
                             ->scalarNode('core_extension_data_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/data/coreShopCurrency.js')->end()

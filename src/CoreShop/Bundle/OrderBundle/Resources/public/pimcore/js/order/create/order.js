@@ -476,7 +476,7 @@ coreshop.order.order.create.order = Class.create({
                                         object: ['object', 'variant']
                                     },
                                     specific: {
-                                        classes: [coreshop.settings.classMapping.product]
+                                        classes: [coreshop.class_map.product]
                                     }
                                 }
                             );

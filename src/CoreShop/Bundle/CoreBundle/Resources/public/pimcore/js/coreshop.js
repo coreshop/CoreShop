@@ -244,42 +244,42 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         /*var messagingMenu = [];
 
-        if (user.isAllowed('coreshop_permission_messaging_thread')) {
-            messagingMenu.push({
-                text: t('coreshop_messaging_thread'),
-                iconCls: 'coreshop_icon_messaging_thread',
-                handler: this.openMessagingThread
-            });
-        }
+         if (user.isAllowed('coreshop_permission_messaging_thread')) {
+         messagingMenu.push({
+         text: t('coreshop_messaging_thread'),
+         iconCls: 'coreshop_icon_messaging_thread',
+         handler: this.openMessagingThread
+         });
+         }
 
-        if (user.isAllowed('coreshop_permission_messaging_contact')) {
-            messagingMenu.push({
-                text: t('coreshop_messaging_contact'),
-                iconCls: 'coreshop_icon_messaging_contact',
-                handler: this.openMessagingContact
-            });
-        }
+         if (user.isAllowed('coreshop_permission_messaging_contact')) {
+         messagingMenu.push({
+         text: t('coreshop_messaging_contact'),
+         iconCls: 'coreshop_icon_messaging_contact',
+         handler: this.openMessagingContact
+         });
+         }
 
-        if (user.isAllowed('coreshop_permission_messaging_thread_state')) {
-            messagingMenu.push({
-                text: t('coreshop_messaging_threadstate'),
-                iconCls: 'coreshop_icon_messaging_thread_state',
-                handler: this.openMessagingThreadState
-            });
-        }
+         if (user.isAllowed('coreshop_permission_messaging_thread_state')) {
+         messagingMenu.push({
+         text: t('coreshop_messaging_threadstate'),
+         iconCls: 'coreshop_icon_messaging_thread_state',
+         handler: this.openMessagingThreadState
+         });
+         }
 
-        if (messagingMenu.length > 0) {
-            coreShopMenuItems.push({
-                text: t('coreshop_messaging'),
-                iconCls: 'coreshop_icon_messaging',
-                hideOnClick: false,
-                menu: {
-                    cls: 'pimcore_navigation_flyout',
-                    shadow: false,
-                    items: messagingMenu
-                }
-            });
-        }*/
+         if (messagingMenu.length > 0) {
+         coreShopMenuItems.push({
+         text: t('coreshop_messaging'),
+         iconCls: 'coreshop_icon_messaging',
+         hideOnClick: false,
+         menu: {
+         cls: 'pimcore_navigation_flyout',
+         shadow: false,
+         items: messagingMenu
+         }
+         });
+         }*/
 
         if (user.admin) {
 
@@ -322,8 +322,6 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                 toolbar.showSubMenu.call(this._menu, e, el);
             }.bind(this));
         }
-
-        coreshop.global.initialize(this.settings);
 
         Ext.get('coreshop_status').set(
             {
@@ -399,7 +397,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     },
 
     postOpenObject: function (tab, type) {
-        if (tab.data.general.o_className === coreshop.settings.classMapping.cart) {
+        if (tab.data.general.o_className === coreshop.class_map.cart) {
             tab.toolbar.insert(tab.toolbar.items.length,
                 '-'
             );
@@ -413,7 +411,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                     }
                 }
             );
-        } else if (tab.data.general.o_className === coreshop.settings.classMapping.product) {
+        } else if (tab.data.general.o_className === coreshop.class_map.product) {
 
             tab.toolbar.insert(tab.toolbar.items.length,
                 '-'
@@ -439,7 +437,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
              //new pimcore.plugin.VariantGenerator.VariantGeneratorDialog(obj);
              }.bind(this, tab)
              });*/
-        } else if (tab.data.general.o_className === coreshop.settings.classMapping.order) {
+        } else if (tab.data.general.o_className === coreshop.class_map.order) {
             var orderMoreButtons = [];
 
             orderMoreButtons.push(
@@ -489,7 +487,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                     }
                 );
             }
-        } else if (tab.data.general.o_className === coreshop.settings.classMapping.order_invoice) {
+        } else if (tab.data.general.o_className === coreshop.class_map.order_invoice) {
             var resetChangesFunction = tab.resetChanges;
 
             var renderTab = new coreshop.invoice.render(tab);
@@ -501,7 +499,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
                 renderTab.reload();
             };
-        } else if (tab.data.general.o_className === coreshop.settings.classMapping.order_shipment) {
+        } else if (tab.data.general.o_className === coreshop.class_map.order_shipment) {
             var resetChangesFunction = tab.resetChanges;
 
             var renderTab = new coreshop.shipment.render(tab);
@@ -638,31 +636,31 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     },
 
     /*openMessagingContact: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_messaging_contacts_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_messaging_contacts_panel', new pimcore.plugin.coreshop.messaging.contact.panel());
-        }
-    },
+     try {
+     pimcore.globalmanager.get('coreshop_messaging_contacts_panel').activate();
+     }
+     catch (e) {
+     pimcore.globalmanager.add('coreshop_messaging_contacts_panel', new pimcore.plugin.coreshop.messaging.contact.panel());
+     }
+     },
 
-    openMessagingThreadState: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_messaging_thread_state_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_messaging_thread_state_panel', new pimcore.plugin.coreshop.messaging.threadstate.panel());
-        }
-    },
+     openMessagingThreadState: function () {
+     try {
+     pimcore.globalmanager.get('coreshop_messaging_thread_state_panel').activate();
+     }
+     catch (e) {
+     pimcore.globalmanager.add('coreshop_messaging_thread_state_panel', new pimcore.plugin.coreshop.messaging.threadstate.panel());
+     }
+     },
 
-    openMessagingThread: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_messaging_thread_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_messaging_thread_panel', new pimcore.plugin.coreshop.messaging.thread.panel());
-        }
-    },*/
+     openMessagingThread: function () {
+     try {
+     pimcore.globalmanager.get('coreshop_messaging_thread_panel').activate();
+     }
+     catch (e) {
+     pimcore.globalmanager.add('coreshop_messaging_thread_panel', new pimcore.plugin.coreshop.messaging.thread.panel());
+     }
+     },*/
 
     openProductPriceRules: function () {
         try {
@@ -710,4 +708,6 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     }
 });
 
-new coreshop.plugin();
+coreshop.broker.addListener('afterClassMap', function () {
+    var plugin = new coreshop.plugin();
+});

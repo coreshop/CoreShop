@@ -56,7 +56,7 @@ services:
     arguments:
       - '@coreshop.registry.resource.installers'
 
-  coreshop.admin_controller.helper:
-    class: CoreShop\Bundle\ResourceBundle\Controller\HelperController
+  coreshop.admin_controller.resource_settings:
+    class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
     calls:
       - [setContainer, ['@service_container']]

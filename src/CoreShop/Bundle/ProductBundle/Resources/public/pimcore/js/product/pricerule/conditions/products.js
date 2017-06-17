@@ -19,7 +19,7 @@ coreshop.product.pricerule.conditions.products = Class.create(coreshop.rules.con
     getForm: function () {
         this.products = new coreshop.object.objectMultihref(this.data ? this.data.products : [], {
             classes: [
-                {classes: coreshop.settings.classMapping.product}
+                {classes: coreshop.class_map.product}
             ],
             name: 'products',
             title: '',

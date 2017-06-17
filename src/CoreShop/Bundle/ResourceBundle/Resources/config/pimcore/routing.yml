@@ -1,3 +1,7 @@
 coreshop_helper_get_nice_path:
   path: /%coreshop.admin.route.base%/helper/get-nice-path
-  defaults: { _controller: 'coreshop.admin_controller.helper:getNicePathAction'}
+  defaults: { _controller: 'coreshop.admin_controller.resource_settings:getNicePathAction'}
+
+coreshop_resource_class_map:
+  path: /%coreshop.admin.route.base%/resource/class-map
+  defaults: { _controller: 'coreshop.admin_controller.resource_settings:getClassMapAction'}

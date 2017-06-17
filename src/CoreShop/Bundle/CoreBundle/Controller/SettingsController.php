@@ -38,21 +38,7 @@ class SettingsController extends AdminController
 
     public function getSettingsAction(Request $request)
     {
-        $classes = $this->getParameter('coreshop.pimcore');
-        $classMapping = [];
-
-        foreach ($classes as $key => $definition) {
-            $alias = explode('.', $key);
-            $alias = $alias[1];
-
-            $class = str_replace('Pimcore\\Model\\Object\\', '', $definition['classes']['model']);
-            $class = str_replace('\\', '', $class);
-
-            $classMapping[$alias] = $class;
-        }
-
         $settings = [
-            'classMapping' => $classMapping,
             'bundle' => [
                 'version' => Version::getVersion(),
                 'build' => Version::getBuild(),

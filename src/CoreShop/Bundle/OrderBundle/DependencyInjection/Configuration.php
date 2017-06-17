@@ -331,6 +331,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('js')
                         ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshoporder/pimcore/js/resource.js')->end()
                             ->scalarNode('cart_pricerule_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/panel.js')->end()
                             ->scalarNode('cart_pricerule_item')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/item.js')->end()
                             ->scalarNode('cart_pricerule_action')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/action.js')->end()

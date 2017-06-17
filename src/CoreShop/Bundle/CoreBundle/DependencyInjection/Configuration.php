@@ -109,7 +109,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('taxrulegroup_item')->defaultValue('/bundles/coreshopcore/pimcore/js/taxation/taxrulegroup/item.js')->end()
                             ->scalarNode('settings')->defaultValue('/bundles/coreshopcore/pimcore/js/settings.js')->end()
                             ->scalarNode('helpers')->defaultValue('/bundles/coreshopcore/pimcore/js/helpers.js')->end()
-                            ->scalarNode('global')->defaultValue('/bundles/coreshopcore/pimcore/js/global.js')->end()
                             ->scalarNode('coreshop')->defaultValue('/bundles/coreshopcore/pimcore/js/coreshop.js')->end()
                         ->end()
                     ->end()

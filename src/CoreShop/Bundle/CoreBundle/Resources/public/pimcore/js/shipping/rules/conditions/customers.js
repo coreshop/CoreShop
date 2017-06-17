@@ -18,7 +18,7 @@ coreshop.shippingrule.conditions.customers = Class.create(coreshop.rules.conditi
     getForm: function () {
         this.customers = new coreshop.object.objectMultihref(this.data ? this.data.customers : [], {
             classes: [
-                {classes: coreshop.settings.classMapping.customer}
+                {classes: coreshop.class_map.customer}
             ],
             name: 'customers',
             title: '',
