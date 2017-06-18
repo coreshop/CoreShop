@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\StoreBundle\Form\Type;
 
+use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,6 +29,7 @@ final class StoreType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('template', TextType::class)
             ->add('siteId', NumberType::class)
+            ->add('currency', CurrencyChoiceType::class);
         ;
     }
 

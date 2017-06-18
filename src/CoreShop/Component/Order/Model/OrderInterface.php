@@ -73,6 +73,18 @@ interface OrderInterface extends SaleInterface
     public function setPaymentFee($paymentFee, $withTax = true);
 
     /**
+     * @param bool $withTax
+     * @return float
+     */
+    public function getPaymentFee($withTax = true);
+
+    /**
+     * @param $paymentFee
+     * @param bool $withTax
+     */
+    public function setBasePaymentFee($paymentFee, $withTax = true);
+
+    /**
      * @param $taxRate
      */
     public function setPaymentFeeTaxRate($taxRate);

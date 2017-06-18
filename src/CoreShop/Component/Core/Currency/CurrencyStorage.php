@@ -82,7 +82,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
     private function isBaseCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
         if ($store instanceof \CoreShop\Component\Core\Model\StoreInterface) {
-            return $store->getBaseCurrency()->getId() === $currency->getId();
+            return $store->getCurrency()->getId() === $currency->getId();
         }
 
         return false;

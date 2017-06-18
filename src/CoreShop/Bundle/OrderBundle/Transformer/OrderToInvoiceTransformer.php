@@ -137,7 +137,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
 
         $invoiceNumber = $this->numberGenerator->generate($invoice);
-        /*
+
+        /**
          * @var $invoice OrderInvoiceInterface
          * @var $order OrderInterface
          */
@@ -154,7 +155,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoice->save();
         $items = [];
 
-        /*
+        /**
          * @var $cartItem CartItemInterface
          */
         foreach ($itemsToTransform as $item) {

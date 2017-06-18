@@ -45,6 +45,6 @@ class Currency extends Base
     {
         $this->printTestName();
 
-        $this->assertEquals($this->get('coreshop.context.currency')->getCurrency()->getId(), Data::$store->getBaseCurrency()->getId());
+        $this->assertEquals($this->get('coreshop.context.currency')->getCurrency()->getId(), Data::$store->getCurrency()->getId());
     }
 }

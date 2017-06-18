@@ -2,7 +2,9 @@ services:
   coreshop.core.order.transformer.cart_to_order:
     decorates: coreshop.order.transformer.cart_to_order
     class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToOrderTransformer
-    arguments: ['@coreshop.core.order.transformer.cart_to_order.inner']
+    arguments:
+      - '@coreshop.core.order.transformer.cart_to_order.inner'
+      - '@coreshop.currency_converter'
 
   coreshop.core.order.taxation.collector.cart:
     decorates: coreshop.order.taxation.collector.cart

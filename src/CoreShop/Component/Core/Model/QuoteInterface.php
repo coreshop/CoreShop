@@ -13,18 +13,10 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\QuoteInterface as BaseQuoteInterface;
+use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-interface QuoteInterface extends BaseQuoteInterface, StoreAwareInterface
+interface QuoteInterface extends BaseQuoteInterface, CarrierAwareInterface
 {
-    /**
-     * @return CarrierInterface
-     */
-    public function getCarrier();
 
-    /**
-     * @param CarrierInterface $carrier
-     * @return mixed
-     */
-    public function setCarrier($carrier);
 }

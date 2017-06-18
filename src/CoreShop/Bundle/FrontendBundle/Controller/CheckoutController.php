@@ -120,16 +120,11 @@ class CheckoutController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($this->checkoutManager->getSteps()));
 
-        $baseCurrency = $this->get('coreshop.context.store')->getStore()->getBaseCurrency();
-        $currency = $this->get('coreshop.context.currency')->getCurrency();
-
-        $exchangeRate = $this->get('coreshop.repository.exchange_rate')->findOneWithCurrencyPair($baseCurrency, $currency);
-
         /**
          * If everything is valid, we continue with Order-Creation.
          */
         $order = $this->getOrderFactory()->createNew();
-        $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order, $exchangeRate ? $exchangeRate->getExchangeRate() : 1);
+        $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
 
         /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/

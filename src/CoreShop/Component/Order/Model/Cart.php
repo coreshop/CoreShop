@@ -12,13 +12,15 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Store\Model\StoreAwareTrait;
 
 class Cart extends AbstractProposal implements CartInterface
 {
     use ProposalPriceRuleTrait;
+    use StoreAwareTrait;
+    use CurrencyAwareTrait;
 
     /**
      * {@inheritdoc}

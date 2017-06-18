@@ -129,7 +129,7 @@ class NotificationRule extends RuleTest
          * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
-        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order, 1);
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
 
         return $order;
     }

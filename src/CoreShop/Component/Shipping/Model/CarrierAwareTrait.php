@@ -10,14 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\Shipping\Model;
 
-use CoreShop\Component\Order\Model\Quote as BaseQuote;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
-use CoreShop\Component\Store\Model\StoreAwareTrait;
-
-class Quote extends BaseQuote implements QuoteInterface
+trait CarrierAwareTrait
 {
-    use CarrierAwareTrait;
+    /**
+     * @var CarrierInterface
+     */
+    protected $carrier;
+
+    /**
+     * @return CarrierInterface
+     */
+    public function getCarrier()
+    {
+        return $this->carrier;
+    }
+
+    /**
+     * @param CarrierInterface $carrier
+     */
+    public function setCarrier($carrier)
+    {
+        $this->carrier = $carrier;
+    }
 }

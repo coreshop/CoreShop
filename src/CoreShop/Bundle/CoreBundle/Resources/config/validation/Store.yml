@@ -1,6 +1,4 @@
 CoreShop\Component\Core\Model\Store:
   properties:
-    baseCurrency:
-      - NotBlank: { groups: [coreshop] }
     baseCountry:
       - NotBlank: { groups: [coreshop] }

@@ -31,3 +31,10 @@ CoreShop\Component\Store\Model\Store:
       gedmo:
         timestampable:
           on: update
+  manyToOne:
+    currency:
+      targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
+      joinColumn:
+        name: currencyId
+        referencedColumnName: id
+        nullable: true

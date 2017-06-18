@@ -22,7 +22,7 @@ class CartToQuoteTransformer extends AbstractCartToSaleTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform(ProposalInterface $cart, ProposalInterface $quote, $exchangeRate)
+    public function transform(ProposalInterface $cart, ProposalInterface $quote)
     {
         /**
          * @var $cart CartInterface
@@ -30,6 +30,6 @@ class CartToQuoteTransformer extends AbstractCartToSaleTransformer
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($quote, QuoteInterface::class);
 
-        return $this->transformSale($cart, $quote, 'quote', $exchangeRate);
+        return $this->transformSale($cart, $quote, 'quote');
     }
 }

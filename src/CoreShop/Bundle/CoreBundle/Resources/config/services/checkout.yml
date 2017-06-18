@@ -32,6 +32,8 @@ services:
       - '@form.factory'
       - '@coreshop.context.currency'
       - '@coreshop.money_formatter'
+      - '@coreshop.currency_converter'
+      - '@coreshop.context.store'
     tags:
       - {name: coreshop.registry.checkout.step, type: shipping, priority: 40, manager: coreshop.checkout_manager.default}
 

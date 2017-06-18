@@ -40,7 +40,7 @@ class OrderInvoice extends Base
          * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
-        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order, 1);
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
 
         $processableItems = $this->get('coreshop.order.invoice.processable')->getProcessableItems($order);
 
@@ -58,7 +58,7 @@ class OrderInvoice extends Base
          * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
-        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order, 1);
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
 
         $processableItems = $this->get('coreshop.order.invoice.processable')->getProcessableItems($order);
 

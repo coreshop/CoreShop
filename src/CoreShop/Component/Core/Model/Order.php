@@ -14,25 +14,10 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\Order as BaseOrder;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 
 class Order extends BaseOrder implements OrderInterface
 {
-    use StoreAwareTrait;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCarrier()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCarrier($carrier)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
+    use CarrierAwareTrait;
 }

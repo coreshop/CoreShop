@@ -2,6 +2,8 @@ CoreShop\Component\Store\Model\Store:
   properties:
     name:
       - NotBlank: { groups: [coreshop] }
+    currency:
+      - NotBlank: { groups: [coreshop] }
     template:
       - NotBlank: { groups: [coreshop] }
     isDefault:

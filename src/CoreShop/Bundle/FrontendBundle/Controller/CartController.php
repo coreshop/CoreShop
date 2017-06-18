@@ -175,13 +175,8 @@ class CartController extends FrontendController
      */
     public function createQuoteAction(Request $request)
     {
-        $baseCurrency = $this->get('coreshop.context.store')->getStore()->getBaseCurrency();
-        $currency = $this->get('coreshop.context.currency')->getCurrency();
-
-        $exchangeRate = $this->get('coreshop.repository.exchange_rate')->findOneWithCurrencyPair($baseCurrency, $currency);
-
         $quote = $this->getQuoteFactory()->createNew();
-        $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote, $exchangeRate ? $exchangeRate->getExchangeRate() : 1);
+        $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
 
         return $this->redirectToRoute('coreshop_quote_detail', ["quote" => $quote->getId()]);
     }

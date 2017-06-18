@@ -5,5 +5,5 @@
 {%- macro convertAndFormat(amount) -%}
     {% from _self import format %}
 
-    {{- format(amount|coreshop_convert_money(coreshop.store.baseCurrency.isoCode, coreshop.currency.isoCode), coreshop.currency.isoCode) }}
+    {{- format(amount|coreshop_convert_money(coreshop.store.currency.isoCode, coreshop.currency.isoCode), coreshop.currency.isoCode) }}
 {%- endmacro -%}

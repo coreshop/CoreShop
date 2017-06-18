@@ -4,5 +4,5 @@ CoreShop\Component\Core\Model\TaxRuleGroup:
   properties:
     stores:
       expose: true
-      type: array
+      type: relation
       groups: [Detailed]

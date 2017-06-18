@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
@@ -22,7 +23,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform(ProposalInterface $cart, ProposalInterface $order, $exchangeRate)
+    public function transform(ProposalInterface $cart, ProposalInterface $order)
     {
         /**
          * @var $cart CartInterface
@@ -31,11 +32,17 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($order, OrderInterface::class);
 
-        $order->setPaymentFee($cart->getPaymentFee(true), true);
-        $order->setPaymentFee($cart->getPaymentFee(false), false);
+        $fromCurrency = $this->storeContext->getStore()->getCurrency()->getIsoCode();
+        $toCurrency = $cart->getCurrency() instanceof CurrencyInterface ? $cart->getCurrency()->getIsoCode() : $fromCurrency;
+
+        $order->setPaymentFee($this->currencyConverter->convert($cart->getPaymentFee(true), $fromCurrency, $toCurrency), true);
+        $order->setPaymentFee($this->currencyConverter->convert($cart->getPaymentFee(false), $fromCurrency, $toCurrency), false);
         $order->setPaymentFeeTaxRate($cart->getPaymentFeeTaxRate());
 
-        $order = $this->transformSale($cart, $order, 'order', $exchangeRate);
+        $order->setBasePaymentFee($cart->getPaymentFee(true), true);
+        $order->setBasePaymentFee($cart->getPaymentFee(false), false);
+
+        $order = $this->transformSale($cart, $order, 'order');
 
         $cart->setOrder($order);
         $cart->save();

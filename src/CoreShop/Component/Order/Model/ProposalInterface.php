@@ -12,9 +12,11 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-interface ProposalInterface extends ResourceInterface
+interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface
 {
     /**
      * @param PurchasableInterface $product

@@ -19,20 +19,6 @@ coreshop.store.item = Class.create(coreshop.store.item, {
             [
                 {
                     xtype: 'combo',
-                    fieldLabel: t('coreshop_base_currency'),
-                    typeAhead: true,
-                    value: this.data.baseCurrency,
-                    mode: 'local',
-                    listWidth: 100,
-                    store: pimcore.globalmanager.get('coreshop_currencies'),
-                    displayField: 'name',
-                    valueField: 'id',
-                    forceSelection: true,
-                    triggerAction: 'all',
-                    name: 'baseCurrency'
-                },
-                {
-                    xtype: 'combo',
                     fieldLabel: t('coreshop_base_country'),
                     typeAhead: true,
                     value: this.data.baseCountry,

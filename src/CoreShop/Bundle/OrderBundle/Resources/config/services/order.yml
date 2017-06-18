@@ -10,6 +10,7 @@ services:
       - '%coreshop.folder.order_item%'
       - '@coreshop.order.taxation.collector.cart_item'
       - '@coreshop.transformer.event_dispatcher'
+      - '@coreshop.currency_converter'
 
   coreshop.order.transformer.cart_to_order:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartToOrderTransformer
@@ -21,11 +22,11 @@ services:
       - '@coreshop.object_service'
       - '@coreshop.context.locale'
       - '@coreshop.factory.order_item'
-      - '@coreshop.context.currency'
       - '@coreshop.context.store'
       - '@coreshop.cart_price_rule.order.processor'
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.order.taxation.collector.cart'
+      - '@coreshop.currency_converter'
 
   coreshop.order.transformer.cart_item_to_quote_item:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToQuoteItemTransformer
@@ -34,6 +35,7 @@ services:
       - '%coreshop.folder.quote_item%'
       - '@coreshop.order.taxation.collector.cart_item'
       - '@coreshop.transformer.event_dispatcher'
+      - '@coreshop.currency_converter'
 
   coreshop.order.transformer.cart_to_quote:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartToQuoteTransformer
@@ -45,14 +47,14 @@ services:
       - '@coreshop.object_service'
       - '@coreshop.context.locale'
       - '@coreshop.factory.quote_item'
-      - '@coreshop.context.currency'
       - '@coreshop.context.store'
       - '@coreshop.cart_price_rule.order.processor'
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.order.taxation.collector.cart'
+      - '@coreshop.currency_converter'
 
   coreshop.factory.cart:
-    class: CoreShop\Bundle\CoreBundle\Factory\CartFactory
+    class: CoreShop\Component\Order\Factory\CartFactory
     arguments:
       - '%coreshop.model.cart.class%'
       - '@coreshop.context.currency'

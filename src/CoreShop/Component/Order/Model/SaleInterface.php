@@ -8,31 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\Object\Fieldcollection;
 
 interface SaleInterface extends ProposalInterface, PimcoreModelInterface
 {
-    /**
-     * @return CurrencyInterface
-     */
-    public function getCurrency();
-
-    /**
-     * @param CurrencyInterface $currency
-     *
-     * @return static
-     */
-    public function setCurrency($currency);
-
     /**
      * @return string
      */
@@ -42,6 +28,17 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @param $saleLanguage
      */
     public function setSaleLanguage($saleLanguage);
+
+    /**
+     * @return CurrencyInterface
+     */
+    public function getBaseCurrency();
+
+    /**
+     * @param CurrencyInterface $currency
+     * @return mixed
+     */
+    public function setBaseCurrency($currency);
 
     /**
      * @param $total
@@ -175,4 +172,97 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @return float
      */
     public function getShippingTaxRate();
+
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseTotal($withTax = true);
+
+    /**
+     * @param $total
+     * @param bool $withTax
+     */
+    public function setBaseTotal($total, $withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getBaseTotalTax();
+
+    /**
+     * @param $totalTax
+     */
+    public function setBaseTotalTax($totalTax);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseSubtotal($withTax = true);
+
+    /**
+     * @param $subtotal
+     * @param bool $withTax
+     */
+    public function setBaseSubtotal($subtotal, $withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getBaseSubtotalTax();
+
+    /**
+     * @param $subtotalTax
+     */
+    public function setBaseSubtotalTax($subtotalTax);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseDiscount($withTax = true);
+
+    /**
+     * @param $discount
+     * @param bool $withTax
+     */
+    public function setBaseDiscount($discount, $withTax = true);
+
+    /**
+     * @return Fieldcollection
+     */
+    public function getBaseTaxes();
+
+    /**
+     * @param Fieldcollection $taxes
+     */
+    public function setBaseTaxes($taxes);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseShipping($withTax = true);
+
+    /**
+     * @param $shipping
+     * @param bool $withTax
+     */
+    public function setBaseShipping($shipping, $withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getBaseShippingTax();
+
+    /**
+     * @param $shippingTax
+     */
+    public function setBaseShippingTax($shippingTax);
 }

@@ -76,36 +76,4 @@ class Cart extends BaseCart implements CartInterface
     {
         return parent::getTotalWithoutDiscount($withTax) + $this->getShipping($withTax);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCurrency($currency)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStore($store)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 }

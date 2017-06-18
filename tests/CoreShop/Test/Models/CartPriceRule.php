@@ -261,7 +261,7 @@ class CartPriceRule extends RuleTest
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $condition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()],
+            'currencies' => [Data::$store->getCurrency()->getId()],
         ]);
 
         $this->assertRuleCondition($this->cart, $condition);
@@ -280,7 +280,7 @@ class CartPriceRule extends RuleTest
         ]);
 
         $currencyCondition = $this->createConditionWithForm('currencies', [
-            'currencies' => [Data::$store->getBaseCurrency()->getId()],
+            'currencies' => [Data::$store->getCurrency()->getId()],
         ]);
 
         $condition = $this->createConditionWithForm('nested', [

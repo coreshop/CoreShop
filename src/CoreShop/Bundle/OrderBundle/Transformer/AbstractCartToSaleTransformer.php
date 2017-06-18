@@ -13,8 +13,9 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
+use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Taxation\ProposalTaxCollectorInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
@@ -22,7 +23,6 @@ use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
@@ -68,11 +68,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $localeContext;
 
     /**
-     * @var CurrencyContextInterface
-     */
-    protected $currencyContext;
-
-    /**
      * @var StoreContextInterface
      */
     protected $storeContext;
@@ -98,6 +93,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     private $cartTaxCollector;
 
     /**
+     * @var CurrencyConverterInterface
+     */
+    protected $currencyConverter;
+
+    /**
      * @param ProposalItemTransformerInterface $cartItemToSaleItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -105,11 +105,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param ObjectServiceInterface $objectService
      * @param LocaleContextInterface $localeContext
      * @param PimcoreFactoryInterface $saleItemFactory
-     * @param CurrencyContextInterface $currencyContext
      * @param StoreContextInterface $storeContext
      * @param CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param ProposalTaxCollectorInterface $cartTaxCollector
+     * @param CurrencyConverterInterface $currencyConverter
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToSaleItemTransformer,
@@ -119,11 +119,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         ObjectServiceInterface $objectService,
         LocaleContextInterface $localeContext,
         PimcoreFactoryInterface $saleItemFactory,
-        CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
         CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
         TransformerEventDispatcherInterface $eventDispatcher,
-        ProposalTaxCollectorInterface $cartTaxCollector
+        ProposalTaxCollectorInterface $cartTaxCollector,
+        CurrencyConverterInterface $currencyConverter
     )
     {
         $this->cartItemToSaleItemTransformer = $cartItemToSaleItemTransformer;
@@ -133,17 +133,17 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->objectService = $objectService;
         $this->localeContext = $localeContext;
         $this->saleItemFactory = $saleItemFactory;
-        $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;
         $this->cartPriceRuleOrderProcessor = $cartPriceRuleOrderProcessor;
         $this->eventDispatcher = $eventDispatcher;
         $this->cartTaxCollector = $cartTaxCollector;
+        $this->currencyConverter = $currencyConverter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transformSale(ProposalInterface $cart, ProposalInterface $sale, $type, $exchangeRate)
+    public function transformSale(ProposalInterface $cart, ProposalInterface $sale, $type)
     {
         /**
          * @var $cart CartInterface
@@ -151,31 +151,48 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($sale, SaleInterface::class);
 
+        $fromCurrency = $this->storeContext->getStore()->getCurrency();
+        $toCurrency = $cart->getCurrency() instanceof CurrencyInterface ? $cart->getCurrency() : $fromCurrency;
+
+        $fromCurrencyCode = $fromCurrency->getIsoCode();
+        $toCurrencyCode = $toCurrency->getIsoCode();
+
         $this->eventDispatcher->dispatchPreEvent($type, $sale, ['cart' => $cart]);
 
         $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
-
-        $quoteNumber = $this->numberGenerator->generate($sale);
+        $saleNumber = $this->numberGenerator->generate($sale);
         /**
          * @var $sale SaleInterface
          */
-        $sale->setKey($this->keyTransformer->transform($quoteNumber));
-        $sale->setSaleNumber($quoteNumber);
+        $sale->setBaseCurrency($fromCurrency);
+        $sale->setCurrency($toCurrency);
+        $sale->setKey($this->keyTransformer->transform($saleNumber));
+        $sale->setSaleNumber($saleNumber);
         $sale->setParent($orderFolder);
         $sale->setPublished(true);
         $sale->setCustomer($cart->getCustomer());
         $sale->setSaleLanguage($this->localeContext->getLocaleCode());
         $sale->setSaleDate(Carbon::now());
         $sale->setStore($this->storeContext->getStore());
-        $sale->setCurrency($this->currencyContext->getCurrency());
-        $sale->setTotal($cart->getTotal(true) * $exchangeRate, true);
-        $sale->setTotal($cart->getTotal(false) * $exchangeRate, false);
-        $sale->setTotalTax($cart->getTotalTax() * $exchangeRate);
-        $sale->setSubtotal($cart->getSubtotal(true) * $exchangeRate, true);
-        $sale->setSubtotal($cart->getSubtotal(false) * $exchangeRate, false);
-        $sale->setSubtotalTax($cart->getSubtotalTax() * $exchangeRate);
-        $sale->setDiscount($cart->getDiscount(true) * $exchangeRate, true);
-        $sale->setDiscount($cart->getDiscount(false) * $exchangeRate, false);
+
+        $sale->setTotal($this->currencyConverter->convert($cart->getTotal(true), $fromCurrencyCode, $toCurrencyCode), true);
+        $sale->setTotal($this->currencyConverter->convert($cart->getTotal(false), $fromCurrencyCode, $toCurrencyCode), false);
+        $sale->setTotalTax($this->currencyConverter->convert($cart->getTotalTax(), $fromCurrencyCode, $toCurrencyCode));
+        $sale->setSubtotal($this->currencyConverter->convert($cart->getSubtotal(true), $fromCurrencyCode, $toCurrencyCode), true);
+        $sale->setSubtotal($this->currencyConverter->convert($cart->getSubtotal(false), $fromCurrencyCode, $toCurrencyCode), false);
+        $sale->setSubtotalTax($this->currencyConverter->convert($cart->getSubtotalTax(), $fromCurrencyCode, $toCurrencyCode));
+        $sale->setDiscount($this->currencyConverter->convert($cart->getDiscount(true), $fromCurrencyCode, $toCurrencyCode), true);
+        $sale->setDiscount($this->currencyConverter->convert($cart->getDiscount(false), $fromCurrencyCode, $toCurrencyCode), false);
+
+        $sale->setBaseTotal($cart->getTotal(true), true);
+        $sale->setBaseTotal($cart->getTotal(false), false);
+        $sale->setBaseTotalTax($cart->getTotalTax());
+        $sale->setBaseSubtotal($cart->getSubtotal(true), true);
+        $sale->setBaseSubtotal($cart->getSubtotal(false), false);
+        $sale->setBaseSubtotalTax($cart->getSubtotalTax());
+        $sale->setBaseDiscount($cart->getDiscount(true), true);
+        $sale->setBaseDiscount($cart->getDiscount(false), false);
+
         $sale->setShippingAddress($cart->getShippingAddress());
         $sale->setInvoiceAddress($cart->getInvoiceAddress());
         $sale->setWeight($cart->getWeight());
@@ -199,19 +216,23 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         foreach ($cart->getItems() as $cartItem) {
             $saleItem = $this->saleItemFactory->createNew();
 
-            $sale->addItem($this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem, $exchangeRate));
+            $sale->addItem($this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem));
         }
 
-        $fieldCollection = new Fieldcollection();
-        $fieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
+        $baseTaxesFieldCollection = new Fieldcollection();
+        $baseTaxesFieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
 
-        foreach ($fieldCollection->getItems() as $item) {
+        $taxesFieldCollection = new Fieldcollection();
+        $taxesFieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
+
+        foreach ($baseTaxesFieldCollection->getItems() as $item) {
             if ($item instanceof TaxItemInterface) {
-                $item->setAmount($item->getAmount() * $exchangeRate);
+                $item->setAmount($this->currencyConverter->convert($item->getAmount(), $fromCurrencyCode, $toCurrencyCode));
             }
         }
 
-        $sale->setTaxes($fieldCollection);
+        $sale->setTaxes($taxesFieldCollection);
+        $sale->setBaseTaxes($baseTaxesFieldCollection);
 
         $this->eventDispatcher->dispatchPostEvent($type, $sale, ['cart' => $cart]);
 

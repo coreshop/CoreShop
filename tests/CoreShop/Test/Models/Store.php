@@ -40,7 +40,7 @@ class Store extends Base
         $store->setName('test-country');
         $store->setTemplate('test');
         $store->setBaseCountry(Data::$store->getBaseCountry());
-        $store->setBaseCurrency(Data::$store->getBaseCurrency());
+        $store->setCurrency(Data::$store->getCurrency());
 
         $this->assertNull($store->getId());
 

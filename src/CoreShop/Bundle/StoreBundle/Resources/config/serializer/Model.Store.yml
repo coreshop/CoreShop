@@ -23,3 +23,7 @@ CoreShop\Component\Store\Model\Store:
       expose: true
       type: integer
       groups: [List, Detailed]
+    currency:
+      expose: true
+      type: relation
+      groups: [List, Detailed]

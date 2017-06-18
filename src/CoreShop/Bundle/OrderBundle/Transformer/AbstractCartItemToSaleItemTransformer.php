@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
 use CoreShop\Component\Order\Taxation\ProposalItemTaxCollectorInterface;
@@ -47,28 +48,36 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     protected $cartItemTaxCollector;
 
     /**
+     * @var CurrencyConverterInterface
+     */
+    protected $currencyConverter;
+
+    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
      * @param ProposalItemTaxCollectorInterface $cartItemTaxCollector
      * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param CurrencyConverterInterface $currencyConverter
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
         ProposalItemTaxCollectorInterface $cartItemTaxCollector,
-        TransformerEventDispatcherInterface $eventDispatcher
+        TransformerEventDispatcherInterface $eventDispatcher,
+        CurrencyConverterInterface $currencyConverter
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->cartItemTaxCollector = $cartItemTaxCollector;
         $this->eventDispatcher = $eventDispatcher;
+        $this->currencyConverter = $currencyConverter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transformSaleItem(ProposalInterface $sale, ProposalItemInterface $cartItem, ProposalItemInterface $saleItem, $type, $exchangeRate)
+    public function transformSaleItem(ProposalInterface $sale, ProposalItemInterface $cartItem, ProposalItemInterface $saleItem, $type)
     {
         /**
          * @var $sale SaleInterface
@@ -78,6 +87,9 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         Assert::isInstanceOf($cartItem, CartItemInterface::class);
         Assert::isInstanceOf($saleItem, SaleItemInterface::class);
         Assert::isInstanceOf($sale, SaleInterface::class);
+
+        $fromCurrency = $sale->getBaseCurrency()->getIsoCode();
+        $toCurrency = $sale->getCurrency()->getIsoCode();
 
         $this->eventDispatcher->dispatchPreEvent($type, $cartItem, ['sale' => $sale, 'cart' => $cartItem->getCart(), 'item' => $saleItem]);
 
@@ -95,15 +107,25 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setTaxes($fieldCollection);
 
         $saleItem->setProduct($cartItem->getProduct());
-        $saleItem->setItemWholesalePrice($cartItem->getItemWholesalePrice() * $exchangeRate);
-        $saleItem->setItemRetailPrice($cartItem->getItemRetailPrice(true) * $exchangeRate, true);
-        $saleItem->setItemRetailPrice($cartItem->getItemRetailPrice(false) * $exchangeRate, false);
-        $saleItem->setTotal($cartItem->getTotal(true) * $exchangeRate, true);
-        $saleItem->setTotal($cartItem->getTotal(false) * $exchangeRate, false);
-        $saleItem->setItemPrice($cartItem->getItemPrice(true) * $exchangeRate, true);
-        $saleItem->setItemPrice($cartItem->getItemPrice(false) * $exchangeRate, false);
-        $saleItem->setTotalTax($cartItem->getTotalTax() * $exchangeRate);
-        $saleItem->setItemTax($cartItem->getItemTax() * $exchangeRate);
+        $saleItem->setItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));
+        $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(true), $fromCurrency, $toCurrency), true);
+        $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(false), $fromCurrency, $toCurrency), false);
+        $saleItem->setTotal($this->currencyConverter->convert($cartItem->getTotal(true), $fromCurrency, $toCurrency), true);
+        $saleItem->setTotal($this->currencyConverter->convert($cartItem->getTotal(false), $fromCurrency, $toCurrency), false);
+        $saleItem->setItemPrice($this->currencyConverter->convert($cartItem->getItemPrice(true), $fromCurrency, $toCurrency), true);
+        $saleItem->setItemPrice($this->currencyConverter->convert($cartItem->getItemPrice(false), $fromCurrency, $toCurrency), false);
+        $saleItem->setTotalTax($this->currencyConverter->convert($cartItem->getTotalTax(), $fromCurrency, $toCurrency));
+        $saleItem->setItemTax($this->currencyConverter->convert($cartItem->getItemTax(), $fromCurrency, $toCurrency));
+
+        $saleItem->setBaseItemRetailPrice($cartItem->getItemRetailPrice(true), true);
+        $saleItem->setBaseItemRetailPrice($cartItem->getItemRetailPrice(false), false);
+        $saleItem->setBaseTotal($cartItem->getTotal(true), true);
+        $saleItem->setBaseTotal($cartItem->getTotal(false), false);
+        $saleItem->setBaseItemPrice($cartItem->getItemPrice(true), true);
+        $saleItem->setBaseItemPrice($cartItem->getItemPrice(false), false);
+        $saleItem->setBaseTotalTax($cartItem->getTotalTax());
+        $saleItem->setBaseItemTax($cartItem->getItemTax());
+
         $saleItem->setItemWeight($cartItem->getItemWeight());
         $saleItem->setTotalWeight($cartItem->getTotalWeight());
         $saleItem->save();

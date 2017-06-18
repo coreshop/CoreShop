@@ -28,7 +28,7 @@ class CartItemToOrderItemTransformer extends AbstractCartItemToSaleItemTransform
     /**
      * {@inheritdoc}
      */
-    public function transform(ProposalInterface $order, ProposalItemInterface $cartItem, ProposalItemInterface $orderItem, $exchangeRate)
+    public function transform(ProposalInterface $order, ProposalItemInterface $cartItem, ProposalItemInterface $orderItem)
     {
         /**
          * @var $order OrderInterface
@@ -39,6 +39,6 @@ class CartItemToOrderItemTransformer extends AbstractCartItemToSaleItemTransform
         Assert::isInstanceOf($orderItem, OrderItemInterface::class);
         Assert::isInstanceOf($order, OrderInterface::class);
 
-        return $this->transformSaleItem($order, $cartItem, $orderItem, 'order_item', $exchangeRate);
+        return $this->transformSaleItem($order, $cartItem, $orderItem, 'order_item');
     }
 }

@@ -38,6 +38,26 @@ class Order extends Sale implements OrderInterface
     }
 
     /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function getBasePaymentFee($withTax = true)
+    {
+        $withTax ? $this->getBasePaymentFeeGross() : $this->getBasePaymentFeeNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function setBasePaymentFee($paymentFee, $withTax = true)
+    {
+        return $withTax ? $this->setBasePaymentFeeGross($paymentFee) : $this->setBasePaymentFeeNet($paymentFee);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getTotalPayed()
@@ -153,6 +173,38 @@ class Order extends Sale implements OrderInterface
      * {@inheritdoc}
      */
     public function setOrderNumber($orderNumber)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBasePaymentFeeNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBasePaymentFeeNet($paymentFeeNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBasePaymentFeeGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBasePaymentFeeGross($paymentFeeGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

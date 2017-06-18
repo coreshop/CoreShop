@@ -116,6 +116,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipmentFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->shipmentFolderPath));
 
         $shipmentNumber = $this->numberGenerator->generate($shipment);
+
         /**
          * @var $shipment OrderShipmentInterface
          * @var $order OrderInterface

@@ -25,7 +25,6 @@ final class StoreTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('baseCurrency', CurrencyChoiceType::class);
         $builder->add('baseCountry', CountryChoiceType::class);
     }
 

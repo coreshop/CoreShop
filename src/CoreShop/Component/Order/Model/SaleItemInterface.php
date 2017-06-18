@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -97,4 +97,80 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
      * @return mixed
      */
     public function getTaxes();
+
+    /**
+     * @param bool $withTax
+     *
+     * @return mixed
+     */
+    public function getBaseItemPrice($withTax = true);
+
+    /**
+     * @param $itemPrice
+     * @param bool $withTax
+     *
+     * @return mixed
+     */
+    public function setBaseItemPrice($itemPrice, $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return mixed
+     */
+    public function getBaseItemRetailPrice($withTax = true);
+
+    /**
+     * @param $itemRetailPrice
+     * @param bool $withTax
+     *
+     * @return mixed
+     */
+    public function setBaseItemRetailPrice($itemRetailPrice, $withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getBaseItemTax();
+
+    /**
+     * @param $itemTax
+     *
+     * @return mixed
+     */
+    public function setBaseItemTax($itemTax);
+
+    /**
+     * @return mixed
+     */
+    public function getBaseTaxes();
+
+    /**
+     * @param $taxes
+     *
+     * @return mixed
+     */
+    public function setBaseTaxes($taxes);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseTotal($withTax = true);
+
+    /**
+     * @param $total
+     * @param bool $withTax
+     *
+     * @return mixed
+     */
+    public function setBaseTotal($total, $withTax = true);
+
+    /**
+     * @param $totalTax
+     *
+     * @return mixed
+     */
+    public function setBaseTotalTax($totalTax);
 }

@@ -169,7 +169,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $manager->flush();
 
         $store = $this->container->get('coreshop.repository.store')->findStandard();
-        $store->setBaseCurrency($this->container->get('coreshop.repository.currency')->getByCode('EUR'));
+        $store->setCurrency($this->container->get('coreshop.repository.currency')->getByCode('EUR'));
         $store->setBaseCountry($this->container->get('coreshop.repository.country')->findOneBy(['isoCode' => 'AT']));
 
         $manager->persist($store);

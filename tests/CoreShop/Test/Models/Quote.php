@@ -40,7 +40,7 @@ class Quote extends Base
          * @var $quote QuoteInterface
          */
         $quote = $this->getFactory('quote')->createNew();
-        $quote = $this->get('coreshop.order.transformer.cart_to_quote')->transform($cart, $quote, 1);
+        $quote = $this->get('coreshop.order.transformer.cart_to_quote')->transform($cart, $quote);
 
         $this->assertNotNull($quote);
         $this->assertEquals(288, $quote->getSubtotal());

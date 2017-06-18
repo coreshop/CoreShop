@@ -8,16 +8,19 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\Currency\Model;
 
-use CoreShop\Component\Order\Model\Quote as BaseQuote;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
-use CoreShop\Component\Store\Model\StoreAwareTrait;
-
-class Quote extends BaseQuote implements QuoteInterface
+interface CurrencyAwareInterface
 {
-    use CarrierAwareTrait;
+    /**
+     * @return CurrencyInterface
+     */
+    public function getCurrency();
+
+    /**
+     * @param CurrencyInterface $currency
+     */
+    public function setCurrency($currency);
 }

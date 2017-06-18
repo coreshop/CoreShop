@@ -12,14 +12,28 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\Object\Fieldcollection;
 
 abstract class Sale extends AbstractProposal implements SaleInterface
 {
     use ProposalPriceRuleTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseCurrency()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseCurrency($currency)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
     /**
      * Wrapper Method for Pimcore Object.
@@ -344,6 +358,270 @@ abstract class Sale extends AbstractProposal implements SaleInterface
      * {@inheritdoc}
      */
     public function setTaxes($taxes)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+    
+        /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function getBaseDiscount($withTax = true)
+    {
+        return $withTax ? $this->getBaseDiscountGross() : $this->getBaseDiscountNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function setBaseDiscount($discount, $withTax = true)
+    {
+        $withTax ? $this->setBaseDiscountGross($discount) : $this->setBaseDiscountNet($discount);
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function getBaseSubtotal($withTax = true)
+    {
+        return $withTax ? $this->getBaseSubtotalGross() : $this->getBaseSubtotalNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function setBaseSubtotal($subtotal, $withTax = true)
+    {
+        $withTax ? $this->setBaseSubtotalGross($subtotal) : $this->setBaseSubtotalNet($subtotal);
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function getBaseTotal($withTax = true)
+    {
+        return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function setBaseTotal($total, $withTax = true)
+    {
+        $withTax ? $this->setBaseTotalGross($total) : $this->setBaseTotalNet($total);
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function getBaseShipping($withTax = true)
+    {
+        return $withTax ? $this->getBaseShippingGross() : $this->getBaseShippingNet();
+    }
+
+    /**
+     * Wrapper Method for Pimcore Object.
+     *
+     * {@inheritdoc}
+     */
+    public function setBaseShipping($shipping, $withTax = true)
+    {
+        $withTax ? $this->setBaseShippingGross($shipping) : $this->setBaseShippingNet($shipping);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseTotalNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $total
+     */
+    public function setBaseTotalNet($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseTotalGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $total
+     */
+    public function setBaseTotalGross($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseTotalTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $totalTax
+     */
+    public function setBaseTotalTax($totalTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseSubtotalNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $subTotalNet
+     */
+    public function setBaseSubtotalNet($subTotalNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseSubtotalGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $subTotalGross
+     */
+    public function setBaseSubtotalGross($subTotalGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseSubtotalTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseShippingNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $subtotalTax
+     */
+    public function setBaseSubtotalTax($subtotalTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $total
+     */
+    public function setBaseShippingNet($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $total
+     */
+    public function setBaseShippingGross($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseShippingTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $shippingTax
+     */
+    public function setBaseShippingTax($shippingTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseDiscountNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $total
+     */
+    public function setBaseDiscountNet($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseDiscountGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return float
+     */
+    public function setBaseDiscountGross($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return Fieldcollection
+     */
+    public function getBaseTaxes()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param $taxes
+     */
+    public function setBaseTaxes($taxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

@@ -2,12 +2,17 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\Store\Model\StoreAwareTrait;
 use Webmozart\Assert\Assert;
 
 abstract class AbstractProposal extends AbstractPimcoreModel implements ProposalInterface
 {
+    use StoreAwareTrait;
+    use CurrencyAwareTrait;
+    
     /**
      * {@inheritdoc}
      */

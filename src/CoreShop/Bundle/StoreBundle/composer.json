@@ -20,7 +20,8 @@
   "require": {
     "php": "^7.0",
     "coreshop/store": "dev-master",
-    "coreshop/resource-bundle": "dev-master"
+    "coreshop/resource-bundle": "dev-master",
+    "coreshop/currency-bundle": "dev-master"
   },
   "config": {
     "bin-dir": "bin"
