@@ -24,28 +24,15 @@ final class ExchangeRateType extends AbstractResourceType
                 'scale' => 5,
                 'rounding_mode' => $options['rounding_mode'],
             ])
+            ->add('fromCurrency', CurrencyChoiceType::class, [
+                'required' => true,
+                'empty_data' => false
+            ])
+            ->add('toCurrency', CurrencyChoiceType::class, [
+                'required' => true,
+                'empty_data' => false
+            ])
         ;
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var ExchangeRateInterface $exchangeRate */
-            $exchangeRate = $event->getData();
-            $form = $event->getForm();
-
-            $disabled = null !== $exchangeRate->getId();
-
-            $form
-                ->add('fromCurrency', CurrencyChoiceType::class, [
-                    'required' => true,
-                    'empty_data' => false,
-                    'disabled' => $disabled,
-                ])
-                ->add('toCurrency', CurrencyChoiceType::class, [
-                    'required' => true,
-                    'empty_data' => false,
-                    'disabled' => $disabled,
-                ])
-            ;
-        });
     }
 
     /**
