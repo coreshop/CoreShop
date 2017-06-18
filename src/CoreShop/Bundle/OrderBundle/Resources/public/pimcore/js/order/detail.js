@@ -43,7 +43,6 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
     getLeftItems: function() {
         return [
             this.getSaleInfo(),
-            this.getCarrierDetails(),
             this.getShipmentDetails(),
             this.getInvoiceDetails(),
             this.getPaymentDetails(),

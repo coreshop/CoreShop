@@ -107,38 +107,12 @@ coreshop.order.order.shipment = Class.create({
             name: 'trackingCode'
         });
 
-        pimcore.globalmanager.get("coreshop_carriers").load();
-
-        var carrier = Ext.create('Ext.form.ComboBox', {
-            xtype: 'combo',
-            fieldLabel: t('coreshop_carrier'),
-            mode: 'local',
-            store: pimcore.globalmanager.get("coreshop_carriers"),
-            displayField: 'name',
-            valueField: 'id',
-            forceSelection: true,
-            triggerAction: 'all',
-            name: 'carrierId',
-            value: parseInt(this.order.carrier),
-            afterLabelTextTpl: [
-                '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
-            ],
-            allowBlank: false,
-            required: true
-        });
-
-        var panel = Ext.create('Ext.panel.Panel', {
+        var panel = Ext.create('Ext.form.Panel', {
             title: t('coreshop_products'),
             border: true,
             iconCls: 'coreshop_icon_product',
-            items: [
-                {
-                    xtype: 'panel',
-                    border: false,
-                    padding: 10,
-                    items: [carrier, trackingCode, itemsGrid]
-                }
-            ]
+            bodyPadding: 10,
+            items: [trackingCode, itemsGrid]
         });
 
         var window = new Ext.window.Window({
@@ -167,15 +141,14 @@ coreshop.order.order.shipment = Class.create({
 
                         window.setLoading(t('loading'));
 
+                        var data = panel.getForm().getFieldValues();
+                        data['id'] = parseInt(this.order.o_id);
+                        data['items'] = itemsToShip;
+
                         Ext.Ajax.request({
                             url: '/admin/coreshop/order-shipment/create-shipment',
                             method: 'post',
-                            params: {
-                                'items': Ext.encode(itemsToShip),
-                                'id': this.order.o_id,
-                                'carrier': carrier.getValue(),
-                                'trackingCode': trackingCode.getValue()
-                            },
+                            jsonData: data,
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
 

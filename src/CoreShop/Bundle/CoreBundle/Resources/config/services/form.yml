@@ -29,6 +29,11 @@ services:
     tags:
       - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
 
+  coreshop.form.extension.type.order_shipment_creation:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }
+
   coreshop.form.type.address_choice:
     class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
     arguments: ['@coreshop.repository.customer']

@@ -75,7 +75,7 @@ coreshop.order.sale.detail = Class.create({
                 }.bind(this)
             }];
 
-            buttons.concat(this.getTopButtons());
+            buttons = buttons.concat(this.getTopButtons());
 
             // create new panel
             this.layout = new Ext.panel.Panel({
@@ -118,7 +118,6 @@ coreshop.order.sale.detail = Class.create({
     getLeftItems: function () {
         return [
             this.getSaleInfo(),
-            this.getCarrierDetails(),
             this.getMailDetails()
         ];
     },
@@ -404,66 +403,6 @@ coreshop.order.sale.detail = Class.create({
         }
 
         return panel;
-    },
-
-    getCarrierDetails: function () {
-        if (!this.carrierDetails) {
-            var items = [];
-
-            items.push({
-                xtype: 'panel',
-                layout: 'hbox',
-                items: [
-                    {
-                        xtype: 'panel',
-                        flex: 1,
-                        items: [
-                            {
-                                xtype: 'panel',
-                                style: 'display:block',
-                                text: t('coreshop_currency'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_currency') + ': </span>' + this.order.currency.name
-                            },
-                            {
-                                xtype: 'panel',
-                                style: 'display:block',
-                                text: t('coreshop_weight'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_weight') + ': </span>' + (this.order.shippingPayment.weight ? this.order.shippingPayment.weight : 0)
-                            }
-                        ]
-                    },
-                    {
-                        xtype: 'panel',
-                        flex: 1,
-                        items: [
-                            {
-                                xtype: 'panel',
-                                style: 'display:block',
-                                text: t('coreshop_carrier'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_carrier') + ': </span>' + this.order.shippingPayment.carrier
-                            },
-                            {
-                                xtype: 'panel',
-                                style: 'display:block',
-                                text: t('coreshop_carrier_price'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_carrier_price') + ': </span>' + coreshop.util.format.currency(this.order.currency.symbol, this.order.shippingPayment.cost)
-                            }
-                        ]
-                    }
-                ]
-            });
-
-            this.carrierDetails = Ext.create('Ext.panel.Panel', {
-                title: t('coreshop_carrier') + '/' + t('coreshop_paymentProvider'),
-                margin: '0 20 20 0',
-                border: true,
-                flex: 6,
-                iconCls: 'coreshop_icon_carrier',
-                items: items
-            });
-        }
-
-        return this.carrierDetails;
     },
 
     getMailDetails: function () {

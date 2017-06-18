@@ -8,19 +8,21 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
+use CoreShop\Bundle\OrderBundle\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -38,7 +40,7 @@ class OrderShipmentController extends AdminController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+            return $this->json(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $itemsToReturn = [];
@@ -80,37 +82,44 @@ class OrderShipmentController extends AdminController
      */
     public function createShipmentAction(Request $request)
     {
-        $items = $request->get('items');
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId);
-        $carrierId = $request->get('carrier');
-        $trackingCode = $request->get('trackingCode');
-        $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
 
-        if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+        $form = $this->get('form.factory')->createNamed('', OrderShipmentCreationType::class);
+
+        $handledForm = $form->handleRequest($request);
+
+        if (in_array($request->getMethod(), ['POST'], true) && $handledForm->isValid()) {
+            $resource = $handledForm->getData();
+
+            $order = $this->getOrderRepository()->find($resource['id']);
+
+            if (!$order instanceof OrderInterface) {
+                return $this->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+            }
+
+            try {
+                $items = $resource['items'];
+
+                /**
+                 * @var OrderShipmentInterface
+                 */
+                $shipment = $this->getShipmentFactory()->createNew();
+
+                foreach ($resource as $key => $value) {
+                    if ($key === 'items' || $key === 'id') continue;
+
+                    $shipment->setValue($key, $value);
+                }
+
+                $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
+
+                return $this->json(['success' => true, 'shipmentId' => $shipment->getId()]);
+            } catch (\Exception $ex) {
+                return $this->json(['success' => false, 'message' => $ex->getMessage()]);
+            }
         }
 
-        if (!$carrier instanceof CarrierInterface) {
-            return $this->json(['success' => false, 'message' => "Carrier with ID '$carrierId' not found"]);
-        }
-
-        try {
-            $items = $this->decodeJson($items);
-
-            /**
-             * @var OrderShipmentInterface
-             */
-            $shipment = $this->getShipmentFactory()->createNew();
-            $shipment->setCarrier($carrier);
-            $shipment->setTrackingCode($trackingCode);
-
-            $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
-
-            return $this->json(['success' => true, 'shipmentId' => $shipment->getId()]);
-        } catch (\Exception $ex) {
-            return $this->json(['success' => false, 'message' => $ex->getMessage()]);
-        }
+        return $this->json(['success' => false, 'message' => "Method not supported, use POST"]);
     }
 
     /**
@@ -129,7 +138,7 @@ class OrderShipmentController extends AdminController
                 200,
                 [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
+                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
                 ]
             );
         }
@@ -140,7 +149,7 @@ class OrderShipmentController extends AdminController
     /**
      * @return OrderDocumentRendererInterface
      */
-    private function getOrderDocumentRenderer()
+    protected function getOrderDocumentRenderer()
     {
         return $this->get('coreshop.renderer.order.pdf');
     }
@@ -148,7 +157,7 @@ class OrderShipmentController extends AdminController
     /**
      * @return PimcoreRepositoryInterface
      */
-    private function getOrderShipmentRepository()
+    protected function getOrderShipmentRepository()
     {
         return $this->get('coreshop.repository.order_shipment');
     }
@@ -156,7 +165,7 @@ class OrderShipmentController extends AdminController
     /**
      * @return ProcessableInterface
      */
-    private function getProcessableHelper()
+    protected function getProcessableHelper()
     {
         return $this->get('coreshop.order.shipment.processable');
     }
@@ -164,17 +173,23 @@ class OrderShipmentController extends AdminController
     /**
      * @return PimcoreRepositoryInterface
      */
-    private function getOrderRepository()
+    protected function getOrderRepository()
     {
         return $this->get('coreshop.repository.order');
     }
 
-    private function getShipmentFactory()
+    /**
+     * @return FactoryInterface
+     */
+    protected function getShipmentFactory()
     {
         return $this->get('coreshop.factory.order_shipment');
     }
 
-    private function getOrderToShipmentTransformer()
+    /**
+     * @return OrderToShipmentTransformer
+     */
+    protected function getOrderToShipmentTransformer()
     {
         return $this->get('coreshop.order.transformer.order_to_shipment');
     }

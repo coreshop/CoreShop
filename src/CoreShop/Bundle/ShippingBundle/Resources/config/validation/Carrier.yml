@@ -9,4 +9,4 @@ CoreShop\Component\Shipping\Model\Carrier:
           type: boolean
     rangeBehaviour:
       - Type:
-          type: integer
+          type: string

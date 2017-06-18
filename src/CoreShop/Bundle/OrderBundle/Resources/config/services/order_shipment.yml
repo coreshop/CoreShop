@@ -21,3 +21,13 @@ services:
       - '@coreshop.repository.order_item'
       - '@coreshop.factory.order_shipment_item'
       - '@coreshop.transformer.event_dispatcher'
+
+  coreshop.form.type.order_document_items:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\OrderDocumentCreationItemsType
+    tags:
+      - { name: form.type }
+
+  coreshop.form.type.shipment_creation:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType
+    tags:
+      - { name: form.type }
