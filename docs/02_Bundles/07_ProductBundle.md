@@ -70,3 +70,13 @@ The Product Bundle provides you with basic information needed for products: Prod
 ## Pimcore Entities
  - Product (CoreShopProduct)
  - Category (CoreShopCategory)
+
+## Pimcore UI
+
+ - Product Grid
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.product', 'products');
+```

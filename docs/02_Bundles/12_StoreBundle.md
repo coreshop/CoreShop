@@ -44,3 +44,13 @@ Nothing much to say here, adds a Store Model you can work with.
 
 ## Doctrine Entities
  - Store
+
+## Pimcore UI
+
+ - Store
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.store', 'store');
+```

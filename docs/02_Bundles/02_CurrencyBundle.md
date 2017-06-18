@@ -67,3 +67,15 @@ The Currency Bundle provides you with basic information needed for Currencies: C
 
 ## Doctrine Entities
  - Currency
+
+## Pimcore UI
+
+ - Currency
+ - Exchange Rate
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.currency', 'currency');
+coreshop.global.resource.open('coreshop.currency', 'exchange_rate');
+```

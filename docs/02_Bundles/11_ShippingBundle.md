@@ -50,3 +50,15 @@ The Shipping Bundle provides you with basic information needed for shipping: Car
  - Carrier
  - Shipping Rule
  - Shipping Rule Group
+
+## Pimcore UI
+
+ - Carrier
+ - Shipping Rule
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.shipping', 'carrier');
+coreshop.global.resource.open('coreshop.shipping', 'shipping_rule');
+```

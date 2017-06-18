@@ -58,3 +58,16 @@ Learn more about overriding Pimcore Classes [here](../03_Development/12_Override
 
 ## Pimcore Entities
  - TaxItem Fieldcollection (CoreShopTaxItem)
+
+
+## Pimcore UI
+
+ - Tax Item
+ - Tax Rule Group
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.taxation', 'tax_item');
+coreshop.global.resource.open('coreshop.taxation', 'tax_rule_group');
+```

@@ -77,3 +77,13 @@ Learn more about adding new Conditions [here](../03_Development/14_Price_Rules/0
 
 ### Actions
 Learn more about adding new Actions [here](../03_Development/14_Price_Rules/02_Custom_Actions.md)
+
+## Pimcore UI
+
+ - Order Grid
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.order', 'orders');
+```

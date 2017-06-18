@@ -49,3 +49,13 @@ The Bundle also introduces an Address Formatter, which formats addresses in coun
 
 ## Doctrine Entities
  - Payment
+
+ ## Pimcore UI
+
+ - Payment Provider
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.payment', 'payment_provider');
+```

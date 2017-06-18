@@ -58,3 +58,15 @@ $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);
 $filteredList->setCategory($category);
 $filteredList->load();
 ```
+
+## Pimcore UI
+
+ - Index Configuration
+ - Fitler Configuration
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.index', 'index');
+coreshop.global.resource.open('coreshop.index', 'filter');
+```

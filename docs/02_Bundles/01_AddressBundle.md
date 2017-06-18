@@ -65,3 +65,17 @@ The Bundle also introduces an Address Formatter, which formats addresses in coun
 
 ## Pimcore Entities
  - Address (CoreShopAddress)
+
+## Pimcore UI
+
+ - Country
+ - State
+ - Zone
+
+How to use?
+
+```javascript
+coreshop.global.resource.open('coreshop.address', 'country');
+coreshop.global.resource.open('coreshop.address', 'state');
+coreshop.global.resource.open('coreshop.address', 'zone');
+```
