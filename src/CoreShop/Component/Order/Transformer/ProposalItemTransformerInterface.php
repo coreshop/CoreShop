@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -20,11 +20,12 @@ interface ProposalItemTransformerInterface
     /**
      * Transforms one proposal item to another.
      *
-     * @param ProposalInterface     $proposal
+     * @param ProposalInterface $proposal
      * @param ProposalItemInterface $fromProposalItem
      * @param ProposalItemInterface $toProposal
+     * @param float $exchangeRate
      *
      * @return mixed
      */
-    public function transform(ProposalInterface $proposal, ProposalItemInterface $fromProposalItem, ProposalItemInterface $toProposal);
+    public function transform(ProposalInterface $proposal, ProposalItemInterface $fromProposalItem, ProposalItemInterface $toProposal, $exchangeRate);
 }

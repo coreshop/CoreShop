@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -41,7 +41,8 @@ class CartController extends FrontendController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function widgetSummaryAction(Request $request) {
+    public function widgetSummaryAction(Request $request)
+    {
         return $this->render('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
             'cart' => $this->getCart(),
             'editAllowed' => true,
@@ -172,9 +173,15 @@ class CartController extends FrontendController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createQuoteAction(Request $request) {
+    public function createQuoteAction(Request $request)
+    {
+        $baseCurrency = $this->get('coreshop.context.store')->getStore()->getBaseCurrency();
+        $currency = $this->get('coreshop.context.currency')->getCurrency();
+
+        $exchangeRate = $this->get('coreshop.repository.exchange_rate')->findOneWithCurrencyPair($baseCurrency, $currency);
+
         $quote = $this->getQuoteFactory()->createNew();
-        $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
+        $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote, $exchangeRate ? $exchangeRate->getExchangeRate() : 1);
 
         return $this->redirectToRoute('coreshop_quote_detail', ["quote" => $quote->getId()]);
     }
@@ -182,11 +189,13 @@ class CartController extends FrontendController
     /**
      * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
      */
-    protected function getQuoteFactory() {
+    protected function getQuoteFactory()
+    {
         return $this->get('coreshop.factory.quote');
     }
 
-    protected function getCartToQuoteTransformer() {
+    protected function getCartToQuoteTransformer()
+    {
         return $this->get('coreshop.order.transformer.cart_to_quote');
     }
 

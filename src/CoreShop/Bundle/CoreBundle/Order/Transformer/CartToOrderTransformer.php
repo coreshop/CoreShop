@@ -24,7 +24,7 @@ final class CartToOrderTransformer implements ProposalTransformerInterface
         $this->innerCartToOrderTransformer = $innerCartToOrderTransformer;
     }
 
-    public function transform(ProposalInterface $cart, ProposalInterface $order)
+    public function transform(ProposalInterface $cart, ProposalInterface $order, $exchangeRate)
     {
          /**
          * @var $cart CartInterface
@@ -32,14 +32,14 @@ final class CartToOrderTransformer implements ProposalTransformerInterface
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($order, OrderInterface::class);
 
-        $order = $this->innerCartToOrderTransformer->transform($cart, $order);
+        $order = $this->innerCartToOrderTransformer->transform($cart, $order, $exchangeRate);
 
         if ($cart->getCarrier() instanceof CarrierInterface) {
             $order->setCarrier($cart->getCarrier());
-            $order->setShipping($cart->getShipping(true), true);
-            $order->setShipping($cart->getShipping(false), false);
+            $order->setShipping($cart->getShipping(true) * $exchangeRate, true);
+            $order->setShipping($cart->getShipping(false) * $exchangeRate, false);
             $order->setShippingTaxRate($cart->getShippingTaxRate());
-            $order->setShippingTax($order->getShipping(true) - $order->getShipping(false));
+            $order->setShippingTax($order->getShipping(true) - $order->getShipping(false) * $exchangeRate);
         } else {
             $order->setShipping(0, true);
             $order->setShipping(0, false);

@@ -40,7 +40,7 @@ class OrderShipment extends Base
          * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
-        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order, 1);
 
         $processableItems = $this->get('coreshop.order.shipment.processable')->getProcessableItems($order);
 
@@ -58,7 +58,7 @@ class OrderShipment extends Base
          * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
-        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order, 1);
 
         $processableItems = $this->get('coreshop.order.shipment.processable')->getProcessableItems($order);
 

@@ -21,8 +21,9 @@ interface ProposalTransformerInterface
      *
      * @param ProposalInterface $fromProposal
      * @param ProposalInterface $toProposal
+     * @param float $exchangeRate
      *
      * @return mixed
      */
-    public function transform(ProposalInterface $fromProposal, ProposalInterface $toProposal);
+    public function transform(ProposalInterface $fromProposal, ProposalInterface $toProposal, $exchangeRate);
 }

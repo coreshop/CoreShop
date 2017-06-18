@@ -129,6 +129,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('js')
                         ->addDefaultsIfNotSet()
                         ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopshipping/pimcore/js/resource.js')->end()
                             ->scalarNode('carrier_item')->defaultValue('/bundles/coreshopshipping/pimcore/js/carrier/item.js')->end()
                             ->scalarNode('carrier_panel')->defaultValue('/bundles/coreshopshipping/pimcore/js/carrier/panel.js')->end()
                             ->scalarNode('shipping_rule_item')->defaultValue('/bundles/coreshopshipping/pimcore/js/shippingrule/item.js')->end()

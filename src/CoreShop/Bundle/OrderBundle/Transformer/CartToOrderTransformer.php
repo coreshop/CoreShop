@@ -22,7 +22,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform(ProposalInterface $cart, ProposalInterface $order)
+    public function transform(ProposalInterface $cart, ProposalInterface $order, $exchangeRate)
     {
         /**
          * @var $cart CartInterface
@@ -35,7 +35,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         $order->setPaymentFee($cart->getPaymentFee(false), false);
         $order->setPaymentFeeTaxRate($cart->getPaymentFeeTaxRate());
 
-        $order = $this->transformSale($cart, $order, 'order');
+        $order = $this->transformSale($cart, $order, 'order', $exchangeRate);
 
         $cart->setOrder($order);
         $cart->save();

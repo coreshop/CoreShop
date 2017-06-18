@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
@@ -29,27 +29,27 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     /**
      * @var ObjectServiceInterface
      */
-    private $objectService;
+    protected $objectService;
 
     /**
      * @var string
      */
-    private $pathForItems;
+    protected $pathForItems;
 
     /**
      * @var TransformerEventDispatcherInterface
      */
-    private $eventDispatcher;
+    protected $eventDispatcher;
 
     /**
      * @var ProposalItemTaxCollectorInterface
      */
-    private $cartItemTaxCollector;
+    protected $cartItemTaxCollector;
 
     /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
-     * @param ProposalItemTaxCollectorInterface   $cartItemTaxCollector
+     * @param ObjectServiceInterface $objectService
+     * @param string $pathForItems
+     * @param ProposalItemTaxCollectorInterface $cartItemTaxCollector
      * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
@@ -57,7 +57,8 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $pathForItems,
         ProposalItemTaxCollectorInterface $cartItemTaxCollector,
         TransformerEventDispatcherInterface $eventDispatcher
-    ) {
+    )
+    {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->cartItemTaxCollector = $cartItemTaxCollector;
@@ -67,7 +68,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     /**
      * {@inheritdoc}
      */
-    public function transformSaleItem(ProposalInterface $sale, ProposalItemInterface $cartItem, ProposalItemInterface $saleItem, $type)
+    public function transformSaleItem(ProposalInterface $sale, ProposalItemInterface $cartItem, ProposalItemInterface $saleItem, $type, $exchangeRate)
     {
         /**
          * @var $sale SaleInterface
@@ -80,7 +81,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $this->eventDispatcher->dispatchPreEvent($type, $cartItem, ['sale' => $sale, 'cart' => $cartItem->getCart(), 'item' => $saleItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath().'/'.$this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath() . '/' . $this->pathForItems);
 
         $this->objectService->copyObject($cartItem, $saleItem);
 
@@ -94,15 +95,15 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setTaxes($fieldCollection);
 
         $saleItem->setProduct($cartItem->getProduct());
-        $saleItem->setItemWholesalePrice($cartItem->getItemWholesalePrice());
-        $saleItem->setItemRetailPrice($cartItem->getItemRetailPrice(true), true);
-        $saleItem->setItemRetailPrice($cartItem->getItemRetailPrice(false), false);
-        $saleItem->setTotal($cartItem->getTotal(true), true);
-        $saleItem->setTotal($cartItem->getTotal(false), false);
-        $saleItem->setItemPrice($cartItem->getItemPrice(true), true);
-        $saleItem->setItemPrice($cartItem->getItemPrice(false), false);
-        $saleItem->setTotalTax($cartItem->getTotalTax());
-        $saleItem->setItemTax($cartItem->getItemTax());
+        $saleItem->setItemWholesalePrice($cartItem->getItemWholesalePrice() * $exchangeRate);
+        $saleItem->setItemRetailPrice($cartItem->getItemRetailPrice(true) * $exchangeRate, true);
+        $saleItem->setItemRetailPrice($cartItem->getItemRetailPrice(false) * $exchangeRate, false);
+        $saleItem->setTotal($cartItem->getTotal(true) * $exchangeRate, true);
+        $saleItem->setTotal($cartItem->getTotal(false) * $exchangeRate, false);
+        $saleItem->setItemPrice($cartItem->getItemPrice(true) * $exchangeRate, true);
+        $saleItem->setItemPrice($cartItem->getItemPrice(false) * $exchangeRate, false);
+        $saleItem->setTotalTax($cartItem->getTotalTax() * $exchangeRate);
+        $saleItem->setItemTax($cartItem->getItemTax() * $exchangeRate);
         $saleItem->setItemWeight($cartItem->getItemWeight());
         $saleItem->setTotalWeight($cartItem->getTotalWeight());
         $saleItem->save();

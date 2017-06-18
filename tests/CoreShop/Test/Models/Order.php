@@ -39,7 +39,7 @@ class Order extends Base
          * @var OrderInterface
          */
         $order = $this->getFactory('order')->createNew();
-        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
+        $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order, 1);
 
         $this->assertNotNull($order);
         $this->assertEquals(288, $order->getSubtotal());

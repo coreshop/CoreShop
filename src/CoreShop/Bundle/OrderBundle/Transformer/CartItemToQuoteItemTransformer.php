@@ -24,7 +24,7 @@ class CartItemToQuoteItemTransformer extends AbstractCartItemToSaleItemTransform
     /**
      * {@inheritdoc}
      */
-    public function transform(ProposalInterface $quote, ProposalItemInterface $cartItem, ProposalItemInterface $quoteItem)
+    public function transform(ProposalInterface $quote, ProposalItemInterface $cartItem, ProposalItemInterface $quoteItem, $exchangeRate)
     {
         /**
          * @var $quote QuoteInterface
@@ -35,6 +35,6 @@ class CartItemToQuoteItemTransformer extends AbstractCartItemToSaleItemTransform
         Assert::isInstanceOf($quoteItem, QuoteItemInterface::class);
         Assert::isInstanceOf($quote, QuoteInterface::class);
 
-        return $this->transformSaleItem($quote, $cartItem, $quoteItem, 'quote_item');
+        return $this->transformSaleItem($quote, $cartItem, $quoteItem, 'quote_item', $exchangeRate);
     }
 }

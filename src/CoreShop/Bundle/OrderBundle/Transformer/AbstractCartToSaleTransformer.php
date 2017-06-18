@@ -31,6 +31,7 @@ use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -142,7 +143,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     /**
      * {@inheritdoc}
      */
-    public function transformSale(ProposalInterface $cart, ProposalInterface $sale, $type)
+    public function transformSale(ProposalInterface $cart, ProposalInterface $sale, $type, $exchangeRate)
     {
         /**
          * @var $cart CartInterface
@@ -165,16 +166,16 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setCustomer($cart->getCustomer());
         $sale->setSaleLanguage($this->localeContext->getLocaleCode());
         $sale->setSaleDate(Carbon::now());
-        $sale->setCurrency($this->currencyContext->getCurrency());
         $sale->setStore($this->storeContext->getStore());
-        $sale->setTotal($cart->getTotal(true), true);
-        $sale->setTotal($cart->getTotal(false), false);
-        $sale->setTotalTax($cart->getTotalTax());
-        $sale->setSubtotal($cart->getSubtotal(true), true);
-        $sale->setSubtotal($cart->getSubtotal(false), false);
-        $sale->setSubtotalTax($cart->getSubtotalTax());
-        $sale->setDiscount($cart->getDiscount(true), true);
-        $sale->setDiscount($cart->getDiscount(false), false);
+        $sale->setCurrency($this->currencyContext->getCurrency());
+        $sale->setTotal($cart->getTotal(true) * $exchangeRate, true);
+        $sale->setTotal($cart->getTotal(false) * $exchangeRate, false);
+        $sale->setTotalTax($cart->getTotalTax() * $exchangeRate);
+        $sale->setSubtotal($cart->getSubtotal(true) * $exchangeRate, true);
+        $sale->setSubtotal($cart->getSubtotal(false) * $exchangeRate, false);
+        $sale->setSubtotalTax($cart->getSubtotalTax() * $exchangeRate);
+        $sale->setDiscount($cart->getDiscount(true) * $exchangeRate, true);
+        $sale->setDiscount($cart->getDiscount(false) * $exchangeRate, false);
         $sale->setShippingAddress($cart->getShippingAddress());
         $sale->setInvoiceAddress($cart->getInvoiceAddress());
         $sale->setWeight($cart->getWeight());
@@ -198,11 +199,17 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         foreach ($cart->getItems() as $cartItem) {
             $saleItem = $this->saleItemFactory->createNew();
 
-            $sale->addItem($this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem));
+            $sale->addItem($this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem, $exchangeRate));
         }
 
         $fieldCollection = new Fieldcollection();
         $fieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
+
+        foreach ($fieldCollection->getItems() as $item) {
+            if ($item instanceof TaxItemInterface) {
+                $item->setAmount($item->getAmount() * $exchangeRate);
+            }
+        }
 
         $sale->setTaxes($fieldCollection);
 
