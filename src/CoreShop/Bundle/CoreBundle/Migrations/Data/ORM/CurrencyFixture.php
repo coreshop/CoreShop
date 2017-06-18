@@ -78,7 +78,6 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
             $currency->setIsoCode($iso);
             $currency->setNumericIsoCode($c['iso_4217_numeric']);
             $currency->setSymbol(Intl::getCurrencyBundle()->getCurrencySymbol($iso));
-            $currency->setExchangeRate(0);
 
             $manager->persist($currency);
         }
