@@ -13,13 +13,42 @@
 pimcore.registerNS('coreshop.order.resource');
 coreshop.order.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.resource.global.addStore('coreshop_cart_price_rules', 'coreshop/cart_price_rules');
+        coreshop.global.addStore('coreshop_cart_price_rules', 'coreshop/cart_price_rules');
 
         /*pimcore.globalmanager.add('coreshop_order_states', new Ext.data.JsonStore({
-            data: this.settings.orderStates,
-            fields: ['name', 'label', 'color'],
-            idProperty: 'name'
-        }));*/
+         data: this.settings.orderStates,
+         fields: ['name', 'label', 'color'],
+         idProperty: 'name'
+         }));*/
+
+        coreshop.broker.fireEvent('resource.register', 'coreshop.order', this);
+    },
+
+    openResource: function (item) {
+        if (item === 'orders') {
+            this.openOrders();
+        } else if (item === 'cart_price_rule') {
+            this.openCartPriceRules();
+        }
+    },
+
+    openOrders: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_order').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_order', new coreshop.order.order.list());
+        }
+    },
+
+    openCartPriceRules: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_price_rules_panel').activate();
+        }
+        catch (e) {
+            //console.log(e);
+            pimcore.globalmanager.add('coreshop_price_rules_panel', new coreshop.cart.pricerules.panel());
+        }
     }
 });
 

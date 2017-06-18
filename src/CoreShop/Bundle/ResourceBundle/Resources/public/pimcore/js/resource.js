@@ -12,6 +12,8 @@
 
 pimcore.registerNS('coreshop.resource');
 coreshop.resource = Class.create({
+    resources: {},
+
     initialize: function () {
         Ext.Ajax.request({
             url: '/admin/coreshop/resource/class-map',
@@ -23,7 +25,17 @@ coreshop.resource = Class.create({
                 coreshop.broker.fireEvent("afterClassMap", coreshop.class_map);
             }.bind(this)
         });
+
+        coreshop.broker.addListener('resource.register', this.resourceRegistered, this);
+    },
+
+    resourceRegistered: function (name, resource) {
+        this.resources[name] = resource;
+    },
+
+    open: function (module, resource) {
+        this.resources[module].openResource(resource);
     }
 });
 
-new coreshop.resource();
+coreshop.global.resource = new coreshop.resource();

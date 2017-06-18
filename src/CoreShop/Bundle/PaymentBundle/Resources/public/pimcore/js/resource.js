@@ -13,7 +13,24 @@
 pimcore.registerNS('coreshop.payment.resource');
 coreshop.payment.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.resource.global.addStore('coreshop_payment_provider', 'coreshop/payment_providers');
+        coreshop.global.addStore('coreshop_payment_provider', 'coreshop/payment_providers');
+
+        coreshop.broker.fireEvent('resource.register', 'coreshop.payment', this);
+    },
+
+    openResource: function (item) {
+        if (item === 'payment_provider') {
+            this.openPaymentProvider();
+        }
+    },
+
+    openPaymentProvider: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_payment_providers_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_payment_providers_panel', new coreshop.provider.panel());
+        }
     }
 });
 

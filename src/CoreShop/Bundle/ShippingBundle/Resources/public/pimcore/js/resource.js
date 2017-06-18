@@ -13,11 +13,39 @@
 pimcore.registerNS('coreshop.shipping.resource');
 coreshop.shipping.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.resource.global.addStore('coreshop_carriers', 'coreshop/carriers');
-        coreshop.resource.global.addStore('coreshop_carrier_shipping_rules', 'coreshop/shipping_rules');
+        coreshop.global.addStore('coreshop_carriers', 'coreshop/carriers');
+        coreshop.global.addStore('coreshop_carrier_shipping_rules', 'coreshop/shipping_rules');
 
         pimcore.globalmanager.get('coreshop_carriers').load();
         pimcore.globalmanager.get('coreshop_carrier_shipping_rules').load();
+
+        coreshop.broker.fireEvent('resource.register', 'coreshop.shipping', this);
+    },
+
+    openResource: function(item) {
+        if (item === 'carrier') {
+            this.openCarrierResource();
+        } else if (item === 'shipping_rules') {
+            this.openShippingRules();
+        }
+    },
+
+    openCarrierResource: function() {
+        try {
+            pimcore.globalmanager.get('coreshop_carriers_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_carriers_panel', new coreshop.carrier.panel());
+        }
+    },
+
+    openShippingRules: function() {
+        try {
+            pimcore.globalmanager.get('coreshop_carrier_shipping_rule_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_carrier_shipping_rule_panel', new coreshop.shippingrule.panel());
+        }
     }
 });
 

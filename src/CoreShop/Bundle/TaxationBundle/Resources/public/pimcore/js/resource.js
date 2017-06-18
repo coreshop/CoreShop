@@ -13,14 +13,42 @@
 pimcore.registerNS('coreshop.taxation.resource');
 coreshop.taxation.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.resource.global.addStore('coreshop_tax_rates', 'coreshop/tax_rates', [
+        coreshop.global.addStore('coreshop_tax_rates', 'coreshop/tax_rates', [
             {name: 'id'},
             {name: 'name'},
             {name: 'rate'}
         ]);
-        coreshop.resource.global.addStore('coreshop_taxrulegroups', 'coreshop/tax_rule_groups');
+        coreshop.global.addStore('coreshop_taxrulegroups', 'coreshop/tax_rule_groups');
 
         pimcore.globalmanager.get('coreshop_tax_rates').load();
+
+        coreshop.broker.fireEvent('resource.register', 'coreshop.taxation', this);
+    },
+
+    openResource: function (item) {
+        if (item === 'tax_item') {
+            this.openTaxItemResource();
+        } else if (item === 'tax_rule_group') {
+            this.openTaxRuleGroupResource();
+        }
+    },
+
+    openTaxItemResource: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_taxes_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_taxes_panel', new coreshop.tax.panel());
+        }
+    },
+
+    openTaxRuleGroupResource: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_tax_rule_groups_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_tax_rule_groups_panel', new coreshop.taxrulegroup.panel());
+        }
     }
 });
 

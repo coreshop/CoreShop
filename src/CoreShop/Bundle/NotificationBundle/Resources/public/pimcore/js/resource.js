@@ -13,7 +13,24 @@
 pimcore.registerNS('coreshop.notification.resource');
 coreshop.notification.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.resource.global.addStore('coreshop_notification_rules', 'coreshop/notification_rules');
+        coreshop.global.addStore('coreshop_notification_rules', 'coreshop/notification_rules');
+
+        coreshop.broker.fireEvent('resource.register', 'coreshop.notification', this);
+    },
+
+    openResource: function (item) {
+        if (item === 'notification_rule') {
+            this.openNotificationRule();
+        }
+    },
+
+    openNotificationRule: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_notification_rule_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_notification_rule_panel', new coreshop.notification.rule.panel());
+        }
     }
 });
 

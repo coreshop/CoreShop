@@ -10,8 +10,10 @@
  *
  */
 
-pimcore.registerNS('coreshop.resource.global');
-coreshop.resource.global = {
+pimcore.registerNS('coreshop.global');
+coreshop.global = {
+    resource: null,
+
     addStore: function (name, url, fields) {
         var proxy = new Ext.data.HttpProxy({
             url: '/admin/' + url + '/list'

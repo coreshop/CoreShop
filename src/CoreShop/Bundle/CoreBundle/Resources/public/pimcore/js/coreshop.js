@@ -534,122 +534,60 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
         }
     },
 
-    openPriceRules: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_price_rules_panel').activate();
-        }
-        catch (e) {
-            //console.log(e);
-            pimcore.globalmanager.add('coreshop_price_rules_panel', new coreshop.cart.pricerules.panel());
-        }
-    },
-
     openCurrencyList: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_currencies_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_currencies_panel', new coreshop.currency.panel());
-        }
+        coreshop.global.resource.open('coreshop.currency', 'currency');
     },
 
     openExchangeRates: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_exchange_rates_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_exchange_rates_panel', new coreshop.exchange_rate.panel());
-        }
+        coreshop.global.resource.open('coreshop.currency', 'exchange_rate');
     },
 
     openZoneList: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_zones_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_zones_panel', new coreshop.zone.panel());
-        }
+        coreshop.global.resource.open('coreshop.address', 'zone');
     },
 
     openCountryList: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_countries_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_countries_panel', new coreshop.country.panel());
-        }
-    },
-
-    openCarriersList: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_carriers_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_carriers_panel', new coreshop.carrier.panel());
-        }
-    },
-
-    openTaxes: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_taxes_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_taxes_panel', new coreshop.tax.panel());
-        }
-    },
-
-    openTaxRuleGroups: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_tax_rule_groups_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_tax_rule_groups_panel', new coreshop.taxrulegroup.panel());
-        }
-    },
-
-    openOrders: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_order').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_order', new coreshop.order.order.list());
-        }
-    },
-
-    openIndexes: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_indexes_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_indexes_panel', new coreshop.index.panel());
-        }
-    },
-
-    openProductFilters: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_product_filters_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_product_filters_panel', new coreshop.filter.panel());
-        }
+        coreshop.global.resource.open('coreshop.address', 'country');
     },
 
     openStateList: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_states_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_states_panel', new coreshop.state.panel());
-        }
+        coreshop.global.resource.open('coreshop.address', 'state');
+    },
+
+    openCarriersList: function () {
+        coreshop.global.resource.open('coreshop.shipping', 'carrier');
+    },
+
+    openCarriersShippingRules: function () {
+        coreshop.global.resource.open('coreshop.shipping', 'shipping_rules');
+    },
+
+    openTaxes: function () {
+        coreshop.global.resource.open('coreshop.taxation', 'tax_item');
+    },
+
+    openTaxRuleGroups: function () {
+        coreshop.global.resource.open('coreshop.taxation', 'tax_rule_group');
+    },
+
+    openOrders: function () {
+        coreshop.global.resource.open('coreshop.order', 'orders');
+    },
+
+    openPriceRules: function () {
+        coreshop.global.resource.open('coreshop.order', 'cart_price_rule');
+    },
+
+    openIndexes: function () {
+        coreshop.global.resource.open('coreshop.index', 'index');
+    },
+
+    openProductFilters: function () {
+        coreshop.global.resource.open('coreshop.index', 'filter');
     },
 
     openProducts: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_products').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_products', new coreshop.product.grid());
-        }
+        coreshop.global.resource.open('coreshop.product', 'products');
     },
 
     /*openMessagingContact: function () {
@@ -680,48 +618,19 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
      },*/
 
     openProductPriceRules: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_product_price_rule_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_product_price_rule_panel', new coreshop.product.pricerule.panel());
-        }
+        coreshop.global.resource.open('coreshop.product', 'product_price_rule');
     },
 
     openStores: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_stores_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_stores_panel', new coreshop.store.panel());
-        }
-    },
-
-    openCarriersShippingRules: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_carrier_shipping_rule_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_carrier_shipping_rule_panel', new coreshop.shippingrule.panel());
-        }
+        coreshop.global.resource.open('coreshop.store', 'store');
     },
 
     openNotificationRules: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_notification_rule_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_notification_rule_panel', new coreshop.notification.rule.panel());
-        }
+        coreshop.global.resource.open('coreshop.notification', 'notification_rule');
     },
 
     openPaymentProviders: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_payment_providers_panel').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_payment_providers_panel', new coreshop.provider.panel());
-        }
+        coreshop.global.resource.open('coreshop.payment', 'payment_provider');
     }
 });
 

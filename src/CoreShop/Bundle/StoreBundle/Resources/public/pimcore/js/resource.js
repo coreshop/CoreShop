@@ -13,9 +13,26 @@
 pimcore.registerNS('coreshop.store.resource');
 coreshop.store.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.resource.global.addStore('coreshop_stores', 'coreshop/stores');
+        coreshop.global.addStore('coreshop_stores', 'coreshop/stores');
 
         pimcore.globalmanager.get('coreshop_stores').load();
+
+        coreshop.broker.fireEvent('resource.register', 'coreshop.store', this);
+    },
+
+    openResource: function (item) {
+        if (item === 'store') {
+            this.openStore();
+        }
+    },
+
+    openStore: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_stores_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_stores_panel', new coreshop.store.panel());
+        }
     }
 });
 
