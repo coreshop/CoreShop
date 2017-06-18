@@ -17,8 +17,8 @@ class ExchangeRateRepository extends EntityRepository implements ExchangeRateRep
 
         return $this->createQueryBuilder('o')
             ->andWhere($expr->orX(
-                'fromCurrency = :firstCurrency AND toCurrency.code = :secondCurrency',
-                'toCurrency.code = :firstCurrency AND fromCurrency.code = :secondCurrency'
+                'o.fromCurrency = :firstCurrency AND o.toCurrency = :secondCurrency',
+                'o.toCurrency = :firstCurrency AND o.fromCurrency = :secondCurrency'
             ))
             ->setParameter('firstCurrency', $firstCurrency)
             ->setParameter('secondCurrency', $secondCurrency)
