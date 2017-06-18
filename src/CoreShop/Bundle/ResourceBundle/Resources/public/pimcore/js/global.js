@@ -30,7 +30,8 @@ coreshop.resource.global = {
             restful: false,
             proxy: proxy,
             reader: reader,
-            autoload: true
+            autoload: true,
+            fields: fields
         });
 
         pimcore.globalmanager.add(name, store);

@@ -1,0 +1,11 @@
+CoreShop\Component\Currency\Model\ExchangeRate:
+  properties:
+    fromCurrency:
+      - NotBlank: { groups: [coreshop] }
+    toCurrency:
+      - NotBlank: { groups: [coreshop] }
+    exchangeRate:
+      - NotBlank: { groups: [coreshop] }
+      - Type:
+          type: float
+          groups: [coreshop]

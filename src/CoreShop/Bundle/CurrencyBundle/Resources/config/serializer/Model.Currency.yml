@@ -23,10 +23,6 @@ CoreShop\Component\Currency\Model\Currency:
       expose: true
       type: string
       groups: [List, Detailed]
-    exchangeRate:
-      expose: true
-      type: float
-      groups: [Detailed]
     countries:
       expose: true
       type: relation

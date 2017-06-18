@@ -16,10 +16,10 @@ interface CurrencyConverterInterface
 {
     /**
      * @param int    $value
-     * @param string $sourceCurrencyCode
-     * @param string $targetCurrencyCode
+     * @param string $fromCurrencyCode
+     * @param string $toCurrencyCode
      *
      * @return int
      */
-    public function convert($value, $sourceCurrencyCode, $targetCurrencyCode);
+    public function convert($value, $fromCurrencyCode, $toCurrencyCode);
 }

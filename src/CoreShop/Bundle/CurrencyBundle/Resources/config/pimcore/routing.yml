@@ -2,3 +2,8 @@ coreshop_admin_currency:
   type: coreshop.resources
   resource: |
     alias: coreshop.currency
+
+coreshop_admin_exchange_rate:
+  type: coreshop.resources
+  resource: |
+    alias: coreshop.exchange_rate

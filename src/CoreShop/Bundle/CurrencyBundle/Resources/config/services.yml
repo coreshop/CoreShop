@@ -21,7 +21,7 @@ services:
 
   coreshop.currency_converter:
     class: CoreShop\Component\Currency\Converter\CurrencyConverter
-    arguments: ['@coreshop.repository.currency']
+    arguments: ['@coreshop.repository.exchange_rate', '@coreshop.repository.currency']
 
   coreshop.templating.helper.convert_money:
     class: CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertMoneyHelper

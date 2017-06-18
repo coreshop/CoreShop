@@ -27,9 +27,6 @@ CoreShop\Component\Currency\Model\Currency:
       column: symbol
       type: string
       nullable: true
-    exchangeRate:
-      column: exchangeRate
-      type: float
     creationDate:
       type: datetime
       gedmo:

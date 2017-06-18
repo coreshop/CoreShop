@@ -14,6 +14,12 @@ pimcore.registerNS('coreshop.currency.resource');
 coreshop.currency.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.resource.global.addStore('coreshop_currencies', 'coreshop/currencies');
+        coreshop.resource.global.addStore('coreshop_exchange_rates', 'coreshop/exchange_rates', [
+            {name: 'id'},
+            {name: 'fromCurrency'},
+            {name: 'toCurrency'},
+            {name: 'exchangeRate'}
+        ]);
 
         pimcore.globalmanager.get('coreshop_currencies').load();
     }

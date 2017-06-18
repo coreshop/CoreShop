@@ -56,14 +56,4 @@ interface CurrencyInterface extends ResourceInterface, TimestampableInterface
      * @param string $symbol
      */
     public function setSymbol($symbol);
-
-    /**
-     * @return float
-     */
-    public function getExchangeRate();
-
-    /**
-     * @param float $exchangeRate
-     */
-    public function setExchangeRate($exchangeRate);
 }

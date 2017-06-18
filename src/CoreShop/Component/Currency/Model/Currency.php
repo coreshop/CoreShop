@@ -45,11 +45,6 @@ class Currency extends AbstractResource implements CurrencyInterface
     protected $symbol;
 
     /**
-     * @var float
-     */
-    protected $exchangeRate = 1;
-
-    /**
      * @return string
      */
     public function __toString()
@@ -151,26 +146,6 @@ class Currency extends AbstractResource implements CurrencyInterface
     public function setSymbol($symbol)
     {
         $this->symbol = $symbol;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getExchangeRate()
-    {
-        return $this->exchangeRate;
-    }
-
-    /**
-     * @param float $exchangeRate
-     *
-     * @return static
-     */
-    public function setExchangeRate($exchangeRate)
-    {
-        $this->exchangeRate = $exchangeRate;
 
         return $this;
     }

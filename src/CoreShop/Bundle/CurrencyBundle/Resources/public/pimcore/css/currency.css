@@ -1,3 +1,7 @@
 .coreshop_icon_currency, .pimcore_icon_coreShopCurrencyMultiselect, .pimcore_icon_coreShopCurrency {
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
+
+.coreshop_icon_exchange_rate {
+    background: url(../img/exchange_rate.svg) center center no-repeat !important;
+}

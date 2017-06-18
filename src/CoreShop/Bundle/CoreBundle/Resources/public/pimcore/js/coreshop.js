@@ -120,6 +120,14 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
+        if (user.isAllowed('coreshop_permission_exchange_rates')) {
+            localizationMenu.push({
+                text: t('coreshop_exchange_rates'),
+                iconCls: 'coreshop_icon_exchange_rate',
+                handler: this.openExchangeRates
+            });
+        }
+
         if (user.isAllowed('coreshop_permission_zones')) {
             localizationMenu.push({
                 text: t('coreshop_zones'),
@@ -542,6 +550,15 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_currencies_panel', new coreshop.currency.panel());
+        }
+    },
+
+    openExchangeRates: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_exchange_rates_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_exchange_rates_panel', new coreshop.exchange_rate.panel());
         }
     },
 

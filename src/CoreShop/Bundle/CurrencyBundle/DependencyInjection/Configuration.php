@@ -12,12 +12,17 @@
 
 namespace CoreShop\Bundle\CurrencyBundle\DependencyInjection;
 
+use CoreShop\Bundle\CurrencyBundle\Controller\ExchangeRateController;
 use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\CurrencyRepository;
+use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\ExchangeRateRepository;
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType;
+use CoreShop\Bundle\CurrencyBundle\Form\Type\ExchangeRateType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Currency\Model\Currency;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\ExchangeRate;
+use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -71,6 +76,23 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                        ->arrayNode('exchange_rate')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(ExchangeRate::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ExchangeRateInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ExchangeRateController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ExchangeRateRepository::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(ExchangeRateType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()
@@ -90,12 +112,13 @@ final class Configuration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopcurrency/pimcore/js/resource.js')->end()
-                            ->scalarNode('currency_item')->defaultValue('/bundles/coreshopcurrency/pimcore/js/item.js')->end()
-                            ->scalarNode('currency_panel')->defaultValue('/bundles/coreshopcurrency/pimcore/js/panel.js')->end()
+                            ->scalarNode('currency_item')->defaultValue('/bundles/coreshopcurrency/pimcore/js/currency/item.js')->end()
+                            ->scalarNode('currency_panel')->defaultValue('/bundles/coreshopcurrency/pimcore/js/currency/panel.js')->end()
                             ->scalarNode('core_extension_data_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/data/coreShopCurrency.js')->end()
                             ->scalarNode('core_extension_tag_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/tags/coreShopCurrency.js')->end()
                             ->scalarNode('core_extension_data_currency_multiselect')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/data/coreShopCurrencyMultiselect.js')->end()
                             ->scalarNode('core_extension_tag_currency_multiselect')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/tags/coreShopCurrencyMultiselect.js')->end()
+                            ->scalarNode('exchange_rate_panel')->defaultValue('/bundles/coreshopcurrency/pimcore/js/exchangeRate/panel.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')

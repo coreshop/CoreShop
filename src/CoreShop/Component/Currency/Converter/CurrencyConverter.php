@@ -12,42 +12,101 @@
 
 namespace CoreShop\Component\Currency\Converter;
 
+use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\ExchangeRateRepository;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 
 final class CurrencyConverter implements CurrencyConverterInterface
 {
+    /**
+     * @var ExchangeRateRepositoryInterface
+     */
+    private $exchangeRateRepository;
+
     /**
      * @var CurrencyRepositoryInterface
      */
     private $currencyRepository;
 
     /**
+     * @var array
+     */
+    private $cache;
+
+    /**
+     * @param ExchangeRateRepository $exchangeRateRepository
      * @param CurrencyRepositoryInterface $currencyRepository
      */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository)
+    public function __construct(ExchangeRateRepository $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
     {
+        $this->exchangeRateRepository = $exchangeRateRepository;
         $this->currencyRepository = $currencyRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convert($amount, $sourceCurrencyCode, $targetCurrencyCode)
+    public function convert($amount, $fromCurrencyCode, $toCurrencyCode)
     {
-        if ($sourceCurrencyCode === $targetCurrencyCode) {
+         if ($fromCurrencyCode === $toCurrencyCode) {
             return $amount;
+        }
+
+        $exchangeRate = $this->getExchangeRate($fromCurrencyCode, $toCurrencyCode);
+
+        if (null === $exchangeRate) {
+            return $amount;
+        }
+
+        if ($exchangeRate->getFromCurrency()->getIsoCode() === $fromCurrencyCode) {
+            return (int) round($amount * $exchangeRate->getExchangeRate());
+        }
+
+        return (int) round($amount / $exchangeRate->getExchangeRate());
+    }
+
+    /**
+     * @param string $fromCode
+     * @param string $toCode
+     *
+     * @return ExchangeRateInterface
+     */
+    private function getExchangeRate($fromCode, $toCode)
+    {
+        $fromToIndex = $this->createIndex($fromCode, $toCode);
+
+        if (isset($this->cache[$fromToIndex])) {
+            return $this->cache[$fromToIndex];
+        }
+
+        $toFromIndex = $this->createIndex($fromCode, $toCode);
+
+        if (isset($this->cache[$toFromIndex])) {
+            return $this->cache[$toFromIndex];
         }
 
         /**
          * @var CurrencyInterface
          */
-        $sourceCurrency = $this->currencyRepository->getByCode($sourceCurrencyCode);
+        $fromCurrency = $this->currencyRepository->getByCode($fromCode);
         /**
          * @var CurrencyInterface
          */
-        $targetCurrency = $this->currencyRepository->getByCode($targetCurrencyCode);
+        $toCurrency = $this->currencyRepository->getByCode($toCode);
 
-        return $amount * $targetCurrency->getExchangeRate();
+        return $this->cache[$toFromIndex] = $this->exchangeRateRepository->findOneWithCurrencyPair($fromCurrency, $toCurrency);
+    }
+
+    /**
+     * @param $prefix
+     * @param $suffix
+     *
+     * @return string
+     */
+    private function createIndex($prefix, $suffix)
+    {
+        return sprintf('%s-%s', $prefix, $suffix);
     }
 }

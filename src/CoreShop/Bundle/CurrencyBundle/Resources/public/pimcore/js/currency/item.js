@@ -67,12 +67,6 @@ coreshop.currency.item = Class.create(coreshop.resource.item, {
                             fieldLabel: t('coreshop_currency_symbol'),
                             name: 'symbol',
                             value: this.data.symbol
-                        },
-                        {
-                            fieldLabel: t('coreshop_currency_exchangeRate'),
-                            name: 'exchangeRate',
-                            value: this.data.exchangeRate,
-                            xtype: 'spinnerfield'
                         }
                     ]
                 }
