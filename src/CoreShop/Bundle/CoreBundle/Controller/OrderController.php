@@ -15,8 +15,6 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\Processable\ProcessableInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 
 class OrderController extends BaseOrderController
@@ -30,7 +28,6 @@ class OrderController extends BaseOrderController
 
         if ($sale instanceof OrderInterface) {
             $order['carrier'] = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getId() : null;
-            $order['store'] = $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null;
         }
 
         return $order;
@@ -46,20 +43,9 @@ class OrderController extends BaseOrderController
                 'weight' => $sale->getWeight(),
                 'cost' => $sale->getShipping(),
             ];
-            $order['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
-            $order['invoiceCreationAllowed'] = !$this->getInvoiceProcessableHelper()->isFullyProcessed($sale) && count($sale->getPayments()) !== 0;
-            $order['shipmentCreationAllowed'] = !$this->getShipmentProcessableHelper()->isFullyProcessed($sale) && count($sale->getPayments()) !== 0;
-
         }
 
         return $order;
-    }
-
-    protected function getStore(StoreInterface $store) {
-        return [
-            "id" => $store->getId(),
-            "name" => $store->getName()
-        ];
     }
 
     /**
@@ -80,20 +66,5 @@ class OrderController extends BaseOrderController
         ];
 
         return $columns;
-    }
-
-    /**
-     * @return ProcessableInterface
-     */
-    private function getInvoiceProcessableHelper()
-    {
-        return $this->get('coreshop.order.invoice.processable');
-    }
-    /**
-     * @return ProcessableInterface
-     */
-    private function getShipmentProcessableHelper()
-    {
-        return $this->get('coreshop.order.shipment.processable');
     }
 }
