@@ -24,6 +24,7 @@ use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\Object;
@@ -270,6 +271,7 @@ abstract class AbstractSaleController extends AdminController
             'currencyName' => $sale->getCurrency() instanceof CurrencyInterface ? $sale->getCurrency()->getName() : '',
             'customerName' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getFirstname() . ' ' . $sale->getCustomer()->getLastname() : '',
             'customerEmail' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getEmail() : '',
+            'store' => $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null
         ];
 
         $element = array_merge($element, $this->prepareAddress($sale->getShippingAddress(), 'shipping'), $this->prepareAddress($sale->getInvoiceAddress(), 'invocie'));
@@ -335,6 +337,7 @@ abstract class AbstractSaleController extends AdminController
         $jsonSale['details'] = $this->getItemDetails($sale);
         $jsonSale['summary'] = $this->getSummary($sale);
         $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ? $sale->getCurrency() : $this->get('coreshop.context.currency')->getCurrency());
+        $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
 
         $jsonSale['address'] = [
             'shipping' => $this->getDataForObject($sale->getShippingAddress()),
@@ -531,6 +534,17 @@ abstract class AbstractSaleController extends AdminController
         return [
             'name' => $currency->getName(),
             'symbol' => $currency->getSymbol(),
+        ];
+    }
+
+    /**
+     * @param StoreInterface $store
+     * @return array
+     */
+    protected function getStore(StoreInterface $store) {
+        return [
+            "id" => $store->getId(),
+            "name" => $store->getName()
         ];
     }
 
