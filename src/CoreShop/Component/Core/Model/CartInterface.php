@@ -13,22 +13,11 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\CartInterface as BaseCartInterface;
+use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-interface CartInterface extends BaseCartInterface, ShippableInterface
+interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAwareInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getCarrier();
-
-    /**
-     * @param $carrier
-     *
-     * @return mixed
-     */
-    public function setCarrier($carrier);
-
     /**
      * @param bool $withTax
      *

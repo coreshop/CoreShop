@@ -13,17 +13,9 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderShipmentInterface as BaseOrderShipmentInterface;
+use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 
-interface OrderShipmentInterface extends BaseOrderShipmentInterface
+interface OrderShipmentInterface extends BaseOrderShipmentInterface, CarrierAwareInterface
 {
-    /**
-     * @return CarrierInterface
-     */
-    public function getCarrier();
 
-    /**
-     * @param CarrierInterface $carrier
-     * @return mixed
-     */
-    public function setCarrier($carrier);
 }
