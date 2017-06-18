@@ -100,6 +100,16 @@ coreshop.order.sale.list = Class.create({
         return null;
     },
 
+    storeRenderer: function (val) {
+        var stores = pimcore.globalmanager.get('coreshop_stores');
+        var store = stores.getById(val);
+        if (store) {
+            return store.get('name');
+        }
+
+        return null;
+    },
+
     getLayout: function () {
         if (!this.layout) {
 

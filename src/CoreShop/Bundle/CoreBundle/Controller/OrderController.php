@@ -47,24 +47,4 @@ class OrderController extends BaseOrderController
 
         return $order;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getGridColumns()
-    {
-        $columns = parent::getGridColumns();
-
-        $columns[] = [
-            'text' => 'coreshop_store',
-            'type' => 'integer',
-            'dataIndex' => 'store',
-            'renderAs' => 'store',
-            'filter' => [
-                'type' => 'number',
-            ]
-        ];
-
-        return $columns;
-    }
 }

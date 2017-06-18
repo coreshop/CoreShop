@@ -134,6 +134,15 @@ abstract class AbstractSaleController extends AdminController
                 ],
                 'width' => 150,
             ],
+            [
+                'text' => 'coreshop_store',
+                'type' => 'integer',
+                'dataIndex' => 'store',
+                'renderAs' => 'store',
+                'filter' => [
+                    'type' => 'number',
+                ]
+            ]
         ];
 
         $defaultConfiguration = array_merge($defaultConfiguration, $this->getGridColumns());
@@ -323,7 +332,8 @@ abstract class AbstractSaleController extends AdminController
      * @param SaleInterface $sale
      * @return array
      */
-    protected function getDetails(SaleInterface $sale) {
+    protected function getDetails(SaleInterface $sale)
+    {
         $jsonSale = $this->getDataForObject($sale);
 
         if ($jsonSale['items'] === null) {
@@ -541,7 +551,8 @@ abstract class AbstractSaleController extends AdminController
      * @param StoreInterface $store
      * @return array
      */
-    protected function getStore(StoreInterface $store) {
+    protected function getStore(StoreInterface $store)
+    {
         return [
             "id" => $store->getId(),
             "name" => $store->getName()

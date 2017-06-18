@@ -53,7 +53,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('provider_item')->defaultValue('/bundles/coreshopcore/pimcore/js/payment/provider/item.js')->end()
                             ->scalarNode('order_detail')->defaultValue('/bundles/coreshopcore/pimcore/js/order/detail.js')->end()
                             ->scalarNode('order_shipment')->defaultValue('/bundles/coreshopcore/pimcore/js/order/shipment.js')->end()
-                            ->scalarNode('order_list')->defaultValue('/bundles/coreshopcore/pimcore/js/order/list.js')->end()
                             ->scalarNode('quote_list')->defaultValue('/bundles/coreshopcore/pimcore/js/quote/list.js')->end()
                             ->scalarNode('sale_item')->defaultValue('/bundles/coreshopcore/pimcore/js/store/item.js')->end()
                             ->scalarNode('country_item')->defaultValue('/bundles/coreshopcore/pimcore/js/address/country/item.js')->end()
