@@ -36,7 +36,7 @@ class OrderController extends AbstractSaleController
     {
         return [
             [
-                'text' => 'coreshop_orders_orderState',
+                'text' => 'coreshop_order_state',
                 'type' => null,
                 'dataIndex' => 'orderState',
                 'renderAs' => 'orderState',

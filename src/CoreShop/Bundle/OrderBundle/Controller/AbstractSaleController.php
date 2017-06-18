@@ -103,7 +103,7 @@ abstract class AbstractSaleController extends AdminController
                 'hidden' => true,
             ],
             [
-                'text' => 'coreshop_paymentFee',
+                'text' => 'coreshop_payment_fee',
                 'type' => 'float',
                 'dataIndex' => 'paymentFee',
                 'renderAs' => 'currency',
@@ -274,7 +274,7 @@ abstract class AbstractSaleController extends AdminController
             'store' => $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null
         ];
 
-        $element = array_merge($element, $this->prepareAddress($sale->getShippingAddress(), 'shipping'), $this->prepareAddress($sale->getInvoiceAddress(), 'invocie'));
+        $element = array_merge($element, $this->prepareAddress($sale->getShippingAddress(), 'shipping'), $this->prepareAddress($sale->getInvoiceAddress(), 'invoice'));
 
         return $element;
     }
