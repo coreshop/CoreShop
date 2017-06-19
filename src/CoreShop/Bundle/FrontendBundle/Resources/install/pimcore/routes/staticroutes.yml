@@ -8,8 +8,8 @@ coreshop_index:
   priority: 1
 
 coreshop_category_list:
-  pattern: "/(\\w+)\\/shop\\/(.*?)~\\~c([0-9]+)/"
-  reverse: "/%_locale/shop/%name~cÊtegory"
+  pattern: "/(\\w+)\\/shop\\/(.*?)\\~c([0-9]+)/"
+  reverse: "/%_locale/shop/%name~c%category"
   module: FrontendBundle
   controller: "@coreshop.frontend.controller.category"
   action: index
