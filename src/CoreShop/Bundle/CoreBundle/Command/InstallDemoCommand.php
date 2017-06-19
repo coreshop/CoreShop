@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class InstallDemoDataCommand extends AbstractInstallCommand
+final class InstallDemoCommand extends AbstractInstallCommand
 {
     /**
      * {@inheritdoc}
@@ -37,6 +37,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->runCommands(['okvpn:migration:data:load' => ['--fixtures-type=demo']], $output);
+        $this->runCommands(['okvpn:migration:data:load' => ['--fixtures-type' => 'demo']], $output);
     }
 }
