@@ -6,3 +6,5 @@ CoreShop\Component\Core\Model\PaymentProvider:
       expose: true
       type: relation
       groups: [Detailed]
+    gatewayConfig:
+      groups: [Detailed]
