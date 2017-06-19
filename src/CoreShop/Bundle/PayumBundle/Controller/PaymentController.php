@@ -102,7 +102,7 @@ class PaymentController extends Controller
         $payment->setNumber(uniqid('payment-'));
         $payment->setPaymentProvider($this->getCart()->getPaymentProvider());
         $payment->setCurrency($this->currencyContext->getCurrency());
-        $payment->setTotalAmount($order->getTotal());
+        $payment->setTotalAmount($order->getTotal() * 100);
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
         $payment->setOrderId($order->getId());

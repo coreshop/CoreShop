@@ -64,10 +64,14 @@ class CustomerCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
+        if (!$cart->hasItems()) {
+            return false;
+        }
+
         try {
             $customer = $this->customerContext->getCustomer();
 
-            return $cart->hasItems() && $customer instanceof CustomerInterface;
+            return $customer instanceof CustomerInterface;
         } catch (CustomerNotFoundException $ex) {
             //If we don't have a customer, we ignore the exception and return false
         }

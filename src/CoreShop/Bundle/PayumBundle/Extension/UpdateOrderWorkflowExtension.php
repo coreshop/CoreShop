@@ -114,17 +114,17 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
         }
 
         $params = null;
-        if ($payment->getState() === PaymentInterface::STATE_PROCESSING || $payment->getState() === PaymentInterface::STATE_NEW) {
+        if ($nextState === PaymentInterface::STATE_PROCESSING || $nextState === PaymentInterface::STATE_NEW) {
             $params = [
                 'newState' => WorkflowManagerInterface::ORDER_STATE_PENDING_PAYMENT,
                 'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PENDING_PAYMENT,
             ];
-        } elseif ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
+        } elseif ($nextState === PaymentInterface::STATE_COMPLETED) {
             $params = [
                 'newState' => WorkflowManagerInterface::ORDER_STATE_PROCESSING,
                 'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PROCESSING,
             ];
-        } elseif ($payment->getState() === PaymentInterface::STATE_FAILED) {
+        } elseif ($nextState === PaymentInterface::STATE_FAILED) {
             $params = [
                 'newState' => WorkflowManagerInterface::ORDER_STATE_PAYMENT_REVIEW,
                 'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PAYMENT_REVIEW,
