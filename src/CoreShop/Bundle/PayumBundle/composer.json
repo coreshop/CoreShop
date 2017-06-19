@@ -22,7 +22,8 @@
     "coreshop/order-bundle": "dev-master",
     "coreshop/payment-bundle": "dev-master",
     "payum/payum-bundle": "^2.2",
-    "payum/offline": "^1.3"
+    "payum/offline": "^1.3",
+    "payum/sofort": "^1.3"
   },
   "config": {
     "bin-dir": "bin"

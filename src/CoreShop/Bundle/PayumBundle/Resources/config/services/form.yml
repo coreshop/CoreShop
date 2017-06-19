@@ -16,3 +16,9 @@ services:
     tags:
       - { name: coreshop.gateway_configuration_type, type: paypal_express_checkout }
       - { name: form.type }
+
+  coreshop.form.type.gateway_configuration.sofort:
+    class: CoreShop\Bundle\PayumBundle\Form\Type\SofortGatewayConfigurationType
+    tags:
+      - { name: coreshop.gateway_configuration_type, type: sofort }
+      - { name: form.type }

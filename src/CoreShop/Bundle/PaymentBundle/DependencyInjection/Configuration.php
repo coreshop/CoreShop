@@ -137,6 +137,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('payment_panel')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/panel.js')->end()
                             ->scalarNode('payment_gateway_abstract')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/gateways/abstract.js')->end()
                             ->scalarNode('payment_gateway_paypal')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/gateways/paypal_express_checkout.js')->end()
+                            ->scalarNode('payment_gateway_sofort')->defaultValue('/bundles/coreshoppayment/pimcore/js/provider/gateways/sofort.js')->end()
                             ->scalarNode('core_extension_data_provider')->defaultValue('/bundles/coreshoppayment/pimcore/js/coreExtension/data/coreShopPaymentProvider.js')->end()
                             ->scalarNode('core_extension_tag_provider')->defaultValue('/bundles/coreshoppayment/pimcore/js/coreExtension/tags/coreShopPaymentProvider.js')->end()
                         ->end()
