@@ -93,8 +93,10 @@ class PaymentController extends Controller
         }
         /**
          * We now have our Order -> So lets do Payment -> Yeah :).
-         */        /**
-         * @var PaymentInterface|PimcoreModelInterface
+         */
+
+        /**
+         * @var PaymentInterface
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber(uniqid('payment-'));
@@ -104,6 +106,7 @@ class PaymentController extends Controller
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
         $payment->setOrderId($order->getId());
+        $payment->setDescription(sprintf("Order %s", $order->getId()));
 
         $this->entityManager->persist($payment);
         $this->entityManager->flush();
