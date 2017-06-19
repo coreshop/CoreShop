@@ -57,13 +57,13 @@ class OrderWorkflowFixture extends AbstractFixture implements ContainerAwareInte
      */
     private function getWorkflowObject()
     {
-        $pimClass = $this->container->getParameter('coreshop.model.order.class');
+        $pimClassId = $this->container->getParameter('coreshop.model.order.pimcore_class_id');
 
         $workflowObject = new \Pimcore\Model\Workflow();
         $workflowObject->setName('OrderState');
         $workflowObject->setWorkflowSubject([
             'types' => ['object'],
-            'classes' => [$pimClass::classId()],
+            'classes' => [$pimClassId],
         ]);
         $workflowObject->setDefaultState(WorkflowManagerInterface::ORDER_STATE_INITIALIZED);
         $workflowObject->setDefaultStatus(WorkflowManagerInterface::ORDER_STATUS_INITIALIZED);
