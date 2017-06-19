@@ -36,11 +36,6 @@ class Country extends AbstractResource implements CountryInterface
     protected $isoCode;
 
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var ZoneInterface
      */
     protected $zone;
