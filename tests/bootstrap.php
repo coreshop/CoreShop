@@ -226,7 +226,7 @@ try {
 } catch (\Symfony\Component\Process\Exception\ProcessFailedException $e) {
     throw $e;
 }*/
-$install = new \CoreShop\Bundle\CoreBundle\Installer\PimcoreInstaller();
+$install = new \CoreShop\Bundle\AdminBundle\Installer\PimcoreInstaller();
 $install->install();
 
 //\Pimcore\ExtensionManager::enable("plugin", "CoreShop");
