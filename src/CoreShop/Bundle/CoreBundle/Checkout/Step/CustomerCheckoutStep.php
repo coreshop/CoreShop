@@ -67,7 +67,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
         try {
             $customer = $this->customerContext->getCustomer();
 
-            return $customer instanceof CustomerInterface;
+            return $cart->hasItems() && $customer instanceof CustomerInterface;
         } catch (CustomerNotFoundException $ex) {
             //If we don't have a customer, we ignore the exception and return false
         }

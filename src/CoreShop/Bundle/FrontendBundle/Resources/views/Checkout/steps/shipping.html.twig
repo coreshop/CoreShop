@@ -1,6 +1,10 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
+{% block checkout_title %}
+    {{ 'shipping'|trans }}
+{% endblock %}
+
 {% block checkout %}
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
         {{ form_row(form.carrier) }}

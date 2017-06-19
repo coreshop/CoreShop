@@ -125,6 +125,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     public function validate(CartInterface $cart)
     {
         return
+            $cart->hasItems() &&
             $cart->getCarrier() instanceof CarrierInterface &&
             $this->carrierShippingRuleChecker->isShippingRuleValid($cart->getCarrier(), $cart, $cart->getShippingAddress()) instanceof ShippingRuleGroupInterface;
     }

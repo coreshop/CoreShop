@@ -67,7 +67,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        return $cart->getShippingAddress() instanceof AddressInterface && $cart->getInvoiceAddress() instanceof AddressInterface;
+        return $cart->hasItems() && $cart->getShippingAddress() instanceof AddressInterface && $cart->getInvoiceAddress() instanceof AddressInterface;
     }
 
     /**

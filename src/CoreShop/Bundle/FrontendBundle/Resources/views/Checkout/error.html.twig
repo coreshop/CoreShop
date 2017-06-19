@@ -1,0 +1,27 @@
+{% extends '@CoreShopFrontend/layout.html.twig' %}
+
+{% block content %}
+     <ol class="breadcrumb">
+        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+        <li class="active">{{ 'error'|trans }}</a></li>
+    </ol>
+
+    <h2 class="main-heading text-center">
+        {{ 'error'|trans }}
+    </h2>
+
+    <div class="content-box text-center">
+        <h4 class="special-heading">{{ 'ooops'|trans }}</h4>
+        <h5>
+            {{ 'sorry_something_went_wrong'|trans }}
+        </h5>
+        <br>
+        {% if app.environment == 'dev' %}
+            {{ dump(lastPayment) }}
+        {% endif %}
+
+        <p>
+            <a href="{{ path('coreshop_index') }}" class="btn btn-black text-uppercase">{{ 'back_to_home'|trans }}</a>
+        </p>
+    </div>
+{% endblock %}

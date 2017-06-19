@@ -1,6 +1,10 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
+{% block checkout_title %}
+    {{ 'address'|trans }}
+{% endblock %}
+
 {% block checkout %}
 
     {% for address in addresses %}

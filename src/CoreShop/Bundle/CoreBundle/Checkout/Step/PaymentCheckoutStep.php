@@ -56,7 +56,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        return $cart->getPaymentProvider() instanceof PaymentProviderInterface;
+        return $cart->hasItems() && $cart->getPaymentProvider() instanceof PaymentProviderInterface;
     }
 
     /**

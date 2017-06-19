@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use Payum\Core\Payum;
@@ -130,6 +131,37 @@ class CheckoutController extends FrontendController
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
         */
         return $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function errorAction(Request $request)
+    {
+        $orderId = $request->getSession()->get('coreshop_order_id', null);
+
+        if (null === $orderId) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $request->getSession()->remove('coreshop_order_id');
+
+        /**
+         * @var $order OrderInterface
+         */
+        $order = $this->get('coreshop.repository.order')->find($orderId);
+        Assert::notNull($order);
+
+        $payments = $order->getPayments();
+        $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
+
+        return $this->render('@CoreShopFrontend/Checkout/error.html.twig', [
+            'order' => $order,
+            'payments' => $payments,
+            'lastPayment' => $lastPayment
+        ]);
     }
 
     /**

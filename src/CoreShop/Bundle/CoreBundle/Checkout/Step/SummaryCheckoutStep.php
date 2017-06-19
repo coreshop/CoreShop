@@ -39,7 +39,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        return true;
+        return $cart->hasItems();
     }
 
     /**
