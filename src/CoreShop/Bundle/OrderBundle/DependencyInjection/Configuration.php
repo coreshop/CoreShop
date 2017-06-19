@@ -365,6 +365,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order')->defaultValue('/bundles/coreshoporder/pimcore/css/order.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['cart_price_rule', 'order_list', 'order_detail'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

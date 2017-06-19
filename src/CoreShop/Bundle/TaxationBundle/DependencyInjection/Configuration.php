@@ -190,6 +190,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('tax_item')->defaultValue('/bundles/coreshoptaxation/pimcore/css/taxation.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['tax_rule', 'tax_rule_group'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

@@ -216,6 +216,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('address')->defaultValue('/bundles/coreshopaddress/pimcore/css/address.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['country', 'state', 'zone'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

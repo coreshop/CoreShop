@@ -127,6 +127,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('currency')->defaultValue('/bundles/coreshopcurrency/pimcore/css/currency.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['currency', 'exchange_rate'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

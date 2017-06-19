@@ -113,6 +113,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule')->defaultValue('/bundles/coreshopnotification/pimcore/css/notification.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['notification'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

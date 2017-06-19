@@ -148,6 +148,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('payment')->defaultValue('/bundles/coreshoppayment/pimcore/css/payment.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['payment_provider'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

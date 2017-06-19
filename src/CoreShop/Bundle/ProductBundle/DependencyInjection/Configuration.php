@@ -209,6 +209,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('product')->defaultValue('/bundles/coreshopproduct/pimcore/css/product.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['product_price_rule'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

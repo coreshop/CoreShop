@@ -103,6 +103,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('store_item')->defaultValue('/bundles/coreshopstore/pimcore/css/store.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['store'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

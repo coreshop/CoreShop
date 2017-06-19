@@ -160,6 +160,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('shipping')->defaultValue('/bundles/coreshopshipping/pimcore/css/shipping.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['carrier', 'shipping_rule'])
+                    ->end()
                 ->end()
             ->end()
         ->end();

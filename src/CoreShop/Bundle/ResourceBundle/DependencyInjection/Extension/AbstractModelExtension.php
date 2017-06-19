@@ -99,5 +99,32 @@ abstract class AbstractModelExtension extends Extension
 
             $container->setParameter($parameter, array_merge($resources, array_values($bundleResources['css'])));
         }
+
+        if (array_key_exists('permissions', $bundleResources)) {
+            $applicationPermissions = [];
+            $applicationParameter = sprintf('%s.permissions', $applicationName);
+            $resourcePermissions = [];
+            $globalParameter = sprintf('coreshop.resource.permissions', $applicationName);
+
+            if ($container->hasParameter($applicationParameter)) {
+                $applicationPermissions = $container->getParameter($applicationParameter);
+            }
+
+            if ($container->hasParameter($globalParameter)) {
+                $resourcePermissions = $container->getParameter($globalParameter);
+            }
+
+            $permissions = [];
+
+            foreach ($bundleResources['permissions'] as $permission) {
+                $identifier = sprintf('%s_permission_%s', $applicationName, $permission);
+
+                $permissions[] = $identifier;
+                $resourcePermissions[] = $identifier;
+            }
+
+            $container->setParameter($globalParameter, array_merge($applicationPermissions, $permissions));
+            $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
+        }
     }
 }

@@ -51,6 +51,12 @@ services:
     tags:
       - { name: 'coreshop.resource.installer', type: 'routes', priority: 200}
 
+  coreshop.resource.installer.permissions:
+    class: CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller
+    arguments: ['%coreshop.resource.permissions%']
+    tags:
+      - { name: 'coreshop.resource.installer', type: 'permissions', priority: 200}
+
   coreshop.resource.installer:
     class: CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller
     arguments:

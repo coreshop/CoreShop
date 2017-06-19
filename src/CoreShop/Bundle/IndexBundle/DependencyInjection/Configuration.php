@@ -187,6 +187,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('index')->defaultValue('/bundles/coreshopindex/pimcore/css/index.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['index', 'filter'])
+                    ->end()
                 ->end()
             ->end()
         ->end();
