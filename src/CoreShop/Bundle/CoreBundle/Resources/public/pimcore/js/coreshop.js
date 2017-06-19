@@ -634,6 +634,4 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     }
 });
 
-coreshop.broker.addListener('afterClassMap', function () {
-    var plugin = new coreshop.plugin();
-});
+var plugin = new coreshop.plugin();
