@@ -35,6 +35,10 @@ final class InstallCommand extends AbstractInstallCommand
             'command' => 'folders',
             'message' => 'Install CoreShop Object Folders.',
         ],
+        [
+            'command' => 'assets',
+            'message' => 'Install CoreShop Assets.',
+        ]
     ];
 
     /**
