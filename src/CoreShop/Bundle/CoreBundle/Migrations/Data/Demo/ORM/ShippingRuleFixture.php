@@ -61,7 +61,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             ]
                         ],
                         [
-                            'type' => 'zone',
+                            'type' => 'zones',
                             'config' => [
                                 'zones' => [4]
                             ]
@@ -87,7 +87,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             ]
                         ],
                         [
-                            'type' => 'zone',
+                            'type' => 'zones',
                             'config' => [
                                 'zones' => [4]
                             ]
@@ -103,7 +103,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                     ]
                 ],
                 [
-                    'name' => 'demo2',
+                    'name' => 'demo3',
                     'conditions' => [
                         [
                             'type' => 'amount',
@@ -113,7 +113,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             ]
                         ],
                         [
-                            'type' => 'zone',
+                            'type' => 'zones',
                             'config' => [
                                 'zones' => [4]
                             ]
