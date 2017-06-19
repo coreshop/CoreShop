@@ -45,6 +45,7 @@ class RegisterBundleHelper
 
             new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(),
             new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(),
+            new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(),
 
             new \FOS\RestBundle\FOSRestBundle(),
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
