@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
+use Composer\Autoload\ClassLoader;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,6 +39,9 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
         $fieldCollections = [];
         $bricks = [];
         $classes = [];
+
+        $classLoader = new ClassLoader();
+        $classLoader->register(true);
 
         foreach ($this->pimcoreModels as $pimcoreModel) {
             $modelName = explode('\\', $pimcoreModel['classes']['model']);
@@ -104,6 +108,8 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
 
             $progress->advance();
         }
+
+        $classLoader->addPsr4("Pimcore\\Model\\Object\\", PIMCORE_CLASS_DIRECTORY . "/Object");
 
         $progress->finish();
     }
