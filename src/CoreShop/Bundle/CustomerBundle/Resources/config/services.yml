@@ -1,10 +1,6 @@
 imports:
   - { resource: "services/form.yml" }
 
-parameters:
-  coreshop.folder.customer: /%coreshop.folder.objects%/customers
-  coreshop.folder.customer_groups: /%coreshop.folder.objects%/customer-groups
-
 services:
   coreshop.context.customer.composite:
     class: CoreShop\Component\Customer\Context\CompositeCustomerContext

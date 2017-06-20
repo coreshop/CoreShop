@@ -16,9 +16,6 @@ imports:
   - { resource: "services/customer.yml" }
   - { resource: "services/settings.yml" }
 
-parameters:
-  coreshop.folder.objects: '/coreshop'
-
 services:
   coreshop.core.key_transformer:
     class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer

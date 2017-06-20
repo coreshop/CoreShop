@@ -4,3 +4,6 @@ core_shop_address:
       classes:
         model: CoreShop\Component\Core\Model\Country
         repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CountryRepository
+  pimcore:
+    address:
+      path: coreshop/addresses

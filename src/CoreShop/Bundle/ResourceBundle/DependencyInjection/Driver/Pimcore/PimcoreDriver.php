@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
@@ -40,10 +40,14 @@ final class PimcoreDriver extends AbstractDriver
         if ($metadata->hasClass('admin_controller')) {
             $this->addPimcoreController($container, $metadata);
         }
+
+        if ($metadata->hasParameter('path')) {
+            $this->addPimcoreClass($container, $metadata);
+        }
     }
 
     /**
-     * @param ContainerBuilder  $container
+     * @param ContainerBuilder $container
      * @param MetadataInterface $metadata
      */
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
@@ -58,10 +62,33 @@ final class PimcoreDriver extends AbstractDriver
                 new Reference('coreshop.resource_controller.form_factory'),
                 new Reference('coreshop.context.shopper'),
             ])
-            ->addMethodCall('setContainer', [new Reference('service_container')])
-        ;
+            ->addMethodCall('setContainer', [new Reference('service_container')]);
 
         $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param MetadataInterface $metadata
+     */
+    protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $container->setParameter(sprintf('%s.folder.%s', $metadata->getApplicationName(), $metadata->getName()), $metadata->getParameter('path'));
+
+        $parameterNameForAllAppPaths = sprintf('%s.folders', $metadata->getApplicationName());
+        $parameterNameForAllPaths = 'coreshop.resource.folders';
+
+        foreach ([$parameterNameForAllPaths, $parameterNameForAllAppPaths] as $parameterName) {
+            $allPaths = [];
+
+            if ($container->hasParameter($parameterName)) {
+                $allPaths = $container->getParameter($parameterName);
+            }
+
+            $allPaths[] = $metadata->getParameter('path');
+
+            $container->setParameter($parameterName, $allPaths);
+        }
     }
 
     /**

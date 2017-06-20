@@ -12,4 +12,4 @@ services:
 
   coreshop.installer.executor.folder_installer:
     class: CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider
-    arguments: ['%coreshop.folder.cart%', '%coreshop.folder.product%', '%coreshop.folder.customer%', '%coreshop.folder.customer_groups%', '%coreshop.folder.order%']
+    arguments: ['%coreshop.folder.cart%', '%coreshop.folder.product%', '%coreshop.folder.customer%', '%coreshop.folder.customer_group %', '%coreshop.folder.order%']

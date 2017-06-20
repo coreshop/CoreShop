@@ -71,7 +71,7 @@ final class FolderInstallerProvider
         ];
 
         foreach ($folders as $folder) {
-            Object\Service::createFolderByPath($folder);
+            Object\Service::createFolderByPath(sprintf('/%s', $folder));
         }
     }
 }
