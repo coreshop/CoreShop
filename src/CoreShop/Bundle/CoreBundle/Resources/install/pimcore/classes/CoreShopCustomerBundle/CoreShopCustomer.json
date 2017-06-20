@@ -205,6 +205,44 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "gender",
+                                "options": [
+                                    {
+                                        "key": "male",
+                                        "value": "male"
+                                    },
+                                    {
+                                        "key": "female",
+                                        "value": "female"
+                                    },
+                                    {
+                                        "key": "",
+                                        "value": "unknown"
+                                    }
+                                ],
+                                "width": "",
+                                "defaultValue": null,
+                                "optionsProviderClass": null,
+                                "optionsProviderData": null,
+                                "queryColumnType": "varchar(190)",
+                                "columnType": "varchar(190)",
+                                "phpdocType": "string",
+                                "name": "gender",
+                                "title": "Gender",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false

@@ -39,3 +39,8 @@ services:
     arguments: ['@coreshop.repository.customer']
     tags:
       - {name: form.type}
+
+  coreshop.form.type.customer_registration:
+    class: CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType
+    tags:
+      - {name: form.type}

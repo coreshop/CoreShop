@@ -27,18 +27,34 @@ final class AddressType extends AbstractResourceType
     {
         $builder
             ->add('company', TextType::class, [
+                'label' => 'coreshop.form.address.company',
                 'required' => false
             ])
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('street', TextType::class)
-            ->add('number', TextType::class)
-            ->add('postcode', TextType::class)
-            ->add('city', TextType::class)
+            ->add('firstname', TextType::class, [
+                'label' => 'coreshop.form.address.firstname',
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => 'coreshop.form.address.lastname',
+            ])
+            ->add('street', TextType::class, [
+                'label' => 'coreshop.form.address.street',
+            ])
+            ->add('number', TextType::class, [
+                'label' => 'coreshop.form.address.number',
+            ])
+            ->add('postcode', TextType::class, [
+                'label' => 'coreshop.form.address.postcode',
+            ])
+            ->add('city', TextType::class, [
+                'label' => 'coreshop.form.address.city',
+            ])
             ->add('country', CountryChoiceType::class, [
                 'active' => true,
+                'label' => 'coreshop.form.address.country',
             ])
-            ->add('phoneNumber', TextType::class);
+            ->add('phoneNumber', TextType::class, [
+                'label' => 'coreshop.form.address.phone_number',
+            ]);
     }
 
     /**

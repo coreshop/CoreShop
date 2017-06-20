@@ -7,6 +7,11 @@ services:
     calls:
       - [setContainer, ['@service_container']]
 
+  coreshop.frontend.controller.register:
+    class: CoreShop\Bundle\FrontendBundle\Controller\RegisterController
+    calls:
+      - [setContainer, ['@service_container']]
+
   coreshop.frontend.controller.customer:
     class: CoreShop\Bundle\FrontendBundle\Controller\CustomerController
     calls:

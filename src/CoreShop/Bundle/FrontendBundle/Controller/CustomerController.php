@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -114,8 +115,7 @@ class CustomerController extends FrontendController
 
         if (!$address instanceof AddressInterface) {
             $address = $this->get('coreshop.factory.address')->createNew();
-        }
-        else {
+        } else {
             if (!$customer->hasAddress($address)) {
                 return $this->redirectToRoute('coreshop_customer_addresses');
             }
@@ -131,7 +131,7 @@ class CustomerController extends FrontendController
 
                 $address->setPublished(true);
                 $address->setKey(uniqid());
-                $address->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), 'addresses')));
+                $address->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->getParameter('coreshop.folder.address'))));
                 $address->save();
 
                 $customer->addAddress($address);
@@ -161,8 +161,7 @@ class CustomerController extends FrontendController
 
         if (!$address instanceof AddressInterface) {
             return $this->redirectToRoute('coreshop_customer_addresses');
-        }
-        else {
+        } else {
             if (!$customer->hasAddress($address)) {
                 return $this->redirectToRoute('coreshop_customer_addresses');
             }

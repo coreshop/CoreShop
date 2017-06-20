@@ -2,6 +2,9 @@ imports:
   - { resource: "services/form.yml" }
   - { resource: "services/profiler.yml" }
 
+parameters:
+  coreshop.folder.address: addresses
+
 services:
   coreshop.context.country.composite:
     class: CoreShop\Component\Address\Context\CompositeCountryContext
