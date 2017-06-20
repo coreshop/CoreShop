@@ -1,3 +1,4 @@
 coreshop_store: 'Store'
 coreshop_store_site: 'Site'
 coreshop_store_template: 'Template'
+coreshop_permission_store: 'Store'

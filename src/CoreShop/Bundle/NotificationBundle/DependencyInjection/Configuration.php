@@ -59,6 +59,7 @@ final class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
+                                ->scalarNode('permission')->defaultValue('notification')->cannotBeOverwritten()->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()

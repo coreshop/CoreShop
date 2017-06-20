@@ -108,11 +108,14 @@ class ResourceController extends AdminController
      */
     protected function isGrantedOr403()
     {
-        if ($this->getUser()->getPermission($this->permission)) {
-            return;
-        }
+        if ($this->metadata->hasParameter('permission')) {
+            $permission =  sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
+            if ($this->getUser()->getPermission($permission)) {
+                return;
+            }
 
-        throw new AccessDeniedException();
+            throw new AccessDeniedException();
+        }
     }
 
     /**
@@ -134,6 +137,8 @@ class ResourceController extends AdminController
      */
     public function getAction(Request $request)
     {
+        $this->isGrantedOr403();
+
         $dataModel = $this->findOr404($request->get('id'));
 
         return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ['group' => 'Detailed']);
@@ -146,6 +151,8 @@ class ResourceController extends AdminController
      */
     public function saveAction(Request $request)
     {
+        $this->isGrantedOr403();
+
         $resource = $this->findOr404($request->get('id'));
 
         $form = $this->resourceFormFactory->create($this->metadata, $resource);
@@ -187,6 +194,8 @@ class ResourceController extends AdminController
      */
     public function addAction(Request $request)
     {
+        $this->isGrantedOr403();
+
         $name = $request->get('name');
 
         if (strlen($name) <= 0) {
@@ -220,6 +229,8 @@ class ResourceController extends AdminController
      */
     public function deleteAction(Request $request)
     {
+        $this->isGrantedOr403();
+
         $id = $request->get('id');
 
         $dataModel = $this->repository->find($id);

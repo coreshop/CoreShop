@@ -49,11 +49,13 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         var toolbar = pimcore.globalmanager.get('layout_toolbar');
 
-        coreShopMenuItems.push({
-            text: t('coreshop_order_by_number'),
-            iconCls: 'pimcore_icon_open_object_by_id',
-            handler: coreshop.helpers.openOrderByNumberDialog.bind(this)
-        });
+        if (user.isAllowed('coreshop_permission_order_detail')) {
+            coreShopMenuItems.push({
+                text: t('coreshop_order_by_number'),
+                iconCls: 'coreshop_icon_order',
+                handler: coreshop.helpers.openOrderByNumberDialog.bind(this)
+            });
+        }
 
         if (user.isAllowed('coreshop_permission_settings')) {
             coreShopMenuItems.push({
@@ -65,7 +67,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         var priceRulesMenu = [];
 
-        if (user.isAllowed('coreshop_permission_price_rules')) {
+        if (user.isAllowed('coreshop_permission_cart_price_rule')) {
             priceRulesMenu.push({
                 text: t('coreshop_cart_pricerules'),
                 iconCls: 'coreshop_icon_price_rule',
@@ -73,7 +75,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_product_price_rules')) {
+        if (user.isAllowed('coreshop_permission_product_price_rule')) {
             priceRulesMenu.push({
                 text: t('coreshop_product_pricerules'),
                 iconCls: 'coreshop_icon_price_rule',
@@ -96,7 +98,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         var localizationMenu = [];
 
-        if (user.isAllowed('coreshop_permission_countries')) {
+        if (user.isAllowed('coreshop_permission_country')) {
             localizationMenu.push({
                 text: t('coreshop_countries'),
                 iconCls: 'coreshop_icon_country',
@@ -104,7 +106,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_states')) {
+        if (user.isAllowed('coreshop_permission_state')) {
             localizationMenu.push({
                 text: t('coreshop_states'),
                 iconCls: 'coreshop_icon_state',
@@ -112,7 +114,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_currencies')) {
+        if (user.isAllowed('coreshop_permission_currency')) {
             localizationMenu.push({
                 text: t('coreshop_currencies'),
                 iconCls: 'coreshop_icon_currency',
@@ -120,7 +122,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_exchange_rates')) {
+        if (user.isAllowed('coreshop_permission_exchange_rate')) {
             localizationMenu.push({
                 text: t('coreshop_exchange_rates'),
                 iconCls: 'coreshop_icon_exchange_rate',
@@ -128,7 +130,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_zones')) {
+        if (user.isAllowed('coreshop_permission_zone')) {
             localizationMenu.push({
                 text: t('coreshop_zones'),
                 iconCls: 'coreshop_icon_zone',
@@ -136,7 +138,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_taxes')) {
+        if (user.isAllowed('coreshop_permission_tax_item')) {
             localizationMenu.push({
                 text: t('coreshop_taxes'),
                 iconCls: 'coreshop_icon_taxes',
@@ -144,7 +146,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_tax_rules')) {
+        if (user.isAllowed('coreshop_permission_tax_rule_group')) {
             localizationMenu.push({
                 text: t('coreshop_taxrulegroups'),
                 iconCls: 'coreshop_icon_tax_rule_groups',
@@ -167,32 +169,56 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         var ordersMenu = [];
 
-        ordersMenu.push({
-            text: t('coreshop_orders'),
-            iconCls: 'coreshop_icon_orders',
-            handler: this.openOrders
-        });
+        if (user.isAllowed('coreshop_permission_order_list')) {
+            ordersMenu.push({
+                text: t('coreshop_orders'),
+                iconCls: 'coreshop_icon_orders',
+                handler: this.openOrders
+            });
+        }
 
-        ordersMenu.push({
-            text: t('coreshop_order_create'),
-            iconCls: 'coreshop_icon_order_create',
-            handler: function () {
-                coreshop.helpers.createOrder();
-            }.bind(this)
-        });
+        if (user.isAllowed('coreshop_permission_order_create')) {
+            ordersMenu.push({
+                text: t('coreshop_order_create'),
+                iconCls: 'coreshop_icon_order_create',
+                handler: function () {
+                    coreshop.helpers.createOrder();
+                }.bind(this)
+            });
+        }
 
-        coreShopMenuItems.push({
-            text: t('coreshop_order'),
-            iconCls: 'coreshop_icon_order',
-            hideOnClick: false,
-            menu: {
-                cls: 'pimcore_navigation_flyout',
-                shadow: false,
-                items: ordersMenu
-            }
-        });
+        if (ordersMenu.length > 0) {
+            coreShopMenuItems.push({
+                text: t('coreshop_order'),
+                iconCls: 'coreshop_icon_order',
+                hideOnClick: false,
+                menu: {
+                    cls: 'pimcore_navigation_flyout',
+                    shadow: false,
+                    items: ordersMenu
+                }
+            });
+        }
 
-        if (user.isAllowed('coreshop_permission_carriers')) {
+        var carriersMenu = [];
+
+        if (user.isAllowed('coreshop_permission_carrier')) {
+            carriersMenu.push({
+                text: t('coreshop_carriers'),
+                iconCls: 'coreshop_icon_carriers',
+                handler: this.openCarriersList
+            });
+        }
+
+        if (user.isAllowed('coreshop_permission_shipping_rule')) {
+            carriersMenu.push({
+                text: t('coreshop_carriers_shipping_rules'),
+                iconCls: 'coreshop_icon_carrier_shipping_rule',
+                handler: this.openCarriersShippingRules
+            });
+        }
+
+        if (carriersMenu.length > 0) {
             coreShopMenuItems.push({
                 text: t('coreshop_shipping'),
                 iconCls: 'coreshop_icon_shipping',
@@ -200,40 +226,35 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                 menu: {
                     shadow: false,
                     cls: 'pimcore_navigation_flyout',
-                    items: [{
-                        text: t('coreshop_carriers'),
-                        iconCls: 'coreshop_icon_carriers',
-                        handler: this.openCarriersList
-                    }, {
-                        text: t('coreshop_carriers_shipping_rules'),
-                        iconCls: 'coreshop_icon_carrier_shipping_rule',
-                        handler: this.openCarriersShippingRules
-                    }]
+                    items: carriersMenu
                 }
             });
         }
 
         var productsMenu = [];
 
-        productsMenu.push({
-            text: t('coreshop_product_list'),
-            iconCls: 'coreshop_icon_product_list',
-            handler: this.openProducts
-        });
-
-        if (user.isAllowed('coreshop_permission_filters')) {
+        if (user.classes.indexOf(coreshop.class_map.product) >= 0) {
             productsMenu.push({
-                text: t('coreshop_product_filters'),
-                iconCls: 'coreshop_icon_product_filters',
-                handler: this.openProductFilters
+                text: t('coreshop_product_list'),
+                iconCls: 'coreshop_icon_product_list',
+                handler: this.openProducts
             });
         }
 
-        if (user.isAllowed('coreshop_permission_indexes')) {
+
+        if (user.isAllowed('coreshop_permission_index')) {
             productsMenu.push({
                 text: t('coreshop_indexes'),
                 iconCls: 'coreshop_icon_indexes',
                 handler: this.openIndexes
+            });
+        }
+
+        if (user.isAllowed('coreshop_permission_filter')) {
+            productsMenu.push({
+                text: t('coreshop_product_filters'),
+                iconCls: 'coreshop_icon_product_filters',
+                handler: this.openProductFilters
             });
         }
 
@@ -289,26 +310,30 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
          });
          }*/
 
-        if (user.admin) {
-
+        if (user.isAllowed('coreshop_permission_notification')) {
             coreShopMenuItems.push({
                 text: t('coreshop_notification_rules'),
                 iconCls: 'coreshop_icon_notification_rule',
                 handler: this.openNotificationRules
             });
+        }
 
+        if (user.isAllowed('coreshop_permission_payment_provider')) {
             coreShopMenuItems.push({
                 text: t('coreshop_payment_providers'),
                 iconCls: 'coreshop_icon_payment_provider',
                 handler: this.openPaymentProviders
             });
+        }
 
+        if (user.isAllowed('coreshop_permission_store')) {
             coreShopMenuItems.push({
                 text: t('coreshop_stores'),
                 iconCls: 'coreshop_icon_store',
                 handler: this.openStores
             });
         }
+
 
         coreShopMenuItems.push({
             text: 'ABOUT CoreShop &reg;',
