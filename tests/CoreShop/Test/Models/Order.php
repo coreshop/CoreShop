@@ -42,6 +42,6 @@ class Order extends Base
         $order = $this->get('coreshop.order.transformer.cart_to_order')->transform($cart, $order);
 
         $this->assertNotNull($order);
-        $this->assertEquals(288, $order->getSubtotal());
+        $this->assertEquals(28800, $order->getSubtotal());
     }
 }

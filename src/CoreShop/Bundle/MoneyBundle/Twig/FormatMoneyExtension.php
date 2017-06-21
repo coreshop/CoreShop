@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CurrencyBundle\Twig;
+namespace CoreShop\Bundle\MoneyBundle\Twig;
 
-use CoreShop\Bundle\CurrencyBundle\Templating\Helper\FormatMoneyHelperInterface;
+use CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface;
 
 final class FormatMoneyExtension extends \Twig_Extension
 {

@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CurrencyBundle\Templating\Helper;
+namespace CoreShop\Bundle\MoneyBundle\Templating\Helper;
 
 interface ConvertMoneyHelperInterface
 {

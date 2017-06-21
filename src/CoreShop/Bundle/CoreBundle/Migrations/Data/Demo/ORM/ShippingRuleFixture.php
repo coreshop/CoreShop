@@ -57,7 +57,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             'type' => 'amount',
                             'config' => [
                                 'minAmount' => 0,
-                                'maxAmount' => 150
+                                'maxAmount' => 15000
                             ]
                         ],
                         [
@@ -71,7 +71,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'price',
                             'config' => [
-                                'price' => 5
+                                'price' => 500
                             ]
                         ]
                     ]
@@ -82,8 +82,8 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'amount',
                             'config' => [
-                                'minAmount' => 150,
-                                'maxAmount' => 2000
+                                'minAmount' => 15000,
+                                'maxAmount' => 200000
                             ]
                         ],
                         [
@@ -97,7 +97,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'price',
                             'config' => [
-                                'price' => 10
+                                'price' => 1000
                             ]
                         ]
                     ]
@@ -108,8 +108,8 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'amount',
                             'config' => [
-                                'minAmount' => 2000,
-                                'maxAmount' => 3000
+                                'minAmount' => 200000,
+                                'maxAmount' => 300000
                             ]
                         ],
                         [
@@ -123,7 +123,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'price',
                             'config' => [
-                                'price' => 20
+                                'price' => 2000
                             ]
                         ]
                     ]

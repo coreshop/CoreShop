@@ -19,7 +19,7 @@ coreshop.product.pricerule.actions.price = Class.create(coreshop.rules.actions.a
         var priceValue = 0;
 
         if (this.data) {
-            priceValue = this.data.price;
+            priceValue = this.data.price / 100;
         }
 
         var price = new Ext.form.NumberField({

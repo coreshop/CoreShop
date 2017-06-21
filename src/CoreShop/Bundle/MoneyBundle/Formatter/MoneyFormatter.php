@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CurrencyBundle\Formatter;
+namespace CoreShop\Bundle\MoneyBundle\Formatter;
 
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use Webmozart\Assert\Assert;
@@ -24,13 +24,13 @@ final class MoneyFormatter implements MoneyFormatterInterface
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        $result = $formatter->formatCurrency(abs($amount), $currency);
+        $result = $formatter->formatCurrency(abs($amount / 100), $currency);
         Assert::notSame(
             false,
             $result,
             sprintf('The amount "%s" of type %s cannot be formatted to currency "%s".', $amount, gettype($amount), $currency)
         );
 
-        return $amount >= 0 ? $result : '-'.$result;
+        return $amount >= 0 ? $result : '-' . $result;
     }
 }

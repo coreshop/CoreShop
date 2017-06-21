@@ -316,8 +316,8 @@ class CartPriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
 
-        $this->assertEquals(5, $discount);
-        $this->assertEquals(6, $discountWt);
+        $this->assertEquals(500, $discount);
+        $this->assertEquals(600, $discountWt);
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -348,8 +348,8 @@ class CartPriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
 
-        $this->assertEquals(24, $discount);
-        $this->assertEquals(28.8, $discountWt);
+        $this->assertEquals(2400, $discount);
+        $this->assertEquals(2880, $discountWt);
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -379,8 +379,8 @@ class CartPriceRule extends RuleTest
         $shipping = $cart->getShipping(false);
         $shippingWt = $cart->getShipping(true);
 
-        $this->assertEquals(10, $shipping);
-        $this->assertEquals(12, $shippingWt);
+        $this->assertEquals(1000, $shipping);
+        $this->assertEquals(1200, $shippingWt);
 
         $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, '', $cart));
 

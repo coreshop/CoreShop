@@ -19,7 +19,7 @@ coreshop.shippingrule.actions.additionAmount = Class.create(coreshop.rules.actio
         var me = this;
 
         if (this.data) {
-            amountValue = this.data.amount;
+            amountValue = this.data.amount / 100;
         }
 
         var amount = new Ext.form.NumberField({

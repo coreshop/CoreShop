@@ -165,7 +165,7 @@ class Carrier extends RuleTest
         $price = $this->getPriceCalculator()->getPrice($carrier, $cart, Data::$customer1->getAddresses()[0], false);
         $priceWithTax = $this->getPriceCalculator()->getPrice($carrier, $cart, Data::$customer1->getAddresses()[0], true);
 
-        $this->assertEquals(10, $price);
-        $this->assertEquals(12, $priceWithTax);
+        $this->assertEquals(1000, $price);
+        $this->assertEquals(1200, $priceWithTax);
     }
 }

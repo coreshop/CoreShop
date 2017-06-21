@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
+use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -25,7 +25,7 @@ class PriceActionConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('price', NumberType::class, [
+            ->add('price', MoneyType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],

@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CurrencyBundle\Twig;
+namespace CoreShop\Bundle\MoneyBundle\Twig;
 
-use CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertMoneyHelperInterface;
+use CoreShop\Bundle\MoneyBundle\Templating\Helper\ConvertMoneyHelperInterface;
 
 final class ConvertMoneyExtension extends \Twig_Extension
 {

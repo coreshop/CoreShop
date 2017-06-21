@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -26,13 +26,13 @@ final class AmountConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('minAmount', IntegerType::class, [
+            ->add('minAmount', MoneyType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
-            ->add('maxAmount', IntegerType::class, [
+            ->add('maxAmount', MoneyType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),

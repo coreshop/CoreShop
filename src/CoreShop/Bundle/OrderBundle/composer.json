@@ -25,7 +25,8 @@
     "coreshop/locale-bundle": "dev-master",
     "coreshop/registry": "dev-master",
     "coreshop/rule-bundle": "dev-master",
-    "coreshop/store-bundle": "dev-master"
+    "coreshop/store-bundle": "dev-master",
+    "coreshop/money-bundle": "dev-master"
   },
   "config": {
     "bin-dir": "bin"

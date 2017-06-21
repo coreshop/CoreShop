@@ -22,7 +22,8 @@
     "coreshop/product": "dev-master",
     "coreshop/registry": "dev-master",
     "coreshop/rule-bundle": "dev-master",
-    "coreshop/resource-bundle": "dev-master"
+    "coreshop/resource-bundle": "dev-master",
+    "coreshop/money-bundle": "dev-master"
   },
   "config": {
     "bin-dir": "bin"

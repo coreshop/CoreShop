@@ -43,6 +43,6 @@ class Quote extends Base
         $quote = $this->get('coreshop.order.transformer.cart_to_quote')->transform($cart, $quote);
 
         $this->assertNotNull($quote);
-        $this->assertEquals(288, $quote->getSubtotal());
+        $this->assertEquals(28800, $quote->getSubtotal());
     }
 }

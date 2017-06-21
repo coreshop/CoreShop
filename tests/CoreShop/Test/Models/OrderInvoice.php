@@ -68,6 +68,6 @@ class OrderInvoice extends Base
         $invoice = $this->getFactory('order_invoice')->createNew();
         $invoice = $this->get('coreshop.order.transformer.order_to_invoice')->transform($order, $invoice, $processableItems);
 
-        $this->assertEquals(288, $invoice->getSubtotal());
+        $this->assertEquals(28800, $invoice->getSubtotal());
     }
 }

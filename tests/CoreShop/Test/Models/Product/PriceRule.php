@@ -335,9 +335,9 @@ class PriceRule extends RuleTest
 
         $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice());
 
-        $this->assertEquals(5, $discount);
-        $this->assertEquals(10, $this->product->getPrice(false));
-        $this->assertEquals(12, $this->product->getPrice());
+        $this->assertEquals(500, $discount);
+        $this->assertEquals(1000, $this->product->getPrice(false));
+        $this->assertEquals(1200, $this->product->getPrice());
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -361,11 +361,11 @@ class PriceRule extends RuleTest
         $this->getEntityManager()->persist($rule);
         $this->getEntityManager()->flush();
 
-        $discount = round($this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice(false)), 2);
+        $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice(false));
 
-        $this->assertEquals(1.5, $discount);
-        $this->assertEquals(13.5, $this->product->getPrice(false));
-        $this->assertEquals(16.2, $this->product->getPrice());
+        $this->assertEquals(150, $discount);
+        $this->assertEquals(1350, $this->product->getPrice(false));
+        $this->assertEquals(1620, $this->product->getPrice());
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -392,8 +392,8 @@ class PriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice(false));
 
         $this->assertEquals(0, $discount);
-        $this->assertEquals(100, $this->product->getPrice(false));
-        $this->assertEquals(120, $this->product->getPrice());
+        $this->assertEquals(10000, $this->product->getPrice(false));
+        $this->assertEquals(12000, $this->product->getPrice());
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();

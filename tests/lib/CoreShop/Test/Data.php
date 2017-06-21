@@ -214,7 +214,7 @@ class Data
 
             $priceAct = $actionFactory->createNew();
             $priceAct->setType('price');
-            $priceAct->setConfiguration(['price' => 10]);
+            $priceAct->setConfiguration(['price' => 1000]);
 
             /**
              * @var ShippingRuleInterface
@@ -284,8 +284,8 @@ class Data
              */
             $product1 = $productFactory->createNew();
             $product1->setName('test1');
-            $product1->setWholesalePrice(10);
-            $product1->setBasePrice(15);
+            $product1->setWholesalePrice(1000);
+            $product1->setBasePrice(1500);
             $product1->setCategories([self::$category1]);
             $product1->setHeight(50);
             $product1->setWidth(50);
@@ -306,8 +306,8 @@ class Data
              */
             $product2 = $productFactory->createNew();
             $product2->setName('test2');
-            $product2->setWholesalePrice(100);
-            $product2->setBasePrice(150);
+            $product2->setWholesalePrice(10000);
+            $product2->setBasePrice(15000);
             $product2->setCategories([self::$category2]);
             $product2->setHeight(500);
             $product2->setWidth(500);
@@ -328,8 +328,8 @@ class Data
              */
             $product3 = $productFactory->createNew();
             $product3->setName('test3');
-            $product3->setWholesalePrice(50);
-            $product3->setBasePrice(75);
+            $product3->setWholesalePrice(5000);
+            $product3->setBasePrice(7500);
             $product3->setHeight(100);
             $product3->setWidth(100);
             $product3->setDepth(100);
@@ -423,7 +423,7 @@ class Data
             $customer->setParent(Service::createFolderByPath('/users'));
             $customer->setFirstname('Max');
             $customer->setLastname('Mustermann');
-            //$customer->setGender("m"); TODO
+            $customer->setGender("m");
             $customer->setEmail('mus@coreshop.org');
             $customer->setCustomerGroups([self::$customerGroup1]);
             $customer->save();

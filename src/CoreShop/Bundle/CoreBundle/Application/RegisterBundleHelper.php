@@ -26,6 +26,7 @@ class RegisterBundleHelper
 
             new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
 
+            new \CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle(),
             new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
             new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(),
             new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(),

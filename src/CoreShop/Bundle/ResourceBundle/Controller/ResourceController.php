@@ -139,9 +139,9 @@ class ResourceController extends AdminController
     {
         $this->isGrantedOr403();
 
-        $dataModel = $this->findOr404($request->get('id'));
+        $resources = $this->findOr404($request->get('id'));
 
-        return $this->viewHandler->handle(['data' => $dataModel, 'success' => true], ['group' => 'Detailed']);
+        return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }
 
     /**

@@ -34,7 +34,7 @@ class Product extends Base
     {
         $this->printTestName();
 
-        $this->assertEquals(15 * 1.2, Data::$product1->getPrice());
+        $this->assertEquals(1800, Data::$product1->getPrice());
     }
 
     /**
@@ -44,6 +44,6 @@ class Product extends Base
     {
         $this->printTestName();
 
-        $this->assertEquals(15 * 1.2 - 15, Data::$product1->getTaxAmount());
+        $this->assertEquals(300, Data::$product1->getTaxAmount());
     }
 }

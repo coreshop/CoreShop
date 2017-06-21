@@ -144,8 +144,8 @@ class Taxation extends Base
 
         $taxCalculator = new TaxRulesTaxCalculator([$tax10, $tax20], TaxCalculatorInterface::ONE_AFTER_ANOTHER_METHOD);
 
-        $this->assertEquals(13.2, round($taxCalculator->applyTaxes(10), 2));
-        $this->assertEquals(15.84, round($taxCalculator->applyTaxes(12), 2));
+        $this->assertEquals(13.2, $taxCalculator->applyTaxes(10));
+        $this->assertEquals(15.84, $taxCalculator->applyTaxes(12));
     }
 
     public function testTaxCalculatorFactoryService()

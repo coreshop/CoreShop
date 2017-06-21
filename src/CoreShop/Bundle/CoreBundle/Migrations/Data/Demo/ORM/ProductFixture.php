@@ -104,8 +104,8 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 $product->setEnabled(true);
                 $product->setCategories([$usedCategory]);
                 $product->setQuantity(10);
-                $product->setWholesalePrice($faker->numberBetween(100, 200));
-                $product->setBasePrice($faker->numberBetween(200, 400));
+                $product->setWholesalePrice($faker->randomFloat(2, 100, 200) * 100);
+                $product->setBasePrice($faker->randomFloat(2, 200, 400) * 100);
                 $product->setTaxRule($this->getReference('taxRule'));
                 $product->setWidth($faker->numberBetween(5, 10));
                 $product->setHeight($faker->numberBetween(5, 10));

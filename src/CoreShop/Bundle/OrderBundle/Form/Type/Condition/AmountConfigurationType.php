@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
 
+use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class AmountConfigurationType extends AbstractType
@@ -24,8 +24,8 @@ final class AmountConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('minAmount', NumberType::class)
-            ->add('maxAmount', NumberType::class)
+            ->add('minAmount', MoneyType::class)
+            ->add('maxAmount', MoneyType::class)
         ;
     }
 

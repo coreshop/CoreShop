@@ -43,7 +43,7 @@ class Cart extends Base
         $tax = $cart->getSubtotalTax();
         $subTotalWT = $cart->getSubtotal(false);
 
-        $this->assertEquals(288, $subtotal);
+        $this->assertEquals(28800, $subtotal);
         $this->assertEquals($subtotal - $subTotalWT, $tax);
         $this->assertEquals($subtotal - $tax, $subTotalWT);
     }
@@ -61,8 +61,8 @@ class Cart extends Base
         $tax = $cart->getTotalTax();
         $totalWT = $total - $tax;
 
-        $this->assertEquals(288, $cart->getSubtotal() + $cart->getShipping());
-        $this->assertEquals(288, $total);
+        $this->assertEquals(28800, $cart->getSubtotal() + $cart->getShipping());
+        $this->assertEquals(28800, $total);
         $this->assertEquals($total - $totalWT, $tax);
         $this->assertEquals($total - $tax, $totalWT);
 
@@ -71,9 +71,9 @@ class Cart extends Base
         $cart->setShippingAddress(Data::$customer1->getAddresses()[0]);
         $cart->setCarrier(Data::$carrier1);
 
-        $this->assertEquals(12, $cart->getShipping());
-        $this->assertEquals(10, $cart->getShipping(false));
-        $this->assertEquals(300, $cart->getTotal());
+        $this->assertEquals(1200, $cart->getShipping());
+        $this->assertEquals(1000, $cart->getShipping(false));
+        $this->assertEquals(30000, $cart->getTotal());
     }
 
     /**
