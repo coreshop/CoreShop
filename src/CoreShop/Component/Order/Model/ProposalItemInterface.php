@@ -40,37 +40,34 @@ interface ProposalItemInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getItemPrice($withTax = true);
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getItemRetailPrice($withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getItemWholesalePrice();
 
     /**
-     * @return float
+     * @return int
      */
     public function getItemTax();
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getTotal($withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getTotalTax();
 

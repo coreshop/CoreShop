@@ -38,7 +38,7 @@ interface TaxCalculatorInterface
      *
      * @param $price
      *
-     * @return float
+     * @return int
      */
     public function applyTaxes($price);
 
@@ -47,17 +47,17 @@ interface TaxCalculatorInterface
      *
      * @param $price
      *
-     * @return float
+     * @return int
      */
     public function removeTaxes($price);
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
-     * @param float $price
+     * @param int $price
      * @param bool  $asArray
      *
-     * @return float|array $taxes_amount
+     * @return int|array $taxes_amount
      */
     public function getTaxesAmount($price, $asArray = false);
 

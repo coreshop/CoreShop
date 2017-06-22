@@ -57,7 +57,7 @@ interface OrderInterface extends SaleInterface
     public function getPayments();
 
     /**
-     * @return float
+     * @return int
      */
     public function getTotalPayed();
 
@@ -67,25 +67,26 @@ interface OrderInterface extends SaleInterface
     public function getIsPayed();
 
     /**
-     * @param $paymentFee
+     * @param int $paymentFee
      * @param bool $withTax
      */
     public function setPaymentFee($paymentFee, $withTax = true);
 
     /**
      * @param bool $withTax
-     * @return float
+     * @return int
      */
     public function getPaymentFee($withTax = true);
 
     /**
-     * @param $paymentFee
+     * @param int $paymentFee
      * @param bool $withTax
      */
     public function setBasePaymentFee($paymentFee, $withTax = true);
 
     /**
      * @param bool $withTax
+     * @return int
      */
     public function getBasePaymentFee($withTax = true);
 }

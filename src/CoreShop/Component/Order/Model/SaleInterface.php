@@ -41,13 +41,13 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function setBaseCurrency($currency);
 
     /**
-     * @param $total
+     * @param int $total
      * @param bool $withTax
      */
     public function setTotal($total, $withTax = true);
 
     /**
-     * @param $totalTax
+     * @param int $totalTax
      */
     public function setTotalTax($totalTax);
 
@@ -62,39 +62,39 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function setTaxes($taxes);
 
     /**
-     * @param $subtotal
+     * @param int $subtotal
      * @param bool $withTax
      */
     public function setSubtotal($subtotal, $withTax = true);
 
     /**
-     * @param $subtotalTax
+     * @param int $subtotalTax
      */
     public function setSubtotalTax($subtotalTax);
 
     /**
-     * @param $shipping
+     * @param int $shipping
      * @param bool $withTax
      */
     public function setShipping($shipping, $withTax = true);
 
     /**
-     * @param $taxRate
+     * @param int $taxRate
      */
     public function setShippingTaxRate($taxRate);
 
     /**
-     * @return float
+     * @return int
      */
     public function getShippingTax();
 
     /**
-     * @param $shippingTax
+     * @param int $shippingTax
      */
     public function setShippingTax($shippingTax);
 
     /**
-     * @param $discount
+     * @param int $discount
      * @param bool $withTax
      */
     public function setDiscount($discount, $withTax = true);
@@ -152,7 +152,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function hasPriceRule($priceRule);
 
     /**
-     * @return float
+     * @return int
      */
     public function getDiscountPercentage();
 
@@ -163,72 +163,68 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getShipping($withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getShippingTaxRate();
 
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getBaseTotal($withTax = true);
 
     /**
-     * @param $total
+     * @param int $total
      * @param bool $withTax
      */
     public function setBaseTotal($total, $withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseTotalTax();
 
     /**
-     * @param $totalTax
+     * @param int $totalTax
      */
     public function setBaseTotalTax($totalTax);
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getBaseSubtotal($withTax = true);
 
     /**
-     * @param $subtotal
+     * @param int $subtotal
      * @param bool $withTax
      */
     public function setBaseSubtotal($subtotal, $withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseSubtotalTax();
 
     /**
-     * @param $subtotalTax
+     * @param int $subtotalTax
      */
     public function setBaseSubtotalTax($subtotalTax);
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getBaseDiscount($withTax = true);
 
     /**
-     * @param $discount
+     * @param int $discount
      * @param bool $withTax
      */
     public function setBaseDiscount($discount, $withTax = true);
@@ -245,24 +241,23 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getBaseShipping($withTax = true);
 
     /**
-     * @param $shipping
+     * @param int $shipping
      * @param bool $withTax
      */
     public function setBaseShipping($shipping, $withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseShippingTax();
 
     /**
-     * @param $shippingTax
+     * @param int $shippingTax
      */
     public function setBaseShippingTax($shippingTax);
 }

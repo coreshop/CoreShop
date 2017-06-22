@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -16,27 +16,25 @@ interface OrderShipmentItemInterface extends OrderDocumentItemInterface
 {
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getTotal($withTax = true);
 
     /**
-     * @param float $total
-     * @param bool  $withTax
+     * @param int $total
+     * @param bool $withTax
      */
     public function setTotal($total, $withTax = true);
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getBaseTotal($withTax = true);
 
     /**
-     * @param float $baseTotal
-     * @param bool  $withTax
+     * @param int $baseTotal
+     * @param bool $withTax
      */
     public function setBaseTotal($baseTotal, $withTax = true);
 

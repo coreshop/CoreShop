@@ -32,54 +32,40 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     public function getSaleDocument();
 
     /**
-     * @param $itemPrice
+     * @param int $itemPrice
      * @param bool $withTax
-     *
-     * @return mixed
      */
     public function setItemPrice($itemPrice, $withTax = true);
 
     /**
-     * @param $itemRetailPrice
+     * @param int $itemRetailPrice
      * @param bool $withTax
-     *
-     * @return mixed
      */
     public function setItemRetailPrice($itemRetailPrice, $withTax = true);
 
     /**
-     * @param $wholesalePrice
-     *
-     * @return mixed
+     * @param int $wholesalePrice
      */
     public function setItemWholesalePrice($wholesalePrice);
 
     /**
-     * @param $itemTax
-     *
-     * @return mixed
+     * @param int $itemTax
      */
     public function setItemTax($itemTax);
 
     /**
-     * @param $taxes
-     *
-     * @return mixed
+     * @param mixed $taxes
      */
     public function setTaxes($taxes);
 
     /**
-     * @param $total
+     * @param int $total
      * @param bool $withTax
-     *
-     * @return mixed
      */
     public function setTotal($total, $withTax = true);
 
     /**
-     * @param $totalTax
-     *
-     * @return mixed
+     * @param int $totalTax
      */
     public function setTotalTax($totalTax);
 
@@ -100,43 +86,35 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
 
     /**
      * @param bool $withTax
-     *
-     * @return mixed
+     * @return int
      */
     public function getBaseItemPrice($withTax = true);
 
     /**
-     * @param $itemPrice
+     * @param int $itemPrice
      * @param bool $withTax
-     *
-     * @return mixed
      */
     public function setBaseItemPrice($itemPrice, $withTax = true);
 
     /**
      * @param bool $withTax
-     *
-     * @return mixed
+     * @return int
      */
     public function getBaseItemRetailPrice($withTax = true);
 
     /**
-     * @param $itemRetailPrice
+     * @param int $itemRetailPrice
      * @param bool $withTax
-     *
-     * @return mixed
      */
     public function setBaseItemRetailPrice($itemRetailPrice, $withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseItemTax();
 
     /**
-     * @param $itemTax
-     *
-     * @return mixed
+     * @param int $itemTax
      */
     public function setBaseItemTax($itemTax);
 
@@ -154,23 +132,18 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getBaseTotal($withTax = true);
 
     /**
-     * @param $total
+     * @param int $total
      * @param bool $withTax
-     *
-     * @return mixed
      */
     public function setBaseTotal($total, $withTax = true);
 
     /**
-     * @param $totalTax
-     *
-     * @return mixed
+     * @param int $totalTax
      */
     public function setBaseTotalTax($totalTax);
 }

@@ -28,38 +28,38 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
     /**
      * @param bool $withTax
      *
-     * @return float
+     * @return int
      */
     public function getTotal($withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getTotalTax();
 
     /**
      * @param bool $withTax
      *
-     * @return float
+     * @return int
      */
     public function getSubtotal($withTax = true);
 
     /**
-     * @return float
+     * @return int
      */
     public function getSubtotalTax();
 
     /**
      * @param bool $withTax
      *
-     * @return float
+     * @return int
      */
     public function getDiscount($withTax = true);
 
     /**
      * @param bool $withTax
      *
-     * @return float
+     * @return int
      */
     public function getPaymentFee($withTax = true);
 
@@ -76,7 +76,7 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
     public function setPaymentProvider($paymentProvider);
 
     /**
-     * @return float
+     * @return int
      */
     public function getPaymentFeeTaxRate();
 

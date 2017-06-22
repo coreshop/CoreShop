@@ -34,41 +34,35 @@ interface ProductInterface extends PimcoreModelInterface
     /**
      * @param $name
      * @param string|null $language
-     *
-     * @return mixed
      */
     public function setName($name, $language = null);
 
     /**
      * @param bool $withTax
      *
-     * @return float
+     * @return int
      */
     public function getPrice($withTax = true);
 
     /**
      * @param bool $withTax
      *
-     * @return mixed
+     * @return int
      */
     public function getBasePrice($withTax = true);
 
     /**
-     * @param $basePrice
-     *
-     * @return mixed
+     * @param int $basePrice
      */
     public function setBasePrice($basePrice);
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getWholesalePrice();
 
     /**
-     * @param $wholesalePrice
-     *
-     * @return mixed
+     * @param int $wholesalePrice
      */
     public function setWholesalePrice($wholesalePrice);
 
@@ -79,8 +73,6 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param $availableForOrder
-     *
-     * @return mixed
      */
     public function setAvailableForOrder($availableForOrder);
 
@@ -91,8 +83,6 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param TaxRuleGroupInterface $taxRule
-     *
-     * @return mixed
      */
     public function setTaxRule($taxRule);
 
@@ -110,8 +100,6 @@ interface ProductInterface extends PimcoreModelInterface
 
     /**
      * @param CategoryInterface[] $categories
-     *
-     * @return mixed
      */
     public function setCategories($categories);
 
@@ -182,14 +170,14 @@ interface ProductInterface extends PimcoreModelInterface
     public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
 
     /**
-     * @return float
+     * @return int
      */
     public function getTaxRate();
 
     /**
      * Get Product Tax Amount.
      *
-     * @return float
+     * @return int
      */
     public function getTaxAmount();
 

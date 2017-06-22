@@ -30,20 +30,18 @@ interface PurchasableInterface
 
     /**
      * @param bool $withTax
-     *
-     * @return float
+     * @return int
      */
     public function getPrice($withTax = true);
 
     /**
      * @param bool $withTax
-     *
-     * @return mixed
+     * @return int
      */
     public function getBasePrice($withTax = true);
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getWholesalePrice();
 
