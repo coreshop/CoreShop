@@ -28,6 +28,19 @@ interface OrderShipmentItemInterface extends OrderDocumentItemInterface
     public function setTotal($total, $withTax = true);
 
     /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseTotal($withTax = true);
+
+    /**
+     * @param float $baseTotal
+     * @param bool  $withTax
+     */
+    public function setBaseTotal($baseTotal, $withTax = true);
+
+    /**
      * @return float
      */
     public function getWeight();

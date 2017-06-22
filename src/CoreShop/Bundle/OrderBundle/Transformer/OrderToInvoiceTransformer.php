@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
@@ -87,15 +87,15 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
-     * @param ItemKeyTransformerInterface           $keyTransformer
-     * @param NumberGeneratorInterface              $numberGenerator
-     * @param string                                $invoiceFolderPath
-     * @param ObjectServiceInterface                $objectService
-     * @param PimcoreRepositoryInterface            $orderItemRepository
-     * @param PimcoreFactoryInterface               $invoiceItemFactory
-     * @param OrderInvoiceRepositoryInterface       $invoiceRepository
-     * @param TransformerEventDispatcherInterface   $eventDispatcher
-     * @param FactoryInterface                      $taxItemFactory
+     * @param ItemKeyTransformerInterface $keyTransformer
+     * @param NumberGeneratorInterface $numberGenerator
+     * @param string $invoiceFolderPath
+     * @param ObjectServiceInterface $objectService
+     * @param PimcoreRepositoryInterface $orderItemRepository
+     * @param PimcoreFactoryInterface $invoiceItemFactory
+     * @param OrderInvoiceRepositoryInterface $invoiceRepository
+     * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param FactoryInterface $taxItemFactory
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
@@ -108,7 +108,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         OrderInvoiceRepositoryInterface $invoiceRepository,
         TransformerEventDispatcherInterface $eventDispatcher,
         FactoryInterface $taxItemFactory
-    ) {
+    )
+    {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -183,19 +184,25 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     private function calculateInvoice(OrderInvoiceInterface $invoice)
     {
-        $this->calculateSubtotal($invoice);
-        $this->calculateShipping($invoice);
-        $this->calculatePaymentFees($invoice);
-        $this->calculateDiscount($invoice);
-        $this->calculateTotal($invoice);
+        $this->calculateSubtotal($invoice, true);
+        $this->calculateSubtotal($invoice, false);
+        $this->calculateShipping($invoice, true);
+        $this->calculateShipping($invoice, false);
+        $this->calculatePaymentFees($invoice, true);
+        $this->calculatePaymentFees($invoice, false);
+        $this->calculateDiscount($invoice, true);
+        $this->calculateDiscount($invoice, false);
+        $this->calculateTotal($invoice, true);
+        $this->calculateTotal($invoice, false);
 
         $invoice->save();
     }
 
     /**
      * @param OrderInvoiceInterface $invoice
+     * @param boolean $base Calculate Subtotal for Base Values
      */
-    private function calculateSubtotal(OrderInvoiceInterface $invoice)
+    private function calculateSubtotal(OrderInvoiceInterface $invoice, $base = true)
     {
         $discountPercentage = $invoice->getOrder()->getDiscountPercentage();
 
@@ -207,37 +214,57 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
          * @var $item OrderInvoiceItemInterface
          */
         foreach ($invoice->getItems() as $item) {
-            $subtotalWithTax += $item->getTotal();
-            $subtotalWithoutTax += $item->getTotal(false);
-            $subtotalTax += $item->getTotalTax();
+            if ($base) {
+                $subtotalWithTax += $item->getBaseTotal();
+                $subtotalWithoutTax += $item->getBaseTotal(false);
+                $subtotalTax += $item->getBaseTotalTax();
+            } else {
+                $subtotalWithTax += $item->getTotal();
+                $subtotalWithoutTax += $item->getTotal(false);
+                $subtotalTax += $item->getTotalTax();
+            }
 
             foreach ($item->getTaxes() as $tax) {
                 if ($tax instanceof TaxItemInterface) {
-                    $this->addTax($invoice, $tax->getName(), $tax->getRate(), $tax->getAmount() * $discountPercentage);
+                    $this->addTax($invoice, $tax->getName(), $tax->getRate(), $tax->getAmount() * $discountPercentage, $base);
                 }
             }
         }
 
-        $invoice->setSubtotal($subtotalWithTax);
-        $invoice->setSubtotal($subtotalWithoutTax, false);
-        $invoice->setSubtotalTax($subtotalTax);
+        if ($base) {
+            $invoice->setBaseSubtotal($subtotalWithTax);
+            $invoice->setBaseSubtotal($subtotalWithoutTax, false);
+            $invoice->setBaseSubtotalTax($subtotalTax);
+        } else {
+            $invoice->setSubtotal($subtotalWithTax);
+            $invoice->setSubtotal($subtotalWithoutTax, false);
+            $invoice->setSubtotalTax($subtotalTax);
+        }
     }
 
     /**
      * Calculate Shipping Prices for invoices.
      *
      * @param OrderInvoiceInterface $invoice
+     * @param boolean $base Calculate Shipping for Base Values
      */
-    private function calculateShipping(OrderInvoiceInterface $invoice)
+    private function calculateShipping(OrderInvoiceInterface $invoice, $base = true)
     {
         $shippingWithTax = 0;
         $shippingWithoutTax = 0;
         $shippingTax = 0;
 
-        $totalShipping = $invoice->getOrder()->getShipping();
-        $totalShippingWT = $invoice->getOrder()->getShipping(false);
-        $invoicedShipping = $this->getProcessedValue('shippingGross', $invoice->getOrder());
-        $invoicedShippingWT = $this->getProcessedValue('shippingNet', $invoice->getOrder());
+        if ($base) {
+            $totalShipping = $invoice->getOrder()->getBaseShipping();
+            $totalShippingWT = $invoice->getOrder()->getBaseShipping(false);
+            $invoicedShipping = $this->getProcessedValue('baseShippingGross', $invoice->getOrder());
+            $invoicedShippingWT = $this->getProcessedValue('baseShippingNet', $invoice->getOrder());
+        } else {
+            $totalShipping = $invoice->getOrder()->getShipping();
+            $totalShippingWT = $invoice->getOrder()->getShipping(false);
+            $invoicedShipping = $this->getProcessedValue('shippingGross', $invoice->getOrder());
+            $invoicedShippingWT = $this->getProcessedValue('shippingNet', $invoice->getOrder());
+        }
 
         if ($totalShipping - $invoicedShipping > 0) {
             $shippingTaxRate = $invoice->getOrder()->getShippingTaxRate();
@@ -246,29 +273,42 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $shippingWithoutTax = $totalShippingWT - $invoicedShippingWT;
             $shippingTax = $shippingWithTax - $shippingWithoutTax;
 
-            $this->addTax($invoice, 'shipping', $shippingTaxRate, $shippingTax);
+            $this->addTax($invoice, 'shipping', $shippingTaxRate, $shippingTax, $base);
         }
 
-        $invoice->setShipping($shippingWithTax);
-        $invoice->setShipping($shippingWithoutTax, false);
-        $invoice->setShippingTax($shippingTax);
-        $invoice->setShippingTaxRate($invoice->getOrder()->getShippingTaxRate());
+        if ($base) {
+            $invoice->setBaseShipping($shippingWithTax);
+            $invoice->setBaseShipping($shippingWithoutTax, false);
+            $invoice->setBaseShippingTax($shippingTax);
+        } else {
+            $invoice->setShipping($shippingWithTax);
+            $invoice->setShipping($shippingWithoutTax, false);
+            $invoice->setShippingTax($shippingTax);
+            $invoice->setShippingTaxRate($invoice->getOrder()->getShippingTaxRate());
+        }
     }
 
     /**
      * Calculate Payment Fees for Invoice.
      *
      * @param OrderInvoiceInterface $invoice
+     * @param boolean $base Calculate Payment Fees for Base Values
      */
-    private function calculatePaymentFees(OrderInvoiceInterface $invoice)
+    private function calculatePaymentFees(OrderInvoiceInterface $invoice, $base = true)
     {
         $paymentFeeWithTax = 0;
         $paymentFeeWithoutTax = 0;
         $paymentFeeTax = 0;
 
-        $totalPaymentFee = $invoice->getOrder()->getPaymentFee();
-        $invoicedPaymentFees = $this->getProcessedValue('paymentFeeGross', $invoice->getOrder());
-        $invoicedPaymentFeesWT = $this->getProcessedValue('paymentFeeNet', $invoice->getOrder());
+        if ($base) {
+            $totalPaymentFee = $invoice->getOrder()->getBasePaymentFee();
+            $invoicedPaymentFees = $this->getProcessedValue('basePaymentFeeGross', $invoice->getOrder());
+            $invoicedPaymentFeesWT = $this->getProcessedValue('basePaymentFeeNet', $invoice->getOrder());
+        } else {
+            $totalPaymentFee = $invoice->getOrder()->getPaymentFee();
+            $invoicedPaymentFees = $this->getProcessedValue('paymentFeeGross', $invoice->getOrder());
+            $invoicedPaymentFeesWT = $this->getProcessedValue('paymentFeeNet', $invoice->getOrder());
+        }
 
         if ($totalPaymentFee - $invoicedPaymentFees > 0) {
             $paymentFeeTaxRate = $invoice->getOrder()->getPaymentFeeTaxRate();
@@ -277,28 +317,41 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $paymentFeeWithoutTax = $paymentFeeWithTax - $invoicedPaymentFeesWT;
             $paymentFeeTax = $paymentFeeWithTax - $paymentFeeWithoutTax;
 
-            $this->addTax($invoice, 'payment', $paymentFeeTaxRate, $paymentFeeTax);
+            $this->addTax($invoice, 'payment', $paymentFeeTaxRate, $paymentFeeTax, $base);
         }
 
-        $invoice->setPaymentFee($paymentFeeWithTax);
-        $invoice->setPaymentFee($paymentFeeWithoutTax, false);
-        $invoice->setPaymentFeeTax($paymentFeeTax);
-        $invoice->setPaymentFeeTaxRate($invoice->getShippingTaxRate());
+        if ($base) {
+            $invoice->setBasePaymentFee($paymentFeeWithTax);
+            $invoice->setBasePaymentFee($paymentFeeWithoutTax, false);
+            $invoice->setBasePaymentFeeTax($paymentFeeTax);
+        } else {
+            $invoice->setPaymentFee($paymentFeeWithTax);
+            $invoice->setPaymentFee($paymentFeeWithoutTax, false);
+            $invoice->setPaymentFeeTax($paymentFeeTax);
+            $invoice->setPaymentFeeTaxRate($invoice->getShippingTaxRate());
+        }
     }
 
     /**
      * Calculate Discount for Invoice.
      *
      * @param OrderInvoiceInterface $invoice
+     * @param boolean $base Calculate Discount for Base Values
      */
-    private function calculateDiscount(OrderInvoiceInterface $invoice)
+    private function calculateDiscount(OrderInvoiceInterface $invoice, $base = true)
     {
         $discountWithTax = 0;
         $discountWithoutTax = 0;
         $discountTax = 0;
 
-        $totalDiscount = $invoice->getOrder()->getDiscount();
-        $invoicedDiscount = $this->getProcessedValue('discount', $invoice->getOrder());
+        if ($base) {
+            $totalDiscount = $invoice->getOrder()->getBaseDiscount();
+            $invoicedDiscount = $this->getProcessedValue('baseDiscount', $invoice->getOrder());
+        }
+        else {
+            $totalDiscount = $invoice->getOrder()->getDiscount();
+            $invoicedDiscount = $this->getProcessedValue('discount', $invoice->getOrder());
+        }
 
         if ($totalDiscount - $invoicedDiscount > 0) {
             $discountWithTax = $totalDiscount - $invoicedDiscount;
@@ -306,44 +359,77 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $discountTax = $discountWithTax - $discountWithoutTax;
         }
 
-        $invoice->setDiscount($discountWithTax);
-        $invoice->setDiscount($discountWithoutTax, false);
-        $invoice->setDiscountTax($discountTax);
+        if ($base) {
+            $invoice->setBaseDiscount($discountWithTax);
+            $invoice->setBaseDiscount($discountWithoutTax, false);
+            $invoice->setBaseDiscountTax($discountTax);
+        }
+        else {
+            $invoice->setDiscount($discountWithTax);
+            $invoice->setDiscount($discountWithoutTax, false);
+            $invoice->setDiscountTax($discountTax);
+        }
     }
 
     /**
      * Calculate Total for invoice.
      *
      * @param OrderInvoiceInterface $invoice
+     * @param boolean $base Calculate Totals for Base Values
      */
-    private function calculateTotal(OrderInvoiceInterface $invoice)
+    private function calculateTotal(OrderInvoiceInterface $invoice, $base = true)
     {
-        $subtotalTax = $invoice->getSubtotalTax();
-        $shippingTax = $invoice->getShippingTax();
-        $paymentFeeTax = $invoice->getPaymentFeeTax();
-        $discountTax = $invoice->getDiscountTax();
+        if ($base) {
+            $subtotalTax = $invoice->getBaseSubtotalTax();
+            $shippingTax = $invoice->getBaseShippingTax();
+            $paymentFeeTax = $invoice->getBasePaymentFeeTax();
+            $discountTax = $invoice->getBaseDiscountTax();
 
-        $subtotalWithTax = $invoice->getSubtotal();
-        $shippingWithTax = $invoice->getShipping();
-        $paymentFeeWithTax = $invoice->getPaymentFee();
-        $discountWithTax = $invoice->getDiscount();
+            $subtotalWithTax = $invoice->getBaseSubtotal();
+            $shippingWithTax = $invoice->getBaseShipping();
+            $paymentFeeWithTax = $invoice->getBasePaymentFee();
+            $discountWithTax = $invoice->getBaseDiscount();
 
-        $subtotalWithoutTax = $invoice->getSubtotal(false);
-        $shippingWithoutTax = $invoice->getShipping(false);
-        $paymentFeeWithoutTax = $invoice->getPaymentFee(false);
-        $discountWithoutTax = $invoice->getDiscount(false);
+            $subtotalWithoutTax = $invoice->getBaseSubtotal(false);
+            $shippingWithoutTax = $invoice->getBaseShipping(false);
+            $paymentFeeWithoutTax = $invoice->getBasePaymentFee(false);
+            $discountWithoutTax = $invoice->getBaseDiscount(false);
+        }
+        else {
+            $subtotalTax = $invoice->getSubtotalTax();
+            $shippingTax = $invoice->getShippingTax();
+            $paymentFeeTax = $invoice->getPaymentFeeTax();
+            $discountTax = $invoice->getDiscountTax();
+
+            $subtotalWithTax = $invoice->getSubtotal();
+            $shippingWithTax = $invoice->getShipping();
+            $paymentFeeWithTax = $invoice->getPaymentFee();
+            $discountWithTax = $invoice->getDiscount();
+
+            $subtotalWithoutTax = $invoice->getSubtotal(false);
+            $shippingWithoutTax = $invoice->getShipping(false);
+            $paymentFeeWithoutTax = $invoice->getPaymentFee(false);
+            $discountWithoutTax = $invoice->getDiscount(false);
+        }
 
         $totalTax = ($subtotalTax + $shippingTax + $paymentFeeTax) - $discountTax;
         $total = ($subtotalWithTax + $shippingWithTax + $paymentFeeWithTax) - $discountWithTax;
         $totalWithoutTax = ($subtotalWithoutTax + $shippingWithoutTax + $paymentFeeWithoutTax) - $discountWithoutTax;
 
-        $invoice->setTotalTax($totalTax);
-        $invoice->setTotal($total);
-        $invoice->setTotal($totalWithoutTax, false);
+        if ($base) {
+            $invoice->setBaseTotalTax($totalTax);
+            $invoice->setBaseTotal($total);
+            $invoice->setBaseTotal($totalWithoutTax, false);
+        }
+        else {
+            $invoice->setTotalTax($totalTax);
+            $invoice->setTotal($total);
+            $invoice->setTotal($totalWithoutTax, false);
+        }
     }
 
     /**
-     * @param string         $field
+     * @param string $field
      * @param OrderInterface $order
      *
      * @return float
@@ -365,10 +451,15 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * @param $name
      * @param $rate
      * @param $amount
+     * @param boolean $base
      */
-    private function addTax(OrderInvoiceInterface $invoice, $name, $rate, $amount)
+    private function addTax(OrderInvoiceInterface $invoice, $name, $rate, $amount, $base = true)
     {
-        $taxes = $invoice->getTaxes();
+        if ($base) {
+            $taxes = $invoice->getBaseTaxes();
+        } else {
+            $taxes = $invoice->getTaxes();
+        }
 
         if (!$taxes instanceof Fieldcollection) {
             $taxes = new Fieldcollection();
@@ -396,7 +487,12 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $taxItem->setAmount($amount);
 
             $taxes->add($taxItem);
-            $invoice->setTaxes($taxes);
+
+            if ($base) {
+                $invoice->setBaseTaxes($taxes);
+            } else {
+                $invoice->setTaxes($taxes);
+            }
         }
     }
 }

@@ -225,7 +225,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $taxesFieldCollection = new Fieldcollection();
         $taxesFieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
 
-        foreach ($baseTaxesFieldCollection->getItems() as $item) {
+        foreach ($taxesFieldCollection->getItems() as $item) {
             if ($item instanceof TaxItemInterface) {
                 $item->setAmount($this->currencyConverter->convert($item->getAmount(), $fromCurrencyCode, $toCurrencyCode));
             }

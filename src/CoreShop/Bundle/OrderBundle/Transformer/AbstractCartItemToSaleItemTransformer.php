@@ -22,6 +22,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\Object\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -101,13 +102,24 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setParent($itemFolder);
         $saleItem->setPublished(true);
 
-        $fieldCollection = new Fieldcollection();
-        $fieldCollection->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
+        $baseTaxesFieldCollection = new Fieldcollection();
+        $baseTaxesFieldCollection->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
 
-        $saleItem->setTaxes($fieldCollection);
+        $taxesFieldCollection = new Fieldcollection();
+        $taxesFieldCollection->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
+
+        foreach ($taxesFieldCollection->getItems() as $item) {
+            if ($item instanceof TaxItemInterface) {
+                $item->setAmount($this->currencyConverter->convert($item->getAmount(), $fromCurrency, $toCurrency));
+            }
+        }
+
+        $saleItem->setTaxes($taxesFieldCollection);
+        $saleItem->setBaseTaxes($baseTaxesFieldCollection);
 
         $saleItem->setProduct($cartItem->getProduct());
         $saleItem->setItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));
+
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(true), $fromCurrency, $toCurrency), true);
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(false), $fromCurrency, $toCurrency), false);
         $saleItem->setTotal($this->currencyConverter->convert($cartItem->getTotal(true), $fromCurrency, $toCurrency), true);

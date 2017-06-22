@@ -98,11 +98,17 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
 
         $invoiceItem->setOrderItem($orderItem);
         $invoiceItem->setQuantity($quantity);
+
         $invoiceItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
         $invoiceItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
         $invoiceItem->setTotalTax(($orderItem->getItemPrice(true) - $orderItem->getItemPrice(false)) * $quantity);
 
-        $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false));
+        $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
+        $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
+        $invoiceItem->setBaseTotalTax(($orderItem->getBaseItemPrice(true) - $orderItem->getBaseItemPrice(false)) * $quantity);
+
+        $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), false);
+        $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), true);
 
         $invoiceItem->save();
 
@@ -111,12 +117,23 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         return $invoiceItem;
     }
 
-    protected function setDocumentItemTaxes(OrderItemInterface $orderItem, OrderInvoiceItemInterface $docItem, $quantity)
+    /**
+     * @param OrderItemInterface $orderItem
+     * @param OrderInvoiceItemInterface $docItem
+     * @param $quantity
+     * @param bool $base
+     */
+    protected function setDocumentItemTaxes(OrderItemInterface $orderItem, OrderInvoiceItemInterface $docItem, $quantity, $base = true)
     {
         $itemTaxes = new Fieldcollection();
         $totalTax = 0;
 
-        $orderTaxes = $orderItem->getTaxes();
+        if ($base) {
+            $orderTaxes = $orderItem->getBaseTaxes();
+        }
+        else {
+            $orderTaxes = $orderItem->getTaxes();
+        }
 
         if ($orderTaxes instanceof Fieldcollection) {
             foreach ($orderTaxes as $tax) {
@@ -144,7 +161,13 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
             }
         }
 
-        $docItem->setTotalTax($totalTax);
-        $docItem->setTaxes($itemTaxes);
+        if ($base) {
+            $docItem->setBaseTotalTax($totalTax);
+            $docItem->setBaseTaxes($itemTaxes);
+        }
+        else {
+            $docItem->setTotalTax($totalTax);
+            $docItem->setTaxes($itemTaxes);
+        }
     }
 }

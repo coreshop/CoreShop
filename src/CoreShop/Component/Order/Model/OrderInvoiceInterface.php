@@ -188,4 +188,129 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
      * @param mixed $taxes
      */
     public function setTaxes($taxes);
+    
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseDiscount($withTax = true);
+
+    /**
+     * @param float $baseDiscount
+     * @param bool  $withTax
+     */
+    public function setBaseDiscount($baseDiscount, $withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getBaseDiscountTax();
+
+    /**
+     * @param float $baseDiscountTax
+     */
+    public function setBaseDiscountTax($baseDiscountTax);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseShipping($withTax = true);
+
+    /**
+     * @param float $baseShipping
+     * @param bool  $withTax
+     */
+    public function setBaseShipping($baseShipping, $withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getBaseShippingTax();
+
+    /**
+     * @param float $baseShippingTax
+     */
+    public function setBaseShippingTax($baseShippingTax);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBasePaymentFee($withTax = true);
+
+    /**
+     * @param float $basePaymentFee
+     * @param bool  $withTax
+     */
+    public function setBasePaymentFee($basePaymentFee, $withTax = true);
+
+    /**
+     * @return mixed
+     */
+    public function getBasePaymentFeeTax();
+
+    /**
+     * @param float $basePaymentFeeTax
+     */
+    public function setBasePaymentFeeTax($basePaymentFeeTax);
+
+    /**
+     * @return float
+     */
+    public function getBaseTotalTax();
+
+    /**
+     * @param float $baseTotalTax
+     */
+    public function setBaseTotalTax($baseTotalTax);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseTotal($withTax = true);
+
+    /**
+     * @param float $baseTotal
+     * @param bool  $withTax
+     */
+    public function setBaseTotal($baseTotal, $withTax = true);
+
+    /**
+     * @return float
+     */
+    public function getBaseSubtotalTax();
+
+    /**
+     * @param float $baseSubtotalTax
+     */
+    public function setBaseSubtotalTax($baseSubtotalTax);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getBaseSubtotal($withTax = true);
+
+    /**
+     * @param float $baseSubtotal
+     * @param bool  $withTax
+     */
+    public function setBaseSubtotal($baseSubtotal, $withTax = true);
+
+    /**
+     * @return mixed
+     */
+    public function getBaseTaxes();
+
+    /**
+     * @param mixed $baseTaxes
+     */
+    public function setBaseTaxes($baseTaxes);
 }

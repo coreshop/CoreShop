@@ -79,6 +79,10 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         $shipmentItem->setQuantity($quantity);
         $shipmentItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
         $shipmentItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
+
+        $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
+        $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
+
         $shipmentItem->setWeight($orderItem->getTotalWeight());
 
         $shipmentItem->save();
