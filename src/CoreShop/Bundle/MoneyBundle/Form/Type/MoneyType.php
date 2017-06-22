@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\MoneyBundle\Form\Type;
 use CoreShop\Bundle\MoneyBundle\Form\Transfomer\MoneyToIntegerTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -45,7 +46,7 @@ class MoneyType extends AbstractType
      */
     public function getParent()
     {
-        return IntegerType::class;
+        return NumberType::class;
     }
 
     /**

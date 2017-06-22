@@ -134,18 +134,18 @@ class Taxation extends Base
          */
         $taxCalculator = new TaxRulesTaxCalculator([$tax10], TaxCalculatorInterface::DISABLE_METHOD);
 
-        $this->assertEquals(11, $taxCalculator->applyTaxes(10));
-        $this->assertEquals(13.2, $taxCalculator->applyTaxes(12));
+        $this->assertEquals(1100, $taxCalculator->applyTaxes(1000));
+        $this->assertEquals(1320, $taxCalculator->applyTaxes(1200));
 
         $taxCalculator = new TaxRulesTaxCalculator([$tax10, $tax20], TaxCalculatorInterface::COMBINE_METHOD);
 
-        $this->assertEquals(13, $taxCalculator->applyTaxes(10));
-        $this->assertEquals(15.6, $taxCalculator->applyTaxes(12));
+        $this->assertEquals(1300, $taxCalculator->applyTaxes(1000));
+        $this->assertEquals(1560, $taxCalculator->applyTaxes(1200));
 
         $taxCalculator = new TaxRulesTaxCalculator([$tax10, $tax20], TaxCalculatorInterface::ONE_AFTER_ANOTHER_METHOD);
 
-        $this->assertEquals(13.2, $taxCalculator->applyTaxes(10));
-        $this->assertEquals(15.84, $taxCalculator->applyTaxes(12));
+        $this->assertEquals(1320, $taxCalculator->applyTaxes(1000));
+        $this->assertEquals(1584, $taxCalculator->applyTaxes(1200));
     }
 
     public function testTaxCalculatorFactoryService()

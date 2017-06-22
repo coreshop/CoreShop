@@ -41,7 +41,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
      */
     public function applyTaxes($price)
     {
-        return $price * (1 + ($this->getTotalRate() / 100));
+        return (int) round($price * (1 + ($this->getTotalRate() / 100)));
     }
 
     /**
@@ -49,7 +49,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
      */
     public function removeTaxes($price)
     {
-        return $price / (1 + $this->getTotalRate() / 100);
+        return (int) round($price / (1 + $this->getTotalRate() / 100));
     }
 
     /**

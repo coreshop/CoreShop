@@ -25,7 +25,7 @@ class DiscountPercentActionProcessor implements ProductPriceActionProcessorInter
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        return ($configuration['percent'] / 100) * $price;
+        return (int) round(($configuration['percent'] / 100) * $price);
     }
 
     /**

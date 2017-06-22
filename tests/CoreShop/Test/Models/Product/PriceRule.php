@@ -344,6 +344,34 @@ class PriceRule extends RuleTest
     }
 
     /**
+     * Test Price Rule Action Discount Amount.
+     */
+    public function testPriceRuleActionDiscountAmountWithOddAmount()
+    {
+        $this->printTestName();
+        $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
+
+        $action = $this->createActionWithForm('discountAmount', [
+            'amount' => 5.12,
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action);
+
+        $this->getEntityManager()->persist($rule);
+        $this->getEntityManager()->flush();
+
+        $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice());
+
+        $this->assertEquals(512, $discount);
+        $this->assertEquals(988, $this->product->getPrice(false));
+        $this->assertEquals(1186, $this->product->getPrice());
+
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
      * Test Price Rule Action Discount Percent.
      */
     public function testPriceRuleActionDiscountPercent()
