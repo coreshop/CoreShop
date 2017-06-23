@@ -105,7 +105,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
                     return;
                 }
 
-                $this->addInterpreterConfigurationFields($event->getForm(), $this->getterTypeRegistry->get($type, 'default'));
+                $this->addInterpreterConfigurationFields($event->getForm(), $this->interpreterTypeRegistry->get($type, 'default'));
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 $type = $this->getInterpreterRegistryIdentifier($event->getForm(), $event->getData());
@@ -122,7 +122,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
                     return;
                 }
 
-                $this->addInterpreterConfigurationFields($event->getForm(), $this->getterTypeRegistry->get($data['interpreter'], 'default'));
+                $this->addInterpreterConfigurationFields($event->getForm(), $this->interpreterTypeRegistry->get($data['interpreter'], 'default'));
             })
         ;
     }
