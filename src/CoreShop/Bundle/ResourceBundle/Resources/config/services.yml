@@ -66,3 +66,6 @@ services:
     class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
     calls:
       - [setContainer, ['@service_container']]
+
+  coreshop.resource_loader:
+    class: CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader

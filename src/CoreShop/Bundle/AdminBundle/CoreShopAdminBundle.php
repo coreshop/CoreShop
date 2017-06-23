@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\AdminBundle;
 
@@ -73,8 +73,10 @@ final class CoreShopAdminBundle extends AbstractPimcoreBundle
     {
         $jsFiles = [];
 
-        if ($this->container->hasParameter('coreshop.pimcore.admin.js')) {
-            $jsFiles = $this->container->getParameter('coreshop.pimcore.admin.js');
+        foreach (['core_shop_resource.pimcore.admin.js', 'import_definitions.pimcore.admin.js'] as $parameter) {
+            if ($this->container->hasParameter($parameter)) {
+                $jsFiles = array_merge($jsFiles, $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter($parameter)));
+            }
         }
 
         return $jsFiles;
@@ -87,11 +89,11 @@ final class CoreShopAdminBundle extends AbstractPimcoreBundle
     {
         $cssFiles = [];
 
-        if ($this->container->hasParameter('coreshop.pimcore.admin.css')) {
-            $cssFiles = $this->container->getParameter('coreshop.pimcore.admin.css');
+        foreach (['core_shop_resource.pimcore.admin.css', 'import_definitions.pimcore.admin.css'] as $parameter) {
+            if ($this->container->hasParameter($parameter)) {
+                $cssFiles = array_merge($cssFiles, $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter($parameter)));
+            }
         }
-
-        $cssFiles[] = '/bundles/coreshopcore/pimcore/css/coreshop.css';
 
         return $cssFiles;
     }
