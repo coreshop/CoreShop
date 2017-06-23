@@ -78,26 +78,28 @@ abstract class AbstractModelExtension extends Extension
     }
 
     protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container) {
-        if (array_key_exists('js', $bundleResources)) {
-            $resources = [];
-            $parameter = sprintf('%s.pimcore.admin.js', $applicationName);
+        $resourceTypes = ['js', 'css'];
 
-            if ($container->hasParameter($parameter)) {
-                $resources = $container->getParameter($parameter);
+        foreach ($resourceTypes as $resourceType) {
+            if (array_key_exists($resourceType, $bundleResources)) {
+                $applicationParameter = sprintf('%s.pimcore.admin.%s', $applicationName, $resourceType);
+                $aliasParameter = sprintf('%s.pimcore.admin.%s', $this->getAlias(), $resourceType);
+                $globalParameter = sprintf('resources.admin.%s', $resourceType);
+
+                $parameters = [
+                    $applicationParameter, $aliasParameter, $globalParameter
+                ];
+
+                foreach ($parameters as $containerParameter) {
+                    $resources = [];
+
+                    if ($container->hasParameter($containerParameter)) {
+                        $resources = $container->getParameter($containerParameter);
+                    }
+
+                    $container->setParameter($containerParameter, array_merge($resources, array_values($bundleResources[$resourceType])));
+                }
             }
-
-            $container->setParameter($parameter, array_merge($resources, array_values($bundleResources['js'])));
-        }
-
-        if (array_key_exists('css', $bundleResources)) {
-            $resources = [];
-            $parameter = sprintf('%s.pimcore.admin.css', $applicationName);
-
-            if ($container->hasParameter($parameter)) {
-                $resources = $container->getParameter($parameter);
-            }
-
-            $container->setParameter($parameter, array_merge($resources, array_values($bundleResources['css'])));
         }
 
         if (array_key_exists('permissions', $bundleResources)) {
