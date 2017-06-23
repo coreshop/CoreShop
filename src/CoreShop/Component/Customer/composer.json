@@ -1,7 +1,7 @@
 {
-  "name": "coreshop/currency",
+  "name": "coreshop/customer",
   "type": "library",
-  "description": "CoreShop Currency Component.",
+  "description": "CoreShop Customer Component.",
   "keywords": [
     "coreshop",
     "pimcore",
