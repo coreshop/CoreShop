@@ -1,5 +1,5 @@
 {
-  "name": "coreshop/oayum-bundle",
+  "name": "coreshop/payum-bundle",
   "type": "symfony-bundle",
   "description": "CoreShop - Payment Bundle",
   "keywords": [
