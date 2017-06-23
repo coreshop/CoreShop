@@ -77,7 +77,7 @@ coreshop.resource.item = Class.create({
         return {};
     },
 
-    save: function () {
+    save: function (callback) {
         var me = this,
             data;
 
@@ -112,6 +112,10 @@ coreshop.resource.item = Class.create({
                         var res = Ext.decode(response.responseText);
 
                         this.postSave(res);
+
+                        if (Ext.isFunction(callback)) {
+                            callback();
+                        }
 
                         if (res.success) {
                             pimcore.helpers.showNotification(t('success'), t('coreshop_save_success'), 'success');
