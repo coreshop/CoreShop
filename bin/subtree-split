@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+function split()
+{
+#    split_new_repo $1 $2
+
+
+    SHA1=`./bin/splitsh-lite --prefix=$1`
+    git push $2 "$SHA1:$CURRENT_BRANCH"
+}
+
+function split_new_repo()
+{
+    TMP_DIR="/tmp/enqueue-repo"
+    REMOTE_URL=`git remote get-url $2`
+
+    rm -rf $TMP_DIR;
+    mkdir $TMP_DIR;
+
+    (
+        cd $TMP_DIR;
+        git clone $REMOTE_URL .;
+        git checkout -b master;
+        touch foo;
+        git add foo;
+        git commit -m "foo";
+        git push origin master;
+    );
+
+    SHA1=`./bin/splitsh-lite --prefix=$1`
+    git fetch $2
+    git push $2 "$SHA1:$CURRENT_BRANCH" -f
+}
+
+
+function remote()
+{
+    git remote add $1 $2 || true
+}
+
+remote resource git@github.com:CoreShop/Resource.git
+remote registry git@github.com:CoreShop/Registry.git
+remote address git@github.com:CoreShop/Address.git
+remote configuration git@github.com:CoreShop/Configuration.git
+remote core git@github.com:CoreShop/Core.git
+remote currency git@github.com:CoreShop/Currency.git
+remote customer git@github.com:CoreShop/Customer.git
+remote index git@github.com:CoreShop/Index.git
+remote locale git@github.com:CoreShop/Locale.git
+remote notification git@github.com:CoreShop/Notification.git
+remote order git@github.com:CoreShop/Order.git
+remote payment git@github.com:CoreShop/Payment.git
+remote product git@github.com:CoreShop/Product.git
+remote rule git@github.com:CoreShop/Rule.git
+remote sequence git@github.com:CoreShop/Sequence.git
+remote shipping git@github.com:CoreShop/Shipping.git
+remote store git@github.com:CoreShop/Store.git
+remote taxation git@github.com:CoreShop/Taxation.git
+
+remote address-bundle git@github.com:CoreShop/AddressBundle.git
+remote admin-bundle git@github.com:CoreShop/AdminBundle.git
+remote configuration-bundle git@github.com:CoreShop/ConfigurationBundle.git
+remote core-bundle git@github.com:CoreShop/CoreBundle.git
+remote currency-bundle git@github.com:CoreShop/CurrencyBundle.git
+remote customer-bundle git@github.com:CoreShop/CustomerBundle.git
+remote frontend-bundle git@github.com:CoreShop/FrontendBundle.git
+remote index-bundle git@github.com:CoreShop/IndexBundle.git
+remote locale-bundle git@github.com:CoreShop/LocaleBundle.git
+remote money-bundle git@github.com:CoreShop/MoneyBundle.git
+remote notification-bundle git@github.com:CoreShop/NotificationBundle.git
+remote order-bundle git@github.com:CoreShop/OrderBundle.git
+remote payment-bundle git@github.com:CoreShop/PaymentBundle.git
+remote payum-bundle git@github.com:CoreShop/PayumBundle.git
+remote product-bundle git@github.com:CoreShop/ProductBundle.git
+remote resource-bundle git@github.com:CoreShop/ResourceBundle.git
+remote rule-bundle git@github.com:CoreShop/RuleBundle.git
+remote sequence-bundle git@github.com:CoreShop/SequenceBundle.git
+remote shipping-bundle git@github.com:CoreShop/ShippingBundle.git
+remote store-bundle git@github.com:CoreShop/StoreBundle.git
+remote taxation-bundle git@github.com:CoreShop/TaxationBundle.git
+remote tracking-bundle git@github.com:CoreShop/TrackingBundle.git
+
+split 'src/CoreShop/Component/Resource' resource
+split 'src/CoreShop/Component/Registry' registry
+split 'src/CoreShop/Component/Address' address
+split 'src/CoreShop/Component/Configuration' configuration
+split 'src/CoreShop/Component/Core' core
+split 'src/CoreShop/Component/Currency' currency
+split 'src/CoreShop/Component/Customer' customer
+split 'src/CoreShop/Component/Index' index
+split 'src/CoreShop/Component/Locale' locale
+split 'src/CoreShop/Component/Notification' notification
+split 'src/CoreShop/Component/Order' order
+split 'src/CoreShop/Component/Payment' payment
+split 'src/CoreShop/Component/Product' product
+split 'src/CoreShop/Component/Rule' rule
+split 'src/CoreShop/Component/Sequence' sequence
+split 'src/CoreShop/Component/Shipping' shipping
+split 'src/CoreShop/Component/Store' store
+split 'src/CoreShop/Component/Taxation' taxation
+
+split 'src/CoreShop/Bundle/AddressBundle' address-bundle
+split 'src/CoreShop/Bundle/AdminBundle' admin-bundle
+split 'src/CoreShop/Bundle/ConfigurationBundle' configuration-bundle
+split 'src/CoreShop/Bundle/CoreBundle' core-bundle
+split 'src/CoreShop/Bundle/CurrencyBundle' currency-bundle
+split 'src/CoreShop/Bundle/CustomerBundle' customer-bundle
+split 'src/CoreShop/Bundle/FrontendBundle' frontend-bundle
+split 'src/CoreShop/Bundle/IndexBundle' index-bundle
+split 'src/CoreShop/Bundle/LocaleBundle' locale-bundle
+split 'src/CoreShop/Bundle/MoneyBundle' money-bundle
+split 'src/CoreShop/Bundle/NotificationBundle' notification-bundle
+split 'src/CoreShop/Bundle/OrderBundle' order-bundle
+split 'src/CoreShop/Bundle/PaymentBundle' payment-bundle
+split 'src/CoreShop/Bundle/PayumBundle' payum-bundle
+split 'src/CoreShop/Bundle/ProductBundle' product-bundle
+split 'src/CoreShop/Bundle/ResourceBundle' resource-bundle
+split 'src/CoreShop/Bundle/RuleBundle' rule-bundle
+split 'src/CoreShop/Bundle/SequenceBundle' sequence-bundle
+split 'src/CoreShop/Bundle/ShippingBundle' shipping-bundle
+split 'src/CoreShop/Bundle/StoreBundle' store-bundle
+split 'src/CoreShop/Bundle/TaxationBundle' taxation-bundle
+split 'src/CoreShop/Bundle/TrackingBundle' tracking-bundle
