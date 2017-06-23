@@ -44,7 +44,7 @@ final class RegisterResourcesPass implements CompilerPassInterface
     {
         if (!in_array(ResourceInterface::class, class_implements($class), true)) {
             throw new InvalidArgumentException(sprintf(
-                'Class "%s" must implement "%s" to be registered as a CoreShop model.',
+                'Class "%s" must implement "%s" to be registered as a Resource model.',
                 $class,
                 ResourceInterface::class
             ));
