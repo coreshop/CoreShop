@@ -10,12 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ResourceBundle\Repository;
+namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\Intl\Exception\NotImplementedException;
 
-class PimcoreRepository implements PimcoreRepositoryInterface
+class PimcoreRepository implements PimcoreRepositoryInterface, RepositoryInterface
 {
     /**
      * @var MetadataInterface
@@ -28,6 +31,30 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     public function __construct(MetadataInterface $metadata)
     {
         $this->metadata = $metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function add(ResourceInterface $resource)
+    {
+        throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(ResourceInterface $resource)
+    {
+        throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassName()
+    {
+        return $this->metadata->getClass('model');
     }
 
     /**
@@ -65,7 +92,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL)
     {
         $list = $this->getList();
 
@@ -77,14 +104,18 @@ class PimcoreRepository implements PimcoreRepositoryInterface
             }
         }
 
-        if (null !== $orderBy) {
-            $orderBy = $this->normalizeOrderBy($orderBy);
+        if (is_array($orderBy) && count($orderBy) > 0) {
+            $orderBy = $orderBy[0];
 
-            if ($orderBy['key']) {
-                $list->setOrderKey($orderBy['key']);
+            if (null !== $orderBy) {
+                $orderBy = $this->normalizeOrderBy($orderBy);
+
+                if ($orderBy['key']) {
+                    $list->setOrderKey($orderBy['key']);
+                }
+
+                $list->setOrder($orderBy['direction']);
             }
-
-            $list->setOrder($orderBy['direction']);
         }
 
         $list->setLimit($limit);

@@ -43,7 +43,7 @@ final class DriverProvider
         switch ($type) {
             case CoreShopResourceBundle::DRIVER_DOCTRINE_ORM:
                 return self::$drivers[$type] = new DoctrineORMDriver();
-            case CoreShopResourceBundle::DRIVER_DOCTRINE_PIMCORE:
+            case CoreShopResourceBundle::DRIVER_PIMCORE:
                 return self::$drivers[$type] = new PimcoreDriver();
         }
 

@@ -22,48 +22,48 @@ coreshop_admin_cart_price_rule:
 
 coreshop_order_get_grid_configuration:
   path: /%coreshop.admin.route.base%/order/get-grid-configuration
-  defaults: { _controller: 'coreshop.admin_controller.order:getGridConfigurationAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order:getGridConfigurationAction'}
 
 coreshop_order_get_orders:
   path: /%coreshop.admin.route.base%/order/list
-  defaults: { _controller: 'coreshop.admin_controller.order:listAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order:listAction'}
 
 coreshop_order_get_order:
   path: /%coreshop.admin.route.base%/order/detail
-  defaults: { _controller: 'coreshop.admin_controller.order:detailAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}
 
 coreshop_order_update_payment:
   path: /%coreshop.admin.route.base%/order/update-payment
-  defaults: { _controller: 'coreshop.admin_controller.order:updatePaymentAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order:updatePaymentAction'}
 
 coreshop_order_add_payment:
   path: /%coreshop.admin.route.base%/order/add-payment
-  defaults: { _controller: 'coreshop.admin_controller.order:addPaymentAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order:addPaymentAction'}
 
 coreshop_order_get_payment_providres:
   path: /%coreshop.admin.route.base%/order/get-payment-providers
-  defaults: { _controller: 'coreshop.admin_controller.order:getPaymentProvidersAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order:getPaymentProvidersAction'}
 
 coreshop_order_invoice_get_processable_items:
   path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
-  defaults: { _controller: 'coreshop.admin_controller.order_invoice:getInvoiceAbleItemsAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:getInvoiceAbleItemsAction'}
 
 coreshop_order_invoice_create:
   path: /%coreshop.admin.route.base%/order-invoice/create-invoice
-  defaults: { _controller: 'coreshop.admin_controller.order_invoice:createInvoiceAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:createInvoiceAction'}
 
 coreshop_order_invoice_render:
   path: /%coreshop.admin.route.base%/order-invoice/render
-  defaults: { _controller: 'coreshop.admin_controller.order_invoice:renderAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:renderAction'}
 
 coreshop_order_shipment_get_processable_items:
   path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
-  defaults: { _controller: 'coreshop.admin_controller.order_shipment:getShipAbleItemsAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:getShipAbleItemsAction'}
 
 coreshop_order_shipment_create:
   path: /%coreshop.admin.route.base%/order-shipment/create-shipment
-  defaults: { _controller: 'coreshop.admin_controller.order_shipment:createShipmentAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:createShipmentAction'}
 
 coreshop_order_shipment_render:
   path: /%coreshop.admin.route.base%/order-shipment/render
-  defaults: { _controller: 'coreshop.admin_controller.order_shipment:renderAction'}
+  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}

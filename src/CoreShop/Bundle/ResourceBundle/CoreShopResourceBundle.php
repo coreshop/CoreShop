@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 final class CoreShopResourceBundle extends Bundle
 {
     const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
-    const DRIVER_DOCTRINE_PIMCORE = 'pimcore';
+    const DRIVER_PIMCORE = 'pimcore';
 
     const PIMCORE_MODEL_TYPE_OBJECT = 'object';
     const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';

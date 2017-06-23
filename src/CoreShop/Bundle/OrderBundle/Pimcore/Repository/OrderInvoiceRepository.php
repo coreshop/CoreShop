@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Repository\PimcoreRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 

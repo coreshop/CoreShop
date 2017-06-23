@@ -16,6 +16,7 @@ use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\TranslatableFactoryInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use Pimcore\Navigation\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -75,7 +76,6 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference($metadata->getServiceId('factory')),
                 new Reference($metadata->getServiceId('manager')),
                 new Reference('coreshop.resource_controller.view_handler'),
-                new Reference('doctrine.orm.default_entity_manager'),
                 new Reference('coreshop.resource_controller.event_dispatcher'),
                 new Reference('coreshop.resource_controller.form_factory')
             ])

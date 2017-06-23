@@ -7,7 +7,7 @@ core_shop_order:
     order:
       path: coreshop/orders
       classes:
-        admin_controller: CoreShop\Bundle\CoreBundle\Controller\OrderController
+        pimcore_controller: CoreShop\Bundle\CoreBundle\Controller\OrderController
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrder.json'
     order_shipment:
       classes:

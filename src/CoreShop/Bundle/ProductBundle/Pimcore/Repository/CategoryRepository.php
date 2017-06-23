@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\Pimcore\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Repository\PimcoreRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Product\Repository\CategoryRepositoryInterface;
 
 class CategoryRepository extends PimcoreRepository implements CategoryRepositoryInterface

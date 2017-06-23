@@ -150,7 +150,6 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(TaxItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopTaxationBundle/Resources/install/pimcore/fieldcollections/CoreShopTaxItem.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION)->cannotBeOverwritten(true)->end()
                                     ->end()

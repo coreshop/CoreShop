@@ -23,6 +23,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
      */
     public function getLatestByShop(StoreInterface $store, $count = 8)
     {
-        return $this->findBy(['enabled=1'], 'o_creationDate DESC', $count);
+        return $this->findBy(['enabled=1'], ['o_creationDate DESC'], $count);
     }
 }

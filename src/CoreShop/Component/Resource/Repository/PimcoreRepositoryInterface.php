@@ -21,45 +21,4 @@ interface PimcoreRepositoryInterface
      * @return AbstractListing
      */
     public function getList();
-
-    /**
-     * @param $id
-     *
-     * @return Concrete
-     */
-    public function find($id);
-
-    /**
-     * Finds all objects in the repository.
-     *
-     * @return array The objects.
-     */
-    public function findAll();
-
-    /**
-     * Finds objects by a set of criteria.
-     *
-     * Optionally sorting and limiting details can be passed. An implementation may throw
-     * an UnexpectedValueException if certain values of the sorting or limiting details are
-     * not supported.
-     *
-     * @param array       $criteria
-     * @param string|null $orderBy
-     * @param int|null    $limit
-     * @param int|null    $offset
-     *
-     * @return array The objects.
-     *
-     * @throws \UnexpectedValueException
-     */
-    public function findBy(array $criteria, $orderBy = null, $limit = null, $offset = null);
-
-    /**
-     * Finds a single object by a set of criteria.
-     *
-     * @param array $criteria The criteria.
-     *
-     * @return object|null The object.
-     */
-    public function findOneBy(array $criteria);
 }

@@ -14,8 +14,10 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
-use CoreShop\Bundle\ResourceBundle\Repository\PimcoreRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -37,7 +39,7 @@ final class PimcoreDriver extends AbstractDriver
     {
         parent::load($container, $metadata);
 
-        if ($metadata->hasClass('admin_controller')) {
+        if ($metadata->hasClass('pimcore_controller')) {
             $this->addPimcoreController($container, $metadata);
         }
 
@@ -52,19 +54,16 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $definition = new Definition($metadata->getClass('admin_controller'));
+        $definition = new Definition($metadata->getClass('pimcore_controller'));
         $definition
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
-                new Reference($metadata->getServiceId('factory')),
-                new Reference('coreshop.resource_controller.event_dispatcher'),
-                new Reference('coreshop.resource_controller.form_factory'),
-                new Reference('coreshop.context.shopper'),
+                new Reference($metadata->getServiceId('factory'))
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
-        $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);
+        $container->setDefinition($metadata->getServiceId('pimcore_controller'), $definition);
     }
 
     /**
@@ -120,8 +119,17 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        //No Manager needed for Pimcore
-        //Maybe we could create a manager for pimcore stuff? we just implement the same interface
-        //as doctrine does?
+        $serviceName = 'pimcore.dao.object_manager';
+
+        if (!$container->has($serviceName)) {
+            $definition = new Definition(ObjectManager::class);
+
+            $container->setDefinition($serviceName, $definition);
+        }
+
+        $container->setAlias(
+            $metadata->getServiceId('manager'),
+            new Alias($serviceName)
+        );
     }
 }

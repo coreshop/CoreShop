@@ -17,7 +17,6 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,11 +57,6 @@ class ResourceController extends AdminController
     protected $viewHandler;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
@@ -78,7 +72,6 @@ class ResourceController extends AdminController
      * @param FactoryInterface $factory
      * @param ObjectManager $manager
      * @param ViewHandler $viewHandler
-     * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
      */
@@ -88,7 +81,6 @@ class ResourceController extends AdminController
         FactoryInterface $factory,
         ObjectManager $manager,
         ViewHandler $viewHandler,
-        EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
         ResourceFormFactoryInterface $resourceFormFactory
     )
@@ -98,7 +90,6 @@ class ResourceController extends AdminController
         $this->factory = $factory;
         $this->manager = $manager;
         $this->viewHandler = $viewHandler;
-        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->resourceFormFactory = $resourceFormFactory;
     }
@@ -163,7 +154,8 @@ class ResourceController extends AdminController
 
             $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
 
-            $this->entityManager->flush();
+            $this->manager->persist($resource);
+            $this->manager->flush();
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
 
@@ -213,8 +205,8 @@ class ResourceController extends AdminController
 
             $this->eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
 
-            $this->entityManager->persist($resource);
-            $this->entityManager->flush();
+            $this->manager->persist($resource);
+            $this->manager->flush();
 
             $this->eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
 
@@ -236,8 +228,8 @@ class ResourceController extends AdminController
         $dataModel = $this->repository->find($id);
 
         if ($dataModel instanceof ResourceInterface) {
-            $this->entityManager->remove($dataModel);
-            $this->entityManager->flush();
+            $this->manager->remove($dataModel);
+            $this->manager->flush();
 
             return $this->viewHandler->handle(['success' => true]);
         }

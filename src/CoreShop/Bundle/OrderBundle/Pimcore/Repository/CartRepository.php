@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Repository\PimcoreRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 
