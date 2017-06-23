@@ -32,6 +32,7 @@
     "coreshop/payum-bundle": "dev-master",
     "coreshop/configuration-bundle": "dev-master",
     "coreshop/notification-bundle": "dev-master",
+    "coreshop/core": "dev-master",
     "fzaninotto/faker": "^1.6",
     "okvpn/migration-bundle": "^1.0",
     "rinvex/country": "^3.1"
