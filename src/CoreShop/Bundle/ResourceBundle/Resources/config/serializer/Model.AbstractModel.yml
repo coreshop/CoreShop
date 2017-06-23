@@ -1,0 +1,2 @@
+Pimcore\Model\AbstractModel:
+  exclude: true
