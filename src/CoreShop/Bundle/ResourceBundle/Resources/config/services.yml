@@ -55,7 +55,13 @@ services:
     class: CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller
     arguments: ['%coreshop.resource.permissions%']
     tags:
-      - { name: 'coreshop.resource.installer', type: 'permissions', priority: 200}
+      - { name: 'coreshop.resource.installer', type: 'permissions', priority: 300}
+
+  coreshop.resource.installer.sql:
+    class: CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller
+    arguments: ['@kernel']
+    tags:
+      - { name: 'coreshop.resource.installer', type: 'sql', priority: 400}
 
   coreshop.resource.installer:
     class: CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller
