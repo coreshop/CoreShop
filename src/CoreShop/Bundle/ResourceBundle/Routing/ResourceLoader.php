@@ -66,6 +66,14 @@ final class ResourceLoader implements LoaderInterface
             $defaultRoutes = [];
         }
 
+        if (isset($configuration['only']) && is_array($configuration['only']) && count($configuration['only']) > 0) {
+            foreach ($defaultRoutes as $key => $method) {
+                if (!in_array($key, $configuration['only'])) {
+                    unset ($defaultRoutes[$key]);
+                }
+            }
+        }
+
         foreach ($defaultRoutes as $route => $methods) {
             $routesToGenerate[] = [
                 'path' => $route,
