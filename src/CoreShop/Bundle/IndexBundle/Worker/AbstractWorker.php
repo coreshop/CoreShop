@@ -101,6 +101,10 @@ abstract class AbstractWorker implements WorkerInterface
 
         $data['active'] = $object->getEnabled();
 
+        if (!is_bool($data['active'])) {
+            $data['active'] = false;
+        }
+
         $localizedData = [
             'oo_id' => $object->getId(),
             'values' => [],
