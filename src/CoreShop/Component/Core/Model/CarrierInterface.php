@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Store\Model\StoresAwareInterface;
-use Doctrine\Common\Collections\Collection;
+
 
 interface CarrierInterface extends BaseCarrierInterface, StoresAwareInterface
 {

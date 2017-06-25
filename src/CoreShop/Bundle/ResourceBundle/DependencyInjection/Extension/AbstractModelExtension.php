@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
 use CoreShop\Component\Resource\Metadata\Metadata;
-use Pimcore\Navigation\Container;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 

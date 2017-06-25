@@ -13,11 +13,7 @@
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
-use Pimcore\Model\Object\Fieldcollection;
+
 
 interface QuoteInterface extends SaleInterface
 {

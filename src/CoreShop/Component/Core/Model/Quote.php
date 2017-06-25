@@ -13,9 +13,9 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\Quote as BaseQuote;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
-use CoreShop\Component\Store\Model\StoreAwareTrait;
+
 
 class Quote extends BaseQuote implements QuoteInterface
 {

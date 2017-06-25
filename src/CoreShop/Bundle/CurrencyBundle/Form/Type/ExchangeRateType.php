@@ -3,12 +3,12 @@
 namespace CoreShop\Bundle\CurrencyBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Currency\Model\ExchangeRateInterface;
+
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ExchangeRateType extends AbstractResourceType

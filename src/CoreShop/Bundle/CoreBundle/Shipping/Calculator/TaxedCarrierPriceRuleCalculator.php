@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 

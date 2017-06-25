@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Rule\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
+
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;

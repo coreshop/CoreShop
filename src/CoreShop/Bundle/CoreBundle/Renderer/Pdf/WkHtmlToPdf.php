@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Renderer\Pdf;
 
-use Pimcore\Tool;
+
 use Pimcore\Tool\Console;
 
 final class WkHtmlToPdf implements PdfRendererInterface

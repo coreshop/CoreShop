@@ -17,7 +17,7 @@ use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\ClassDefinition;
 use Pimcore\Model\Object\Classificationstore;
 use Pimcore\Model\Object\Classificationstore\KeyConfig;
-use Pimcore\Model\Object\Concrete;
+
 
 /**
  * TODO: This class needs some hard refactoring! Currently only copy&paste from Version 1!

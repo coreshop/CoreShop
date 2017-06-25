@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Resource\Repository;
 
 use Pimcore\Model\Listing\AbstractListing;
-use Pimcore\Model\Object\Concrete;
+
 
 interface PimcoreRepositoryInterface
 {

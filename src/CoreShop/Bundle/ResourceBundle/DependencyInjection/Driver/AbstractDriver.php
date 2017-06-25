@@ -16,7 +16,7 @@ use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\TranslatableFactoryInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use Pimcore\Navigation\Container;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;

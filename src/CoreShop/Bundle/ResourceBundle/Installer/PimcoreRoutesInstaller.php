@@ -2,13 +2,13 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+
 use Pimcore\Model\Staticroute;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Pimcore\Model\Object;
+
 use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreRoutesInstaller implements ResourceInstallerInterface

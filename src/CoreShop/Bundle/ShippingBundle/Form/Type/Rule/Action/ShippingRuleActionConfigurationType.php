@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
-use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

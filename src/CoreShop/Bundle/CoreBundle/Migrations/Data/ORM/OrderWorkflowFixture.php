@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
 
-use Composer\Autoload\ClassLoader;
+
 use CoreShop\Bundle\OrderBundle\Workflow\WorkflowHelper;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;

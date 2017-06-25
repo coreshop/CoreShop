@@ -14,10 +14,9 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
-use CoreShop\Component\Store\Model\StoreInterface as BaseStoreInterface;
+
 use CoreShop\Component\Store\Model\StoresAwareTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
 
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {

@@ -19,7 +19,7 @@ use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Exception\RequestNotSupportedException;

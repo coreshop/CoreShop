@@ -12,23 +12,9 @@
 
 namespace CoreShop\Bundle\MoneyBundle\DependencyInjection;
 
-use CoreShop\Bundle\IndexBundle\Controller\FilterController;
-use CoreShop\Bundle\IndexBundle\Controller\IndexController;
-use CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionType;
-use CoreShop\Bundle\IndexBundle\Form\Type\FilterType;
-use CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType;
-use CoreShop\Bundle\IndexBundle\Form\Type\IndexType;
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\Index\Model\Filter;
-use CoreShop\Component\Index\Model\FilterCondition;
-use CoreShop\Component\Index\Model\FilterConditionInterface;
-use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Index\Model\Index;
-use CoreShop\Component\Index\Model\IndexColumn;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Resource\Factory\Factory;
+
+
+
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

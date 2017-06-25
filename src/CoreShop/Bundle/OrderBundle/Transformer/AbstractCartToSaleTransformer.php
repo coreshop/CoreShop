@@ -19,7 +19,7 @@ use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Taxation\ProposalTaxCollectorInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;

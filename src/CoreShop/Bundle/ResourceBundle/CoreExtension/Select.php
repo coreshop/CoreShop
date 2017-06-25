@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
-use Pimcore\Model\Object;
+
 
 abstract class Select extends Model\Object\ClassDefinition\Data\Select
 {
