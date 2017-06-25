@@ -12,7 +12,7 @@
 
 namespace CoreShop\Test\Models;
 
-use CoreShop\Component\Order\Model\OrderInterface;
+
 use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
