@@ -41,7 +41,7 @@ class ResourceSettingsController extends AdminController
 
     public function getClassMapAction()
     {
-        $classes = $this->getParameter('coreshop.pimcore');
+        $classes = $this->getParameter('coreshop.pimcore.classes');
         $classMapping = [];
 
         foreach ($classes as $key => $definition) {

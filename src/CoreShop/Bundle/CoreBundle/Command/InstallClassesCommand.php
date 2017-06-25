@@ -38,7 +38,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->runCommands(['coreshop:resources:install'], $output, false, true);
+        $this->runCommands(['coreshop:resources:install' => ['--application-name coreshop']], $output, false, true);
 
         return 0;
     }

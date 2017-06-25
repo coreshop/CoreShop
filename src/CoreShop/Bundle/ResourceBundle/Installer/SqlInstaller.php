@@ -26,37 +26,32 @@ final class SqlInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output)
+    public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $sqlFilesToExecute = [];
+        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.sql', $applicationName) : 'resources.admin.install.sql';
 
-        $fileSystem = new Filesystem();
-        foreach ($this->kernel->getBundles() as $bundle) {
-            $file = $bundle->getPath() . "/Resources/install/pimcore/sql/data.sql";
+        if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            $sqlFilesToExecute = $this->kernel->getContainer()->getParameter($parameter);
 
-            if ($fileSystem->exists($file)) {
-                $sqlFilesToExecute[] = $file;
+            $progress = new ProgressBar($output);
+            $progress->setBarCharacter('<info>░</info>');
+            $progress->setEmptyBarCharacter(' ');
+            $progress->setProgressCharacter('<comment>░</comment>');
+            $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
+
+            $db = Db::get();
+
+            $progress->start(count($sqlFilesToExecute));
+
+            foreach ($sqlFilesToExecute as $sqlFile) {
+                $progress->setMessage(sprintf('<error>Execute SQL File %s</error>', $sqlFile));
+
+                $db->query(file_get_contents($this->kernel->locateResource($sqlFile)));
+
+                $progress->advance();
             }
+
+            $progress->finish();
         }
-
-        $progress = new ProgressBar($output);
-        $progress->setBarCharacter('<info>░</info>');
-        $progress->setEmptyBarCharacter(' ');
-        $progress->setProgressCharacter('<comment>░</comment>');
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
-
-        $db = Db::get();
-
-        $progress->start(count($sqlFilesToExecute));
-
-        foreach ($sqlFilesToExecute as $sqlFile) {
-            $progress->setMessage(sprintf('<error>Execute SQL File %s</error>', $sqlFilesToExecute));
-
-            $db->query(file_get_contents($sqlFile));
-
-            $progress->advance();
-        }
-
-        $progress->finish();
     }
 }

@@ -29,45 +29,44 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output)
+    public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $routeFilesToInstall = [];
-        $routesToInstall = [];
+        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.routes', $applicationName) : 'resources.admin.install.routes';
 
-        $fileSystem = new Filesystem();
-        foreach ($this->kernel->getBundles() as $bundle) {
-            $file = $bundle->getPath() . "/Resources/install/pimcore/routes/staticroutes.yml";
+        if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            $routeFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
+            $routesToInstall = [];
 
-            if ($fileSystem->exists($file)) {
-                $routeFilesToInstall[] = $file;
+            $progress = new ProgressBar($output);
+            $progress->setBarCharacter('<info>░</info>');
+            $progress->setEmptyBarCharacter(' ');
+            $progress->setProgressCharacter('<comment>░</comment>');
+            $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
+
+            foreach ($routeFilesToInstall as $file) {
+                $file = $this->kernel->locateResource($file);
+
+                if (file_exists($file)) {
+                    $routes = Yaml::parse(file_get_contents($file));
+
+                    foreach ($routes as $name => $routeData) {
+                        $routesToInstall[$name] = $routeData;
+                    }
+                }
             }
-        }
 
-        $progress = new ProgressBar($output);
-        $progress->setBarCharacter('<info>░</info>');
-        $progress->setEmptyBarCharacter(' ');
-        $progress->setProgressCharacter('<comment>░</comment>');
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
+            $progress->start(count($routesToInstall));
 
-        foreach ($routeFilesToInstall as $file) {
-            $routes = Yaml::parse(file_get_contents($file));
+            foreach ($routesToInstall as $name => $routeData) {
+                $progress->setMessage(sprintf('<error>Install Route %s</error>', $name));
 
-            foreach ($routes as $name => $routeData) {
-                $routesToInstall[$name] = $routeData;
+                $this->installRoute($name, $routeData);
+
+                $progress->advance();
             }
+
+            $progress->finish();
         }
-
-        $progress->start(count($routesToInstall));
-
-        foreach ($routesToInstall as $name => $routeData) {
-            $progress->setMessage(sprintf('<error>Install Route %s</error>', $name));
-
-            $this->installRoute($name, $routeData);
-            
-            $progress->advance();
-        }
-
-        $progress->finish();
     }
 
     /**

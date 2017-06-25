@@ -23,11 +23,11 @@ class CompositeResourceInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output)
+    public function installResources(OutputInterface $output, $applicationName = null)
     {
         foreach ($this->serviceRegistry->all() as $installer) {
             if ($installer instanceof ResourceInstallerInterface) {
-                $installer->installResources($output);
+                $installer->installResources($output, $applicationName);
             }
         }
     }

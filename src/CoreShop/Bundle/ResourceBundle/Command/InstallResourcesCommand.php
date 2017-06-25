@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -30,6 +31,11 @@ final class InstallResourcesCommand extends ContainerAwareCommand
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command install Resources. (Like Static Routes or Pimcore Classes)
 EOT
+            )
+            ->addOption(
+                'application-name', 'a',
+                InputOption::VALUE_REQUIRED,
+                'Application Name'
             );
     }
 
@@ -46,7 +52,7 @@ EOT
 
         $this
             ->getContainer()->get('coreshop.resource.installer')
-            ->installResources($output);
+            ->installResources($output, $input->getOption('application-name'));
 
         return 0;
     }

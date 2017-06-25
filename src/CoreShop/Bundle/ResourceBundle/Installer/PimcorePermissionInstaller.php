@@ -5,48 +5,55 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Pimcore\Model\User\Permission;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcorePermissionInstaller implements ResourceInstallerInterface
 {
     /**
-     * @var string[]
+     * @var KernelInterface
      */
-    protected $permissions;
+    protected $kernel;
 
     /**<
-     * @param $permissions
+     * @param KernelInterface $kernel
      */
-    public function __construct($permissions)
+    public function __construct(KernelInterface $kernel)
     {
-        $this->permissions = $permissions;
+        $this->kernel = $kernel;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output)
+    public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $progress = new ProgressBar($output);
-        $progress->setBarCharacter('<info>░</info>');
-        $progress->setEmptyBarCharacter(' ');
-        $progress->setProgressCharacter('<comment>░</comment>');
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
-        $progress->start(count($this->permissions));
+        $parameter = $applicationName ? sprintf('%s.permissions', $applicationName) : 'coreshop.resource.permissions';
 
-        foreach ($this->permissions as $permission) {
-            $progress->setMessage(sprintf('<error>Install Permission %s</error>', $permission));
+        if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            $permissions = $this->kernel->getContainer()->getParameter($parameter);
 
-            $permissionDefinition = Permission\Definition::getByKey($permission);
+            $progress = new ProgressBar($output);
+            $progress->setBarCharacter('<info>░</info>');
+            $progress->setEmptyBarCharacter(' ');
+            $progress->setProgressCharacter('<comment>░</comment>');
+            $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
+            $progress->start(count($permissions));
 
-            if (!$permissionDefinition instanceof Permission\Definition) {
-                $permissionDefinition = new Permission\Definition();
-                $permissionDefinition->setKey($permission);
-                $permissionDefinition->save();
+            foreach ($permissions as $permission) {
+                $progress->setMessage(sprintf('<error>Install Permission %s</error>', $permission));
+
+                $permissionDefinition = Permission\Definition::getByKey($permission);
+
+                if (!$permissionDefinition instanceof Permission\Definition) {
+                    $permissionDefinition = new Permission\Definition();
+                    $permissionDefinition->setKey($permission);
+                    $permissionDefinition->save();
+                }
+
+                $progress->advance();
             }
 
-            $progress->advance();
+            $progress->finish();
         }
-
-        $progress->finish();
     }
 }

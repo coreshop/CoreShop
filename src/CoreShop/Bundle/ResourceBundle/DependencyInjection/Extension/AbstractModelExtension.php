@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 
@@ -21,9 +21,9 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 abstract class AbstractModelExtension extends Extension
 {
     /**
-     * @param string           $applicationName
-     * @param string           $driver
-     * @param array            $resources
+     * @param string $applicationName
+     * @param string $driver
+     * @param array $resources
      * @param ContainerBuilder $container
      */
     protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container)
@@ -32,7 +32,7 @@ abstract class AbstractModelExtension extends Extension
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
 
         foreach ($resources as $resourceName => $resourceConfig) {
-            $alias = $applicationName.'.'.$resourceName;
+            $alias = $applicationName . '.' . $resourceName;
             $resourceConfig = array_merge(['driver' => $driver], $resourceConfig);
 
             $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
@@ -44,7 +44,7 @@ abstract class AbstractModelExtension extends Extension
             DriverProvider::get($metadata)->load($container, $metadata);
 
             if ($metadata->hasParameter('translation')) {
-                $alias = $alias.'_translation';
+                $alias = $alias . '_translation';
                 $resourceConfig = array_merge(['driver' => $driver], $resourceConfig['translation']);
 
                 $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
@@ -58,18 +58,25 @@ abstract class AbstractModelExtension extends Extension
         }
     }
 
+    /**
+     * @param $applicationName
+     * @param array $models
+     * @param ContainerBuilder $container
+     */
     protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container)
     {
         $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), 'pimcore'), true);
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), 'pimcore');
 
         foreach ($models as $modelName => $modelConfig) {
-            $alias = $applicationName.'.'.$modelName;
+            $alias = $applicationName . '.' . $modelName;
             $modelConfig = array_merge(['driver' => 'pimcore'], $modelConfig);
 
-            $models = $container->hasParameter('coreshop.pimcore') ? $container->getParameter('coreshop.pimcore') : [];
-            $models = array_merge($models, [$alias => $modelConfig]);
-            $container->setParameter('coreshop.pimcore', $models);
+            foreach (['coreshop.pimcore', sprintf('%s.pimcore.classes', $applicationName)] as $parameter) {
+                $models = $container->hasParameter($parameter) ? $container->getParameter($parameter) : [];
+                $models = array_merge($models, [$alias => $modelConfig]);
+                $container->setParameter($parameter, $models);
+            }
 
             $metadata = Metadata::fromAliasAndConfiguration($alias, $modelConfig);
 
@@ -77,12 +84,18 @@ abstract class AbstractModelExtension extends Extension
         }
     }
 
-    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container) {
+    /**
+     * @param $applicationName
+     * @param $bundleResources
+     * @param ContainerBuilder $container
+     */
+    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
+    {
         $resourceTypes = ['js', 'css'];
 
         foreach ($resourceTypes as $resourceType) {
             if (array_key_exists($resourceType, $bundleResources)) {
-                $applicationParameter = sprintf('%s.pimcore.admin.%s', $applicationName, $resourceType);
+                $applicationParameter = sprintf('%s.application.pimcore.admin.%s', $applicationName, $resourceType);
                 $aliasParameter = sprintf('%s.pimcore.admin.%s', $this->getAlias(), $resourceType);
                 $globalParameter = sprintf('resources.admin.%s', $resourceType);
 
@@ -98,6 +111,24 @@ abstract class AbstractModelExtension extends Extension
                     }
 
                     $container->setParameter($containerParameter, array_merge($resources, array_values($bundleResources[$resourceType])));
+                }
+            }
+        }
+
+        if (array_key_exists('install', $bundleResources)) {
+            foreach ($bundleResources['install'] as $type => $value) {
+                $applicationParameter = sprintf('%s.application.pimcore.admin.install.%s', $applicationName, $type);
+                $aliasParameter = sprintf('%s.pimcore.admin.install.%s', $this->getAlias(), $type);
+                $globalParameter = sprintf('resources.admin.install.%s', $type);
+
+                foreach ([$applicationParameter, $aliasParameter, $globalParameter] as $containerParameter) {
+                    $resources = [];
+
+                    if ($container->hasParameter($containerParameter)) {
+                        $resources = $container->getParameter($containerParameter);
+                    }
+
+                    $container->setParameter($containerParameter, array_merge($resources, array_values($value)));
                 }
             }
         }

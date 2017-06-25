@@ -41,7 +41,7 @@ services:
 
   coreshop.resource.installer.classes:
     class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller
-    arguments: ['%coreshop.pimcore%', '@kernel']
+    arguments: ['@kernel']
     tags:
       - { name: 'coreshop.resource.installer', type: 'classes', priority: 100}
 
@@ -53,7 +53,7 @@ services:
 
   coreshop.resource.installer.permissions:
     class: CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller
-    arguments: ['%coreshop.resource.permissions%']
+    arguments: ['@kernel']
     tags:
       - { name: 'coreshop.resource.installer', type: 'permissions', priority: 300}
 

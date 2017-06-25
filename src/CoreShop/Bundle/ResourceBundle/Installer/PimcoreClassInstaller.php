@@ -12,106 +12,104 @@ use Pimcore\Model\Object;
 final class PimcoreClassInstaller implements ResourceInstallerInterface
 {
     /**
-     * @var array
-     */
-    protected $pimcoreModels;
-
-    /**
      * @var KernelInterface
      */
     protected $kernel;
 
     /**
-     * @param array $pimcoreModels
      * @param KernelInterface $kernel
      */
-    public function __construct($pimcoreModels, KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel)
     {
-        $this->pimcoreModels = $pimcoreModels;
         $this->kernel = $kernel;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output)
+    public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $fieldCollections = [];
-        $bricks = [];
-        $classes = [];
+        $parameter = $applicationName ? sprintf('%s.pimcore.classes', $applicationName) : 'coreshop.pimcore';
 
-        $classLoader = new ClassLoader();
-        $classLoader->register(true);
+        if ($this->kernel->getContainer()->hasParameter($parameter)) {
+            $pimcoreClasses = $this->kernel->getContainer()->getParameter($parameter);
+            $fieldCollections = [];
+            $bricks = [];
+            $classes = [];
 
-        foreach ($this->pimcoreModels as $pimcoreModel) {
-            $modelName = explode('\\', $pimcoreModel['classes']['model']);
-            $modelName = $modelName[count($modelName) - 1];
+            $classLoader = new ClassLoader();
+            $classLoader->register(true);
 
-            if (array_key_exists("install_file", $pimcoreModel['classes'])) {
-                $type = $pimcoreModel['classes']['type'];
+            foreach ($pimcoreClasses as $pimcoreModel) {
+                $modelName = explode('\\', $pimcoreModel['classes']['model']);
+                $modelName = $modelName[count($modelName) - 1];
 
-                try {
-                    $file = $this->kernel->locateResource($pimcoreModel['classes']['install_file']);
+                if (array_key_exists("install_file", $pimcoreModel['classes'])) {
+                    $type = $pimcoreModel['classes']['type'];
 
-                    if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
-                        //$this->createClass($file, $modelName, true);
-                        $classes[] = [
-                            'model' => $modelName,
-                            'file' => $file
-                        ];
-                    } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION) {
-                        $fieldCollections[] = [
-                            'model' => $modelName,
-                            'file' => $file
-                        ];
-                    } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK) {
-                        $bricks[] = [
-                            'model' => $modelName,
-                            'file' => $file
-                        ];
+                    try {
+                        $file = $this->kernel->locateResource($pimcoreModel['classes']['install_file']);
+
+                        if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
+                            //$this->createClass($file, $modelName, true);
+                            $classes[] = [
+                                'model' => $modelName,
+                                'file' => $file
+                            ];
+                        } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION) {
+                            $fieldCollections[] = [
+                                'model' => $modelName,
+                                'file' => $file
+                            ];
+                        } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK) {
+                            $bricks[] = [
+                                'model' => $modelName,
+                                'file' => $file
+                            ];
+                        }
+
+                    } catch (\InvalidArgumentException $ex) {
+                        //File not found, continue with next, maybe add some logging?
                     }
-
-                } catch (\InvalidArgumentException $ex) {
-                    //File not found, continue with next, maybe add some logging?
                 }
             }
+
+            $progress = new ProgressBar($output);
+            $progress->setBarCharacter('<info>░</info>');
+            $progress->setEmptyBarCharacter(' ');
+            $progress->setProgressCharacter('<comment>░</comment>');
+            $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
+
+            $progress->start(count($pimcoreClasses));
+
+            foreach ($fieldCollections as $fc) {
+                $progress->setMessage(sprintf('<error>Install Fieldcollection %s (%s)</error>', $fc['model'], $fc['file']));
+
+                $this->createFieldCollection($fc['file'], $fc['model']);
+
+                $progress->advance();
+            }
+
+            foreach ($classes as $class) {
+                $progress->setMessage(sprintf('<error>Install Class %s (%s)</error>', $class['model'], $class['file']));
+
+                $this->createClass($class['file'], $class['model']);
+
+                $progress->advance();
+            }
+
+            foreach ($bricks as $brick) {
+                $progress->setMessage(sprintf('<error>Install Brick %s (%s)</error>', $brick['model'], $brick['file']));
+
+                $this->createBrick($brick['file'], $brick['model']);
+
+                $progress->advance();
+            }
+
+            $classLoader->addPsr4("Pimcore\\Model\\Object\\", PIMCORE_CLASS_DIRECTORY . "/Object");
+
+            $progress->finish();
         }
-
-        $progress = new ProgressBar($output);
-        $progress->setBarCharacter('<info>░</info>');
-        $progress->setEmptyBarCharacter(' ');
-        $progress->setProgressCharacter('<comment>░</comment>');
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
-
-        $progress->start(count($this->pimcoreModels));
-
-        foreach ($fieldCollections as $fc) {
-            $progress->setMessage(sprintf('<error>Install Fieldcollection %s (%s)</error>', $fc['model'], $fc['file']));
-
-            $this->createFieldCollection($fc['file'], $fc['model']);
-
-            $progress->advance();
-        }
-
-        foreach ($classes as $class) {
-            $progress->setMessage(sprintf('<error>Install Class %s (%s)</error>', $class['model'], $class['file']));
-
-            $this->createClass($class['file'], $class['model']);
-
-            $progress->advance();
-        }
-
-        foreach ($bricks as $brick) {
-            $progress->setMessage(sprintf('<error>Install Brick %s (%s)</error>', $brick['model'], $brick['file']));
-
-            $this->createBrick($brick['file'], $brick['model']);
-
-            $progress->advance();
-        }
-
-        $classLoader->addPsr4("Pimcore\\Model\\Object\\", PIMCORE_CLASS_DIRECTORY . "/Object");
-
-        $progress->finish();
     }
 
     /**
