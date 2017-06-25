@@ -1,8 +1,10 @@
 # CoreShop Resource Bundle
 
 Resource Bundle is the Heart of CoreShops Model. It handles saving/deleting/updating/creating of CoreShop Models. It handles
-Doctrine ORM Mappings and Translations. As well as Routing, Event Dispatching, Serialization and ORM. Resource Bundle also
-takes care about installation of Pimcore Class Definitions, Object Brick Definitions, Field Collection Definitions and Static Routes.
+Doctrine ORM Mappings and Translations. As well as Routing, Event Dispatching, Serialization and CRUD.
+
+Resource Bundle also takes care about installation of Pimcore Class Definitions, Object Brick Definitions, Field Collection Definitions,
+Static Routes and SQL.
 
 You can use Resource Bundle as base for all your Custom Pimcore Entities.
 
