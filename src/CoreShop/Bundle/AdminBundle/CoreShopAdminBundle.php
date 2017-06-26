@@ -73,8 +73,8 @@ final class CoreShopAdminBundle extends AbstractPimcoreBundle
     {
         $jsFiles = [];
 
-        if ($this->container->hasParameter('coreshop.pimcore.admin.js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.pimcore.admin.js'));
+        if ($this->container->hasParameter('coreshop.application.pimcore.admin.js')) {
+            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.application.pimcore.admin.js'));
         }
 
         return $jsFiles;
@@ -87,8 +87,8 @@ final class CoreShopAdminBundle extends AbstractPimcoreBundle
     {
         $cssFiles = [];
 
-        if ($this->container->hasParameter('coreshop.pimcore.admin.css')) {
-            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.pimcore.admin.css'));
+        if ($this->container->hasParameter('coreshop.application.pimcore.admin.css')) {
+            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.application.pimcore.admin.css'));
         }
 
         return $cssFiles;
