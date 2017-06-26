@@ -39,19 +39,25 @@ class ResourceSettingsController extends AdminController
         return $this->json(["success" => true, "data" => $result]);
     }
 
+    /**
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
     public function getClassMapAction()
     {
-        $classes = $this->getParameter('coreshop.pimcore.classes');
         $classMapping = [];
 
-        foreach ($classes as $key => $definition) {
-            $alias = explode('.', $key);
-            $alias = $alias[1];
+        if ($this->container->hasParameter('coreshop.pimcore.classes')) {
+            $classes = $this->getParameter('coreshop.pimcore.classes');
 
-            $class = str_replace('Pimcore\\Model\\Object\\', '', $definition['classes']['model']);
-            $class = str_replace('\\', '', $class);
+            foreach ($classes as $key => $definition) {
+                $alias = explode('.', $key);
+                $alias = $alias[1];
 
-            $classMapping[$alias] = $class;
+                $class = str_replace('Pimcore\\Model\\Object\\', '', $definition['classes']['model']);
+                $class = str_replace('\\', '', $class);
+
+                $classMapping[$alias] = $class;
+            }
         }
 
         return $this->json($classMapping);
