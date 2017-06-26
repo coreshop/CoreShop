@@ -139,7 +139,9 @@ coreshop.resource.panel = Class.create({
             );
 
             this.grid.getStore().on("load", function (store, records) {
-                this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length))
+                if (this.grid.rendered) {
+                    this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length));
+                }
             }.bind(this));
 
             this.grid.on('beforerender', function () {
