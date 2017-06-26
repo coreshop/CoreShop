@@ -127,6 +127,7 @@ final class Configuration implements ConfigurationInterface
                 ->children()
                     ->arrayNode('js')
                         ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('broker')->defaultValue('/bundles/coreshopresource/pimcore/js/broker.js')->end()
                             ->scalarNode('global')->defaultValue('/bundles/coreshopresource/pimcore/js/global.js')->end()
