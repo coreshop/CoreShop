@@ -19,6 +19,7 @@
   ],
   "require": {
     "php": "^7.0",
+    "doctrine/orm": "^2.5",
     "doctrine/doctrine-bundle": "^1.6",
     "friendsofsymfony/rest-bundle": "^2.1",
     "jms/serializer-bundle": "^1.1",
