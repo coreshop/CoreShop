@@ -17,43 +17,12 @@ imports:
   - { resource: "@CoreShopCoreBundle/Resources/config/app/security.yml" }
   - { resource: "@CoreShopCoreBundle/Resources/config/app/payum.yml" }
 
-framework:
-    form: true
-
-doctrine:
-  dbal:
-    mapping_types:
-      enum: string
-  orm:
-    auto_generate_proxy_classes: "%kernel.debug%"
-    entity_managers:
-      default:
-        auto_mapping: true
-
-doctrine_cache:
-    providers:
-        coreshop:
-          type: file_system
-          namespace: coreshop
-
-stof_doctrine_extensions:
-    default_locale: "%locale%"
-    orm:
-        default:
-            timestampable: true
-
 jms_serializer:
   metadata:
     directories:
       core-shop-core:
         namespace_prefix: "CoreShop\\Component\\Core"
         path: "@CoreShopCoreBundle/Resources/config/serializer"
-
-fos_rest:
-  format_listener:
-    rules:
-      - { path: '^/admin/coreshop', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: true }
-      - { path: '^/', stop: true }
 
 twig:
   globals:

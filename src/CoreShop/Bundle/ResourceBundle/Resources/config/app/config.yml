@@ -4,3 +4,34 @@ jms_serializer:
             pimcore:
                 namespace_prefix: "Pimcore"
                 path: "@CoreShopResourceBundle/Resources/config/serializer"
+
+framework:
+    form: true
+
+doctrine:
+  dbal:
+    mapping_types:
+      enum: string
+  orm:
+    auto_generate_proxy_classes: "%kernel.debug%"
+    entity_managers:
+      default:
+        auto_mapping: true
+
+doctrine_cache:
+    providers:
+        coreshop:
+          type: file_system
+          namespace: coreshop
+
+stof_doctrine_extensions:
+    default_locale: "%locale%"
+    orm:
+        default:
+            timestampable: true
+
+fos_rest:
+  format_listener:
+    rules:
+      - { path: '^/admin/coreshop', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: true }
+      - { path: '^/', stop: true }
