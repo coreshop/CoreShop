@@ -4,13 +4,13 @@ Adding Price-, Shipping- or Notification-Rule Conditions is the same for all of 
 tag you use and Interface you need to implement for them.
 
 
-| Action Type               | Tag                                              | Interface                                                                              |
-| ------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| Cart Price Rule           | coreshop.cart_price_rule.condition               | CoreShop\Component\Rule\Condition\ConditionCheckerInterface                            |
-| Product Price Rule        | coreshop.product_price_rule.condition            | CoreShop\Component\Rule\Condition\ConditionCheckerInterface                            |
-| Product Specific Price    | coreshop.product_specific_price_rule.condition   | CoreShop\Component\Rule\Condition\ConditionCheckerInterface                            |
-| Shipping Rule             | coreshop.shipping_rule.condition                 | CoreShop\Component\Shipping\Rule\Condition\ShippingConditionCheckerInterface           |
-| Notification Rule         | coreshop.notification_rule.condition             | CoreShop\Component\Notification\Rule\Condition\NotificationConditionCheckerInterface   |
+| Action Type               | Tag                                              | Interface                                                   |
+| ------------------------- | ------------------------------------------------ | ----------------------------------------------------------- |
+| Cart Price Rule           | coreshop.cart_price_rule.condition               | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
+| Product Price Rule        | coreshop.product_price_rule.condition            | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
+| Product Specific Price    | coreshop.product_specific_price_rule.condition   | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
+| Shipping Rule             | coreshop.shipping_rule.condition                 | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
+| Notification Rule         | coreshop.notification_rule.condition             | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
 
 
 ## Example Adding a new Condition
