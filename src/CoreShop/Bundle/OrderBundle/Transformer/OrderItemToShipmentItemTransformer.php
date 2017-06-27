@@ -12,13 +12,13 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use Webmozart\Assert\Assert;
 
 class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformerInterface

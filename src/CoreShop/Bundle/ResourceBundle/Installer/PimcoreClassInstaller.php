@@ -4,10 +4,10 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use Composer\Autoload\ClassLoader;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\Model\Object;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Pimcore\Model\Object;
 
 final class PimcoreClassInstaller implements ResourceInstallerInterface
 {

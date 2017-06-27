@@ -2,14 +2,14 @@
 
 namespace CoreShop\Bundle\PayumBundle\Extension;
 
+use CoreShop\Bundle\PayumBundle\Request\GetStatus;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\Generic;
 use Payum\Core\Request\GetStatusInterface;
 use Payum\Core\Request\Notify;
-use CoreShop\Bundle\PayumBundle\Request\GetStatus;
-use CoreShop\Component\Payment\Model\PaymentInterface;
 
 final class UpdatePaymentStateExtension implements ExtensionInterface
 {

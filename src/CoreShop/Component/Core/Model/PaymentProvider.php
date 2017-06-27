@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
-
 use CoreShop\Component\Store\Model\StoresAwareTrait;
 
 

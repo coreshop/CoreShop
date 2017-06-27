@@ -12,9 +12,9 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
-use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
+use CoreShop\Component\Order\Model\QuoteInterface;
 use Webmozart\Assert\Assert;
 
 class CartToQuoteTransformer extends AbstractCartToSaleTransformer

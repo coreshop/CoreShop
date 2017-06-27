@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\ShippingBundle\Checker;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface

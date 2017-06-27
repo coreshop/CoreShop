@@ -12,10 +12,12 @@
 
 namespace CoreShop\Test\Models;
 
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
@@ -24,9 +26,7 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionCo
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType;
-use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType;
-use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Address\Model\AddressInterface;

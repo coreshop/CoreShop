@@ -19,7 +19,6 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-
 use Pimcore\Logger;
 use Pimcore\Tool;
 

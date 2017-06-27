@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
-
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;

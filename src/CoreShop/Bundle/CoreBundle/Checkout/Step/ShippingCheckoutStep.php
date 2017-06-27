@@ -12,13 +12,13 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
-use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;

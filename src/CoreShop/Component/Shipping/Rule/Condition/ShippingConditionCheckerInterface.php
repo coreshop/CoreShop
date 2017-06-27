@@ -13,8 +13,8 @@
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface ShippingConditionCheckerInterface extends ConditionCheckerInterface

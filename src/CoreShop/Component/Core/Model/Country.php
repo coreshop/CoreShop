@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\Country as BaseCountry;
 use CoreShop\Component\Store\Model\StoresAwareTrait;
-
 use Doctrine\Common\Collections\Collection;
 
 class Country extends BaseCountry implements CountryInterface

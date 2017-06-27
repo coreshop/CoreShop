@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface

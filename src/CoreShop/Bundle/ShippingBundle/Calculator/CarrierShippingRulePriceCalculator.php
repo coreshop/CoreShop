@@ -13,11 +13,11 @@
 namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
-use CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
+use CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessorInterface;
 
 class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterface
 {

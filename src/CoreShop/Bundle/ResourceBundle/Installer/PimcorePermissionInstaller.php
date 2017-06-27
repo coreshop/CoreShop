@@ -2,9 +2,9 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
+use Pimcore\Model\User\Permission;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
-use Pimcore\Model\User\Permission;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcorePermissionInstaller implements ResourceInstallerInterface

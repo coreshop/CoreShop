@@ -15,10 +15,9 @@ namespace CoreShop\Bundle\CoreBundle\Shipping\Calculator;
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
-
+use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 

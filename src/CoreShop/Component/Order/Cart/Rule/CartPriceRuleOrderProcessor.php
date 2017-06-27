@@ -15,9 +15,7 @@ namespace CoreShop\Component\Order\Cart\Rule;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
-
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;

@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\Order as BaseOrder;
-
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
 

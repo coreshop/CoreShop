@@ -12,14 +12,14 @@
 
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
+use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;

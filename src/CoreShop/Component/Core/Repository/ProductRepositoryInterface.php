@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Product\Repository\ProductRepositoryInterface  as BaseProductRepositoryInterface ;
+use CoreShop\Component\Product\Repository\ProductRepositoryInterface as BaseProductRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 interface ProductRepositoryInterface extends BaseProductRepositoryInterface

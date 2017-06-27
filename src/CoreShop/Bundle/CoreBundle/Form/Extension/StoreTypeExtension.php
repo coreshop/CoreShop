@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType;
-
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;

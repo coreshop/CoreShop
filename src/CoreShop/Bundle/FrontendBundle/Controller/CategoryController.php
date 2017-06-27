@@ -12,11 +12,11 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Paginator\Paginator;

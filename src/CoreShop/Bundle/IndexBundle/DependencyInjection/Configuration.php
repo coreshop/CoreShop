@@ -18,7 +18,6 @@ use CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionType;
 use CoreShop\Bundle\IndexBundle\Form\Type\FilterType;
 use CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType;
 use CoreShop\Bundle\IndexBundle\Form\Type\IndexType;
-
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Index\Model\Filter;
 use CoreShop\Component\Index\Model\FilterCondition;

@@ -14,12 +14,11 @@ namespace CoreShop\Bundle\PayumBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Exception\RequestNotSupportedException;

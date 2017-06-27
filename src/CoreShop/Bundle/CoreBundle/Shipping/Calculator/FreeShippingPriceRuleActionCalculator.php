@@ -14,9 +14,9 @@ namespace CoreShop\Bundle\CoreBundle\Shipping\Calculator;
 
 use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class FreeShippingPriceRuleActionCalculator implements CarrierPriceCalculatorInterface

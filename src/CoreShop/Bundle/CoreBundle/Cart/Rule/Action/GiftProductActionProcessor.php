@@ -16,7 +16,6 @@ use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-
 use CoreShop\Component\Product\Repository\ProductRepositoryInterface;
 
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface

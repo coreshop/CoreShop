@@ -13,9 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Order\Model\CartInterface;
-
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -24,6 +22,7 @@ use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
+use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use Webmozart\Assert\Assert;

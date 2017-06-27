@@ -13,13 +13,13 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Helper\VariantHelper;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class Product extends AbstractPimcoreModel implements ProductInterface
 {

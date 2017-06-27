@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\Cart as BaseCart;
-
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
