@@ -34,7 +34,7 @@ class StoreRepository extends EntityRepository implements StoreRepositoryInterfa
             ->andWhere('o.siteId = :siteId')
             ->setParameter('siteId', $siteId)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 
     /**

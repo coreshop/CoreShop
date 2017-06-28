@@ -52,6 +52,7 @@ class RegisterBundleHelper
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new \Payum\Bundle\PayumBundle\PayumBundle(),
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new \Liip\ThemeBundle\LiipThemeBundle()
         ], 120);
     }
 }

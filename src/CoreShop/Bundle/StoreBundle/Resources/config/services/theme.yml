@@ -1,0 +1,14 @@
+services:
+  coreshop.store.theme_resolver:
+    class: CoreShop\Bundle\StoreBundle\Theme\ThemeResolver
+    arguments:
+      - '@liip_theme.active_theme'
+      - '@coreshop.context.store'
+      - '@coreshop.repository.store'
+
+  coreshop.listener.theme_request:
+    class: CoreShop\Bundle\StoreBundle\EventListener\ThemeRequestListener
+    arguments:
+        - '@coreshop.store.theme_resolver'
+    tags:
+        - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
