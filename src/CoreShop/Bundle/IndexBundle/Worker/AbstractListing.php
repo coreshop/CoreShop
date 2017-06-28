@@ -19,9 +19,6 @@ use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Tool;
 
-/**
- * Class Listing.
- */
 abstract class AbstractListing implements ListingInterface
 {
     /**

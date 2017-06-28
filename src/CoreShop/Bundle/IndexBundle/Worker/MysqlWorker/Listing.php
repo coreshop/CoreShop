@@ -24,9 +24,6 @@ use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;
 use Zend\Paginator\Adapter\AdapterInterface;
 
-/**
- * Class Mysql.
- */
 class Listing extends AbstractListing
 {
     /**
