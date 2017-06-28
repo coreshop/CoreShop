@@ -12,12 +12,9 @@
 
 namespace CoreShop\Component\Customer\Repository;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
-/**
- * Interface RepositoryInterface.
- */
-interface CustomerRepositoryInterface extends RepositoryInterface
+interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
 {
     /**
      * Find Customer by email.

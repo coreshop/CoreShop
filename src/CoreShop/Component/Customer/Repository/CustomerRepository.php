@@ -14,9 +14,6 @@ namespace CoreShop\Component\Customer\Repository;
 
 use Pimcore\Model\Object\Listing;
 
-/**
- * Class CustomerRepository.
- */
 class CustomerRepository implements CustomerRepositoryInterface
 {
     /**
@@ -35,7 +32,7 @@ class CustomerRepository implements CustomerRepositoryInterface
     /**
      * @return Listing
      */
-    private function createList()
+    public function getList()
     {
         return new $this->customerListClass();
     }
@@ -50,7 +47,7 @@ class CustomerRepository implements CustomerRepositoryInterface
      */
     public function getUniqueByEmail($email, $isGuest)
     {
-        $list = $this->createList();
+        $list = $this->getList();
 
         $conditions = ['email = ?'];
         $conditionsValues = [$email];
@@ -63,8 +60,9 @@ class CustomerRepository implements CustomerRepositoryInterface
         }
 
         $list->setCondition(implode(' AND ', $conditions), $conditionsValues);
+        $list->load();
 
-        $users = $list->load();
+        $users = $list->getObjects();
 
         if (count($users) > 0) {
             return $users[0];
