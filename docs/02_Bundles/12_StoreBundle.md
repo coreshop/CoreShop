@@ -40,7 +40,7 @@ php bin/console doctrine:schema:update --force
 
 ## Usage
 
-Nothing much to say here, adds a Store Model you can work with.
+Nothing much to say here, adds a Store Model you can work with. It also adds Multi-theme Support.
 
 ## Doctrine Entities
  - Store
