@@ -83,9 +83,9 @@ final class WorkflowManager implements WorkflowManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function addValidator(ProposalValidatorInterface $proposalValidator, $priority)
+    public function addValidator(ProposalValidatorInterface $proposalValidator, $type, $priority)
     {
-        $this->serviceRegistry->register(get_class($proposalValidator), $priority, $proposalValidator);
+        $this->serviceRegistry->register($type, $priority, $proposalValidator);
     }
 
     /**
@@ -94,7 +94,7 @@ final class WorkflowManager implements WorkflowManagerInterface
     public function validateNewState(ProposalInterface $proposal, $currentState, $newState)
     {
         /**
-         * @var ProposalValidatorInterface
+         * @var $validator ProposalValidatorInterface
          */
         foreach ($this->serviceRegistry->all() as $validator) {
             if (!$validator->isValidForState($proposal, $currentState, $newState)) {

@@ -32,11 +32,15 @@ services:
         - {name: coreshop.workflow.validator, type: payment, priority: 10, manager: coreshop.workflow.manager.order}
 
   coreshop.workflow.manager.order.validator.invoice:
-    class: CoreShop\Bundle\OrderBundle\Workflow\Order\InvoicedValidator
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\OrderDocumentValidator
+    arguments:
+      - '@coreshop.order.invoice.processable'
     tags:
         - {name: coreshop.workflow.validator, type: invoice, priority: 20, manager: coreshop.workflow.manager.order}
 
   coreshop.workflow.manager.order.validator.shipment:
-    class: CoreShop\Bundle\OrderBundle\Workflow\Order\ShipmentValidator
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\OrderDocumentValidator
+    arguments:
+      - '@coreshop.order.shipment.processable'
     tags:
         - {name: coreshop.workflow.validator, type: shipment, priority: 30, manager: coreshop.workflow.manager.order}

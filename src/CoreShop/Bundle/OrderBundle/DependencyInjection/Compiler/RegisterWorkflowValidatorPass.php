@@ -38,7 +38,7 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
             $map[$attributes[0]['type']] = $attributes[0]['type'];
             $priority = isset($attributes[0]['priority']) ? (int) $attributes[0]['priority'] : 0;
 
-            $manager->addMethodCall('addValidator', [new Reference($id), $priority]);
+            $manager->addMethodCall('addValidator', [new Reference($id), $attributes[0]['type'], $priority]);
         }
     }
 }

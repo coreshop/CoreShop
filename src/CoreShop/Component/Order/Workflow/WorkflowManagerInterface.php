@@ -38,9 +38,10 @@ interface WorkflowManagerInterface
 
     /**
      * @param ProposalValidatorInterface $proposalValidator
+     * @param $type
      * @param $priority
      */
-    public function addValidator(ProposalValidatorInterface $proposalValidator, $priority);
+    public function addValidator(ProposalValidatorInterface $proposalValidator, $type, $priority);
 
     /**
      * @param ProposalInterface $proposal
