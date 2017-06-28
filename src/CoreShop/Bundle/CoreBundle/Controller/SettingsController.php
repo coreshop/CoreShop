@@ -17,9 +17,6 @@ use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-/**
- * Class SettingsController.
- */
 class SettingsController extends AdminController
 {
     /**
