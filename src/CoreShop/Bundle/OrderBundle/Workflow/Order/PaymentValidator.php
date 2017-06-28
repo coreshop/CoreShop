@@ -25,7 +25,7 @@ class PaymentValidator implements ProposalValidatorInterface
      */
     public function isValidForState(ProposalInterface $proposal, $currentState, $newState)
     {
-        /*
+        /**
          * @var $proposal OrderInterface
          */
         Assert::isInstanceOf($proposal, OrderInterface::class);

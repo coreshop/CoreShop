@@ -16,7 +16,12 @@ use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use Pimcore\Event\Model\WorkflowEvent;
 
-class WorkflowHelper
+/**
+ * This class is kinda special, since Pimcore doesn't yet allow
+ * Workflow Event Classes to be services, we need to have this
+ * kind of "in-the-middle" class
+ */
+final class WorkflowHelper
 {
     public static function beforeDispatchOrderChange(WorkflowEvent $event)
     {
