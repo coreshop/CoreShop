@@ -10,14 +10,6 @@
         - Currency Conversion
         - Currency Code to Symbol
 
-# CoreShop Address Bundle
-
-    - Pimcore Core Extensions
-    - Doctrine Mappings
-    - Symfony Forms
-    - Twig Extensions
-        - Address Formatting
-
 ## Installation
 ```
 composer require coreshop/currency-bundle dev-master

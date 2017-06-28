@@ -73,10 +73,10 @@ The Order Bundle provides you with basic information needed for ordering: Orders
 ## Cart Price Rule
 
 ### Conditions
-Learn more about adding new Conditions [here](../03_Development/14_Price_Rules/02_Custom_Conditions.md)
+Learn more about adding new Conditions [here](../03_Development/14_Rules/02_Custom_Conditions.md)
 
 ### Actions
-Learn more about adding new Actions [here](../03_Development/14_Price_Rules/02_Custom_Actions.md)
+Learn more about adding new Actions [here](../03_Development/14_Rules/02_Custom_Actions.md)
 
 ## Pimcore UI
 

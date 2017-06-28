@@ -20,10 +20,10 @@ $iterator = Finder::create()
     ->in('../')
 ;
 
-$xml = simplexml_load_string(file_get_contents('../plugin.xml'));
+require_once '../src/CoreShop/Bundle/CoreBundle/Application/Version.php';
 
 return new Sami($iterator, [
     'build_dir' => __DIR__.'/build',
     'cache_dir' => __DIR__.'/cache',
-    'title' => $xml->plugin->pluginNiceName.' API (Build: '.$xml->plugin->pluginRevision.')',
+    'title' => 'CoreShop API (Build: '.\CoreShop\Bundle\CoreBundle\Application\Version::getVersion().')',
 ]);

@@ -58,3 +58,15 @@ final class Configuration implements ConfigurationInterface
 }
 
 ```
+
+## Routes Exmaple File
+```yml
+acme_route:
+  pattern: "/(\\w+)\\/acme/"
+  reverse: "/%_locale/acme"
+  module: AcmeBundle
+  controller: "@acme.frontend.controller.controller"
+  action: doSomething
+  variables: _locale
+  priority: 2
+```

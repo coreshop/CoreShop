@@ -15,5 +15,5 @@ This section provides a quick getting started tutorial for CoreShop and covers t
 10. [Override Controllers](./11_Override_Controllers.md)
 11. [Override CoreShop Classes](./12_Override_CoreShop_Classes.md)
 12. [Tracking](./13_Tracking.md)
-13. [Extending Price Rules](./14_Price_Rules)
+13. [Extending Rules](./14_Rules)
 14. [Mail Rules](./15_Mail_Rules)
