@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle;
 
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
+use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCheckoutManagerPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterWorkflowManagerPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterWorkflowValidatorPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
@@ -40,6 +41,7 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $container->addCompilerPass(new CartPriceRuleConditionPass());
         $container->addCompilerPass(new RegisterWorkflowManagerPass());
         $container->addCompilerPass(new RegisterWorkflowValidatorPass());
+        $container->addCompilerPass(new RegisterCheckoutManagerPass());
     }
 
     /**

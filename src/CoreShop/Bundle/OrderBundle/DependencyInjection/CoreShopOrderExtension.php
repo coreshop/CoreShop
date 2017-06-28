@@ -34,6 +34,8 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        $container->setParameter('coreshop_order.checkout_manager', $config['checkout_manager']);
+
         $loader->load('services.yml');
     }
 }

@@ -2,9 +2,6 @@ services:
   coreshop.checkout_manager.default:
     class: CoreShop\Bundle\CoreBundle\Checkout\CheckoutManager
 
-  coreshop.checkout_manager:
-    alias: coreshop.checkout_manager.default
-
   #default steps
   coreshop.checkout.step.cart:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\CartCheckoutStep

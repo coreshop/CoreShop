@@ -27,7 +27,12 @@ services:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep
     tags:
       - {name: coreshop.registry.checkout.step, type: summary, priority: 20, manager: acme.coreshop.checkout_manager }
+```
 
-  coreshop.checkout_manager:
-    alias: acme.coreshop.checkout_manager
+You then also need to change CoreShop configured Checkout Manager to use yours:
+
+```yml
+# config.yml
+coreshop_order:
+    checkout_manager: acme.coreshop.checkout_manager
 ```

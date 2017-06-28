@@ -57,6 +57,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->scalarNode('checkout_manager')->cannotBeEmpty()->end()
             ->end()
         ;
         $this->addModelsSection($rootNode);
