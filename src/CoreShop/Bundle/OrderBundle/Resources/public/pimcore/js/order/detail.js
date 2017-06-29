@@ -378,8 +378,8 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         text: t('coreshop_amount'),
                         flex: 1,
                         renderer: function(value) {
-                            return coreshop.util.format.currency(this.order.currency.symbol, value / 100);
-                        }
+                            return coreshop.util.format.currency(this.order.currency.symbol, value);
+                        }.bind(this)
                     },
                     /*{
                      menuDisabled: true,
