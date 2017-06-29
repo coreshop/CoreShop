@@ -40,7 +40,7 @@ coreshop_order_add_payment:
   path: /%coreshop.admin.route.base%/order/add-payment
   defaults: { _controller: 'coreshop.pimcore_controller.order:addPaymentAction'}
 
-coreshop_order_get_payment_providres:
+coreshop_order_get_payment_providers:
   path: /%coreshop.admin.route.base%/order/get-payment-providers
   defaults: { _controller: 'coreshop.pimcore_controller.order:getPaymentProvidersAction'}
 
