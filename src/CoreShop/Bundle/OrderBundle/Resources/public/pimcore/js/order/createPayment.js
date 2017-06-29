@@ -150,7 +150,7 @@ coreshop.order.order.createPayment = {
                     {
                         xtype: 'numberfield',
                         name: 'amount',
-                        fieldLabel: t('coreshop_amount'),
+                        fieldLabel: t('coreshop_quantity'),
                         decimalPrecision: 4,
                         value: order.total - order.totalPayed,
                         afterLabelTextTpl: [

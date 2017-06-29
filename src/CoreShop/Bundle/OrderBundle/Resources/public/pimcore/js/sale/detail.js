@@ -662,7 +662,7 @@ coreshop.order.sale.detail = Class.create({
                     {
                         xtype: 'gridcolumn',
                         dataIndex: 'amount',
-                        text: t('coreshop_amount'),
+                        text: t('coreshop_quantity'),
                         width: 150,
                         align: 'right',
                         field: {

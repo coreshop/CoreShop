@@ -93,7 +93,7 @@ coreshop.order.order.editPayment = {
                     {
                         xtype: 'numberfield',
                         name: 'amount',
-                        fieldLabel: t('coreshop_amount'),
+                        fieldLabel: t('coreshop_quantity'),
                         disabled: false,
                         value: payment.get("amount")
                     },

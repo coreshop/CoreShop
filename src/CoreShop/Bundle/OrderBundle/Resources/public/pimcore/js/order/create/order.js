@@ -427,7 +427,7 @@ coreshop.order.order.create.order = Class.create({
                         xtype: 'gridcolumn',
                         dataIndex: 'amount',
                         width: 100,
-                        text: t('coreshop_amount'),
+                        text: t('coreshop_quantity'),
                         field: {
                             xtype: 'numberfield',
                             decimalPrecision: 0
