@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -519,7 +520,12 @@ abstract class AbstractSaleController extends PimcoreController
                     }
                 }
             } elseif ($def instanceof Object\ClassDefinition\Data) {
-                $value = $def->getDataForEditmode($fieldData, $data, false);
+                if ($def instanceof Money) {
+                    $value = $fieldData;
+                }
+                else {
+                    $value = $def->getDataForEditmode($fieldData, $data, false);
+                }
 
                 $objectData[$key] = $value;
             } else {
