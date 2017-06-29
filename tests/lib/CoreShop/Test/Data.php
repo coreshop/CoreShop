@@ -77,6 +77,11 @@ class Data
     public static $taxRuleGroup;
 
     /**
+     * @var AddressInterface
+     */
+    public static $address;
+
+    /**
      * @var CustomerInterface
      */
     public static $customer1;
@@ -367,6 +372,9 @@ class Data
         self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product2);
         self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product3);
 
+        $cart->setShippingAddress(self::$address);
+        $cart->setInvoiceAddress(self::$address);
+
         return $cart;
     }
 
@@ -446,6 +454,7 @@ class Data
             $customer->save();
 
             self::$customer1 = $customer;
+            self::$address = $address;
         }
     }
 }
