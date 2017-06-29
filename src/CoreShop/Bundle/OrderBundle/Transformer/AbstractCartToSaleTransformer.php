@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectCloner;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
@@ -97,6 +98,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $currencyConverter;
 
     /**
+     * @var ObjectCloner
+     */
+    protected $objectCloner;
+
+    /**
      * @param ProposalItemTransformerInterface $cartItemToSaleItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -109,6 +115,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param ProposalTaxCollectorInterface $cartTaxCollector
      * @param CurrencyConverterInterface $currencyConverter
+     * @param ObjectCloner $objectCloner
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToSaleItemTransformer,
@@ -122,7 +129,8 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
         TransformerEventDispatcherInterface $eventDispatcher,
         ProposalTaxCollectorInterface $cartTaxCollector,
-        CurrencyConverterInterface $currencyConverter
+        CurrencyConverterInterface $currencyConverter,
+        ObjectCloner $objectCloner
     )
     {
         $this->cartItemToSaleItemTransformer = $cartItemToSaleItemTransformer;
@@ -137,6 +145,8 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->eventDispatcher = $eventDispatcher;
         $this->cartTaxCollector = $cartTaxCollector;
         $this->currencyConverter = $currencyConverter;
+        $this->objectCloner = $objectCloner;
+        $this->addressPath = $addressPath;
     }
 
     /**
@@ -192,8 +202,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setBaseDiscount($cart->getDiscount(true), true);
         $sale->setBaseDiscount($cart->getDiscount(false), false);
 
-        $sale->setShippingAddress($cart->getShippingAddress());
-        $sale->setInvoiceAddress($cart->getInvoiceAddress());
         $sale->setWeight($cart->getWeight());
 
         if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
@@ -208,6 +216,23 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
          * We need to save the sale twice in order to create the object in the tree for pimcore
          */
         $sale->save();
+
+        $shippingAddress = $this->objectCloner->cloneObject(
+            $cart->getShippingAddress(),
+            $this->objectService->createFolderByPath(sprintf("%s/addresses", $sale->getFullPath())),
+            "shipping"
+        );
+        $invoiceAddress = $this->objectCloner->cloneObject(
+            $cart->getInvoiceAddress(),
+            $this->objectService->createFolderByPath(sprintf("%s/addresses", $sale->getFullPath())),
+            "invoice"
+        );
+
+        $shippingAddress->save();
+        $invoiceAddress->save();
+
+        $sale->setShippingAddress($shippingAddress);
+        $sale->setInvoiceAddress($invoiceAddress);
 
         /**
          * @var CartItemInterface

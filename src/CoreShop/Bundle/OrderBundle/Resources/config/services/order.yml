@@ -27,6 +27,7 @@ services:
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.order.taxation.collector.cart'
       - '@coreshop.currency_converter'
+      - '@coreshop.resource.object_cloner'
 
   coreshop.order.transformer.cart_item_to_quote_item:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToQuoteItemTransformer
@@ -52,6 +53,7 @@ services:
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.order.taxation.collector.cart'
       - '@coreshop.currency_converter'
+      - '@coreshop.resource.object_cloner'
 
   coreshop.factory.cart:
     class: CoreShop\Component\Order\Factory\CartFactory
