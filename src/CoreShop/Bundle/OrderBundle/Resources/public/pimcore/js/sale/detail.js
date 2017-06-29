@@ -302,7 +302,7 @@ coreshop.order.sale.detail = Class.create({
                 xtype: 'tabpanel',
                 items: [
                     this.getAddressPanelForAddress(this.order.address.shipping, t('coreshop_address_shipping'), 'shipping'),
-                    this.getAddressPanelForAddress(this.order.address.billing, t('coreshop_address_billing'), 'billing')
+                    this.getAddressPanelForAddress(this.order.address.billing, t('coreshop_address_invoice'), 'invoice')
                 ]
             });
 
@@ -340,30 +340,7 @@ coreshop.order.sale.detail = Class.create({
                 xtype: 'toolbar',
                 dock: 'top',
                 items: [
-                    {
-                        iconCls: 'pimcore_icon_edit',
-                        text: t('edit'),
-                        scale: 'small',
-                        handler: function () {
-                            Ext.Ajax.request({
-                                url: '/admin/coreshop/order/get-address-fields',
-                                params: {
-                                    id: this.order.o_id,
-                                    type: type
-                                },
-                                success: function (response) {
-                                    var res = Ext.decode(response.responseText);
-
-                                    var addressWindow = new coreshop.order.order.address(res.data, res.layout, this.order.o_id, type, title, function (success) {
-                                        addressWindow.close();
-                                        if (success) {
-                                            this.reload();
-                                        }
-                                    }.bind(this)).show();
-                                }.bind(this)
-                            });
-                        }.bind(this)
-                    }, '->',
+                    '->',
                     {
                         iconCls: 'coreshop_icon_open',
                         text: t('open'),
