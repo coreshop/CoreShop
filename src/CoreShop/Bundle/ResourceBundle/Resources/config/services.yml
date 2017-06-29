@@ -1,6 +1,7 @@
 imports:
     - { resource: "services/routing.yml" }
     - { resource: "services/controller.yml" }
+    - { resource: "services/installer.yml" }
 
 parameters:
   coreshop.admin.route.base: /admin/coreshop
@@ -33,41 +34,6 @@ services:
     decoration_priority: 256
     public: false
 
-  coreshop.registry.resource.installers:
-    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
-    arguments:
-      - CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface
-      - 'coreshop-resource-installer'
-
-  coreshop.resource.installer.classes:
-    class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller
-    arguments: ['@kernel']
-    tags:
-      - { name: 'coreshop.resource.installer', type: 'classes', priority: 100}
-
-  coreshop.resource.installer.routes:
-    class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreRoutesInstaller
-    arguments: ['@kernel']
-    tags:
-      - { name: 'coreshop.resource.installer', type: 'routes', priority: 200}
-
-  coreshop.resource.installer.permissions:
-    class: CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller
-    arguments: ['@kernel']
-    tags:
-      - { name: 'coreshop.resource.installer', type: 'permissions', priority: 300}
-
-  coreshop.resource.installer.sql:
-    class: CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller
-    arguments: ['@kernel']
-    tags:
-      - { name: 'coreshop.resource.installer', type: 'sql', priority: 400}
-
-  coreshop.resource.installer:
-    class: CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller
-    arguments:
-      - '@coreshop.registry.resource.installers'
-
   coreshop.admin_controller.resource_settings:
     class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
     calls:
@@ -75,3 +41,6 @@ services:
 
   coreshop.resource_loader:
     class: CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader
+
+  coreshop.resource.object_cloner:
+    class: CoreShop\Bundle\ResourceBundle\Pimcore\ObjectCloner
