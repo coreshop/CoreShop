@@ -42,7 +42,7 @@ coreshop.filter.abstract = Class.create({
             xparent: this,
             id: myId,
             style: 'margin: 10px 0 0 0',
-            tbar: this.getTopBar(t('coreshop_product_filters_' + this.type), myId, this.parent, this.data, 'coreshop_product_filters_icon_' + this.elementType + '_' + this.type),
+            tbar: this.getTopBar(t('coreshop_filters_' + this.type), myId, this.parent, this.data, 'coreshop_filters_icon_' + this.elementType + '_' + this.type),
             items: [
                 {
                     xtype: 'fieldset',
@@ -68,7 +68,7 @@ coreshop.filter.abstract = Class.create({
 
             this.fieldsCombo = Ext.create({
                 xtype: 'combo',
-                fieldLabel: t('coreshop_product_filters_field'),
+                fieldLabel: t('coreshop_filters_field'),
                 name: 'field',
                 width: 400,
                 store: this.parent.getFieldsStore(),

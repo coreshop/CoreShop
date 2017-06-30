@@ -36,8 +36,8 @@ coreshop.filter.similarity = Class.create({
                 return;
 
             addMenu.push({
-                iconCls: 'coreshop_product_filters_icon_similarities_' + similarity,
-                text: t('coreshop_product_filters_' + similarity),
+                iconCls: 'coreshop_filters_icon_similarities_' + similarity,
+                text: t('coreshop_filters_' + similarity),
                 handler: _this.addSimilarity.bind(_this, similarity, {})
             });
 

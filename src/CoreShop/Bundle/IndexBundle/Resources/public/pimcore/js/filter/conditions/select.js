@@ -20,7 +20,7 @@ coreshop.filter.conditions.select = Class.create(coreshop.filter.conditions.abst
         return [
             {
                 xtype: 'combo',
-                fieldLabel: t('coreshop_product_filters_value'),
+                fieldLabel: t('coreshop_filters_value'),
                 name: 'preSelect',
                 width: 400,
                 store: this.valueStore,

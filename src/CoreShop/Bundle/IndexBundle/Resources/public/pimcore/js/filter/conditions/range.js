@@ -19,7 +19,7 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
     getItems: function () {
         return [
             {
-                fieldLabel: t('coreshop_product_filters_step_count'),
+                fieldLabel: t('coreshop_filters_step_count'),
                 xtype: 'numberfield',
                 name: 'stepCount',
                 value: this.data.stepCount,
@@ -28,7 +28,7 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
             },
             {
                 xtype: 'combo',
-                fieldLabel: t('coreshop_product_filters_value_min'),
+                fieldLabel: t('coreshop_filters_value_min'),
                 name: 'preSelectMin',
                 width: 400,
                 store: this.valueStore,
@@ -43,7 +43,7 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
             },
             {
                 xtype: 'combo',
-                fieldLabel: t('coreshop_product_filters_value_max'),
+                fieldLabel: t('coreshop_filters_value_max'),
                 name: 'preSelectMax',
                 width: 400,
                 store: this.valueStore,

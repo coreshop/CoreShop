@@ -17,9 +17,9 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
     /**
      * @var string
      */
-    layoutId: 'coreshop_product_filters_panel',
-    storeId: 'coreshop_product_filters',
-    iconCls: 'coreshop_icon_product_filters',
+    layoutId: 'coreshop_filters_panel',
+    storeId: 'coreshop_filters',
+    iconCls: 'coreshop_icon_filters',
     type: 'filters',
 
     url: {

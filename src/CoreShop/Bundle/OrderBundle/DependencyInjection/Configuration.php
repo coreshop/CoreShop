@@ -354,7 +354,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail.js')->end()
                             ->scalarNode('order_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice.js')->end()
                             ->scalarNode('order_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment.js')->end()
-                            ->scalarNode('order_address')->defaultValue('/bundles/coreshoporder/pimcore/js/order/address.js')->end()
                             ->scalarNode('order_create_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/createPayment.js')->end()
                             ->scalarNode('order_edit_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editPayment.js')->end()
                             ->scalarNode('order_create_order')->defaultValue('/bundles/coreshoporder/pimcore/js/order/create/order.js')->end()

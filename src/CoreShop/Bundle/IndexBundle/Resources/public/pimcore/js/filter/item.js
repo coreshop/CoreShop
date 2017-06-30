@@ -14,7 +14,7 @@ pimcore.registerNS('coreshop.filter.item');
 
 coreshop.filter.item = Class.create(coreshop.resource.item, {
 
-    iconCls: 'coreshop_icon_product_filters',
+    iconCls: 'coreshop_icon_filters',
 
     url: {
         save: '/admin/coreshop/filters/save'
@@ -117,7 +117,7 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
 
         this.indexCombo = Ext.create({
             xtype: 'combo',
-            fieldLabel: t('coreshop_product_filters_index'),
+            fieldLabel: t('coreshop_filters_index'),
             typeAhead: true,
             listWidth: 100,
             width: 250,
@@ -157,11 +157,11 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
                 value: data.name
             }, this.indexCombo, {
                 xtype: 'combo',
-                fieldLabel: t('coreshop_product_filters_order'),
+                fieldLabel: t('coreshop_filters_order'),
                 name: 'orderDirection',
                 value: data.orderDirection,
                 width: 250,
-                store: [['desc', t('coreshop_product_filters_order_desc')], ['asc', t('coreshop_product_filters_order_asc')]],
+                store: [['desc', t('coreshop_filters_order_desc')], ['asc', t('coreshop_filters_order_asc')]],
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
@@ -170,12 +170,12 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
             }, {
                 xtype: 'textfield',
                 name: 'orderKey',
-                fieldLabel: t('coreshop_product_filters_orderKey'),
+                fieldLabel: t('coreshop_filters_orderKey'),
                 width: 250,
                 value: data.orderKey
             }, {
                 xtype: 'numberfield',
-                fieldLabel: t('coreshop_product_filters_resultsPerPage'),
+                fieldLabel: t('coreshop_filters_resultsPerPage'),
                 name: 'resultsPerPage',
                 value: data.resultsPerPage,
                 minValue: 1,

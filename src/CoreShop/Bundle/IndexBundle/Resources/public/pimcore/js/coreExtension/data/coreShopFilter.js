@@ -16,7 +16,7 @@ pimcore.object.classes.data.coreShopFilter = Class.create(coreshop.object.classe
     type: 'coreShopFilter',
 
     getTypeName: function () {
-        return t('coreshop_product_filter');
+        return t('coreshop_filter');
     },
 
     getGroup: function () {
@@ -24,6 +24,6 @@ pimcore.object.classes.data.coreShopFilter = Class.create(coreshop.object.classe
     },
 
     getIconClass: function () {
-        return 'coreshop_icon_product_filters';
+        return 'coreshop_icon_filters';
     }
 });

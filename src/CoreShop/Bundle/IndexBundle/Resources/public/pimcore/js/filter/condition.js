@@ -35,16 +35,16 @@ coreshop.filter.condition = Class.create({
         // show only defined conditions
         Ext.each(this.conditions, function (condition) {
             addMenu.push({
-                iconCls: 'coreshop_product_filters_icon_conditions_' + condition,
-                text: t('coreshop_product_filters_' + condition),
+                iconCls: 'coreshop_filters_icon_conditions_' + condition,
+                text: t('coreshop_filters_' + condition),
                 handler: _this.addCondition.bind(_this, condition, {})
             });
 
         });
 
         this.fieldsContainer = new Ext.Panel({
-            iconCls: 'coreshop_product_filters_' + this.type,
-            title: t('coreshop_product_filters_' + this.label),
+            iconCls: 'coreshop_filters_' + this.type,
+            title: t('coreshop_filters_' + this.label),
             autoScroll: true,
             style: 'padding: 10px',
             forceLayout: true,

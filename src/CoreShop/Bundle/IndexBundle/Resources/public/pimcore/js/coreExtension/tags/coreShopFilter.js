@@ -14,6 +14,6 @@ pimcore.registerNS('pimcore.object.tags.coreShopFilter');
 pimcore.object.tags.coreShopFilter = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopFilter',
-    storeName: 'product_filters',
+    storeName: 'filters',
     allowEmpty: true
 });

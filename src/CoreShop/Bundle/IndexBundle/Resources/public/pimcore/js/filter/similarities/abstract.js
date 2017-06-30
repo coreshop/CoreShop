@@ -26,7 +26,7 @@ coreshop.filter.similarities.abstract = Class.create(coreshop.filter.abstract, {
         return [
             {
                 xtype: 'numberfield',
-                fieldLabel: t('coreshop_product_filters_similarity_weight'),
+                fieldLabel: t('coreshop_filters_similarity_weight'),
                 name: 'weight',
                 width: 400,
                 value: this.data.weight

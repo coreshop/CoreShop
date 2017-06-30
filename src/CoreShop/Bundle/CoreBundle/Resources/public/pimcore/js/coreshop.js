@@ -252,8 +252,8 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         if (user.isAllowed('coreshop_permission_filter')) {
             productsMenu.push({
-                text: t('coreshop_product_filters'),
-                iconCls: 'coreshop_icon_product_filters',
+                text: t('coreshop_filters'),
+                iconCls: 'coreshop_icon_filters',
                 handler: this.openProductFilters
             });
         }

@@ -41,7 +41,7 @@ coreshop.filter.conditions.abstract = Class.create(coreshop.filter.abstract, {
                 triggerAction: "all",
                 editable: false,
                 width: 400,
-                fieldLabel: t('coreshop_product_filters_quantityUnit'),
+                fieldLabel: t('coreshop_filters_quantityUnit'),
                 store: quantityUnitStore,
                 value: this.data.quantityUnit ? this.data.quantityUnit : 0,
                 displayField: 'abbreviation',

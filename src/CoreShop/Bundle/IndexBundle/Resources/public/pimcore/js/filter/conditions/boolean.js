@@ -28,7 +28,7 @@ coreshop.filter.conditions.boolean = Class.create(coreshop.filter.conditions.abs
 
         this.fieldsCombo = Ext.create({
             xtype: 'combo',
-            fieldLabel: t('coreshop_product_filters_fields'),
+            fieldLabel: t('coreshop_filters_fields'),
             name: 'field',
             width: 400,
             store: this.parent.getFieldsStore(),
@@ -68,7 +68,7 @@ coreshop.filter.conditions.boolean = Class.create(coreshop.filter.conditions.abs
         return [
             {
                 xtype: 'combo',
-                fieldLabel: t('coreshop_product_filters_values'),
+                fieldLabel: t('coreshop_filters_values'),
                 name: 'preSelects',
                 width: 400,
                 store: this.parent.getFieldsStore(),
