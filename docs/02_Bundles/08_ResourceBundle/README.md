@@ -25,15 +25,17 @@ public function registerBundles()
 {
     $bundles = array(
         new \JMS\SerializerBundle\JMSSerializerBundle(),
-        new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
-
         new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-
-
         new \FOS\RestBundle\FOSRestBundle(),
         new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-        new \Payum\Bundle\PayumBundle\PayumBundle(),
-        new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+        new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle()
     );
 }
+```
+
+### Loading the config file
+```yml
+#app/config.yml
+imports:
+    - { resource: "@CoreShopResourceBundle/Resources/config/app/config.yml" }
 ```
