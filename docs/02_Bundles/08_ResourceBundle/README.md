@@ -32,10 +32,3 @@ public function registerBundles()
     );
 }
 ```
-
-### Loading the config file
-```yml
-#app/config.yml
-imports:
-    - { resource: "@CoreShopResourceBundle/Resources/config/app/config.yml" }
-```
