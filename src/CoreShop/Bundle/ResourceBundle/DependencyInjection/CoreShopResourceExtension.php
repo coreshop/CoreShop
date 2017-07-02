@@ -17,9 +17,10 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopResourceExtension extends AbstractModelExtension
+final class CoreShopResourceExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -42,6 +43,73 @@ final class CoreShopResourceExtension extends AbstractModelExtension
         }
 
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $fosRestConfig = [
+            'format_listener' => [
+                'rules' => [
+                    [
+                        'path' => '^/admin/coreshop',
+                        'priorities' => ['json', 'xml'],
+                        'fallback_format' => 'json',
+                        'prefer_extension' => true
+                    ],
+                    [
+                        'path' => '^/',
+                        'stop' => true
+                    ]
+                ]
+            ]
+        ];
+
+        $frameworkConfig = [
+            'form' => true
+        ];
+
+        $doctrineConfig = [
+            'dbal' => [
+                'mapping_types' => [
+                    'enum' => 'string'
+                ]
+            ],
+            'orm' => [
+                'auto_generate_proxy_classes' => '%kernel.debug%',
+                'entity_managers' => [
+                    'default' => [
+                        'auto_mapping' => true
+                    ]
+                ]
+            ]
+        ];
+
+        $doctrineCacheConfig = [
+            'providers' => [
+                'coreshop' => [
+                    'type' => 'file_system',
+                    'namespace' => 'coreshop'
+                ]
+            ]
+        ];
+
+        $stofDoctrineExtensions = [
+            'default_locale' => '%locale%',
+            'orm' => [
+                'default' => [
+                    'timestampable' => true
+                ]
+            ]
+        ];
+
+        $container->prependExtensionConfig('fos_rest', $fosRestConfig);
+        $container->prependExtensionConfig('framework', $frameworkConfig);
+        $container->prependExtensionConfig('doctrine', $doctrineConfig);
+        $container->prependExtensionConfig('doctrine_cache', $doctrineCacheConfig);
+        $container->prependExtensionConfig('stof_doctrine_extensions', $stofDoctrineExtensions);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)
