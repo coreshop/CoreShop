@@ -27,11 +27,10 @@ class PimcoreInstaller extends AbstractInstaller
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $options = ['command' => 'coreshop:install'];
-        $options = array_merge($options, ['--no-interaction' => true]);
+        $options = array_merge($options, ['--no-interaction' => true, '--application-name coreshop ']);
         $application->run(new ArrayInput($options));
 
         //TODO: Create Configuration, however configuration looks like in the future, probably just a Doctrine Entity -> therefore Fixtures!
-        //TODO: Install Bricks
         //TODO: Install Customer Service Stuff, not implemented yet -> done via Fixtures
     }
 
@@ -55,7 +54,7 @@ class PimcoreInstaller extends AbstractInstaller
      */
     public function canBeInstalled()
     {
-        return true;
+        return !$this->isInstalled();
     }
 
     /**
@@ -79,7 +78,7 @@ class PimcoreInstaller extends AbstractInstaller
      */
     public function canBeUpdated()
     {
-        return true;
+        return false;
     }
 
     /**
