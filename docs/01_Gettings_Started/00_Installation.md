@@ -7,7 +7,6 @@ You can setup your own example:
     ```php
         \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
     ```
- - Import ```"@CoreShopCoreBundle/Resources/config/app/config.yml"``` in your app/config/config.yml
  - Activate Admin Bundle in Pimcore Extension Manager
  - Run Install from Pimcore Extension Manager or from CLI
     ```php bin/console coreshop:install```
