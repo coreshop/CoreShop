@@ -100,13 +100,13 @@ class NotificationRuleController extends ResourceController
                 if ($newRule instanceof NotificationRuleInterface) {
                     $newRule->setSort($newRule->getSort() - 1);
 
-                    $this->entityManager->persist($newRule);
+                    $this->manager->persist($newRule);
                 }
             }
 
             $rule->setSort($toSort);
 
-            $this->entityManager->persist($rule);
+            $this->manager->persist($rule);
         } else {
             //Update all records in between and move one direction down.
 
@@ -123,16 +123,16 @@ class NotificationRuleController extends ResourceController
                 if ($newRule instanceof NotificationRuleInterface) {
                     $newRule->setSort($newRule->getSort() + 1);
 
-                    $this->entityManager->persist($newRule);
+                    $this->manager->persist($newRule);
                 }
             }
 
             $rule->setSort($fromSort);
 
-            $this->entityManager->persist($rule);
+            $this->manager->persist($rule);
         }
 
-        $this->entityManager->flush();
+        $this->manager->flush();
 
         return $this->json(['success' => true]);
     }

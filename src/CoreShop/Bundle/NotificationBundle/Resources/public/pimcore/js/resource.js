@@ -14,6 +14,7 @@ pimcore.registerNS('coreshop.notification.resource');
 coreshop.notification.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.global.addStore('coreshop_notification_rules', 'coreshop/notification_rules');
+        pimcore.globalmanager.get('coreshop_notification_rules').sort('sort', 'ASC');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.notification', this);
     },

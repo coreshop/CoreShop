@@ -15,6 +15,10 @@ CoreShop\Component\Notification\Model\NotificationRUle:
       expose: true
       type: string
       groups: [List, Detailed]
+    sort:
+      expose: true
+      type: integer
+      groups: [List, Detailed]
     active:
       expose: true
       type: boolean

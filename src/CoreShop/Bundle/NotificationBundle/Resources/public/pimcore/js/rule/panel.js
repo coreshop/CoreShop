@@ -76,6 +76,7 @@ coreshop.notification.rule.panel = Class.create(coreshop.rules.panel, {
                             },
                             callback: function (request, success, response) {
                                 this.grid.setLoading(false);
+                                this.grid.getStore().load();
                             }.bind(this)
                         });
                     }.bind(this)
