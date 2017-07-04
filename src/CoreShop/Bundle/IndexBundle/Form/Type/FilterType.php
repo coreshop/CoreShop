@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +28,12 @@ class FilterType extends AbstractResourceType
         $builder
             ->add('name', TextType::class)
             ->add('orderKey', TextType::class)
-            ->add('orderDirection', TextType::class) //TODO: Make ChoiceType with ASC and DESC
+            ->add('orderDirection', ChoiceType::class, [
+                'choices'  => array(
+                    'ASC' => 'ASC',
+                    'DESC' => 'DESC'
+                ),
+            ])
             ->add('preConditions', FilterConditionCollectionType::class)
             ->add('conditions', FilterConditionCollectionType::class)
             ->add('resultsPerPage', IntegerType::class)
