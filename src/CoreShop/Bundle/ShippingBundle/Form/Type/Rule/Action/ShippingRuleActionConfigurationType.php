@@ -26,7 +26,9 @@ class ShippingRuleActionConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('shippingRule', TextType::class, [ //TODO: Should be ShippingRuleChoiceType, but would't save ID to database, instead it saves the whole object
+            //TODO: Should be ShippingRuleChoiceType, but would't save ID to database, instead it saves the whole object
+            //Could be solved with a Transfomer!
+            ->add('shippingRule', TextType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
