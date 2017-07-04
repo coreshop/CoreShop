@@ -18,3 +18,8 @@ services:
       - '@coreshop.translation_locale_provider.pimcore'
     tags:
       - { name: 'form.type' }
+
+  coreshop.form.type.pimcore_class_choice:
+    class: CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreClassChoiceType
+    tags:
+      - { name: 'form.type' }
