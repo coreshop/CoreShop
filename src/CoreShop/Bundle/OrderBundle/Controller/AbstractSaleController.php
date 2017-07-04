@@ -341,7 +341,7 @@ abstract class AbstractSaleController extends PimcoreController
         }
 
         $jsonSale['o_id'] = $sale->getId();
-        $jsonSale['saleNumber'] = $sale->getId();
+        $jsonSale['saleNumber'] = $sale->getSaleNumber();
         $jsonSale['saleDate'] = $sale->getSaleDate()->getTimestamp();
         $jsonSale['customer'] = $sale->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($sale->getCustomer()) : null;
         $jsonSale['details'] = $this->getItemDetails($sale);
