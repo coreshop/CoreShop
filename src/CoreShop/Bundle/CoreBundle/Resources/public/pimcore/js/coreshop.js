@@ -23,7 +23,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     },
 
     uninstall: function () {
-        //TODO remove from menu
+        //Nothing to do here, reload pimcore
     },
 
     pimcoreReady: function (params, broker) {

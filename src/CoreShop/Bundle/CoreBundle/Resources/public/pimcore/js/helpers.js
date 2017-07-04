@@ -165,7 +165,6 @@ coreshop.helpers.openMessagingThread = function (id) {
                 if (res.success) {
                     pimcore.globalmanager.add(panelKey, new pimcore.plugin.coreshop.messaging.thread.item(null, res.data, panelKey, panelKey, 'thread'));
                 } else {
-                    //TODO: Show messagebox
                     Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
                 }
             }.bind(this)
