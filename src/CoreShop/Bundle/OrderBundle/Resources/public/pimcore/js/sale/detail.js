@@ -26,9 +26,10 @@ coreshop.order.sale.detail = Class.create({
         borderWidth: '1px'
     },
 
-    initialize: function (order) {
-        this.order = order;
-        this.layoutId = 'coreshop_' + this.type + '_' + this.order.o_id;
+    initialize: function (sale) {
+        this.sale = sale;
+        this.sale = sale;
+        this.layoutId = 'coreshop_' + this.type + '_' + this.sale.o_id;
         this.iconCls = 'coreshop_icon_' + this.type;
         this.getLayout();
         this.getObjectInfo();
@@ -41,14 +42,15 @@ coreshop.order.sale.detail = Class.create({
 
     reload: function () {
         this.layout.destroy();
-        coreshop.helpers.openOrder(this.order.o_id);
+
+        coreshop.order.helper.openSale(this.sale.o_id, this.type);
     },
 
     getObjectInfo: function () {
 
         Ext.Ajax.request({
             url: '/admin/object/get',
-            params: {id: this.order.o_id},
+            params: {id: this.sale.o_id},
             success: function (response) {
                 try {
                     this.objectData = Ext.decode(response.responseText);
@@ -80,7 +82,7 @@ coreshop.order.sale.detail = Class.create({
             // create new panel
             this.layout = new Ext.panel.Panel({
                 id: this.layoutId,
-                title: t('coreshop_' + this.type) + ': ' + this.order.saleNumber,
+                title: t('coreshop_' + this.type) + ': ' + this.sale.saleNumber,
                 iconCls: this.iconCls,
                 border: false,
                 layout: 'border',
@@ -122,13 +124,13 @@ coreshop.order.sale.detail = Class.create({
         ];
     },
 
-    getRightItems: function() {
+    getRightItems: function () {
         return [
             this.getCustomerInfo()
         ];
     },
 
-    getFullItems: function() {
+    getFullItems: function () {
         var pluginPanel = this.getPluginInfo();
         var items = [];
 
@@ -205,19 +207,25 @@ coreshop.order.sale.detail = Class.create({
             var items = [
                 {
                     xtype: 'panel',
-                    html: t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.order.saleDate * 1000), t('coreshop_date_time_format')) + '</span>',
+                    html: t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.sale.saleDate * 1000), t('coreshop_date_time_format')) + '</span>',
                     bodyPadding: 20,
                     flex: 1
                 },
                 {
                     xtype: 'panel',
-                    html: t('coreshop_sale_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.order.currency.symbol, this.order.totalGross) + '</span>',
+                    html: t('coreshop_sale_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.sale.currency.symbol, this.sale.totalGross) + '</span>',
                     bodyPadding: 20,
                     flex: 1
                 },
                 {
                     xtype: 'panel',
-                    html: t('coreshop_product_count') + '<br/><span class="coreshop_order_big">' + this.order.items.length + '</span>',
+                    html: t('coreshop_product_count') + '<br/><span class="coreshop_order_big">' + this.sale.items.length + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_store') + '<br/><span class="coreshop_order_big">' + this.sale.store.name + '</span>',
                     bodyPadding: 20,
                     flex: 1
                 }
@@ -234,9 +242,9 @@ coreshop.order.sale.detail = Class.create({
     },
 
     getSaleInfo: function () {
-        if (!this.orderInfo) {
-            this.orderInfo = Ext.create('Ext.panel.Panel', {
-                title: t('coreshop_order') + ': ' + this.order.saleNumber + ' (' + this.order.o_id + ')',
+        if (!this.saleInfo) {
+            this.saleInfo = Ext.create('Ext.panel.Panel', {
+                title: t('coreshop_' + this.type) + ': ' + this.sale.saleNumber + ' (' + this.sale.o_id + ')',
                 margin: '0 20 20 0',
                 border: true,
                 flex: 8,
@@ -246,22 +254,22 @@ coreshop.order.sale.detail = Class.create({
                         type: 'coreshop-open',
                         tooltip: t('open'),
                         handler: function () {
-                            pimcore.helpers.openObject(this.order.o_id);
+                            pimcore.helpers.openObject(this.sale.o_id);
                         }.bind(this)
                     }
                 ]
             });
         }
 
-        return this.orderInfo;
+        return this.saleInfo;
     },
 
     getCustomerInfo: function () {
         if (!this.customerInfo) {
             var items = [];
 
-            if (this.order.customer) {
-                if (!this.order.customer.isGuest) {
+            if (this.sale.customer) {
+                if (!this.sale.customer.isGuest) {
 
                     items.push({
                         xtype: 'panel',
@@ -277,7 +285,7 @@ coreshop.order.sale.detail = Class.create({
                             {
                                 xtype: 'label',
                                 style: 'display:block',
-                                text: this.order.customer.email
+                                text: this.sale.customer.email
                             },
                             {
                                 xtype: 'label',
@@ -287,7 +295,7 @@ coreshop.order.sale.detail = Class.create({
                             {
                                 xtype: 'label',
                                 style: 'display:block',
-                                text: Ext.Date.format(new Date(this.order.customer.o_creationDate * 1000), t('coreshop_date_time_format'))
+                                text: Ext.Date.format(new Date(this.sale.customer.o_creationDate * 1000), t('coreshop_date_time_format'))
                             }
                         ]
                     });
@@ -297,14 +305,14 @@ coreshop.order.sale.detail = Class.create({
             items.push({
                 xtype: 'tabpanel',
                 items: [
-                    this.getAddressPanelForAddress(this.order.address.shipping, t('coreshop_address_shipping'), 'shipping'),
-                    this.getAddressPanelForAddress(this.order.address.billing, t('coreshop_address_invoice'), 'invoice')
+                    this.getAddressPanelForAddress(this.sale.address.shipping, t('coreshop_address_shipping'), 'shipping'),
+                    this.getAddressPanelForAddress(this.sale.address.billing, t('coreshop_address_invoice'), 'invoice')
                 ]
             });
 
-            var guestStr = this.order.customer.isGuest ? ' –  ' + t('coreshop_order_is_guest') : '';
+            var guestStr = this.sale.customer.isGuest ? ' –  ' + t('coreshop_is_guest') : '';
             this.customerInfo = Ext.create('Ext.panel.Panel', {
-                title: t('coreshop_customer') + ': ' + (this.order.customer ? this.order.customer.firstname + ' (' + this.order.customer.o_id + ')' : t('unknown')) + guestStr,
+                title: t('coreshop_customer') + ': ' + (this.sale.customer ? this.sale.customer.firstname + ' (' + this.sale.customer.o_id + ')' : t('unknown')) + guestStr,
                 margin: '0 0 20 0',
                 border: true,
                 flex: 6,
@@ -314,8 +322,8 @@ coreshop.order.sale.detail = Class.create({
                         type: 'coreshop-open',
                         tooltip: t('open'),
                         handler: function () {
-                            if (this.order.customer) {
-                                pimcore.helpers.openObject(this.order.customer.o_id);
+                            if (this.sale.customer) {
+                                pimcore.helpers.openObject(this.sale.customer.o_id);
                             }
                         }.bind(this)
                     }
@@ -381,7 +389,7 @@ coreshop.order.sale.detail = Class.create({
     getMailDetails: function () {
         if (!this.mailCorrespondence) {
             this.mailCorrespondenceStore = new Ext.data.JsonStore({
-                data: this.order.mailCorrespondence
+                data: this.sale.mailCorrespondence
             });
 
             this.mailCorrespondence = Ext.create('Ext.panel.Panel', {
@@ -523,19 +531,19 @@ coreshop.order.sale.detail = Class.create({
     getPluginInfo: function () {
         /*var pluginInfo = coreshop.plugin.broker.fireEvent(this.type + 'Detail', this);
 
-        if (pluginInfo.length > 0) {
+         if (pluginInfo.length > 0) {
 
-            return {
-                xtype: 'container',
-                layout: 'hbox',
-                margin: '0 0 20 0',
-                border: 0,
-                style: {
-                    border: 0
-                },
-                items: pluginInfo
-            };
-        }*/
+         return {
+         xtype: 'container',
+         layout: 'hbox',
+         margin: '0 0 20 0',
+         border: 0,
+         style: {
+         border: 0
+         },
+         items: pluginInfo
+         };
+         }*/
 
         return null;
     },
@@ -543,49 +551,49 @@ coreshop.order.sale.detail = Class.create({
     getDetailInfo: function () {
         if (!this.detailsInfo) {
             this.detailsStore = new Ext.data.JsonStore({
-                data: this.order.details
+                data: this.sale.details
             });
 
             this.summaryStore = new Ext.data.JsonStore({
-                data: this.order.summary
+                data: this.sale.summary
             });
 
-            var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-                listeners: {
-                    edit: function (editor, context, eOpts) {
-                        if (context.originalValue !== context.value) {
-                            Ext.Ajax.request({
-                                url: '/admin/coreshop/' + this.type + '/change-item',
-                                params: {
-                                    id: this.order.o_id,
-                                    orderItemId: context.record.get('o_id'),
-                                    amount: context.record.get('amount'),
-                                    price: context.record.get('price_without_tax')
-                                },
-                                success: function (response) {
-                                    var res = Ext.decode(response.responseText);
+            /*var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+             listeners: {
+             edit: function (editor, context, eOpts) {
+             if (context.originalValue !== context.value) {
+             Ext.Ajax.request({
+             url: '/admin/coreshop/' + this.type + '/change-item',
+             params: {
+             id: this.sale.o_id,
+             orderItemId: context.record.get('o_id'),
+             amount: context.record.get('amount'),
+             price: context.record.get('price_without_tax')
+             },
+             success: function (response) {
+             var res = Ext.decode(response.responseText);
 
-                                    if (res.success) {
-                                        context.record.commit();
+             if (res.success) {
+             context.record.commit();
 
-                                        //this.reload();
+             //this.reload();
 
-                                        this.detailsStore.loadData(res.details);
-                                        this.summaryStore.loadData(res.summary);
+             this.detailsStore.loadData(res.details);
+             this.summaryStore.loadData(res.summary);
 
-                                        this.order.totalGross = res.totalGross;
+             this.sale.totalGross = res.totalGross;
 
-                                        this.updatePaymentInfoAlert();
-                                    } else {
-                                        pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
-                                    }
+             this.updatePaymentInfoAlert();
+             } else {
+             pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
+             }
 
-                                }.bind(this)
-                            });
-                        }
-                    }.bind(this)
-                }
-            });
+             }.bind(this)
+             });
+             }
+             }.bind(this)
+             }
+             });*/
 
             var plugins = [];
             var actions = [
@@ -600,18 +608,18 @@ coreshop.order.sale.detail = Class.create({
                 }
             ];
 
-            if (this.order.editable) {
-                plugins.push(cellEditing);
-                actions.push({
-                    iconCls: 'pimcore_icon_edit',
-                    tooltip: t('edit'),
-                    handler: function (grid, rowIndex, colIndex) {
-                        cellEditing.startEditByPosition({
-                            row: rowIndex,
-                            column: 4
-                        });
-                    }.bind(this)
-                });
+            if (this.sale.editable) {
+                //plugins.push(cellEditing);
+                /*actions.push({
+                 iconCls: 'pimcore_icon_edit',
+                 tooltip: t('edit'),
+                 handler: function (grid, rowIndex, colIndex) {
+                 cellEditing.startEditByPosition({
+                 row: rowIndex,
+                 column: 4
+                 });
+                 }.bind(this)
+                 });*/
             }
 
             var itemsGrid = {
@@ -633,7 +641,7 @@ coreshop.order.sale.detail = Class.create({
                         text: t('coreshop_wholesale_price'),
                         width: 150,
                         align: 'right',
-                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                        renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                     },
                     {
                         xtype: 'gridcolumn',
@@ -641,7 +649,7 @@ coreshop.order.sale.detail = Class.create({
                         text: t('coreshop_price_without_tax'),
                         width: 150,
                         align: 'right',
-                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol),
+                        renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol),
                         field: {
                             xtype: 'numberfield',
                             decimalPrecision: 4
@@ -653,7 +661,7 @@ coreshop.order.sale.detail = Class.create({
                         text: t('coreshop_price_with_tax'),
                         width: 150,
                         align: 'right',
-                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                        renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                     },
                     {
                         xtype: 'gridcolumn',
@@ -672,7 +680,7 @@ coreshop.order.sale.detail = Class.create({
                         text: t('coreshop_total'),
                         width: 150,
                         align: 'right',
-                        renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                        renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                     },
                     {
                         menuDisabled: true,
@@ -710,7 +718,7 @@ coreshop.order.sale.detail = Class.create({
                         width: 150,
                         align: 'right',
                         renderer: function (value, metaData, record) {
-                            return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
+                            return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
                         }.bind(this)
                     }
                 ]
@@ -718,10 +726,10 @@ coreshop.order.sale.detail = Class.create({
 
             var detailItems = [itemsGrid, summaryGrid];
 
-            if (this.order.priceRule) {
+            if (this.sale.priceRule) {
 
                 var priceRuleStore = new Ext.data.JsonStore({
-                    data: this.order.priceRule
+                    data: this.sale.priceRule
                 });
 
                 var priceRuleItem = {
@@ -744,7 +752,7 @@ coreshop.order.sale.detail = Class.create({
                             width: 150,
                             align: 'right',
                             renderer: function (value, metaData, record) {
-                                return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.order.currency.symbol, value) + '</span>';
+                                return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
                             }.bind(this)
                         }
                     ]

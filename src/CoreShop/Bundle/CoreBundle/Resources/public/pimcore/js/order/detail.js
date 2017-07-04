@@ -18,24 +18,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.order.detail, {
 
         return leftItems.concat([this.getCarrierDetails()]);
     },
-
-    getHeader: function ($super) {
-        if (!this.headerPanel) {
-            var header = $super();
-
-            header.add({
-                xtype: 'panel',
-                html: t('coreshop_store') + '<br/><span class="coreshop_order_big">' + this.order.store.name + '</span>',
-                bodyPadding: 20,
-                flex: 1
-            });
-
-            return header;
-        }
-
-        return this.headerPanel;
-    },
-
+    
     getCarrierDetails: function () {
         if (!this.carrierDetails) {
             var items = [];
@@ -52,13 +35,13 @@ coreshop.order.order.detail = Class.create(coreshop.order.order.detail, {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_currency'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_currency') + ': </span>' + this.order.currency.name
+                                html: '<span style="font-weight:bold;">' + t('coreshop_currency') + ': </span>' + this.sale.currency.name
                             },
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_weight'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_weight') + ': </span>' + (this.order.shippingPayment.weight ? this.order.shippingPayment.weight : 0)
+                                html: '<span style="font-weight:bold;">' + t('coreshop_weight') + ': </span>' + (this.sale.shippingPayment.weight ? this.sale.shippingPayment.weight : 0)
                             }
                         ]
                     },
@@ -70,13 +53,13 @@ coreshop.order.order.detail = Class.create(coreshop.order.order.detail, {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_carrier'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_carrier') + ': </span>' + this.order.shippingPayment.carrier
+                                html: '<span style="font-weight:bold;">' + t('coreshop_carrier') + ': </span>' + this.sale.shippingPayment.carrier
                             },
                             {
                                 xtype: 'panel',
                                 style: 'display:block',
                                 text: t('coreshop_price'),
-                                html: '<span style="font-weight:bold;">' + t('coreshop_price') + ': </span>' + coreshop.util.format.currency(this.order.currency.symbol, this.order.shippingPayment.cost)
+                                html: '<span style="font-weight:bold;">' + t('coreshop_price') + ': </span>' + coreshop.util.format.currency(this.sale.currency.symbol, this.sale.shippingPayment.cost)
                             }
                         ]
                     }

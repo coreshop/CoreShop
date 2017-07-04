@@ -17,7 +17,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
     getTopButtons: function () {
         var buttons = [];
 
-        if (this.order.invoiceCreationAllowed) {
+        if (this.sale.invoiceCreationAllowed) {
             buttons.push({
                 iconCls: 'coreshop_icon_orders_invoice',
                 text: t('coreshop_invoice_create_short'),
@@ -27,7 +27,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
             });
         }
 
-        if (this.order.shipmentCreationAllowed) {
+        if (this.sale.shipmentCreationAllowed) {
             buttons.push({
                 iconCls: 'coreshop_icon_orders_shipment',
                 text: t('coreshop_shipment_create_short'),
@@ -51,18 +51,18 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
     },
 
     getSaleInfo: function ($super) {
-        if (!this.orderInfo) {
+        if (!this.saleInfo) {
             var orderInfo = $super();
 
-            this.orderStatesStore = new Ext.data.JsonStore({
-                data: this.order.statesHistory
+            this.saleStatesStore = new Ext.data.JsonStore({
+                data: this.sale.statesHistory
             });
 
             orderInfo.add({
                 xtype: 'grid',
                 margin: '0 0 15 0',
                 cls: 'coreshop-detail-grid',
-                store: this.orderStatesStore,
+                store: this.saleStatesStore,
                 columns: [
                     {
                         xtype: 'gridcolumn',
@@ -90,7 +90,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
             });
         }
 
-        return this.orderInfo;
+        return this.saleInfo;
     },
 
     getShipmentDetails: function () {
@@ -116,7 +116,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
             });
 
             this.shipmentsStore = new Ext.data.JsonStore({
-                data: this.order.shipments
+                data: this.sale.shipments
             });
 
             this.shippingInfo = Ext.create('Ext.panel.Panel', {
@@ -208,7 +208,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
     getInvoiceDetails: function () {
         if (!this.invoiceDetails) {
             this.invoicesStore = new Ext.data.JsonStore({
-                data: this.order.invoices
+                data: this.sale.invoices
             });
 
             this.invoiceDetails = Ext.create('Ext.panel.Panel', {
@@ -248,7 +248,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                 text: t('coreshop_total_without_tax'),
                                 flex: 2,
                                 align: 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                                renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                             },
                             {
                                 xtype: 'gridcolumn',
@@ -256,7 +256,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                 text: t('coreshop_total'),
                                 flex: 2,
                                 align: 'right',
-                                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+                                renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                             },
                             {
                                 xtype: 'widgetcolumn',
@@ -299,8 +299,8 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
 
     updatePaymentInfoAlert: function () {
         if (this.paymentInfoAlert) {
-            if (this.order.totalPayed < this.order.total || this.order.totalPayed > this.order.total) {
-                this.paymentInfoAlert.update(t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(this.order.currency.symbol, this.order.totalPayed), coreshop.util.format.currency(this.order.currency.symbol, this.order.totalGross)));
+            if (this.sale.totalPayed < this.sale.total || this.sale.totalPayed > this.sale.total) {
+                this.paymentInfoAlert.update(t('coreshop_order_payment_paid_warning').format(coreshop.util.format.currency(this.sale.currency.symbol, this.sale.totalPayed), coreshop.util.format.currency(this.sale.currency.symbol, this.sale.totalGross)));
                 this.paymentInfoAlert.show();
             } else {
                 this.paymentInfoAlert.update('');
@@ -312,7 +312,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
     getPaymentDetails: function () {
         if (!this.paymentInfo) {
             this.paymentsStore = new Ext.data.JsonStore({
-                data: this.order.payments
+                data: this.sale.payments
             });
 
             this.paymentInfoAlert = Ext.create('Ext.panel.Panel', {
@@ -378,7 +378,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         text: t('coreshop_quantity'),
                         flex: 1,
                         renderer: function(value) {
-                            return coreshop.util.format.currency(this.order.currency.symbol, value);
+                            return coreshop.util.format.currency(this.sale.currency.symbol, value);
                         }.bind(this)
                     },
                     /*{
@@ -425,7 +425,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         type: 'coreshop-add',
                         tooltip: t('add'),
                         handler: function () {
-                            coreshop.order.order.createPayment.showWindow(this.order.o_id, this.order, function (result) {
+                            coreshop.order.order.createPayment.showWindow(this.sale.o_id, this.sale, function (result) {
                                 if (result.success) {
                                     this.reload();
                                 }
@@ -451,7 +451,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
             this.objectData.data.workflowManagement = this.objectData.workflowManagement;
         }
 
-        pimcore.elementservice.integrateWorkflowManagement('object', this.order.o_id, this.objectData, buttons);
+        pimcore.elementservice.integrateWorkflowManagement('object', this.sale.o_id, this.objectData, buttons);
 
         toolbar = new Ext.Toolbar({
             border: false,
@@ -459,17 +459,17 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
             overflowHandler: 'scroller'
         });
 
-        this.orderInfo.insert(0, toolbar);
+        this.saleInfo.insert(0, toolbar);
     },
 
     createInvoice: function () {
-        new coreshop.order.order.invoice(this.order, function () {
+        new coreshop.order.order.invoice(this.sale, function () {
             this.reload();
         }.bind(this));
     },
 
     createShipment: function () {
-        new coreshop.order.order.shipment(this.order, function () {
+        new coreshop.order.order.shipment(this.sale, function () {
             this.reload();
         }.bind(this));
     },
