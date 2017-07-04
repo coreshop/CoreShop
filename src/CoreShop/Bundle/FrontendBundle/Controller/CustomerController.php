@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -169,6 +170,32 @@ class CustomerController extends FrontendController
         $address->delete();
 
         return $this->redirectToRoute('coreshop_customer_addresses');
+    }
+
+    public function settingsAction(Request $request) {
+        $customer = $this->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $form = $this->get('form.factory')->createNamed('', CustomerType::class, $customer);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+            $handledForm = $form->handleRequest($request);
+
+            if ($handledForm->isValid()) {
+                $customer = $handledForm->getData();
+                $customer->save();
+
+                return $this->redirectToRoute('coreshop_customer_profile');
+            }
+        }
+
+        return $this->render('CoreShopFrontendBundle:Customer:settings.html.twig', [
+            'customer' => $customer,
+            'form' => $form->createView()
+        ]);
     }
 
     protected function getCustomer()

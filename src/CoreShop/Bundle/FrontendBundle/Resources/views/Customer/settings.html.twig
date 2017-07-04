@@ -1,0 +1,37 @@
+{% extends '@CoreShopFrontend/layout-full.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block center %}
+    <div id="main-container" class="container">
+
+        <ol class="breadcrumb">
+            <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
+            <li class="active">{{ 'settings'|trans }}</li>
+        </ol>
+
+        <h2 class="main-heading text-center">
+            {{ 'settings'|trans }} <br/>
+        </h2>
+
+        <section class="registration-area">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-smart">
+                        <div class="panel-body">
+                            {{ form_start(form) }}
+                                {{ form_rest(form) }}
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-black">
+                                        {{ 'save'|trans }}
+                                    </button>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
