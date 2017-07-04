@@ -30,7 +30,6 @@ class PimcoreInstaller extends AbstractInstaller
         $options = array_merge($options, ['--no-interaction' => true, '--application-name coreshop ']);
         $application->run(new ArrayInput($options));
 
-        //TODO: Create Configuration, however configuration looks like in the future, probably just a Doctrine Entity -> therefore Fixtures!
         //TODO: Install Customer Service Stuff, not implemented yet -> done via Fixtures
     }
 
