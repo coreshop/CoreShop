@@ -97,13 +97,13 @@
                                 {% set retailPrice = item.getItemRetailPrice %}
 
                                 {% if price != retailPrice %}
-                                    <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+                                    <span class="price-old">{{ currency.format(retailPrice, order.currency.isoCode) }}</span>
                                 {% endif %}
 
-                                {{ currency.convertAndFormat(price) }}
+                                {{ currency.format(price, order.currency.isoCode) }}
                             </td>
                             <td class="text-right cart-item-total-price">
-                                {{ currency.convertAndFormat(item.getTotal) }}
+                                {{ currency.format(item.getTotal, order.currency.isoCode) }}
                             </td>
                         </tr>
                     {% endfor %}
@@ -117,10 +117,10 @@
 
                                 </td>
                                 <td class="text-right">
-                                    -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
+                                    -{{ currency.format(priceRule.getDiscount(true), order.currency.isoCode) }}
                                 </td>
                                 <td class="text-right">
-                                    -{{ currency.convertAndFormat(priceRule.getDiscount(false)) }}
+                                    -{{ currency.format(priceRule.getDiscount(false), order.currency.isoCode) }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -156,7 +156,7 @@
                             <strong>{{ 'subtotal_inc'|trans }}:</strong>
                         </td>
                         <td colspan="1" class="text-right cart-sub-total">
-                            {{ currency.convertAndFormat(order.getSubtotal(true)) }}
+                            {{ currency.format(order.getSubtotal(true), order.currency.isoCode) }}
                         </td>
                     </tr>
                     <tr>
@@ -164,7 +164,7 @@
                             <strong>{{ 'subtotal_excl'|trans }}:</strong>
                         </td>
                         <td colspan="1" class="text-right cart-discount">
-                            {{ currency.convertAndFormat(order.getSubtotal(false)) }}
+                            {{ currency.format(order.getSubtotal(false), order.currency.isoCode) }}
                         </td>
                     </tr>
                     {% if discount > 0 %}
@@ -174,7 +174,7 @@
                             </td>
                             <td colspan="1"
                                 class="text-right cart-discount">
-                                -{{ currency.convertAndFormat(discountIt) }}
+                                -{{ currency.format(discountIt, order.currency.isoCode) }}
                             </td>
                         </tr>
                         <tr>
@@ -183,7 +183,7 @@
                             </td>
                             <td colspan="1"
                                 class="text-right cart-discount">
-                                -{{ currency.convertAndFormat(discount) }}
+                                -{{ currency.format(discount, order.currency.isoCode) }}
                             </td>
                         </tr>
                     {% endif %}
@@ -194,7 +194,7 @@
                             </td>
                             <td colspan="1"
                                 class="text-right cart-shipping">
-                                {{ currency.convertAndFormat(shippingIt) }}
+                                {{ currency.format(shippingIt, order.currency.isoCode) }}
                             </td>
                         </tr>
                         <tr>
@@ -203,7 +203,7 @@
                             </td>
                             <td colspan="1"
                                 class="text-right cart-shipping">
-                                {{ currency.convertAndFormat(shipping) }}
+                                {{ currency.format(shipping, order.currency.isoCode) }}
                             </td>
                         </tr>
                     {% endif %}
@@ -214,7 +214,7 @@
                             </td>
                             <td colspan="1"
                                 class="text-right cart-payment">
-                                {{ currency.convertAndFormat(payment) }}
+                                {{ currency.format(payment, order.currency.isoCode) }}
                             </td>
                         </tr>
                     {% endif %}
@@ -225,7 +225,7 @@
                             </td>
                             <td colspan="1"
                                 class="text-right cart-tax-detail">
-                                {{ currency.convertAndFormat(taxItem.amount) }}
+                                {{ currency.format(taxItem.amount, order.currency.isoCode) }}
                             </td>
                         </tr>
                     {% endfor %}
@@ -234,7 +234,7 @@
                             <strong>{{ 'total_tax'|trans }}:</strong>
                         </td>
                         <td colspan="1" class="text-right cart-tax">
-                            {{ currency.convertAndFormat(order.getTotalTax) }}
+                            {{ currency.format(order.getTotalTax, order.currency.isoCode) }}
                         </td>
                     </tr>
                     <tr>
@@ -243,7 +243,7 @@
                         </td>
                         <td colspan="1"
                             class="text-right cart-total-price">
-                            {{ currency.convertAndFormat(order.getTotal) }}
+                            {{ currency.format(order.getTotal, order.currency.isoCode) }}
                         </td>
                     </tr>
                     </tfoot>
