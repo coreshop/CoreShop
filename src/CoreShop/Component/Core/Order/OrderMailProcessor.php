@@ -92,7 +92,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $mail->setParams($emailParameters);
         $mail->setEnableLayoutOnPlaceholderRendering(false);
 
-        if ($sendInvoices) { //TODO: Should invoice creation be configurable?
+        if ($sendInvoices) {
             $invoices = $this->invoiceRepository->getDocuments($order);
 
             foreach ($invoices as $invoice) {
@@ -104,7 +104,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             }
         }
 
-        if ($sendShipments) {  //TODO: Should shipment creation be configurable?
+        if ($sendShipments) {
             $shipments = $this->shipmentRepository->getDocuments($order);
 
             foreach ($shipments as $shipment) {
