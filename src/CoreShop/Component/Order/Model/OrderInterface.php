@@ -86,4 +86,26 @@ interface OrderInterface extends SaleInterface
      * @return int
      */
     public function getBasePaymentFee($withTax = true);
+
+    /**
+     * @return mixed
+     */
+    public function getPaymentProvider();
+
+    /**
+     * @param $paymentProvider
+     *
+     * @return mixed
+     */
+    public function setPaymentProvider($paymentProvider);
+
+    /**
+     * @return int
+     */
+    public function getPaymentFeeTaxRate();
+
+    /**
+     * @param int $paymentFeeTaxRate
+     */
+    public function setPaymentFeeTaxRate($paymentFeeTaxRate);
 }

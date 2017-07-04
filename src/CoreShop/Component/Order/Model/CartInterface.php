@@ -65,4 +65,28 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Checko
      * @return bool
      */
     public function hasPriceRule($priceRule);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getPaymentFee($withTax = true);
+
+    /**
+     * @return mixed
+     */
+    public function getPaymentProvider();
+
+    /**
+     * @param $paymentProvider
+     *
+     * @return mixed
+     */
+    public function setPaymentProvider($paymentProvider);
+
+    /**
+     * @return int
+     */
+    public function getPaymentFeeTaxRate();
 }

@@ -40,26 +40,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
      *
      * {@inheritdoc}
      */
-    public function getPaymentFee($withTax = true)
-    {
-        return $withTax ? $this->getPaymentFeeGross() : $this->getPaymentFeeNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setPaymentFee($paymentFee, $withTax = true)
-    {
-        return $withTax ? $this->setPaymentFeeGross($paymentFee) : $this->setPaymentFeeNet($paymentFee);
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getDiscount($withTax = true)
     {
         return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
