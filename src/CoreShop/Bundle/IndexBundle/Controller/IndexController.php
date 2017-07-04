@@ -82,6 +82,7 @@ class IndexController extends ResourceController
             ];
         }
 
+        //TODO: This should not be done here, IndexBundle should be more independent.
         $productClass = $this->getParameter('coreshop.model.product.class');
 
         return $this->viewHandler->handle(
