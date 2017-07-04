@@ -122,7 +122,7 @@ coreshop.order.sale.list = Class.create({
                 layout: 'border',
                 closable: true,
                 items: this.getItems(),
-                dockedItems: [{
+                /*dockedItems: [{
                     xtype: 'toolbar',
                     dock: 'top',
                     items: [
@@ -134,7 +134,7 @@ coreshop.order.sale.list = Class.create({
                             }.bind(this)
                         }
                     ]
-                }]
+                }]*/
             });
 
             // add event listener

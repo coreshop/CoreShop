@@ -57,6 +57,14 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
+        if (user.isAllowed('coreshop_permission_quote_detail')) {
+            coreShopMenuItems.push({
+                text: t('coreshop_quote_by_number'),
+                iconCls: 'coreshop_icon_quote',
+                handler: coreshop.helpers.openQuoteByNumberDialog.bind(this)
+            });
+        }
+
         if (user.isAllowed('coreshop_permission_settings')) {
             coreShopMenuItems.push({
                 text: t('coreshop_settings'),
@@ -177,7 +185,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        if (user.isAllowed('coreshop_permission_order_create')) {
+        /*if (user.isAllowed('coreshop_permission_order_create')) {
             ordersMenu.push({
                 text: t('coreshop_order_create'),
                 iconCls: 'coreshop_icon_order_create',
@@ -185,7 +193,25 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                     coreshop.helpers.createOrder();
                 }.bind(this)
             });
+        }*/
+
+        if (user.isAllowed('coreshop_permission_quote_list')) {
+            ordersMenu.push({
+                text: t('coreshop_quotes'),
+                iconCls: 'coreshop_icon_quotes',
+                handler: this.openQuotes
+            });
         }
+
+        /*if (user.isAllowed('coreshop_permission_quote_create')) {
+            ordersMenu.push({
+                text: t('coreshop_quote_create'),
+                iconCls: 'coreshop_icon_quote_create',
+                handler: function () {
+                    coreshop.helpers.createQuote();
+                }.bind(this)
+            });
+        }*/
 
         if (ordersMenu.length > 0) {
             coreShopMenuItems.push({
@@ -434,7 +460,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             tab.toolbar.insert(tab.toolbar.items.length,
                 '-'
             );
-            tab.toolbar.insert(tab.toolbar.items.length,
+            /*tab.toolbar.insert(tab.toolbar.items.length,
                 {
                     text: t('coreshop_cart_create_order'),
                     scale: 'medium',
@@ -443,7 +469,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                         alert('Create Order from Cart');
                     }
                 }
-            );
+            );*/
         } else if (tab.data.general.o_className === coreshop.class_map.product) {
 
             tab.toolbar.insert(tab.toolbar.items.length,
@@ -597,6 +623,10 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
     openOrders: function () {
         coreshop.global.resource.open('coreshop.order', 'orders');
+    },
+
+    openQuotes: function () {
+        coreshop.global.resource.open('coreshop.order', 'quotes');
     },
 
     openPriceRules: function () {

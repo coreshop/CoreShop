@@ -10,12 +10,7 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.quote.list');
-coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
-    type: 'quote',
-
-    open: function (record, callback) {
-        coreshop.order.helper.openQuote(record.get('o_id'), callback);
-    }
+pimcore.registerNS('coreshop.order.quote.detail');
+coreshop.order.quote.detail = Class.create(coreshop.order.sale.detail, {
+    type: 'quote'
 });
-

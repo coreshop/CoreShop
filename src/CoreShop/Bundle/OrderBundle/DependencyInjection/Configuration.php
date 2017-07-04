@@ -16,6 +16,7 @@ use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
+use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartRepository;
@@ -293,6 +294,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(QuoteInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_controller')->defaultValue(QuoteController::class)->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopQuote.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
@@ -350,6 +352,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('sale_list')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/list.js')->end()
                             ->scalarNode('order_list')->defaultValue('/bundles/coreshoporder/pimcore/js/order/list.js')->end()
                             ->scalarNode('quote_list')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/list.js')->end()
+                            ->scalarNode('quote_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/detail.js')->end()
                             ->scalarNode('order_helper')->defaultValue('/bundles/coreshoporder/pimcore/js/helper.js')->end()
                             ->scalarNode('order_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail.js')->end()
                             ->scalarNode('order_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice.js')->end()
@@ -372,7 +375,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['cart_price_rule', 'order_list', 'order_detail', 'order_create'])
+                        ->defaultValue(['cart_price_rule', 'order_list', 'order_detail', 'order_create', 'quote_list', 'quote_detail', 'quote_create'])
                     ->end()
                 ->end()
             ->end()

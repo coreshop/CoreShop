@@ -61,12 +61,12 @@ coreshop.order.helper.openOrder = function (id, callback) {
 };
 
 coreshop.order.helper.openQuote = function (id, callback) {
-    if (pimcore.globalmanager.exists('coreshop_order_' + id) === false) {
+    if (pimcore.globalmanager.exists('coreshop_quote_' + id) === false) {
 
-        pimcore.globalmanager.add('coreshop_order_' + id, true);
+        pimcore.globalmanager.add('coreshop_quote_' + id, true);
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order/detail',
+            url: '/admin/coreshop/quote/detail',
             params: {
                 id: id
             },
@@ -74,7 +74,7 @@ coreshop.order.helper.openQuote = function (id, callback) {
                 var res = Ext.decode(response.responseText);
 
                 if (res.success) {
-                    pimcore.globalmanager.add('coreshop_order_' + id, new coreshop.order.order.detail(res.sale));
+                    pimcore.globalmanager.add('coreshop_quote_' + id, new coreshop.order.quote.detail(res.sale));
                 } else {
                     //TODO: Show messagebox
                     Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
@@ -86,7 +86,7 @@ coreshop.order.helper.openQuote = function (id, callback) {
             }.bind(this)
         });
     } else {
-        var tab = pimcore.globalmanager.get('coreshop_order_' + id);
+        var tab = pimcore.globalmanager.get('coreshop_quote_' + id);
 
         if (Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
             tab.activate();

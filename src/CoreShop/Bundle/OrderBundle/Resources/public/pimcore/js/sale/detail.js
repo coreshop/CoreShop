@@ -235,12 +235,8 @@ coreshop.order.sale.detail = Class.create({
 
     getSaleInfo: function () {
         if (!this.orderInfo) {
-            this.orderStatesStore = new Ext.data.JsonStore({
-                data: this.order.statesHistory
-            });
-
             this.orderInfo = Ext.create('Ext.panel.Panel', {
-                title: t('coreshop_order') + ': ' + this.order.orderNumber + ' (' + this.order.o_id + ')',
+                title: t('coreshop_order') + ': ' + this.order.saleNumber + ' (' + this.order.o_id + ')',
                 margin: '0 20 20 0',
                 border: true,
                 flex: 8,

@@ -217,7 +217,7 @@ abstract class AbstractSaleController extends PimcoreController
         $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($request->request->all());
 
         $order = 'DESC';
-        $orderKey = 'orderDate';
+        $orderKey = $this->getOrderKey();
 
         if ($sortingSettings['order']) {
             $order = $sortingSettings['order'];
@@ -274,7 +274,6 @@ abstract class AbstractSaleController extends PimcoreController
             'discount' => $sale->getDiscount(),
             'subtotal' => $sale->getSubtotal(),
             'shipping' => $sale->getShipping(),
-            'paymentFee' => $sale->getPaymentFee(),
             'totalTax' => $sale->getTotalTax(),
             'total' => $sale->getTotal(),
             'currency' => $this->getCurrency($sale->getCurrency() ? $sale->getCurrency() : $this->get('coreshop.context.currency')->getCurrency()),
@@ -418,13 +417,6 @@ abstract class AbstractSaleController extends PimcoreController
             $summary[] = [
                 'key' => 'shipping_tax',
                 'value' => $sale->getShippingTax(),
-            ];
-        }
-
-        if ($sale->getPaymentFee() > 0) {
-            $summary[] = [
-                'key' => 'payment',
-                'value' => $sale->getPaymentFee(),
             ];
         }
 
@@ -584,6 +576,11 @@ abstract class AbstractSaleController extends PimcoreController
      * @return array
      */
     public abstract function getGridColumns();
+
+    /**
+     * @return string
+     */
+    protected abstract function getOrderKey();
 
     /**
      * @return AddressFormatterInterface

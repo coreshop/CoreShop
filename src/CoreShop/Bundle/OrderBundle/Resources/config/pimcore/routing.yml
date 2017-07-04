@@ -67,3 +67,16 @@ coreshop_order_shipment_create:
 coreshop_order_shipment_render:
   path: /%coreshop.admin.route.base%/order-shipment/render
   defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}
+
+
+coreshop_quote_get_grid_configuration:
+  path: /%coreshop.admin.route.base%/quote/get-grid-configuration
+  defaults: { _controller: 'coreshop.pimcore_controller.quote:getGridConfigurationAction'}
+
+coreshop_quote_get_quotes:
+  path: /%coreshop.admin.route.base%/quote/list
+  defaults: { _controller: 'coreshop.pimcore_controller.quote:listAction'}
+
+coreshop_quote_get_quote:
+  path: /%coreshop.admin.route.base%/quote/detail
+  defaults: { _controller: 'coreshop.pimcore_controller.quote:detailAction'}

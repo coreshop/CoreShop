@@ -228,6 +228,7 @@ class OrderController extends AbstractSaleController
 
         if ($sale instanceof OrderInterface) {
             $order['orderState'] = $this->getOrderStateManager()->getCurrentState($sale);
+            $order['paymentFee'] = $sale->getPaymentFee();
         }
 
         return $order;
@@ -267,6 +268,23 @@ class OrderController extends AbstractSaleController
 
         return $invoiceArray;
     }
+
+    protected function getSummary(SaleInterface $sale)
+    {
+        $summary = parent::getSummary($sale);
+
+        if ($sale instanceof OrderInterface) {
+            if ($sale->getPaymentFee() > 0) {
+                $summary[] = [
+                    'key' => 'payment',
+                    'value' => $sale->getPaymentFee(),
+                ];
+            }
+        }
+
+        return $summary;
+    }
+
 
     /**
      * @return ProcessableInterface
@@ -363,5 +381,12 @@ class OrderController extends AbstractSaleController
     protected function getSaleClassName()
     {
         return 'coreshop.model.order.pimcore_class_id';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getOrderKey() {
+        return 'orderDate';
     }
 }

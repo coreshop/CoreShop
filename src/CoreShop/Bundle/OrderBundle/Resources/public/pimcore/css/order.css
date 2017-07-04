@@ -2,6 +2,10 @@
     background: url(../img/orders.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_quotes, .coreshop_icon_quote {
+    background: url(../img/quotes.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_orders_invoice, .coreshop_rule_icon_condition_invoiceState {
     background: url(../img/invoice.svg) center center no-repeat !important;
 }

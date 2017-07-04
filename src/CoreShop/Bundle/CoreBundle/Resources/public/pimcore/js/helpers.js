@@ -78,6 +78,9 @@ coreshop.helpers.getTaxRuleGroupSelect = function (value) {
     };
 };
 
+/**
+ * TOOD: Implement/Fix
+ */
 coreshop.helpers.openOrderByNumberDialog = function (keyCode, e) {
 
     if (e['stopEvent']) {
@@ -92,6 +95,9 @@ coreshop.helpers.openOrderByNumberDialog = function (keyCode, e) {
         });
 };
 
+/**
+ * TOOD: Implement/Fix
+ */
 coreshop.helpers.openOrderByNumber = function (orderNumber) {
     Ext.Ajax.request({
         url: '/admin/coreshop/helper/get-order',
@@ -101,7 +107,44 @@ coreshop.helpers.openOrderByNumber = function (orderNumber) {
         success: function (response) {
             var res = Ext.decode(response.responseText);
             if (res.success) {
-                coreshop.helpers.openOrder(res.id);
+                coreshop.order.helper.openOrder(res.id);
+            } else {
+                Ext.MessageBox.alert(t('error'), t('element_not_found'));
+            }
+        }
+    });
+};
+
+/**
+ * TOOD: Implement/Fix
+ */
+coreshop.helpers.openQuoteByNumberDialog = function (keyCode, e) {
+
+    if (e['stopEvent']) {
+        e.stopEvent();
+    }
+
+    Ext.MessageBox.prompt(t('coreshop_quote_by_number'), t('coreshop_please_enter_the_number_of_the_quote'),
+        function (button, value) {
+            if (button == 'ok' && !Ext.isEmpty(value)) {
+                coreshop.helpers.openQuoteByNumber(value);
+            }
+        });
+};
+
+/**
+ * TOOD: Implement/Fix
+ */
+coreshop.helpers.openQuoteByNumber = function (quoteNumber) {
+    Ext.Ajax.request({
+        url: '/admin/coreshop/helper/get-quote',
+        params: {
+            orderNumber: orderNumber
+        },
+        success: function (response) {
+            var res = Ext.decode(response.responseText);
+            if (res.success) {
+                coreshop.order.helper.openQuote(res.id);
             } else {
                 Ext.MessageBox.alert(t('error'), t('element_not_found'));
             }
@@ -176,44 +219,6 @@ coreshop.helpers.showAbout = function () {
 
 coreshop.helpers.constrastColor = function (color) {
     return (parseInt(color.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
-};
-
-coreshop.helpers.openOrder = function (id, callback) {
-    if (pimcore.globalmanager.exists('coreshop_order_' + id) == false) {
-
-        pimcore.globalmanager.add('coreshop_order_' + id, true);
-
-        Ext.Ajax.request({
-            url: '/admin/coreshop/order/detail',
-            params: {
-                id: id
-            },
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
-
-                if (res.success) {
-                    pimcore.globalmanager.add('coreshop_order_' + id, new coreshop.order.order.detail(res.sale));
-                } else {
-                    //TODO: Show messagebox
-                    Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
-                }
-
-                if (Ext.isFunction(callback)) {
-                    callback();
-                }
-            }.bind(this)
-        });
-    } else {
-        var tab = pimcore.globalmanager.get('coreshop_order_' + id);
-
-        if (Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
-            tab.activate();
-        }
-
-        if (Ext.isFunction(callback)) {
-            callback();
-        }
-    }
 };
 
 coreshop.helpers.openMessagingThread = function (id) {
