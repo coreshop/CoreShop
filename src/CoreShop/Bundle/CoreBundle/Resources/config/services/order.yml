@@ -1,9 +1,16 @@
 services:
   coreshop.core.order.transformer.cart_to_order:
     decorates: coreshop.order.transformer.cart_to_order
-    class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToOrderTransformer
+    class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToSaleTransformer
     arguments:
       - '@coreshop.core.order.transformer.cart_to_order.inner'
+      - '@coreshop.currency_converter'
+
+  coreshop.core.order.transformer.cart_to_quote:
+    decorates: coreshop.order.transformer.cart_to_quote
+    class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToSaleTransformer
+    arguments:
+      - '@coreshop.core.order.transformer.cart_to_quote.inner'
       - '@coreshop.currency_converter'
 
   coreshop.core.order.taxation.collector.cart:
