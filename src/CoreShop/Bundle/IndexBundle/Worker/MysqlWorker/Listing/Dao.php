@@ -259,14 +259,13 @@ class Dao
      */
     public function buildSimilarityOrderBy($fields, $objectId)
     {
-        //TODO
+        //TODO: similarity
         /*
         try {
             $fieldString = '';
             $maxFieldString = '';
 
             foreach ($fields as $field) {
-                //TODO
                 if ($field instanceof AbstractSimilarity) {
                     if (!empty($fieldString)) {
                         $fieldString .= ',';
