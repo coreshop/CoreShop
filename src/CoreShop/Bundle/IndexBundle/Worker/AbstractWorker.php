@@ -69,8 +69,8 @@ abstract class AbstractWorker implements WorkerInterface
 
         $classHelper = $this->classHelperRegistry->has($object->getClassName()) ? $this->classHelperRegistry->get($object->getClassName()) : null;
 
-        $virtualProductId = $object->getId();
-        $virtualProductActive = $object->getEnabled();
+        $virtualObjectId = $object->getId();
+        $virtualObjectActive = $object->getEnabled();
 
         if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
             $parent = $object->getParent();
@@ -79,8 +79,8 @@ abstract class AbstractWorker implements WorkerInterface
                 $parent = $parent->getParent();
             }
 
-            $virtualProductId = $parent->getId();
-            $virtualProductActive = $object->getEnabled();
+            $virtualObjectId = $parent->getId();
+            $virtualObjectActive = $object->getEnabled();
         }
 
         $validLanguages = Tool::getValidLanguages();
@@ -90,8 +90,8 @@ abstract class AbstractWorker implements WorkerInterface
             'o_key' => $object->getKey(),
             'o_classId' => $object->getClassId(),
             'o_className' => $object->getClassName(),
-            'o_virtualProductId' => $virtualProductId,
-            'o_virtualProductActive' => $virtualProductActive === null ? false : $virtualProductActive,
+            'o_virtualObjectId' => $virtualObjectId,
+            'o_virtualObjectActive' => $virtualObjectActive === null ? false : $virtualObjectActive,
             'o_type' => $object->getType()
         ];
 
@@ -139,7 +139,7 @@ abstract class AbstractWorker implements WorkerInterface
                                         foreach ($value as $v) {
                                             $relData = [];
                                             $relData['src'] = $object->getId();
-                                            $relData['src_virtualProductId'] = $virtualProductId;
+                                            $relData['src_virtualObjectId'] = $virtualObjectId;
                                             $relData['dest'] = $v['dest'];
                                             $relData['fieldname'] = $column->getName();
                                             $relData['type'] = $v['type'];
@@ -187,7 +187,7 @@ abstract class AbstractWorker implements WorkerInterface
                                 foreach ($value as $v) {
                                     $relData = [];
                                     $relData['src'] = $object->getId();
-                                    $relData['src_virtualProductId'] = $virtualProductId;
+                                    $relData['src_virtualObjectId'] = $virtualObjectId;
                                     $relData['dest'] = $v['dest'];
                                     $relData['fieldname'] = $column->getName();
                                     $relData['type'] = $v['type'];
@@ -309,8 +309,8 @@ abstract class AbstractWorker implements WorkerInterface
             'o_key' => IndexColumnInterface::FIELD_TYPE_STRING,
             'o_classId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
             'o_className' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'o_virtualProductId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
-            'o_virtualProductActive' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
+            'o_virtualObjectId' => IndexColumnInterface::FIELD_TYPE_INTEGER,
+            'o_virtualObjectActive' => IndexColumnInterface::FIELD_TYPE_BOOLEAN,
             'o_type' => IndexColumnInterface::FIELD_TYPE_STRING,
             'active' => IndexColumnInterface::FIELD_TYPE_BOOLEAN
         ];

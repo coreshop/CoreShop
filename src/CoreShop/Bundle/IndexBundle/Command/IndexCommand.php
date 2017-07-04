@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\IndexBundle\Command;
 
+use CoreShop\Component\Index\Model\IndexInterface;
 use Pimcore\Model\Object\AbstractObject;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -27,7 +28,7 @@ final class IndexCommand extends ContainerAwareCommand
     {
         $this
             ->setName('coreshop:index')
-            ->setDescription('Reindex all Products');
+            ->setDescription('Reindex all Objects');
     }
 
     /**
@@ -40,21 +41,43 @@ final class IndexCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $allProducts = $this->getContainer()->get('coreshop.repository.product')->getList();
-        $allProducts->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
-        $allProducts = $allProducts->load();
+        $indices = $this->getContainer()->get('coreshop.repository.index')->findAll();
+        $classesToUpdate = [];
 
-        $steps = count($allProducts);
+        /**
+         * @var $index IndexInterface
+         */
+        foreach ($indices as $index) {
+            if (!in_array($index->getClass(), $classesToUpdate)) {
+                $classesToUpdate[] = $index->getClass();
+            }
+        }
 
-        $output->writeln('<info>Found '.count($allProducts).' Products to index</info>');
+        $classProgress = new ProgressBar($output, count($classesToUpdate));
+        $classProgress->setProgressCharacter('#');
 
-        $progress = new ProgressBar($output, $steps);
-        $progress->start();
+        foreach ($classesToUpdate as $class) {
+            $list = '\Pimcore\Model\Object\\' . $class . '\Listing';
+            $list = new $list();
 
-        foreach ($allProducts as $product) {
-            $this->getContainer()->get('coreshop.index.updater')->updateIndices($product);
+            $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
+            $list = $list->load();
 
-            $progress->advance();
+            $steps = count($list);
+
+            $output->writeln(sprintf('<info>Found %s Objects ("%s") to index</info>', $steps, $class));
+
+            $progress = new ProgressBar($output, $steps);
+            $progress->start();
+
+            foreach ($list as $object) {
+                $this->getContainer()->get('coreshop.index.updater')->updateIndices($object);
+
+                $progress->advance();
+            }
+
+            $progress->finish();
+            $classProgress->advance();
         }
 
         $output->writeln('');

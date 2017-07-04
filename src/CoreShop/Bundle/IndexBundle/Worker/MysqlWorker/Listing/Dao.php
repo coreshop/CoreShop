@@ -45,7 +45,7 @@ class Dao
     }
 
     /**
-     * Load products.
+     * Load objects.
      *
      * @param $condition
      * @param null|string $orderBy
@@ -74,12 +74,12 @@ class Dao
 
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!is_null($orderBy)) {
-                $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualProductId as o_id FROM '
+                $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualObjectId as o_id FROM '
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
-                    .$condition.' GROUP BY o_virtualProductId'.$orderBy.' '.$limit;
+                    .$condition.' GROUP BY o_virtualObjectId'.$orderBy.' '.$limit;
             } else {
-                $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualProductId as o_id FROM '
+                $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualObjectId as o_id FROM '
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
                     .$condition.' '.$limit;
@@ -114,7 +114,7 @@ class Dao
 
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualProductId) as `count` FROM "
+                $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualObjectId) as `count` FROM "
                     .$this->model->getQueryTableName().' a '
                     .$this->model->getJoins()
                     .$condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->database->quoteIdentifier($fieldname);
@@ -157,7 +157,7 @@ class Dao
 
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $query = 'SELECT dest as `value`, count(DISTINCT src_virtualProductId) as `count` FROM '
+                $query = 'SELECT dest as `value`, count(DISTINCT src_virtualObjectId) as `count` FROM '
                     .$this->model->getRelationTablename().' a '
                     .'WHERE fieldname = '.$this->quote($fieldname);
             } else {
@@ -222,7 +222,7 @@ class Dao
         }
 
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            $query = 'SELECT count(DISTINCT o_virtualProductId) FROM '
+            $query = 'SELECT count(DISTINCT o_virtualObjectId) FROM '
                 .$this->model->getQueryTableName().' a '
                 .$this->model->getJoins()
                 .$condition.$orderBy.' '.$limit;

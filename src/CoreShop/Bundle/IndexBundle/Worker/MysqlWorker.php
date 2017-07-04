@@ -218,8 +218,8 @@ class MysqlWorker extends AbstractWorker
         $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getTablename($index) . "` (
           `o_id` INT(11) NOT NULL DEFAULT '0',
           `o_key` VARCHAR(255) NOT NULL,
-          `o_virtualProductId` INT(11) NOT NULL,
-          `o_virtualProductActive` TINYINT(1) NOT NULL,
+          `o_virtualObjectId` INT(11) NOT NULL,
+          `o_virtualObjectActive` TINYINT(1) NOT NULL,
           `o_classId` INT(11) NOT NULL,
           `o_className` VARCHAR(255) NOT NULL,
           `o_type` VARCHAR(20) NOT NULL,
@@ -238,7 +238,7 @@ class MysqlWorker extends AbstractWorker
 
         $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getRelationTablename($index) . "` (
           `src` INT(11) NOT NULL DEFAULT '0',
-          `src_virtualProductId` INT(11) NOT NULL,
+          `src_virtualObjectId` INT(11) NOT NULL,
           `dest` INT(11) NOT NULL,
           `fieldname` VARCHAR(255) COLLATE utf8_bin NOT NULL,
           `type` VARCHAR(20) COLLATE utf8_bin NOT NULL,
@@ -343,7 +343,7 @@ QUERY;
                 Logger::warn('Error during updating index relation table: ' . $e->getMessage(), $e);
             }
         } else {
-            Logger::info("Don't adding product " . $object->getId() . ' to index.');
+            Logger::info("Don't adding object " . $object->getId() . ' to index.');
 
             $this->deleteFromIndex($index, $object);
         }

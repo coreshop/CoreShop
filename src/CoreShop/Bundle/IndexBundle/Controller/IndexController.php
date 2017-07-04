@@ -13,7 +13,9 @@
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use Pimcore\Model\Object\ClassDefinition;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends ResourceController
@@ -68,7 +70,6 @@ class IndexController extends ResourceController
         $fieldTypes = [
             IndexColumnInterface::FIELD_TYPE_STRING,
             IndexColumnInterface::FIELD_TYPE_DOUBLE,
-            IndexColumnInterface::FIELD_TYPE_INTEGER,
             IndexColumnInterface::FIELD_TYPE_BOOLEAN,
             IndexColumnInterface::FIELD_TYPE_DATE,
             IndexColumnInterface::FIELD_TYPE_TEXT,
@@ -82,8 +83,19 @@ class IndexController extends ResourceController
             ];
         }
 
-        //TODO: This should not be done here, IndexBundle should be more independent.
-        $productClass = $this->getParameter('coreshop.model.product.class');
+        $classes = new ClassDefinition\Listing();
+        $classes = $classes->load();
+        $availableClasses = [];
+
+        foreach ($classes as $class) {
+            $pimcoreClass = 'Pimcore\Model\Object\\' . $class->getName();
+
+            if (in_array(IndexableInterface::class, class_implements($pimcoreClass), true)) {
+                $availableClasses[] = [
+                    'name' => $class->getName()
+                ];
+            }
+        }
 
         return $this->viewHandler->handle(
             [
@@ -91,7 +103,7 @@ class IndexController extends ResourceController
                 'interpreters' => $interpretersResult,
                 'getters' => $gettersResult,
                 'fieldTypes' => $fieldTypesResult,
-                'class' => str_replace('Pimcore\\Model\\Object\\', '', $productClass),
+                'classes' => $availableClasses
             ]
         );
     }

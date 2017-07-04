@@ -68,9 +68,13 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
             data: []
         });
 
+        this.classes = new Ext.data.JsonStore({
+            data: []
+        });
+
         pimcore.globalmanager.add('coreshop_index_getters', this.getterStore);
         pimcore.globalmanager.add('coreshop_index_interpreters', this.interpreterStore);
-        pimcore.globalmanager.add('coreshop_index_fieldTypes', this.fieldTypeStore);
+        pimcore.globalmanager.add('coreshop_index_classes', this.classes);
 
         Ext.Ajax.request({
             url: this.url.config,
@@ -82,7 +86,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
                     this.getterStore.loadData(res.getters);
                     this.interpreterStore.loadData(res.interpreters);
                     this.fieldTypeStore.loadData(res.fieldTypes);
-                    this.class = res.class;
+                    this.classes.loadData(res.classes);
 
                     // create layout
                     this.getLayout();

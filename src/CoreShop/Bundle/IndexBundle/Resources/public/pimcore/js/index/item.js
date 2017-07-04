@@ -51,6 +51,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
             this.getIndexTypeConfig(this.data.type);
         }
 
+
         this.formPanel = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_settings',
             title: t('settings'),
@@ -69,6 +70,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                         {
                             xtype: 'fieldset',
                             autoHeight: true,
+                            border: false,
                             labelWidth: 350,
                             defaultType: 'textfield',
                             defaults: {width: '100%'},
@@ -79,6 +81,17 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                                     name: 'name',
                                     value: this.data.name,
                                     regex: /^[a-z0-9]+$/i
+                                },
+                                {
+                                    xtype: 'combo',
+                                    fieldLabel: t('class'),
+                                    name: 'class',
+                                    displayField: 'name',
+                                    valueField: 'name',
+                                    store: pimcore.globalmanager.get('coreshop_index_classes'),
+                                    value: this.data.class,
+                                    queryMode: 'local',
+                                    forceSelection: true
                                 },
                                 {
                                     xtype: 'combo',
@@ -111,7 +124,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     },
 
     getIndexFields: function () {
-        this.fieldsPanel = new coreshop.index.fields(this.data, this.parentPanel.class);
+        this.fieldsPanel = new coreshop.index.fields(this.data, this.data.class);
 
         this.indexFields = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_indexes_fields',
@@ -154,7 +167,6 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     getSaveData: function () {
         var saveData = this.formPanel.down("form").getForm().getFieldValues();
 
-        saveData['class'] = this.parentPanel.class;
         saveData['configuration'] = this.indexTypeSettings.getForm().getFieldValues();
         saveData['columns'] = this.fieldsPanel.getData();
 

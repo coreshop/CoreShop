@@ -49,9 +49,11 @@ CoreShop\Component\Index\Model\Filter:
         joinColumns:
           filterId:
             referencedColumnName: id
+            onDelete: CASCADE
         inverseJoinColumns:
           conditionId:
             referencedColumnName: id
+            onDelete: CASCADE
       cascade:
         - all
     conditions:
@@ -62,8 +64,10 @@ CoreShop\Component\Index\Model\Filter:
         joinColumns:
           filterId:
             referencedColumnName: id
+            onDelete: CASCADE
         inverseJoinColumns:
           conditionId:
             referencedColumnName: id
+            onDelete: CASCADE
       cascade:
         - all
