@@ -68,4 +68,12 @@ class QuoteController extends AbstractSaleController
     {
         return 'quoteDate';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSaleNumberField()
+    {
+        return 'quoteNumber';
+    }
 }

@@ -53,7 +53,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             coreShopMenuItems.push({
                 text: t('coreshop_order_by_number'),
                 iconCls: 'coreshop_icon_order',
-                handler: coreshop.helpers.openOrderByNumberDialog.bind(this)
+                handler: coreshop.order.helper.openSaleByNumberDialog.bind(this, 'order')
             });
         }
 
@@ -61,7 +61,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             coreShopMenuItems.push({
                 text: t('coreshop_quote_by_number'),
                 iconCls: 'coreshop_icon_quote',
-                handler: coreshop.helpers.openQuoteByNumberDialog.bind(this)
+                handler: coreshop.order.helper.openSaleByNumberDialog.bind(this, 'quote')
             });
         }
 

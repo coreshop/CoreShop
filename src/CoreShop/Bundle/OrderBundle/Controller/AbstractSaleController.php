@@ -258,6 +258,28 @@ abstract class AbstractSaleController extends PimcoreController
     }
 
     /**
+     * @param Request $request
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
+    public function findSaleAction(Request $request)
+    {
+        $number = $request->get('number');
+
+        if ($number) {
+            $list = $this->getSalesList();
+            $list->setCondition(sprintf('%s = ? OR o_id = ?', $this->getSaleNumberField()), [$number, $number]);
+
+            $sales = $list->load();
+
+            if (count($sales) > 0) {
+                return $this->json(['success' => true, 'id' => $sales[0]->getId()]);
+            }
+        }
+
+        return $this->json(['success' => false]);
+    }
+
+    /**
      * @param SaleInterface $sale
      *
      * @return array
@@ -514,8 +536,7 @@ abstract class AbstractSaleController extends PimcoreController
             } elseif ($def instanceof Object\ClassDefinition\Data) {
                 if ($def instanceof Money) {
                     $value = $fieldData;
-                }
-                else {
+                } else {
                     $value = $def->getDataForEditmode($fieldData, $data, false);
                 }
 
@@ -581,6 +602,11 @@ abstract class AbstractSaleController extends PimcoreController
      * @return string
      */
     protected abstract function getOrderKey();
+
+    /**
+     * @return string
+     */
+    protected abstract function getSaleNumberField();
 
     /**
      * @return AddressFormatterInterface

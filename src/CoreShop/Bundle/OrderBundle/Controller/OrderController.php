@@ -389,4 +389,12 @@ class OrderController extends AbstractSaleController
     protected function getOrderKey() {
         return 'orderDate';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSaleNumberField()
+    {
+        return 'orderNumber';
+    }
 }
