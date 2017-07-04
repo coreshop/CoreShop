@@ -61,7 +61,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
                 ],
             ])
             ->add('getter', IndexColumnGetterChoiceType::class)
-            ->add('interpreter', TextType::class) //TODO
+            ->add('interpreter', IndexColumnInterpreterChoiceType::class)
         ;
 
         /*
