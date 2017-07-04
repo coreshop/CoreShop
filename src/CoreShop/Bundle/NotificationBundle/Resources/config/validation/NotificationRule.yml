@@ -4,7 +4,7 @@ CoreShop\Component\Notification\Model\NotificationRule:
       - NotBlank: { groups: [coreshop] }
     active:
       - Type:
-          type: integer
+          type: boolean
           groups: [coreshop]
     sort:
       - Type:

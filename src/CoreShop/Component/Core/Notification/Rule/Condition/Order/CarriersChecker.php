@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
 
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 
 class CarriersChecker extends AbstractConditionChecker
 {

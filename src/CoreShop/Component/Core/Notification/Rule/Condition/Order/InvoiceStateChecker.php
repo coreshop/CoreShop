@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
 
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 
 class InvoiceStateChecker extends AbstractConditionChecker

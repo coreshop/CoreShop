@@ -18,7 +18,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.order.detail, {
 
         return leftItems.concat([this.getCarrierDetails()]);
     },
-    
+
     getCarrierDetails: function () {
         if (!this.carrierDetails) {
             var items = [];

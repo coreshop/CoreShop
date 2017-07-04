@@ -26,6 +26,7 @@ services:
     class: CoreShop\Component\Core\Notification\Rule\Condition\Order\CarriersChecker
     tags:
       - { name: coreshop.notification_rule.condition, type: carriers, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
+      - { name: coreshop.notification_rule.condition, type: carriers, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
 
   coreshop.notification_rule.condition.invoice.invoice:
     class: CoreShop\Component\Core\Notification\Rule\Condition\Invoice\InvoiceStateChecker
@@ -58,6 +59,16 @@ services:
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
 
+  coreshop.notification_rule.action.mail:
+    class: CoreShop\Component\Notification\Rule\Action\MailActionProcessor
+    tags:
+      - { name: coreshop.notification_rule.action, type: mail, notification-type: order, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
+      - { name: coreshop.notification_rule.action, type: mail, notification-type: invoice, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
+      - { name: coreshop.notification_rule.action, type: mail, notification-type: shipment, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
+      - { name: coreshop.notification_rule.action, type: mail, notification-type: user, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
+      - { name: coreshop.notification_rule.action, type: mail, notification-type: payment, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
+      - { name: coreshop.notification_rule.action, type: mail, notification-type: quote, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
+
   # Listeners -> here the actual magic happens
   coreshop.notification.listener.invoice:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\InvoiceListener
@@ -72,6 +83,13 @@ services:
       - '@coreshop.notification_rule.processor'
     tags:
       - { name: kernel.event_listener, event: coreshop.shipment.postTransform, method: applyRule }
+
+  coreshop.notification.listener.quote:
+    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\QuoteListener
+    arguments:
+      - '@coreshop.notification_rule.processor'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.quote.postTransform, method: applyRule }
 
   coreshop.notification.listsener.order:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderWorkflowListener

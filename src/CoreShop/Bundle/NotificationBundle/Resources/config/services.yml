@@ -45,13 +45,3 @@ services:
 
   coreshop.form_registry.notification_rule.actions:
     class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
-
-  # Notification Rule ACTIONS
-  coreshop.notification_rule.action.mail:
-    class: CoreShop\Component\Notification\Rule\Action\MailActionProcessor
-    tags:
-      - { name: coreshop.notification_rule.action, type: mail, notification-type: order, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
-      - { name: coreshop.notification_rule.action, type: mail, notification-type: invoice, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
-      - { name: coreshop.notification_rule.action, type: mail, notification-type: shipment, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
-      - { name: coreshop.notification_rule.action, type: mail, notification-type: user, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
-      - { name: coreshop.notification_rule.action, type: mail, notification-type: payment, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
