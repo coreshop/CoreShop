@@ -113,11 +113,23 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
     }
 
     /**
-     * @param $josnFile
+     * @param $jsonFile
      * @param $brickName
+     * @return mixed|Object\Objectbrick\Definition
      */
-    private function createBrick($josnFile, $brickName) {
-        //TODO
+    private function createBrick($jsonFile, $brickName) {
+        try {
+            $objectBrick = Object\Objectbrick\Definition::getByKey($brickName);
+        } catch (\Exception $e) {
+            $objectBrick = new Object\Objectbrick\Definition();
+            $objectBrick->setKey($brickName);
+        }
+
+        $json = file_get_contents($jsonFile);
+
+        Object\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
+
+        return $objectBrick;
     }
 
     /**
