@@ -49,6 +49,12 @@ services:
         - { name: form.type }
     arguments: ['%coreshop.index.getters%']
 
+  coreshop.form.type.index.interpter_choice:
+    class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnInterpreterChoiceType
+    tags:
+        - { name: form.type }
+    arguments: ['%coreshop.index.interpreters%']
+
 
   # Filter Forms
   coreshop.form.type.filter:
