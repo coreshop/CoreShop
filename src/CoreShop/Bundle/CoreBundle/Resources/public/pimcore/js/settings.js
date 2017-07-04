@@ -408,39 +408,6 @@ coreshop.core.settings = Class.create({
                 },
                 {
                     xtype: 'fieldset',
-                    title: t('coreshop_shipping'),
-                    collapsible: true,
-                    collapsed: true,
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: {width: 600},
-                    items: [
-                        {
-                            fieldLabel: t('coreshop_shipment_create'),
-                            xtype: 'checkbox',
-                            name: 'system.shipment.create',
-                            checked: this.getValue(shopId, 'system.shipment.create')
-                        },
-                        {
-                            fieldLabel: t('coreshop_prefix'),
-                            name: 'system.shipment.prefix',
-                            value: this.getValue(shopId, 'system.shipment.prefix')
-                        },
-                        {
-                            fieldLabel: t('coreshop_suffix'),
-                            name: 'system.shipment.suffix',
-                            value: this.getValue(shopId, 'system.shipment.suffix')
-                        },
-                        {
-                            fieldLabel: t('coreshop_wkhtmltopdf_params'),
-                            name: 'system.shipment.wkhtml',
-                            value: this.getValue(shopId, 'system.shipment.wkhtml')
-                        }
-                    ]
-                },
-                {
-                    xtype: 'fieldset',
                     title: t('coreshop_product'),
                     collapsible: true,
                     collapsed: true,
@@ -565,6 +532,28 @@ coreshop.core.settings = Class.create({
                 },
                 {
                     xtype: 'fieldset',
+                    title: t('coreshop_quote'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: {width: 600},
+                    items: [
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'system.quote.prefix',
+                            value: this.getValue(shopId, 'system.quote.prefix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'system.quote.suffix',
+                            value: this.getValue(shopId, 'system.quote.suffix')
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
                     title: t('coreshop_order'),
                     collapsible: true,
                     collapsed: true,
@@ -615,6 +604,39 @@ coreshop.core.settings = Class.create({
                             fieldLabel: t('coreshop_wkhtmltopdf_params'),
                             name: 'system.invoice.wktml',
                             value: this.getValue(shopId, 'system.invoice.wkhtml')
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
+                    title: t('coreshop_shipping'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: {width: 600},
+                    items: [
+                        {
+                            fieldLabel: t('coreshop_shipment_create'),
+                            xtype: 'checkbox',
+                            name: 'system.shipment.create',
+                            checked: this.getValue(shopId, 'system.shipment.create')
+                        },
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'system.shipment.prefix',
+                            value: this.getValue(shopId, 'system.shipment.prefix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'system.shipment.suffix',
+                            value: this.getValue(shopId, 'system.shipment.suffix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_wkhtmltopdf_params'),
+                            name: 'system.shipment.wkhtml',
+                            value: this.getValue(shopId, 'system.shipment.wkhtml')
                         }
                     ]
                 }

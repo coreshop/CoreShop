@@ -66,6 +66,8 @@ class ConfigurationFixture extends AbstractFixture implements ContainerAwareInte
             'system.category.variant_mode' => 'hide',
             'system.order.prefix' => 'O',
             'system.order.suffix' => '',
+            'system.quote.prefix' => 'Q',
+            'system.quote.suffix' => '',
             'system.invoice.create' => true,
             'system.invoice.prefix' => 'IN',
             'system.invoice.suffix' => '',

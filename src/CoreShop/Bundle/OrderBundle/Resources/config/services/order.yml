@@ -3,6 +3,10 @@ services:
     class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderNumberGenerator
     arguments: ['@coreshop.sequence.generator', 'order', '@coreshop.configuration.service']
 
+  coreshop.quote.number_generator.default:
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\QuoteNumberGenerator
+    arguments: ['@coreshop.sequence.generator', 'quote', '@coreshop.configuration.service']
+
   coreshop.order.transformer.cart_item_to_order_item:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToOrderItemTransformer
     arguments:
@@ -43,7 +47,7 @@ services:
     arguments:
       - '@coreshop.order.transformer.cart_item_to_quote_item'
       - '@coreshop.core.key_transformer'
-      - '@coreshop.order.number_generator.default'
+      - '@coreshop.quote.number_generator.default'
       - '%coreshop.folder.quote%'
       - '@coreshop.object_service'
       - '@coreshop.context.locale'
