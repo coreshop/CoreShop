@@ -32,7 +32,7 @@ class QuoteController extends AbstractSaleController
     /**
      * {@inheritdoc}
      */
-    public function getGridColumns()
+    protected function getGridColumns()
     {
         return [];
     }

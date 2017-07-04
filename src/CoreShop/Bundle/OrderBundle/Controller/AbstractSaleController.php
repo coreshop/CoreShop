@@ -575,7 +575,7 @@ abstract class AbstractSaleController extends PimcoreController
     /**
      * @return array
      */
-    public abstract function getGridColumns();
+    protected abstract function getGridColumns();
 
     /**
      * @return string
