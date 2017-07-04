@@ -71,10 +71,18 @@ interface CustomerInterface extends ResourceInterface
 
     /**
      * @param $password
-     *
-     * @return static
      */
     public function setPassword($password);
+
+    /**
+     * @return string
+     */
+    public function getPasswordResetHash();
+
+    /**
+     * @param $passwordResetHash
+     */
+    public function setPasswordResetHash($passwordResetHash);
 
     /**
      * @return bool

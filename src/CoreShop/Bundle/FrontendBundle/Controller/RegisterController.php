@@ -13,14 +13,22 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
+use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
+use CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType;
+use CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use Pimcore\File;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegisterController extends FrontendController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function registerAction(Request $request)
     {
         $customer = $this->getCustomer();
@@ -65,6 +73,9 @@ class RegisterController extends FrontendController
                 $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getCustomerGroups());
                 $this->get('security.token_storage')->setToken($token);
 
+                $dispatcher = $this->container->get('event_dispatcher');
+                $dispatcher->dispatch('coreshop.customer.register', new GenericEvent($customer));
+
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }
@@ -72,6 +83,77 @@ class RegisterController extends FrontendController
         return $this->render('CoreShopFrontendBundle:Register:register.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function passwordResetRequestAction(Request $request)
+    {
+        $form = $this->get('form.factory')->createNamed('', RequestResetPasswordType::class);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+            $handledForm = $form->handleRequest($request);
+
+            if ($handledForm->isValid()) {
+                $passwordReset = $handledForm->getData();
+
+                $customer = $this->get('coreshop.repository.customer')->findCustomerByEmail($passwordReset['email']);
+
+                if (!$customer instanceof CustomerInterface) {
+                    return $this->redirectToRoute('coreshop_index');
+                }
+
+                $customer->setPasswordResetHash(hash('md5', $customer->getId() . $customer->getEmail() . mt_rand() . time()));
+                $customer->save();
+
+                $resetLink = $this->generateUrl('coreshop_customer_password_reset', ['token' => $customer->getPasswordResetHash()]);
+
+                $dispatcher = $this->container->get('event_dispatcher');
+                $dispatcher->dispatch('coreshop.customer.request_password_reset', new RequestPasswordChangeEvent($customer, $resetLink));
+
+                return $this->redirectToRoute('coreshop_index');
+            }
+        }
+
+        return $this->render('CoreShopFrontendBundle:Register:password-reset-request.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    public function passwordResetAction(Request $request)
+    {
+        $resetToken = $request->get('token');
+
+        if ($resetToken) {
+            $customer = $this->get('coreshop.repository.customer')->findByResetToken($resetToken);
+
+            $form = $this->get('form.factory')->createNamed('', ResetPasswordType::class);
+
+            if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+                $handledForm = $form->handleRequest($request);
+
+                if ($handledForm->isValid()) {
+                    $resetPassword = $handledForm->getData();
+
+                    $customer->setPassword($resetPassword['password']);
+                    $customer->save();
+
+                    //TODO: Add flash
+                    $dispatcher = $this->container->get('event_dispatcher');
+                    $dispatcher->dispatch('coreshop.customer.password_reset', new GenericEvent($customer));
+
+                    return $this->redirectToRoute('coreshop_index');
+                }
+            }
+
+            return $this->render('CoreShopFrontendBundle:Register:password-reset.html.twig', [
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->redirectToRoute('coreshop_index');
     }
 
     /**

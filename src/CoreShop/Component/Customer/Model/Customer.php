@@ -103,6 +103,22 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, Pimcor
     /**
      * {@inheritdoc}
      */
+    public function getPasswordResetHash()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPasswordResetHash($passwordResetHash)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIsGuest()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

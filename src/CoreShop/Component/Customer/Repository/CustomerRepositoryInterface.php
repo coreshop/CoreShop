@@ -12,10 +12,19 @@
 
 namespace CoreShop\Component\Customer\Repository;
 
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
 {
+    /**
+     * Find customer by reset token
+     *
+     * @param $resetToken
+     * @return CustomerInterface|null
+     */
+    public function findByResetToken($resetToken);
+
     /**
      * Find Customer by email.
      *
@@ -24,7 +33,7 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return mixed
      */
-    public function getUniqueByEmail($email, $isGuest);
+    public function findUniqueByEmail($email, $isGuest);
 
     /**
      * Find Guest Customer by Email.
@@ -33,7 +42,7 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return mixed
      */
-    public function getGuestByEmail($email);
+    public function findGuestByEmail($email);
 
     /**
      * Find Customer by Email.
@@ -42,5 +51,5 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return mixed
      */
-    public function getCustomerByEmail($email);
+    public function findCustomerByEmail($email);
 }

@@ -243,7 +243,31 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "input",
+                                "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "regex": "",
+                                "name": "passwordResetHash",
+                                "title": "Reset Password Hash",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": true,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
+
                         ],
                         "locked": false
                     },

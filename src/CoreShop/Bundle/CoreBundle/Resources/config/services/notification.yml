@@ -70,30 +70,39 @@ services:
       - { name: coreshop.notification_rule.action, type: mail, notification-type: quote, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
 
   # Listeners -> here the actual magic happens
-  coreshop.notification.listener.invoice:
-    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\InvoiceListener
+  coreshop.notification.listener.rule.abstract:
+    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener
+    abstract: true
     arguments:
       - '@coreshop.notification_rule.processor'
+
+  coreshop.notification.listener.invoice:
+    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\InvoiceListener
+    parent: coreshop.notification.listener.rule.abstract
     tags:
       - { name: kernel.event_listener, event: coreshop.invoice.postTransform, method: applyRule }
 
   coreshop.notification.listener.shipment:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\ShipmentListener
-    arguments:
-      - '@coreshop.notification_rule.processor'
+    parent: coreshop.notification.listener.rule.abstract
     tags:
       - { name: kernel.event_listener, event: coreshop.shipment.postTransform, method: applyRule }
 
   coreshop.notification.listener.quote:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\QuoteListener
-    arguments:
-      - '@coreshop.notification_rule.processor'
+    parent: coreshop.notification.listener.rule.abstract
     tags:
       - { name: kernel.event_listener, event: coreshop.quote.postTransform, method: applyRule }
 
   coreshop.notification.listsener.order:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderWorkflowListener
-    arguments:
-      - '@coreshop.notification_rule.processor'
+    parent: coreshop.notification.listener.rule.abstract
     tags:
       - { name: kernel.event_listener, event: coreshop.workflow_manager.success, method: applyRule }
+
+  coreshop.notification.listener.customer:
+    class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\CustomerListener
+    parent: coreshop.notification.listener.rule.abstract
+    tags:
+      - { name: kernel.event_listener, event: coreshop.customer.request_password_reset, method: applyPasswordRequestResetRule }
+      - { name: kernel.event_listener, event: coreshop.customer.register, method: applyRegisterCustomerRule }

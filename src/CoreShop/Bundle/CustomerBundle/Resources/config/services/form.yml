@@ -9,3 +9,13 @@ services:
       - '%coreshop.form.type.customer.validation_groups%'
     tags:
         - { name: form.type }
+
+  coreshop.form.type.request_reset_password:
+    class: CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType
+    tags:
+      - { name: form.type }
+
+  coreshop.form.type.reset_password:
+    class: CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType
+    tags:
+      - { name: form.type }

@@ -10,42 +10,34 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Customer\Repository;
+namespace CoreShop\Bundle\CustomerBundle\Pimcore\Repository;
 
-use Pimcore\Model\Object\Listing;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 
-class CustomerRepository implements CustomerRepositoryInterface
+class CustomerRepository extends PimcoreRepository implements CustomerRepositoryInterface
 {
     /**
-     * @var string
+     * {@inheritdoc}
      */
-    private $customerListClass;
-
-    /**
-     * @param string $customerListClass
-     */
-    public function __construct($customerListClass)
+    public function findByResetToken($resetToken)
     {
-        $this->customerListClass = $customerListClass;
+        $list = $this->getList();
+        $list->setCondition('passwordResetHash = ?', [$resetToken]);
+        $objects = $list->load();
+
+        if (count($objects) === 1) {
+            return $objects[0];
+        }
+
+        return null;
     }
 
     /**
-     * @return Listing
+     * {@inheritdoc}
      */
-    public function getList()
-    {
-        return new $this->customerListClass();
-    }
-
-    /**
-     * Find Customer by email.
-     *
-     * @param $email
-     * @param $isGuest
-     *
-     * @return mixed
-     */
-    public function getUniqueByEmail($email, $isGuest)
+    public function findUniqueByEmail($email, $isGuest)
     {
         $list = $this->getList();
 
@@ -72,26 +64,18 @@ class CustomerRepository implements CustomerRepositoryInterface
     }
 
     /**
-     * Find Guest Customer by Email.
-     *
-     * @param $email
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getGuestByEmail($email)
+    public function findGuestByEmail($email)
     {
-        return $this->$this->getUniqueByEmail($email, true);
+        return $this->findUniqueByEmail($email, true);
     }
 
     /**
-     * Find Customer by Email.
-     *
-     * @param $email
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getCustomerByEmail($email)
+    public function findCustomerByEmail($email)
     {
-        return $this->$this->getUniqueByEmail($email, false);
+        return $this->findUniqueByEmail($email, false);
     }
 }
