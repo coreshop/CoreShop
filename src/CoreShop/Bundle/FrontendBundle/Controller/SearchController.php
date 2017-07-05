@@ -36,9 +36,10 @@ class SearchController extends FrontendController
             $formData = $form->getData();
             $text = $formData['text'];
             $page = $request->get('page', 1);
-            $itemsPerPage = $request->get('perPage', 2);
+            $itemsPerPage = 10;
 
             $query = [
+                'active = 1',
                 'name LIKE ?',
                 'description LIKE ?',
                 'shortDescription LIKE ?',
