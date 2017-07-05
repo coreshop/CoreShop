@@ -12,9 +12,7 @@
 
 namespace CoreShop\Component\Product\Repository;
 
-
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-
 
 interface ProductRepositoryInterface extends PimcoreRepositoryInterface
 {
