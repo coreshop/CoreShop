@@ -384,28 +384,12 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         Ext.get('coreshop_status').set(
             {
-                'data-menu-tooltip': t('coreshop_loaded').format('2.0 ALPHA'), //TODO: VERSION
+                'data-menu-tooltip': t('coreshop_loaded').format(coreshop.settings.bundle.version),
                 class: ''
             }
         );
 
-        $('[data-menu-tooltip]').unbind('mouseenter');
-        $('[data-menu-tooltip]').unbind('mouseleave');
-
-        $('[data-menu-tooltip]').mouseenter(function (e) {
-            $('#pimcore_menu_tooltip').show();
-            $('#pimcore_menu_tooltip').html($(this).data('menu-tooltip'));
-
-            var offset = $(e.target).offset();
-            var top = offset.top;
-            top = top + ($(e.target).height() / 2);
-
-            $('#pimcore_menu_tooltip').css({top: top});
-        });
-
-        $('[data-menu-tooltip]').mouseleave(function () {
-            $('#pimcore_menu_tooltip').hide();
-        });
+        pimcore.helpers.initMenuTooltips();
 
         $(document).trigger('coreShopReady');
 
