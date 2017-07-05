@@ -2,11 +2,10 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\Product as BaseProduct;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
-class Product extends BaseProduct implements PurchasableInterface, ProductInterface
+class Product extends BaseProduct implements ProductInterface
 {
     /**
      * {@inheritdoc}
