@@ -3,6 +3,12 @@
 {% import '@CoreShopFrontend/Common/Macro/messages.html.twig' as messages %}
 
 {% block center %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+
     {% include 'CoreShopFrontendBundle:Security:_login-form.html.twig' %}
 
     <a href="{{ path('coreshop_customer_password_reset_request') }}">{{ 'reset_password'|trans }}</a>

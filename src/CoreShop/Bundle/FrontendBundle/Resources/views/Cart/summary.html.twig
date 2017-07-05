@@ -3,6 +3,12 @@
 {% block content %}
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' with {currentStep: 1, steps: checkoutSteps} only %}
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+
     {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}
 
     <div class="row">

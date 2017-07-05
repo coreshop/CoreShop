@@ -67,7 +67,7 @@ class CartController extends FrontendController
 
         $this->getCartModifier()->addCartItem($this->getCart(), $product, $quantity);
 
-        //TODO: Flashes
+        $this->addFlash('success', 'item_added');
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -79,7 +79,7 @@ class CartController extends FrontendController
      */
     public function removeItemAction(Request $request)
     {
-        $cartItem = $this->get('coreshop.repository.cart_item')->find($this->get('cartItem'));
+        $cartItem = $this->get('coreshop.repository.cart_item')->find($request->get('cartItem'));
 
         if (!$cartItem instanceof CartItemInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -89,7 +89,7 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        //TODO: add flash
+        $this->addFlash('success', 'item_removed');
 
         $this->getCartModifier()->removeCartItem($this->getCart(), $cartItem);
 
