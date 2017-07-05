@@ -8,30 +8,37 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Address\Model\CountryInterface;
+use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\TaxRuleRepositoryInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 
-class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
+class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
     /**
-     * @var TaxRuleRepositoryInterface
+     * @var TaxCalculatorFactoryInterface
      */
-    private $taxRuleRepository;
+    private $taxCalculatorFactory;
 
     /**
-     * @param TaxRuleRepositoryInterface $taxRuleRepository
+     * @var array
      */
-    public function __construct(TaxRuleRepositoryInterface $taxRuleRepository)
+    private $cache = [];
+
+    /**
+     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
+     */
+    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
+        $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
     /**
@@ -39,27 +46,16 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
      */
     public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address)
     {
-        $taxRules = $this->taxRuleRepository->findForCountryAndState($taxRuleGroup, $address->getCountry(), $address->getState());
-        $taxRates = [];
-        $firstRow = true;
-        $behavior = TaxRulesTaxCalculator::COMBINE_METHOD;
+        $cacheIdentifier = sprintf('%s.%s.%s',
+            $taxRuleGroup->getId(),
+            ($address->getCountry() instanceof CountryInterface ? $address->getCountry()->getId() : 0),
+            ($address->getState() instanceof StateInterface ? $address->getState()->getId() : 0)
+        );
 
-        foreach ($taxRules as $taxRule) {
-            $taxRate = $taxRule->getTaxRate();
-
-            $taxRates[] = $taxRate;
-
-            if ($firstRow) {
-                $behavior = $taxRule->getBehavior();
-
-                $firstRow = false;
-            }
-
-            if ($taxRule->getBehavior() === TaxCalculatorInterface::DISABLE_METHOD) {
-                break;
-            }
+        if (!array_key_exists($cacheIdentifier, $this->cache)) {
+            $this->cache[$cacheIdentifier] = $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
         }
 
-        return new TaxRulesTaxCalculator($taxRates, $behavior);
+        return $this->cache[$cacheIdentifier];
     }
 }

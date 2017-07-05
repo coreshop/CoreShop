@@ -24,6 +24,11 @@ services:
     class: CoreShop\Bundle\CoreBundle\Taxation\TaxCalculatorFactory
     arguments: ['@coreshop.repository.tax_rule']
 
+  coreshop.taxation.factory.cached_tax_calculator:
+    class: CoreShop\Bundle\CoreBundle\Taxation\CachedTaxCalculatorFactory
+    decorates: coreshop.taxation.factory.tax_calculator
+    arguments: ['@coreshop.taxation.factory.cached_tax_calculator.inner']
+
   coreshop.security.customer.user_provider:
     class: CoreShop\Bundle\CoreBundle\ObjectUserProvider
     arguments: ['%coreshop.model.customer.class%', 'email']
