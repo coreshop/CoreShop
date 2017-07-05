@@ -12,14 +12,64 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
+use Zend\Paginator\Paginator;
 
 class SearchController extends FrontendController
 {
     public function widgetAction(Request $request)
     {
+        $form = $this->createSearchForm();
+
         return $this->render('CoreShopFrontendBundle:Search:_widget.html.twig', [
-            //TODO: FORM
+            'form' => $form->createView()
+        ]);
+    }
+
+    public function searchAction(Request $request)
+    {
+        $form = $this->createSearchForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $formData = $form->getData();
+            $text = $formData['text'];
+            $page = $request->get('page', 1);
+            $itemsPerPage = $request->get('perPage', 2);
+
+            $query = [
+                'name LIKE ?',
+                'description LIKE ?',
+                'shortDescription LIKE ?',
+                'sku LIKE ?'
+            ];
+            $queryParams = [
+                '%' . $text . '%',
+                '%' . $text . '%',
+                '%' . $text . '%',
+                '%' . $text . '%'
+            ];
+
+            $list = $this->get('coreshop.repository.product')->getList();
+            $list->setCondition(implode(' OR ', $query), $queryParams);
+
+            $paginator = new Paginator($list);
+            $paginator->setCurrentPageNumber($page);
+            $paginator->setItemCountPerPage($itemsPerPage);
+            
+            return $this->render('CoreShopFrontendBundle:Search:search.html.twig', [
+                'paginator' => $paginator,
+                'searchText' => $text
+            ]);
+        }
+        return $this->redirectToRoute('coreshop_index');
+    }
+
+    protected function createSearchForm() {
+        return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
+            'action' => $this->generateUrl('coreshop_search'),
+            'method' => 'GET'
         ]);
     }
 }

@@ -267,3 +267,12 @@ coreshop_customer_password_reset:
   action: passwordReset
   variables: _locale
   priority: 2
+
+coreshop_search:
+  pattern: "/(\\w+)\\/shop\\/search/"
+  reverse: "/%_locale/shop/search"
+  module: FrontendBundle
+  controller: "@coreshop.frontend.controller.search"
+  action: search
+  variables: _locale
+  priority: 2

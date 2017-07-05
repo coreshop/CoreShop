@@ -1,0 +1,26 @@
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
+{% extends '@CoreShopFrontend/layout-column.html.twig' %}
+
+{% block center %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+        <li class="active">{{ 'search'|trans }}</li>
+    </ol>
+
+    <h2 class="main-heading2">
+        {{ 'search_results_for'|trans }} {{ searchText }}
+    </h2>
+
+    <div class="row">
+        {% for result in paginator %}
+            {% include '@CoreShopFrontend/Category/_list.html.twig' with {
+                product: result,
+            } only %}
+        {% endfor %}
+    </div>
+
+    {% include '@CoreShopFrontend/Common/paginator.html.twig' with {
+        paginator: paginator
+    } only %}
+{% endblock %}

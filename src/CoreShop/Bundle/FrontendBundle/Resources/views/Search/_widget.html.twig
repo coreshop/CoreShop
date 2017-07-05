@@ -1,14 +1,15 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
 <div class="col-md-3">
-    <!-- TODO: URL -->
-    <!-- TOOD: FORM -->
-    <form id="search" method="get" action="#">
+    {{ form_start(form, {'attr' : {'id': 'search'}}) }}
         <div class="input-group">
-          <input type="text" name="text" class="form-control input-lg" placeholder="{{ 'search'|trans }}">
-          <span class="input-group-btn">
-            <button class="btn btn-lg" type="button">
+            {{ form_row(form.text, {'label' : false, 'attr' : {'class': 'input-lg'}}) }}
+            <!--<input type="text" name="text" class="form-control input-lg" placeholder="{{ 'search'|trans }}">-->
+            <span class="input-group-btn">
+            <button class="btn btn-lg" type="submit">
                 <i class="fa fa-search"></i>
             </button>
           </span>
         </div>
-    </form>
+    {{ form_start(form) }}
 </div>
