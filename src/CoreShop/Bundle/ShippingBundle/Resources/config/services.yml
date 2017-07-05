@@ -64,7 +64,7 @@ services:
     class: CoreShop\Component\Shipping\Rule\Condition\ShippingRuleConditionChecker
     arguments: ['@coreshop.shipping_rule.processor', '@coreshop.repository.shipping_rule']
     tags:
-      - { name: coreshop.shipping_rule.condition, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\ShippingRuleConfigurationType }
+      - { name: coreshop.shipping_rule.condition, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common\ShippingRuleConfigurationType }
 
   # Shipping Rule ACTIONS
   coreshop.shipping_rule.action.price:
@@ -96,7 +96,7 @@ services:
     class: CoreShop\Component\Shipping\Rule\Action\ShippingRuleActionProcessor
     arguments: ['@coreshop.carrier.processor.shipping_rules', '@coreshop.repository.shipping_rule']
     tags:
-      - { name: coreshop.shipping_rule.action, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\ShippingRuleActionConfigurationType }
+      - { name: coreshop.shipping_rule.action, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common\ShippingRuleConfigurationType}
 
 
   coreshop.carrier.processor.shipping_rules:

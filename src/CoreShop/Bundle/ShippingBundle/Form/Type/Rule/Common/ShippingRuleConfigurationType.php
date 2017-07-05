@@ -10,10 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common;
 
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType;
+use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -25,14 +27,29 @@ final class ShippingRuleConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            //TODO: Should be ShippingRuleChoiceType, but would't save ID to database, instead it saves the whole object
-            //Could be solved using a Transfomer
-            ->add('shippingRule', TextType::class, [
+            ->add('shippingRule', ShippingRuleChoiceType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
             ])
         ;
+
+        $builder->get('shippingRule')->addModelTransformer(new CallbackTransformer(
+                function ($shippingRule) {
+                    if ($shippingRule instanceof ShippingRuleInterface) {
+                        return $shippingRule->getId();
+                    }
+
+                    return null;
+                },
+                function ($shippingRule) {
+                    if ($shippingRule instanceof ShippingRuleInterface) {
+                        return $shippingRule->getId();
+                    }
+
+                    return null;
+                }
+            ));
     }
 
     /**
