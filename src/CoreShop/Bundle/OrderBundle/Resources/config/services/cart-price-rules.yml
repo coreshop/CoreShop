@@ -1,5 +1,6 @@
 parameters:
   coreshop.form.type.cart_price_rule.validation_groups: [coreshop]
+  coreshop.form.type.cart_price_rule_generator.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule_action.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule_condition.validation_groups: [coreshop]
@@ -7,6 +8,18 @@ parameters:
 
 services:
   # Forms
+  coreshop.form.type_cart_price_rule_choice:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleChoiceType
+    arguments: ['@coreshop.repository.cart_price_rule']
+    tags:
+      - { name: form.type }
+
+  coreshop.form.type.cart_price_rule_generator:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleGeneratorType
+    arguments: ['CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator', '%coreshop.form.type.cart_price_rule_generator.validation_groups%']
+    tags:
+      - { name: form.type }
+
   coreshop.form.type.cart_price_rule:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType
     tags:

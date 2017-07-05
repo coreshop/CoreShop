@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleGeneratorType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,22 +42,19 @@ class CartPriceRuleController extends ResourceController
 
     public function generateVoucherCodesAction(Request $request)
     {
-        $amount = $request->get('amount');
-        $length = $request->get('length');
-        $format = $request->get('format');
-        $prefix = $request->get('prefix', '');
-        $suffix = $request->get('suffix', '');
-        $hyphensOn = $request->get('hyphensOn', 0);
-        $id = $request->get('id');
-        $priceRule = $this->repository->find($id);
+        $form = $this->get('form.factory')->createNamed('', CartPriceRuleGeneratorType::class);
 
-        if ($priceRule instanceof CartPriceRuleInterface) {
-            $codes = $this->getVoucherCodeGenerator()->generateCodes($priceRule, $amount, $length, $format, $hyphensOn, $prefix, $suffix);
+        $handledForm = $form->handleRequest($request);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
+            $resource = $form->getData();
+
+            $codes = $this->getVoucherCodeGenerator()->generateCodes($resource);
 
             foreach ($codes as $code) {
-                $this->entityManager->persist($code);
+                $this->manager->persist($code);
             }
-            $this->entityManager->flush();
+            $this->manager->flush();
 
             return $this->viewHandler->handle(['success' => true]);
         }

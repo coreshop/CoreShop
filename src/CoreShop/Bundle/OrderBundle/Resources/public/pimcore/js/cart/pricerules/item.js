@@ -256,12 +256,12 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                     handler: function (btn) {
                         var params = btn.up('form').getForm().getFieldValues();
 
-                        params['id'] = this.data.id;
+                        params['cartPriceRule'] = this.data.id;
 
                         Ext.Ajax.request({
                             url: '/admin/coreshop/cart_price_rules/generate-voucher-codes',
                             method: 'post',
-                            params: params,
+                            jsonData: params,
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
 

@@ -11,7 +11,7 @@ coreshop_admin_cart_price_rule:
         path: get-voucher-codes
         action: getVoucherCodes
         methods: [GET]
-      getVoucherCodes:
+      generateVoucherCodes:
         path: generate-voucher-codes
         action: generateVoucherCodes
         methods: [POST]

@@ -14,6 +14,7 @@ namespace CoreShop\Component\Order\Generator;
 
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class CartPriceRuleVoucherCodeGenerator
@@ -40,21 +41,15 @@ class CartPriceRuleVoucherCodeGenerator
     /**
      * Generates Voucher Codes.
      *
-     * @param CartPriceRuleInterface $priceRule
-     * @param $amount
-     * @param $length
-     * @param $format
-     * @param $prefix
-     * @param $suffix
-     * @param $hyphensOn
+     * @param CartPriceRuleVoucherGeneratorInterface $generator
      *
      * @return CartPriceRuleVoucherCodeInterface[]
      */
-    public function generateCodes(CartPriceRuleInterface $priceRule, $amount, $length, $format, $hyphensOn = 0, $prefix = '', $suffix = '')
+    public function generateCodes(CartPriceRuleVoucherGeneratorInterface $generator)
     {
         $generatedVouchers = [];
 
-        switch ($format) {
+        switch ($generator->getFormat()) {
             case self::FORMAT_ALPHABETIC:
                 $lettersToUse = implode('', range(chr(65), chr(90)));
                 break;
@@ -68,11 +63,11 @@ class CartPriceRuleVoucherCodeGenerator
                 break;
         }
 
-        for ($i = 0; $i < $amount; ++$i) {
-            $code = $prefix.self::generateCode($lettersToUse, $length).$suffix;
+        for ($i = 0; $i < $generator->getAmount(); ++$i) {
+            $code = sprintf('%s%s%s', $generator->getPrefix(), self::generateCode($lettersToUse, $generator->getLength()), $generator->getSuffix());
 
-            if ($hyphensOn > 0) {
-                $code = implode('-', str_split($code, $hyphensOn));
+            if ($generator->getHyphensOn() > 0) {
+                $code = implode('-', str_split($code, $generator->getHyphensOn()));
             }
 
             /**
@@ -83,7 +78,7 @@ class CartPriceRuleVoucherCodeGenerator
             $codeObject->setCreationDate(new \DateTime());
             $codeObject->setUsed(false);
             $codeObject->setUses(0);
-            $codeObject->setCartPriceRule($priceRule);
+            $codeObject->setCartPriceRule($generator->getCartPriceRule());
 
             $generatedVouchers[] = $codeObject;
         }
