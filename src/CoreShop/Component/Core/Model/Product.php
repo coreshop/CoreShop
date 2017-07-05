@@ -28,7 +28,7 @@ class Product extends BaseProduct implements ProductInterface
      */
     public function getEnabled()
     {
-        return $this->getPublished();
+        return $this->getActive();
     }
 
     /**

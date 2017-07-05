@@ -13,17 +13,25 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 
-/**
- * @todo: lot of stuff, including images
- */
-interface ProductInterface extends PimcoreModelInterface
+interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
 {
+    /**
+     * @return string
+     */
+    public function getSku();
+
+    /**
+     * @param string $sku
+     */
+    public function setSku($sku);
+
     /**
      * @param string|null $language
      *

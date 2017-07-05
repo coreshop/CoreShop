@@ -98,10 +98,11 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                  */
                 $product = $this->container->get('coreshop.factory.product')->createNew();
                 $product->setName($faker->words(3, true));
+                $product->setSku($faker->ean13);
                 $product->setShortDescription($faker->text());
                 $product->setDescription(implode("<br/>", $faker->paragraphs(3)));
                 $product->setEan($faker->ean13);
-                $product->setEnabled(true);
+                $product->setActive(true);
                 $product->setCategories([$usedCategory]);
                 $product->setQuantity(10);
                 $product->setWholesalePrice($faker->randomFloat(2, 100, 200) * 100);

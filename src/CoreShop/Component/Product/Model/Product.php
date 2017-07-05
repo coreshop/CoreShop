@@ -16,6 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Helper\VariantHelper;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -23,6 +24,8 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class Product extends AbstractPimcoreModel implements ProductInterface
 {
+    use ToggleableTrait;
+
     /**
      * @var TaxCalculatorInterface
      */
@@ -190,6 +193,38 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     private function getContainer()
     {
         return \Pimcore::getContainer();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSku()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSku($sku)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActive()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActive($active)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
