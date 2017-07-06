@@ -146,8 +146,9 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
                     if (is_array($divisions)) {
                         foreach ($divisions as $isoCode => $division) {
-                            if (!$division['name'])
+                            if (!$division['name']) {
                                 continue;
+                            }
 
                             $state = $this->container->get('coreshop.factory.state')->createNew();
 
