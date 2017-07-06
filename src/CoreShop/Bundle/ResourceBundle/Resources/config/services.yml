@@ -44,3 +44,6 @@ services:
 
   coreshop.resource.object_cloner:
     class: CoreShop\Bundle\ResourceBundle\Pimcore\ObjectCloner
+
+  coreshop.resource.helper.form_error_serializer:
+    class: CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer

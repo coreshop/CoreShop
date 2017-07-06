@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -67,6 +68,11 @@ class ResourceController extends AdminController
     protected $resourceFormFactory;
 
     /**
+     * @var ErrorSerializer
+     */
+    protected $formErrorSerializer;
+
+    /**
      * @param MetadataInterface $metadata
      * @param RepositoryInterface $repository
      * @param FactoryInterface $factory
@@ -74,6 +80,7 @@ class ResourceController extends AdminController
      * @param ViewHandler $viewHandler
      * @param EventDispatcherInterface $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
+     * @param ErrorSerializer $formErrorSerializer
      */
     public function __construct(
         MetadataInterface $metadata,
@@ -82,7 +89,8 @@ class ResourceController extends AdminController
         ObjectManager $manager,
         ViewHandler $viewHandler,
         EventDispatcherInterface $eventDispatcher,
-        ResourceFormFactoryInterface $resourceFormFactory
+        ResourceFormFactoryInterface $resourceFormFactory,
+        ErrorSerializer $formErrorSerializer
     )
     {
         $this->metadata = $metadata;
@@ -92,6 +100,7 @@ class ResourceController extends AdminController
         $this->viewHandler = $viewHandler;
         $this->eventDispatcher = $eventDispatcher;
         $this->resourceFormFactory = $resourceFormFactory;
+        $this->formErrorSerializer = $formErrorSerializer;
     }
 
     /**
@@ -162,19 +171,7 @@ class ResourceController extends AdminController
             return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
 
-        $errors = [];
-
-        /**
-         * @var $e FormError
-         */
-        foreach ($handledForm->getErrors(true, true) as $e) {
-            $errorMessageTemplate = $e->getMessageTemplate();
-            foreach ($e->getMessageParameters() as $key => $value) {
-                $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
-            }
-
-            $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
-        }
+        $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
         return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }

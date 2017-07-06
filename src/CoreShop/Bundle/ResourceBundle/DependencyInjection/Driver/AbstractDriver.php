@@ -76,7 +76,8 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference($metadata->getServiceId('manager')),
                 new Reference('coreshop.resource_controller.view_handler'),
                 new Reference('coreshop.resource_controller.event_dispatcher'),
-                new Reference('coreshop.resource_controller.form_factory')
+                new Reference('coreshop.resource_controller.form_factory'),
+                new Reference('coreshop.resource.helper.form_error_serializer')
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
         ;

@@ -32,29 +32,17 @@ class ExchangeRateController extends ResourceController
             $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
 
             if (!$resource->getId()) {
-                $this->entityManager->persist($resource);
+                $this->manager->persist($resource);
             }
             
-            $this->entityManager->flush();
+            $this->manager->flush();
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
 
             return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
 
-        $errors = [];
-
-        /**
-         * @var $e FormError
-         */
-        foreach ($handledForm->getErrors(true, true) as $e) {
-            $errorMessageTemplate = $e->getMessageTemplate();
-            foreach ($e->getMessageParameters() as $key => $value) {
-                $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
-            }
-
-            $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
-        }
+        $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
         return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
