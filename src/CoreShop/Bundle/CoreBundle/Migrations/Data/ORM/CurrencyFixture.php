@@ -57,7 +57,7 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
             if ($country instanceof Country) {
                 $currency = $country->getCurrency();
 
-                if ($currency) {
+                if (null !== $currency) {
                     $isoCode = $currency['iso_4217_code'];
 
                     if ($isoCode) {
