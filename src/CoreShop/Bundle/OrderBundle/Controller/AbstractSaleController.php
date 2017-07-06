@@ -282,7 +282,7 @@ abstract class AbstractSaleController extends PimcoreController
     /**
      * @param SaleInterface $sale
      *
-     * @return array
+     * @return array<string,string|integer>[]
      */
     protected function prepareSale(SaleInterface $sale)
     {
@@ -489,7 +489,7 @@ abstract class AbstractSaleController extends PimcoreController
 
     /**
      * @param SaleItemInterface $item
-     * @return array
+     * @return array<string,integer|null|string>
      */
     protected function prepareSaleItem(SaleItemInterface $item)
     {
@@ -568,7 +568,7 @@ abstract class AbstractSaleController extends PimcoreController
 
     /**
      * @param StoreInterface $store
-     * @return array
+     * @return array<string,integer|string>
      */
     protected function getStore(StoreInterface $store)
     {
