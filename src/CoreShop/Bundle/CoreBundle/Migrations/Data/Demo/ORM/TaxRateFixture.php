@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\Demo\ORM;
 
@@ -54,13 +54,13 @@ class TaxRateFixture extends AbstractFixture implements ContainerAwareInterface,
             $taxRate = $this->container->get('coreshop.factory.tax_rate')->createNew();
             $taxRate->setName('20AT', 'de');
             $taxRate->setName('20AT', 'en');
-            $taxRate->setActive(1);
+            $taxRate->setActive(true);
             $taxRate->setRate(20);
 
             $taxRate10 = $this->container->get('coreshop.factory.tax_rate')->createNew();
             $taxRate10->setName('10AT', 'de');
             $taxRate10->setName('10AT', 'en');
-            $taxRate10->setActive(1);
+            $taxRate10->setActive(true);
             $taxRate10->setRate(10);
 
             $manager->persist($taxRate);
