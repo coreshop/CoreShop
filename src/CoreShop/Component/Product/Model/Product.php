@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Model;
 
@@ -20,6 +20,7 @@ use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class Product extends AbstractPimcoreModel implements ProductInterface
@@ -29,14 +30,14 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * @var TaxCalculatorInterface
      */
-    private $taxCalculator;
+    protected $taxCalculator;
 
     /**
      * {@inheritdoc}
      */
     public function getPrice($withTax = true)
     {
-        $variable = 'price'.($withTax ? 'Gross' : 'Net');
+        $variable = 'price' . ($withTax ? 'Gross' : 'Net');
 
         /**
          * @var ProductPriceCalculatorInterface
@@ -124,18 +125,19 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     public function getTaxCalculator(AddressInterface $address = null)
     {
         if (is_null($this->taxCalculator)) {
-            $factory = $this->getContainer()->get('coreshop.taxation.factory.tax_calculator');
-
             $taxRuleGroup = $this->getTaxRule();
 
             if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
-                $address = $this->getContainer()->get('coreshop.factory.address')->createNew();
-                $country = $this->getContainer()->get('coreshop.context.country')->getCountry();
+                $taxRules = $taxRuleGroup->getTaxRules();
+                $taxes = [];
 
-                $address->setCountry($country);
+                foreach ($taxRules as $taxRule) {
+                    $taxes[] = $taxRule->getTaxRate();
+                }
 
-                $this->taxCalculator = $factory->getTaxCalculatorForAddress($taxRuleGroup, $address);
-            } else {
+                $this->taxCalculator = new TaxRulesTaxCalculator($taxes);
+            }
+            else {
                 $this->taxCalculator = null;
             }
         }
@@ -190,7 +192,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer()
+    protected function getContainer()
     {
         return \Pimcore::getContainer();
     }
