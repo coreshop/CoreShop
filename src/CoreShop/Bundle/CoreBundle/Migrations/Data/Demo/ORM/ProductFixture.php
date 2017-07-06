@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Migrations\Data\Demo\ORM;
 
@@ -74,14 +74,14 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
 
             $categories = $this->container->get('coreshop.repository.category')->findAll();
 
-            for($i = 0; $i < $productsCount; $i++) {
+            for ($i = 0; $i < $productsCount; $i++) {
                 /**
                  * @var $usedCategory CategoryInterface
                  */
-                $usedCategory = $categories[rand(0, count($categories)-1)];
+                $usedCategory = $categories[rand(0, count($categories) - 1)];
 
                 $images = [];
-                
+
                 for ($j = 0; $j < 3; $j++) {
                     $image = new \Pimcore\Model\Asset\Image();
                     $image->setData(file_get_contents($faker->imageUrl(1000, 1000, 'technics')));
@@ -89,7 +89,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                     $image->setFilename('image' . ($i) . '_' . ($j) . '.jpg');
                     \Pimcore\Model\Asset\Service::getUniqueKey($image);
                     $image->save();
-                    
+
                     $images[] = $image;
                 }
 
