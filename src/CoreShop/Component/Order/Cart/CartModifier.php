@@ -16,6 +16,7 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class CartModifier implements CartModifierInterface
@@ -26,18 +27,25 @@ class CartModifier implements CartModifierInterface
     protected $cartManager;
 
     /**
+     * @var CartProcessorInterface
+     */
+    protected $processor;
+
+    /**
      * @var FactoryInterface
      */
     protected $cartItemFactory;
 
     /**
      * @param CartManagerInterface $cartManager
-     * @param FactoryInterface     $cartItemFactory
+     * @param CartProcessorInterface $processor
+     * @param FactoryInterface $cartItemFactory
      */
-    public function __construct(CartManagerInterface $cartManager, FactoryInterface $cartItemFactory)
+    public function __construct(CartManagerInterface $cartManager, CartProcessorInterface $processor, FactoryInterface $cartItemFactory)
     {
         $this->cartManager = $cartManager;
         $this->cartItemFactory = $cartItemFactory;
+        $this->processor = $processor;
     }
 
     /**
@@ -56,6 +64,8 @@ class CartModifier implements CartModifierInterface
     public function removeCartItem(CartInterface $cart, CartItemInterface $cartItem)
     {
         $cartItem->delete();
+
+        $this->processor->process($cart);
     }
 
     /**
@@ -99,6 +109,8 @@ class CartModifier implements CartModifierInterface
             $cart->addItem($item);
             $cart->save();
         }
+
+        $this->processor->process($cart);
 
         return $item;
     }

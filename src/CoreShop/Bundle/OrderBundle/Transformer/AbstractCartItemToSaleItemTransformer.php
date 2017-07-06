@@ -102,7 +102,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setParent($itemFolder);
         $saleItem->setPublished(true);
 
-        $baseTaxesFieldCollection = new Fieldcollection();
+        /*$baseTaxesFieldCollection = new Fieldcollection();
         $baseTaxesFieldCollection->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
 
         $taxesFieldCollection = new Fieldcollection();
@@ -115,7 +115,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         }
 
         $saleItem->setTaxes($taxesFieldCollection);
-        $saleItem->setBaseTaxes($baseTaxesFieldCollection);
+        $saleItem->setBaseTaxes($baseTaxesFieldCollection);*/
 
         $saleItem->setProduct($cartItem->getProduct());
         $saleItem->setItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));

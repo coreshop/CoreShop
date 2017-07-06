@@ -146,7 +146,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->cartTaxCollector = $cartTaxCollector;
         $this->currencyConverter = $currencyConverter;
         $this->objectCloner = $objectCloner;
-        $this->addressPath = $addressPath;
     }
 
     /**
@@ -243,7 +242,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             $sale->addItem($this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem));
         }
 
-        $baseTaxesFieldCollection = new Fieldcollection();
+        /*$baseTaxesFieldCollection = new Fieldcollection();
         $baseTaxesFieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
 
         $taxesFieldCollection = new Fieldcollection();
@@ -256,7 +255,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         }
 
         $sale->setTaxes($taxesFieldCollection);
-        $sale->setBaseTaxes($baseTaxesFieldCollection);
+        $sale->setBaseTaxes($baseTaxesFieldCollection);*/
 
         $this->eventDispatcher->dispatchPostEvent($type, $sale, ['cart' => $cart]);
 

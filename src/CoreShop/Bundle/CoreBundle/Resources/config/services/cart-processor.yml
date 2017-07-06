@@ -1,0 +1,7 @@
+services:
+  coreshop.cart_processor.items:
+    class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
+    arguments:
+      - '@coreshop.product.taxed_price_calculator'
+    tags:
+      - { name: coreshop.cart_processor, priority: 10 }

@@ -92,11 +92,11 @@
 
             <div class="price">
                 <span class="price-head">{{ 'price'|trans }}:</span>
-                <span class="price-new">{{ currency.convertAndFormat(product.getPrice) }}</span>
+                <span class="price-new">{{ currency.getPrice(product) }}</span>
                 {#TODO: savings#}
             </div>
             <div class="tax">
-                {{ 'incl. %s%% Tax'|format(product.getTaxRate) }} ({{ currency.convertAndFormat(product.getTaxAmount) }})
+                {#{{ 'incl. %s%% Tax'|format(product.getTaxRate) }} ({{ currency.convertAndFormat(product.getTaxAmount) }})#}
             </div>
 
             <hr/>

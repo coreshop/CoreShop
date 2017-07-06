@@ -17,48 +17,6 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
 {
     /**
-     * @return bool
-     */
-    public function getIsGiftItem();
-
-    /**
-     * @param bool $isGiftItem
-     */
-    public function setIsGiftItem($isGiftItem);
-
-    /**
-     * @return SaleInterface
-     */
-    public function getSaleDocument();
-
-    /**
-     * @param int $itemPrice
-     * @param bool $withTax
-     */
-    public function setItemPrice($itemPrice, $withTax = true);
-
-    /**
-     * @param int $itemRetailPrice
-     * @param bool $withTax
-     */
-    public function setItemRetailPrice($itemRetailPrice, $withTax = true);
-
-    /**
-     * @param int $wholesalePrice
-     */
-    public function setItemWholesalePrice($wholesalePrice);
-
-    /**
-     * @param int $itemTax
-     */
-    public function setItemTax($itemTax);
-
-    /**
-     * @param mixed $taxes
-     */
-    public function setTaxes($taxes);
-
-    /**
      * @param int $total
      * @param bool $withTax
      */
@@ -68,6 +26,21 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
      * @param int $totalTax
      */
     public function setTotalTax($totalTax);
+
+    /**
+     * @return bool
+     */
+    public function getIsGiftItem();
+
+    /**
+     * @return SaleInterface
+     */
+    public function getSaleDocument();
+
+    /**
+     * @param mixed $taxes
+     */
+    public function setTaxes($taxes);
 
     /**
      * @param float $totalWeight

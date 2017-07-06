@@ -17,4 +17,14 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
      * @param StoreInterface[] $stores
      */
     public function setStores($stores);
+
+    /**
+     * @return TaxRuleInterface
+     */
+    public function getTaxRule();
+
+    /**
+     * @param TaxRuleGroupInterface $taxRule
+     */
+    public function setTaxRule($taxRule);
 }

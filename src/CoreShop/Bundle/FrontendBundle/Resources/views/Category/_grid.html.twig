@@ -15,7 +15,7 @@
                 {{ product.getShortDescription }}
             </div>
             <div class="price">
-                <span class="price-new">{{ currency.convertAndFormat(product.getPrice) }}</span>
+                <span class="price-new">{{ currency.getPrice(product) }}</span>
                 {#TODO: Savings#}
             </div>
             <div class="cart-button button-group">

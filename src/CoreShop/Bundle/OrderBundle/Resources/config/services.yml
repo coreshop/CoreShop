@@ -38,7 +38,7 @@ services:
 
   coreshop.cart.modifier:
     class: CoreShop\Component\Order\Cart\CartModifier
-    arguments: ['@coreshop.cart.manager', '@coreshop.factory.cart_item']
+    arguments: ['@coreshop.cart.manager', '@coreshop.cart_processor', '@coreshop.factory.cart_item']
 
   coreshop.order.invoice.processable:
     class: CoreShop\Component\Order\Processable\ProcessableOrderItems
@@ -52,3 +52,6 @@ services:
     class: CoreShop\Bundle\OrderBundle\Transformer\TransformerEventDispatcher
     public: false
     arguments: ['@event_dispatcher']
+
+  coreshop.cart_processor.composite:
+    class: CoreShop\Component\Order\Processor\CompositeCartProcessor

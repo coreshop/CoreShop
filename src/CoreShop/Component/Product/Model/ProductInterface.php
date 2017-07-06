@@ -12,13 +12,9 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 
 interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
 {
@@ -53,11 +49,9 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function getPrice($withTax = true);
 
     /**
-     * @param bool $withTax
-     *
      * @return int
      */
-    public function getBasePrice($withTax = true);
+    public function getBasePrice();
 
     /**
      * @param int $basePrice
@@ -83,23 +77,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param $availableForOrder
      */
     public function setAvailableForOrder($availableForOrder);
-
-    /**
-     * @return TaxRuleInterface
-     */
-    public function getTaxRule();
-
-    /**
-     * @param TaxRuleGroupInterface $taxRule
-     */
-    public function setTaxRule($taxRule);
-
-    /**
-     * @param AddressInterface|null $address
-     *
-     * @return TaxCalculatorInterface
-     */
-    public function getTaxCalculator(AddressInterface $address = null);
 
     /**
      * @return CategoryInterface[]
@@ -176,18 +153,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @return array|bool
      */
     public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
-
-    /**
-     * @return int
-     */
-    public function getTaxRate();
-
-    /**
-     * Get Product Tax Amount.
-     *
-     * @return int
-     */
-    public function getTaxAmount();
 
     /**
      * @param string|null $language

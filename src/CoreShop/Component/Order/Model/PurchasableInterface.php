@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 interface PurchasableInterface
@@ -35,10 +36,9 @@ interface PurchasableInterface
     public function getPrice($withTax = true);
 
     /**
-     * @param bool $withTax
      * @return int
      */
-    public function getBasePrice($withTax = true);
+    public function getBasePrice();
 
     /**
      * @return int
@@ -46,9 +46,7 @@ interface PurchasableInterface
     public function getWholesalePrice();
 
     /**
-     * @param AddressInterface|null $address
-     *
-     * @return TaxCalculatorInterface
+     * @return TaxRuleGroupInterface
      */
-    public function getTaxCalculator(AddressInterface $address = null);
+    public function getTaxRule();
 }

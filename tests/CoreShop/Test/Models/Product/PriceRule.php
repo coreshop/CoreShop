@@ -28,8 +28,9 @@ use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\CategoriesConfigurati
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductPriceNestedConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Test\Data;
 use CoreShop\Test\RuleTest;
@@ -102,6 +103,14 @@ class PriceRule extends RuleTest
     protected function getActionFormClass()
     {
         return ProductPriceRuleActionType::class;
+    }
+
+    /**
+     * @return TaxedProductPriceCalculatorInterface
+     */
+    protected function getTaxedPriceCalculator()
+    {
+        return $this->get('coreshop.product.taxed_price_calculator');
     }
 
     /**
@@ -333,11 +342,11 @@ class PriceRule extends RuleTest
         $this->getEntityManager()->persist($rule);
         $this->getEntityManager()->flush();
 
-        $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice());
+        $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getPrice());
 
         $this->assertEquals(500, $discount);
-        $this->assertEquals(1000, $this->product->getPrice(false));
-        $this->assertEquals(1200, $this->product->getPrice());
+        $this->assertEquals(1000, $this->getTaxedPriceCalculator()->getPrice($this->product, false));
+        $this->assertEquals(1200, $this->getTaxedPriceCalculator()->getPrice($this->product));
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -364,8 +373,8 @@ class PriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice());
 
         $this->assertEquals(512, $discount);
-        $this->assertEquals(988, $this->product->getPrice(false));
-        $this->assertEquals(1186, $this->product->getPrice());
+        $this->assertEquals(988, $this->getTaxedPriceCalculator()->getPrice($this->product, false));
+        $this->assertEquals(1186, $this->getTaxedPriceCalculator()->getPrice($this->product));
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -392,8 +401,8 @@ class PriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice(false));
 
         $this->assertEquals(150, $discount);
-        $this->assertEquals(1350, $this->product->getPrice(false));
-        $this->assertEquals(1620, $this->product->getPrice());
+        $this->assertEquals(1350, $this->getTaxedPriceCalculator()->getPrice($this->product,false));
+        $this->assertEquals(1620, $this->getTaxedPriceCalculator()->getPrice($this->product));
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -420,8 +429,8 @@ class PriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getBasePrice(false));
 
         $this->assertEquals(0, $discount);
-        $this->assertEquals(10000, $this->product->getPrice(false));
-        $this->assertEquals(12000, $this->product->getPrice());
+        $this->assertEquals(10000, $this->getTaxedPriceCalculator()->getPrice($this->product,false));
+        $this->assertEquals(12000, $this->getTaxedPriceCalculator()->getPrice($this->product));
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();

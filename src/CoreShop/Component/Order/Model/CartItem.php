@@ -37,15 +37,33 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * {@inheritdoc}
      */
+    public function getTotal($withTax = true)
+    {
+        return $this->getItemPrice($withTax) * $this->getQuantity();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalTax()
+    {
+        return $this->getItemTax() * $this->getQuantity();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getItemPrice($withTax = true)
     {
-        $product = $this->getProduct();
+        return $withTax ? $this->getItemPriceGross() : $this->getItemPriceNet();
+    }
 
-        if ($product instanceof PurchasableInterface) {
-            return $product->getPrice($withTax);
-        }
-
-        return 0;
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemPrice($itemPrice, $withTax = true)
+    {
+        $withTax ? $this->setItemPriceGross($itemPrice) : $this->setItemPriceNet($itemPrice);
     }
 
     /**
@@ -53,35 +71,15 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     public function getItemRetailPrice($withTax = true)
     {
-        $product = $this->getProduct();
-
-        if ($product instanceof PurchasableInterface) {
-            return $product->getBasePrice($withTax);
-        }
-
-        return 0;
+        return $withTax ? $this->getItemRetailPriceGross() : $this->getItemRetailPriceNet();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getItemWholesalePrice()
+    public function setItemRetailPrice($itemRetailPrice, $withTax = true)
     {
-        $product = $this->getProduct();
-
-        if ($product instanceof PurchasableInterface) {
-            return $product->getWholesalePrice();
-        }
-
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemTax()
-    {
-        return $this->getItemPrice(true) - $this->getItemPrice(false);
+        $withTax ? $this->setItemRetailPriceGross($itemRetailPrice) : $this->setItemRetailPriceNet($itemRetailPrice);
     }
 
     /**
@@ -100,17 +98,97 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotal($withTax = true)
+    public function getItemPriceNet()
     {
-        return $this->getItemPrice($withTax) * $this->getQuantity();
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTotalTax()
+    public function setItemPriceNet($itemPriceNet)
     {
-        return $this->getItemTax() * $this->getQuantity();
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemPriceGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemPriceGross($itemPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemRetailPriceNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemRetailPriceNet($itemRetailPriceNett)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemRetailPriceGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemRetailPriceGross($itemRetailPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemWholesalePrice()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemWholesalePrice($itemWholesalePrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemTax($itemTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
