@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Transformer;
 
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
+use Pimcore\File;
 
 class PimcoreKeyTransformer implements ItemKeyTransformerInterface
 {
@@ -21,6 +22,6 @@ class PimcoreKeyTransformer implements ItemKeyTransformerInterface
      */
     public function transform($string)
     {
-        return \Pimcore\File::getValidFilename($string);
+        return File::getValidFilename($string);
     }
 }

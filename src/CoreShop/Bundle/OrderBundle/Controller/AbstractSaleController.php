@@ -28,6 +28,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Pimcore\Admin\Helper\QueryParams;
 use Pimcore\Model\Object;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -149,10 +150,10 @@ abstract class AbstractSaleController extends PimcoreController
         $defaultConfiguration = array_merge($defaultConfiguration, $this->getGridColumns());
         $addressClassId = $this->getParameter('coreshop.model.address.pimcore_class_id');
 
-        $addressClassDefinition = \Pimcore\Model\Object\ClassDefinition::getById($addressClassId);
+        $addressClassDefinition = Object\ClassDefinition::getById($addressClassId);
         $addressFields = [];
 
-        if ($addressClassDefinition instanceof \Pimcore\Model\Object\ClassDefinition) {
+        if ($addressClassDefinition instanceof Object\ClassDefinition) {
             $invalidFields = ['extra'];
 
             foreach ($addressClassDefinition->getFieldDefinitions() as $fieldDefinition) {
@@ -208,13 +209,13 @@ abstract class AbstractSaleController extends PimcoreController
 
         if ($request->get('filter', null)) {
             $conditionFilters = [];
-            $conditionFilters[] = \Pimcore\Model\Object\Service::getFilterCondition($this->getParam('filter'), \Pimcore\Model\Object\ClassDefinition::getById($this->getParameter($this->getSaleClassName())));
+            $conditionFilters[] = Object\Service::getFilterCondition($this->getParam('filter'), Object\ClassDefinition::getById($this->getParameter($this->getSaleClassName())));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
         }
 
-        $sortingSettings = \Pimcore\Admin\Helper\QueryParams::extractSortingSettings($request->request->all());
+        $sortingSettings = QueryParams::extractSortingSettings($request->request->all());
 
         $order = 'DESC';
         $orderKey = $this->getOrderKey();

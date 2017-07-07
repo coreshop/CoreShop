@@ -39,7 +39,7 @@ final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntit
     public function assignLocale(TranslatableInterface $translatableEntity)
     {
         $translatableEntity->setCurrentLocale($this->getPimcoreLanguage());
-        $translatableEntity->setFallbackLocale(\Pimcore\Tool::getDefaultLanguage());
+        $translatableEntity->setFallbackLocale(Tool::getDefaultLanguage());
     }
 
     /**

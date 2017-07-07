@@ -7,6 +7,8 @@ services:
 
   coreshop.tracking.item_builder:
     class: CoreShop\Bundle\TrackingBundle\Builder\ItemBuilder
+    arguments:
+      - '@coreshop.product.taxed_price_calculator'
 
   coreshop.tracking.tracker.google.enhanced_ecommerce:
     class: CoreShop\Bundle\TrackingBundle\EnhancedEcommerce

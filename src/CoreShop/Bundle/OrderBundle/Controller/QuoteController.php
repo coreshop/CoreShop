@@ -12,20 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use Carbon\Carbon;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
-use CoreShop\Component\Order\Processable\ProcessableInterface;
-use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
-use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\HttpFoundation\Request;
+
+
 
 class QuoteController extends AbstractSaleController
 {

@@ -4,7 +4,7 @@ namespace CoreShop\Bundle\CurrencyBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\Form\FormError;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

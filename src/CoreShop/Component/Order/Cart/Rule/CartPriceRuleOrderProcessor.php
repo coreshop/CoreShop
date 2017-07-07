@@ -93,10 +93,7 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
             /**
              * @var ProposalCartPriceRuleItemInterface
              */
-            if ($priceRuleItem === null) {
-                $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
-            }
-
+            $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
             $priceRuleItem->setCartPriceRule($cartPriceRule);
             $priceRuleItem->setVoucherCode($usedCode);
             $priceRuleItem->setDiscount($discountNet, false);
@@ -106,5 +103,7 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
 
             return true;
         }
+
+        return false;
     }
 }

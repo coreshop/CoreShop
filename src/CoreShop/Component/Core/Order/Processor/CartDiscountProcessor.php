@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
+
+
 use CoreShop\Component\Order\Cart\Calculator\CartDiscountCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;

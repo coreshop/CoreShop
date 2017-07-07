@@ -93,6 +93,8 @@ class Money extends Model\Object\ClassDefinition\Data
         if ($this->defaultValue !== null) {
             return $this->toNumeric($this->defaultValue);
         }
+        
+        return 0;
     }
 
     /**

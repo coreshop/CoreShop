@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\IndexBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Model\Object\ClassDefinition;
+use Pimcore\Model\Object;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends ResourceController
@@ -83,7 +83,7 @@ class IndexController extends ResourceController
             ];
         }
 
-        $classes = new ClassDefinition\Listing();
+        $classes = new Object\ClassDefinition\Listing();
         $classes = $classes->load();
         $availableClasses = [];
 
@@ -117,7 +117,7 @@ class IndexController extends ResourceController
      */
     public function getClassDefinitionForFieldSelectionAction(Request $request)
     {
-        $class = \Pimcore\Model\Object\ClassDefinition::getByName($request->get('class'));
+        $class = Object\ClassDefinition::getByName($request->get('class'));
         $fields = $class->getFieldDefinitions();
 
         $result = [
@@ -129,7 +129,7 @@ class IndexController extends ResourceController
         ];
 
         foreach ($fields as $field) {
-            if ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Localizedfields) {
+            if ($field instanceof Object\ClassDefinition\Data\Localizedfields) {
                 if (!is_array($result['localizedfields'])) {
                     $result['localizedfields'] = [
                         'nodeLabel' => 'localizedfields',
@@ -143,12 +143,12 @@ class IndexController extends ResourceController
                 foreach ($localizedFields as $localizedField) {
                     $result['localizedfields']['childs'][] = $this->getFieldConfiguration($localizedField);
                 }
-            } elseif ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Objectbricks) {
-                $list = new \Pimcore\Model\Object\Objectbrick\Definition\Listing();
+            } elseif ($field instanceof Object\ClassDefinition\Data\Objectbricks) {
+                $list = new Object\Objectbrick\Definition\Listing();
                 $list = $list->load();
 
                 foreach ($list as $brickDefinition) {
-                    if ($brickDefinition instanceof \Pimcore\Model\Object\Objectbrick\Definition) {
+                    if ($brickDefinition instanceof Object\Objectbrick\Definition) {
                         $key = $brickDefinition->getKey();
                         $classDefs = $brickDefinition->getClassDefinitions();
 
@@ -171,9 +171,9 @@ class IndexController extends ResourceController
                         }
                     }
                 }
-            } elseif ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Fieldcollections) {
+            } elseif ($field instanceof Object\ClassDefinition\Data\Fieldcollections) {
                 foreach ($field->getAllowedTypes() as $type) {
-                    $definition = \Pimcore\Model\Object\Fieldcollection\Definition::getByKey($type);
+                    $definition = Object\Fieldcollection\Definition::getByKey($type);
 
                     $fieldDefinition = $definition->getFieldDefinitions();
 
@@ -189,8 +189,8 @@ class IndexController extends ResourceController
                         $result[$key]['childs'][] = $this->getFieldConfiguration($fieldcollectionField);
                     }
                 }
-            } elseif ($field instanceof \Pimcore\Model\Object\ClassDefinition\Data\Classificationstore) {
-                $list = new \Pimcore\Model\Object\Classificationstore\GroupConfig\Listing();
+            } elseif ($field instanceof Object\ClassDefinition\Data\Classificationstore) {
+                $list = new Object\Classificationstore\GroupConfig\Listing();
 
                 $allowedGroupIds = $field->getAllowedGroupIds();
 
@@ -240,11 +240,11 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param \Pimcore\Model\Object\Classificationstore\GroupConfig $config
+     * @param Object\Classificationstore\GroupConfig $config
      *
      * @return array
      */
-    protected function getClassificationStoreGroupConfiguration(\Pimcore\Model\Object\Classificationstore\GroupConfig $config)
+    protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config)
     {
         $result = [];
         $result['nodeLabel'] = $config->getName();
@@ -252,10 +252,10 @@ class IndexController extends ResourceController
         $result['childs'] = [];
 
         foreach ($config->getRelations() as $relation) {
-            if ($relation instanceof \Pimcore\Model\Object\Classificationstore\KeyGroupRelation) {
+            if ($relation instanceof Object\Classificationstore\KeyGroupRelation) {
                 $keyId = $relation->getKeyId();
 
-                $keyConfig = \Pimcore\Model\Object\Classificationstore\KeyConfig::getById($keyId);
+                $keyConfig = Object\Classificationstore\KeyConfig::getById($keyId);
 
                 $result['childs'][] = $this->getClassificationStoreFieldConfiguration($keyConfig, $config);
             }
@@ -265,11 +265,11 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param \Pimcore\Model\Object\ClassDefinition\Data $field
+     * @param Object\ClassDefinition\Data $field
      *
      * @return array
      */
-    protected function getFieldConfiguration(\Pimcore\Model\Object\ClassDefinition\Data $field)
+    protected function getFieldConfiguration(Object\ClassDefinition\Data $field)
     {
         return [
             'name' => $field->getName(),
@@ -280,12 +280,12 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param \Pimcore\Model\Object\Classificationstore\KeyConfig   $field
-     * @param \Pimcore\Model\Object\Classificationstore\GroupConfig $groupConfig
+     * @param Object\Classificationstore\KeyConfig   $field
+     * @param Object\Classificationstore\GroupConfig $groupConfig
      *
      * @return array
      */
-    protected function getClassificationStoreFieldConfiguration(\Pimcore\Model\Object\Classificationstore\KeyConfig $field, \Pimcore\Model\Object\Classificationstore\GroupConfig $groupConfig)
+    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig)
     {
         return [
             'name' => $field->getName(),

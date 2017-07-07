@@ -149,10 +149,7 @@ pimcore.object.tags.coreShopMoney = Class.create(pimcore.object.tags.abstract, {
             return true;
         }
 
-        if (this.getValue()) {
-            return false;
-        }
-        return true;
+        return this.getValue();
     },
 
     isDirty: function ()

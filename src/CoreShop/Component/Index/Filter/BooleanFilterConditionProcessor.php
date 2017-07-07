@@ -16,6 +16,7 @@ use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use Pimcore\File;
 use Pimcore\Model\Object\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -27,7 +28,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
         $rawValues = [];
-        $currentValues = $currentFilter[\Pimcore\File::getValidFilename($condition->getLabel())];
+        $currentValues = $currentFilter[File::getValidFilename($condition->getLabel())];
         $fields = $condition->getField();
 
         if (is_array($fields)) {
@@ -88,7 +89,7 @@ class BooleanFilterConditionProcessor implements FilterConditionProcessorInterfa
             $values[$definedValue] = $val;
         }
 
-        $name = \Pimcore\File::getValidFilename($condition->getLabel());
+        $name = File::getValidFilename($condition->getLabel());
 
         foreach ($values as $valueName => $boolValue) {
             $currentFilter[$name][$valueName] = $boolValue;

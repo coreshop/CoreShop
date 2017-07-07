@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\TrackingBundle\Builder;
 use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculator;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -15,6 +16,19 @@ use Pimcore\Model\Object\Fieldcollection;
 
 class ItemBuilder implements ItemBuilderInterface
 {
+    /**
+     * @var TaxedProductPriceCalculator
+     */
+    private $productPriceCalculator;
+
+    /**
+     * @param TaxedProductPriceCalculator $productPriceCalculator
+     */
+    public function __construct(TaxedProductPriceCalculator $productPriceCalculator)
+    {
+        $this->productPriceCalculator = $productPriceCalculator;
+    }
+
     /**
      * Build a product view object
      *
@@ -40,7 +54,7 @@ class ItemBuilder implements ItemBuilderInterface
         $item->setId($product->getId());
         $item->setName($product->getName());
         $item->setQuantity($quantity);
-        $item->setPrice($product->getPrice(true));
+        $item->setPrice($this->productPriceCalculator->getPrice($product));
 
         return $item;
     }
@@ -56,7 +70,7 @@ class ItemBuilder implements ItemBuilderInterface
         $item = new ImpressionData();
         $item->setId($product->getId());
         $item->setName($product->getName());
-        $item->setPrice($product->getPrice(true));
+        $item->setPrice($this->productPriceCalculator->getPrice($product));
 
         return $item;
     }

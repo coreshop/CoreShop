@@ -12,7 +12,9 @@
 
 namespace CoreShop\Component\Core\Helper;
 
+use Carbon\Carbon;
 use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\Object\Fieldcollection;
 
 class ArrayHelper
 {
@@ -84,8 +86,8 @@ class ArrayHelper
 
             switch ($fd->getFieldtype()) {
                 case 'fieldcollections':
-                    if (($value instanceof \Pimcore\Model\Object\Fieldcollection) && is_array($value->getItems())) {
-                        /* @var $value \Pimcore\Model\Object\Fieldcollection */
+                    if (($value instanceof Fieldcollection) && is_array($value->getItems())) {
+                        /* @var $value Fieldcollection */
                         $def = $value->getItemDefinitions();
                         if (method_exists($def['children'], 'getFieldDefinitions')) {
                             $collection[$fieldName] = _objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
@@ -95,7 +97,7 @@ class ArrayHelper
 
                 case 'date':
                     /* @var $value \Pimcore\Date */
-                    $collection[$fieldName] = ($value instanceof \Pimcore\Date || $value instanceof \Carbon\Carbon) ? $value->getTimestamp() : 0;
+                    $collection[$fieldName] = ($value instanceof Carbon) ? $value->getTimestamp() : 0;
                     break;
                 default:
                     /* @var $value string */

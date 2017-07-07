@@ -18,11 +18,13 @@ use CoreShop\Component\Order\Workflow\ProposalWorkflowEvent;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use Pimcore\Bundle\AdminBundle\Security\User\User;
+use Pimcore\Logger;
 use Pimcore\Model\Element\Note;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
+use Pimcore\WorkflowManagement\Workflow;
 
 final class WorkflowManager implements WorkflowManagerInterface
 {
@@ -149,7 +151,7 @@ final class WorkflowManager implements WorkflowManagerInterface
         Assert::isInstanceOf($proposal, $this->class);
 
         $user = \Pimcore\Model\User::getById(0);
-        $manager = \Pimcore\WorkflowManagement\Workflow\Manager\Factory::getManager($proposal, $user);
+        $manager = Workflow\Manager\Factory::getManager($proposal, $user);
 
         $state = $manager->getWorkflowStateForElement()->getState();
         $status = $manager->getWorkflowStateForElement()->getStatus();
@@ -195,7 +197,7 @@ final class WorkflowManager implements WorkflowManagerInterface
 
         $user = \Pimcore\Model\User::getById(0);
         $proxyUser = new User($user);
-        $manager = \Pimcore\WorkflowManagement\Workflow\Manager\Factory::getManager($proposal, $user);
+        $manager = Workflow\Manager\Factory::getManager($proposal, $user);
 
         /**
          * This is so stupid, Pimcores Workflow needs a valid token storage :/.
@@ -208,7 +210,7 @@ final class WorkflowManager implements WorkflowManagerInterface
         if ($manager->validateAction($params['action'], $params['newState'], $params['newStatus'])) {
             try {
                 $manager->performAction($params['action'], $params);
-                \Pimcore\Logger::debug('CoreShop State update. ID: '.$proposal->getId().', newState: "'.$params['newState'].'", newStatus: "'.$params['newStatus'].'"');
+                Logger::debug('CoreShop State update. ID: '.$proposal->getId().', newState: "'.$params['newState'].'", newStatus: "'.$params['newStatus'].'"');
             } catch (\Exception $e) {
                 throw new \Exception('changeOrderState Error: '.$e->getMessage());
             }

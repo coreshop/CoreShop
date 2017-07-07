@@ -14,6 +14,7 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use Pimcore\Model\Object\Classificationstore;
 
 class ClassificationStoreGetter implements GetterInterface
 {
@@ -30,7 +31,7 @@ class ClassificationStoreGetter implements GetterInterface
         if (method_exists($object, $classificationStoreGetter)) {
             $classificationStore = $object->$classificationStoreGetter();
 
-            if ($classificationStore instanceof \Pimcore\Model\Object\Classificationstore) {
+            if ($classificationStore instanceof Classificationstore) {
                 return $classificationStore->getLocalizedKeyValue($columnConfig['groupConfigId'], $columnConfig['keyConfigId']);
             }
         }

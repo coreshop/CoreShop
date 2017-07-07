@@ -37,7 +37,6 @@ class OrderInvoiceController extends PimcoreController
             return $this->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
-        $items = [];
         $itemsToReturn = [];
 
         if (count($order->getPayments()) === 0) {

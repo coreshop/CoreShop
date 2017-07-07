@@ -16,7 +16,7 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Order\Processor\CartProcessorInterface;
+
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class CartModifier implements CartModifierInterface

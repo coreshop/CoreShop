@@ -58,8 +58,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
     {
         //TODO: Needs to be solved different. Everytime you make a mistake on class-creation
         //this stops pimcore from being functional :/
-return;
-        if (Tool::classExists($class)) {
+        /*if (Tool::classExists($class)) {
             if (!in_array($interface, class_implements($class), true)) {
                 throw new InvalidArgumentException(sprintf(
                     'Class "%s" must implement "%s" to be registered as a CoreShop Pimcore model.',
@@ -67,6 +66,6 @@ return;
                     $interface
                 ));
             }
-        }
+        }*/
     }
 }

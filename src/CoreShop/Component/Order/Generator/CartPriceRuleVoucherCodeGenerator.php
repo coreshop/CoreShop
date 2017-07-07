@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Generator;
 
-use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;

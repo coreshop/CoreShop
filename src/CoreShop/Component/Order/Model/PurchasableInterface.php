@@ -12,9 +12,9 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Address\Model\AddressInterface;
+
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+
 
 interface PurchasableInterface
 {

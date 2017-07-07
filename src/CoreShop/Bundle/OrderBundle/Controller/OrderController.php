@@ -25,6 +25,7 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
 class OrderController extends AbstractSaleController
@@ -152,7 +153,7 @@ class OrderController extends AbstractSaleController
 
         if (is_array($history)) {
             foreach ($history as $note) {
-                $user = \Pimcore\Model\User::getById($note->getUser());
+                $user = User::getById($note->getUser());
                 $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
 
                 $statesHistory[] = [

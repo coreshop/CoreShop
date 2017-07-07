@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\StoreBundle\Form\Type;
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 

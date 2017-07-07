@@ -19,6 +19,7 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Pimcore\Db;
 use Pimcore\Logger;
 use Pimcore\Tool;
 
@@ -39,7 +40,7 @@ class MysqlWorker extends AbstractWorker
     {
         parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry);
 
-        $this->database = \Pimcore\Db::get();
+        $this->database = Db::get();
     }
 
     /**
