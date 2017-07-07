@@ -234,10 +234,10 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         }
 
         $baseTaxesFieldCollection = new Fieldcollection();
-        $baseTaxesFieldCollection->setItems($cart->getTaxes());
+        $baseTaxesFieldCollection->setItems($cart->getTaxes() instanceof Fieldcollection ? $cart->getTaxes()->getItems() : []);
 
         $taxesFieldCollection = new Fieldcollection();
-        $taxesFieldCollection->setItems($cart->getTaxes());
+        $taxesFieldCollection->setItems($cart->getTaxes() instanceof Fieldcollection ? $cart->getTaxes()->getItems() : []);
 
         foreach ($taxesFieldCollection->getItems() as $item) {
             if ($item instanceof TaxItemInterface) {

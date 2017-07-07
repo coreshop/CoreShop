@@ -94,10 +94,10 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setPublished(true);
 
         $baseTaxesFieldCollection = new Fieldcollection();
-        $baseTaxesFieldCollection->setItems($cartItem->getTaxes());
+        $baseTaxesFieldCollection->setItems($cartItem->getTaxes() instanceof Fieldcollection ? $cartItem->getTaxes()->getItems() : []);
 
         $taxesFieldCollection = new Fieldcollection();
-        $taxesFieldCollection->setItems($cartItem->getTaxes());
+        $taxesFieldCollection->setItems($cartItem->getTaxes() instanceof Fieldcollection ? $cartItem->getTaxes()->getItems() : []);
 
         foreach ($taxesFieldCollection->getItems() as $item) {
             if ($item instanceof TaxItemInterface) {
