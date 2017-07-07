@@ -33,5 +33,6 @@ services:
     arguments:
       - '@coreshop.carrier.price_calculator'
       - '@coreshop.taxation.factory.tax_calculator'
+      - '@coreshop.collector.taxes'
     tags:
       - { name: coreshop.cart_processor, priority: 300 }

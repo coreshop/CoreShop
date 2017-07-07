@@ -19,6 +19,8 @@ use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
+use Pimcore\Model\Object\Fieldcollection;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
@@ -33,16 +35,24 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $taxCalculationFactory;
 
     /**
+     * @var TaxCollectorInterface
+     */
+    private $taxCollector;
+
+    /**
      * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
      * @param TaxCalculatorFactoryInterface $taxCalculationFactory
+     * @param TaxCollectorInterface $taxCollector
      */
     public function __construct(
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
-        TaxCalculatorFactoryInterface $taxCalculationFactory
+        TaxCalculatorFactoryInterface $taxCalculationFactory,
+        TaxCollectorInterface $taxCollector
     )
     {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->taxCalculationFactory = $taxCalculationFactory;
+        $this->taxCollector = $taxCollector;
     }
 
     /**
@@ -67,6 +77,14 @@ final class CartShippingProcessor implements CartProcessorInterface
 
                 if ($taxCalculator instanceof TaxCalculatorInterface) {
                     $cart->setShippingTaxRate($taxCalculator->getTotalRate());
+
+                    $usedTaxes = $cart->getTaxes() instanceof Fieldcollection ? $cart->getTaxes()->getItems() : [];
+                    $usedTaxes = $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $cart->getShipping(false)), $usedTaxes);
+
+                    $fieldCollection = new Fieldcollection();
+                    $fieldCollection->setItems($usedTaxes);
+
+                    $cart->setTaxes($fieldCollection);
                 }
             }
         }

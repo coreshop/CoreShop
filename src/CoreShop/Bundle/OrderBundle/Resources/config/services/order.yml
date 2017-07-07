@@ -28,7 +28,6 @@ services:
       - '@coreshop.context.store'
       - '@coreshop.cart_price_rule.order.processor'
       - '@coreshop.transformer.event_dispatcher'
-      - '@coreshop.order.taxation.collector.cart'
       - '@coreshop.currency_converter'
       - '@coreshop.resource.object_cloner'
 
@@ -53,7 +52,6 @@ services:
       - '@coreshop.context.store'
       - '@coreshop.cart_price_rule.order.processor'
       - '@coreshop.transformer.event_dispatcher'
-      - '@coreshop.order.taxation.collector.cart'
       - '@coreshop.currency_converter'
       - '@coreshop.resource.object_cloner'
 

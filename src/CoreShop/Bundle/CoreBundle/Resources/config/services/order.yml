@@ -12,11 +12,3 @@ services:
     arguments:
       - '@coreshop.core.order.transformer.cart_to_quote.inner'
       - '@coreshop.currency_converter'
-
-  coreshop.core.order.taxation.collector.cart:
-    decorates: coreshop.order.taxation.collector.cart
-    class: CoreShop\Component\Core\Order\Taxation\CartTaxCollector
-    arguments:
-      - '@coreshop.collector.taxes'
-      - '@coreshop.taxation.factory.tax_calculator'
-      - '@coreshop.core.order.taxation.collector.cart.inner'

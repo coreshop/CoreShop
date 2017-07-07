@@ -19,7 +19,6 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
-use CoreShop\Component\Order\Taxation\ProposalItemTaxCollectorInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;

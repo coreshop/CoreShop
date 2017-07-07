@@ -24,7 +24,6 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
-use CoreShop\Component\Order\Taxation\ProposalTaxCollectorInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
@@ -88,11 +87,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     private $eventDispatcher;
 
     /**
-     * @var ProposalTaxCollectorInterface
-     */
-    private $cartTaxCollector;
-
-    /**
      * @var CurrencyConverterInterface
      */
     protected $currencyConverter;
@@ -113,7 +107,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param StoreContextInterface $storeContext
      * @param CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
      * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param ProposalTaxCollectorInterface $cartTaxCollector
      * @param CurrencyConverterInterface $currencyConverter
      * @param ObjectCloner $objectCloner
      */
@@ -128,7 +121,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         StoreContextInterface $storeContext,
         CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
         TransformerEventDispatcherInterface $eventDispatcher,
-        ProposalTaxCollectorInterface $cartTaxCollector,
         CurrencyConverterInterface $currencyConverter,
         ObjectCloner $objectCloner
     )
@@ -143,7 +135,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->storeContext = $storeContext;
         $this->cartPriceRuleOrderProcessor = $cartPriceRuleOrderProcessor;
         $this->eventDispatcher = $eventDispatcher;
-        $this->cartTaxCollector = $cartTaxCollector;
         $this->currencyConverter = $currencyConverter;
         $this->objectCloner = $objectCloner;
     }
@@ -242,11 +233,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             $sale->addItem($this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem));
         }
 
-        /*$baseTaxesFieldCollection = new Fieldcollection();
-        $baseTaxesFieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
+        $baseTaxesFieldCollection = new Fieldcollection();
+        $baseTaxesFieldCollection->setItems($cart->getTaxes());
 
         $taxesFieldCollection = new Fieldcollection();
-        $taxesFieldCollection->setItems($this->cartTaxCollector->getTaxes($cart));
+        $taxesFieldCollection->setItems($cart->getTaxes());
 
         foreach ($taxesFieldCollection->getItems() as $item) {
             if ($item instanceof TaxItemInterface) {
@@ -255,7 +246,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         }
 
         $sale->setTaxes($taxesFieldCollection);
-        $sale->setBaseTaxes($baseTaxesFieldCollection);*/
+        $sale->setBaseTaxes($baseTaxesFieldCollection);
 
         $this->eventDispatcher->dispatchPostEvent($type, $sale, ['cart' => $cart]);
 
