@@ -254,4 +254,20 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaxes()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTaxes($taxes)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

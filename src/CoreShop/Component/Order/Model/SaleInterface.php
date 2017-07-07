@@ -52,16 +52,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function setTotalTax($totalTax);
 
     /**
-     * @return Fieldcollection
-     */
-    public function getTaxes();
-
-    /**
-     * @param Fieldcollection $taxes
-     */
-    public function setTaxes($taxes);
-
-    /**
      * @param int $subtotal
      * @param bool $withTax
      */
@@ -92,12 +82,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @param int $shippingTax
      */
     public function setShippingTax($shippingTax);
-
-    /**
-     * @param int $discount
-     * @param bool $withTax
-     */
-    public function setDiscount($discount, $withTax = true);
 
     /**
      * @return Carbon

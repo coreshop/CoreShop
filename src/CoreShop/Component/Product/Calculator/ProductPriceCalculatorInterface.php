@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Product\Calculator;
 
+use CoreShop\Component\Product\Model\ProductInterface;
+
 interface ProductPriceCalculatorInterface
 {
     /**
@@ -19,7 +21,7 @@ interface ProductPriceCalculatorInterface
      *
      * @return mixed
      */
-    public function getPrice($subject);
+    public function getPrice(ProductInterface $subject);
 
     /**
      * @param $subject
@@ -27,5 +29,5 @@ interface ProductPriceCalculatorInterface
      *
      * @return mixed
      */
-    public function getDiscount($subject, $price);
+    public function getDiscount(ProductInterface $subject, $price);
 }

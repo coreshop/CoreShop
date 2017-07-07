@@ -24,10 +24,8 @@ class Product extends AbstractPimcoreModel implements ProductInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: refactor this class, a Product is now Tax unaware!
      */
-    public function getPrice($withTax = true)
+    public function getPrice()
     {
         return $this->getPimcoreBasePrice();
     }
@@ -35,15 +33,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getBasePrice()
-    {
-        return $this->getPimcoreBasePrice();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBasePrice($basePrice)
+    public function setPrice($basePrice)
     {
         $this->setPimcoreBasePrice($basePrice);
     }
@@ -62,6 +52,8 @@ class Product extends AbstractPimcoreModel implements ProductInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Refactor to do this in a service!
      */
     public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants')
     {

@@ -27,25 +27,18 @@ class CartModifier implements CartModifierInterface
     protected $cartManager;
 
     /**
-     * @var CartProcessorInterface
-     */
-    protected $processor;
-
-    /**
      * @var FactoryInterface
      */
     protected $cartItemFactory;
 
     /**
      * @param CartManagerInterface $cartManager
-     * @param CartProcessorInterface $processor
      * @param FactoryInterface $cartItemFactory
      */
-    public function __construct(CartManagerInterface $cartManager, CartProcessorInterface $processor, FactoryInterface $cartItemFactory)
+    public function __construct(CartManagerInterface $cartManager, FactoryInterface $cartItemFactory)
     {
         $this->cartManager = $cartManager;
         $this->cartItemFactory = $cartItemFactory;
-        $this->processor = $processor;
     }
 
     /**
@@ -65,7 +58,7 @@ class CartModifier implements CartModifierInterface
     {
         $cartItem->delete();
 
-        $this->processor->process($cart);
+        //$this->processor->process($cart);
     }
 
     /**
@@ -109,8 +102,6 @@ class CartModifier implements CartModifierInterface
             $cart->addItem($item);
             $cart->save();
         }
-
-        $this->processor->process($cart);
 
         return $item;
     }

@@ -31,9 +31,9 @@ class CartItemTaxCollector implements ProposalItemTaxCollectorInterface
     {
         Assert::isInstanceOf($proposalItem, CartItemInterface::class);
 
-        $taxCalculator = $proposalItem->getProduct()->getTaxCalculator();
-        $total = $proposalItem->getTotal(false);
+        //$taxCalculator = $proposalItem->getProduct()->getTaxCalculator();
+        //$total = $proposalItem->getTotal(false);
 
-        return $this->taxCollector->collectTaxes($taxCalculator, $total);
+        return [];//$this->taxCollector->collectTaxes($taxCalculator, $total);
     }
 }

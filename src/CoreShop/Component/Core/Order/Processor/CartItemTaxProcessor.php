@@ -1,0 +1,68 @@
+<?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
+
+namespace CoreShop\Component\Core\Order\Processor;
+
+use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
+use Pimcore\Model\Object\Fieldcollection;
+
+final class CartItemTaxProcessor implements CartProcessorInterface
+{
+    /**
+     * @var ProductTaxCalculatorFactoryInterface
+     */
+    private $productTaxFactory;
+
+    /**
+     * @var TaxCollectorInterface
+     */
+    private $taxCollector;
+
+    /**
+     * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
+     * @param TaxCollectorInterface $taxCollector
+     */
+    public function __construct(ProductTaxCalculatorFactoryInterface $productTaxFactory, TaxCollectorInterface $taxCollector)
+    {
+        $this->productTaxFactory = $productTaxFactory;
+        $this->taxCollector = $taxCollector;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(CartInterface $cart)
+    {
+        $totalWithoutDiscount = $cart->getSubtotal(false);
+        $totalWithDiscount = $cart->getSubtotal(false) - $cart->getDiscount(false);
+
+        $discountPercentage = ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+
+        /**
+         * @var $item CartItemInterface
+         */
+        foreach ($cart->getItems() as $item) {
+            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct());
+            $total = $item->getTotal(false);
+
+            $fieldCollection = new Fieldcollection();
+            $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $total * $discountPercentage));
+
+            $item->setTaxes($fieldCollection);
+            $item->save();
+        }
+    }
+}

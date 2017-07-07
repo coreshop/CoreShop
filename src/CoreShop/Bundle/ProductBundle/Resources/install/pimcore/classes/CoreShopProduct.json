@@ -551,30 +551,6 @@
                                         "invisible": false,
                                         "visibleGridView": false,
                                         "visibleSearch": false
-                                    },
-                                    {
-                                        "fieldtype": "coreShopTaxRuleGroup",
-                                        "phpdocType": "CoreShop\\Component\\Taxation\\Model\\TaxRuleGroupInterface",
-                                        "queryColumnType": "int(11)",
-                                        "columnType": "int(11)",
-                                        "allowEmpty": true,
-                                        "options": null,
-                                        "width": "",
-                                        "defaultValue": null,
-                                        "name": "taxRule",
-                                        "title": "Tax Rule",
-                                        "tooltip": "",
-                                        "mandatory": false,
-                                        "noteditable": false,
-                                        "index": false,
-                                        "locked": false,
-                                        "style": "",
-                                        "permissions": null,
-                                        "datatype": "data",
-                                        "relationType": false,
-                                        "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
                                     }
                                 ],
                                 "locked": false

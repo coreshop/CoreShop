@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\Calculator;
 
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 final class ProductPriceCalculator implements ProductPriceCalculatorInterface
@@ -35,7 +36,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice($subject)
+    public function getPrice(ProductInterface $subject)
     {
         $price = false;
 
@@ -53,7 +54,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, $price)
+    public function getDiscount(ProductInterface $subject, $price)
     {
         $discount = 0;
 

@@ -45,8 +45,7 @@ class CartController extends FrontendController
     {
         return $this->render('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
             'cart' => $this->getCart(),
-            'editAllowed' => true,
-            'cartTaxes' => $this->get('coreshop.order.taxation.collector.cart')->getTaxes($this->getCart())
+            'editAllowed' => true
         ]);
     }
 

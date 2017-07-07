@@ -12,7 +12,6 @@ services:
     arguments:
       - '@coreshop.object_service'
       - '%coreshop.folder.order_item%'
-      - '@coreshop.order.taxation.collector.cart_item'
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.currency_converter'
 
@@ -38,7 +37,6 @@ services:
     arguments:
       - '@coreshop.object_service'
       - '%coreshop.folder.quote_item%'
-      - '@coreshop.order.taxation.collector.cart_item'
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.currency_converter'
 

@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Product;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -28,59 +29,33 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     private $priceCalculator;
 
     /**
-     * @var TaxCalculatorFactoryInterface
+     * @var ProductTaxCalculatorFactoryInterface
      */
     private $taxCalculatorFactory;
 
     /**
-     * @var PimcoreFactoryInterface
-     */
-    private $addressFactory;
-
-    /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
-
-    /**
      * @param ProductPriceCalculatorInterface $priceCalculator
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param PimcoreFactoryInterface $addressFactory
-     * @param CountryContextInterface $countryContext
+     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      */
-    public function __construct(ProductPriceCalculatorInterface $priceCalculator, TaxCalculatorFactoryInterface $taxCalculatorFactory, PimcoreFactoryInterface $addressFactory, CountryContextInterface $countryContext)
+    public function __construct(ProductPriceCalculatorInterface $priceCalculator, ProductTaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
         $this->priceCalculator = $priceCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->addressFactory = $addressFactory;
-        $this->countryContext = $countryContext;
-    }
-
-    /**
-     * @param $taxRuleGroup
-     * @return \CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface|null
-     */
-    private function getTaxCalculator($taxRuleGroup) {
-        if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
-            $address = $this->addressFactory->createNew();
-            $country = $this->countryContext->getCountry();
-
-            $address->setCountry($country);
-
-            return $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
-        }
-
-        return null;
     }
 
     /**
      * {@inheritdoc}
      */
     public function getPrice(PurchasableInterface $product, $withTax = true) {
-        $price = $this->priceCalculator->getPrice($product);
-        $discount = $this->priceCalculator->getDiscount($product, $price);
-        
-        $price = $price - $discount;
+        if ($product instanceof ProductInterface) {
+            $price = $this->priceCalculator->getPrice($product);
+            $discount = $this->priceCalculator->getDiscount($product, $price);
+
+            $price = $price - $discount;
+        }
+        else {
+            $price = $product->getPrice();
+        }
 
         if ($withTax) {
             return $this->applyTaxes($product, $price);
@@ -93,7 +68,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
      * {@inheritdoc}
      */
     public function getRetailPrice(PurchasableInterface $product, $withTax = true) {
-        $price = $product->getBasePrice();
+        $price = $product->getPrice();
 
         if ($withTax) {
             return $this->applyTaxes($product, $price);
@@ -108,7 +83,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
      * @return int
      */
     private function applyTaxes(PurchasableInterface $product, $price) {
-        $taxCalculator = $this->getTaxCalculator($product->getTaxRule());
+        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->applyTaxes($price);

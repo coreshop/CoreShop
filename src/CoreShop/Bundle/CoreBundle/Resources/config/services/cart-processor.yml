@@ -4,4 +4,34 @@ services:
     arguments:
       - '@coreshop.product.taxed_price_calculator'
     tags:
-      - { name: coreshop.cart_processor, priority: 10 }
+      - { name: coreshop.cart_processor, priority: 500 }
+
+  coreshop.cart_processor.discount:
+    class: CoreShop\Component\Core\Order\Processor\CartDiscountProcessor
+    arguments:
+      - '@coreshop.cart.discount_calculator'
+    tags:
+      - { name: coreshop.cart_processor, priority: 450 }
+
+  coreshop.cart_processor.item_taxes:
+    class: CoreShop\Component\Core\Order\Processor\CartItemTaxProcessor
+    arguments:
+      - '@coreshop.product.tax_factory'
+      - '@coreshop.collector.taxes'
+    tags:
+      - { name: coreshop.cart_processor, priority: 400 }
+
+  coreshop.cart_processor.taxes:
+    class: CoreShop\Component\Core\Order\Processor\CartTaxProcessor
+    arguments:
+      - '@coreshop.collector.taxes'
+    tags:
+      - { name: coreshop.cart_processor, priority: 350 }
+
+  coreshop.cart_processor.shipping:
+    class: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
+    arguments:
+      - '@coreshop.carrier.price_calculator'
+      - '@coreshop.taxation.factory.tax_calculator'
+    tags:
+      - { name: coreshop.cart_processor, priority: 300 }

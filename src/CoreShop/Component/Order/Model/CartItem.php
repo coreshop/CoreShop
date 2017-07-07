@@ -238,4 +238,20 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaxes()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTaxes($taxes)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

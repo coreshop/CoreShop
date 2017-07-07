@@ -44,11 +44,6 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     protected $eventDispatcher;
 
     /**
-     * @var ProposalItemTaxCollectorInterface
-     */
-    protected $cartItemTaxCollector;
-
-    /**
      * @var CurrencyConverterInterface
      */
     protected $currencyConverter;
@@ -56,21 +51,18 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
-     * @param ProposalItemTaxCollectorInterface $cartItemTaxCollector
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param CurrencyConverterInterface $currencyConverter
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
-        ProposalItemTaxCollectorInterface $cartItemTaxCollector,
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
-        $this->cartItemTaxCollector = $cartItemTaxCollector;
         $this->eventDispatcher = $eventDispatcher;
         $this->currencyConverter = $currencyConverter;
     }
@@ -102,11 +94,11 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setParent($itemFolder);
         $saleItem->setPublished(true);
 
-        /*$baseTaxesFieldCollection = new Fieldcollection();
-        $baseTaxesFieldCollection->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
+        $baseTaxesFieldCollection = new Fieldcollection();
+        $baseTaxesFieldCollection->setItems($cartItem->getTaxes());
 
         $taxesFieldCollection = new Fieldcollection();
-        $taxesFieldCollection->setItems($this->cartItemTaxCollector->getTaxes($cartItem));
+        $taxesFieldCollection->setItems($cartItem->getTaxes());
 
         foreach ($taxesFieldCollection->getItems() as $item) {
             if ($item instanceof TaxItemInterface) {
@@ -115,7 +107,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         }
 
         $saleItem->setTaxes($taxesFieldCollection);
-        $saleItem->setBaseTaxes($baseTaxesFieldCollection);*/
+        $saleItem->setBaseTaxes($baseTaxesFieldCollection);
 
         $saleItem->setProduct($cartItem->getProduct());
         $saleItem->setItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));

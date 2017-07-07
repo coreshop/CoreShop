@@ -6,13 +6,18 @@ services:
     tags:
       - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType }
 
+  coreshop.product.tax_factory:
+    class: CoreShop\Component\Core\Product\ProductTaxCalculatorFactory
+    arguments:
+      - '@coreshop.taxation.factory.tax_calculator'
+      - '@coreshop.factory.address'
+      - '@coreshop.context.country'
+
   coreshop.product.taxed_price_calculator:
     class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
     arguments:
       - '@coreshop.product.price_calculator'
-      - '@coreshop.taxation.factory.tax_calculator'
-      - '@coreshop.factory.address'
-      - '@coreshop.context.country'
+      - '@coreshop.product.tax_factory'
 
   coreshop.templating.helper.price:
     class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper

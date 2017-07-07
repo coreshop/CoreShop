@@ -375,6 +375,7 @@ class CartPriceRule extends RuleTest
         $cart->setCarrier(Data::$carrier1);
         $cart->setCustomer(Data::$customer1);
         $cart->setShippingAddress(Data::$customer1->getAddresses()[0]);
+        $cart->save();
 
         $shipping = $cart->getShipping(false);
         $shippingWt = $cart->getShipping(true);

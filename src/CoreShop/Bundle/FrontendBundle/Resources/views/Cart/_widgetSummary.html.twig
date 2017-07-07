@@ -133,7 +133,7 @@
         {% set discount = cart.getDiscount(false) %}
         {% set discountIt = cart.getDiscount(true) %}
         {% set payment = cart.getPaymentFee() %}
-        {% set taxes = cartTaxes %}
+        {% set taxes = cart.taxes %}
         {% set rowspan = 10 + taxes|length %}
 
         {% if shipping == 0 %}

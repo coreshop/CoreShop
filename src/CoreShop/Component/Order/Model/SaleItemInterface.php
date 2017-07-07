@@ -38,11 +38,6 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     public function getSaleDocument();
 
     /**
-     * @param mixed $taxes
-     */
-    public function setTaxes($taxes);
-
-    /**
      * @param float $totalWeight
      */
     public function setTotalWeight($totalWeight);
@@ -51,11 +46,6 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
      * @param float $itemWeight
      */
     public function setItemWeight($itemWeight);
-
-    /**
-     * @return mixed
-     */
-    public function getTaxes();
 
     /**
      * @param bool $withTax

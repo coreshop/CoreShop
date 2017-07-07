@@ -42,21 +42,14 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setName($name, $language = null);
 
     /**
-     * @param bool $withTax
-     *
      * @return int
      */
-    public function getPrice($withTax = true);
+    public function getPrice();
 
     /**
-     * @return int
+     * @param int $price
      */
-    public function getBasePrice();
-
-    /**
-     * @param int $basePrice
-     */
-    public function setBasePrice($basePrice);
+    public function setPrice($price);
 
     /**
      * @return int

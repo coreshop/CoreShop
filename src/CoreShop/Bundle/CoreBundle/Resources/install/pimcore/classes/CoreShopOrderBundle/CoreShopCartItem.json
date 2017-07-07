@@ -298,6 +298,35 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "fieldcollections",
+                                "phpdocType": "\\Pimcore\\Model\\Object\\Fieldcollection",
+                                "allowedTypes": [
+                                    "CoreShopTaxItem"
+                                ],
+                                "lazyLoading": true,
+                                "maxItems": "",
+                                "disallowAddRemove": false,
+                                "disallowReorder": false,
+                                "collapsed": false,
+                                "collapsible": false,
+                                "name": "taxes",
+                                "title": "Taxes",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "columnType": null,
+                                "queryColumnType": null,
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false

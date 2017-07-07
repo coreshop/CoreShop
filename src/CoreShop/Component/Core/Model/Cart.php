@@ -13,8 +13,8 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\Cart as BaseCart;
+use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class Cart extends BaseCart implements CartInterface
 {
@@ -22,33 +22,18 @@ class Cart extends BaseCart implements CartInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Do we actually need the container here?
-     * Can't we just save shipping via shipping step?
      */
     public function getShipping($withTax = true)
     {
-        if ($this->getCarrier() instanceof CarrierInterface) {
-            return $this->getContainer()->get('coreshop.carrier.price_calculator.default')->getPrice($this->getCarrier(), $this, $this->getShippingAddress(), $withTax);
-        }
-
-        return 0;
+        return $withTax ? $this->getShippingGross() : $this->getShippingNet();
     }
 
     /**
-     *  {@inheritdoc}
+     * {@inheritdoc}
      */
-    public function getShippingTaxRate()
+    public function setShipping($shipping, $withTax = true)
     {
-        if ($this->getCarrier() instanceof CarrierInterface && $this->getCarrier()->getTaxRule() instanceof TaxRuleGroupInterface) {
-            $taxCalculator = $this->getContainer()->get('coreshop.taxation.factory.tax_calculator')->getTaxCalculatorForAddress($this->getCarrier()->getTaxRule(), $this->getShippingAddress());
-
-            if ($taxCalculator instanceof TaxCalculatorInterface) {
-                return $taxCalculator->getTotalRate();
-            }
-        }
-
-        return 0;
+        $withTax ? $this->setShippingGross($shipping) : $this->setShippingNet($shipping);
     }
 
     /**
@@ -61,5 +46,54 @@ class Cart extends BaseCart implements CartInterface
     protected function getTotalWithoutDiscount($withTax = true)
     {
         return parent::getTotalWithoutDiscount($withTax) + $this->getShipping($withTax);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingNet($shippingNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingGross($shippingGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingTaxRate()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingTaxRate($shippingTaxRate)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }

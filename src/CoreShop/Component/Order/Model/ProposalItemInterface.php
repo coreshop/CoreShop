@@ -107,4 +107,14 @@ interface ProposalItemInterface extends ResourceInterface
      * @return float
      */
     public function getTotalWeight();
+
+    /**
+     * @return mixed
+     */
+    public function getTaxes();
+
+    /**
+     * @param mixed $taxes
+     */
+    public function setTaxes($taxes);
 }

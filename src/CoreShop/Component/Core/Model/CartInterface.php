@@ -26,7 +26,18 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
     public function getShipping($withTax = true);
 
     /**
+     * @param $shipping
+     * @param bool $withTax
+     */
+    public function setShipping($shipping, $withTax = true);
+
+    /**
      * @return float
      */
     public function getShippingTaxRate();
+
+    /**
+     * @param $shippingTaxRate
+     */
+    public function setShippingTaxRate($shippingTaxRate);
 }

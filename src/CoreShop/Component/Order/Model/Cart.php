@@ -100,14 +100,6 @@ class Cart extends AbstractProposal implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($withTax = true)
-    {
-        return $this->getContainer()->get('coreshop.cart.discount_calculator')->getDiscount($this, $withTax);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getWeight()
     {
         $weight = 0;
@@ -120,11 +112,51 @@ class Cart extends AbstractProposal implements CartInterface
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * {@inheritdoc}
      */
-    protected function getContainer()
+    public function getDiscount($withTax = true)
     {
-        return \Pimcore::getContainer();
+        return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscount($discount, $withTax = true)
+    {
+        $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscountNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscountNet($discountNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscountGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDiscountGross($discountGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

@@ -8,13 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
@@ -39,14 +40,15 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 
     /**
      * @param RuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param FactoryInterface                 $cartPriceRuleItemFactory
-     * @param ServiceRegistryInterface         $actionServiceRegistry
+     * @param FactoryInterface $cartPriceRuleItemFactory
+     * @param ServiceRegistryInterface $actionServiceRegistry
      */
     public function __construct(
         RuleValidationProcessorInterface $cartPriceRuleValidator,
         FactoryInterface $cartPriceRuleItemFactory,
         ServiceRegistryInterface $actionServiceRegistry
-    ) {
+    )
+    {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
         $this->actionServiceRegistry = $actionServiceRegistry;
@@ -103,7 +105,6 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 
             $cart->addPriceRule($priceRuleItem);
 
-            //TODO: Shouldn't this do the cart-manager?
             if ($cart->getId()) {
                 $cart->save();
             }

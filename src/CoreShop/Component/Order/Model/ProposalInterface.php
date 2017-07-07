@@ -15,6 +15,7 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
+use Pimcore\Model\Object\Fieldcollection;
 
 interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface
 {
@@ -55,6 +56,12 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      * @return int
      */
     public function getDiscount($withTax = true);
+
+    /**
+     * @param int $discount
+     * @param bool $withTax
+     */
+    public function setDiscount($discount, $withTax = true);
 
     /**
      * @return CartItemInterface[]
@@ -123,4 +130,14 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      * @return float
      */
     public function getWeight();
+
+     /**
+     * @return Fieldcollection
+     */
+    public function getTaxes();
+
+    /**
+     * @param Fieldcollection $taxes
+     */
+    public function setTaxes($taxes);
 }
