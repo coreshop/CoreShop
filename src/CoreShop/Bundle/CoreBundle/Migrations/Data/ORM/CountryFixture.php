@@ -83,6 +83,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '%Object(country,{"method" : "getName"});',
                 '%Text(phone);',
             ],
+            'region' => ''
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $languages = Tool::getValidLanguages();
