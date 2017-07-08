@@ -16,6 +16,7 @@ imports:
   - { resource: "services/customer.yml" }
   - { resource: "services/settings.yml" }
   - { resource: "services/cart-processor.yml" }
+  - { resource: "services/reports.yml" }
 
 services:
   coreshop.core.key_transformer:

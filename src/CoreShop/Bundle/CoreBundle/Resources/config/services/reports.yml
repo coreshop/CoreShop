@@ -1,0 +1,85 @@
+services:
+  coreshop.registry.reports:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - 'CoreShop\Component\Core\Report\ReportInterface'
+      - 'coreshop-reports'
+
+  coreshop.report.products:
+    class: CoreShop\Bundle\CoreBundle\Report\ProductsReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '@coreshop.money_formatter'
+      - '%coreshop.model.order.pimcore_class_id%'
+      - '%coreshop.model.order_item.pimcore_class_id%'
+      - '%coreshop.model.product.pimcore_class_id%'
+    tags:
+      - { name: coreshop.report, type: products }
+
+  coreshop.report.categories:
+    class: CoreShop\Bundle\CoreBundle\Report\CategoriesReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '@coreshop.money_formatter'
+      - '%coreshop.model.order.pimcore_class_id%'
+      - '%coreshop.model.order_item.pimcore_class_id%'
+      - '%coreshop.model.product.pimcore_class_id%'
+      - '%coreshop.model.category.pimcore_class_id%'
+      - '@coreshop.context.locale'
+    tags:
+      - { name: coreshop.report, type: categories }
+
+  coreshop.report.customers:
+    class: CoreShop\Bundle\CoreBundle\Report\CustomersReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '@coreshop.money_formatter'
+      - '%coreshop.model.order.pimcore_class_id%'
+      - '%coreshop.model.customer.pimcore_class_id%'
+    tags:
+      - { name: coreshop.report, type: customers }
+
+  coreshop.report.carts:
+    class: CoreShop\Bundle\CoreBundle\Report\CartsReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%coreshop.model.order.pimcore_class_id%'
+      - '%coreshop.model.cart.pimcore_class_id%'
+    tags:
+      - { name: coreshop.report, type: carts }
+
+  coreshop.report.carts_abandoned:
+    class: CoreShop\Bundle\CoreBundle\Report\AbandonedCartsReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%coreshop.model.customer.pimcore_class_id%'
+      - '%coreshop.model.cart.pimcore_class_id%'
+    tags:
+      - { name: coreshop.report, type: carts_abandoned }
+
+  coreshop.report.sales:
+    class: CoreShop\Bundle\CoreBundle\Report\SalesReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '@coreshop.money_formatter'
+      - '%coreshop.model.order.pimcore_class_id%'
+    tags:
+      - { name: coreshop.report, type: sales }
+
+  coreshop.report.carriers:
+    class: CoreShop\Bundle\CoreBundle\Report\CarriersReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%coreshop.model.order.pimcore_class_id%'
+      - '@coreshop.repository.carrier'
+    tags:
+      - { name: coreshop.report, type: carriers }
+
+  coreshop.report.payment_providers:
+    class: CoreShop\Bundle\CoreBundle\Report\PaymentProvidersReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '%coreshop.model.order.pimcore_class_id%'
+      - '@coreshop.repository.payment_provider'
+    tags:
+      - { name: coreshop.report, type: payment_providers }

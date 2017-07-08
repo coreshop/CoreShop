@@ -10,10 +10,10 @@
  *
  */
 
-pimcore.registerNS('coreshop.report.reports.payments');
-coreshop.report.reports.payments = Class.create(coreshop.report.abstract, {
+pimcore.registerNS('coreshop.report.reports.payment_providers');
+coreshop.report.reports.payment_providers = Class.create(coreshop.report.abstract, {
 
-    url: '/admin/coreshop/reports/get-payment-report',
+    reportType: 'payment_providers',
 
     getName: function () {
         return t('coreshop_report_payments');

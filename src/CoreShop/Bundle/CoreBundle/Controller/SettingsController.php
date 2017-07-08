@@ -40,6 +40,7 @@ class SettingsController extends AdminController
                 'version' => Version::getVersion(),
                 'build' => Version::getBuild(),
             ],
+            'reports' => array_values($this->getParameter('coreshop.reports'))
         ];
 
         return $this->json($settings);

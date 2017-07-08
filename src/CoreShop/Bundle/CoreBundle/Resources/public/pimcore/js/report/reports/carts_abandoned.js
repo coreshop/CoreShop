@@ -10,10 +10,10 @@
  *
  */
 
-pimcore.registerNS('coreshop.report.reports.cartsAbandoned');
-coreshop.report.reports.cartsAbandoned = Class.create(coreshop.report.abstract, {
+pimcore.registerNS('coreshop.report.reports.carts_abandoned');
+coreshop.report.reports.carts_abandoned = Class.create(coreshop.report.abstract, {
 
-    url: '/admin/coreshop/reports/get-orders-carts-abandoned-report',
+    reportType: 'carts_abandoned',
 
     getName: function () {
         return t('coreshop_report_carts_abandoned');
@@ -48,7 +48,7 @@ coreshop.report.reports.cartsAbandoned = Class.create(coreshop.report.abstract, 
                 store: this.getStore(),
                 columns: [
                     {
-                        text: t('coreshop_report_user_name'),
+                        text: t('coreshop_report_customer_name'),
                         dataIndex: 'userName',
                         flex: 1
                     },

@@ -13,7 +13,7 @@
 pimcore.registerNS('coreshop.report.abstract');
 coreshop.report.abstract = Class.create(pimcore.report.abstract, {
 
-    url: '',
+    reportType: 'abstract',
     remoteSort: false,
 
     matchType: function (type) {
@@ -213,9 +213,9 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
                 remoteSort: this.remoteSort,
                 proxy: {
                     type: 'ajax',
-                    url: this.url,
+                    url: '/admin/coreshop/report/get-data?report=' + this.reportType,
                     actionMethods: {
-                        read: 'POST'
+                        read: 'GET'
                     },
                     reader: {
                         type: 'json',
@@ -240,8 +240,8 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
 
     getFilterParams: function () {
         return {
-            'filters[from]': this.getFromField().getValue().getTime() / 1000,
-            'filters[to]': this.getToField().getValue().getTime() / 1000
+            'from': this.getFromField().getValue().getTime() / 1000,
+            'to': this.getToField().getValue().getTime() / 1000
         };
     }
 });

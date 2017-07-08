@@ -1,5 +1,10 @@
 services:
     coreshop.admin_controller.settings:
-        class: CoreShop\Bundle\CoreBundle\Controller\SettingsController
-        calls:
-            - [setContainer, ['@service_container']]
+      class: CoreShop\Bundle\CoreBundle\Controller\SettingsController
+      calls:
+        - [setContainer, ['@service_container']]
+
+    coreshop.admin_controller.reports:
+      class: CoreShop\Bundle\CoreBundle\Controller\ReportsController
+      calls:
+        - [setContainer, ['@service_container']]

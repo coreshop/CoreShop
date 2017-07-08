@@ -13,7 +13,7 @@
 pimcore.registerNS('coreshop.report.reports.customers');
 coreshop.report.reports.customers = Class.create(coreshop.report.abstract, {
 
-    url: '/admin/coreshop/reports/get-customers-report',
+    reportType: 'customers',
 
     getName: function () {
         return t('coreshop_report_customers');

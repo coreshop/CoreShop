@@ -13,7 +13,7 @@
 pimcore.registerNS('coreshop.report.reports.carriers');
 coreshop.report.reports.carriers = Class.create(coreshop.report.abstract, {
 
-    url: '/admin/coreshop/reports/get-carrier-report',
+    reportType: 'carriers',
 
     getName: function () {
         return t('coreshop_report_carriers');

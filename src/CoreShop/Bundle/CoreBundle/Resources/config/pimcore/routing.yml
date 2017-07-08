@@ -18,6 +18,11 @@ coreshop_admin_settings_get_settings:
   methods: [GET]
   defaults:  { _controller: coreshop.admin_controller.settings:getSettingsAction }
 
+coreshop_admin_report_get_data:
+  path: /%coreshop.admin.route.base%/report/get-data
+  methods: [GET]
+  defaults:  { _controller: coreshop.admin_controller.reports:getReportDataAction}
+
 coreshop_admin_settings_get:
   path: /%coreshop.admin.route.base%/settings/get
   methods: [GET]
