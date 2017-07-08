@@ -25,26 +25,21 @@ class CartsReport implements ReportInterface
     private $db;
 
     /**
-     * @var string
+     * @var array
      */
-    private $orderClassId;
+    private $pimcoreClasses;
 
     /**
-     * @var string
-     */
-    private $cartClassId;
-
-    /**
+     * CartsReport constructor.
      * @param Connection $db
-     * @param string $orderClassId
-     * @param string $cartClassId
+     * @param array $pimcoreClasses
      */
-    public function __construct(Connection $db, $orderClassId, $cartClassId)
+    public function __construct(Connection $db, array $pimcoreClasses)
     {
         $this->db = $db;
-        $this->orderClassId = $orderClassId;
-        $this->cartClassId = $cartClassId;
+        $this->pimcoreClasses = $pimcoreClasses;
     }
+
 
     /**
      * {@inheritdoc}
@@ -55,8 +50,8 @@ class CartsReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
-        $orderClassId = $this->orderClassId;
-        $cartClassId = $this->cartClassId;
+        $orderClassId = $this->pimcoreClasses['order'];
+        $cartClassId = $this->pimcoreClasses['cart'];
 
         $queries = [];
 

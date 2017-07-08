@@ -28,25 +28,25 @@ class PaymentProvidersReport implements ReportInterface
     private $db;
 
     /**
-     * @var string
-     */
-    private $orderClassId;
-
-    /**
      * @var RepositoryInterface
      */
     private $paymentProviderRepository;
 
     /**
-     * @param Connection $db
-     * @param string $orderClassId
-     * @param RepositoryInterface $paymentProviderRepository
+     * @var array
      */
-    public function __construct(Connection $db, $orderClassId, RepositoryInterface $paymentProviderRepository)
+    private $pimcoreClasses;
+
+    /**
+     * @param Connection $db
+     * @param RepositoryInterface $paymentProviderRepository
+     * @param array $pimcoreClasses
+     */
+    public function __construct(Connection $db, RepositoryInterface $paymentProviderRepository, array $pimcoreClasses)
     {
         $this->db = $db;
-        $this->orderClassId = $orderClassId;
         $this->paymentProviderRepository = $paymentProviderRepository;
+        $this->pimcoreClasses = $pimcoreClasses;
     }
 
     /**
@@ -60,7 +60,7 @@ class PaymentProvidersReport implements ReportInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        $tableName = 'object_query_'.$this->orderClassId;
+        $tableName = 'object_query_'.$this->pimcoreClasses['order'];;
         $sql = "
             SELECT  paymentProvider, 
                     COUNT(1) as total, 

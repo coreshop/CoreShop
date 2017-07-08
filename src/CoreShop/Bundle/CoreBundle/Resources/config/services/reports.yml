@@ -10,9 +10,7 @@ services:
     arguments:
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
-      - '%coreshop.model.order.pimcore_class_id%'
-      - '%coreshop.model.order_item.pimcore_class_id%'
-      - '%coreshop.model.product.pimcore_class_id%'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: products }
 
@@ -21,11 +19,8 @@ services:
     arguments:
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
-      - '%coreshop.model.order.pimcore_class_id%'
-      - '%coreshop.model.order_item.pimcore_class_id%'
-      - '%coreshop.model.product.pimcore_class_id%'
-      - '%coreshop.model.category.pimcore_class_id%'
       - '@coreshop.context.locale'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: categories }
 
@@ -34,8 +29,7 @@ services:
     arguments:
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
-      - '%coreshop.model.order.pimcore_class_id%'
-      - '%coreshop.model.customer.pimcore_class_id%'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: customers }
 
@@ -43,8 +37,7 @@ services:
     class: CoreShop\Bundle\CoreBundle\Report\CartsReport
     arguments:
       - '@doctrine.dbal.default_connection'
-      - '%coreshop.model.order.pimcore_class_id%'
-      - '%coreshop.model.cart.pimcore_class_id%'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: carts }
 
@@ -52,8 +45,7 @@ services:
     class: CoreShop\Bundle\CoreBundle\Report\AbandonedCartsReport
     arguments:
       - '@doctrine.dbal.default_connection'
-      - '%coreshop.model.customer.pimcore_class_id%'
-      - '%coreshop.model.cart.pimcore_class_id%'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: carts_abandoned }
 
@@ -62,7 +54,7 @@ services:
     arguments:
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
-      - '%coreshop.model.order.pimcore_class_id%'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: sales }
 
@@ -70,8 +62,8 @@ services:
     class: CoreShop\Bundle\CoreBundle\Report\CarriersReport
     arguments:
       - '@doctrine.dbal.default_connection'
-      - '%coreshop.model.order.pimcore_class_id%'
       - '@coreshop.repository.carrier'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: carriers }
 
@@ -79,7 +71,7 @@ services:
     class: CoreShop\Bundle\CoreBundle\Report\PaymentProvidersReport
     arguments:
       - '@doctrine.dbal.default_connection'
-      - '%coreshop.model.order.pimcore_class_id%'
       - '@coreshop.repository.payment_provider'
+      - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: payment_providers }

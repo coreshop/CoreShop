@@ -31,20 +31,20 @@ class SalesReport implements ReportInterface
     private $moneyFormatter;
 
     /**
-     * @var string
+     * @var array
      */
-    private $orderClassId;
+    private $pimcoreClasses;
 
     /**
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param string $orderClassId
+     * @param array $pimcoreClasses
      */
-    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, $orderClassId)
+    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, array $pimcoreClasses)
     {
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
-        $this->orderClassId = $orderClassId;
+        $this->pimcoreClasses = $pimcoreClasses;
     }
 
     /**
@@ -57,7 +57,7 @@ class SalesReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
-        $classId = $this->orderClassId;
+        $classId = $this->pimcoreClasses['order'];
 
         $data = [];
 

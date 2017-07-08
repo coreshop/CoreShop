@@ -25,25 +25,19 @@ class AbandonedCartsReport implements ReportInterface
     private $db;
 
     /**
-     * @var string
+     * @var array
      */
-    private $customerClassId;
+    private $pimcoreClasses;
 
     /**
-     * @var string
-     */
-    private $cartClassId;
-
-    /**
+     * AbandonedCartsReport constructor.
      * @param Connection $db
-     * @param string $customerClassId
-     * @param string $cartClassId
+     * @param array $pimcoreClasses
      */
-    public function __construct(Connection $db, $customerClassId, $cartClassId)
+    public function __construct(Connection $db, array $pimcoreClasses)
     {
         $this->db = $db;
-        $this->customerClassId = $customerClassId;
-        $this->cartClassId = $cartClassId;
+        $this->pimcoreClasses = $pimcoreClasses;
     }
 
     /**
@@ -66,8 +60,8 @@ class AbandonedCartsReport implements ReportInterface
         $limit = $parameterBag->get('limit', 25);
         $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page-1)*$limit);
 
-        $userClassId = $this->customerClassId;
-        $cartClassId = $this->cartClassId;
+        $userClassId = $this->pimcoreClasses['customer'];
+        $cartClassId = $this->pimcoreClasses['cart'];
 
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();

@@ -31,8 +31,16 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
             return;
         }
 
+        $pimcore_classes = [
+
+        ];
+
         foreach ($resources as $alias => $configuration) {
             list($applicationName, $resourceName) = explode('.', $alias);
+
+            if (!array_key_exists($applicationName, $pimcore_classes)) {
+                $pimcore_classes[$applicationName] = [];
+            }
 
             //Causes installation problems
             $this->validateCoreShopPimcoreModel($configuration['classes']['model'], $configuration['classes']['interface']);
@@ -45,8 +53,14 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
                     $classId = $class::classId();
 
                     $container->setParameter(sprintf('%s.model.%s.pimcore_class_id', $applicationName, $resourceName), $classId);
+
+                    $pimcore_classes[$applicationName][$resourceName] = $classId;
                 }
             }
+        }
+
+        foreach ($pimcore_classes as $applicationName => $values) {
+            $container->setParameter(sprintf('%s.pimcore_class_ids', $applicationName), $values);
         }
     }
 

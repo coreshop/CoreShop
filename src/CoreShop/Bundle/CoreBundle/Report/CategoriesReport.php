@@ -32,48 +32,28 @@ class CategoriesReport implements ReportInterface
     private $moneyFormatter;
 
     /**
-     * @var string
-     */
-    private $orderClassId;
-
-    /**
-     * @var string
-     */
-    private $orderItemClassId;
-
-    /**
-     * @var string
-     */
-    private $productClassId;
-
-    /**
-     * @var string
-     */
-    private $categoryClassId;
-
-    /**
      * @var LocaleContextInterface
      */
     private $localeService;
 
     /**
+     * @var array
+     */
+    private $pimcoreClasses;
+
+    /**
+     * CategoriesReport constructor.
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param string $orderClassId
-     * @param string $orderItemClassId
-     * @param string $productClassId
-     * @param $categoryClassId
      * @param LocaleContextInterface $localeService
+     * @param array $pimcoreClasses
      */
-    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, $orderClassId, $orderItemClassId, $productClassId, $categoryClassId, LocaleContextInterface $localeService)
+    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, LocaleContextInterface $localeService, array $pimcoreClasses)
     {
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
-        $this->orderClassId = $orderClassId;
-        $this->orderItemClassId = $orderItemClassId;
-        $this->productClassId = $productClassId;
-        $this->categoryClassId = $categoryClassId;
         $this->localeService = $localeService;
+        $this->pimcoreClasses = $pimcoreClasses;
     }
 
     /**
@@ -85,10 +65,10 @@ class CategoriesReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
-        $orderClassId = $this->orderClassId;
-        $orderItemClassId = $this->orderItemClassId;
-        $productClassId = $this->productClassId;
-        $categoryClassId = $this->categoryClassId;
+        $orderClassId = $this->pimcoreClasses['order'];
+        $orderItemClassId = $this->pimcoreClasses['order_item'];
+        $productClassId = $this->pimcoreClasses['product'];
+        $categoryClassId = $this->pimcoreClasses['category'];
         $categoryLocalizedQuery = $categoryClassId . "_" . $this->localeService->getLocaleCode();
 
         $query = "

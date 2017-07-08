@@ -31,34 +31,20 @@ class ProductsReport implements ReportInterface
     private $moneyFormatter;
 
     /**
-     * @var string
+     * @var array
      */
-    private $orderClassId;
-
-    /**
-     * @var string
-     */
-    private $orderItemClassId;
-
-    /**
-     * @var string
-     */
-    private $productClassId;
+    private $pimcoreClasses;
 
     /**
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param string $orderClassId
-     * @param string $orderItemClassId
-     * @param string $productClassId
+     * @param array $pimcoreClasses
      */
-    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, $orderClassId, $orderItemClassId, $productClassId)
+    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, array $pimcoreClasses)
     {
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
-        $this->orderClassId = $orderClassId;
-        $this->orderItemClassId = $orderItemClassId;
-        $this->productClassId = $productClassId;
+        $this->pimcoreClasses = $pimcoreClasses;
     }
 
     /**
@@ -70,9 +56,9 @@ class ProductsReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
-        $orderClassId = $this->orderClassId;
-        $orderItemClassId = $this->orderItemClassId;
-        $productClassId = $this->productClassId;
+        $orderClassId = $this->pimcoreClasses['order'];
+        $orderItemClassId = $this->pimcoreClasses['order_item'];
+        $productClassId = $this->pimcoreClasses['product'];
 
         $query = "
             SELECT 

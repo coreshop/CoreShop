@@ -27,25 +27,25 @@ class CarriersReport implements ReportInterface
     private $db;
 
     /**
-     * @var string
-     */
-    private $orderClassId;
-
-    /**
      * @var RepositoryInterface
      */
     private $carrierRepository;
 
     /**
-     * @param Connection $db
-     * @param string $orderClassId
-     * @param RepositoryInterface $carrierRepository
+     * @var array
      */
-    public function __construct(Connection $db, $orderClassId, RepositoryInterface $carrierRepository)
+    private $pimcoreClasses;
+
+    /**
+     * @param Connection $db
+     * @param RepositoryInterface $carrierRepository
+     * @param array $pimcoreClasses
+     */
+    public function __construct(Connection $db, RepositoryInterface $carrierRepository, array $pimcoreClasses)
     {
         $this->db = $db;
-        $this->orderClassId = $orderClassId;
         $this->carrierRepository = $carrierRepository;
+        $this->pimcoreClasses = $pimcoreClasses;
     }
 
     /**
@@ -59,7 +59,7 @@ class CarriersReport implements ReportInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        $tableName = 'object_query_'.$this->orderClassId;
+        $tableName = 'object_query_'.$this->pimcoreClasses['order'];
         $sql = "
               SELECT carrier, 
                     COUNT(1) as total, 
