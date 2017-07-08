@@ -49,7 +49,12 @@ final class CartItemTaxProcessor implements CartProcessorInterface
         $totalWithoutDiscount = $cart->getSubtotal(false);
         $totalWithDiscount = $cart->getSubtotal(false) - $cart->getDiscount(false);
 
-        $discountPercentage = ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+        if ($totalWithDiscount > 0) {
+            $discountPercentage = ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+        }
+        else {
+            $discountPercentage = 1;
+        }
 
         /**
          * @var $item CartItemInterface
