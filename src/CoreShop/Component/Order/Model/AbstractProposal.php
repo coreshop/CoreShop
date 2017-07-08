@@ -178,54 +178,6 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     /**
      * {@inheritdoc}
      */
-    public function getPaymentFeeNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeNet($paymentFeeNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeGross($paymentFeeGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-     /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeTaxRate()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeTaxRate($paymentFeeTaxRate)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

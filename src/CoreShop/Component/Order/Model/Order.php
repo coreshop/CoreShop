@@ -208,6 +208,53 @@ class Order extends Sale implements OrderInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+/**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeNet($paymentFeeNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeGross($paymentFeeGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function getPaymentFeeTaxRate()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentFeeTaxRate($paymentFeeTaxRate)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
     /**
      * @return PaymentRepositoryInterface

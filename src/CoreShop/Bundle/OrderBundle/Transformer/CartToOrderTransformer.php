@@ -35,6 +35,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         $fromCurrency = $this->storeContext->getStore()->getCurrency()->getIsoCode();
         $toCurrency = $cart->getCurrency() instanceof CurrencyInterface ? $cart->getCurrency()->getIsoCode() : $fromCurrency;
 
+        $order->setPaymentProvider($cart->getPaymentProvider());
         $order->setPaymentFee($this->currencyConverter->convert($cart->getPaymentFee(true), $fromCurrency, $toCurrency), true);
         $order->setPaymentFee($this->currencyConverter->convert($cart->getPaymentFee(false), $fromCurrency, $toCurrency), false);
         $order->setPaymentFeeTaxRate($cart->getPaymentFeeTaxRate());

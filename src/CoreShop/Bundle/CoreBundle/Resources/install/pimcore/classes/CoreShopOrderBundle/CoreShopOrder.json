@@ -2946,6 +2946,32 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "coreShopPaymentProvider",
+                                "phpdocType": "CoreShop\\Component\\Payment\\Model\\PaymentProvider",
+                                "queryColumnType": "int(11)",
+                                "columnType": "int(11)",
+                                "allowEmpty": false,
+                                "options": null,
+                                "width": "",
+                                "defaultValue": null,
+                                "optionsProviderClass": null,
+                                "optionsProviderData": null,
+                                "name": "paymentProvider",
+                                "title": "Payment Provider",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false
