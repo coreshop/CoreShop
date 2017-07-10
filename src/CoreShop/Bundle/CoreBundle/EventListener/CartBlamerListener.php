@@ -8,13 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
@@ -38,6 +39,20 @@ final class CartBlamerListener
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent)
     {
         $user = $interactiveLoginEvent->getAuthenticationToken()->getUser();
+        if (!$user instanceof CustomerInterface) {
+            return;
+        }
+
+        $this->blame($user);
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function onRegisterEvent(GenericEvent $event)
+    {
+        $user = $event->getSubject();
+
         if (!$user instanceof CustomerInterface) {
             return;
         }
