@@ -56,6 +56,14 @@ class RegisterController extends FrontendController
                     ]);
                 }
 
+                $existingCustomer = $this->get('coreshop.repository.customer')->findCustomerByEmail($customer->getEmail());
+
+                if ($existingCustomer instanceof CustomerInterface) {
+                    return $this->render('CoreShopFrontendBundle:Register:register.html.twig', [
+                        'form' => $form->createView()
+                    ]);
+                }
+
                 $customer->setPublished(true);
                 $customer->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $this->getParameter('coreshop.folder.customer'), substr($customer->getLastname(), 0, 1))));
                 $customer->setKey(File::getValidFilename($customer->getEmail()));
