@@ -1,2 +1,0 @@
-imports:
-    - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
