@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Notification\Processor\RulesProcessorInterface;
 
 abstract class AbstractNotificationRuleListener
@@ -22,10 +23,20 @@ abstract class AbstractNotificationRuleListener
     protected $rulesProcessor;
 
     /**
-     * @param RulesProcessorInterface $rulesProcessor
+     * @var ShopperContextInterface
      */
-    public function __construct(RulesProcessorInterface $rulesProcessor)
+    protected $shopperContext;
+
+    /**
+     * @param RulesProcessorInterface $rulesProcessor
+     * @param ShopperContextInterface $shopperContext
+     */
+    public function __construct(
+        RulesProcessorInterface $rulesProcessor,
+        ShopperContextInterface $shopperContext
+    )
     {
         $this->rulesProcessor = $rulesProcessor;
+        $this->shopperContext = $shopperContext;
     }
 }

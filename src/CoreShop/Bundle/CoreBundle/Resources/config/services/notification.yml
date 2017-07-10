@@ -75,6 +75,7 @@ services:
     abstract: true
     arguments:
       - '@coreshop.notification_rule.processor'
+      - '@coreshop.context.shopper'
 
   coreshop.notification.listener.invoice:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\InvoiceListener

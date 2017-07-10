@@ -26,12 +26,12 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
         $language = null;
         $mails = $configuration['mails'];
 
-        if (array_key_exists('language', $params)) {
-            $language = $params['language'];
+        if (array_key_exists('_locale', $params)) {
+            $language = $params['_locale'];
         }
 
         if (is_null($language)) {
-            throw new \InvalidArgumentException('Language is not set');
+            throw new \InvalidArgumentException('Locale is not set');
         }
 
         if (array_key_exists($language, $mails)) {

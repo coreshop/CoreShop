@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
@@ -24,7 +25,8 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $event->getCustomer(), [
             'type' => 'password-reset',
             'recipient' => $event->getCustomer()->getEmail(),
-            'resetLink' => $event->getResetLink()
+            'resetLink' => $event->getResetLink(),
+            '_locale' => $this->shopperContext->getLocaleCode()
         ]);
     }
 
@@ -33,7 +35,8 @@ final class CustomerListener extends AbstractNotificationRuleListener
 
         $this->rulesProcessor->applyRules('user', $event->getSubject(), [
             'type' => 'password-reset',
-            'recipient' => $event->getSubject()->getEmail()
+            'recipient' => $event->getSubject()->getEmail(),
+            '_locale' => $this->shopperContext->getLocaleCode()
         ]);
     }
 }
