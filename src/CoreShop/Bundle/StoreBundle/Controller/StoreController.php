@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\StoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
-use Pimcore\Model\site;
+use Pimcore\Model\Site;
 
 class StoreController extends ResourceController
 {
