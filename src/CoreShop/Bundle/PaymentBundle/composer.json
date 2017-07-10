@@ -19,9 +19,9 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/payment": "dev-master",
-    "coreshop/currency-bundle": "dev-master",
-    "coreshop/resource-bundle": "dev-master"
+    "coreshop/payment": "^2.0",
+    "coreshop/currency-bundle": "^2.0",
+    "coreshop/resource-bundle": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

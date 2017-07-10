@@ -19,8 +19,8 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/sequence": "dev-master",
-    "coreshop/resource-bundle": "dev-master"
+    "coreshop/sequence": "^2.0",
+    "coreshop/resource-bundle": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

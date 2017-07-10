@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/currency-bundle": "dev-master"
+    "coreshop/currency-bundle": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

@@ -19,9 +19,9 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/notification": "dev-master",
-    "coreshop/registry": "dev-master",
-    "coreshop/rule-bundle": "dev-master"
+    "coreshop/notification": "^2.0",
+    "coreshop/registry": "^2.0",
+    "coreshop/rule-bundle": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

@@ -19,8 +19,8 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/customer": "dev-master",
-    "coreshop/resource-bundle": "dev-master",
+    "coreshop/customer": "^2.0",
+    "coreshop/resource-bundle": "^2.0",
     "pimcore/core-version": "^5.0"
   },
   "config": {

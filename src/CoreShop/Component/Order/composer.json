@@ -19,15 +19,15 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/rule": "dev-master",
-    "coreshop/registry": "dev-master",
-    "coreshop/resource": "dev-master",
-    "coreshop/store": "dev-master",
-    "coreshop/currency": "dev-master",
-    "coreshop/taxation": "dev-master",
-    "coreshop/payment": "dev-master",
-    "coreshop/address": "dev-master",
-    "coreshop/customer": "dev-master"
+    "coreshop/rule": "^2.0",
+    "coreshop/registry": "^2.0",
+    "coreshop/resource": "^2.0",
+    "coreshop/store": "^2.0",
+    "coreshop/currency": "^2.0",
+    "coreshop/taxation": "^2.0",
+    "coreshop/payment": "^2.0",
+    "coreshop/address": "^2.0",
+    "coreshop/customer": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

@@ -19,12 +19,12 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/shipping": "dev-master",
-    "coreshop/registry": "dev-master",
-    "coreshop/address-bundle": "dev-master",
-    "coreshop/rule-bundle": "dev-master",
-    "coreshop/resource-bundle": "dev-master",
-    "coreshop/money-bundle": "dev-master"
+    "coreshop/shipping": "^2.0",
+    "coreshop/registry": "^2.0",
+    "coreshop/address-bundle": "^2.0",
+    "coreshop/rule-bundle": "^2.0",
+    "coreshop/resource-bundle": "^2.0",
+    "coreshop/money-bundle": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

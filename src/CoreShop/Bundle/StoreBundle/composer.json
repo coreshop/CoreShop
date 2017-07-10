@@ -19,9 +19,9 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/store": "dev-master",
-    "coreshop/resource-bundle": "dev-master",
-    "coreshop/currency-bundle": "dev-master",
+    "coreshop/store": "^2.0",
+    "coreshop/resource-bundle": "^2.0",
+    "coreshop/currency-bundle": "^2.0",
     "liip/theme-bundle": "^1.4"
   },
   "config": {

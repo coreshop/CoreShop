@@ -19,8 +19,8 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/order-bundle": "dev-master",
-    "coreshop/registry": "dev-master"
+    "coreshop/order-bundle": "^2.0",
+    "coreshop/registry": "^2.0"
   },
   "config": {
     "bin-dir": "bin"
