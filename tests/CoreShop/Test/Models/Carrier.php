@@ -12,7 +12,9 @@
 
 namespace CoreShop\Test\Models;
 
-use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
@@ -72,11 +74,11 @@ class Carrier extends RuleTest
     }
 
     /**
-     * @return CarrierPriceCalculatorInterface
+     * @return TaxedShippingCalculatorInterface
      */
     protected function getPriceCalculator()
     {
-        return $this->get('coreshop.carrier.price_calculator.default');
+        return $this->get('coreshop.carrier.price_calculator.taxed');
     }
 
     /**
@@ -121,9 +123,12 @@ class Carrier extends RuleTest
     {
         $this->printTestName();
 
+        /**
+         * @var $cart CartInterface
+         */
         $cart = Data::createCartWithProducts();
         /**
-         * @var CarrierInterface
+         * @var $carrier CarrierInterface
          */
         $carrier = $this->createResourceWithForm('carrier', CarrierInterface::class, [
             'label' => 'Test',
@@ -136,7 +141,7 @@ class Carrier extends RuleTest
         $this->getEntityManager()->flush();
 
         /**
-         * @var ShippingRuleInterface
+         * @var $shippingRule ShippingRuleInterface
          */
         $shippingRule = $this->createResourceWithForm('shipping_rule', ShippingRuleInterface::class, [
             'name' => 'test->true',
@@ -149,7 +154,7 @@ class Carrier extends RuleTest
         $this->getEntityManager()->flush();
 
         /**
-         * @var ShippingRuleGroupInterface
+         * @var $shippingRuleGroup ShippingRuleGroupInterface
          */
         $shippingRuleGroup = $this->createResourceWithForm('shipping_rule_group', ShippingRuleGroupInterface::class, [
             'carrier' => $carrier->getId(),

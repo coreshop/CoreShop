@@ -119,7 +119,7 @@ services:
   coreshop.registry.shipping.price_calculators:
     class: CoreShop\Component\Registry\PrioritizedServiceRegistry
     arguments:
-      - CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface
+      - CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface
       - shipping-price-calculators
 
   coreshop.carrier.price_calculator:

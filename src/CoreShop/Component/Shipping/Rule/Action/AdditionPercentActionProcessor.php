@@ -20,7 +20,7 @@ class AdditionPercentActionProcessor implements CarrierPriceActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration, $withTax = true)
+    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration)
     {
         return false;
     }

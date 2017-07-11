@@ -21,7 +21,6 @@ services:
 
   coreshop.carrier.price_calculator.taxed:
     class: CoreShop\Bundle\CoreBundle\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
-    decorates: coreshop.carrier.price_calculator
     arguments:
-      - '@coreshop.carrier.price_calculator.taxed.inner'
+      - '@coreshop.carrier.price_calculator.default'
       - '@coreshop.taxation.factory.tax_calculator'

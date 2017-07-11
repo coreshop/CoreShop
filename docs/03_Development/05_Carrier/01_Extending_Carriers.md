@@ -4,7 +4,7 @@ CoreShop implements Carrier Price Calculation using Shipping Rules Conditions/Ac
 
 But if you need some different kind of shipping cost calculation, you can implement your own Carrier Price Calculator.
 
-Your Carrier Price Calculator needs to implement ```CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface```
+Your Carrier Price Calculator needs to implement ```CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface```
 
 ## Create a Custom Carrier
 
@@ -13,7 +13,7 @@ Your Carrier Price Calculator needs to implement ```CoreShop\Bundle\ShippingBund
 ```php
 namespace Acme\Carrier;
 
-class AcmeCarrierPriceCalculation extends \CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface
+class AcmeCarrierPriceCalculation extends \CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface
 {
 
     public function getPrice(CarrierInterface $carrier, CartInterface $cart, AddressInterface $address, $withTax = true)

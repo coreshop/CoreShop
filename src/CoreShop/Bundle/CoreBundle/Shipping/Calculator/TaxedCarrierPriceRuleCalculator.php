@@ -12,7 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Shipping\Calculator;
 
-use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
@@ -21,12 +22,12 @@ use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
-final class TaxedCarrierPriceRuleCalculator implements CarrierPriceCalculatorInterface
+final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorInterface
 {
     /**
      * @var CarrierPriceCalculatorInterface
      */
-    private $inner;
+    private $carrierPriceCalculator;
 
     /**
      * @var TaxCalculatorInterface
@@ -39,14 +40,14 @@ final class TaxedCarrierPriceRuleCalculator implements CarrierPriceCalculatorInt
     private $taxCalculatorFactory;
 
     /**
-     * @param CarrierPriceCalculatorInterface     $inner
-     * @param TaxCalculatorFactoryInterface       $taxCalculatorFactory
+     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
      */
     public function __construct(
-        CarrierPriceCalculatorInterface $inner,
+        CarrierPriceCalculatorInterface $carrierPriceCalculator,
         TaxCalculatorFactoryInterface $taxCalculatorFactory
     ) {
-        $this->inner = $inner;
+        $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
@@ -55,7 +56,7 @@ final class TaxedCarrierPriceRuleCalculator implements CarrierPriceCalculatorInt
      */
     public function getPrice(BaseCarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true)
     {
-        $netPrice = $this->inner->getPrice($carrier, $shippable, $address, $withTax);
+        $netPrice = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address);
 
         if ($withTax && $carrier instanceof CoreCarrierInterface) {
             $taxCalculator = $this->getTaxCalculator($carrier, $address);

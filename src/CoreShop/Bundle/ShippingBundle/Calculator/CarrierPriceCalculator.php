@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
@@ -37,7 +38,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
     {
         $netPrice = 0;
 
@@ -45,7 +46,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
          * @var $calculator CarrierPriceCalculatorInterface
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
-            $price = $calculator->getPrice($carrier, $shippable, $address, $withTax);
+            $price = $calculator->getPrice($carrier, $shippable, $address);
 
             if (false !== $price && null !== $price) {
                 $netPrice = $price;

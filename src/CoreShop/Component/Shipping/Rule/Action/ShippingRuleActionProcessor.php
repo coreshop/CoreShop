@@ -16,7 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
-use CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessorInterface;
+use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 
 class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterface
 {
@@ -43,12 +43,12 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration, $withTax = true)
+    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration)
     {
         $shippingRule = $this->shippingRuleRepository->find($configuration['shippingRule']);
 
         if ($shippingRule instanceof ShippingRuleInterface) {
-            return $this->shippingRuleProcessor->getPrice($shippingRule, $carrier, $address, $withTax);
+            return $this->shippingRuleProcessor->getPrice($shippingRule, $carrier, $address);
         }
 
         return false;

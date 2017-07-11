@@ -31,7 +31,7 @@ services:
   coreshop.cart_processor.shipping:
     class: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
     arguments:
-      - '@coreshop.carrier.price_calculator'
+      - '@coreshop.carrier.price_calculator.taxed'
       - '@coreshop.taxation.factory.tax_calculator'
       - '@coreshop.collector.taxes'
     tags:

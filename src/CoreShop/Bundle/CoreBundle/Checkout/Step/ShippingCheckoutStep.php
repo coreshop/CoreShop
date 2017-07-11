@@ -12,7 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
@@ -40,7 +41,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     /**
      * @var CarrierPriceCalculatorInterface
      */
-    private $carrierPriceCalculator;
+    private $taxedShippingCalculator;
 
     /**
      * @var CarrierShippingRuleCheckerInterface
@@ -74,7 +75,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
     /**
      * @param CartCarrierProcessorInterface $cartCarrierProcessor
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @param TaxedShippingCalculatorInterface $taxedShippingCalculator
      * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
      * @param FormFactoryInterface $formFactory
      * @param CurrencyContextInterface $currencyContext
@@ -84,7 +85,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     public function __construct(
         CartCarrierProcessorInterface $cartCarrierProcessor,
-        CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        TaxedShippingCalculatorInterface $taxedShippingCalculator,
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
         FormFactoryInterface $formFactory,
         CurrencyContextInterface $currencyContext,
@@ -94,7 +95,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     )
     {
         $this->cartCarrierProcessor = $cartCarrierProcessor;
-        $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->taxedShippingCalculator = $taxedShippingCalculator;
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
         $this->formFactory = $formFactory;
         $this->currencyContext = $currencyContext;
@@ -179,7 +180,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         $availableCarriers = [];
 
         foreach ($carriers as $carrier) {
-            $carrierPrice = $this->carrierPriceCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
+            $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
 
             $availableCarriers[$carrier->getId()] = new \stdClass();
             $availableCarriers[$carrier->getId()]->carrier = $carrier;

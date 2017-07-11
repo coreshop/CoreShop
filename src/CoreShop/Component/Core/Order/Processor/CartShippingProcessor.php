@@ -12,7 +12,8 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\TaxRuleGroup;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
@@ -25,7 +26,7 @@ use Pimcore\Model\Object\Fieldcollection;
 final class CartShippingProcessor implements CartProcessorInterface
 {
     /**
-     * @var CarrierPriceCalculatorInterface
+     * @var TaxedShippingCalculatorInterface
      */
     private $carrierPriceCalculator;
 
@@ -40,12 +41,12 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $taxCollector;
 
     /**
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
      * @param TaxCalculatorFactoryInterface $taxCalculationFactory
      * @param TaxCollectorInterface $taxCollector
      */
     public function __construct(
-        CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        TaxedShippingCalculatorInterface $carrierPriceCalculator,
         TaxCalculatorFactoryInterface $taxCalculationFactory,
         TaxCollectorInterface $taxCollector
     )

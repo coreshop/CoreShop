@@ -20,7 +20,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationTy
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
-use CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
@@ -140,7 +140,7 @@ class ShippingRule extends RuleTest
      */
     protected function getPriceCalculator()
     {
-        return $this->get('coreshop.carrier.price_calculator.default');
+        return $this->get('coreshop.carrier.price_calculator.taxed');
     }
 
     /**

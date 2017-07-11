@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Rule\Action;
 
@@ -20,12 +20,11 @@ interface CarrierPriceActionProcessorInterface
     /**
      * @param CarrierInterface $carrier
      * @param AddressInterface $address
-     * @param array            $configuration
-     * @param bool             $withTax
+     * @param array $configuration
      *
      * @return mixed
      */
-    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration, $withTax = true);
+    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration);
 
     /**
      * @param CarrierInterface $carrier

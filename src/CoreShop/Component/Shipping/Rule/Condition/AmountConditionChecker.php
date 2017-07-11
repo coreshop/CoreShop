@@ -25,7 +25,7 @@ class AmountConditionChecker extends AbstractConditionChecker
     {
         $minAmount = $configuration['minAmount'];
         $maxAmount = $configuration['maxAmount'];
-        $totalAmount = $shippable->getSubtotal(true);
+        $totalAmount = $shippable->getSubtotal();
 
         if ($minAmount > 0) {
             if ($totalAmount <= $minAmount) {

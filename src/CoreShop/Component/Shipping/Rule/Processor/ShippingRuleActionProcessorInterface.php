@@ -8,9 +8,9 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Shipping\Processor;
+namespace CoreShop\Component\Shipping\Rule\Processor;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
@@ -20,18 +20,17 @@ interface ShippingRuleActionProcessorInterface
 {
     /**
      * @param ShippingRuleInterface $shippingRule
-     * @param CarrierInterface      $carrier
-     * @param AddressInterface      $address
-     * @param bool                  $withTax
+     * @param CarrierInterface $carrier
+     * @param AddressInterface $address
      *
      * @return mixed
      */
-    public function getPrice(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, AddressInterface $address, $withTax = true);
+    public function getPrice(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, AddressInterface $address);
 
     /**
      * @param ShippingRuleInterface $shippingRule
-     * @param CarrierInterface      $carrier
-     * @param AddressInterface      $address
+     * @param CarrierInterface $carrier
+     * @param AddressInterface $address
      * @param $price
      *
      * @return mixed

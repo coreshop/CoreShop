@@ -14,10 +14,11 @@ namespace CoreShop\Bundle\ShippingBundle\Calculator;
 
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
-use CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessorInterface;
+use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 
 class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterface
 {
@@ -46,7 +47,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
     {
         /**
          * First valid price rule wins. so, we loop through all ShippingRuleGroups
@@ -55,7 +56,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
         $shippingRuleGroup = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $shippable, $address);
 
         if ($shippingRuleGroup instanceof ShippingRuleGroupInterface) {
-            $price = $this->shippingRuleProcessor->getPrice($shippingRuleGroup->getShippingRule(), $carrier, $address, $withTax);
+            $price = $this->shippingRuleProcessor->getPrice($shippingRuleGroup->getShippingRule(), $carrier, $address);
             $modifications = $this->shippingRuleProcessor->getModification($shippingRuleGroup->getShippingRule(), $carrier, $address, $price);
 
             return $price + $modifications;
