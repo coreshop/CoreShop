@@ -1,6 +1,4 @@
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
-{% set currentRoute = app.request.attributes.get('_route') %}
-{% set currentRouteParams = app.request.attributes.get('_route_params') %}
 
 {% block center %}
     <ol class="breadcrumb">
@@ -18,10 +16,10 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="display">
-                    <a href="{{ path(currentRoute, currentRouteParams|merge({'type': 'list'}))  }}" class="{% if type == 'list' %} active {% endif %}">
+                    <a href="{{ pimcore_url({'type': 'list'})  }}" class="{% if type == 'list' %} active {% endif %}">
                         <i class="fa fa-th-list" title="" data-original-title="{{ 'list_view'|trans }}"></i>
                     </a>
-                    <a href="{{ path(currentRoute, currentRouteParams|merge({'type': 'grid'}))  }}" class="{% if type == 'grid' %} active {% endif %}">
+                    <a href="{{ pimcore_url({'type': 'grid'})  }}" class="{% if type == 'grid' %} active {% endif %}">
                         <i class="fa fa-th-list" title="" data-original-title="{{ 'grid_view'|trans }}"></i>
                     </a>
                 </div>

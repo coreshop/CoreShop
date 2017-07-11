@@ -5,5 +5,5 @@
 {% endblock %}
 
 {% block checkout %}
-    {{ render(controller('coreshop.frontend.controller.security:loginAction', {renderLayout: false, target: path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params'))})) }}
+    {{ render(controller('coreshop.frontend.controller.security:loginAction', {renderLayout: false, target: pimcore_url()})) }}
 {% endblock %}
