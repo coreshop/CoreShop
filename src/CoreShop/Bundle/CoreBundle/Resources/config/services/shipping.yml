@@ -30,5 +30,5 @@ services:
     decorates: coreshop.carrier.discovery
     arguments:
       - '@coreshop.repository.carrier'
-      - '@coreshop.shippable_carrier.checker'
+      - '@coreshop.shipping.carrier.validator'
       - '@coreshop.context.store'

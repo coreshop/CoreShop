@@ -19,10 +19,10 @@ final class CompositeShippableValidatorPass extends PrioritizedCompositeServiceP
     public function __construct()
     {
         parent::__construct(
-            'coreshop.shippable_carrier.checker',
-            'coreshop.shippable_carrier.checker.composite',
-            'coreshop.shippable_checker',
-            'addChecker'
+            'coreshop.shipping.carrier.validator',
+            'coreshop.shipping.carrier.validator.composite',
+            'coreshop.shipping.carrier.validator',
+            'addValidator'
         );
     }
 }
