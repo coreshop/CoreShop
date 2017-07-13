@@ -117,8 +117,6 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     protected function getStore()
     {
         try {
-            //TODO: Check for frontend calls, but how? Tool::isFrontend is not good at all :/
-
             return $this->storeContext->getStore();
         } catch (StoreNotFoundException $ex) {
             //if we don't have a store, do nothing and return false
