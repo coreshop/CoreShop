@@ -8,17 +8,20 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Resource\Model\AbstractObject;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zend\Paginator\Paginator;
 
 class CategoryController extends FrontendController
@@ -29,7 +32,7 @@ class CategoryController extends FrontendController
      */
     public function menuAction(Request $request)
     {
-        $categories = $this->getRepository()->findBy([], null, 5, 0);
+        $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
         return $this->render('CoreShopFrontendBundle:Category:_menu.html.twig', [
             'categories' => $categories,
@@ -42,7 +45,7 @@ class CategoryController extends FrontendController
      */
     public function menuLeftAction(Request $request)
     {
-        $categories = $this->getRepository()->findForStore($this->getStoreContext()->getStore());
+        $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
         return $this->render('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
             'categories' => $categories
@@ -55,13 +58,22 @@ class CategoryController extends FrontendController
      */
     public function indexAction(Request $request)
     {
-        //TODO: add some of the old configurations
+        $listModeDefault = $this->getConfigurationService()->get('system.category.list.mode');
+        $gridPerPageAllowed = $this->getConfigurationService()->get("system.category.grid.per_page");
+        $gridPerPageDefault = $this->getConfigurationService()->get("system.category.grid.per_page_default");
+        $listPerPageAllowed = $this->getConfigurationService()->get("system.category.list.per_page");
+        $listPerPageDefault = $this->getConfigurationService()->get("system.category.list.per_page_default");
+        $variantMode = $this->getConfigurationService()->get("system.category.variant_mode");
 
         $page = $request->get('page', 0);
         $sort = $request->get('sort', 'NAMEA');
         $sortParsed = $this->parseSorting($sort);
-        $type = $request->get('type', 'list');
-        $perPage = $request->get('perPage', 20);
+        $type = $request->get('type', $listModeDefault);
+
+        $defaultPerPage = $type === "list" ? $listPerPageDefault : $gridPerPageDefault;
+        $allowedPerPage = $type === "list" ? $listPerPageAllowed : $gridPerPageAllowed;
+
+        $perPage = $request->get('perPage', $defaultPerPage);
 
         $category = $this->getRepository()->find($request->get("category"));
 
@@ -69,16 +81,22 @@ class CategoryController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        //if (!in_array($this->shopperContext->getStore()->getId())) TODO: Check for allowed Stores
+        if (!in_array($perPage, $allowedPerPage)) {
+            $perPage = $defaultPerPage;
+        }
+
+        if (!in_array($this->getContext()->getStore()->getId(), array_values($category->getStores()))) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
         $paginator = null;
 
-        $viewParameters = [
-        ];
+        $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
-            $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);
-            $filteredList->addCondition(Condition::like('stores', $this->getStoreContext()->getStore()->getId(), 'both'), 'stores');
+            $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
+            $filteredList->addCondition(Condition::like('stores', $this->getContext()->getStore()->getId(), 'both'), 'stores');
             $filteredList->setCategory($category);
 
             $currentFilter = $this->get('coreshop.filter.processor')->processConditions($category->getFilter(), $filteredList, $request->query);
@@ -99,12 +117,16 @@ class CategoryController extends FrontendController
             $list = $this->get('coreshop.repository.product')->getList();
 
             $condition = 'active = 1';
-            $condition .= " AND categories LIKE '%,object|".$category->getId().",%'";
-            $condition .= " AND stores LIKE '%,".$this->getStoreContext()->getStore()->getId().",%'";
+            $condition .= " AND categories LIKE '%,object|" . $category->getId() . ",%'";
+            $condition .= " AND stores LIKE '%," . $this->getContext()->getStore()->getId() . ",%'";
 
             $list->setCondition($condition);
             $list->setOrderKey($sortParsed['name']);
             $list->setOrder($sortParsed['direction']);
+
+            if ($variantMode !== ListingInterface::VARIANT_MODE_HIDE) {
+                $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
+            }
 
             $paginator = new Paginator($list);
             $paginator->setItemCountPerPage($perPage);
@@ -160,18 +182,26 @@ class CategoryController extends FrontendController
     }
 
     /**
-     * @return StoreContextInterface
-     */
-    public function getStoreContext()
-    {
-        return $this->get('coreshop.context.store');
-    }
-
-    /**
      * @return CategoryRepositoryInterface
      */
     public function getRepository()
     {
         return $this->get('coreshop.repository.category');
+    }
+
+    /**
+     * @return \CoreShop\Component\Core\Configuration\ConfigurationService
+     */
+    public function getConfigurationService()
+    {
+        return $this->get('coreshop.configuration.service');
+    }
+
+    /**
+     * @return ShopperContextInterface
+     */
+    public function getContext()
+    {
+        return $this->get('coreshop.context.shopper');
     }
 }

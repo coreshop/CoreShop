@@ -23,6 +23,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
      */
     public function findForStore(StoreInterface $store)
     {
-        return $this->findBy(["stores LIKE '%".$store->getId()."%'"]);
+        return $this->findBy([["condition" => "stores LIKE ?", "variable" => "%" . $store->getId() . "%"]]);
     }
 }
