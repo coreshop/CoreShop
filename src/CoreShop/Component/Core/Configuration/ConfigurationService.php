@@ -48,14 +48,6 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     /**
      * {@inheritdoc}
      */
-    public function get($key, $returnObject = false)
-    {
-        return $this->getForStore($key, null, $returnObject);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getForStore($key, StoreInterface $store = null, $returnObject = false)
     {
         if (null === $store) {

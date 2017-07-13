@@ -58,12 +58,12 @@ class CategoryController extends FrontendController
      */
     public function indexAction(Request $request)
     {
-        $listModeDefault = $this->getConfigurationService()->get('system.category.list.mode');
-        $gridPerPageAllowed = $this->getConfigurationService()->get("system.category.grid.per_page");
-        $gridPerPageDefault = $this->getConfigurationService()->get("system.category.grid.per_page_default");
-        $listPerPageAllowed = $this->getConfigurationService()->get("system.category.list.per_page");
-        $listPerPageDefault = $this->getConfigurationService()->get("system.category.list.per_page_default");
-        $variantMode = $this->getConfigurationService()->get("system.category.variant_mode");
+        $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
+        $gridPerPageAllowed = $this->getConfigurationService()->getForStore("system.category.grid.per_page");
+        $gridPerPageDefault = $this->getConfigurationService()->getForStore("system.category.grid.per_page_default");
+        $listPerPageAllowed = $this->getConfigurationService()->getForStore("system.category.list.per_page");
+        $listPerPageDefault = $this->getConfigurationService()->getForStore("system.category.list.per_page_default");
+        $variantMode = $this->getConfigurationService()->getForStore("system.category.variant_mode");
 
         $page = $request->get('page', 0);
         $sort = $request->get('sort', 'NAMEA');
