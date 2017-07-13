@@ -82,10 +82,20 @@ final class CartManager implements CartManagerInterface
         $this->cartRepository = $cartRepository;
         $this->session = $session;
         $this->cartFactory = $cartFactory;
-        $this->sessionBag = $session->getBag('cart');
         $this->objectService = $objectService;
         $this->customerContext = $customerContext;
         $this->cartFolderPath = $cartFolderPath;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Session\SessionBagInterface
+     */
+    protected function getBag() {
+        if (null === $this->sessionBag) {
+            $this->sessionBag = $this->session->getBag('cart');
+        }
+
+        return $this->sessionBag;
     }
 
     /**
@@ -119,13 +129,13 @@ final class CartManager implements CartManagerInterface
     {
         $cart = null;
 
-        if ($this->sessionBag->has(self::CART_ID_IDENTIFIER) && $this->sessionBag->get(self::CART_ID_IDENTIFIER) !== 0) {
-            $cart = $this->cartRepository->find($this->sessionBag->get(self::CART_ID_IDENTIFIER));
+        if ($this->getBag()->has(self::CART_ID_IDENTIFIER) && $this->getBag()->get(self::CART_ID_IDENTIFIER) !== 0) {
+            $cart = $this->cartRepository->find($this->getBag()->get(self::CART_ID_IDENTIFIER));
         }
 
-        if (!$cart instanceof CartInterface && $this->sessionBag->has(self::CART_OBJ_IDENTIFIER)) {
-            if ($this->sessionBag->get(self::CART_OBJ_IDENTIFIER) instanceof CartInterface) {
-                $cart = $this->sessionBag->get(self::CART_OBJ_IDENTIFIER);
+        if (!$cart instanceof CartInterface && $this->getBag()->has(self::CART_OBJ_IDENTIFIER)) {
+            if ($this->getBag()->get(self::CART_OBJ_IDENTIFIER) instanceof CartInterface) {
+                $cart = $this->getBag()->get(self::CART_OBJ_IDENTIFIER);
             }
         }
 
@@ -138,9 +148,9 @@ final class CartManager implements CartManagerInterface
     public function setCurrentCart(CartInterface $cart)
     {
         if ($cart->getId() > 0) {
-            $this->sessionBag->set(self::CART_ID_IDENTIFIER, $cart->getId());
+            $this->getBag()->set(self::CART_ID_IDENTIFIER, $cart->getId());
         } else {
-            $this->sessionBag->set(self::CART_OBJ_IDENTIFIER, $cart);
+            $this->getBag()->set(self::CART_OBJ_IDENTIFIER, $cart);
         }
     }
 
@@ -198,8 +208,8 @@ final class CartManager implements CartManagerInterface
      */
     public function persistCart(CartInterface $cart)
     {
-        if ($this->sessionBag->has(self::CART_OBJ_IDENTIFIER)) {
-            $this->sessionBag->remove(self::CART_OBJ_IDENTIFIER);
+        if ($this->getBag()->has(self::CART_OBJ_IDENTIFIER)) {
+            $this->getBag()->remove(self::CART_OBJ_IDENTIFIER);
         }
 
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
