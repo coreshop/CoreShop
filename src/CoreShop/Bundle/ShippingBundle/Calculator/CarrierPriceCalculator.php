@@ -25,7 +25,6 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
      */
     private $shippingCalculatorRegistry;
 
-
     /**
      * @param PrioritizedServiceRegistryInterface $shippingCalculatorRegistry
      */

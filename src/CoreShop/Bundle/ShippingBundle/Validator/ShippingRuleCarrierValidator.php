@@ -8,55 +8,38 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Bundle\ShippingBundle\Processor;
+namespace CoreShop\Bundle\ShippingBundle\Validator;
 
 use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 
-class CartCarrierProcessor implements CartCarrierProcessorInterface
+class ShippingRuleCarrierValidator implements ShippableCarrierValidatorInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $carrierRepository;
-
     /**
      * @var CarrierShippingRuleCheckerInterface
      */
     private $carrierShippingRuleChecker;
 
     /**
-     * @param RepositoryInterface                 $carrierRepository
      * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
      */
     public function __construct(
-        RepositoryInterface $carrierRepository,
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
-    ) {
-        $this->carrierRepository = $carrierRepository;
+    )
+    {
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address)
-    {
-        $carriers = $this->carrierRepository->findAll(); //TODO: restrict to store, but needs to be moved to CoreBundle to make it work: NOTE: Really? Shipping Rule Stores?!
-        $availableCarriers = [];
-
-        //First: Get all available carriers
-        foreach ($carriers as $carrier) {
-            if ($this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $shippable, $address) instanceof ShippingRuleGroupInterface) {
-                $availableCarriers[] = $carrier;
-            }
-        }
-
-        return $availableCarriers;
+    public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address) {
+        return null != $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $shippable, $address);
     }
 }

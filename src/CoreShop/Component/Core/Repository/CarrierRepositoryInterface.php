@@ -10,18 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\ShippingBundle\Processor;
+namespace CoreShop\Component\Core\Repository;
 
-use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
-interface CartCarrierProcessorInterface
+interface CarrierRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param ShippableInterface    $shippable
-     * @param AddressInterface      $address
-     *
-     * @return mixed
+     * @param StoreInterface $store
+     * @return CarrierInterface[]
      */
-    public function getCarriersForCart(ShippableInterface $shippable, AddressInterface $address);
+    public function findForStore(StoreInterface $store);
 }

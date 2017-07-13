@@ -23,9 +23,9 @@ services:
   coreshop.checkout.step.shipping:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
     arguments:
-      - '@coreshop.carrier.cart.processor'
+      - '@coreshop.carrier.discovery'
       - '@coreshop.carrier.price_calculator.taxed'
-      - '@coreshop.carrier.cart.checker'
+      - '@coreshop.shippable_carrier.checker'
       - '@form.factory'
       - '@coreshop.context.currency'
       - '@coreshop.money_formatter'

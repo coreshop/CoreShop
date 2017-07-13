@@ -106,14 +106,25 @@ services:
       - '@coreshop.registry.shipping_rule.actions'
 
   # Carrier Shipping Rule Validator
-  coreshop.carrier.cart.checker:
+  coreshop.shippable_carrier.checker.composite:
+    class: CoreShop\Bundle\ShippingBundle\Validator\CompositeShippableCarrierValidator
+    public: false
+
+  coreshop.shippable_carrier.shipping_rule.validator:
+    class: CoreShop\Bundle\ShippingBundle\Validator\ShippingRuleCarrierValidator
+    arguments:
+      - '@coreshop.carrier.shipping_rule.checker'
+    tags:
+      - { name: coreshop.shippable_checker, priority: 10 }
+
+  coreshop.carrier.shipping_rule.checker:
     class: CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleChecker
     arguments: ['@coreshop.shipping_rule.processor']
 
   # Carrier Processor
-  coreshop.carrier.cart.processor:
-    class: CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessor
-    arguments: ['@coreshop.repository.carrier', '@coreshop.carrier.cart.checker']
+  coreshop.carrier.discovery:
+    class: CoreShop\Bundle\ShippingBundle\Discover\ShippableCarriersDiscovery
+    arguments: ['@coreshop.repository.carrier', '@coreshop.shippable_carrier.checker']
 
   # Carrier Price Calculator
   coreshop.registry.shipping.price_calculators:
@@ -129,7 +140,7 @@ services:
   coreshop.carrier.price_calculator.shipping_rules:
     class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierShippingRulePriceCalculator
     arguments:
-      - '@coreshop.carrier.cart.checker'
+      - '@coreshop.carrier.shipping_rule.checker'
       - '@coreshop.carrier.processor.shipping_rules'
     tags:
       - { name: coreshop.shipping.price_calculator, type: shipping-rule, priority: 256 }

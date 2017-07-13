@@ -24,3 +24,11 @@ services:
     arguments:
       - '@coreshop.carrier.price_calculator.default'
       - '@coreshop.taxation.factory.tax_calculator'
+
+  coreshop.carrier.cart.store_based_processor:
+    class: CoreShop\Bundle\CoreBundle\Shipping\Discover\StoreBasedShippableCarriersDiscovery
+    decorates: coreshop.carrier.discovery
+    arguments:
+      - '@coreshop.repository.carrier'
+      - '@coreshop.shippable_carrier.checker'
+      - '@coreshop.context.store'

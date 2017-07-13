@@ -12,10 +12,10 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
+use CoreShop\Bundle\ShippingBundle\Discover\ShippableCarriersDiscoveryInterface;
+use CoreShop\Bundle\ShippingBundle\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
-use CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleCheckerInterface;
-use CoreShop\Bundle\ShippingBundle\Processor\CartCarrierProcessorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
@@ -34,9 +34,9 @@ use Symfony\Component\Validator\Constraints\Valid;
 class ShippingCheckoutStep implements CheckoutStepInterface
 {
     /**
-     * @var CartCarrierProcessorInterface
+     * @var ShippableCarriersDiscoveryInterface
      */
-    private $cartCarrierProcessor;
+    private $shippableCarriersDiscovery;
 
     /**
      * @var CarrierPriceCalculatorInterface
@@ -44,9 +44,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     private $taxedShippingCalculator;
 
     /**
-     * @var CarrierShippingRuleCheckerInterface
+     * @var ShippableCarrierValidatorInterface
      */
-    private $carrierShippingRuleChecker;
+    private $shippableCarrierValidator;
 
     /**
      * @var FormFactoryInterface
@@ -74,9 +74,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     private $storeContext;
 
     /**
-     * @param CartCarrierProcessorInterface $cartCarrierProcessor
+     * @param ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery
      * @param TaxedShippingCalculatorInterface $taxedShippingCalculator
-     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
+     * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      * @param FormFactoryInterface $formFactory
      * @param CurrencyContextInterface $currencyContext
      * @param MoneyFormatterInterface $moneyFormatter
@@ -84,9 +84,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      * @param StoreContextInterface $storeContext
      */
     public function __construct(
-        CartCarrierProcessorInterface $cartCarrierProcessor,
+        ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery,
         TaxedShippingCalculatorInterface $taxedShippingCalculator,
-        CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
+        ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
         CurrencyContextInterface $currencyContext,
         MoneyFormatterInterface $moneyFormatter,
@@ -94,9 +94,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         StoreContextInterface $storeContext
     )
     {
-        $this->cartCarrierProcessor = $cartCarrierProcessor;
+        $this->shippableCarriersDiscovery = $shippableCarriersDiscovery;
         $this->taxedShippingCalculator = $taxedShippingCalculator;
-        $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
+        $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
         $this->currencyContext = $currencyContext;
         $this->moneyFormatter = $moneyFormatter;
@@ -128,7 +128,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         return
             $cart->hasItems() &&
             $cart->getCarrier() instanceof CarrierInterface &&
-            $this->carrierShippingRuleChecker->isShippingRuleValid($cart->getCarrier(), $cart, $cart->getShippingAddress()) instanceof ShippingRuleGroupInterface;
+            $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress());
     }
 
     /**
@@ -176,7 +176,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     private function getCarriers(CartInterface $cart)
     {
-        $carriers = $this->cartCarrierProcessor->getCarriersForCart($cart, $cart->getShippingAddress());
+        $carriers = $this->shippableCarriersDiscovery->discoverCarriers($cart, $cart->getShippingAddress());
         $availableCarriers = [];
 
         foreach ($carriers as $carrier) {

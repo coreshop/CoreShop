@@ -3,3 +3,4 @@ core_shop_shipping:
     carrier:
       classes:
         model: CoreShop\Component\Core\Model\Carrier
+        repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CarrierRepository
