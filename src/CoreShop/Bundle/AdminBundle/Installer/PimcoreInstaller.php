@@ -27,7 +27,7 @@ class PimcoreInstaller extends AbstractInstaller
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $options = ['command' => 'coreshop:install'];
-        $options = array_merge($options, ['--no-interaction' => true, '--application-name coreshop ']);
+        $options = array_merge($options, ['--no-interaction' => true, '--application-name coreshop']);
         $application->run(new ArrayInput($options));
 
         //TODO: Install Customer Service Stuff, not implemented yet -> done via Fixtures
