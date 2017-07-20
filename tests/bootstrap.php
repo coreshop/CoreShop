@@ -226,6 +226,10 @@ try {
 } catch (\Symfony\Component\Process\Exception\ProcessFailedException $e) {
     throw $e;
 }*/
+
+$fs = new \Symfony\Component\Filesystem\Filesystem();
+$fs->mkdir($kernel->getContainer()->getParameter('kernel.project_dir').'/public');
+
 $install = new \CoreShop\Bundle\AdminBundle\Installer\PimcoreInstaller();
 $install->install();
 
