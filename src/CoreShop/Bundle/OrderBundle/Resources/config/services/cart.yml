@@ -1,0 +1,9 @@
+services:
+  coreshop.cart.cleanup:
+    class: CoreShop\Bundle\OrderBundle\Cart\Maintenance\Cleanup
+    shared: false
+    arguments:
+     - '@coreshop.repository.cart'
+     - '%coreshop.cart.cleanup.expiration_days%'
+     - '%coreshop.cart.cleanup.anonymous%'
+     - '%coreshop.cart.cleanup.user%'
