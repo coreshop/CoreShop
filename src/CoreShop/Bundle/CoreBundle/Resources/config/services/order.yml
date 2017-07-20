@@ -12,3 +12,11 @@ services:
     arguments:
       - '@coreshop.core.order.transformer.cart_to_quote.inner'
       - '@coreshop.currency_converter'
+
+  coreshop.cart.cleanup.maintenance_listener:
+    class: CoreShop\Bundle\CoreBundle\EventListener\CartCleanerMaintenanceManagerListener
+    arguments:
+      - '@coreshop.configuration.service'
+      - '@coreshop.cart.cleanup'
+    tags:
+      - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerCartCleanup }
