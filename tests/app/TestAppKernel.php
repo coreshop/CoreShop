@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 use Pimcore\Kernel;
 
@@ -25,5 +25,10 @@ class TestAppKernel extends Kernel
     public function registerBundlesToCollection(\Pimcore\HttpKernel\BundleCollection\BundleCollection $collection)
     {
         \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
+    }
+
+    public function getProjectDir()
+    {
+        return '../';
     }
 }
