@@ -1,0 +1,163 @@
+documents:
+  -
+    key: 'shop'
+    type: 'page'
+    module: 'FrontendBundle'
+    controller: '@coreshop.frontend.controller.index'
+    action: 'index'
+
+  -
+    key: 'email'
+    type: 'folder'
+    path: 'shop'
+
+  -
+    key: 'user-registered'
+    type: 'email'
+    action: 'email'
+    controller: 'email'
+    module: 'FrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hallo %Text(firstname); %Text(lastname);,<br/>
+              vielen Dank für die Registrierung in unserem Shop.
+            </p>
+        head:
+          type: 'input'
+          value: 'Registrierung erfolgreich abgeschlossen'
+        subject:
+          type: 'objectProperty'
+          value: 'Registrierung erfolgreich abgeschlossen'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hi %Text(firstname); %Text(lastname);,<br/>
+              thanks for registering to our shop.
+            </p>
+        head:
+          type: 'input'
+          value: 'Registrierung erfolgreich abgeschlossen'
+        subject:
+          type: 'objectProperty'
+          value: 'Registrierung erfolgreich abgeschlossen'
+
+  -
+    key: 'user-reset-password'
+    type: 'email'
+    action: 'email'
+    controller: 'email'
+    module: 'FrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hallo %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              bitte klicken Sie auf folgenden Link, um Ihr Passwort zurückzusetzen: %Text(resetLink);
+            </p>
+        head:
+          type: 'input'
+          value: 'Passwort zurücksetzen'
+        subject:
+          type: 'objectProperty'
+          value: 'Passwort zurücksetzen'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hi %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              please click on the link to reset your password: %Text(resetLink);
+            </p>
+        head:
+          type: 'input'
+          value: 'Reset Password'
+        subject:
+          type: 'objectProperty'
+          value: 'Reset Password'
+
+  -
+    key: 'order-confirmation'
+    type: 'email'
+    action: 'order-confirmation'
+    controller: 'email'
+    module: 'FrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hallo %Text(firstname); %Text(lastname);,<br/>
+              Ihre Bestellung mit der Nummer %Text(orderNumber); ist bei uns eingangen.
+            </p>
+        head:
+          type: 'input'
+          value: 'Bestellbestätigung %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Bestellbestätigung %Text(orderNumber);'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hi %Text(firstname); %Text(lastname);,<br/>
+              your order with the reference %Text(orderNumber); has been received by us.
+            </p>
+        head:
+          type: 'input'
+          value: 'Order Confirmation %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Order Confirmation %Text(orderNumber);'
+
+
+  -
+    key: 'order-shipped'
+    type: 'email'
+    action: 'email'
+    controller: 'email'
+    module: 'FrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hallo %Text(firstname); %Text(lastname);,<br/>
+              Ihre Bestellung Nr. %Text(orderNumber); wurde soeben versendet.
+            </p>
+        head:
+          type: 'input'
+          value: 'Ihre Bestellung wurde versandt %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Ihre Bestellung wurde versandt %Text(orderNumber);'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hi %Text(firstname); %Text(lastname);,<br/>
+              your order %Text(orderNumber); has been shipped.
+            </p>
+        head:
+          type: 'input'
+          value: 'Your order has been shipped %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Your order has been shipped %Text(orderNumber);'
