@@ -1,9 +1,20 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
-
+use CoreShop\Bundle\ResourceBundle\Installer\Configuration\RouteConfiguration;
 use Pimcore\Model\Staticroute;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -41,11 +52,16 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
             $progress->setProgressCharacter('<comment>░</comment>');
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
 
+            $processor = new Processor();
+            $configurationDefinition = new RouteConfiguration();
+
             foreach ($routeFilesToInstall as $file) {
                 $file = $this->kernel->locateResource($file);
 
                 if (file_exists($file)) {
                     $routes = Yaml::parse(file_get_contents($file));
+                    $routes = $processor->processConfiguration($configurationDefinition, ['staticroutes' => $routes]);
+                    $routes = $routes['routes'];
 
                     foreach ($routes as $name => $routeData) {
                         $routesToInstall[$name] = $routeData;

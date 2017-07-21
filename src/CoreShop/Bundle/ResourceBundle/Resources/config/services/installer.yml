@@ -17,6 +17,12 @@ services:
     tags:
       - { name: 'coreshop.resource.installer', type: 'routes', priority: 200}
 
+  coreshop.resource.installer.documents:
+    class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreDocumentsInstaller
+    arguments: ['@kernel']
+    tags:
+      - { name: 'coreshop.resource.installer', type: 'documents', priority: 250}
+
   coreshop.resource.installer.permissions:
     class: CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller
     arguments: ['@kernel']
