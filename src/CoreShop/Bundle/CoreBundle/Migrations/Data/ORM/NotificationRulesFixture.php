@@ -20,7 +20,7 @@ use Pimcore\Model\Document;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface //, DependentFixtureInterface
+final class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -42,16 +42,6 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
     {
         $this->container = $container;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    /*function getDependencies()
-    {
-        return [
-            //TODO: NotificationRules do have a dependency on mails
-        ];
-    }*/
 
     /**
      * {@inheritdoc}
