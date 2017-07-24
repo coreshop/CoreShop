@@ -10,3 +10,8 @@ services:
     arguments: ['@pimcore.locale']
     tags:
       - { name: coreshop.context.locale }
+
+  coreshop.context.locale.fixed:
+    class: CoreShop\Component\Locale\Context\FixedLocaleContext
+    tags:
+        - { name: coreshop.context.locale }

@@ -130,6 +130,7 @@ class Data
         self::get('coreshop.context.currency.fixed')->setCurrency(self::$store->getCurrency());
         self::get('coreshop.context.store.fixed')->setStore(self::$store);
         self::get('coreshop.context.customer.fixed')->setCustomer(self::$customer1);
+        self::get('coreshop.context.locale.fixed')->setLocale('en');
     }
 
     /**

@@ -167,6 +167,7 @@ $setup->config([
     'database' => $dbConfig,
     'webservice' => ['enabled' => 1],
     'general' => ['validLanguages' => 'en,de'],
+    'email' => ['debug' => ['emailaddresses' => 'travis@coreshop.org']],
 ]);
 
 $kernel = new TestAppKernel('dev', true);
