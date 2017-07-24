@@ -81,7 +81,7 @@
         "configuration": {
           "transitionType": 1,
           "states": [
-            "new"
+            "paymentPending"
           ]
         }
       }
