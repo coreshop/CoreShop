@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
+use CoreShop\Bundle\CoreBundle\Checkout\CheckoutManager;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -31,9 +32,11 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->scalarNode('send_usage_log')->defaultValue(true)->end()
+                ->scalarNode('checkout_manager')->cannotBeEmpty()->end()
             ->end()
         ;
         $this->addPimcoreResourcesSection($rootNode);
+        $this->addCheckoutConfigurationSection($rootNode);
 
         return $treeBuilder;
     }
@@ -118,6 +121,35 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('core')->defaultValue('/bundles/coreshopcore/pimcore/css/core.css')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addCheckoutConfigurationSection(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('checkout')
+                ->isRequired()
+                ->useAttributeAsKey('name')
+                ->requiresAtLeastOneElement()
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('manager')->defaultValue(CheckoutManager::class)->end()
+                        ->arrayNode('steps')
+                        ->useAttributeAsKey('identifier')
+                            ->arrayPrototype()
+                                ->canBeUnset(true)
+                                ->children()
+                                    ->scalarNode('step')->isRequired()->end()
+                                    ->integerNode('priority')->isRequired()->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

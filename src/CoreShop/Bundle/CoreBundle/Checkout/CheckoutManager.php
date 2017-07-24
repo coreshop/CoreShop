@@ -51,7 +51,9 @@ class CheckoutManager implements CheckoutManagerInterface
      */
     public function getSteps()
     {
-        return $this->steps;
+        return array_map(function(CheckoutStepInterface $step) {
+            return $step->getIdentifier();
+        }, $this->serviceRegistry->all());
     }
 
     /**

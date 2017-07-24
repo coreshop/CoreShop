@@ -19,4 +19,3 @@ core_shop_order:
       path: coreshop/quotes
       classes:
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuote.json'
-  checkout_manager: coreshop.checkout_manager.default

@@ -8,15 +8,20 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use Webmozart\Assert\Assert;
 
 final class CoreShopCoreExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
@@ -46,7 +51,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $this->registerResources('coreshop', $config['driver'], [], $container);
 
@@ -55,6 +60,18 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         }
 
         $loader->load('services.yml');
+
+        if (array_key_exists('checkout', $config)) {
+            $this->registerCheckout($container, $config['checkout']);
+        }
+
+        if (array_key_exists('checkout_manager', $config)) {
+            $alias = new Alias(sprintf('coreshop.checkout_manager.%s', $config['checkout_manager']));
+            $container->setAlias('coreshop.checkout_manager', $alias);
+        }
+        else {
+            throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');
+        }
     }
 
     /**
@@ -70,5 +87,34 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
                 $container->prependExtensionConfig($name, ['driver' => $config['driver']]);
             }
         }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param $config
+     */
+    private function registerCheckout(ContainerBuilder $container, $config)
+    {
+        $availableCheckoutManagers = [];
+
+        foreach ($config as $checkoutManager => $typeConfiguration) {
+            $checkoutManagerId = sprintf(sprintf('coreshop.checkout_manager.%s', $checkoutManager));
+            $managerClass = $typeConfiguration['manager'];
+
+            Assert::classExists($managerClass);
+            Assert::implementsInterface($managerClass, CheckoutManagerInterface::class);
+
+            $definition = new Definition($managerClass);
+
+            foreach ($typeConfiguration['steps'] as $step) {
+                $definition->addMethodCall('addCheckoutStep', [new Reference($step['step']), $step['priority']]);
+            }
+
+            $container->setDefinition($checkoutManagerId, $definition);
+
+            $availableCheckoutManagers[] = $checkoutManagerId;
+        }
+
+        $container->setParameter('coreshop.checkout_managers', $availableCheckoutManagers);
     }
 }

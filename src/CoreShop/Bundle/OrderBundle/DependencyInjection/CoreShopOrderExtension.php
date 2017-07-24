@@ -34,8 +34,6 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
-        $container->setParameter('coreshop_order.checkout_manager', $config['checkout_manager']);
-
         $container->setParameter('coreshop.cart.cleanup.expiration_days', $config['expiration']['order']);
         $container->setParameter('coreshop.cart.cleanup.anonymous', $config['cleanup']['anonymous']);
         $container->setParameter('coreshop.cart.cleanup.user', $config['cleanup']['user']);
