@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
@@ -28,7 +28,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
 
@@ -81,7 +81,19 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
                 'auto_generate_proxy_classes' => '%kernel.debug%',
                 'entity_managers' => [
                     'default' => [
-                        'auto_mapping' => true
+                        'auto_mapping' => true,
+                        'metadata_cache_driver' => [
+                            'type' => 'service',
+                            'id' => 'doctrine_cache.providers.coreshop_filesystem_metadata_cache'
+                        ],
+                        'result_cache_driver' => [
+                            'type' => 'service',
+                            'id' => 'doctrine_cache.providers.coreshop_filesystem_result_cache'
+                        ],
+                        'query_cache_driver' => [
+                            'type' => 'service',
+                            'id' => 'doctrine_cache.providers.coreshop_filesystem_query_cache'
+                        ]
                     ]
                 ]
             ]
@@ -89,9 +101,23 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
 
         $doctrineCacheConfig = [
             'providers' => [
-                'coreshop' => [
-                    'type' => 'file_system',
-                    'namespace' => 'coreshop'
+                'coreshop_filesystem_metadata_cache' => [
+                    'file_system' => [
+                        'extension' => 'cache',
+                        'directory' => '%kernel.cache_dir%/doctrine',
+                    ]
+                ],
+                'coreshop_filesystem_result_cache' => [
+                    'file_system' => [
+                        'extension' => 'cache',
+                        'directory' => '%kernel.cache_dir%/doctrine',
+                    ]
+                ],
+                'coreshop_filesystem_query_cache' => [
+                    'file_system' => [
+                        'extension' => 'cache',
+                        'directory' => '%kernel.cache_dir%/doctrine',
+                    ]
                 ]
             ]
         ];
