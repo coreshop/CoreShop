@@ -2,7 +2,7 @@ documents:
   -
     key: 'shop'
     type: 'page'
-    module: 'FrontendBundle'
+    module: 'CoreShopFrontendBundle'
     controller: '@coreshop.frontend.controller.index'
     action: 'index'
 
@@ -14,9 +14,9 @@ documents:
   -
     key: 'user-registered'
     type: 'email'
-    action: 'email'
-    controller: 'email'
-    module: 'FrontendBundle'
+    action: 'mail'
+    controller: 'mail'
+    module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
       de:
@@ -51,9 +51,9 @@ documents:
   -
     key: 'user-reset-password'
     type: 'email'
-    action: 'email'
-    controller: 'email'
-    module: 'FrontendBundle'
+    action: 'mail'
+    controller: 'mail'
+    module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
       de:
@@ -91,8 +91,8 @@ documents:
     key: 'order-confirmation'
     type: 'email'
     action: 'order-confirmation'
-    controller: 'email'
-    module: 'FrontendBundle'
+    controller: 'mail'
+    module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
       de:
@@ -128,9 +128,9 @@ documents:
   -
     key: 'order-shipped'
     type: 'email'
-    action: 'email'
-    controller: 'email'
-    module: 'FrontendBundle'
+    action: 'mail'
+    controller: 'mail'
+    module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
       de:

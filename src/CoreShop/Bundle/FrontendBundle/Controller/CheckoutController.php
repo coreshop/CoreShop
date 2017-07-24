@@ -89,7 +89,7 @@ class CheckoutController extends FrontendController
             'identifier' => $stepIdentifier,
         ]);
 
-        return $this->render(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
+        return $this->renderTemplate(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
     }
 
     public function doCheckoutAction(Request $request)
@@ -157,7 +157,7 @@ class CheckoutController extends FrontendController
         $payments = $order->getPayments();
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
-        return $this->render('@CoreShopFrontend/Checkout/error.html.twig', [
+        return $this->renderTemplate('@CoreShopFrontend/Checkout/error.html.twig', [
             'order' => $order,
             'payments' => $payments,
             'lastPayment' => $lastPayment
@@ -183,7 +183,7 @@ class CheckoutController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order);
 
-        return $this->render('@CoreShopFrontend/Checkout/thank-you.html.twig', [
+        return $this->renderTemplate('@CoreShopFrontend/Checkout/thank-you.html.twig', [
             'order' => $order,
         ]);
     }

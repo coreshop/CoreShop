@@ -1,0 +1,38 @@
+{% extends '@CoreShopFrontend/Mail/layout.html.twig' %}
+
+{% block mail %}
+    <row>
+        <columns>
+            {{ pimcore_wysiwyg("text") }}
+        </columns>
+    </row>
+
+    {% if order is defined %}
+    <callout class="secondary">
+        <row>
+            <columns large="6">
+                <p>
+                    <strong>{{ 'payment_method'|trans }}</strong><br/>
+                    {{ order.paymentProvider.name }}
+                </p>
+                <p>
+                    <strong>{{ 'email_address'|trans }}</strong><br/>
+                    {{ order.customer.email }}
+                </p>
+                <p>
+                    <strong>{{ 'order_number'|trans }}</strong><br/>
+                    {{ order.orderNumber }}
+                </p>
+            </columns>
+            <columns large="6">
+                <p>
+                    <strong>{{ 'shipping_method'|trans }}</strong><br/>
+                    {{ order.carrier.name }}<br/>
+                    <strong>{{ 'shipping_address'|trans }}</strong><br/>
+                    {{ order.carrier.shippingAddress|coreshop_format_address }}
+                </p>
+            </columns>
+        </row>
+    </callout>
+    {% endif %}
+{% endblock %}

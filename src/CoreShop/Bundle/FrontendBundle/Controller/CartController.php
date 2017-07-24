@@ -32,7 +32,7 @@ class CartController extends FrontendController
      */
     public function widgetAction(Request $request)
     {
-        return $this->render('CoreShopFrontendBundle:Cart:_widget.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Cart:_widget.html.twig', [
             'cart' => $this->getCart(),
         ]);
     }
@@ -43,7 +43,7 @@ class CartController extends FrontendController
      */
     public function widgetSummaryAction(Request $request)
     {
-        return $this->render('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
             'cart' => $this->getCart(),
             'editAllowed' => true
         ]);
@@ -102,7 +102,7 @@ class CartController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        return $this->render('CoreShopFrontendBundle:Cart:summary.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
             'cart' => $this->getCart(),
             'checkoutSteps' => $this->get('coreshop.checkout_manager')->getSteps(),
             'currentCheckoutStep' => 0

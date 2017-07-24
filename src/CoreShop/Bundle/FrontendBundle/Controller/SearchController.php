@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -22,7 +22,7 @@ class SearchController extends FrontendController
     {
         $form = $this->createSearchForm();
 
-        return $this->render('CoreShopFrontendBundle:Search:_widget.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Search:_widget.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -58,8 +58,8 @@ class SearchController extends FrontendController
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);
             $paginator->setItemCountPerPage($itemsPerPage);
-            
-            return $this->render('CoreShopFrontendBundle:Search:search.html.twig', [
+
+            return $this->renderTemplate('CoreShopFrontendBundle:Search:search.html.twig', [
                 'paginator' => $paginator,
                 'searchText' => $text
             ]);
@@ -67,7 +67,8 @@ class SearchController extends FrontendController
         return $this->redirectToRoute('coreshop_index');
     }
 
-    protected function createSearchForm() {
+    protected function createSearchForm()
+    {
         return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
             'action' => $this->generateUrl('coreshop_search'),
             'method' => 'GET'

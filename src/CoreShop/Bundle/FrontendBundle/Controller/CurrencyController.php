@@ -27,7 +27,7 @@ class CurrencyController extends FrontendController
     {
         $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get('coreshop.context.shopper')->getStore());
 
-        return $this->render('CoreShopFrontendBundle:Currency:_widget.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Currency:_widget.html.twig', [
             'currencies' => $currencies,
         ]);
     }

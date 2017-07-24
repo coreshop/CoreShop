@@ -15,10 +15,10 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class IndexController extends Controller
+class IndexController extends FrontendController
 {
     public function indexAction(Request $request)
     {
-        return $this->render('CoreShopFrontendBundle:Index:index.html.twig');
+        return $this->renderTemplate('CoreShopFrontendBundle:Index:index.html.twig');
     }
 }

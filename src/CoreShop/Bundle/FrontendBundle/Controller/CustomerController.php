@@ -23,7 +23,7 @@ class CustomerController extends FrontendController
 {
     public function headerAction(Request $request)
     {
-        return $this->render('CoreShopFrontendBundle:Customer:_header.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:_header.html.twig', [
             'catalogMode' => false,
             'customer' => $this->getCustomer(),
         ]);
@@ -31,7 +31,7 @@ class CustomerController extends FrontendController
 
     public function footerAction()
     {
-        return $this->render('CoreShopFrontendBundle:Customer:_footer.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:_footer.html.twig', [
             'catalogMode' => false,
             'customer' => $this->getCustomer(),
         ]);
@@ -45,7 +45,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render('CoreShopFrontendBundle:Customer:profile.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:profile.html.twig', [
             'customer' => $customer,
         ]);
     }
@@ -58,7 +58,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render('CoreShopFrontendBundle:Customer:orders.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:orders.html.twig', [
             'customer' => $customer,
             'orders' => $this->get('coreshop.repository.order')->findByCustomer($this->getCustomer())
         ]);
@@ -83,7 +83,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_customer_orders');
         }
 
-        return $this->render('CoreShopFrontendBundle:Customer:order_detail.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:order_detail.html.twig', [
             'customer' => $customer,
             'order' => $order
         ]);
@@ -97,7 +97,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->render('CoreShopFrontendBundle:Customer:addresses.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:addresses.html.twig', [
             'customer' => $customer,
         ]);
     }
@@ -141,7 +141,7 @@ class CustomerController extends FrontendController
             }
         }
 
-        return $this->render('CoreShopFrontendBundle:Customer:address.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:address.html.twig', [
             'address' => $address,
             'customer' => $customer,
             'form' => $form->createView()
@@ -192,7 +192,7 @@ class CustomerController extends FrontendController
             }
         }
 
-        return $this->render('CoreShopFrontendBundle:Customer:settings.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Customer:settings.html.twig', [
             'customer' => $customer,
             'form' => $form->createView()
         ]);

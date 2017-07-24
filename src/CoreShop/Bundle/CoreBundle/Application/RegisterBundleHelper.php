@@ -52,7 +52,8 @@ class RegisterBundleHelper
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new \Payum\Bundle\PayumBundle\PayumBundle(),
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new \Liip\ThemeBundle\LiipThemeBundle()
+            new \Liip\ThemeBundle\LiipThemeBundle(),
+            new \Hampe\Bundle\ZurbInkBundle\HampeZurbInkBundle()
         ], 120);
     }
 }

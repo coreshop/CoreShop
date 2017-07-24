@@ -12,7 +12,18 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-class FrontendController extends \Pimcore\Controller\FrontendController
-{
+use Symfony\Component\HttpFoundation\Request;
 
+class MailController extends FrontendController
+{
+    public function mailAction(Request $request)
+    {
+        return $this->renderTemplate('CoreShopFrontendBundle:Mail:mail.html.twig');
+    }
+
+    public function orderConfirmationAction(Request $request) {
+        return $this->renderTemplate('CoreShopFrontendBundle:Mail:order-confirmation.html.twig', [
+            'order' => $request->get('object')
+        ]);
+    }
 }

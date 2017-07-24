@@ -20,7 +20,8 @@
   "require": {
     "php": "^7.0",
     "coreshop/core-bundle": "^2.0",
-    "pimcore/core-version": "^5.0"
+    "pimcore/core-version": "^5.0",
+    "hampe/zurb-ink-bundle": "^2.2"
   },
   "config": {
     "bin-dir": "bin"

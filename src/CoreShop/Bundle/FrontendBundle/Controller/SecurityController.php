@@ -65,7 +65,7 @@ class SecurityController extends FrontendController
 
         $renderLayout = $request->get('renderLayout', true);
 
-        return $this->templatingEngine->renderResponse($renderLayout ? '@CoreShopFrontend/Security/login.html.twig' : '@CoreShopFrontend/Security/_login-form.html.twig', [
+        return $this->renderTemplate($renderLayout ? '@CoreShopFrontend/Security/login.html.twig' : '@CoreShopFrontend/Security/_login-form.html.twig', [
             'form' => $form->createView(),
             'last_username' => $lastUsername,
             'last_error' => $lastError,

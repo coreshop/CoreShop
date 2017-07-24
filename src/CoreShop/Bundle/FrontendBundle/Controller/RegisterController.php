@@ -88,7 +88,7 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->render('CoreShopFrontendBundle:Register:register.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Register:register.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -127,7 +127,7 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->render('CoreShopFrontendBundle:Register:password-reset-request.html.twig', [
+        return $this->renderTemplate('CoreShopFrontendBundle:Register:password-reset-request.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -159,7 +159,7 @@ class RegisterController extends FrontendController
                 }
             }
 
-            return $this->render('CoreShopFrontendBundle:Register:password-reset.html.twig', [
+            return $this->renderTemplate('CoreShopFrontendBundle:Register:password-reset.html.twig', [
                 'form' => $form->createView()
             ]);
         }

@@ -76,7 +76,8 @@
     "gedmo/doctrine-extensions": "^2.4.12",
     "stof/doctrine-extensions-bundle": "^1.2",
     "fzaninotto/faker": "^1.6",
-    "liip/theme-bundle": "^1.4"
+    "liip/theme-bundle": "^1.4",
+    "hampe/zurb-ink-bundle": "^2.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.0",
