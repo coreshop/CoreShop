@@ -72,7 +72,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('report_reports_customers')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/customers.js')->end()
                             ->scalarNode('report_reports_payment_providers')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/payment_providers.js')->end()
                             ->scalarNode('report_reports_products')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/products.js')->end()
-                            ->scalarNode('report_reports_quantities')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/quantities.js')->end()
                             ->scalarNode('report_reports_sales')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/sales.js')->end()
                             ->scalarNode('dashboard_orders_carts')->defaultValue('/bundles/coreshopcore/pimcore/js/dashboard/portlets/ordersAndCartsFromLastDays.js')->end()
                             ->scalarNode('dashboard_sales')->defaultValue('/bundles/coreshopcore/pimcore/js/dashboard/portlets/salesFromLastDays.js')->end()
