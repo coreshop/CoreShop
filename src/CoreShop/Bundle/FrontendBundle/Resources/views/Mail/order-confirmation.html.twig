@@ -28,8 +28,10 @@
                 <p>
                     <strong>{{ 'shipping_method'|trans }}</strong><br/>
                     {{ order.carrier.name }}<br/>
-                    <strong>{{ 'shipping_address'|trans }}</strong><br/>
-                    {{ order.carrier.shippingAddress|coreshop_format_address }}
+                    {% if order.shippingAddress is defined %}
+                        <strong>{{ 'shipping_address'|trans }}</strong><br/>
+                        {{ order.shippingAddress|coreshop_format_address }}
+                    {% endif %}
                 </p>
             </columns>
         </row>

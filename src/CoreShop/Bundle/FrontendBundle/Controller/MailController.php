@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 class MailController extends FrontendController
 {
@@ -22,8 +24,12 @@ class MailController extends FrontendController
     }
 
     public function orderConfirmationAction(Request $request) {
+        $order = $request->get('object');
+
+        Assert::isInstanceOf($order, OrderInterface::class);
+
         return $this->renderTemplate('CoreShopFrontendBundle:Mail:order-confirmation.html.twig', [
-            'order' => $request->get('object')
+            'order' => $order
         ]);
     }
 }

@@ -41,7 +41,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
 
             $params['rule'] = $rule;
 
-            unset($params['recipient'], $params['language']);
+            unset($params['recipient'], $params['_locale']);
 
             if ($mailDocument instanceof Document\Email) {
                 $mail = new Mail();
@@ -53,7 +53,6 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
 
                 $mail->setDocument($mailDocument);
                 $mail->setParams($params);
-                $mail->setEnableLayoutOnPlaceholderRendering(false);
 
                 $mail->send();
             }

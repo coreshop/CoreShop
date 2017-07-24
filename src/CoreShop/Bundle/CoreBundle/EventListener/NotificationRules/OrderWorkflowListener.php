@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Workflow\ProposalWorkflowEvent;
 
@@ -19,11 +20,22 @@ final class OrderWorkflowListener extends AbstractNotificationRuleListener
 {
     public function applyRule(ProposalWorkflowEvent $event)
     {
-        if ($event->getProposal() instanceof OrderInterface) {
-            $this->rulesProcessor->applyRules('invoice', $event->getProposal(), [
-                'fromState' => $event->getOldState(),
-                'toState' => $event->getNewState(),
-            ]);
+        $order = $event->getProposal();
+
+        if ($order instanceof OrderInterface) {
+            $customer = $order->getCustomer();
+
+            if ($customer instanceof CustomerInterface) {
+                $this->rulesProcessor->applyRules('order', $event->getProposal(), [
+                    'fromState' => $event->getOldState(),
+                    'toState' => $event->getNewState(),
+                    '_locale' => $order->getOrderLanguage(),
+                    'recipient' => $customer->getEmail(),
+                    'firstname' => $customer->getFirstname(),
+                    'lastname' => $customer->getLastname(),
+                    'orderNumber' => $order->getOrderNumber()
+                ]);
+            }
         }
     }
 }
