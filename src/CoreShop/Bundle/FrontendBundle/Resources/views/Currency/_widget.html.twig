@@ -5,7 +5,7 @@
     </button>
     <ul class="pull-right dropdown-menu">
         {% for currency in currencies %}
-            <li><a tabindex="-1" href="{{ path('coreshop_switch_currency', {'currencyCode': currency.getIsoCode}) }}">{{ currency.getName() }}</a></li>
+            <li><a tabindex="-1" href="{{ path('coreshop_switch_currency', {'currencyCode': currency.getIsoCode}) }}" rel="nofollow">{{ currency.getName() }}</a></li>
         {% endfor %}
     </ul>
 </div>
