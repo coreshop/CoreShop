@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Notification\Rule\Action\Order;
 
+use CoreShop\Component\Core\Model\OrderShipmentInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
@@ -27,6 +28,14 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
     private $orderMailProcessor;
 
     /**
+     * @param OrderMailProcessorInterface $orderMailProcessor
+     */
+    public function __construct(OrderMailProcessorInterface $orderMailProcessor)
+    {
+        $this->orderMailProcessor = $orderMailProcessor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
@@ -34,6 +43,8 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
         $order = null;
 
         if ($subject instanceof OrderInvoiceInterface) {
+            $order = $subject->getOrder();
+        } elseif ($subject instanceof OrderShipmentInterface) {
             $order = $subject->getOrder();
         } elseif ($subject instanceof OrderInterface) {
             $order = $subject;

@@ -49,11 +49,11 @@
   },
   {
     "name": "Order Shipped",
-    "type": "order",
+    "type": "shipment",
     "active": true,
     "conditions": [
       {
-        "type": "order.shipmentState",
+        "type": "shipment.shipmentState",
         "configuration": {
           "shipmentState": 2
         }
@@ -61,7 +61,7 @@
     ],
     "actions": [
       {
-        "type": "order.mail",
+        "type": "shipment.orderMail",
         "configuration": {
           "mails": {
             "de": "/de/shop/email/order-shipped",

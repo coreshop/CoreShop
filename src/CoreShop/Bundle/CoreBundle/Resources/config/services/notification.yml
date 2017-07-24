@@ -54,6 +54,8 @@ services:
   # Notification Rule Actions
   coreshop.notification_rule.action.order_mail:
     class: CoreShop\Component\Core\Notification\Rule\Action\Order\OrderMailActionProcessor
+    arguments:
+      - '@coreshop.mail.processor.order'
     tags:
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
       - { name: coreshop.notification_rule.action, type: orderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
@@ -81,19 +83,19 @@ services:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\InvoiceListener
     parent: coreshop.notification.listener.rule.abstract
     tags:
-      - { name: kernel.event_listener, event: coreshop.invoice.postTransform, method: applyRule }
+      - { name: kernel.event_listener, event: coreshop.invoice.post_transform, method: applyRule }
 
   coreshop.notification.listener.shipment:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\ShipmentListener
     parent: coreshop.notification.listener.rule.abstract
     tags:
-      - { name: kernel.event_listener, event: coreshop.shipment.postTransform, method: applyRule }
+      - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: applyRule }
 
   coreshop.notification.listener.quote:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\QuoteListener
     parent: coreshop.notification.listener.rule.abstract
     tags:
-      - { name: kernel.event_listener, event: coreshop.quote.postTransform, method: applyRule }
+      - { name: kernel.event_listener, event: coreshop.quote.post_transform, method: applyRule }
 
   coreshop.notification.listsener.order:
     class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderWorkflowListener
