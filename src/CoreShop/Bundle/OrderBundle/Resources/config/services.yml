@@ -61,6 +61,13 @@ services:
     tags:
       - { name: kernel.event_listener, event: pimcore.object.preUpdate, method: recalculateCart }
 
+  coreshop.event_listener.update_cart:
+    class: CoreShop\Bundle\OrderBundle\EventListener\RequestCartRecalculation
+    arguments: ['@coreshop.cart.manager']
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+
   coreshop.cart.cleanup:
     class: CoreShop\Bundle\OrderBundle\Cart\Maintenance\Cleanup
     shared: false
