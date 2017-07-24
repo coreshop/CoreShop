@@ -11,7 +11,7 @@ language: php
 
 php:
   - 7
-  - 7.1
+#  - 7.1
 
 services:
   - redis
