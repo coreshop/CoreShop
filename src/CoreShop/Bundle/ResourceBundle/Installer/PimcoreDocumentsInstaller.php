@@ -82,6 +82,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                     if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
                         $languageDocument->setParent(Document::getById(1));
+                        $languageDocument->setProperty('language', 'text', $language);
                         $languageDocument->setKey($language);
                         $languageDocument->save();
                     }
