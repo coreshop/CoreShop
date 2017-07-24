@@ -46,6 +46,28 @@ class OrderController extends AbstractSaleController
         ];
     }
 
+    public function getStatesAction()
+    {
+        $states = [];
+
+        $list = new \Pimcore\Model\Workflow\Listing();
+        $list->load();
+
+        foreach ($list->getWorkflows() as $workflow) {
+            if (is_array($workflow->getWorkflowSubject())) {
+                $subject = $workflow->getWorkflowSubject();
+
+                if (array_key_exists('classes', $subject)) {
+                    if (in_array($this->getParameter('coreshop.model.order.pimcore_class_id'), $subject['classes'])) {
+                        $states = $workflow->getStates();
+                    }
+                }
+            }
+        }
+
+        return $this->json($states);
+    }
+
     /**
      * @param Request $request
      *
@@ -387,7 +409,8 @@ class OrderController extends AbstractSaleController
     /**
      * {@inheritdoc}
      */
-    protected function getOrderKey() {
+    protected function getOrderKey()
+    {
         return 'orderDate';
     }
 

@@ -24,6 +24,10 @@ coreshop_order_get_grid_configuration:
   path: /%coreshop.admin.route.base%/order/get-grid-configuration
   defaults: { _controller: 'coreshop.pimcore_controller.order:getGridConfigurationAction'}
 
+coreshop_order_get_states:
+  path: /%coreshop.admin.route.base%/order/get-states
+  defaults: { _controller: 'coreshop.pimcore_controller.order:getStatesAction'}
+
 coreshop_order_get_orders:
   path: /%coreshop.admin.route.base%/order/list
   defaults: { _controller: 'coreshop.pimcore_controller.order:listAction'}

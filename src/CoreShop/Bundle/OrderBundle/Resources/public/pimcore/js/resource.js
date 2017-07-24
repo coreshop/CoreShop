@@ -14,12 +14,20 @@ pimcore.registerNS('coreshop.order.resource');
 coreshop.order.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.global.addStore('coreshop_cart_price_rules', 'coreshop/cart_price_rules');
-
-        /*pimcore.globalmanager.add('coreshop_order_states', new Ext.data.JsonStore({
-         data: this.settings.orderStates,
-         fields: ['name', 'label', 'color'],
-         idProperty: 'name'
-         }));*/
+        pimcore.globalmanager.add('coreshop_order_states', new Ext.data.Store({
+            restful: false,
+            proxy: {
+                type: 'ajax',
+                url: '/admin/coreshop/order/get-states'
+            },
+            reader: {
+                type: 'json'
+            },
+            fields: [
+                 'color', 'label', 'name'
+            ],
+            autoLoad: true
+        }));
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.order', this);
     },
