@@ -29,14 +29,14 @@ CoreShop\Component\Currency\Model\ExchangeRate:
           on: update
   manyToOne:
     fromCurrency:
-      targetEntity: CoreShop\Component\Currency\Model\Currency
+      targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
       joinColumn:
         name: fromCurrency
         referencedColumnName: id
         nullable: false
         onDelete: cascade
     toCurrency:
-      targetEntity: CoreShop\Component\Currency\Model\Currency
+      targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
       joinColumn:
         name: toCurrency
         referencedColumnName: id
