@@ -214,12 +214,12 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setDepth($depth);
 
     /**
-     * @return RuleInterface[]
+     * @return PriceRuleInterface[]
      */
     public function getSpecificPriceRules();
 
     /**
-     * @param RuleInterface[] $specificPriceRules
+     * @param PriceRuleInterface[] $specificPriceRules
      */
     public function setSpecificPriceRules($specificPriceRules);
 }
