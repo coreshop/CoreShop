@@ -27,6 +27,9 @@ class ProductSpecificPriceRuleRepository extends EntityRepository implements Pro
             ->andWhere('o.product = :productId')
             ->setParameter('productId', $product->getId())
             ->getQuery()
+            ->useQueryCache(true)
+            ->useResultCache(true)
+            ->setCacheable(true)
             ->getResult()
         ;
     }

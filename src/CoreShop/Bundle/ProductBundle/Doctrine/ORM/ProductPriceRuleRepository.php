@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class ProductPriceRuleRepository extends EntityRepository implements ProductPriceRuleRepositoryInterface
 {
@@ -25,6 +26,9 @@ class ProductPriceRuleRepository extends EntityRepository implements ProductPric
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = 1')
             ->getQuery()
+            ->useQueryCache(true)
+            ->useResultCache(true)
+            ->setCacheable(true)
             ->getResult()
         ;
     }
