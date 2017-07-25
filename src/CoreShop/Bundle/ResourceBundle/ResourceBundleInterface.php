@@ -21,9 +21,8 @@ interface ResourceBundleInterface
     /**
      * Returns a vector of supported drivers.
      *
-     * @see CoreShopCoreBundle::DRIVER_DOCTRINE_ORM
-     * @see CoreShopCoreBundle::DRIVER_DOCTRINE_MONGODB_ODM
-     * @see CoreShopCoreBundle::DRIVER_DOCTRINE_PHPCR_ODM
+     * @see CoreShopResourceBundle::DRIVER_DOCTRINE_ORM
+     * @see CoreShopResourceBundle::DRIVER_PIMCORE
      *
      * @return array
      */
