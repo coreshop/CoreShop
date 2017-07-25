@@ -43,6 +43,11 @@ final class RequestCartRecalculation
 
         $cart = $this->cartManager->getCart();
 
+        //This could lead to performance issues,
+        //The main issue is: when should a cart get recalculated
+        //when a price-rule gets invalid? we actually don't know
+        //when a price-rule changes or gets invalid
+        //Maybe a CronJob to recalculate carts every 30 min?
         if ($cart->getId()) {
             Version::disable();
             $cart->save();
