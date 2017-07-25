@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
 use Pimcore\Event\Model\ElementEventInterface;
 use Pimcore\Event\Model\ObjectEvent;
@@ -35,6 +36,10 @@ final class IndexObjectListener
     {
         if ($event instanceof ObjectEvent) {
             $object = $event->getObject();
+
+            if (!$object instanceof IndexableInterface) {
+                return;
+            }
 
             $this->indexUpdaterService->updateIndices($object);
         }
