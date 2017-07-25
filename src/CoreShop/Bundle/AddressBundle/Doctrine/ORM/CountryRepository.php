@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\AddressBundle\Doctrine\ORM;
 
@@ -37,8 +37,9 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->setParameter('name', $name)
             ->setParameter('localeCode', $locale)
             ->getQuery()
-            ->getResult()
-        ;
+            ->useQueryCache(true)
+            ->useResultCache(true)
+            ->getResult();
     }
 
     /**
@@ -50,7 +51,8 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->andWhere('o.isoCode= :isoCode')
             ->setParameter('isoCode', $code)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->useQueryCache(true)
+            ->useResultCache(true)
+            ->getOneOrNullResult();
     }
 }
