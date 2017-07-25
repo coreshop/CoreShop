@@ -85,15 +85,15 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
                         'auto_mapping' => true,
                         'metadata_cache_driver' => [
                             'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_filesystem_metadata_cache'
+                            'id' => 'doctrine_cache.providers.coreshop_pimcore_metadata_cache'
                         ],
                         'result_cache_driver' => [
                             'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_filesystem_result_cache'
+                            'id' => 'doctrine_cache.providers.coreshop_pimcore_result_cache'
                         ],
                         'query_cache_driver' => [
                             'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_filesystem_query_cache'
+                            'id' => 'doctrine_cache.providers.coreshop_pimcore_query_cache'
                         ]
                     ]
                 ]
@@ -107,13 +107,13 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
                 ]
             ],
             'providers' => [
-                'coreshop_filesystem_metadata_cache' => [
+                'coreshop_pimcore_metadata_cache' => [
                     'coreshop_pimcore_cache' => []
                 ],
-                'coreshop_filesystem_result_cache' => [
+                'coreshop_pimcore_result_cache' => [
                     'coreshop_pimcore_cache' => []
                 ],
-                'coreshop_filesystem_query_cache' => [
+                'coreshop_pimcore_query_cache' => [
                     'coreshop_pimcore_cache' => []
                 ]
             ]
