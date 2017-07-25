@@ -1,0 +1,2 @@
+CoreShop\Component\Resource\Model\AbstractTranslation:
+  type: mappedSuperclass
