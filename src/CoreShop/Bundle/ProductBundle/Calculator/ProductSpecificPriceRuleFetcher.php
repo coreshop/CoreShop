@@ -13,24 +13,21 @@
 namespace CoreShop\Bundle\ProductBundle\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
+use CoreShop\Component\Product\Model\PriceRuleInterface;
 use Webmozart\Assert\Assert;
 
-class ProductPriceRuleCalculator extends AbstractPriceRuleCalculator
+class ProductSpecificPriceRuleFetcher implements ProductPriceRuleFetcherInterface
 {
     /**
-     * {@inheritdoc}
+     * @param ProductInterface $subject
+     * @return PriceRuleInterface[]
      */
-    protected function getPriceRules($subject)
-    {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-        Assert::isInstanceOf($this->productPriceRuleRepository, ProductPriceRuleRepositoryInterface::class);
-
+    public function getPriceRules(ProductInterface $subject) {
         /**
-         * @var ProductPriceRuleRepositoryInterface
+         * @var $subject ProductInterface
          */
-        $productPriceRuleRepository = $this->productPriceRuleRepository;
+        Assert::isInstanceOf($subject, ProductInterface::class);
 
-        return $productPriceRuleRepository->findActive();
+        return $subject->getSpecificPriceRules();
     }
 }

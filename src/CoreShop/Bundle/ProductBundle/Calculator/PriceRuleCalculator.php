@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ProductBundle\Calculator;
 
@@ -21,12 +21,12 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInterface
+final class PriceRuleCalculator implements ProductPriceCalculatorInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var ProductPriceRuleFetcherInterface
      */
-    protected $productPriceRuleRepository;
+    protected $productPriceRuleFetcher;
 
     /**
      * @var RuleValidationProcessorInterface
@@ -39,26 +39,20 @@ abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInte
     protected $actionServiceRegistry;
 
     /**
-     * @param RepositoryInterface              $productPriceRuleRepository
+     * @param ProductPriceRuleFetcherInterface $productPriceRuleFetcher
      * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param ServiceRegistryInterface         $actionServiceRegistry
+     * @param ServiceRegistryInterface $actionServiceRegistry
      */
     public function __construct(
-        RepositoryInterface $productPriceRuleRepository,
+        ProductPriceRuleFetcherInterface $productPriceRuleFetcher,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         ServiceRegistryInterface $actionServiceRegistry
-    ) {
-        $this->productPriceRuleRepository = $productPriceRuleRepository;
+    )
+    {
+        $this->productPriceRuleFetcher = $productPriceRuleFetcher;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
-
-    /**
-     * @param $subject
-     *
-     * @return mixed
-     */
-    abstract protected function getPriceRules($subject);
 
     /**
      * {@inheritdoc}
@@ -70,7 +64,7 @@ abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInte
         /**
          * @var RuleInterface[]
          */
-        $rules = $this->getPriceRules($subject);
+        $rules = $this->productPriceRuleFetcher->getPriceRules($subject);
 
         if (is_array($rules)) {
             foreach ($rules as $rule) {
@@ -108,7 +102,7 @@ abstract class AbstractPriceRuleCalculator implements ProductPriceCalculatorInte
         /**
          * @var RuleInterface[]
          */
-        $rules = $this->getPriceRules($subject);
+        $rules = $this->productPriceRuleFetcher->getPriceRules($subject);
 
         if (is_array($rules)) {
             foreach ($rules as $rule) {
