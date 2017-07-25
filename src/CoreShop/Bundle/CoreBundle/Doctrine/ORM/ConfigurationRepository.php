@@ -29,6 +29,8 @@ class ConfigurationRepository extends BaseConfigurationRepository implements Con
             ->setParameter('configKey', $key)
             ->setParameter('store', $store)
             ->getQuery()
+            ->useResultCache(true)
+            ->useQueryCache(true)
             ->getOneOrNullResult()
         ;
     }

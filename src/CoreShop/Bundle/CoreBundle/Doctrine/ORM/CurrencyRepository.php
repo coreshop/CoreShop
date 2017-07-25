@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
@@ -24,14 +24,15 @@ class CurrencyRepository extends BaseCurrencyRepository implements CurrencyRepos
     public function findActiveForStore(StoreInterface $store)
     {
         return $this->createQueryBuilder('o')
-             ->leftJoin('o.countries', 'c')
-             ->innerJoin('c.stores', 's')
-             ->andWhere('c.active = true')
-             ->andWhere('s.id = :storeId')
-             ->setParameter('storeId', $store->getId())
-             ->distinct()
-             ->getQuery()
-             ->getResult()
-        ;
+            ->leftJoin('o.countries', 'c')
+            ->innerJoin('c.stores', 's')
+            ->andWhere('c.active = true')
+            ->andWhere('s.id = :storeId')
+            ->setParameter('storeId', $store->getId())
+            ->distinct()
+            ->getQuery()
+            ->useResultCache(true)
+            ->useQueryCache(true)
+            ->getResult();
     }
 }
