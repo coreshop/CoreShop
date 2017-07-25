@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectCloner;
-use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;

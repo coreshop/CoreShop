@@ -13,25 +13,29 @@
 namespace CoreShop\Bundle\CoreBundle\NumberGenerator;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 
-class OrderNumberGenerator extends SequenceNumberGenerator
+final class OrderNumberGenerator implements NumberGeneratorInterface
 {
+     /**
+     * @var NumberGeneratorInterface
+     */
+    protected $numberGenerator;
+
     /**
      * @var ConfigurationServiceInterface
      */
     protected $configurationService;
 
     /**
-     * @param SequenceGeneratorInterface    $sequenceNumberGenerator
-     * @param string                        $type
+     * @param NumberGeneratorInterface $numberGenerator
      * @param ConfigurationServiceInterface $configurationService
      */
-    public function __construct(SequenceGeneratorInterface $sequenceNumberGenerator, $type, ConfigurationServiceInterface $configurationService)
+    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService)
     {
-        parent::__construct($sequenceNumberGenerator, $type);
-
+        $this->numberGenerator = $numberGenerator;
         $this->configurationService = $configurationService;
     }
 
@@ -40,8 +44,6 @@ class OrderNumberGenerator extends SequenceNumberGenerator
      */
     public function generate(ResourceInterface $model)
     {
-        $number = parent::generate($model);
-
-        return sprintf('%s%s%s', $this->configurationService->getForStore('system.order.prefix'), $number, $this->configurationService->getForStore('system.order.suffix'));
+        return sprintf('%s%s%s', $this->configurationService->getForStore('system.order.prefix'), $this->numberGenerator->generate($model), $this->configurationService->getForStore('system.order.suffix'));
     }
 }

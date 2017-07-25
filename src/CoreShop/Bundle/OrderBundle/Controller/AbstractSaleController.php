@@ -17,7 +17,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
-use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;

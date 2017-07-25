@@ -1,11 +1,11 @@
 services:
   coreshop.order.number_generator.default:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderNumberGenerator
-    arguments: ['@coreshop.sequence.generator', 'order', '@coreshop.configuration.service']
+    class: CoreShop\Bundle\OrderBundle\NumberGenerator\SequenceNumberGenerator
+    arguments: ['@coreshop.sequence.generator', 'order']
 
   coreshop.quote.number_generator.default:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\QuoteNumberGenerator
-    arguments: ['@coreshop.sequence.generator', 'quote', '@coreshop.configuration.service']
+    class: CoreShop\Bundle\OrderBundle\NumberGenerator\SequenceNumberGenerator
+    arguments: ['@coreshop.sequence.generator', 'quote']
 
   coreshop.order.transformer.cart_item_to_order_item:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToOrderItemTransformer
@@ -61,23 +61,3 @@ services:
       - '%coreshop.model.cart.class%'
       - '@coreshop.context.currency'
       - '@coreshop.context.store'
-
-  coreshop.mail.processor.order:
-    class: CoreShop\Component\Core\Order\OrderMailProcessor
-    arguments:
-     - '@coreshop.money_formatter'
-     - '@coreshop.repository.order_invoice'
-     - '@coreshop.repository.order_shipment'
-     - '@coreshop.renderer.order.pdf'
-
-  coreshop.renderer.order.pdf:
-    class: CoreShop\Bundle\CoreBundle\Order\Renderer\OrderDocumentPdfRenderer
-    arguments:
-      - '@fragment.renderer.inline'
-      - '@coreshop.configuration.service'
-      - '@coreshop.renderer.pdf'
-
-  coreshop.renderer.order.pdf.asset:
-    class: CoreShop\Bundle\CoreBundle\Order\Renderer\AssetOrderDocumentPdfRenderer
-    decorates: coreshop.renderer.order.pdf
-    arguments: ['@coreshop.renderer.order.pdf.asset.inner']

@@ -1,7 +1,7 @@
 services:
   coreshop.order_shipment.number_generator.default:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderShipmentNumberGenerator
-    arguments: ['@coreshop.sequence.generator', 'shipment', '@coreshop.configuration.service']
+    class: CoreShop\Bundle\OrderBundle\NumberGenerator\SequenceNumberGenerator
+    arguments: ['@coreshop.sequence.generator', 'shipment']
 
   coreshop.order_shipment.transformer.order_item_to_shipment_item:
     class: CoreShop\Bundle\OrderBundle\Transformer\OrderItemToShipmentItemTransformer

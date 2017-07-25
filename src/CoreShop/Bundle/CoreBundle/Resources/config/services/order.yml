@@ -20,3 +20,51 @@ services:
       - '@coreshop.cart.cleanup'
     tags:
       - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerCartCleanup }
+
+  coreshop.order.number_generator.prefix_suffix:
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderNumberGenerator
+    decorates: coreshop.order.number_generator.default
+    arguments:
+      - '@coreshop.order.number_generator.prefix_suffix.inner'
+      - '@coreshop.configuration.service'
+
+  coreshop.quote.number_generator.prefix_suffix:
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\QuoteNumberGenerator
+    decorates: coreshop.quote.number_generator.default
+    arguments:
+      - '@coreshop.quote.number_generator.prefix_suffix.inner'
+      - '@coreshop.configuration.service'
+
+  coreshop.order_invoice.number_generator.prefix_suffix:
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderInvoiceNumberGenerator
+    decorates: coreshop.order_invoice.number_generator.default
+    arguments:
+      - '@coreshop.order_invoice.number_generator.prefix_suffix.inner'
+      - '@coreshop.configuration.service'
+
+  coreshop.order_shipment.number_generator.prefix_suffix:
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderShipmentNumberGenerator
+    decorates: coreshop.order_shipment.number_generator.default
+    arguments:
+      - '@coreshop.order_shipment.number_generator.prefix_suffix.inner'
+      - '@coreshop.configuration.service'
+
+  coreshop.mail.processor.order:
+    class: CoreShop\Component\Core\Order\OrderMailProcessor
+    arguments:
+     - '@coreshop.money_formatter'
+     - '@coreshop.repository.order_invoice'
+     - '@coreshop.repository.order_shipment'
+     - '@coreshop.renderer.order.pdf'
+
+  coreshop.renderer.order.pdf:
+    class: CoreShop\Bundle\CoreBundle\Order\Renderer\OrderDocumentPdfRenderer
+    arguments:
+      - '@fragment.renderer.inline'
+      - '@coreshop.configuration.service'
+      - '@coreshop.renderer.pdf'
+
+  coreshop.renderer.order.pdf.asset:
+    class: CoreShop\Bundle\CoreBundle\Order\Renderer\AssetOrderDocumentPdfRenderer
+    decorates: coreshop.renderer.order.pdf
+    arguments: ['@coreshop.renderer.order.pdf.asset.inner']
