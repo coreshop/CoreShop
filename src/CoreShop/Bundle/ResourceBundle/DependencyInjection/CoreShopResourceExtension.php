@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -100,24 +101,20 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
         ];
 
         $doctrineCacheConfig = [
+            'custom_providers' => [
+                'coreshop_pimcore_cache' => [
+                    'prototype' => 'coreshop.doctrine.cache.pimcore'
+                ]
+            ],
             'providers' => [
                 'coreshop_filesystem_metadata_cache' => [
-                    'file_system' => [
-                        'extension' => 'cache',
-                        'directory' => '%kernel.cache_dir%/doctrine',
-                    ]
+                    'coreshop_pimcore_cache' => []
                 ],
                 'coreshop_filesystem_result_cache' => [
-                    'file_system' => [
-                        'extension' => 'cache',
-                        'directory' => '%kernel.cache_dir%/doctrine',
-                    ]
+                    'coreshop_pimcore_cache' => []
                 ],
                 'coreshop_filesystem_query_cache' => [
-                    'file_system' => [
-                        'extension' => 'cache',
-                        'directory' => '%kernel.cache_dir%/doctrine',
-                    ]
+                    'coreshop_pimcore_cache' => []
                 ]
             ]
         ];

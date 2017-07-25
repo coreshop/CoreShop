@@ -47,3 +47,6 @@ services:
 
   coreshop.resource.helper.form_error_serializer:
     class: CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer
+
+  coreshop.doctrine.cache.pimcore:
+    class: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
