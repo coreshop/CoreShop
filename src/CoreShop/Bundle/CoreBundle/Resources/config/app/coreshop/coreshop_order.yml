@@ -4,7 +4,7 @@ core_shop_order:
       path: coreshop/carts
       classes:
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json'
-    cart:
+    cart_item:
       classes:
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCartItem.json'
     order:
