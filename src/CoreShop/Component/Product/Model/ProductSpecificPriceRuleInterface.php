@@ -12,9 +12,6 @@
 
 namespace CoreShop\Component\Product\Model;
 
-
-
-
 interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
 {
     /**
