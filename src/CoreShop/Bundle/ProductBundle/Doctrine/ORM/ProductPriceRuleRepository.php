@@ -26,9 +26,6 @@ class ProductPriceRuleRepository extends EntityRepository implements ProductPric
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = 1')
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
-            ->setCacheable(true)
             ->getResult()
         ;
     }
