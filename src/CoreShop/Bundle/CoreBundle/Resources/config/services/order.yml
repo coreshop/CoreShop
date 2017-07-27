@@ -68,3 +68,20 @@ services:
     class: CoreShop\Bundle\CoreBundle\Order\Renderer\AssetOrderDocumentPdfRenderer
     decorates: coreshop.renderer.order.pdf
     arguments: ['@coreshop.renderer.order.pdf.asset.inner']
+
+  coreshop.event_listener.price_rule_update:
+    class: CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener
+    arguments: ['@coreshop.configuration.service']
+    tags:
+      - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+      - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+      - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+
+  coreshop.event_listener.update_cart:
+    class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
+    arguments:
+     - '@coreshop.cart.manager'
+     - '@coreshop.configuration.service'
+     - '@pimcore.http.request_helper'
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

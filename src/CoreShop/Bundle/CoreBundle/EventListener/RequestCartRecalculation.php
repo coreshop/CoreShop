@@ -10,10 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle\EventListener;
+namespace CoreShop\Bundle\CoreBundle\EventListener;
 
+use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
+use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Version;
+use Pimcore\Service\Context\PimcoreContextGuesser;
+use Pimcore\Tool;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartRecalculation
@@ -24,11 +28,29 @@ final class RequestCartRecalculation
     private $cartManager;
 
     /**
-     * @param CartManagerInterface $cartManager
+     * @var ConfigurationServiceInterface
      */
-    public function __construct(CartManagerInterface $cartManager)
+    private $configurationService;
+
+    /**
+     * @var RequestHelper
+     */
+    private $pimcoreRequestHelper;
+
+    /**
+     * @param CartManagerInterface $cartManager
+     * @param ConfigurationServiceInterface $configurationService
+     * @param RequestHelper $pimcoreRequestHelper
+     */
+    public function __construct(
+        CartManagerInterface $cartManager,
+        ConfigurationServiceInterface $configurationService,
+        RequestHelper $pimcoreRequestHelper
+    )
     {
         $this->cartManager = $cartManager;
+        $this->configurationService = $configurationService;
+        $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
 
     /**
@@ -41,6 +63,10 @@ final class RequestCartRecalculation
             return;
         }
 
+        if (!$this->pimcoreRequestHelper->isFrontendRequest($event->getRequest())) {
+            return;
+        }
+
         $cart = $this->cartManager->getCart();
 
         //This could lead to performance issues,
@@ -49,9 +75,11 @@ final class RequestCartRecalculation
         //when a price-rule changes or gets invalid
         //Maybe a CronJob to recalculate carts every 30 min?
         if ($cart->getId()) {
-            Version::disable();
-            $cart->save();
-            Version::enable();
+            if ($this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE') > $cart->getModificationDate()) {
+                Version::disable();
+                $cart->save();
+                Version::enable();
+            }
         }
     }
 }
