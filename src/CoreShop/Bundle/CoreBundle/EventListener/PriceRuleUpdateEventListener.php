@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
-use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Webmozart\Assert\Assert;
 
