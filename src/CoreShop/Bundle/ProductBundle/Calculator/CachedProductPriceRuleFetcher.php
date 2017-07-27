@@ -45,7 +45,7 @@ class CachedProductPriceRuleFetcher implements ProductPriceRuleFetcherInterface
         if (!$rules = Cache::load($cacheKey)) {
             $rules = $this->productPriceRuleFetcher->getPriceRules($subject);
 
-            Cache::save($rules, $cacheKey);
+            Cache::save($rules, $cacheKey, ['product_price_rule']);
 
             return $rules;
         }

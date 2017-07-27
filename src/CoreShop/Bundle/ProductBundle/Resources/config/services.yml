@@ -74,3 +74,11 @@ services:
 
   coreshop.product.price_calculator:
     alias: coreshop.product.price_calculator.composite
+
+  coreshop.event_listener.clear_cached_rules:
+    class: CoreShop\Bundle\ProductBundle\EventListener\ClearCachedPriceRulesListener
+    tags:
+      - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: clearCachedRules }
+      - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_save, method: clearCachedRules }
+      - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: clearCachedRules }
+      - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_delete, method: clearCachedRules }
