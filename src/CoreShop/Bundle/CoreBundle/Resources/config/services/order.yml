@@ -74,8 +74,11 @@ services:
     arguments: ['@coreshop.configuration.service']
     tags:
       - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+      - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
       - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+      - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
       - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+      - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
 
   coreshop.event_listener.update_cart:
     class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
