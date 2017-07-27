@@ -222,11 +222,15 @@ class ResourceController extends AdminController
 
         $id = $request->get('id');
 
-        $dataModel = $this->repository->find($id);
+        $resource = $this->repository->find($id);
 
-        if ($dataModel instanceof ResourceInterface) {
-            $this->manager->remove($dataModel);
+        if ($resource instanceof ResourceInterface) {
+            $this->eventDispatcher->dispatchPreEvent('delete', $this->metadata, $resource, $request);
+
+            $this->manager->remove($resource);
             $this->manager->flush();
+
+            $this->eventDispatcher->dispatchPostEvent('delete', $this->metadata, $resource, $request);
 
             return $this->viewHandler->handle(['success' => true]);
         }
