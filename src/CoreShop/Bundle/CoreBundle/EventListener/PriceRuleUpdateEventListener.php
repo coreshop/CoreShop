@@ -49,13 +49,6 @@ final class PriceRuleUpdateEventListener
 
         Assert::isInstanceOf($rule, RuleInterface::class);
 
-        if ($rule instanceof ToggleableInterface) {
-            if ($rule->getActive()) {
-                $this->configurationService->set('SYSTEM.PRICE_RULE.UPDATE', time());
-            }
-        }
-        else {
-            $this->configurationService->set('SYSTEM.PRICE_RULE.UPDATE', time());
-        }
+        $this->configurationService->set('SYSTEM.PRICE_RULE.UPDATE', time());
     }
 }
