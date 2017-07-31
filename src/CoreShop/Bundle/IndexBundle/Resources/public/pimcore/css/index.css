@@ -41,3 +41,7 @@
 .coreshop_filters_icon_similarities_field {
     background: url(../img/similarities-field.svg) center center no-repeat !important;
 }
+
+.coreshop_icon_settings {
+    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important;
+}

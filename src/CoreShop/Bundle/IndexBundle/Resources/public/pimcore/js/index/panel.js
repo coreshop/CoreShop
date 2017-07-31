@@ -75,6 +75,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_index_getters', this.getterStore);
         pimcore.globalmanager.add('coreshop_index_interpreters', this.interpreterStore);
         pimcore.globalmanager.add('coreshop_index_classes', this.classes);
+        pimcore.globalmanager.add('coreshop_index_fieldTypes', this.fieldTypeStore);
 
         Ext.Ajax.request({
             url: this.url.config,

@@ -88,12 +88,14 @@ class IndexController extends ResourceController
         $availableClasses = [];
 
         foreach ($classes as $class) {
-            $pimcoreClass = 'Pimcore\Model\Object\\' . $class->getName();
+            if ($class instanceof Object\ClassDefinition) {
+                $pimcoreClass = 'Pimcore\Model\Object\\' . ucfirst($class->getName());
 
-            if (in_array(IndexableInterface::class, class_implements($pimcoreClass), true)) {
-                $availableClasses[] = [
-                    'name' => $class->getName()
-                ];
+                if (in_array(IndexableInterface::class, class_implements($pimcoreClass), true)) {
+                    $availableClasses[] = [
+                        'name' => $class->getName()
+                    ];
+                }
             }
         }
 
@@ -118,6 +120,11 @@ class IndexController extends ResourceController
     public function getClassDefinitionForFieldSelectionAction(Request $request)
     {
         $class = Object\ClassDefinition::getByName($request->get('class'));
+
+        if (!$class instanceof Object\ClassDefinition) {
+            return $this->viewHandler->handle([]);
+        }
+
         $fields = $class->getFieldDefinitions();
 
         $result = [
