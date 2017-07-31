@@ -18,15 +18,12 @@ public function registerBundles()
 {
     $bundles = array(
         new \JMS\SerializerBundle\JMSSerializerBundle(),
-        new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
-        new \CoreShop\Bundle\IndexBundle\CoreShopIndexBundle(),
         new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-
+        new \CoreShop\Bundle\IndexBundle\CoreShopIndexBundle(),
 
         new \FOS\RestBundle\FOSRestBundle(),
         new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-        new \Payum\Bundle\PayumBundle\PayumBundle(),
         new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
     );
 }
