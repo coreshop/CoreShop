@@ -5,10 +5,13 @@ CoreShop\Component\Core\Model\Country:
     currency:
       targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
       inversedBy: countries
+      orphanRemoval: false
       joinColumn:
         name: currencyId
         referencedColumnName: id
         nullable: true
+        cascade:
+          - 'persist'
   manyToMany:
     stores:
       targetEntity: CoreShop\Component\Store\Model\StoreInterface
@@ -22,3 +25,5 @@ CoreShop\Component\Core\Model\Country:
           store_id:
             referencedColumnName: id
             nullable: false
+      cascade:
+        - remove

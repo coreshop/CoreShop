@@ -9,3 +9,21 @@ CoreShop\Component\Core\Model\Store:
         referencedColumnName: id
         nullable: true
       fetch: EAGER
+  oneToMany:
+    configurations:
+      targetEntity: CoreShop\Component\Configuration\Model\ConfigurationInterface
+      orphanRemoval: true
+      mappedBy: store
+      cascade: [ persist, remove ]
+      fetch: EAGER
+  manyToMany:
+    countries:
+      targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      mappedBy: stores
+      cascade:
+        - remove
+    taxRuleGroups:
+      targetEntity: CoreShop\Component\Taxation\Model\TaxRuleGroupInterface
+      mappedBy: stores
+      cascade:
+        - remove

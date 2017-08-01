@@ -4,9 +4,7 @@ CoreShop\Component\Core\Model\Configuration:
   manyToOne:
     store:
       targetEntity: CoreShop\Component\Store\Model\StoreInterface
-      joinTable:
-        name: coreshop_carrier_stores
-        joinColumns:
-          store_id:
-            referencedColumnName: id
-            nullable: true
+      joinColumn:
+        name: store_id
+        referencedColumnName: id
+        nullable: true
