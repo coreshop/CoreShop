@@ -88,7 +88,7 @@ class Store extends BaseStore implements StoreInterface
      */
     public function getBaseCountry()
     {
-        return $this->baseConfiguration;
+        return $this->baseCountry;
     }
 
     /**
