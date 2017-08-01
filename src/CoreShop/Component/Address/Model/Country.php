@@ -16,6 +16,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
+use Doctrine\Common\Collections\Collection;
 
 class Country extends AbstractResource implements CountryInterface
 {
@@ -39,6 +40,11 @@ class Country extends AbstractResource implements CountryInterface
      * @var ZoneInterface
      */
     protected $zone;
+
+    /**
+     * @var Collection|StateInterface[]
+     */
+    protected $states;
 
     /**
      * @var string
