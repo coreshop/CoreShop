@@ -29,6 +29,6 @@ CoreShop\Component\Address\Model\Zone:
     countries:
       targetEntity: CoreShop\Component\Address\Model\CountryInterface
       mappedBy: zone
-      orphanRemoval: true
+      orphanRemoval: false
       cascade:
-        - all
+          - 'persist'

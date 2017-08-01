@@ -41,3 +41,11 @@ CoreShop\Component\Address\Model\Country:
         name: zoneId
         referencedColumnName: id
         nullable: true
+        onDelete: "SET NULL"
+  oneToMany:
+    states:
+      targetEntity: CoreShop\Component\Address\Model\StateInterface
+      mappedBy: country
+      cascade:
+          - remove
+          - persist
