@@ -40,4 +40,5 @@ CoreShop\Component\Payment\Model\Payment:
       joinColumn:
         name: currency_id
         referencedColumnName: id
-        nullable: false
+        nullable: true
+        onDelete: 'SET NULL'
