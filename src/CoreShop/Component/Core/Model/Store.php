@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Store\Model\Store as BaseStore;
+use Doctrine\Common\Collections\Collection;
 
 class Store extends BaseStore implements StoreInterface
 {
@@ -20,13 +21,74 @@ class Store extends BaseStore implements StoreInterface
      * @var CountryInterface
      */
     private $baseCountry;
+    
+    /**
+     * @var Collection|ConfigurationInterface[]
+     */
+    protected $configurations;
+
+    /**
+     * @var Collection|CountryInterface[]
+     */
+    protected $countries;
+
+    /**
+     * @var Collection|TaxRuleGroupInterface[]
+     */
+    protected $taxRuleGroups;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurations()
+    {
+        return $this->configurations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasConfigurations()
+    {
+        return !$this->configurations->isEmpty();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addConfiguration(ConfigurationInterface $configuration)
+    {
+        if (!$this->hasConfiguration($configuration)) {
+            $this->configurations->add($configuration);
+            $configuration->setStore($this);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeConfiguration(ConfigurationInterface $configuration)
+    {
+        if ($this->hasConfiguration($configuration)) {
+            $this->configurations->removeElement($configuration);
+            $configuration->setStore(null);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasConfiguration(ConfigurationInterface $configuration)
+    {
+        return $this->configurations->contains($configuration);
+    }
 
     /**
      * {@inheritdoc}
      */
     public function getBaseCountry()
     {
-        return $this->baseCountry;
+        return $this->baseConfiguration;
     }
 
     /**

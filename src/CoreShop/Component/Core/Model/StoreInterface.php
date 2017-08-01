@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Store\Model\StoreInterface as BaseStoreInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface StoreInterface extends BaseStoreInterface
 {
@@ -25,4 +26,31 @@ interface StoreInterface extends BaseStoreInterface
      * @param CountryInterface $baseCurrency
      */
     public function setBaseCountry(CountryInterface $baseCurrency);
+
+    /**
+     * @return Collection|ConfigurationInterface[]
+     */
+    public function getConfigurations();
+
+    /**
+     * @return bool
+     */
+    public function hasConfigurations();
+
+    /**
+     * @param ConfigurationInterface $configuration
+     */
+    public function addConfiguration(ConfigurationInterface $configuration);
+
+    /**
+     * @param ConfigurationInterface $configuration
+     */
+    public function removeConfiguration(ConfigurationInterface $configuration);
+
+    /**
+     * @param ConfigurationInterface $configuration
+     *
+     * @return bool
+     */
+    public function hasConfiguration(ConfigurationInterface $configuration);
 }
