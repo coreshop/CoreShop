@@ -23,7 +23,8 @@
     "coreshop/payment-bundle": "^2.0",
     "payum/payum-bundle": "^2.2",
     "payum/offline": "^1.3",
-    "payum/sofort": "^1.3"
+    "payum/sofort": "^1.3",
+    "php-http/guzzle6-adapter": "^1.1"
   },
   "config": {
     "bin-dir": "bin"
@@ -34,5 +35,10 @@
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0-dev"
+    }
+  }
 }
