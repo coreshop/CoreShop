@@ -88,5 +88,10 @@
       "CoreShop\\Bundle\\": "src/CoreShop/Bundle",
       "CoreShop\\Component\\": "src/CoreShop/Component"
     }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0-dev"
+    }
   }
 }
