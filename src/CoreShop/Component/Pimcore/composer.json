@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.0",
-    "pimcore/core-version": "^5.0",
+    "pimcore/core-version": "^5.0"
   },
   "config": {
     "bin-dir": "bin"
