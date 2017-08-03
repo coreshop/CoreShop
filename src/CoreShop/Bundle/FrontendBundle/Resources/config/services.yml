@@ -68,7 +68,7 @@ services:
     calls:
       - [setContainer, ['@service_container']]
 
-   coreshop.frontend.controller.payment:
+  coreshop.frontend.controller.payment:
     class: CoreShop\Bundle\PayumBundle\Controller\PaymentController
     arguments:
       - '@coreshop.factory.payment'
