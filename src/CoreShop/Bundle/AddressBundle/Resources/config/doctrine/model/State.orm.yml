@@ -30,6 +30,7 @@ CoreShop\Component\Address\Model\State:
   manyToOne:
     country:
       targetEntity: CoreShop\Component\Address\Model\CountryInterface
+      inversedBy: states
       joinColumn:
         name: countryId
         referencedColumnName: id
