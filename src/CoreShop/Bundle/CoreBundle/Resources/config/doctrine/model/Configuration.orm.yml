@@ -4,6 +4,7 @@ CoreShop\Component\Core\Model\Configuration:
   manyToOne:
     store:
       targetEntity: CoreShop\Component\Store\Model\StoreInterface
+      inversedBy: configurations
       joinColumn:
         name: store_id
         referencedColumnName: id

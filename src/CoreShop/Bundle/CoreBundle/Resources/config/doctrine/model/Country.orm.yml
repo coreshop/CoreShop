@@ -15,6 +15,7 @@ CoreShop\Component\Core\Model\Country:
   manyToMany:
     stores:
       targetEntity: CoreShop\Component\Store\Model\StoreInterface
+      inversedBy: countries
       joinTable:
         name: coreshop_country_stores
         joinColumns:
