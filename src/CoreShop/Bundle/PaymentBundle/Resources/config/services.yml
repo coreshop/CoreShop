@@ -1,14 +1,2 @@
 imports:
     - { resource: "services/form.yml" }
-
-services:
- coreshop.frontend.controller.payment:
-    class: CoreShop\Bundle\PayumBundle\Controller\PaymentController
-    arguments:
-      - '@coreshop.factory.payment'
-      - '@coreshop.repository.order'
-      - '@coreshop.object_service'
-      - '@coreshop.context.currency'
-      - '@doctrine.orm.entity_manager'
-    calls:
-            - [setContainer, ['@service_container']]
