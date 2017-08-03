@@ -59,7 +59,8 @@
     "coreshop/store-bundle": "self.version",
     "coreshop/taxation-bundle": "self.version",
     "coreshop/tracking-bundle": "self.version",
-    "coreshop/core-bundle": "self.version"
+    "coreshop/core-bundle": "self.version",
+    "coreshop/pimcore": "self.version"
   },
   "require": {
     "doctrine/orm": "^2.5",
