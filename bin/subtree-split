@@ -61,6 +61,7 @@ remote sequence git@github.com:CoreShop/Sequence.git
 remote shipping git@github.com:CoreShop/Shipping.git
 remote store git@github.com:CoreShop/Store.git
 remote taxation git@github.com:CoreShop/Taxation.git
+remote pimcore git@github.com:CoreShop/Pimcore.git
 
 remote address-bundle git@github.com:CoreShop/AddressBundle.git
 remote admin-bundle git@github.com:CoreShop/AdminBundle.git
@@ -103,6 +104,7 @@ split 'src/CoreShop/Component/Sequence' sequence
 split 'src/CoreShop/Component/Shipping' shipping
 split 'src/CoreShop/Component/Store' store
 split 'src/CoreShop/Component/Taxation' taxation
+split 'src/CoreShop/Component/Pimcore' pimcore
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
 split 'src/CoreShop/Bundle/AdminBundle' admin-bundle
