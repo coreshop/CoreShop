@@ -18,10 +18,17 @@ coreshop.address.resource = Class.create(coreshop.resource, {
             {name: 'name'},
             {name: 'active'}
         ]);
-        coreshop.global.addStore('coreshop_countries', 'coreshop/countries');
+        coreshop.global.addStore('coreshop_countries', 'coreshop/countries', null, 'name');
+        coreshop.global.addStore('coreshop_countries_active', 'coreshop/countries', null, 'name');
         coreshop.global.addStore('coreshop_states', 'coreshop/states');
 
+        pimcore.globalmanager.get('coreshop_countries_active').addFilter({
+            property: 'active',
+            value: true
+        });
+
         pimcore.globalmanager.get('coreshop_countries').load();
+        pimcore.globalmanager.get('coreshop_countries_active').load();
         pimcore.globalmanager.get('coreshop_states').load();
         pimcore.globalmanager.get('coreshop_zones').load();
 

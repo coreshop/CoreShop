@@ -13,7 +13,7 @@ CoreShop\Component\Address\Model\Country:
     active:
       expose: true
       type: boolean
-      groups: [Detailed]
+      groups: [List, Detailed]
     zone:
       expose: true
       type: relation
