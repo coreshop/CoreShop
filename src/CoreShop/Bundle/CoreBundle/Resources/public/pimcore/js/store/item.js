@@ -24,7 +24,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     value: this.data.baseCountry,
                     mode: 'local',
                     listWidth: 100,
-                    store: pimcore.globalmanager.get('coreshop_countries'),
+                    store: pimcore.globalmanager.get('coreshop_countries_active'),
                     displayField: 'name',
                     valueField: 'id',
                     forceSelection: true,
