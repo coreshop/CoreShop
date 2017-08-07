@@ -14,7 +14,7 @@ pimcore.registerNS('coreshop.global');
 coreshop.global = {
     resource: null,
 
-    addStore: function (name, url, fields) {
+    addStore: function (name, url, fields, sorters) {
         var proxy = new Ext.data.HttpProxy({
             url: '/admin/' + url + '/list'
         });
@@ -33,7 +33,8 @@ coreshop.global = {
             proxy: proxy,
             reader: reader,
             autoload: true,
-            fields: fields
+            fields: fields,
+            sorters: sorters ? sorters : []
         });
 
         pimcore.globalmanager.add(name, store);
