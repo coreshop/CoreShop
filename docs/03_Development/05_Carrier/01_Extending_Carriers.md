@@ -6,7 +6,7 @@ But if you need some different kind of shipping cost calculation, you can implem
 
 Your Carrier Price Calculator needs to implement ```CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface```
 
-## Create a Custom Carrier
+## Create a Custom Shipping Calculator
 
 1. Add a new Price Calculator Class
 

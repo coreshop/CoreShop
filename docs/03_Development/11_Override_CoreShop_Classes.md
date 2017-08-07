@@ -6,13 +6,12 @@ CoreShop uses Pimcore Parameters to determine the Pimcore Object Class. To chang
 
 ```
 parameters:
-    coreshop:
-        model:
-            order:
+    core_shop_order:
+    	pimcore:
+			order:
+				classes:
                 class: 'Pimcore\Model\Object\MyOrderClass'
                 install_file: '@AcmeBundle/Resources/install/pimcore/classes/MyOrderClass.json'
                 repository: AcmeBundle\Repository\OrderRepository
-                admin_controller: AcmeBundle\Controller\OrderController
                 factory: AcmeBundle\Factory\OrderFactory
-
 ```

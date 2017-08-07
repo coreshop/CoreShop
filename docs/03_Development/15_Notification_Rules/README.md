@@ -1,6 +1,6 @@
-# CoreShop Mail Rules
+# CoreShop Notification Rules
 
-Mail Rules are responsible for all types of email correspondence. It handles mails for following types:
+Notification Rules are responsible for all types of notification going out from CoreShop. Like email correspondence. It handles notification for following types:
 
  - order
  - invoice
