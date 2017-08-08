@@ -585,7 +585,7 @@ abstract class AbstractSaleController extends PimcoreController
     protected abstract function getSaleRepository();
 
     /**
-     * @return \Pimcore\Model\Listing\AbstractListing
+     * @return \Pimcore\Model\Object\Listing
      */
     protected abstract function getSalesList();
 
