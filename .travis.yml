@@ -11,7 +11,7 @@ language: php
 
 php:
   - 7
-#  - 7.1
+  - 7.1
 
 services:
   - redis
@@ -26,9 +26,9 @@ matrix:
     - os: linux
       sudo: required
       php: 7
-#    - os: linux
-#      sudo: required
-#      php: 7.1
+    - os: linux
+      sudo: required
+      php: 7.1
 
 env:
   global:
