@@ -15,10 +15,11 @@ namespace CoreShop\Bundle\CoreBundle\NumberGenerator;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 
-class QuoteNumberGenerator implements NumberGeneratorInterface
+final class SaleNumberGenerator implements NumberGeneratorInterface
 {
-     /**
+    /**
      * @var NumberGeneratorInterface
      */
     protected $numberGenerator;
@@ -29,13 +30,27 @@ class QuoteNumberGenerator implements NumberGeneratorInterface
     protected $configurationService;
 
     /**
+     * @var string
+     */
+    protected $prefixConfigurationKey;
+
+    /**
+     * @var string
+     */
+    protected $suffixConfigurationKey;
+
+    /**
      * @param NumberGeneratorInterface $numberGenerator
      * @param ConfigurationServiceInterface $configurationService
+     * @param string $prefixConfigurationKey
+     * @param string $suffixConfigurationKey
      */
-    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService)
+    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey)
     {
         $this->numberGenerator = $numberGenerator;
         $this->configurationService = $configurationService;
+        $this->prefixConfigurationKey = $prefixConfigurationKey;
+        $this->suffixConfigurationKey = $suffixConfigurationKey;
     }
 
     /**
@@ -43,6 +58,6 @@ class QuoteNumberGenerator implements NumberGeneratorInterface
      */
     public function generate(ResourceInterface $model)
     {
-        return sprintf('%s%s%s', $this->configurationService->getForStore('system.quote.prefix'), $this->numberGenerator->generate($model), $this->configurationService->getForStore('system.quote.suffix'));
+        return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey));
     }
 }

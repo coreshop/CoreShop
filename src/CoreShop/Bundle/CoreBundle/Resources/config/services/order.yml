@@ -22,32 +22,40 @@ services:
       - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerCartCleanup }
 
   coreshop.order.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderNumberGenerator
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.order.number_generator.default
     arguments:
       - '@coreshop.order.number_generator.prefix_suffix.inner'
       - '@coreshop.configuration.service'
+      - 'system.order.prefix'
+      - 'system.order.suffix'
 
   coreshop.quote.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\QuoteNumberGenerator
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.quote.number_generator.default
     arguments:
       - '@coreshop.quote.number_generator.prefix_suffix.inner'
       - '@coreshop.configuration.service'
+      - 'system.quote.prefix'
+      - 'system.quote.suffix'
 
   coreshop.order_invoice.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderInvoiceNumberGenerator
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.order_invoice.number_generator.default
     arguments:
       - '@coreshop.order_invoice.number_generator.prefix_suffix.inner'
       - '@coreshop.configuration.service'
+      - 'system.invoice.prefix'
+      - 'system.invoice.suffix'
 
   coreshop.order_shipment.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\OrderShipmentNumberGenerator
+    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.order_shipment.number_generator.default
     arguments:
       - '@coreshop.order_shipment.number_generator.prefix_suffix.inner'
       - '@coreshop.configuration.service'
+      - 'system.shipment.prefix'
+      - 'system.shipment.suffix'
 
   coreshop.mail.processor.order:
     class: CoreShop\Component\Core\Order\OrderMailProcessor
