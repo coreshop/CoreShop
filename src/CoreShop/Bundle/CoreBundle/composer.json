@@ -32,9 +32,9 @@
     "coreshop/payum-bundle": "^2.0",
     "coreshop/configuration-bundle": "^2.0",
     "coreshop/notification-bundle": "^2.0",
+    "coreshop/fixture-bundle": "^2.0",
     "coreshop/core": "^2.0",
     "fzaninotto/faker": "^1.6",
-    "okvpn/migration-bundle": "^1.0",
     "rinvex/country": "^3.1"
   },
   "config": {

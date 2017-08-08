@@ -10,13 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
+namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
 
 use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 use Pimcore\Tool;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
@@ -36,7 +36,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
      */
     public function getVersion()
     {
-        return '2.0.1';
+        return '2.0';
     }
 
     /**
@@ -53,9 +53,9 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
     public function getDependencies()
     {
         return [
-            'CoreShop\Bundle\CoreBundle\Migrations\Data\ORM\ZoneFixture',
-            'CoreShop\Bundle\CoreBundle\Migrations\Data\ORM\CurrencyFixture',
-            'CoreShop\Bundle\CoreBundle\Migrations\Data\ORM\StoreFixture',
+            ZoneFixture::class,
+            CurrencyFixture::class,
+            StoreFixture::class
         ];
     }
 

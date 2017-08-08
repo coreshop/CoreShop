@@ -22,10 +22,10 @@ class RegisterBundleHelper
     public static function registerBundles(BundleCollection $collection) {
         $collection->addBundles([
             new \JMS\SerializerBundle\JMSSerializerBundle(),
-            new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
             new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
 
+            new \CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle(),
             new \CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle(),
             new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
             new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(),

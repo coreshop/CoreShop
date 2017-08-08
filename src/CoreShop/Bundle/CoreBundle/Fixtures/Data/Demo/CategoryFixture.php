@@ -10,13 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Migrations\Data\Demo\ORM;
+namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
-use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 use Pimcore\Model\Object\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

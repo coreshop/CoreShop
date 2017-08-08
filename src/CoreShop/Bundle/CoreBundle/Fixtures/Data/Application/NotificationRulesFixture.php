@@ -10,12 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
+namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
 
+use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 use Pimcore\Model\Document;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

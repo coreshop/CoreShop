@@ -10,10 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Migrations\Data\Demo\ORM;
+namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,7 +22,6 @@ use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Image;
 use Faker\Provider\Lorem;
-use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 use Pimcore\Model\Object\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -55,8 +55,8 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
     public function getDependencies()
     {
         return [
-            'CoreShop\Bundle\CoreBundle\Migrations\Data\Demo\ORM\CategoryFixture',
-            'CoreShop\Bundle\CoreBundle\Migrations\Data\Demo\ORM\TaxRuleGroupFixture'
+            CategoryFixture::class,
+            TaxRuleGroupFixture::class
         ];
     }
 

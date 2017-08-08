@@ -59,6 +59,7 @@
     "coreshop/store-bundle": "self.version",
     "coreshop/taxation-bundle": "self.version",
     "coreshop/tracking-bundle": "self.version",
+    "coreshop/fixture-bundle": "self.version",
     "coreshop/core-bundle": "self.version",
     "coreshop/pimcore": "self.version"
   },
@@ -72,13 +73,14 @@
     "payum/offline": "^1.3",
     "payum/sofort": "^1.3",
     "php-http/guzzle6-adapter": "^1.1",
-    "okvpn/migration-bundle": "^1.0",
     "rinvex/country": "^3.1",
     "gedmo/doctrine-extensions": "^2.4.12",
     "stof/doctrine-extensions-bundle": "^1.2",
     "fzaninotto/faker": "^1.6",
     "liip/theme-bundle": "^1.4",
-    "hampe/zurb-ink-bundle": "^2.2"
+    "hampe/zurb-ink-bundle": "^2.2",
+    "symfony/twig-bundle": "~2.7|~3.0",
+    "doctrine/data-fixtures": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.0",

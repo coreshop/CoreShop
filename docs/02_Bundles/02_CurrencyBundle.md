@@ -30,7 +30,6 @@ public function registerBundles()
 {
     $bundles = array(
         new \JMS\SerializerBundle\JMSSerializerBundle(),
-        new \Okvpn\Bundle\MigrationBundle\OkvpnMigrationBundle(),
 
         new \CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle(),
         new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),

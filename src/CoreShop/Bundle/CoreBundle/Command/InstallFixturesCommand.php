@@ -37,6 +37,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->runCommands(['okvpn:migration:data:load'], $output);
+        $this->runCommands(['coreshop:fixture:data:load'], $output);
     }
 }

@@ -1,0 +1,12 @@
+services:
+    coreshop.fixture.data.executor:
+        class: CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+
+    coreshop.fixture.data.loader:
+        class: CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@service_container'

@@ -10,19 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CoreBundle\Migrations\Data\ORM;
+namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
 
-use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Address\Model\ZoneInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Okvpn\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Intl\Intl;
 
-class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class ZoneFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -51,35 +50,27 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $countries = CountryLoader::countries(true, true);
-        $currencies = [];
+        $continents = [];
 
         foreach ($countries as $country) {
             if ($country instanceof Country) {
-                $currency = $country->getCurrency();
+                $continent = $country->getContinent();
 
-                if (null !== $currency) {
-                    $isoCode = $currency['iso_4217_code'];
-
-                    if ($isoCode) {
-                        if (!array_key_exists($isoCode, $currencies)) {
-                            $currencies[$isoCode] = $currency;
-                        }
-                    }
+                if (!in_array($continent, $continents)) {
+                    $continents[] = $continent;
                 }
             }
         }
 
-        foreach ($currencies as $iso => $c) {
+        foreach ($continents as $continent) {
             /**
-             * @var CurrencyInterface
+             * @var ZoneInterface
              */
-            $currency = $this->container->get('coreshop.factory.currency')->createNew();
-            $currency->setName($c['iso_4217_name']);
-            $currency->setIsoCode($iso);
-            $currency->setNumericIsoCode($c['iso_4217_numeric']);
-            $currency->setSymbol(Intl::getCurrencyBundle()->getCurrencySymbol($iso));
+            $zone = $this->container->get('coreshop.factory.zone')->createNew();
+            $zone->setName($continent);
+            $zone->setActive(true);
 
-            $manager->persist($currency);
+            $manager->persist($zone);
         }
 
         $manager->flush();
