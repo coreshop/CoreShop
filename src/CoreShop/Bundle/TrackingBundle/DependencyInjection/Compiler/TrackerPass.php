@@ -12,33 +12,16 @@
 
 namespace CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
-final class TrackerPass implements CompilerPassInterface
+final class TrackerPass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.tracking.tracker')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.tracking.tracker');
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.tracking.tracker') as $id => $attributes) {
-            if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged Tracker `'.$id.'` has to have `type` attribute.');
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.tracking.trackers', $map);
+        parent::__construct(
+            'coreshop.registry.tracking.tracker',
+            'coreshop.tracking.trackers',
+            'coreshop.tracking.tracker'
+        );
     }
 }

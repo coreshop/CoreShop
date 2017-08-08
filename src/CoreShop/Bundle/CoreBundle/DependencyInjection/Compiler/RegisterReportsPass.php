@@ -12,34 +12,16 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
-class RegisterReportsPass implements CompilerPassInterface
+class RegisterReportsPass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.reports')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.reports');
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.report') as $id => $attributes) {
-            if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type`.');
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.reports', $map);
+        parent::__construct(
+            'coreshop.registry.reports',
+            'coreshop.reports',
+            'coreshop.report'
+        );
     }
 }
