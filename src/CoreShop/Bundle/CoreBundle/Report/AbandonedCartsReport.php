@@ -93,8 +93,6 @@ class AbandonedCartsReport implements ReportInterface
 
         $data = $this->db->fetchAll($sqlQuery, [$fromTimestamp, $toTimestamp]);
 
-        $total = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
-
         foreach ($data as &$entry) {
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
             $entry['userName'] = empty($entry['userName']) ? '--' : $entry['userName'];
