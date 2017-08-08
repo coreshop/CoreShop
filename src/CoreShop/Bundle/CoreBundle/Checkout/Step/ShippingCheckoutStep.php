@@ -39,7 +39,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     private $shippableCarriersDiscovery;
 
     /**
-     * @var CarrierPriceCalculatorInterface
+     * @var TaxedShippingCalculatorInterface
      */
     private $taxedShippingCalculator;
 
