@@ -14,7 +14,7 @@ namespace CoreShop\Component\Resource\Repository;
 
 use Pimcore\Model\Object\Listing;
 
-interface PimcoreRepositoryInterface
+interface PimcoreRepositoryInterface extends RepositoryInterface
 {
     /**
      * @return Listing
