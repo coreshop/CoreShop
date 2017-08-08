@@ -30,7 +30,7 @@ class Money extends Model\Object\ClassDefinition\Data
     public $width;
 
     /**
-     * @var float
+     * @var int
      */
     public $defaultValue;
 
