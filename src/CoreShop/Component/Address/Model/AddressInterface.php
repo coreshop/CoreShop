@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Address\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface AddressInterface extends ResourceInterface
+interface AddressInterface extends ResourceInterface, PimcoreModelInterface
 {
     /**
      * @return string
