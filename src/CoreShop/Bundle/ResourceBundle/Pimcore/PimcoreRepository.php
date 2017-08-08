@@ -18,7 +18,7 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
-class PimcoreRepository implements PimcoreRepositoryInterface, RepositoryInterface
+class PimcoreRepository implements PimcoreRepositoryInterface
 {
     /**
      * @var MetadataInterface
