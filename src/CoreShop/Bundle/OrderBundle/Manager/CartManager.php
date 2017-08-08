@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -88,7 +89,7 @@ final class CartManager implements CartManagerInterface
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Session\SessionBagInterface
+     * @return AttributeBagInterface
      */
     protected function getBag() {
         if (null === $this->sessionBag) {
