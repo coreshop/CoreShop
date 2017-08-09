@@ -2,7 +2,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Index;
 
-use CoreShop\Component\Core\Model\Product;
+use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
@@ -36,7 +37,7 @@ class ProductClassHelper implements ClassHelperInterface
      */
     public function getIndexColumns(IndexableInterface $indexable)
     {
-        if ($indexable instanceof Product) {
+        if ($indexable instanceof ProductInterface) {
             $categoryIds = [];
             $parentCategoryIds = [];
 
@@ -44,7 +45,7 @@ class ProductClassHelper implements ClassHelperInterface
 
             if ($categories) {
                 foreach ($categories as $c) {
-                    if ($c instanceof Product) {
+                    if ($c instanceof CategoryInterface) {
                         $categoryIds[$c->getId()] = $c->getId();
 
                         $parents = $c->getHierarchy();

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
@@ -27,6 +27,7 @@ use Pimcore\Logger;
 use Pimcore\Model\Object\AbstractObject;
 use Pimcore\Model\Object\Concrete;
 use Pimcore\Tool;
+use Webmozart\Assert\Assert;
 
 abstract class AbstractWorker implements WorkerInterface
 {
@@ -49,7 +50,8 @@ abstract class AbstractWorker implements WorkerInterface
         ServiceRegistryInterface $classHelperRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry
-    ) {
+    )
+    {
         $this->classHelperRegistry = $classHelperRegistry;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
@@ -118,102 +120,43 @@ abstract class AbstractWorker implements WorkerInterface
         $columnConfig = $index->getColumns();
 
         foreach ($columnConfig as $column) {
-            if ($column instanceof IndexColumnInterface) {
-                try {
-                    $value = null;
-                    $getter = $column->getGetter();
+            Assert::isInstanceOf($column, IndexColumnInterface::class);
 
-                    if ($column->getType() === 'localizedfields') {
-                        $getter = 'get'.ucfirst($column->getObjectKey());
+            try {
+                $value = null;
+                $getter = $column->getGetter();
+
+                if ($column->getObjectType() === 'localizedfields') {
+                    list ($columnLocalizedData, $columnRelationData) = $this->prepareLocalizedFields($column, $object, $virtualObjectId);
+
+                    $relationData = array_merge_recursive($relationData, $columnRelationData);
+                    $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
+                } else {
+                    if (!empty($getter)) {
+                        $value = $this->processGetter($column, $object);
+                    } else {
+                        $getter = 'get' . ucfirst($column->getObjectKey());
 
                         if (method_exists($object, $getter)) {
-                            foreach ($validLanguages as $language) {
-                                $value = $object->$getter($language);
-
-                                $interpreterClass = $this->getInterpreterObject($column);
-
-                                if ($interpreterClass instanceof InterpreterInterface) {
-                                    $value = $interpreterClass->interpret($value, $column);
-
-                                    if ($interpreterClass instanceof RelationInterpreterInterface) {
-                                        foreach ($value as $v) {
-                                            $relData = [];
-                                            $relData['src'] = $object->getId();
-                                            $relData['src_virtualObjectId'] = $virtualObjectId;
-                                            $relData['dest'] = $v['dest'];
-                                            $relData['fieldname'] = $column->getName();
-                                            $relData['type'] = $v['type'];
-                                            $relationData[] = $relData;
-                                        }
-                                    }
-                                }
-
-                                if (is_array($value)) {
-                                    $value = ','.implode($value, ',').',';
-                                }
-
-                                $localizedData['values'][$language][$column->getName()] = $value;
-                            }
-                        }
-                    } else {
-                        if (!empty($getter)) {
-                            $getterClass = $this->getterServiceRegistry->get($getter);
-
-                            if (Tool::classExists($getterClass)) {
-                                $getterObject = new $getterClass();
-
-                                if ($getterObject instanceof GetterInterface) {
-                                    $value = $getterObject->get($object, $column);
-                                } else {
-                                    throw new \InvalidArgumentException(
-                                        sprintf('%s needs to implement "%s", "%s" given.', $getter, GetterInterface::class, $getterClass)
-                                    );
-                                }
-                            }
-                        } else {
-                            $getter = 'get'.ucfirst($column->getObjectKey());
-
-                            if (method_exists($object, $getter)) {
-                                $value = $object->$getter();
-                            }
-                        }
-
-                        $interpreterClass = $this->getInterpreterObject($column);
-
-                        if ($interpreterClass instanceof InterpreterInterface) {
-                            $value = $interpreterClass->interpret($value, $column);
-
-                            if ($interpreterClass instanceof RelationInterpreterInterface) {
-                                foreach ($value as $v) {
-                                    $relData = [];
-                                    $relData['src'] = $object->getId();
-                                    $relData['src_virtualObjectId'] = $virtualObjectId;
-                                    $relData['dest'] = $v['dest'];
-                                    $relData['fieldname'] = $column->getName();
-                                    $relData['type'] = $v['type'];
-                                    $relationData[] = $relData;
-                                }
-                            }
-                        } elseif ($interpreterClass instanceof LocalizedInterpreterInterface) {
-                            $validLanguages = Tool::getValidLanguages();
-                            $value = null;
-
-                            foreach ($validLanguages as $language) {
-                                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
-                            }
-                        }
-
-                        if ($value) {
-                            if (is_array($value)) {
-                                $value = ','.implode($value, ',').',';
-                            }
-
-                            $data[$column->getName()] = $value;
+                            $value = $object->$getter();
                         }
                     }
-                } catch (\Exception $e) {
-                    Logger::err('Exception in CoreShopIndexService: '.$e->getMessage(), $e);
+
+                    list ($columnLocalizedData, $columnRelationData) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+
+                    $relationData = array_merge_recursive($relationData, $columnRelationData);
+                    $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
+
+                    if ($value) {
+                        if (is_array($value)) {
+                            $value = ',' . implode($value, ',') . ',';
+                        }
+
+                        $data[$column->getName()] = $value;
+                    }
                 }
+            } catch (\Exception $e) {
+                Logger::err('Exception in CoreShopIndexService: ' . $e->getMessage(), $e);
             }
         }
 
@@ -228,6 +171,127 @@ abstract class AbstractWorker implements WorkerInterface
             'data' => $data,
             'relation' => $relationData,
             'localizedData' => $localizedData,
+        ];
+    }
+
+    protected function prepareLocalizedFields(IndexColumnInterface $column, IndexableInterface $object, $virtualObjectId)
+    {
+        $getter = 'get' . ucfirst($column->getObjectKey());
+
+        $validLanguages = Tool::getValidLanguages();
+
+        $localizedData = [];
+        $relationData = [];
+
+        if (method_exists($object, $getter)) {
+            foreach ($validLanguages as $language) {
+                $value = $object->$getter($language);
+
+                $interpreterClass = $this->getInterpreterObject($column);
+
+                if ($interpreterClass instanceof InterpreterInterface) {
+                    $value = $interpreterClass->interpret($value, $column);
+
+                    if ($interpreterClass instanceof RelationInterpreterInterface) {
+                        $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $value, $virtualObjectId));
+                    }
+                }
+
+                if (is_array($value)) {
+                    $value = ',' . implode($value, ',') . ',';
+                }
+
+                $localizedData['values'][$language][$column->getName()] = $value;
+            }
+        }
+
+        return [
+            $localizedData, $relationData
+        ];
+    }
+
+    /**
+     * @param IndexColumnInterface $column
+     * @param IndexableInterface $object
+     * @param $value
+     * @param $virtualObjectId
+     * @return array
+     */
+    protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
+    {
+        Assert::isArray($value);
+        $relationData = [];
+
+        foreach ($value as $v) {
+            $relData = [];
+            $relData['src'] = $object->getId();
+            $relData['src_virtualObjectId'] = $virtualObjectId;
+            $relData['dest'] = $v['dest'];
+            $relData['fieldname'] = $column->getName();
+            $relData['type'] = $v['type'];
+            $relationData[] = $relData;
+        }
+
+        return $relationData;
+    }
+
+    /**
+     * @param IndexColumnInterface $column
+     * @param IndexableInterface $object
+     * @return mixed|null
+     */
+    protected function processGetter(IndexColumnInterface $column, IndexableInterface $object)
+    {
+        $getter = $column->getGetter();
+        $getterClass = $this->getterServiceRegistry->get($getter);
+        $value = null;
+
+        if (Tool::classExists($getterClass)) {
+            $getterObject = new $getterClass();
+
+            if ($getterObject instanceof GetterInterface) {
+                $value = $getterObject->get($object, $column);
+            } else {
+                throw new \InvalidArgumentException(
+                    sprintf('%s needs to implement "%s", "%s" given.', $getter, GetterInterface::class, $getterClass)
+                );
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param IndexColumnInterface $column
+     * @param IndexableInterface $object
+     * @param $value
+     * @param $virtualObjectId
+     * @return array
+     */
+    protected function processInterpreter(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
+    {
+        $relationData = [];
+        $localizedData = [];
+
+        $interpreterClass = $this->getInterpreterObject($column);
+
+        if ($interpreterClass instanceof InterpreterInterface) {
+            $value = $interpreterClass->interpret($value, $column);
+
+            if ($interpreterClass instanceof RelationInterpreterInterface) {
+                $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $value, $virtualObjectId));
+            }
+        } elseif ($interpreterClass instanceof LocalizedInterpreterInterface) {
+            $validLanguages = Tool::getValidLanguages();
+            $value = null;
+
+            foreach ($validLanguages as $language) {
+                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
+            }
+        }
+
+        return [
+            $localizedData, $relationData
         ];
     }
 
@@ -271,10 +335,10 @@ abstract class AbstractWorker implements WorkerInterface
      */
     abstract public function deleteIndexStructures(IndexInterface $index);
 
-   /**
-    * {@inheritdoc}
-    */
-   abstract public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * {@inheritdoc}

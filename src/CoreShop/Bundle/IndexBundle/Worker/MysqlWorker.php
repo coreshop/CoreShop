@@ -71,7 +71,7 @@ class MysqlWorker extends AbstractWorker
 
         foreach ($columnConfig as $column) {
             if ($column instanceof IndexColumnInterface) {
-                $type = $column->getType();
+                $type = $column->getObjectType();
                 $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
 
                 if ($type !== 'localizedfields') {
