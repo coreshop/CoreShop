@@ -26,7 +26,9 @@ coreshop.index.objecttype.abstract = Class.create({
             store: pimcore.globalmanager.get('coreshop_index_fieldTypes'),
             valueField: 'type',
             displayField: 'name',
-            queryMode: 'local'
+            queryMode: 'local',
+            allowBlank: false,
+            editable: false
         })];
     },
 
@@ -40,14 +42,16 @@ coreshop.index.objecttype.abstract = Class.create({
             name: 'key',
             length: 255,
             value: record.data.key,
-            disabled: true
+            disabled: true,
+            allowBlank: false
         }));
 
         fieldSetItems.push(new Ext.form.TextField({
             fieldLabel: t('name'),
             name: 'name',
             length: 255,
-            value: record.data.name ? record.data.name : record.data.key
+            value: record.data.name ? record.data.name : record.data.key,
+            allowBlank: false
         }));
 
         fieldSetItems.push(new Ext.form.ComboBox({
@@ -139,23 +143,25 @@ coreshop.index.objecttype.abstract = Class.create({
         var getterForm = this.getGetterPanel().getForm();
         var interpreterForm = this.getInterpreterPanel().getForm();
 
-        Ext.Object.each(form.getFieldValues(), function (key, value) {
-            this.record.set(key, value);
-        }.bind(this));
+        if (form.isValid() && getterForm.isValid() && interpreterForm.isValid()) {
+            Ext.Object.each(form.getFieldValues(), function (key, value) {
+                this.record.set(key, value);
+            }.bind(this));
 
-        if (this.getGetterPanel().isVisible()) {
-            this.record.set('getterConfig', getterForm.getFieldValues());
+            if (this.getGetterPanel().isVisible()) {
+                this.record.set('getterConfig', getterForm.getFieldValues());
+            }
+
+            if (this.getInterpreterPanel().isVisible()) {
+                this.record.set('interpreterConfig', interpreterForm.getFieldValues());
+            }
+
+            if (this.record.data.name !== this.record.data.text) {
+                this.record.set('text', this.record.data.name);
+            }
+
+            this.window.close();
         }
-
-        if (this.getInterpreterPanel().isVisible()) {
-            this.record.set('interpreterConfig', interpreterForm.getFieldValues());
-        }
-
-        if (this.record.data.name !== this.record.data.text) {
-            this.record.set('text', this.record.data.name);
-        }
-
-        this.window.close();
     },
 
     getGetterPanel: function () {

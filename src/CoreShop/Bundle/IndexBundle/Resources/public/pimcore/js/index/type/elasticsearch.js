@@ -24,7 +24,8 @@ coreshop.index.type.elasticsearch = Class.create(coreshop.index.type.abstract, {
                 xtype: 'textfield',
                 name: 'hosts',
                 fieldLabel: 'hosts',
-                value: config.hosts ? config.hosts : ""
+                value: config.hosts ? config.hosts : "",
+                allowBlank: false
             }]
         };
     }

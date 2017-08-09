@@ -21,7 +21,8 @@ coreshop.index.getters.classificationstore = Class.create(coreshop.index.getters
                 fieldLabel: t('coreshop_index_field_classificationstore'),
                 name: 'classificationStoreField',
                 length: 255,
-                value: record.data.getterConfig ? record.data.getterConfig.classificationStoreField : null
+                value: record.data.getterConfig ? record.data.getterConfig.classificationStoreField : null,
+                allowBlank: false
             }
         ];
     }

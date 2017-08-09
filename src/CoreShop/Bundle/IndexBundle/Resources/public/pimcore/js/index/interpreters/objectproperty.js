@@ -21,7 +21,8 @@ coreshop.index.interpreters.objectproperty = Class.create(coreshop.index.interpr
                 fieldLabel: t('coreshop_index_interpreter_property'),
                 name: 'property',
                 length: 255,
-                value: record.data.interpreterConfig ? record.data.interpreterConfig.property : null
+                value: record.data.interpreterConfig ? record.data.interpreterConfig.property : null,
+                allowBlank: false
             }
         ];
     }

@@ -21,7 +21,8 @@ coreshop.index.getters.brick = Class.create(coreshop.index.getters.abstract, {
                 fieldLabel: t('coreshop_index_field_brickfield'),
                 name: 'brickField',
                 length: 255,
-                value: record.data.getterConfig ? record.data.getterConfig.brickField : null
+                value: record.data.getterConfig ? record.data.getterConfig.brickField : null,
+                allowBlank: false
             }
         ];
     }

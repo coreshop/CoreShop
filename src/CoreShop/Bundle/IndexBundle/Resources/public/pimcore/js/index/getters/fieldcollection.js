@@ -21,7 +21,8 @@ coreshop.index.getters.fieldcollection = Class.create(coreshop.index.getters.abs
                 fieldLabel: t('coreshop_index_field_collectionfield'),
                 name: 'collectionField',
                 length: 255,
-                value: record.data.getterConfig ? record.data.getterConfig.collectionField : null
+                value: record.data.getterConfig ? record.data.getterConfig.collectionField : null,
+                allowBlank: false
             }
         ];
     }
