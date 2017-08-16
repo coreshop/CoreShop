@@ -6,8 +6,10 @@ coreshop_admin_notification_rule:
       config:
         path: get-config
         action: getConfig
-        methods: [GET]
+        methods:
+          - GET
       sort:
         path: sort
         action: sort
-        methods: [POST]
+        methods:
+          - POST

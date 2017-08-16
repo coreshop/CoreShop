@@ -11,4 +11,5 @@ coreshop_admin_shipping_rule:
       config:
         path: get-config
         action: getConfig
-        methods: [GET]
+        methods:
+          - GET

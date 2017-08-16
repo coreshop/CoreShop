@@ -6,19 +6,24 @@ coreshop_admin_cart_price_rule:
       config:
         path: get-config
         action: getConfig
-        methods: [GET]
+        methods:
+          - GET
       getVoucherCodes:
         path: get-voucher-codes
         action: getVoucherCodes
-        methods: [GET]
+        methods:
+          - GET
       generateVoucherCodes:
         path: generate-voucher-codes
         action: generateVoucherCodes
-        methods: [POST]
+        methods:
+          - POST
       exportVoucherCodes:
         path: export-voucher-codes
         action: exportVoucherCodes
-        methods: [GET, POST]
+        methods:
+          - GET
+          - POST
 
 coreshop_order_get_grid_configuration:
   path: /%coreshop.admin.route.base%/order/get-grid-configuration

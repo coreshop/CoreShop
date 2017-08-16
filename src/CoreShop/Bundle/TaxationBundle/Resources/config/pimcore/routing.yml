@@ -11,4 +11,5 @@ coreshop_admin_tax_rule_group:
       listRules:
         path: list-rules
         action: listRules
-        methods: [GET]
+        methods:
+          - GET

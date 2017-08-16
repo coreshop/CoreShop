@@ -6,4 +6,5 @@ coreshop_admin_store:
       listSites:
         path: list-sites
         action: listSites
-        methods: [GET]
+        methods:
+          - GET

@@ -6,15 +6,18 @@ coreshop_admin_index:
       config:
         path: get-config
         action: getConfig
-        methods: [GET]
+        methods:
+          - GET
       types:
         path: get-types
         action: getTypes
-        methods: [GET]
+        methods:
+          - GET
       classDefinition:
         path: get-class-definition-for-field-selection
         action: getClassDefinitionForFieldSelection
-        methods: [GET]
+        methods:
+          - GET
 
 coreshop_admin_filter:
   type: coreshop.resources
@@ -24,12 +27,15 @@ coreshop_admin_filter:
       config:
         path: get-config
         action: getConfig
-        methods: [GET]
+        methods:
+          - GET
       fieldsForIndex:
         path: get-fields-for-index
         action: getFieldsForIndex
-        methods: [GET]
+        methods:
+          - GET
       valuesForField:
         path: get-values-for-filter-field
         action: getValuesForFilterField
-        methods: [GET]
+        methods:
+          - GET

@@ -6,7 +6,8 @@ coreshop_admin_product_price_rule:
       config:
         path: get-config
         action: getConfig
-        methods: [GET]
+        methods:
+          - GET
 
 coreshop_admin_product_specific_price_rule:
   type: coreshop.resources
@@ -17,4 +18,5 @@ coreshop_admin_product_specific_price_rule:
       config:
         path: get-config
         action: getConfig
-        methods: [GET]
+        methods:
+          - GET
