@@ -82,3 +82,9 @@ services:
       - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_save, method: clearCachedRules }
       - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: clearCachedRules }
       - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_delete, method: clearCachedRules }
+
+
+  coreshop.listeners.product.category.pre_update:
+    class: CoreShop\Bundle\ProductBundle\EventListener\CategoryPersistEventListener
+    tags:
+      - { name: kernel.event_listener, event: pimcore.object.preUpdate, method: onPreUpdate }

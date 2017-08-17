@@ -137,6 +137,43 @@
                         "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false
+                    },
+                    {
+                        "fieldtype": "href",
+                        "width": "",
+                        "assetUploadPath": "",
+                        "relationType": true,
+                        "queryColumnType": {
+                            "id": "int(11)",
+                            "type": "enum('document','asset','object')"
+                        },
+                        "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\Object\\AbstractObject",
+                        "objectsAllowed": true,
+                        "assetsAllowed": false,
+                        "assetTypes": [],
+                        "documentsAllowed": false,
+                        "documentTypes": [],
+                        "lazyLoading": true,
+                        "classes": [
+                            {
+                                "classes": "CoreShopCategory"
+                            }
+                        ],
+                        "pathFormatterClass": "",
+                        "name": "parentCategory",
+                        "title": "Parent Category",
+                        "tooltip": "",
+                        "mandatory": false,
+                        "noteditable": true,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "permissions": null,
+                        "datatype": "data",
+                        "columnType": null,
+                        "invisible": true,
+                        "visibleGridView": false,
+                        "visibleSearch": false
                     }
                 ],
                 "locked": false

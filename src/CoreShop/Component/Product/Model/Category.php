@@ -36,6 +36,22 @@ class Category extends AbstractPimcoreModel implements CategoryInterface
     /**
      * {@inheritdoc}
      */
+    public function getParentCategory()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParentCategory($parentCategory)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getChildCategories()
     {
         return $this->getChildren();
