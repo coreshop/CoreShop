@@ -26,5 +26,5 @@ interface CategoryRepositoryInterface extends PimcoreRepositoryInterface
      * @param CategoryInterface $category
      * @return CategoryInterface[]
      */
-    public function getChildCategories(CategoryInterface $category);
+    public function findChildCategories(CategoryInterface $category);
 }

@@ -36,5 +36,5 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      * @param StoreInterface $store
      * @return CategoryInterface[]
      */
-    public function getChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
+    public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
 }

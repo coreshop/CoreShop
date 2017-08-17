@@ -41,7 +41,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function getChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
+    public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
         $list->setCondition("parentCategory__id = ? AND stores LIKE '%," . $store->getId().",%'", [$category->getId()]);

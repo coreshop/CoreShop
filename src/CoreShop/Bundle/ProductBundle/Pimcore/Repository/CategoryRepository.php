@@ -32,7 +32,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     /**
      * {@inheritdoc}
      */
-    public function getChildCategories(CategoryInterface $category)
+    public function findChildCategories(CategoryInterface $category)
     {
         $list = $this->getList();
         $list->setCondition("parentCategory__id = ?", [$category->getId()]);
