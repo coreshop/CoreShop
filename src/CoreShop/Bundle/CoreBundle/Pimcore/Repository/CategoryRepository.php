@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository as BaseCategoryRepository;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 class CategoryRepository extends BaseCategoryRepository implements CategoryRepositoryInterface
@@ -24,5 +25,27 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findForStore(StoreInterface $store)
     {
         return $this->findBy([["condition" => "stores LIKE ?", "variable" => "%" . $store->getId() . "%"]]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findFirstLevelForStore(StoreInterface $store)
+    {
+        $list = $this->getList();
+        $list->setCondition("parentCategory__id is null AND stores LIKE '%," . $store->getId().",%'");
+
+        return $list->getObjects();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
+    {
+        $list = $this->getList();
+        $list->setCondition("parentCategory__id = ? AND stores LIKE '%," . $store->getId().",%'", [$category->getId()]);
+
+        return $list->getObjects();
     }
 }

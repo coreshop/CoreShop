@@ -23,4 +23,18 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      * @return CategoryInterface[]
      */
     public function findForStore(StoreInterface $store);
+
+    /**
+     * @param StoreInterface $store
+     *
+     * @return CategoryInterface[]
+     */
+    public function findFirstLevelForStore(StoreInterface $store);
+
+    /**
+     * @param CategoryInterface $category
+     * @param StoreInterface $store
+     * @return CategoryInterface[]
+     */
+    public function getChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
 }

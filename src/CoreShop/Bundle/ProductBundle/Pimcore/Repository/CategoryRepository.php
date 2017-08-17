@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Product\Repository\CategoryRepositoryInterface;
 
 class CategoryRepository extends PimcoreRepository implements CategoryRepositoryInterface
@@ -22,7 +23,20 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
      */
     public function findFirstLevel()
     {
-        //TODO
-        throw new \Exception("implement me");
+        $list = $this->getList();
+        $list->setCondition("parentCategory__id is null");
+
+        return $list->getObjects();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChildCategories(CategoryInterface $category)
+    {
+        $list = $this->getList();
+        $list->setCondition("parentCategory__id = ?", [$category->getId()]);
+
+        return $list->getObjects();
     }
 }
