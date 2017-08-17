@@ -3,64 +3,64 @@ parameters:
 
 services:
   coreshop.frontend.controller.index:
-    class: CoreShop\Bundle\FrontendBundle\Controller\IndexController
+    class: '%coreshop.frontend.controller.index%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.register:
-    class: CoreShop\Bundle\FrontendBundle\Controller\RegisterController
+    class: '%coreshop.frontend.controller.register%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.customer:
-    class: CoreShop\Bundle\FrontendBundle\Controller\CustomerController
+    class: '%coreshop.frontend.controller.customer%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.currency:
-    class: CoreShop\Bundle\FrontendBundle\Controller\CurrencyController
+    class: '%coreshop.frontend.controller.currency%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.language:
-    class: CoreShop\Bundle\FrontendBundle\Controller\LanguageController
+    class: '%coreshop.frontend.controller.language%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.search:
-    class: CoreShop\Bundle\FrontendBundle\Controller\SearchController
+    class: '%coreshop.frontend.controller.search%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.cart:
-    class: CoreShop\Bundle\FrontendBundle\Controller\CartController
+    class: '%coreshop.frontend.controller.cart%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.checkout:
-    class: CoreShop\Bundle\FrontendBundle\Controller\CheckoutController
+    class: '%coreshop.frontend.controller.checkout%'
     arguments:
       - '@coreshop.checkout_manager'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.category:
-    class: CoreShop\Bundle\FrontendBundle\Controller\CategoryController
+    class: '%coreshop.frontend.controller.category%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.product:
-    class: CoreShop\Bundle\FrontendBundle\Controller\ProductController
+    class: '%coreshop.frontend.controller.product%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.quote:
-    class: CoreShop\Bundle\FrontendBundle\Controller\QuoteController
+    class: '%coreshop.frontend.controller.quote%'
     calls:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.security:
-    class: CoreShop\Bundle\FrontendBundle\Controller\SecurityController
+    class: '%coreshop.frontend.controller.security%'
     arguments:
       - '@security.authentication_utils'
       - '@form.factory'
@@ -69,7 +69,7 @@ services:
       - [setContainer, ['@service_container']]
 
   coreshop.frontend.controller.payment:
-    class: CoreShop\Bundle\PayumBundle\Controller\PaymentController
+    class: '%coreshop.frontend.controller.payment%'
     arguments:
       - '@coreshop.factory.payment'
       - '@coreshop.repository.order'

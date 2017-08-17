@@ -12,6 +12,19 @@
 
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection;
 
+use CoreShop\Bundle\FrontendBundle\Controller\CartController;
+use CoreShop\Bundle\FrontendBundle\Controller\CategoryController;
+use CoreShop\Bundle\FrontendBundle\Controller\CheckoutController;
+use CoreShop\Bundle\FrontendBundle\Controller\CurrencyController;
+use CoreShop\Bundle\FrontendBundle\Controller\CustomerController;
+use CoreShop\Bundle\FrontendBundle\Controller\IndexController;
+use CoreShop\Bundle\FrontendBundle\Controller\LanguageController;
+use CoreShop\Bundle\FrontendBundle\Controller\ProductController;
+use CoreShop\Bundle\FrontendBundle\Controller\QuoteController;
+use CoreShop\Bundle\FrontendBundle\Controller\RegisterController;
+use CoreShop\Bundle\FrontendBundle\Controller\SearchController;
+use CoreShop\Bundle\FrontendBundle\Controller\SecurityController;
+use CoreShop\Bundle\PayumBundle\Controller\PaymentController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -27,8 +40,31 @@ final class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('coreshop_frontend');
 
         $this->addPimcoreResourcesSection($rootNode);
+        $this->addControllerSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    private function addControllerSection(ArrayNodeDefinition $node) {
+        $node->children()
+                ->arrayNode('controllers')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('index')->defaultValue(IndexController::class)->end()
+                        ->scalarNode('register')->defaultValue(RegisterController::class)->end()
+                        ->scalarNode('customer')->defaultValue(CustomerController::class)->end()
+                        ->scalarNode('currency')->defaultValue(CurrencyController::class)->end()
+                        ->scalarNode('language')->defaultValue(LanguageController::class)->end()
+                        ->scalarNode('search')->defaultValue(SearchController::class)->end()
+                        ->scalarNode('cart')->defaultValue(CartController::class)->end()
+                        ->scalarNode('checkout')->defaultValue(CheckoutController::class)->end()
+                        ->scalarNode('category')->defaultValue(CategoryController::class)->end()
+                        ->scalarNode('product')->defaultValue(ProductController::class)->end()
+                        ->scalarNode('quote')->defaultValue(QuoteController::class)->end()
+                        ->scalarNode('security')->defaultValue(SecurityController::class)->end()
+                        ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
+                    ->end()
+                ->end();
     }
 
     /**

@@ -30,6 +30,12 @@ final class CoreShopFrontendExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        if (array_key_exists('controllers', $config)) {
+            foreach ($config['controllers'] as $key => $value) {
+                $container->setParameter(sprintf('coreshop.frontend.controller.%s', $key), $value);
+            }
+        }
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
