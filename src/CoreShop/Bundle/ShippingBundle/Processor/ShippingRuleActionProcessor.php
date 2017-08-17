@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ShippingBundle\Processor;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
@@ -37,7 +38,7 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getPrice(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, AddressInterface $address)
+    public function getPrice(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
     {
         $price = 0;
 
@@ -45,7 +46,7 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof CarrierPriceActionProcessorInterface) {
-                $price += $processor->getPrice($carrier, $address, $action->getConfiguration());
+                $price += $processor->getPrice($carrier, $shippable, $address, $action->getConfiguration());
             }
         }
 
@@ -55,7 +56,7 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getModification(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, AddressInterface $address, $price)
+    public function getModification(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price)
     {
         $modifications = 0;
 
@@ -63,7 +64,7 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof CarrierPriceActionProcessorInterface) {
-                $modifications += $processor->getModification($carrier, $address, $price, $action->getConfiguration());
+                $modifications += $processor->getModification($carrier, $shippable, $address, $price, $action->getConfiguration());
             }
         }
 

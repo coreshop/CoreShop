@@ -14,13 +14,14 @@ namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class AdditionPercentActionProcessor implements CarrierPriceActionProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
         return false;
     }
@@ -28,7 +29,7 @@ class AdditionPercentActionProcessor implements CarrierPriceActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    public function getModification(CarrierInterface $carrier, AddressInterface $address, $price, array $configuration)
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
     {
         return (int) round($price * ($configuration['percent'] / 100));
     }

@@ -56,8 +56,8 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
         $shippingRuleGroup = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $shippable, $address);
 
         if ($shippingRuleGroup instanceof ShippingRuleGroupInterface) {
-            $price = $this->shippingRuleProcessor->getPrice($shippingRuleGroup->getShippingRule(), $carrier, $address);
-            $modifications = $this->shippingRuleProcessor->getModification($shippingRuleGroup->getShippingRule(), $carrier, $address, $price);
+            $price = $this->shippingRuleProcessor->getPrice($shippingRuleGroup->getShippingRule(), $carrier, $shippable, $address);
+            $modifications = $this->shippingRuleProcessor->getModification($shippingRuleGroup->getShippingRule(), $carrier, $shippable, $address, $price);
 
             return $price + $modifications;
         }

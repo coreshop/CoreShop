@@ -14,13 +14,14 @@ namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class PriceActionProcessor implements CarrierPriceActionProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
         return $configuration['price'];
     }
@@ -28,7 +29,7 @@ class PriceActionProcessor implements CarrierPriceActionProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function getModification(CarrierInterface $carrier, AddressInterface $address, $price, array $configuration)
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
     {
         return 0;
     }

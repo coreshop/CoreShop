@@ -14,25 +14,28 @@ namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CarrierPriceActionProcessorInterface
 {
     /**
      * @param CarrierInterface $carrier
+     * @param ShippableInterface $shippable
      * @param AddressInterface $address
      * @param array $configuration
      *
      * @return mixed
      */
-    public function getPrice(CarrierInterface $carrier, AddressInterface $address, array $configuration);
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration);
 
     /**
      * @param CarrierInterface $carrier
+     * @param ShippableInterface $shippable
      * @param AddressInterface $address
      * @param $price
      * @param array $configuration
      *
      * @return mixed
      */
-    public function getModification(CarrierInterface $carrier, AddressInterface $address, $price, array $configuration);
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration);
 }
