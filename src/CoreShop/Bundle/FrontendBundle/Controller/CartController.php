@@ -228,7 +228,7 @@ class CartController extends FrontendController
     /**
      * @return \CoreShop\Component\Order\Model\CartInterface
      */
-    private function getCart()
+    protected function getCart()
     {
         return $this->getCartManager()->getCart();
     }
@@ -236,7 +236,7 @@ class CartController extends FrontendController
     /**
      * @return CartManagerInterface
      */
-    private function getCartManager()
+    protected function getCartManager()
     {
         return $this->get('coreshop.cart.manager');
     }

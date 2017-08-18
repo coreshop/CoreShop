@@ -25,7 +25,7 @@ class CheckoutController extends FrontendController
     /**
      * @var CheckoutManagerInterface
      */
-    private $checkoutManager;
+    protected $checkoutManager;
 
     /**
      * @param CheckoutManagerInterface $checkoutManager
@@ -191,7 +191,7 @@ class CheckoutController extends FrontendController
     /**
      * @return \CoreShop\Component\Order\Model\CartInterface
      */
-    private function getCart()
+    protected function getCart()
     {
         return $this->getCartManager()->getCart();
     }
@@ -199,7 +199,7 @@ class CheckoutController extends FrontendController
     /**
      * @return \CoreShop\Bundle\OrderBundle\Manager\CartManager
      */
-    private function getCartManager()
+    protected function getCartManager()
     {
         return $this->get('coreshop.cart.manager');
     }
@@ -207,7 +207,7 @@ class CheckoutController extends FrontendController
     /**
      * @return \CoreShop\Bundle\OrderBundle\Transformer\CartToOrderTransformer
      */
-    private function getCartToOrderTransformer()
+    protected function getCartToOrderTransformer()
     {
         return $this->get('coreshop.order.transformer.cart_to_order');
     }
@@ -215,7 +215,7 @@ class CheckoutController extends FrontendController
     /**
      * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
      */
-    private function getOrderFactory()
+    protected function getOrderFactory()
     {
         return $this->get('coreshop.factory.order');
     }

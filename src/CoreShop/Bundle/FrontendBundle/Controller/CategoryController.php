@@ -184,7 +184,7 @@ class CategoryController extends FrontendController
     /**
      * @return CategoryRepositoryInterface
      */
-    public function getRepository()
+    protected function getRepository()
     {
         return $this->get('coreshop.repository.category');
     }
@@ -192,7 +192,7 @@ class CategoryController extends FrontendController
     /**
      * @return \CoreShop\Component\Core\Configuration\ConfigurationService
      */
-    public function getConfigurationService()
+    protected function getConfigurationService()
     {
         return $this->get('coreshop.configuration.service');
     }
@@ -200,7 +200,7 @@ class CategoryController extends FrontendController
     /**
      * @return ShopperContextInterface
      */
-    public function getContext()
+    protected function getContext()
     {
         return $this->get('coreshop.context.shopper');
     }
