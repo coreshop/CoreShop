@@ -24,17 +24,17 @@ class SecurityController extends FrontendController
     /**
      * @var AuthenticationUtils
      */
-    private $authenticationUtils;
+    protected $authenticationUtils;
 
     /**
      * @var FormFactoryInterface
      */
-    private $formFactory;
+    protected $formFactory;
 
     /**
      * @var EngineInterface
      */
-    private $templatingEngine;
+    protected $templatingEngine;
 
     /**
      * @param AuthenticationUtils  $authenticationUtils
