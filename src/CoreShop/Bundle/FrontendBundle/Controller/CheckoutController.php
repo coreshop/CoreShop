@@ -89,6 +89,19 @@ class CheckoutController extends FrontendController
             'identifier' => $stepIdentifier,
         ]);
 
+
+        return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
+    }
+
+    /**
+     * @param Request $request
+     * @param CheckoutStepInterface $step
+     * @param $stepIdentifier
+     * @param $dataForStep
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
+    {
         return $this->renderTemplate(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
     }
 
