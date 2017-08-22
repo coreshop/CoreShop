@@ -21,9 +21,9 @@ use Symfony\Component\Console\Input\ArrayInput;
 class Installer extends MigrationInstaller
 {
     /**
-     * {@inheritdoc}
+     *
      */
-    public function migrateInstall(Schema $schema, Version $version)
+    protected function beforeInstallMigration()
     {
         $kernel = \Pimcore::getKernel();
         $application = new Application($kernel);
@@ -31,6 +31,15 @@ class Installer extends MigrationInstaller
         $options = ['command' => 'coreshop:install'];
         $options = array_merge($options, ['--no-interaction' => true, '--application-name coreshop']);
         $application->run(new ArrayInput($options));
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function migrateInstall(Schema $schema, Version $version)
+    {
+
     }
 
     /**
