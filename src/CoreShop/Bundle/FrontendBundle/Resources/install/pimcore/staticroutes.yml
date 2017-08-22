@@ -46,7 +46,7 @@ routes:
 
   coreshop_cart_remove:
     pattern: "/(\\w+)\\/shop\\/cart\\/remove\\/([0-9]+)/"
-    reverse: "/%_locale/shop/cart/remove/ÊrtItem"
+    reverse: "/%_locale/shop/cart/remove/%cartItem"
     module: FrontendBundle
     controller: "@coreshop.frontend.controller.cart"
     action: removeItem
