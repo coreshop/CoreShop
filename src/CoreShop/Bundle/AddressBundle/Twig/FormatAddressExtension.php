@@ -35,7 +35,7 @@ final class FormatAddressExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('coreshop_format_address', [$this->helper, 'formatAddress'], ['is_safe' => ['html']]),
+            new \Twig_Filter('coreshop_format_address', [$this->helper, 'formatAddress'], ['is_safe' => ['html']]),
         ];
     }
 }

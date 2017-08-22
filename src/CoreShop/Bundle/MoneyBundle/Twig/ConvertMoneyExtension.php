@@ -35,7 +35,7 @@ final class ConvertMoneyExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('coreshop_convert_money', [$this->helper, 'convertAmount']),
+            new \Twig_Filter('coreshop_convert_money', [$this->helper, 'convertAmount']),
         ];
     }
 }
