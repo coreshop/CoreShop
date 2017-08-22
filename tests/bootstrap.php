@@ -231,8 +231,8 @@ try {
 $fs = new \Symfony\Component\Filesystem\Filesystem();
 $fs->mkdir($kernel->getContainer()->getParameter('kernel.project_dir').'/public');
 
-$install = new \CoreShop\Bundle\AdminBundle\Installer\PimcoreInstaller();
-$install->install();
+$installer = $kernel->getContainer()->get(\CoreShop\Bundle\AdminBundle\Installer::class);
+$installer->install();
 
 //\Pimcore\ExtensionManager::enable("plugin", "CoreShop");
 //\Pimcore\API\Plugin\Broker::getInstance()->registerPlugin(new \CoreShop\Plugin());
