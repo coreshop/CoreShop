@@ -35,7 +35,7 @@ final class FormatMoneyExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('coreshop_format_money', [$this->helper, 'formatAmount']),
+            new \Twig_Filter('coreshop_format_money', [$this->helper, 'formatAmount']),
         ];
     }
 }

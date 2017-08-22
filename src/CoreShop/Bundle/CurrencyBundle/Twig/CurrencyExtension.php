@@ -35,7 +35,7 @@ final class CurrencyExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('coreshop_currency_symbol', [$this->helper, 'convertCurrencyCodeToSymbol']),
+            new \Twig_Filter('coreshop_currency_symbol', [$this->helper, 'convertCurrencyCodeToSymbol']),
         ];
     }
 }
