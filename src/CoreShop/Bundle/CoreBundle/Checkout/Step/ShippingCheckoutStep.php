@@ -158,7 +158,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart)
+    public function prepareStep(CartInterface $cart, Request $request)
     {
         //Get Carriers
         $carriers = $this->getCarriers($cart);

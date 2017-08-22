@@ -99,7 +99,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart)
+    public function prepareStep(CartInterface $cart, Request $request)
     {
         $customer = $this->getCustomer();
 

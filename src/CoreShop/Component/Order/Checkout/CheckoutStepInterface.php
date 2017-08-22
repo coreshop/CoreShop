@@ -52,8 +52,9 @@ interface CheckoutStepInterface
      * Prepare Checkout Step.
      *
      * @param CartInterface $cart
+     * @param Request $request
      *
      * @return array $params for the view
      */
-    public function prepareStep(CartInterface $cart);
+    public function prepareStep(CartInterface $cart, Request $request);
 }

@@ -70,7 +70,7 @@ interface CheckoutManagerInterface
      *
      * @return mixed
      */
-    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart);
+    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
 
     /**
      * @param CartInterface $cart

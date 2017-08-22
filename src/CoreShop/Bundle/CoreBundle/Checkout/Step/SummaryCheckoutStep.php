@@ -47,13 +47,13 @@ class SummaryCheckoutStep implements CheckoutStepInterface
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        //Nothing to do here
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart)
+    public function prepareStep(CartInterface $cart, Request $request)
     {
         //Nothing to do here
     }

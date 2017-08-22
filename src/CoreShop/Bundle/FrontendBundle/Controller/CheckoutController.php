@@ -79,7 +79,7 @@ class CheckoutController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackCheckoutStep($this->getCart(), $step);
 
-        $dataForStep = $step->prepareStep($this->getCart());
+        $dataForStep = $this->checkoutManager->prepareStep($step, $this->getCart(), $request);
 
         $dataForStep = array_merge(is_array($dataForStep) ? $dataForStep : [], [
             'cart' => $this->getCart(),

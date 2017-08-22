@@ -86,7 +86,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart)
+    public function prepareStep(CartInterface $cart, Request $request)
     {
         return [
             'form' => $this->createForm($cart)->createView(),

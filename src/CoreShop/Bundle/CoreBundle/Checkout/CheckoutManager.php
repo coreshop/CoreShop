@@ -101,9 +101,9 @@ class CheckoutManager implements CheckoutManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart)
+    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request)
     {
-        return $step->prepareStep($cart);
+        return $step->prepareStep($cart, $request);
     }
 
     /**
