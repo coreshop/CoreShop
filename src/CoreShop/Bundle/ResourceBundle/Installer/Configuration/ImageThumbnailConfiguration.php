@@ -37,7 +37,12 @@ final class ImageThumbnailConfiguration implements ConfigurationInterface
                                 ->arrayPrototype()
                                   ->children()
                                         ->scalarNode('method')->isRequired()->end()
-                                        ->variableNode('arguments')->isRequired()->end()
+                                        ->arrayNode('arguments')
+                                            ->ignoreExtraKeys(false)
+                                            ->children()
+
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
