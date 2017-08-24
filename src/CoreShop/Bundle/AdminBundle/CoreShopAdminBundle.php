@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\AdminBundle;
 
-use CoreShop\Bundle\AdminBundle\Installer\PimcoreInstaller;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
