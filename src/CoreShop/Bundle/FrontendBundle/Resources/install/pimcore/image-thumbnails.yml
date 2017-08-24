@@ -1,0 +1,91 @@
+thumbnails:
+  coreshop_categoryThumbnail:
+    items:
+      -
+        method: scaleByWidth
+        arguments:
+          - width: 120
+  coreshop_productCart:
+    items:
+      -
+        method: scaleByWidth
+        arguments:
+          - width: 200
+  coreshop_productCart:
+    items:
+      -
+        method: scaleByWidth
+        arguments:
+          - width: 100
+  coreshop_productDetail:
+    items:
+      -
+        method: contain
+        arguments:
+          - width: 330
+          - height: 330
+      -
+        method: frame
+        arguments:
+          - width: 330
+          - height: 330
+  coreshop_productDetailThumbnail:
+    items:
+      -
+        method: contain
+        arguments:
+          - width: 150
+          - height: 150
+      -
+        method: frame
+        arguments:
+          - width: 150
+          - height: 150
+  coreshop_productInvoice:
+    items:
+      -
+        method: scaleByWidth
+        arguments:
+          - width: 100
+  coreshop_productList:
+    items:
+      -
+        method: contain
+        arguments:
+          - width: 244
+          - height: 244
+      -
+        method: frame
+        arguments:
+          - width: 244
+          - height: 244
+  coreshop_productGrid:
+    items:
+      -
+        method: contain
+        arguments:
+          - width: 240
+          - height: 240
+      -
+        method: frame
+        arguments:
+          - width: 240
+          - height: 240
+  coreshop_productDetailFancy:
+    items:
+      -
+        method: contain
+        arguments:
+          - width: 1000
+  coreshop_category:
+    items:
+      -
+        method: contain
+        arguments:
+          - width: 250
+          - height: 150
+      -
+        method: frame
+        arguments:
+          - width: 250
+          - height: 150
