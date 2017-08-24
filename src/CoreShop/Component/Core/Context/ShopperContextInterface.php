@@ -25,4 +25,28 @@ interface ShopperContextInterface extends
     CountryContextInterface,
     CustomerContextInterface
 {
+    /**
+     * @return bool
+     */
+    public function hasStore();
+
+    /**
+     * @return bool
+     */
+    public function hasCurrency();
+
+    /**
+     * @return bool
+     */
+    public function hasLocaleCode();
+
+    /**
+     * @return bool
+     */
+    public function hasCountry();
+
+    /**
+     * @return bool
+     */
+    public function hasCustomer();
 }

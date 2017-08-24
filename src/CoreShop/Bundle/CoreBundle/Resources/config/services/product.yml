@@ -30,3 +30,15 @@ services:
     arguments: ['@coreshop.templating.helper.price']
     tags:
       - { name: twig.extension }
+
+  coreshop.templating.helper.discount:
+    class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductDiscountHelper
+    arguments: ['@coreshop.product.taxed_price_calculator']
+    tags:
+      - { name: templating.helper, alias: coreshop_product_discount}
+
+  coreshop.twig.extension.discount:
+    class: CoreShop\Bundle\CoreBundle\Twig\ProductDiscountExtension
+    arguments: ['@coreshop.templating.helper.discount']
+    tags:
+      - { name: twig.extension }

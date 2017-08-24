@@ -74,6 +74,20 @@ class ShopperContext implements ShopperContextInterface
         return $this->storeContext->getStore();
     }
 
+     /**
+     * {@inheritdoc}
+     */
+    public function hasStore() {
+        try {
+            $this->storeContext->getStore();
+            return true;
+        }
+        finally
+        {
+            return false;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -82,12 +96,40 @@ class ShopperContext implements ShopperContextInterface
         return $this->currencyContext->getCurrency();
     }
 
+     /**
+     * {@inheritdoc}
+     */
+    public function hasCurrency() {
+        try {
+            $this->currencyContext->getCurrency();
+            return true;
+        }
+        finally
+        {
+            return false;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getLocaleCode()
     {
         return $this->localeContext->getLocaleCode();
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function hasLocaleCode() {
+        try {
+            $this->localeContext->getLocaleCode();
+            return true;
+        }
+        finally
+        {
+            return false;
+        }
     }
 
     /**
@@ -101,8 +143,36 @@ class ShopperContext implements ShopperContextInterface
     /**
      * {@inheritdoc}
      */
+    public function hasCountry() {
+        try {
+            $this->countryContext->getCountry();
+            return true;
+        }
+        finally
+        {
+            return false;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCustomer()
     {
         return $this->customerContext->getCustomer();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCustomer() {
+        try {
+            $this->customerContext->getCustomer();
+            return true;
+        }
+        finally
+        {
+            return false;
+        }
     }
 }
