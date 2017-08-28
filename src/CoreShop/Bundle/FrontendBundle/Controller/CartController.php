@@ -62,7 +62,11 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $quantity = 1;
+        $quantity = $request->get('quantity', 1);
+
+        if (!is_int($quantity)) {
+            $quantity = 1;
+        }
 
         $this->getCartModifier()->addCartItem($this->getCart(), $product, $quantity);
 
