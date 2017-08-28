@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType;
@@ -51,7 +52,7 @@ class RegisterController extends FrontendController
                 if (!$customer instanceof \CoreShop\Component\Core\Model\CustomerInterface ||
                     !$address instanceof AddressInterface
                 ) {
-                    return $this->render('CoreShopFrontendBundle:Register:register.html.twig', [
+                    return $this->renderTemplate('CoreShopFrontendBundle:Register:register.html.twig', [
                         'form' => $form->createView()
                     ]);
                 }
@@ -59,7 +60,7 @@ class RegisterController extends FrontendController
                 $existingCustomer = $this->get('coreshop.repository.customer')->findCustomerByEmail($customer->getEmail());
 
                 if ($existingCustomer instanceof CustomerInterface) {
-                    return $this->render('CoreShopFrontendBundle:Register:register.html.twig', [
+                    return $this->renderTemplate('CoreShopFrontendBundle:Register:register.html.twig', [
                         'form' => $form->createView()
                     ]);
                 }
@@ -76,13 +77,14 @@ class RegisterController extends FrontendController
                 $address->save();
 
                 $customer->addAddress($address);
-                $customer->save();
 
                 $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getCustomerGroups());
                 $this->get('security.token_storage')->setToken($token);
 
                 $dispatcher = $this->container->get('event_dispatcher');
-                $dispatcher->dispatch('coreshop.customer.register', new GenericEvent($customer));
+                $dispatcher->dispatch('coreshop.customer.register', new CustomerRegistrationEvent($customer, $formData));
+
+                $customer->save();
 
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
