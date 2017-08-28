@@ -13,10 +13,15 @@
 namespace CoreShop\Component\Core\Context;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 class ShopperContext implements ShopperContextInterface
 {
@@ -82,7 +87,7 @@ class ShopperContext implements ShopperContextInterface
             $this->storeContext->getStore();
             return true;
         }
-        finally
+        catch (StoreNotFoundException $ex)
         {
             return false;
         }
@@ -104,7 +109,7 @@ class ShopperContext implements ShopperContextInterface
             $this->currencyContext->getCurrency();
             return true;
         }
-        finally
+        catch (CurrencyNotFoundException $ex)
         {
             return false;
         }
@@ -126,7 +131,7 @@ class ShopperContext implements ShopperContextInterface
             $this->localeContext->getLocaleCode();
             return true;
         }
-        finally
+        catch (LocaleNotFoundException $ex)
         {
             return false;
         }
@@ -148,7 +153,7 @@ class ShopperContext implements ShopperContextInterface
             $this->countryContext->getCountry();
             return true;
         }
-        finally
+        catch (CountryNotFoundException $ex)
         {
             return false;
         }
@@ -170,7 +175,7 @@ class ShopperContext implements ShopperContextInterface
             $this->customerContext->getCustomer();
             return true;
         }
-        finally
+        catch (CustomerNotFoundException $ex)
         {
             return false;
         }
