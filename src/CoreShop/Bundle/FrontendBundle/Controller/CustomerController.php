@@ -121,7 +121,7 @@ class CustomerController extends FrontendController
             }
         }
 
-        $form = $this->get('form.factory')->createNamed('', AddressType::class, $address);
+        $form = $this->get('form.factory')->createNamed('address', AddressType::class, $address);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
