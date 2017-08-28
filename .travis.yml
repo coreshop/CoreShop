@@ -37,6 +37,10 @@ env:
     - CORESHOP_MYSQL_HOST=127.0.0.1
     - CORESHOP_MYSQL_DB=coreshop_phpunit
     - CORESHOP_MYSQL_USER=root
+cache:
+    directories:
+        - ~/.composer/cache/files
+        - vendor
 
 before_install:
  - mkdir $TRAVIS_BUILD_DIR/../lib
@@ -51,10 +55,7 @@ install:
   - mkdir -p var/config
   - cp .travis/system.template.php var/config/system.php
   - cp app/config/parameters.example.yml app/config/parameters.yml
-
-  # install composer - HHVM isn't officially PHP 7 compatible - see https://github.com/composer/composer/issues/4976
-  - if [[ "$TRAVIS_PHP_VERSION" != *"hhvm"* ]]; then composer install; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == *"hhvm"* ]]; then composer install --ignore-platform-reqs; fi
+  - composer install
 
   # Add path to CoreShop
   - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
@@ -66,4 +67,4 @@ install:
   - composer update
 
 script:
-  - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/phpunit.xml --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
+  - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/ --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests

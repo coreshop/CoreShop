@@ -11,7 +11,7 @@ thumbnails:
         method: scaleByWidth
         arguments:
           width: 200
-  coreshop_productCart:
+  coreshop_productCartPreview:
     items:
       -
         method: scaleByWidth
