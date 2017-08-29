@@ -62,7 +62,7 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $quantity = $request->get('quantity', 1);
+        $quantity = intval($request->get('quantity', 1));
 
         if (!is_int($quantity)) {
             $quantity = 1;
