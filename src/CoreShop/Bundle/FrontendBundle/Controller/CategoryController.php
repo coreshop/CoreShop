@@ -45,10 +45,19 @@ class CategoryController extends FrontendController
      */
     public function menuLeftAction(Request $request)
     {
-        $categories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
+        $activeCategory = $request->get('activeCategory');
+        $activeSubCategories = [];
+
+        $firstLevelCategories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
+
+        if ($activeCategory instanceof CategoryInterface) {
+            $activeSubCategories = $this->getRepository()->findChildCategoriesForStore($activeCategory, $this->getContext()->getStore());
+        }
 
         return $this->renderTemplate('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
-            'categories' => $categories
+            'categories' => $firstLevelCategories,
+            'activeCategory' => $activeCategory,
+            'activeSubCategories' => $activeSubCategories
         ]);
     }
 

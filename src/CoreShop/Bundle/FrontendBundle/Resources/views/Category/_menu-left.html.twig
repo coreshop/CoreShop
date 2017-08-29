@@ -2,11 +2,22 @@
 {% if categories %}
 <div class="list-group categories">
     {% for category in categories %}
-        {# TODO: URL, ACTIVE #}
-        <a href="{{ path('coreshop_category_list', {name: category.getName, category: category.getId}) }}" class="list-group-item">
+        {% set active = activeCategory is defined and activeCategory.getId == category.getId %}
+        <a href="{{ path('coreshop_category_list', {name: category.getName, category: category.getId}) }}" class="{% if active %} active {% endif %} list-group-item">
             <i class="fa fa-chevron-right"></i>
             {{ category.getName }}
         </a>
+        {% if active and activeSubCategories|length > 0 %}
+            <div class="list-group categories">
+                {% for subCategory in activeSubCategories %}
+                    {% set active = activeCategory is defined and activeCategory.getId == subCategory.getId %}
+                    <a href="{{ path('coreshop_category_list', {name: subCategory.getName, category: subCategory.getId}) }}" class="{% if active %} active {% endif %} list-group-item">
+                        <i class="fa fa-chevron-right"></i>
+                        {{ subCategory.getName }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% endfor %}
 </div>
 {% endif %}
