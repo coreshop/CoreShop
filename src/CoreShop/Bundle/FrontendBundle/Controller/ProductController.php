@@ -22,7 +22,7 @@ class ProductController extends FrontendController
         $productRepository = $this->get('coreshop.repository.product');
 
         return $this->renderTemplate('CoreShopFrontendBundle:Product:_latest.html.twig', [
-            'products' => $productRepository->getLatestByShop($this->get('coreshop.context.store')->getStore()),
+            'products' => $productRepository->findLatestByStore($this->get('coreshop.context.store')->getStore()),
         ]);
     }
 

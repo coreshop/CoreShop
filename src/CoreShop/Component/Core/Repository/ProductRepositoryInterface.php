@@ -24,5 +24,5 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface
      *
      * @return ProductInterface[]
      */
-    public function getLatestByShop(StoreInterface $store, $count = 8);
+    public function findLatestByStore(StoreInterface $store, $count = 8);
 }
