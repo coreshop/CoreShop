@@ -11,11 +11,19 @@
 {%- macro getPrice(product, with_tax) -%}
     {% from _self import convertAndFormat %}
 
-    {{- convertAndFormat(product|coreshop_product_price({'with_tax': with_tax})) }}
+    {% if with_tax is null %}
+        {% set with_tax = true %}
+    {% endif %}
+
+    {{- convertAndFormat(product|coreshop_product_price(with_tax)) }}
 {%- endmacro -%}
 
 {%- macro getDiscount(product, with_tax) -%}
     {% from _self import convertAndFormat %}
 
-    {{- convertAndFormat(product|coreshop_product_discount({'with_tax': with_tax})) }}
+    {% if with_tax is null %}
+        {% set with_tax = true %}
+    {% endif %}
+    
+    {{- convertAndFormat(product|coreshop_product_discount(with_tax)) }}
 {%- endmacro -%}
