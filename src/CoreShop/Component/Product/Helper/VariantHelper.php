@@ -399,7 +399,7 @@ class VariantHelper
         $storeParams = [];
 
         foreach ($object->getStores() as $shop) {
-            $storeParams[] = "shops LIKE '%,".$shop.",%'";
+            $storeParams[] = "stores LIKE '%,".$shop.",%'";
         }
 
         $condition .= ' AND ('.implode(' OR ', $storeParams).')';
