@@ -45,7 +45,7 @@ class CategoryController extends FrontendController
      */
     public function menuLeftAction(Request $request)
     {
-        $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
+        $categories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
 
         return $this->renderTemplate('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
             'categories' => $categories
