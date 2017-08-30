@@ -22,7 +22,7 @@ use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Image;
 use Faker\Provider\Lorem;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\DataObject\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -15,7 +15,7 @@ namespace CoreShop\Component\Order\Model;
 use Carbon\Carbon;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Pimcore\Model\Object\Fieldcollection;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 interface SaleInterface extends ProposalInterface, PimcoreModelInterface
 {

@@ -23,7 +23,7 @@ use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Pimcore\Model\Object\Fieldcollection;
+use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerInterface

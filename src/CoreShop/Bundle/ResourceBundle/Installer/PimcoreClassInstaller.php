@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use Composer\Autoload\ClassLoader;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use Pimcore\Model\Object;
+use Pimcore\Model\DataObject;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -116,7 +116,7 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
                 $progress->advance();
             }
 
-            $classLoader->addPsr4("Pimcore\\Model\\Object\\", PIMCORE_CLASS_DIRECTORY . "/Object");
+            $classLoader->addPsr4("Pimcore\\Model\\DataObject\\", PIMCORE_CLASS_DIRECTORY . "/Object");
 
             $progress->finish();
         }
@@ -125,19 +125,19 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
     /**
      * @param $jsonFile
      * @param $brickName
-     * @return mixed|Object\Objectbrick\Definition
+     * @return mixed|DataObject\Objectbrick\Definition
      */
     private function createBrick($jsonFile, $brickName) {
         try {
-            $objectBrick = Object\Objectbrick\Definition::getByKey($brickName);
+            $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
         } catch (\Exception $e) {
-            $objectBrick = new Object\Objectbrick\Definition();
+            $objectBrick = new DataObject\Objectbrick\Definition();
             $objectBrick->setKey($brickName);
         }
 
         $json = file_get_contents($jsonFile);
 
-        Object\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
+        DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
 
         return $objectBrick;
     }
@@ -147,34 +147,34 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
      * @param $className
      * @param bool $updateClass
      *
-     * @return Object\ClassDefinition
+     * @return DataObject\ClassDefinition
      */
     private function createClass($jsonFile, $className, $updateClass = false)
     {
-        $tempClass = new Object\ClassDefinition();
+        $tempClass = new DataObject\ClassDefinition();
         $id = $tempClass->getDao()->getIdByName($className);
         $class = null;
 
         if ($id) {
-            $class = Object\ClassDefinition::getById($id);
+            $class = DataObject\ClassDefinition::getById($id);
         }
 
         if (!$class || $updateClass) {
             $json = file_get_contents($jsonFile);
 
             if (!$class) {
-                $class = Object\ClassDefinition::create();
+                $class = DataObject\ClassDefinition::create();
             }
 
             $class->setName($className);
             $class->setUserOwner(0);
 
-            Object\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
+            DataObject\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
 
             /**
              * Fixes Object Brick Stuff.
              */
-            $list = new Object\Objectbrick\Definition\Listing();
+            $list = new DataObject\Objectbrick\Definition\Listing();
             $list = $list->load();
 
             if (!empty($list)) {
@@ -200,20 +200,20 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
      * @param $name
      * @param null $jsonFile
      *
-     * @return mixed|null|Object\Fieldcollection\Definition
+     * @return mixed|null|DataObject\Fieldcollection\Definition
      */
     private function createFieldCollection($jsonFile, $name)
     {
         try {
-            $fieldCollection = Object\Fieldcollection\Definition::getByKey($name);
+            $fieldCollection = DataObject\Fieldcollection\Definition::getByKey($name);
         } catch (\Exception $e) {
-            $fieldCollection = new Object\Fieldcollection\Definition();
+            $fieldCollection = new DataObject\Fieldcollection\Definition();
             $fieldCollection->setKey($name);
         }
 
         $json = file_get_contents($jsonFile);
 
-        Object\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
+        DataObject\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
 
         return $fieldCollection;
     }

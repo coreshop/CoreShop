@@ -16,7 +16,7 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
-use Pimcore\Model\Object\Fieldcollection;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface
 {

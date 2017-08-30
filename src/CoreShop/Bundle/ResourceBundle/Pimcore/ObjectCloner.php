@@ -2,8 +2,8 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
-use Pimcore\Model\Object\Concrete;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Service;
 
 final class ObjectCloner
 {

@@ -51,7 +51,7 @@ include_once CORESHOP_TESTS_PATH . '/app/TestAppKernel.php';
  * @var $loader \Composer\Autoload\ClassLoader
  */
 $loader->add('CoreShop\Test', [__DIR__.'/lib', __DIR__.'/']);
-$loader->addPsr4('Pimcore\\Model\\Object\\', PIMCORE_CLASS_DIRECTORY.'/Object', true);
+$loader->addPsr4('Pimcore\\Model\\DataObject\\', PIMCORE_CLASS_DIRECTORY.'/DataObject', true);
 
 //Actually, only needed
 foreach (['CoreShopAddress',
@@ -69,12 +69,12 @@ foreach (['CoreShopAddress',
     'CoreShopProduct',
     'CoreShopQuote',
     'CoreShopQuoteItem'] as $class) {
-    $loader->addClassMap([sprintf('Pimcore\Model\Object\%s', $class) => sprintf('%s/Object/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
-    $loader->addClassMap([sprintf('Pimcore\Model\Object\%s\Listing', $class) => sprintf('%s/Object/%s/Listing.php', PIMCORE_CLASS_DIRECTORY, $class)]);
+    $loader->addClassMap([sprintf('Pimcore\Model\DataObject\%s', $class) => sprintf('%s/DataObject/%s.php', PIMCORE_CLASS_DIRECTORY, $class)]);
+    $loader->addClassMap([sprintf('Pimcore\Model\DataObject\%s\Listing', $class) => sprintf('%s/DataObject/%s/Listing.php', PIMCORE_CLASS_DIRECTORY, $class)]);
 }
 
 foreach (['CoreShopProposalCartPriceRuleItem', 'CoreShopTaxItem'] as $fc) {
-    $loader->addClassMap([sprintf('Pimcore\Model\Object\Fieldcollection\Data\%s', $fc) => sprintf('%s/Object/Fieldcollection/Data/%s.php', PIMCORE_CLASS_DIRECTORY, $fc)]);
+    $loader->addClassMap([sprintf('Pimcore\Model\DataObject\Fieldcollection\Data\%s', $fc) => sprintf('%s/DataObject/Fieldcollection/Data/%s.php', PIMCORE_CLASS_DIRECTORY, $fc)]);
 }
 
 $phpLog = PIMCORE_LOG_DIRECTORY.'/php.log';

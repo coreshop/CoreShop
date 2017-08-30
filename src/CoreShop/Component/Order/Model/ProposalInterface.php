@@ -15,7 +15,7 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
-use Pimcore\Model\Object\Fieldcollection;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface
 {

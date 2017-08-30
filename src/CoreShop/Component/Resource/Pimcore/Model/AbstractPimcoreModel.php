@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Resource\Pimcore\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\DataObject\Concrete;
 
 abstract class AbstractPimcoreModel extends Concrete implements ResourceInterface, PimcoreModelInterface
 {

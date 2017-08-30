@@ -14,7 +14,7 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Model\Object\Fieldcollection;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 class FieldCollectionGetter implements GetterInterface
 {
@@ -34,7 +34,7 @@ class FieldCollectionGetter implements GetterInterface
 
         if ($collectionContainer instanceof Fieldcollection) {
             foreach ($collectionContainer->getItems() as $item) {
-                $className = 'Pimcore\Model\Object\Fieldcollection\Data\\'.$columnConfig['className'];
+                $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\'.$columnConfig['className'];
                 if (is_a($item, $className)) {
                     $validItems[] = $item;
                 }

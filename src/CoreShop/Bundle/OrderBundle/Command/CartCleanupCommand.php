@@ -12,10 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
-use CoreShop\Component\Index\Model\IndexInterface;
-use Pimcore\Model\Object\AbstractObject;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

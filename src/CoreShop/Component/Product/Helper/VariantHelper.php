@@ -13,10 +13,10 @@
 namespace CoreShop\Component\Product\Helper;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Object\ClassDefinition;
-use Pimcore\Model\Object\Classificationstore;
-use Pimcore\Model\Object\Classificationstore\KeyConfig;
+use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Classificationstore;
+use Pimcore\Model\DataObject\Classificationstore\KeyConfig;
 
 
 /**

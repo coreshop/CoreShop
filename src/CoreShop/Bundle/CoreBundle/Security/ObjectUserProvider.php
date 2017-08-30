@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle;
 
-use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\DataObject\AbstractObject;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -23,7 +23,7 @@ class ObjectUserProvider implements UserProviderInterface
 {
     /**
      * The pimcore class name to be used. Needs to be a fully qualified class
-     * name (e.g. Pimcore\Model\Object\User or your custom user class extending
+     * name (e.g. Pimcore\Model\DataObject\User or your custom user class extending
      * the generated one.
      *
      * @var string

@@ -13,8 +13,8 @@
 namespace CoreShop\Component\Resource\Pimcore;
 
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Pimcore\Model\Object\Concrete;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class ObjectService implements ObjectServiceInterface

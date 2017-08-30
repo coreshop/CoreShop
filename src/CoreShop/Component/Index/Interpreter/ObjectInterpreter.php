@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Index\Interpreter;
 
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\DataObject\AbstractObject;
 
 class ObjectInterpreter implements RelationInterpreterInterface
 {

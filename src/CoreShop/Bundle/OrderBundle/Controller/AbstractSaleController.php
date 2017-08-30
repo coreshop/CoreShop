@@ -29,7 +29,7 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Admin\Helper\QueryParams;
-use Pimcore\Model\Object;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractSaleController extends PimcoreController
@@ -150,10 +150,10 @@ abstract class AbstractSaleController extends PimcoreController
         $defaultConfiguration = array_merge($defaultConfiguration, $this->getGridColumns());
         $addressClassId = $this->getParameter('coreshop.model.address.pimcore_class_id');
 
-        $addressClassDefinition = Object\ClassDefinition::getById($addressClassId);
+        $addressClassDefinition = DataObject\ClassDefinition::getById($addressClassId);
         $addressFields = [];
 
-        if ($addressClassDefinition instanceof Object\ClassDefinition) {
+        if ($addressClassDefinition instanceof DataObject\ClassDefinition) {
             $invalidFields = ['extra'];
 
             foreach ($addressClassDefinition->getFieldDefinitions() as $fieldDefinition) {
@@ -209,7 +209,7 @@ abstract class AbstractSaleController extends PimcoreController
 
         if ($request->get('filter', null)) {
             $conditionFilters = [];
-            $conditionFilters[] = Object\Service::getFilterCondition($this->getParam('filter'), Object\ClassDefinition::getById($this->getParameter($this->getSaleClassName())));
+            $conditionFilters[] = DataObject\Service::getFilterCondition($this->getParam('filter'), DataObject\ClassDefinition::getById($this->getParameter($this->getSaleClassName())));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
@@ -322,12 +322,12 @@ abstract class AbstractSaleController extends PimcoreController
         $prefix = 'address' . ucfirst($type);
         $values = [];
         $fullAddress = [];
-        $classDefinition = Object\ClassDefinition::getById($this->getParameter('coreshop.model.address.pimcore_class_id'));
+        $classDefinition = DataObject\ClassDefinition::getById($this->getParameter('coreshop.model.address.pimcore_class_id'));
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';
 
-            if ($address instanceof AddressInterface && $address instanceof Object\Concrete) {
+            if ($address instanceof AddressInterface && $address instanceof DataObject\Concrete) {
                 $getter = "get" . ucfirst($fieldDefinition->getName());
 
                 if (method_exists($address, $getter)) {
@@ -391,7 +391,7 @@ abstract class AbstractSaleController extends PimcoreController
 
         $jsonSale['priceRule'] = false;
 
-        if ($sale->getPriceRuleItems() instanceof Object\Fieldcollection) {
+        if ($sale->getPriceRuleItems() instanceof DataObject\Fieldcollection) {
             $rules = [];
 
             foreach ($sale->getPriceRuleItems()->getItems() as $ruleItem) {
@@ -509,32 +509,32 @@ abstract class AbstractSaleController extends PimcoreController
     }
 
     /**
-     * @param Object\Concrete $data
+     * @param DataObject\Concrete $data
      *
      * @return array
      */
-    protected function getDataForObject(Object\Concrete $data)
+    protected function getDataForObject(DataObject\Concrete $data)
     {
         $objectData = [];
-        Object\Service::loadAllObjectFields($data);
+        DataObject\Service::loadAllObjectFields($data);
 
         foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
             $getter = 'get' . ucfirst($key);
             $fieldData = $data->$getter();
 
-            if ($def instanceof Object\ClassDefinition\Data\Href) {
-                if ($fieldData instanceof Object\Concrete) {
+            if ($def instanceof DataObject\ClassDefinition\Data\Href) {
+                if ($fieldData instanceof DataObject\Concrete) {
                     $objectData[$key] = $this->getDataForObject($fieldData);
                 }
-            } elseif ($def instanceof Object\ClassDefinition\Data\Multihref) {
+            } elseif ($def instanceof DataObject\ClassDefinition\Data\Multihref) {
                 $objectData[$key] = [];
 
                 foreach ($fieldData as $object) {
-                    if ($object instanceof Object\Concrete) {
+                    if ($object instanceof DataObject\Concrete) {
                         $objectData[$key][] = $this->getDataForObject($object);
                     }
                 }
-            } elseif ($def instanceof Object\ClassDefinition\Data) {
+            } elseif ($def instanceof DataObject\ClassDefinition\Data) {
                 if ($def instanceof Money) {
                     $value = $fieldData;
                 } else {
@@ -585,7 +585,7 @@ abstract class AbstractSaleController extends PimcoreController
     protected abstract function getSaleRepository();
 
     /**
-     * @return \Pimcore\Model\Object\Listing
+     * @return \Pimcore\Model\DataObject\Listing
      */
     protected abstract function getSalesList();
 

@@ -78,7 +78,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
                     'path' => 'coreshop/carts',
                     'classes' => array(
                         'install_file' => '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json',
-                        'model' => 'Pimcore\\Model\\Object\\CoreShopCart',
+                        'model' => 'Pimcore\\Model\\DataObject\\CoreShopCart',
                         'interface' => 'CoreShop\\Component\\Order\\Model\\CartInterface',
                         'factory' => 'CoreShop\\Component\\Resource\\Factory\\PimcoreFactory',
                         'repository' => 'CoreShop\\Bundle\\OrderBundle\\Pimcore\\Repository\\CartRepository',
@@ -151,7 +151,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
                 'pimcore' => [
                     $shortClassType => [
                         'classes' => [
-                            'model' => 'Pimcore\Model\Object\\' . $className
+                            'model' => 'Pimcore\Model\DataObject\\' . $className
                         ]
                     ]
                 ]

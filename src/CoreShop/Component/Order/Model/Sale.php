@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use Pimcore\Model\Object\Fieldcollection;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 abstract class Sale extends AbstractProposal implements SaleInterface
 {

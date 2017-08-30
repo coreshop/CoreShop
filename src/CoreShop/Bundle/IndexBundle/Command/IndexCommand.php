@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\IndexBundle\Command;
 
 use CoreShop\Component\Index\Model\IndexInterface;
-use Pimcore\Model\Object\AbstractObject;
+use Pimcore\Model\DataObject\AbstractObject;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,7 +57,7 @@ final class IndexCommand extends ContainerAwareCommand
         $classProgress->setProgressCharacter('#');
 
         foreach ($classesToUpdate as $class) {
-            $list = '\Pimcore\Model\Object\\' . $class . '\Listing';
+            $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);

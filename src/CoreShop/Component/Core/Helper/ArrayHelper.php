@@ -13,8 +13,8 @@
 namespace CoreShop\Component\Core\Helper;
 
 use Carbon\Carbon;
-use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Object\Fieldcollection;
+use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 class ArrayHelper
 {

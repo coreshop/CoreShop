@@ -23,7 +23,7 @@ class RegisterProductHelperPass implements CompilerPassInterface
             $registry = $container->getDefinition('coreshop.registry.index.class_helpers');
 
             $class = $container->getParameter($class);
-            $class = str_replace('Pimcore\\Model\\Object\\', '', $class);
+            $class = str_replace('Pimcore\\Model\\DataObject\\', '', $class);
             $class = str_replace('\\', '', $class);
 
             $container->setDefinition($definitionId, new Definition(ProductClassHelper::class));

@@ -17,8 +17,8 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use JMS\Serializer\SerializationContext;
-use Pimcore\Model\Object\ClassDefinition\Data;
-use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data

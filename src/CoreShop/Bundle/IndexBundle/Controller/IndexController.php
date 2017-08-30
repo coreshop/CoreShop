@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\IndexBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Model\Object;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends ResourceController
@@ -84,13 +84,13 @@ class IndexController extends ResourceController
             ];
         }
 
-        $classes = new Object\ClassDefinition\Listing();
+        $classes = new DataObject\ClassDefinition\Listing();
         $classes = $classes->load();
         $availableClasses = [];
 
         foreach ($classes as $class) {
-            if ($class instanceof Object\ClassDefinition) {
-                $pimcoreClass = 'Pimcore\Model\Object\\' . ucfirst($class->getName());
+            if ($class instanceof DataObject\ClassDefinition) {
+                $pimcoreClass = 'Pimcore\Model\DataObject\\' . ucfirst($class->getName());
 
                 if (in_array(IndexableInterface::class, class_implements($pimcoreClass), true)) {
                     $availableClasses[] = [
@@ -120,9 +120,9 @@ class IndexController extends ResourceController
      */
     public function getClassDefinitionForFieldSelectionAction(Request $request)
     {
-        $class = Object\ClassDefinition::getByName($request->get('class'));
+        $class = DataObject\ClassDefinition::getByName($request->get('class'));
 
-        if (!$class instanceof Object\ClassDefinition) {
+        if (!$class instanceof DataObject\ClassDefinition) {
             return $this->viewHandler->handle([]);
         }
 
@@ -139,13 +139,13 @@ class IndexController extends ResourceController
         $result = array_merge_recursive($result, $this->getSystemFields());
 
         foreach ($fields as $field) {
-            if ($field instanceof Object\ClassDefinition\Data\Localizedfields) {
+            if ($field instanceof DataObject\ClassDefinition\Data\Localizedfields) {
                 $result = array_merge_recursive($result, $this->getLocalizedFields($field));
-            } elseif ($field instanceof Object\ClassDefinition\Data\Objectbricks) {
+            } elseif ($field instanceof DataObject\ClassDefinition\Data\Objectbricks) {
                 $result = array_merge_recursive($result, $this->getObjectbrickFields($field, $class));
-            } elseif ($field instanceof Object\ClassDefinition\Data\Fieldcollections) {
+            } elseif ($field instanceof DataObject\ClassDefinition\Data\Fieldcollections) {
                 $result = array_merge_recursive($result, $this->getFieldcollectionFields($field));
-            } elseif ($field instanceof Object\ClassDefinition\Data\Classificationstore) {
+            } elseif ($field instanceof DataObject\ClassDefinition\Data\Classificationstore) {
                 $result = array_merge_recursive($result, $this->getClassificationStoreFields($field));
             } else {
                 $result['fields']['childs'][] = $this->getFieldConfiguration($field);
@@ -201,10 +201,10 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Object\ClassDefinition\Data\Localizedfields $field
+     * @param DataObject\ClassDefinition\Data\Localizedfields $field
      * @return array
      */
-    protected function getLocalizedFields(Object\ClassDefinition\Data\Localizedfields $field)
+    protected function getLocalizedFields(DataObject\ClassDefinition\Data\Localizedfields $field)
     {
         $result['localizedfields'] = [
             'nodeLabel' => 'localizedfields',
@@ -222,19 +222,19 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Object\ClassDefinition\Data\Objectbricks $field
-     * @param Object\ClassDefinition $class
+     * @param DataObject\ClassDefinition\Data\Objectbricks $field
+     * @param DataObject\ClassDefinition $class
      * @return array
      */
-    protected function getObjectbrickFields(Object\ClassDefinition\Data\Objectbricks $field, Object\ClassDefinition $class)
+    protected function getObjectbrickFields(DataObject\ClassDefinition\Data\Objectbricks $field, DataObject\ClassDefinition $class)
     {
         $result = [];
 
-        $list = new Object\Objectbrick\Definition\Listing();
+        $list = new DataObject\Objectbrick\Definition\Listing();
         $list = $list->load();
 
         foreach ($list as $brickDefinition) {
-            if ($brickDefinition instanceof Object\Objectbrick\Definition) {
+            if ($brickDefinition instanceof DataObject\Objectbrick\Definition) {
                 $key = $brickDefinition->getKey();
                 $classDefs = $brickDefinition->getClassDefinitions();
 
@@ -262,10 +262,10 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Object\ClassDefinition\Data\Fieldcollections $field
+     * @param DataObject\ClassDefinition\Data\Fieldcollections $field
      * @return array
      */
-    protected function getFieldcollectionFields(Object\ClassDefinition\Data\Fieldcollections $field)
+    protected function getFieldcollectionFields(DataObject\ClassDefinition\Data\Fieldcollections $field)
     {
         $result = [];
 
@@ -273,7 +273,7 @@ class IndexController extends ResourceController
 
         if (is_array($allowedTypes)) {
             foreach ($allowedTypes as $type) {
-                $definition = Object\Fieldcollection\Definition::getByKey($type);
+                $definition = DataObject\Fieldcollection\Definition::getByKey($type);
 
                 $fieldDefinition = $definition->getFieldDefinitions();
 
@@ -295,14 +295,14 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Object\ClassDefinition\Data\Classificationstore $field
+     * @param DataObject\ClassDefinition\Data\Classificationstore $field
      * @return array
      */
-    protected function getClassificationStoreFields(Object\ClassDefinition\Data\Classificationstore $field)
+    protected function getClassificationStoreFields(DataObject\ClassDefinition\Data\Classificationstore $field)
     {
         $result = [];
 
-        $list = new Object\Classificationstore\GroupConfig\Listing();
+        $list = new DataObject\Classificationstore\GroupConfig\Listing();
         $list->load();
 
         $allowedGroupIds = $field->getAllowedGroupIds();
@@ -314,7 +314,7 @@ class IndexController extends ResourceController
         $groupConfigList = $list->getList();
 
         /**
-         * @var $config Object\Classificationstore\GroupConfig
+         * @var $config DataObject\Classificationstore\GroupConfig
          */
         foreach ($groupConfigList as $config) {
             $key = $config->getId() . ($config->getName() ? $config->getName() : 'EMPTY');
@@ -326,11 +326,11 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Object\Classificationstore\GroupConfig $config
+     * @param DataObject\Classificationstore\GroupConfig $config
      *
      * @return array
      */
-    protected function getClassificationStoreGroupConfiguration(Object\Classificationstore\GroupConfig $config)
+    protected function getClassificationStoreGroupConfiguration(DataObject\Classificationstore\GroupConfig $config)
     {
         $result = [];
         $result['nodeLabel'] = $config->getName();
@@ -338,10 +338,10 @@ class IndexController extends ResourceController
         $result['childs'] = [];
 
         foreach ($config->getRelations() as $relation) {
-            if ($relation instanceof Object\Classificationstore\KeyGroupRelation) {
+            if ($relation instanceof DataObject\Classificationstore\KeyGroupRelation) {
                 $keyId = $relation->getKeyId();
 
-                $keyConfig = Object\Classificationstore\KeyConfig::getById($keyId);
+                $keyConfig = DataObject\Classificationstore\KeyConfig::getById($keyId);
 
                 $result['childs'][] = $this->getClassificationStoreFieldConfiguration($keyConfig, $config);
             }
@@ -351,11 +351,11 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Object\ClassDefinition\Data $field
+     * @param DataObject\ClassDefinition\Data $field
      *
      * @return array
      */
-    protected function getFieldConfiguration(Object\ClassDefinition\Data $field)
+    protected function getFieldConfiguration(DataObject\ClassDefinition\Data $field)
     {
         return [
             'name' => $field->getName(),
@@ -366,12 +366,12 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Object\Classificationstore\KeyConfig $field
-     * @param Object\Classificationstore\GroupConfig $groupConfig
+     * @param DataObject\Classificationstore\KeyConfig $field
+     * @param DataObject\Classificationstore\GroupConfig $groupConfig
      *
      * @return array
      */
-    protected function getClassificationStoreFieldConfiguration(Object\Classificationstore\KeyConfig $field, Object\Classificationstore\GroupConfig $groupConfig)
+    protected function getClassificationStoreFieldConfiguration(DataObject\Classificationstore\KeyConfig $field, DataObject\Classificationstore\GroupConfig $groupConfig)
     {
         return [
             'name' => $field->getName(),

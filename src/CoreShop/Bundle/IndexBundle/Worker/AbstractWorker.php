@@ -24,8 +24,8 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Logger;
-use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Tool;
 use Webmozart\Assert\Assert;
 

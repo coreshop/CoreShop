@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
-use Pimcore\Model\Object\ClassDefinition;
+use Pimcore\Model\DataObject\ClassDefinition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Resource\Repository;
 
-use Pimcore\Model\Object\Listing;
+use Pimcore\Model\DataObject\Listing;
 
 interface PimcoreRepositoryInterface extends RepositoryInterface
 {

@@ -14,7 +14,7 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Model\Object\Classificationstore;
+use Pimcore\Model\DataObject\Classificationstore;
 
 class ClassificationStoreGetter implements GetterInterface
 {

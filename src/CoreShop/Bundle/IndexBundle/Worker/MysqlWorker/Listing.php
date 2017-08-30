@@ -20,8 +20,8 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Pimcore\Model\Object\AbstractObject;
-use Pimcore\Model\Object\Concrete;
+use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Concrete;
 use Zend\Paginator\Adapter\AdapterInterface;
 
 class Listing extends AbstractListing

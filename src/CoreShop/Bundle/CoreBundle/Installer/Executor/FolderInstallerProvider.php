@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Executor;
 
-use Pimcore\Model\Object;
+use Pimcore\Model\DataObject;
 
 final class FolderInstallerProvider
 {
@@ -71,7 +71,7 @@ final class FolderInstallerProvider
         ];
 
         foreach ($folders as $folder) {
-            Object\Service::createFolderByPath(sprintf('/%s', $folder));
+            DataObject\Service::createFolderByPath(sprintf('/%s', $folder));
         }
     }
 }

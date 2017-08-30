@@ -17,7 +17,7 @@ use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\DataObject\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
