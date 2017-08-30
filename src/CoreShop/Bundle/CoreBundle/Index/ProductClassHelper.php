@@ -18,7 +18,7 @@ class ProductClassHelper implements ClassHelperInterface
         return [
             'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
             'parentCategoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'shops' => IndexColumnInterface::FIELD_TYPE_STRING,
+            'stores' => IndexColumnInterface::FIELD_TYPE_STRING,
             'minPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
             'maxPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
         ];
@@ -60,7 +60,7 @@ class ProductClassHelper implements ClassHelperInterface
             return [
                 'categoryIds' => implode(',', $categoryIds) . ',',
                 'parentCategoryIds' => ',' . implode(',', $parentCategoryIds) . ',',
-                'shops' => ','.@implode(',', $indexable->getStores()).','
+                'stores' => ','.@implode(',', $indexable->getStores()).','
             ];
         }
 
