@@ -90,7 +90,7 @@ services:
     class: CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener
     arguments: ['@coreshop.configuration.service']
     tags:
-      - { name: kernel.event_listener, event: pimcore.object.postUpdate, method: storeConfigurationThatProductChanged }
+      - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: storeConfigurationThatProductChanged }
 
 
   coreshop.event_listener.update_cart:

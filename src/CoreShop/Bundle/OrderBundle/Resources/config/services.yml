@@ -59,7 +59,7 @@ services:
     class: CoreShop\Bundle\OrderBundle\EventListener\CartRecalculationUpdate
     arguments: ['@coreshop.cart_processor']
     tags:
-      - { name: kernel.event_listener, event: pimcore.object.preUpdate, method: recalculateCart }
+      - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: recalculateCart }
 
   coreshop.cart.cleanup:
     class: CoreShop\Bundle\OrderBundle\Cart\Maintenance\Cleanup

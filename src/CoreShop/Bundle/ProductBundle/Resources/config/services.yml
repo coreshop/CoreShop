@@ -87,4 +87,4 @@ services:
   coreshop.listeners.product.category.pre_update:
     class: CoreShop\Bundle\ProductBundle\EventListener\CategoryPersistEventListener
     tags:
-      - { name: kernel.event_listener, event: pimcore.object.preUpdate, method: onPreUpdate }
+      - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: onPreUpdate }

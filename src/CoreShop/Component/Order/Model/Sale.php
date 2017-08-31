@@ -123,7 +123,11 @@ abstract class Sale extends AbstractProposal implements SaleInterface
         $totalWithoutDiscount = $this->getSubtotal(false);
         $totalWithDiscount = $this->getSubtotal(false) - $this->getDiscount(false);
 
-        return ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+        if ($totalWithoutDiscount > 0) {
+            return ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
+        }
+
+        return 0;
     }
 
     /**

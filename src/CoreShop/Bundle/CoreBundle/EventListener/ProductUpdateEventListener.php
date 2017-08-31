@@ -12,12 +12,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
-use Pimcore\Event\Model\ObjectEvent;
-use Webmozart\Assert\Assert;
+use Pimcore\Event\Model\DataObjectEvent;
 
 final class ProductUpdateEventListener
 {
@@ -35,9 +32,9 @@ final class ProductUpdateEventListener
     }
 
     /**
-     * @param ObjectEvent $event
+     * @param DataObjectEvent $event
      */
-    public function storeConfigurationThatProductChanged(ObjectEvent $event)
+    public function storeConfigurationThatProductChanged(DataObjectEvent $event)
     {
         $object = $event->getObject();
 

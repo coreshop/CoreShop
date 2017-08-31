@@ -12,18 +12,16 @@
 
 namespace CoreShop\Bundle\ProductBundle\EventListener;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use Pimcore\Event\Model\ElementEventInterface;
-use Pimcore\Event\Model\ObjectEvent;
+use Pimcore\Event\Model\DataObjectEvent;
 
 final class CategoryPersistEventListener
 {
 
     public function onPreUpdate(ElementEventInterface $event)
     {
-        if ($event instanceof ObjectEvent) {
+        if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();
 
             if (!$object instanceof CategoryInterface) {

@@ -80,7 +80,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             'postalcode' => ' %Text(postcode); ',
             'city' => '%Text(city);',
             'country' => [
-                '%Object(country,{"method" : "getName"});',
+                '%DataObject(country,{"method" : "getName"});',
                 '%Text(phone);',
             ],
             'region' => ''

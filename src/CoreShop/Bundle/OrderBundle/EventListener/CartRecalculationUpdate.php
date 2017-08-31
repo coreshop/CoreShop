@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\EventListener;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use Pimcore\Event\Model\ObjectEvent;
+use Pimcore\Event\Model\DataObjectEvent;
 
 final class CartRecalculationUpdate
 {
@@ -32,9 +32,9 @@ final class CartRecalculationUpdate
     }
 
     /**
-     * @param ObjectEvent $event
+     * @param DataObjectEvent $event
      */
-    public function recalculateCart(ObjectEvent $event)
+    public function recalculateCart(DataObjectEvent $event)
     {
         $cart = $event->getObject();
 
