@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
@@ -38,13 +38,14 @@ final class ORMTranslatableListener implements EventSubscriber
     private $translatableEntityLocaleAssigner;
 
     /**
-     * @param RegistryInterface  $resourceMetadataRegistry
+     * @param RegistryInterface $resourceMetadataRegistry
      * @param ContainerInterface $container
      */
     public function __construct(
         RegistryInterface $resourceMetadataRegistry,
         ContainerInterface $container
-    ) {
+    )
+    {
         $this->resourceMetadataRegistry = $resourceMetadataRegistry;
         $this->translatableEntityLocaleAssigner = $container->get('coreshop.translatable_entity_locale_assigner');
     }
@@ -117,17 +118,19 @@ final class ORMTranslatableListener implements EventSubscriber
         }
 
         /** @var MetadataInterface $translationResourceMetadata */
-        $translationResourceMetadata = $this->resourceMetadataRegistry->get($resourceMetadata->getAlias().'_translation');
+        $translationResourceMetadata = $this->resourceMetadataRegistry->get($resourceMetadata->getAlias() . '_translation');
 
-        $metadata->mapOneToMany([
-            'fieldName' => 'translations',
-            'targetEntity' => $translationResourceMetadata->getClass('model'),
-            'mappedBy' => 'translatable',
-            'fetch' => ClassMetadataInfo::FETCH_EXTRA_LAZY,
-            'indexBy' => 'locale',
-            'cascade' => ['persist', 'merge', 'remove'],
-            'orphanRemoval' => true,
-        ]);
+        if (!$metadata->hasAssociation('translations')) {
+            $metadata->mapOneToMany([
+                'fieldName' => 'translations',
+                'targetEntity' => $translationResourceMetadata->getClass('model'),
+                'mappedBy' => 'translatable',
+                'fetch' => ClassMetadataInfo::FETCH_EXTRA_LAZY,
+                'indexBy' => 'locale',
+                'cascade' => ['persist', 'merge', 'remove'],
+                'orphanRemoval' => true,
+            ]);
+        }
     }
 
     /**
@@ -148,17 +151,19 @@ final class ORMTranslatableListener implements EventSubscriber
         /** @var MetadataInterface $translatableResourceMetadata */
         $translatableResourceMetadata = $this->resourceMetadataRegistry->get(str_replace('_translation', '', $resourceMetadata->getAlias()));
 
-        $metadata->mapManyToOne([
-            'fieldName' => 'translatable',
-            'targetEntity' => $translatableResourceMetadata->getClass('model'),
-            'inversedBy' => 'translations',
-            'joinColumns' => [[
-                'name' => 'translatable_id',
-                'referencedColumnName' => 'id',
-                'onDelete' => 'CASCADE',
-                'nullable' => false,
-            ]],
-        ]);
+        if (!$metadata->hasAssociation('translatable')) {
+            $metadata->mapManyToOne([
+                'fieldName' => 'translatable',
+                'targetEntity' => $translatableResourceMetadata->getClass('model'),
+                'inversedBy' => 'translations',
+                'joinColumns' => [[
+                    'name' => 'translatable_id',
+                    'referencedColumnName' => 'id',
+                    'onDelete' => 'CASCADE',
+                    'nullable' => false,
+                ]],
+            ]);
+        }
 
         if (!$metadata->hasField('locale')) {
             $metadata->mapField([
@@ -178,7 +183,7 @@ final class ORMTranslatableListener implements EventSubscriber
         if (!$this->hasUniqueConstraint($metadata, $columns)) {
             $constraints = isset($metadata->table['uniqueConstraints']) ? $metadata->table['uniqueConstraints'] : [];
 
-            $constraints[$metadata->getTableName().'_uniq_trans'] = [
+            $constraints[$metadata->getTableName() . '_uniq_trans'] = [
                 'columns' => $columns,
             ];
 
@@ -192,7 +197,7 @@ final class ORMTranslatableListener implements EventSubscriber
      * Check if a unique constraint has been defined.
      *
      * @param ClassMetadata $metadata
-     * @param array         $columns
+     * @param array $columns
      *
      * @return bool
      */
