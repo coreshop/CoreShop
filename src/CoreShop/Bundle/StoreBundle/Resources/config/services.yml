@@ -29,9 +29,19 @@ services:
     class: CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver
     public: false
 
+  coreshop.context.store.request_based.resolver.admin:
+    class: CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver
+    public: false
+    arguments:
+     - '@coreshop.repository.store'
+     - '@pimcore.http.request_helper'
+     - '@pimcore.document_service'
+    tags:
+        - { name: coreshop.context.store.request_based.resolver, priority: 200 }
+
   coreshop.context.store.request_based.resolver.hostname_based:
     class: CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver
     public: false
     tags:
-        - { name: coreshop.context.store.request_based.resolver }
+        - { name: coreshop.context.store.request_based.resolver, priority: 100 }
     arguments: ['@coreshop.repository.store']
