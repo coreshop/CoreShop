@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use Payum\Core\Payum;
@@ -47,6 +48,7 @@ class CheckoutController extends FrontendController
          */
         $stepIdentifier = $request->get('stepIdentifier');
         $step = $this->checkoutManager->getStep($stepIdentifier);
+        $dataForStep = [];
 
         if (!$step instanceof CheckoutStepInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -68,18 +70,23 @@ class CheckoutController extends FrontendController
         }
 
         if ($request->isMethod('POST')) {
-            if ($step->commitStep($this->getCart(), $request)) {
-                $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
+            try {
+                if ($step->commitStep($this->getCart(), $request)) {
+                    $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
 
-                if ($nextStep) {
-                    return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                    if ($nextStep) {
+                        return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                    }
                 }
+            }
+            catch(CheckoutException $ex) {
+                $dataForStep['exception'] = $ex->getTranslatableText();
             }
         }
 
         $this->get('coreshop.tracking.manager')->trackCheckoutStep($this->getCart(), $step);
 
-        $dataForStep = $this->checkoutManager->prepareStep($step, $this->getCart(), $request);
+        $dataForStep = array_merge($dataForStep, $this->checkoutManager->prepareStep($step, $this->getCart(), $request));
 
         $dataForStep = array_merge(is_array($dataForStep) ? $dataForStep : [], [
             'cart' => $this->getCart(),
