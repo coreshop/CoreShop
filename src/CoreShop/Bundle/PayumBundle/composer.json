@@ -22,8 +22,8 @@
     "coreshop/order-bundle": "^2.0",
     "coreshop/payment-bundle": "^2.0",
     "payum/payum-bundle": "^2.2",
-    "payum/offline": "^1.3",
-    "payum/sofort": "^1.3",
+    "payum/offline": "^1.4",
+    "payum/sofort": "^1.4",
     "php-http/guzzle6-adapter": "^1.1"
   },
   "config": {
