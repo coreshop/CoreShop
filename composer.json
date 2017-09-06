@@ -64,7 +64,6 @@
     "coreshop/pimcore": "self.version"
   },
   "require": {
-    "doctrine/instantiator": "1.0.5",
     "doctrine/orm": "^2.5",
     "jms/serializer-bundle": "^1.3",
     "friendsofsymfony/rest-bundle": "^2.1",
