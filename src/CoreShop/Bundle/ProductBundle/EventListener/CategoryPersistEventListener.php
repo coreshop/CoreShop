@@ -33,6 +33,9 @@ final class CategoryPersistEventListener
             if ($parent instanceof CategoryInterface) {
                 $object->setParentCategory($parent);
             }
+            else {
+                $object->setParentCategory(null);
+            }
         }
     }
 }
