@@ -34,6 +34,11 @@ interface CartManagerInterface
     public function hasCart();
 
     /**
+     * Invalidates current session cart
+     */
+    public function invalidateSessionCart();
+
+    /**
      * @param CartInterface $cart
      *
      * @return mixed

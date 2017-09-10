@@ -203,6 +203,13 @@ class CheckoutController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order);
 
+        //After successfull payment, we log out the customer
+        if ($this->get('coreshop.context.customer')->getCustomer()->getIsGuest()) {
+            $this->get('security.token_storage')->setToken(null);
+        }
+
+        $this->getCartManager()->invalidateSessionCart();
+
         return $this->renderTemplate('@CoreShopFrontend/Checkout/thank-you.html.twig', [
             'order' => $order,
         ]);
