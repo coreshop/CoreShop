@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerType extends AbstractResourceType
 {
@@ -38,27 +39,47 @@ class CustomerType extends AbstractResourceType
                 'type' => EmailType::class,
                 'first_options' => ['label' => 'coreshop.form.customer.email'],
                 'second_options' => ['label' => 'coreshop.form.customer.email_repeat']
-            ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => ['label' => 'coreshop.form.customer.password'],
-                'second_options' => ['label' => 'coreshop.form.customer.password_repeat']
-            ])
+            ]);
+
+        if (!$options['guest']) {
+            $builder
+                ->add('password', RepeatedType::class, [
+                    'type' => PasswordType::class,
+                    'first_options' => ['label' => 'coreshop.form.customer.password'],
+                    'second_options' => ['label' => 'coreshop.form.customer.password_repeat']
+                ]);
+        }
+
+        $builder
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
                 'choices' => array(
                     'coreshop.form.customer.gender.male' => 'male',
                     'coreshop.form.customer.gender.female' => 'female'
                 ),
-            ])
-            ->add('newsletterActive', ChoiceType::class, [
-                'label' => 'coreshop.form.customer.newsletter',
-                'choices' => array(
-                    'coreshop.form.customer.newsletter.subscribe' => true,
-                    'coreshop.form.customer.gender.un_subscribe' => false
-                ),
-                'expanded' => true
             ]);
+
+        if (!$options['guest']) {
+            $builder
+                ->add('newsletterActive', ChoiceType::class, [
+                    'label' => 'coreshop.form.customer.newsletter',
+                    'choices' => array(
+                        'coreshop.form.customer.newsletter.subscribe' => true,
+                        'coreshop.form.customer.gender.un_subscribe' => false
+                    ),
+                    'expanded' => true
+                ]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->setDefault('guest', false);
     }
 
     /**
