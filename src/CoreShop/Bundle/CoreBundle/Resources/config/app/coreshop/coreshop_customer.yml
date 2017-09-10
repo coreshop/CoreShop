@@ -5,6 +5,8 @@ core_shop_customer:
       classes:
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomerGroup.json'
     customer:
-      path: coreshop/customers
+      path:
+        customer: coreshop/customers
+        guest: coreshop/guests
       classes:
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomer.json'

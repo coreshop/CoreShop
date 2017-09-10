@@ -55,6 +55,6 @@ class SummaryCheckoutStep implements CheckoutStepInterface
      */
     public function prepareStep(CartInterface $cart, Request $request)
     {
-        //Nothing to do here
+        return [];
     }
 }

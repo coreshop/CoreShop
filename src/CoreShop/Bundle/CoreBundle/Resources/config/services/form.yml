@@ -38,9 +38,14 @@ services:
     class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
     arguments: ['@coreshop.repository.customer']
     tags:
-      - {name: form.type}
+      - { name: form.type }
 
   coreshop.form.type.customer_registration:
     class: CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType
     tags:
-      - {name: form.type}
+      - { name: form.type }
+
+  coreshop.form.type.guest_registration:
+    class: CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType
+    tags:
+      - { name: form.type }

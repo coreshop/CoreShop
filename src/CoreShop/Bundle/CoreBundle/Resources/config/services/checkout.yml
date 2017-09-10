@@ -8,7 +8,10 @@ services:
 
   coreshop.checkout.step.customer:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep
-    arguments: ['@coreshop.context.customer', '@form.factory']
+    arguments:
+      - '@coreshop.context.customer'
+      - '@form.factory'
+      - '@coreshop.customer.registration_service'
 
   coreshop.checkout.step.address:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep

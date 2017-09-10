@@ -12,17 +12,15 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
+use CoreShop\Bundle\CoreBundle\Customer\CustomerAlreadyExistsException;
 use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use Pimcore\File;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegisterController extends FrontendController
 {
@@ -57,34 +55,15 @@ class RegisterController extends FrontendController
                     ]);
                 }
 
-                $existingCustomer = $this->get('coreshop.repository.customer')->findCustomerByEmail($customer->getEmail());
+                $registrationService = $this->get('coreshop.customer.registration_service');
 
-                if ($existingCustomer instanceof CustomerInterface) {
+                try {
+                    $registrationService->registerCustomer($customer, $address, $formData, false);
+                } catch (CustomerAlreadyExistsException $e) {
                     return $this->renderTemplate('CoreShopFrontendBundle:Register:register.html.twig', [
                         'form' => $form->createView()
                     ]);
                 }
-
-                $customer->setPublished(true);
-                $customer->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $this->getParameter('coreshop.folder.customer'), substr($customer->getLastname(), 0, 1))));
-                $customer->setKey(File::getValidFilename($customer->getEmail()));
-                $customer->setIsGuest(false);
-                $customer->save();
-
-                $address->setPublished(true);
-                $address->setKey(uniqid());
-                $address->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->getParameter('coreshop.folder.address'))));
-                $address->save();
-
-                $customer->addAddress($address);
-
-                $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getCustomerGroups());
-                $this->get('security.token_storage')->setToken($token);
-
-                $dispatcher = $this->container->get('event_dispatcher');
-                $dispatcher->dispatch('coreshop.customer.register', new CustomerRegistrationEvent($customer, $formData));
-
-                $customer->save();
 
                 return $this->redirectToRoute('coreshop_customer_profile');
             }

@@ -5,14 +5,14 @@
     <div class="col-sm-6">
         <div class="panel panel-smart">
             <div class="panel-heading">
-                <h3 class="panel-title">Login</h3>
+                <h3 class="panel-title">{{ 'login'|trans }}</h3>
             </div>
             <div class="panel-body">
                 {% if last_error %}
                     {{ messages.error(last_error.messageKey|trans(last_error.messageData, 'security')) }}
                 {% endif %}
                 <p>
-                    Please login using your existing account
+                    {{ 'login_with_existing_account'|trans }}
                 </p>
 
                 {{ form_start(form, {'action': path('coreshop_login_check'), 'attr': {'novalidate': 'novalidate'}}) }}
@@ -26,6 +26,8 @@
                     {% endif %}
 
                     <button type="submit" class="ui blue submit button">{{ 'login'|trans }}</button>
+
+                    <a class="pull-right" href="{{ path('coreshop_customer_password_reset_request') }}">{{ 'reset_password'|trans }}</a>
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
         </div>
@@ -39,9 +41,9 @@
             </div>
             <div class="panel-body">
                 <p>
-                    Registration allows you to avoid filling in billing and shipping forms every time you checkout on this website
+                    {{ 'registration_text'|trans }}
                 </p>
-                {# TODO: Register #}
+                <a href="{{ path('coreshop_register') }}" class="btn btn-black">{{ 'register'|trans }}</a>
             </div>
         </div>
     </div>
