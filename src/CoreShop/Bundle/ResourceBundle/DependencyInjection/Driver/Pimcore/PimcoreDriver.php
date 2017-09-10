@@ -72,21 +72,33 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $container->setParameter(sprintf('%s.folder.%s', $metadata->getApplicationName(), $metadata->getName()), $metadata->getParameter('path'));
+        $folder = $metadata->getParameter('path');
+
+        if (!is_array($folder)) {
+            $folders[$metadata->getName()] = $folder;
+        }
+        else {
+            $folders = $folder;
+        }
 
         $parameterNameForAllAppPaths = sprintf('%s.folders', $metadata->getApplicationName());
         $parameterNameForAllPaths = 'coreshop.resource.folders';
 
-        foreach ([$parameterNameForAllPaths, $parameterNameForAllAppPaths] as $parameterName) {
-            $allPaths = [];
+        foreach ($folders as $folderType => $folder) {
+            $paramName = sprintf('%s.folder.%s', $metadata->getApplicationName(), $folderType);
+            $container->setParameter($paramName, $folder);
 
-            if ($container->hasParameter($parameterName)) {
-                $allPaths = $container->getParameter($parameterName);
+            foreach ([$parameterNameForAllPaths, $parameterNameForAllAppPaths] as $parameterName) {
+                $allPaths = [];
+
+                if ($container->hasParameter($parameterName)) {
+                    $allPaths = $container->getParameter($parameterName);
+                }
+
+                $allPaths[$paramName] = $folder;
+
+                $container->setParameter($parameterName, $allPaths);
             }
-
-            $allPaths[] = $metadata->getParameter('path');
-
-            $container->setParameter($parameterName, $allPaths);
         }
     }
 
