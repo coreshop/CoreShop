@@ -156,9 +156,10 @@ class PaymentController extends Controller
 
         //Start Workflow with $status->getStatus()
 
-        /*
+        /**
          * Further process the status here, kick-off the pimcore workflow for orders?
-        */        return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
+        */
+        return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 
     /**
