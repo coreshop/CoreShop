@@ -20,6 +20,9 @@ use Webmozart\Assert\Assert;
 
 final class CustomerListener extends AbstractNotificationRuleListener
 {
+    /**
+     * @param RequestPasswordChangeEvent $event
+     */
     public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event)
     {
         $this->rulesProcessor->applyRules('user', $event->getCustomer(), [
@@ -30,11 +33,14 @@ final class CustomerListener extends AbstractNotificationRuleListener
         ]);
     }
 
+    /**
+     * @param GenericEvent $event
+     */
     public function applyRegisterCustomerRule(GenericEvent $event) {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         $this->rulesProcessor->applyRules('user', $event->getSubject(), [
-            'type' => 'password-reset',
+            'type' => 'register',
             'recipient' => $event->getSubject()->getEmail(),
             '_locale' => $this->shopperContext->getLocaleCode()
         ]);
