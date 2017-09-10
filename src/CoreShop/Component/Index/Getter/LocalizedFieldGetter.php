@@ -14,7 +14,7 @@ namespace CoreShop\Component\Index\Getter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Localization\Locale;
+use Pimcore\Service\Locale;
 
 class LocalizedFieldGetter implements GetterInterface
 {
