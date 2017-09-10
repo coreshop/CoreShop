@@ -134,7 +134,14 @@ class Dao
                 .$this->model->getJoins()
                 .$condition.' GROUP BY '.$this->database->quoteIdentifier($fieldname).' ORDER BY '.$this->database->quoteIdentifier($fieldname);
 
-            $result = $this->database->fetchCol($query);
+            $queryResult = $this->database->fetchAll($query);
+            $result = [];
+
+            foreach ($queryResult as $row) {
+                if ($row[$fieldname]) {
+                    $result[] = $row[$fieldname];
+                }
+            }
 
             return $result;
         }

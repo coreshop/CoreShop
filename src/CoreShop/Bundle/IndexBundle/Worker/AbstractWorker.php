@@ -142,7 +142,7 @@ abstract class AbstractWorker implements WorkerInterface
                         }
                     }
 
-                    list ($columnLocalizedData, $columnRelationData) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+                    list ($columnLocalizedData, $columnRelationData, $value) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
 
                     $relationData = array_merge_recursive($relationData, $columnRelationData);
                     $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
@@ -156,7 +156,8 @@ abstract class AbstractWorker implements WorkerInterface
                     }
                 }
             } catch (\Exception $e) {
-                Logger::err('Exception in CoreShopIndexService: ' . $e->getMessage(), $e);
+                Logger::err('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
+                throw $e;
             }
         }
 
@@ -291,7 +292,7 @@ abstract class AbstractWorker implements WorkerInterface
         }
 
         return [
-            $localizedData, $relationData
+            $localizedData, $relationData, $value
         ];
     }
 
@@ -307,18 +308,14 @@ abstract class AbstractWorker implements WorkerInterface
         $interpreter = $column->getInterpreter();
 
         if (!empty($interpreter)) {
-            $interpreterClass = $this->interpreterServiceRegistry->get($column->getInterpreter());
+            $interpreterObject = $this->interpreterServiceRegistry->get($column->getInterpreter());
 
-            if (Tool::classExists($interpreterClass)) {
-                $interpreterObject = new $interpreterClass();
-
-                if ($interpreterObject instanceof InterpreterInterface) {
-                    return $interpreterObject;
-                } else {
-                    throw new \InvalidArgumentException(
-                        sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreterClass)
-                    );
-                }
+            if ($interpreterObject instanceof InterpreterInterface) {
+                return $interpreterObject;
+            } else {
+                throw new \InvalidArgumentException(
+                    sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreter)
+                );
             }
         }
 
