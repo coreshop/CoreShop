@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Translation;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Pimcore\Cache\Runtime;
-use Pimcore\Service\Locale;
+use Pimcore\Localization\Locale;
 use Pimcore\Tool;
 
 final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntityLocaleAssignerInterface

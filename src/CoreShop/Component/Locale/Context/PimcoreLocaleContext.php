@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Locale\Context;
 
-use Pimcore\Service\Locale;
+use Pimcore\Localization\Locale;
 
 class PimcoreLocaleContext implements LocaleContextInterface
 {
