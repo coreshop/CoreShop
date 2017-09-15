@@ -12,12 +12,13 @@
 
 namespace CoreShop\Test;
 
-use Pimcore\Model\Object\AbstractObject;
+use PHPUnit\Framework\TestSuite;
+use Pimcore\Model\DataObject\AbstractObject;
 
 /**
  * Class SuiteBase.
  */
-class SuiteBase extends \PHPUnit_Framework_TestSuite
+class SuiteBase extends TestSuite
 {
     /**
      * Setup.
