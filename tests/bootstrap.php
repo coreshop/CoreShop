@@ -41,10 +41,18 @@ if (!defined('PIMCORE_APP_ROOT')) {
 
 define('PIMCORE_PRIVATE_VAR', CORESHOP_TESTS_PATH.'/tmp/var');
 
-if (file_exists('pimcore/config/constants.php'))
-    require_once 'pimcore/config/constants.php';
+if (!defined('PIMCORE_PROJECT_ROOT')) {
+    define(
+        'PIMCORE_PROJECT_ROOT',
+        getenv('PIMCORE_PROJECT_ROOT')
+            ?: getenv('REDIRECT_PIMCORE_PROJECT_ROOT')
+            ?: realpath(getcwd())
+    );
+}
 
-$loader = require_once PIMCORE_PATH.'/config/autoload.php';
+if (file_exists('pimcore/config/bootstrap.php'))
+    require_once 'pimcore/config/bootstrap.php';
+
 include_once CORESHOP_TESTS_PATH . '/app/TestAppKernel.php';
 
 /*
