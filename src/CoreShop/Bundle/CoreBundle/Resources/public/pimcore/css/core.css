@@ -10,10 +10,15 @@
     background-image: url(../img/logo-fill.svg)
 }
 
-#pimcore_menu_coreshop {
-    background-image: url(../img/logo-fill.svg) !important;
-    width:100%;
-    height:100%;
+#pimcore_menu_coreshop svg {
+    width: 30px!important;
+    height: 30px!important;
+    left: 13px!important;
+    top: 8px!important;
+}
+
+#pimcore_navigation li#pimcore_menu_coreshop:hover:after {
+    background-color: #5CB672;
 }
 
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */
