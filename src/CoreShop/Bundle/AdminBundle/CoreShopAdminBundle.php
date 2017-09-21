@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\AdminBundle;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
 final class CoreShopAdminBundle extends AbstractPimcoreBundle
@@ -46,7 +47,17 @@ final class CoreShopAdminBundle extends AbstractPimcoreBundle
      */
     public function getVersion()
     {
-        return Version::getVersion();
+        return Version::getVersion() . " (" . $this->getComposerVersion() . ")";
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerVersion()
+    {
+        $version = Versions::getVersion('coreshop/core-shop');
+
+        return $version;
     }
 
     /**
