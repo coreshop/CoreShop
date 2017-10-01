@@ -44,7 +44,7 @@ php bin/console doctrine:schema:update --force
 php bin/console coreshop:resources:install
 ```
 
-Learn more about overriding Pimcore Classes [here](../03_Development/12_Override_CoreShop_Classes.md))
+Learn more about overriding Pimcore Classes [here](../03_Development/01_Extending_Guide/03_Extend_CoreShop_DataObjects.md))
 
 
 ## Usage

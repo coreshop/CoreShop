@@ -1,20 +1,41 @@
-# CoreShop Development
+# CoreShop
 
-This section provides a quick getting started tutorial for CoreShop and covers the following topics: 
+The Developer’s guide to leveraging the flexibility of CoreShop. Here you will find all the concepts used in CoreShop.
 
-1. [Getting Started](./01_Getting_Started.md)
-2. [Extending CoreShop](./02_Extending_CoreShop.md)
-3. [Themes](./04_Themes.md)
-4. [Payment](./04_Payment.md)
-5. [Carrier](./05_Carrier)
-6. [Tax Manager](./06_Tax_Manager.md)
-7. [Events](./07_Events.md)
-8. [Products](./08_Products/README.md)
-    1. [Product Comparing](./09_Products/01_Product_Comparing.md) 
-9. [Cart](./09_Cart.md)
-10. [Override Controllers](./10_Override_Controllers.md)
-11. [Override CoreShop Classes](./11_Override_CoreShop_Classes.md)
-12. [Tracking](./12_Tracking.md)
-13. [Checkout](./13_Checkout.md)
-13. [Extending Rules](./14_Rules)
-15. [Notification Rules](./15_Notification_Rules)
+## Introduction
+
+## CoreShop Resources
+
+CoreShop uses Doctrine ORM for Custom Resources. ORM enables us great flexibility and extendability for simple models like Currencies and Countries.
+CoreShop currently implements these Resources as ORM Model:
+
+ - Currency
+ - Country and State
+ - Tax Rate and Tax Rules
+ - Price Rules
+ - Carrier
+ - Shipping Rules
+ - Index and Filter Configuration
+ - Notification Rule Configuration
+ - Stores
+ - Payments
+
+Everytime something is called a Resource, we talk about ORM Models.
+
+## CoreShop Pimcore Models
+
+CoreShop also takes advantage of Pimcores flexible data-model. Objects that are heavily used and changed are implemented using Data Objects:
+
+ - Product
+ - Product Category
+ - Manufacturer
+ - Cart
+ - Order
+ - Order Invoice
+ - Order Shipment
+ - Quote
+ - Customer
+ - Customer Group
+ - Addresses
+
+Everytime we talk about Objects, we talk about Pimcore Data Objects.
