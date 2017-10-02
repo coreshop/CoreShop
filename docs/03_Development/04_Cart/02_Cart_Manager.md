@@ -14,7 +14,7 @@ The Cart Manager implements the Interface ```CoreShop\Component\Order\Manager\Ca
 
 If you want to get the current cart, you simply use the service:
 
-```
+```php
 $cartManager = $container->get('coreshop.cart.manager');
 
 // Get current cart, if none exists, it creates a new one

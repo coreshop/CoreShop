@@ -60,7 +60,7 @@ final class Configuration implements ConfigurationInterface
 ```
 
 ## Routes Exmaple File
-```yml
+```yaml
 yeah_route:
   pattern: "/(\\w+)\\/yeah-route/"
   reverse: "/%_locale/yeah\-route"

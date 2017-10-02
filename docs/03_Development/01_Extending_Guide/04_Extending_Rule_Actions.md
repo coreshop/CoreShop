@@ -96,7 +96,7 @@ coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.
 ## Registering the Custom Action to the Container and load the Javascript File
 We now need to create our Service Definition for our Custom Action:
 
-```yml
+```yaml
 app.product_price_rule.custom:
     class: AppBundle\CoreShop\CustomAction
     tags:
@@ -105,7 +105,7 @@ app.product_price_rule.custom:
 
 and add this to your config.yml:
 
-```yml
+```yaml
 core_shop_product:
     pimcore_admin:
         js:

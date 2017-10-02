@@ -7,7 +7,7 @@ dynamic and configurable. It uses a Factory and Repository Pattern to do that.
 
 If you want to create a new Cart, we need to get our Factory Service for that:
 
-```
+```php
 $factory = $container->get('coreshop.factory.cart');
 $cart = $factory->createNew();
 ```
@@ -16,7 +16,7 @@ No we have a new Cart and we can set all needed values.
 
 If you now want to save it, just call the save function
 
-```
+```php
 $cart->save();
 ```
 
@@ -24,7 +24,7 @@ $cart->save();
 
 To get carts, you need to use the Repository Service CoreShop provides you.
 
-```
+```php
 $repository = $container->get('coreshop.repository.cart');
 
 
@@ -42,7 +42,7 @@ $carts = $list->getObjects();
 
 Update works the same as you are used to in Pimcore
 
-```
+```php
 $repository = $container->get('coreshop.repository.cart');
 
 
@@ -58,7 +58,7 @@ $cartWithIdOne->save();
 
 Delete works the same as you are used to in Pimcore
 
-```
+```php
 $repository = $container->get('coreshop.repository.cart');
 
 

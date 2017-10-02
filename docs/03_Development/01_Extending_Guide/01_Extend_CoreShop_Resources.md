@@ -10,7 +10,7 @@ Let’s take the ```CoreShop\Component\Currency\Model\Currency``` as an example.
 
 First of all, you need to find the current used class by doing following:
 
-```
+```bash
 $ php bin/console debug:container --parameter=coreshop.model.currency.class
 ```
 
@@ -20,7 +20,7 @@ Assuming you want to add a field called **flag**
 
 **1.** The first thing to do is to write your own class which will extend the base ```Currency``` class
 
-```
+```php
 <?php
 
 namespace AppBundle\Entity;
@@ -56,7 +56,7 @@ class Currency extends BaseCurrency
 
 The file should be placed in ```AppBundle/Resources/config/doctrine/Currency.orm.yml```
 
-```
+```yaml
 AppBundle\Entity\Currency:
     type: entity
     table: coreshop_currency
@@ -71,7 +71,7 @@ AppBundle\Entity\Currency:
 Under the core_shop_* where * is the name of the bundle of the model you are customizing, in our case it will be the CoreShopCurrencyBundle -> core_shop_currency.
 
 
-```
+```yaml
 core_shop_currency:
     resources:
         currency:
@@ -83,14 +83,14 @@ core_shop_currency:
 
 via direct database schema update:
 
-```
+```bash
 $ php bin/console doctrine:schema:update --force
 ```
 
 via migrations:
 Which we strongly recommend over updating the schema.
 
-```
+```bash
 $ php bin/console doctrine:migrations:diff
 $ php bin/console doctrine:migrations:migrate
 ```

@@ -33,7 +33,7 @@ are on page ```/en``` we want to resolve to Country ```Great Britain```:
 
 **1**: First of all we need to create our RequestBased Country Context:
 
-```
+```php
 <?php
 
 namespace AppBundle\CoreShop\Address\Context;
@@ -84,7 +84,7 @@ final class DocumentBasedRequestRequestResolver implements RequestResolverInterf
 
 Now we need to configure the service in ```src/AppBundle/Resources/config/services.yml```
 
-```
+```yaml
 services:
   app.coreshop.country.context.request.document_based:
     class: AppBundle\CoreShop\Address\Context\DocumentBasedRequestRequestResolver

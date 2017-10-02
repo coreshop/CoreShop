@@ -65,7 +65,7 @@ final class CustomOrderTransfomer implements ProposalTransformerInterface
 
 Now we need to register our class the container set the decorator:
 
-```yml
+```yaml
 app.coreshop.order.transformer.cart_to_order:
     decorates: coreshop.order.transformer.cart_to_order
     class: AppBundle\CoreShop\Order\Transformer\CustomOrderTransformer

@@ -1,8 +1,8 @@
 # CoreShop Payment Bundle
 
 ## Installation
-```
-composer require coreshop/payment-bundle:^2.0
+```bash
+$ composer require coreshop/payment-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel
@@ -36,8 +36,8 @@ public function registerBundles()
 ### Updating database schema
 Run the following command.
 
-```
-php bin/console doctrine:schema:update --force
+```bash
+$ php bin/console doctrine:schema:update --force
 ```
 
 ## Usage

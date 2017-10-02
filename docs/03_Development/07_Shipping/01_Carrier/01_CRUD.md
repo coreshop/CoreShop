@@ -3,13 +3,13 @@
 ## Create
 If you want to create a Carrier via API, you can do following:
 
-```
+```php
 $newCarrier = $container->get('coreshop.factory.carrier')->createNew();
 ```
 
 Now you have a new Carrier, if you want to persist it, you need to do following:
 
-```
+```php
 $container->get('coreshop.manager.carrier')->persist($newCarrier);
 $container->get('coreshop.manager.carrier')->flush();
 ```
@@ -20,7 +20,7 @@ You now have a new persisted Carrier.
 
 If you want to query for Carriers, you can do following:
 
-```
+```php
 $carrierRepository = $container->get('coreshop.repository.carrier');
 
 $queryBuilder = $carrierRepository->createQueryBuilder('c');
@@ -37,7 +37,7 @@ $carriers = $queryBuilder->getQuery()->getResult();
 
 If you want to update and existing Carrier, you need to do following:
 
-```
+```php
 // Fetch Carrier
 
 $carrier = $carrierRepository->findById(1);
@@ -51,7 +51,7 @@ $container->get('coreshop.manager.carrier')->flush();
 ## Delete
 If you want to update and existing Carrier, you need to do following:
 
-```
+```php
 // Fetch Carrier
 
 $carrier = $carrierRepository->findById(1);

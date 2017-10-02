@@ -34,13 +34,13 @@ Your form has to extend a proper base class. How can you check that?
 
 For the ``StoreType`` run:
 
-```
+```bash
 $ php bin/console debug:container coreshop.form.type.store
 ```
 
 As a result you will get the ``CoreShop\Bundle\StoreBundle\Form\Type\StoreType`` - this is the class that you need to be extending.
 
-```
+```php
 <?php
 
 namespace AppBundle\Form\Extension;
@@ -69,7 +69,7 @@ final class StoreTypeExtension extends AbstractTypeExtension
 
 **3.** After creating your class, register this extension as a service in the ``AppBundle/Resources/config/services.yml``:
 
-```
+```yaml
 services:
     app.form.extension.type.customer_profile:
         class: AppBundle\Form\Extension\StoreTypeExtension
@@ -81,7 +81,7 @@ In our case you will need to extend the ExtJs Form as well: `src/AppBundle/Resou
 
 In **ExtJs** your new store file need to like like this:
 
-```
+```javascript
 coreshop.store.item = Class.create(coreshop.store.item, {
 
     getFormPanel: function ($super) {
@@ -104,7 +104,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
 
 And you need to configure it to be loaded as well:
 
-```
+```yaml
 core_shop_store:
     pimcore_admin:
         js:

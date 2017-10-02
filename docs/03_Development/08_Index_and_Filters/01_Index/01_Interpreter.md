@@ -61,7 +61,7 @@ class MyInterpreter implements InterpreterInterface
 
 **2**:Register MyInterpreter as service with tag ```coreshop.index.interpreter```, type and form
 
-```
+```yaml
 app.index.interpreter.my_interpreter:
     class: AppBundle\Index\Interpreter\MyInterpreter
     tags:

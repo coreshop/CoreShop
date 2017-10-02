@@ -4,7 +4,7 @@ CoreShop Data Objects (like CoreShopProduct or CoreShopOrder) should not be chan
 
 CoreShop uses Pimcore Parameters to determine the Pimcore Object Class. To change it, simply add this to your services.yml
 
-```
+```yaml
 parameters:
     core_shop_order:
         pimcore:

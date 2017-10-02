@@ -1,6 +1,6 @@
 # CoreShop Product Configuration
 
-```
+```yaml
 core_shop_product:
     pimcore:
         product:

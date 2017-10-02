@@ -4,7 +4,7 @@
     - FormType for processing the Input Data
     - And a FilterConditionProcessorInterface, which checks if a cart fulfills the condition.
 
-```
+```php
 namespace AppBundle\Filter\Form\Type\Condition;
 
 use Symfony\Component\Form\AbstractType;
@@ -33,7 +33,7 @@ final class MyFilterCondition extends AbstractType
 
 ```
 
-```
+```php
 namespace AppBundle\Filter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -59,7 +59,7 @@ class MyFilterCondition extends FilterConditionProcessorInterface
 
 **2**. Register MyFilterCondition as service with tag ```coreshop.filter.condition_type```, type and form
 
-```
+```yaml
 app.coreshop.shipping_rule.condition.my_rule:
     class: AppBundle\Shipping\Rule\Condition\MyRuleConditionChecker
     tags:

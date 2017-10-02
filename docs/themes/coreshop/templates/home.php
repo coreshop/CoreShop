@@ -8,81 +8,48 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/$this->layout('theme::layout/00_layout') ?>
-<div class="Navbar hidden-print">
-    <div class="container">
-        <?php $this->insert('theme::partials/navbar_content', ['params' => $params]); ?>
-    </div>
-</div>
+*/$this->layout('theme::layout/05_page') ?>
+<article class="Page">
 
-<div class="Homepage">
-    <div class="HomepageTitle container">
-        <?php if ($params['tagline']) {
-    echo '<h2>'.$params['tagline'].'</h2>';
+    <div class="Page__header">
+        <?= $page['breadcrumbs'] ? $this->get_breadcrumb_title($page, $base_page) : $page['title'] ?>
+        <?php if ($params['html']['date_modified']) {
+    ?>
+        <span style="float: left; font-size: 10px; color: gray;">
+            <?= date('l, F j, Y g:i A', $page['modified_time']); ?>
+        </span>
+        <?php
+} ?>
+        <?php if (array_key_exists('edit_on_github', $params['html']) && $params['html']['edit_on_github']) {
+    ?>
+        <span style="float: right; font-size: 10px; color: gray;">
+            <a href="https://github.com/<?= $params['html']['edit_on_github'] ?>/<?= $page['relative_path'] ?>" target="_blank">Edit on GitHub</a>
+        </span>
+        <?php
 } ?>
     </div>
 
-    <div class="HomepageImage container">
-        <?php if ($params['image']) {
-    echo '<img class="homepage-image img-responsive" src="'.$params['image'].'" alt="'.$params['title'].'">';
+
+    <div class="s-content">
+        <?= $page['content']; ?>
+    </div>
+
+    <?php if (!empty($page['prev']) || !empty($page['next'])) {
+    ?>
+    <nav>
+        <ul class="Pager">
+            <?php if (!empty($page['prev'])) {
+        ?><li class=Pager--prev><a href="<?= $base_url.$page['prev']->getUrl() ?>">Previous</a></li><?php
+
+    } ?>
+            <?php if (!empty($page['next'])) {
+        ?><li class=Pager--next><a href="<?= $base_url.$page['next']->getUrl() ?>">Next</a></li><?php
+
+    } ?>
+        </ul>
+    </nav>
+    <?php
+
 } ?>
-    </div>
+</article>
 
-    <div class="HomepageButtons">
-        <div class="container">
-            <?php
-            if ($params['html']['repo']) {
-                echo '<a href="https://github.com/'.$params['html']['repo'].'" class="Button Button--secondary Button--hero">View On GitHub</a>';
-            }
-            foreach ($page['entry_page'] as $key => $node) {
-                echo '<a href="'.$node.'" class="Button Button--primary Button--hero">'.$key.'</a>';
-            }
-            ?>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-</div>
-
-<div class="HomepageContent">
-    <div class="container">
-        <div class="container--inner">
-            <div class="doc_content s-content">
-                <?= $page['content']; ?>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="HomepageFooter">
-    <div class="container">
-        <div class="container--inner">
-            <?php if (!empty($params['html']['links'])) {
-                ?>
-                <ul class="HomepageFooter__links">
-                    <?php foreach ($params['html']['links'] as $name => $url) {
-                    echo '<li><a href="'.$url.'" target="_blank">'.$name.'</a></li>';
-                } ?>
-                </ul>
-            <?php
-
-            } ?>
-
-            <?php if (!empty($params['html']['twitter'])) {
-                ?>
-                <div class="HomepageFooter__twitter">
-                    <?php foreach ($params['html']['twitter'] as $handle) {
-                    ?>
-                    <div class="Twitter">
-                        <iframe allowtransparency="true" frameborder="0" scrolling="no" style="width:162px; height:20px;" src="https://platform.twitter.com/widgets/follow_button.html?screen_name=<?= $handle; ?>&amp;show_count=false"></iframe>
-                    </div>
-                    <?php
-
-                } ?>
-                </div>
-            <?php
-
-            } ?>
-        </div>
-    </div>
-    <div class="clearfix"></div>
-</div>

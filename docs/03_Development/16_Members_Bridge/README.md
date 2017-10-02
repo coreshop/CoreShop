@@ -22,7 +22,7 @@ If you are using the full CoreShop Suite (coreshop/core-shop), simply add follow
 
 Add following configuration to your config.yml
 
-```yml
+```yaml
 imports:
     - { resource: "@CoreShopMembersBridgeBundle/Resources/config/app/config.yml" }
 ```

@@ -31,7 +31,7 @@ are on page ```/en``` we want to resolve to Store ```Store EN```:
 
 **1**: First of all we need to create our RequestBased Store Context:
 
-```
+```php
 <?php
 
 namespace AppBundle\CoreShop\Store\Context;
@@ -82,7 +82,7 @@ final class DocumentBasedRequestRequestResolver implements RequestResolverInterf
 
 Now we need to configure the service in ```src/AppBundle/Resources/config/services.yml```
 
-```
+```yaml
 services:
   app.coreshop.store.context.request.document_based:
     class: AppBundle\CoreShop\Store\Context\DocumentBasedRequestRequestResolver

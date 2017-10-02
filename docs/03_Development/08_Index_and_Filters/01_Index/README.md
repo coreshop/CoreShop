@@ -34,6 +34,6 @@ Every field has some properties that needs to be configured
 
 If you make changes to the index, you need to re-index all of your products. To do that, there is a cli Command
 
-```
-php bin/console coreshop:index
+```bash
+$ php bin/console coreshop:index
 ```

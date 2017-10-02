@@ -8,7 +8,7 @@ You can setup your own example:
         \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
     ```
  - Add Following to your app/config/config.yml
-    ```yml
+    ```yaml
         imports:
             - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
     ```

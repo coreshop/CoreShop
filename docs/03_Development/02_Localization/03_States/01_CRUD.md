@@ -3,13 +3,13 @@
 ## Create
 If you want to create a State via API, you can do following:
 
-```
+```php
 $newState = $container->get('coreshop.factory.state')->createNew();
 ```
 
 Now you have a new State, if you want to persist it, you need to do following:
 
-```
+```php
 $container->get('coreshop.manager.state')->persist($newState);
 $container->get('coreshop.manager.state')->flush();
 ```
@@ -20,7 +20,7 @@ You now have a new persisted State.
 
 If you want to query for States, you can do following:
 
-```
+```php
 $stateRepository = $container->get('coreshop.repository.state');
 
 $queryBuilder = $stateRepository->createQueryBuilder('c');
@@ -37,7 +37,7 @@ $states = $queryBuilder->getQuery()->getResult();
 
 If you want to update and existing State, you need to do following:
 
-```
+```php
 // Fetch State
 
 $state = $stateRepository->findById(1);
@@ -51,7 +51,7 @@ $container->get('coreshop.manager.state')->flush();
 ## Delete
 If you want to update and existing State, you need to do following:
 
-```
+```php
 // Fetch State
 
 $state = $stateRepository->findById(1);

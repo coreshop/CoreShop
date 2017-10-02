@@ -2,7 +2,7 @@
 
 If you use CoreShop FrontendBundle, you can change the Controllers it uses. Simply change the configuration for the controller:
 
-```yml
+```yaml
 core_shop_frontend:
     controllers:
         index: CoreShop\Bundle\FrontendBundle\Controller\IndexController
@@ -45,7 +45,7 @@ class ProductController extends \CoreShop\Bundle\FrontendBundle\Controller\Produ
 
 **2**: Change Configuration of the Controller:
 
-```yml
+```yaml
 core_shop_frontend:
     controllers:
         product: AppBundle\Controller\ProductController

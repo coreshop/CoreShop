@@ -3,13 +3,13 @@
 ## Create
 If you want to create a Currency via API, you can do following:
 
-```
+```php
 $newCurrency = $container->get('coreshop.factory.currency')->createNew();
 ```
 
 Now you have a new Currency, if you want to persist it, you need to do following:
 
-```
+```php
 $container->get('coreshop.manager.currency')->persist($newCurrency);
 $container->get('coreshop.manager.currency')->flush();
 ```
@@ -20,7 +20,7 @@ You now have a new persisted Currency.
 
 If you want to query for Currencies, you can do following:
 
-```
+```php
 $currencyRepository = $container->get('coreshop.repository.currency');
 
 $queryBuilder = $currencyRepository->createQueryBuilder('c');
@@ -37,7 +37,7 @@ $currencies = $queryBuilder->getQuery()->getResult();
 
 If you want to update and existing Currency, you need to do following:
 
-```
+```php
 // Fetch Currency
 
 $currency = $currencyRepository->findById(1);
@@ -51,7 +51,7 @@ $container->get('coreshop.manager.currency')->flush();
 ## Delete
 If you want to update and existing Currency, you need to do following:
 
-```
+```php
 // Fetch Currency
 
 $currency = $currencyRepository->findById(1);

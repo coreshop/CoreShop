@@ -7,7 +7,7 @@
 
 To add the Omnipay Bridge, do following:
 
-```
+```bash
 $ composer require payum/omnipay-v3-bridge:dev-master
 ```
 
@@ -86,7 +86,7 @@ final class WorldpayType extends AbstractType
 
 Register into the container:
 
-```yml
+```yaml
 services:
   app.form.type.gateway_configuration.worldpay:
     class: AppBundle\Form\Type\WorldpayType
@@ -99,7 +99,7 @@ services:
 
 **2**: Add ExtJs Form:
 
-```
+```javascript
 pimcore.registerNS('coreshop.provider.gateways.omnipay_worldpay');
 coreshop.provider.gateways.omnipay_worldpay = Class.create(coreshop.provider.gateways.abstract, {
 
@@ -134,7 +134,7 @@ coreshop.provider.gateways.omnipay_worldpay = Class.create(coreshop.provider.gat
 
 Register JS File for CoreShop to be loaded:
 
-```
+```yaml
 core_shop_payment:
     pimcore_admin:
       js:

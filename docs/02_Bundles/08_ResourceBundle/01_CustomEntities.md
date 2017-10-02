@@ -108,7 +108,7 @@ class CustomEntityTranslation extends AbstractTranslation implements CountryTran
 
 ## Create Doctrine Configuration
 
-```yml
+```yaml
 # AppBundle/Resources/config/doctrine/model/CustomEntity.orm.yml
 
 AppBundle\Model\CustomEntity:
@@ -125,7 +125,7 @@ AppBundle\Model\CustomEntity:
 
 Our Translation Doctrine definition:
 
-```yml
+```yaml
 # AppBundle/Resources/config/doctrine/model/CustomEntityTranslation.orm.yml
 
 AppBundle\Model\CustomEntityTranslation:
@@ -270,7 +270,7 @@ final class AppBundle extends AbstractResourceBundle
 
 ## Create Serialization Definition if you want to serialize your Entity
 
-```yml
+```yaml
 # AppBundle/Resources/config/serializer/Model.CustomEntity.yml
 
 AppBundle\Model\CustomEntity:
@@ -291,7 +291,7 @@ AppBundle\Model\CustomEntity:
       groups: [List, Detailed]
 ```
 
-```yml
+```yaml
 # AppBundle/Resources/config/serializer/Model.CustomEntityTranslation.yml
 
 AppBundle\Model\CustomEntityTranslation:
@@ -305,7 +305,7 @@ AppBundle\Model\CustomEntityTranslation:
 ```
 
 ## Create Routes to ResourceController
-```yml
+```yaml
 # AppBundle/Resources/config/pimcore/routing.yml
 
 app_custom_entity:

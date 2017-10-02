@@ -4,8 +4,8 @@ Address Bundle provides you with Models for Storing Countries, States, Zones and
 to find the visitors Country.
 
 ## Installation
-```
-composer require coreshop/address-bundle:^2.0
+```bash
+$ composer require coreshop/address-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel
@@ -39,14 +39,14 @@ public function registerBundles()
 ### Updating database schema
 Run the following command.
 
-```
-php bin/console doctrine:schema:update --force
+```bash
+$ php bin/console doctrine:schema:update --force
 ```
 
 ### Install Pimcore Entities
 
-```
-php bin/console coreshop:resources:install
+```bash
+$ php bin/console coreshop:resources:install
 ```
 
 

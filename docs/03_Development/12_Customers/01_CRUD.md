@@ -7,7 +7,7 @@ dynamic and configurable. It uses a Factory and Repository Pattern to do that.
 
 If you want to create a new Custom, we need to get our Factory Service for that:
 
-```
+```php
 $customerFactory = $container->get('coreshop.factory.custom');
 $customer = $customerFactory->createNew();
 ```
@@ -16,7 +16,7 @@ No we have our customer and we can set all needed values.
 
 If you now want to save it, just call the save function
 
-```
+```php
 $customer->save();
 ```
 
@@ -24,7 +24,7 @@ $customer->save();
 
 To get customers, you need to use the Repository Service CoreShop provides you.
 
-```
+```php
 $repository = $container->get('coreshop.repository.customer');
 
 
@@ -42,7 +42,7 @@ $customers = $list->getObjects();
 
 Update works the same as you are used to in Pimcore
 
-```
+```php
 $repository = $container->get('coreshop.repository.customer');
 
 
@@ -58,7 +58,7 @@ $customerWithIdOne->save();
 
 Delete works the same as you are used to in Pimcore
 
-```
+```php
 $repository = $container->get('coreshop.repository.customer');
 
 

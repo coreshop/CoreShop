@@ -22,7 +22,7 @@ into the container with the tag ```coreshop.cart_processor``` and a ```priority`
 ### Example of a Cart Processor
 For example, we create a Cart Processor, which calculates a custom field in our Cart.
 
-```
+```php
 <?php
 
 namespace AppBundle\CoreShop\Order\Cart\Processor;
@@ -41,7 +41,7 @@ final class CustomCartProcessor implements CartProcessorInterface
 
 We now only need to register the class:
 
-```
+```yaml
 app.coreshop.cart.processor.custom:
     class: AppBundle\CoreShop\Order\Cart\Processor\CustomCartProcessor
     tags:

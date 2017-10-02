@@ -17,19 +17,30 @@ If you want to calculate the Price for a Product, you need to use a special serv
 
 **2**: ```coreshop.product.taxed_price_calculator``` which calculates prices with tax or without. (recommended one to use)
 
-### Twig
-If you want to calculate the price within a Twig Template, you can do so by using the filter ```coreshop_product_price```
+### Templating
+If you want to calculate the price within a Template, you can do so by using the filter ```coreshop_product_price```
 
+<div class="code-section">
+
+```php
+<?php
+echo $this->coreshop_product_price($product);
+
+?>
 ```
+
+```twig
 {{ (product|coreshop_product_price(true)) }}
 ```
+
+</div>
 
 ## Custom Price Calculator Example
 
 Our Example Service will take the Property "price" - 1 as Product Price and -1 as Discount, therefore the price stays the same.
 This example is only a show-case of how to add a new calculator.
 
-```
+```php
 <?php
 
 namespace AppBundle\CoreShop\Product;
@@ -53,7 +64,7 @@ final class CustomPriceCalculator implements ProductPriceCalculatorInterface
 
 Now we need to register our service to the container and add the calculator tag:
 
-```
+```yaml
 app.coreshop.product.price_calculator.custom:
     class: AppBundle\CoreShop\Product\CustomPriceCalculator
     tags:

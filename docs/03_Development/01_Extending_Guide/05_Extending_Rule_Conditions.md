@@ -92,7 +92,7 @@ coreshop.product.pricerule.conditions.custom = Class.create(coreshop.rules.condi
 ## Registering the Custom Condition to the Container and load the Javascript File
 We now need to create our Service Definition for our Custom Condition:
 
-```yml
+```yaml
 app.product_price_rule.custom_condition:
     class: AppBundle\CoreShop\CustomCondition
     tags:
@@ -101,7 +101,7 @@ app.product_price_rule.custom_condition:
 
 and add this to your config.yml:
 
-```yml
+```yaml
 core_shop_product:
     pimcore_admin:
         js:

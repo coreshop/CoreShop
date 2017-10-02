@@ -17,7 +17,7 @@ Then you should register its configuration form type with ```coreshop.gateway_co
 
 
 > You’ll probably need also this kind of configuration in your app/config/config.yml for the gateway’s factory:
-> ```yml
+> ```yaml
 > payum:
 >     gateways:
 >        yourgateway:
@@ -72,7 +72,7 @@ final class SofortGatewayConfigurationType extends AbstractType
 
 Now we register the FormType into the container
 
-```yml
+```yaml
 services:
   app.coreshop.form.type.gateway_configuration.sofort:
     class: AppBundle\Form\Type\SofortGatewayConfigurationType
@@ -107,7 +107,7 @@ coreshop.provider.gateways.sofort = Class.create(coreshop.provider.gateways.abst
 
 Next we need to register our new Gateway JS file to be loaded:
 
-```yml
+```yaml
 core_shop_payment:
     pimcore_admin:
         js:

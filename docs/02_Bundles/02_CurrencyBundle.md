@@ -13,8 +13,9 @@ Currency Bundle provides you with Models for persisting Currencies and resolving
    - Currency Code to Symbol
 
 ## Installation
-```
-composer require coreshop/currency-bundle:^2.0
+
+```bash
+$ composer require coreshop/currency-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel
@@ -48,8 +49,8 @@ public function registerBundles()
 ### Updating database schema
 Run the following command.
 
-```
-php bin/console doctrine:schema:update --force
+```bash
+$ php bin/console doctrine:schema:update --force
 ```
 
 ## Usage
