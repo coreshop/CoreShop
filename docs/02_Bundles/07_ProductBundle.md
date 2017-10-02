@@ -9,7 +9,7 @@
 
 ## Installation
 ```
-composer require coreshop/product-bundle dev-master
+composer require coreshop/product-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

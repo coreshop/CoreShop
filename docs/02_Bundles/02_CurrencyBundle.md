@@ -1,18 +1,20 @@
 # CoreShop Currency Bundle
 
-    - Symfony Profiler
-    - Pimcore Core Extensions
-    - Doctrine Mappings
-    - Symfony Forms
-    - Money Formatter
-    - Twig Extensions
-        - Currency Formatting
-        - Currency Conversion
-        - Currency Code to Symbol
+Currency Bundle provides you with Models for persisting Currencies and resolving Currency Contexts.
+
+ - Symfony Profiler
+ - Pimcore Core Extensions
+ - Doctrine Mappings
+ - Symfony Forms
+ - Money Formatter
+ - Twig Extensions
+   - Currency Formatting
+   - Currency Conversion
+   - Currency Code to Symbol
 
 ## Installation
 ```
-composer require coreshop/currency-bundle dev-master
+composer require coreshop/currency-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

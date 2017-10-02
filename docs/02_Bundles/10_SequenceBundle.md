@@ -1,6 +1,8 @@
+# CoreShop Sequence Bundle
+
 ## Installation
 ```
-composer require coreshop/sequence-bundle dev-master
+composer require coreshop/sequence-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

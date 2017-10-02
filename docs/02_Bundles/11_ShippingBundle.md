@@ -1,6 +1,8 @@
+# CoreShop Shipping Bundle
+
 ## Installation
 ```
-composer require coreshop/shipping-bundle dev-master
+composer require coreshop/shipping-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

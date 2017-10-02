@@ -59,7 +59,7 @@ class MyInterpreter implements InterpreterInterface
 }
 ```
 
-**2** Register MyInterpreter as service with tag ```coreshop.index.interpreter```, type and form
+**2**:Register MyInterpreter as service with tag ```coreshop.index.interpreter```, type and form
 
 ```
 app.index.interpreter.my_interpreter:

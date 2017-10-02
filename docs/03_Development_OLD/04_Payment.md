@@ -1,3 +1,0 @@
-# CoreShop Payment
-
-# TODO

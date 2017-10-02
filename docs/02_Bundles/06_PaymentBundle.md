@@ -1,6 +1,8 @@
+# CoreShop Payment Bundle
+
 ## Installation
 ```
-composer require coreshop/payment-bundle dev-master
+composer require coreshop/payment-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

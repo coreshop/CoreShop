@@ -1,6 +1,11 @@
+# CoreShop Address Bundle
+
+Address Bundle provides you with Models for Storing Countries, States, Zones and Addresses. As well as Context Resolvers
+to find the visitors Country.
+
 ## Installation
 ```
-composer require coreshop/address-bundle dev-master
+composer require coreshop/address-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

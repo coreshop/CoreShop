@@ -1,6 +1,8 @@
+# CoreShop Store Bundle
+
 ## Installation
 ```
-composer require coreshop/store-bundle dev-master
+composer require coreshop/store-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

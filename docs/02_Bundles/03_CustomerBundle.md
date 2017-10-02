@@ -1,6 +1,8 @@
+# CoreShop Customer Bundle
+
 ## Installation
 ```
-composer require coreshop/customer-bundle dev-master
+composer require coreshop/customer-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

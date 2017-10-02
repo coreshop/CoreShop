@@ -1,6 +1,8 @@
+# CoreShop Taxation Bundle
+
 ## Installation
 ```
-composer require coreshop/taxation-bundle dev-master
+composer require coreshop/taxation-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

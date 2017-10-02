@@ -10,7 +10,7 @@ You can use Resource Bundle as base for all your Custom Pimcore Entities.
 
 ## Installation
 ```
-composer require coreshop/resource-bundle dev-master
+composer require coreshop/resource-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel

@@ -1,6 +1,8 @@
+# CoreShop Index Bundle
+
 ## Installation
 ```
-composer require coreshop/index-bundle dev-master
+composer require coreshop/index-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel
