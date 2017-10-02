@@ -102,7 +102,7 @@ app.product_price_rule.custom_condition:
 and add this to your config.yml:
 
 ```yml
-core_shop_product:
+coreshop_product:
     pimcore_admin:
         js:
             custom_condition: '/bundles/app/pimcore/js/custom_condition.js'

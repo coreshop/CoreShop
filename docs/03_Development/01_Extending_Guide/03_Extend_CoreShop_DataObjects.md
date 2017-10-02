@@ -11,9 +11,9 @@ parameters:
             order:
                 classes:
                     class: 'Pimcore\Model\Object\MyOrderClass'
-                    install_file: '@AcmeBundle/Resources/install/pimcore/classes/MyOrderClass.json'
-                    repository: AcmeBundle\Repository\OrderRepository
-                    factory: AcmeBundle\Factory\OrderFactory
+                    install_file: '@AppBundle/Resources/install/pimcore/classes/MyOrderClass.json'
+                    repository: AppBundle\Repository\OrderRepository
+                    factory: AppBundle\Factory\OrderFactory
 ```
 
 TODO: Be more clear about that

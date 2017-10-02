@@ -7,7 +7,7 @@ First of all, we need to create our Entity Class. In this case, we create a Tran
 ```php
 <?php
 
-//AcmeBundle/Model/CustomEntityInterface.php
+//AppBundle/Model/CustomEntityInterface.php
 
 interface CustomEntityInterface extends ResourceInterface, TranslatableInterface {
     public function getName($language = null);
@@ -19,7 +19,7 @@ interface CustomEntityInterface extends ResourceInterface, TranslatableInterface
 ```php
 <?php
 
-//AcmeBundle/Model/CustomEntity.php
+//AppBundle/Model/CustomEntity.php
 
 interface CustomEntity implements CustomEntityInterface {
     use TranslatableTrait {
@@ -63,7 +63,7 @@ Since our Entity is Translatable, we need to add our Translation Entity as well.
 ```php
 <?php
 
-//AcmeBundle/Model/CustomEntityTranslationInterface.php
+//AppBundle/Model/CustomEntityTranslationInterface.php
 
 interface CustomEntityTranslationInterface extends ResourceInterface, TimestampableInterface
 {
@@ -82,7 +82,7 @@ interface CustomEntityTranslationInterface extends ResourceInterface, Timestampa
 ```php
 <?php
 
-//AcmeBundle/Model/CustomEntityTranslation.php
+//AppBundle/Model/CustomEntityTranslation.php
 
 class CustomEntityTranslation extends AbstractTranslation implements CountryTranslationInterface
 {
@@ -109,11 +109,11 @@ class CustomEntityTranslation extends AbstractTranslation implements CountryTran
 ## Create Doctrine Configuration
 
 ```yml
-# AcmeBundle/Resources/config/doctrine/model/CustomEntity.orm.yml
+# AppBundle/Resources/config/doctrine/model/CustomEntity.orm.yml
 
-AcmeBundle\Model\CustomEntity:
+AppBundle\Model\CustomEntity:
   type: mappedSuperclass
-  table: acme_custom_entity
+  table: app_custom_entity
   fields:
     id:
       type: integer
@@ -126,11 +126,11 @@ AcmeBundle\Model\CustomEntity:
 Our Translation Doctrine definition:
 
 ```yml
-# AcmeBundle/Resources/config/doctrine/model/CustomEntityTranslation.orm.yml
+# AppBundle/Resources/config/doctrine/model/CustomEntityTranslation.orm.yml
 
-AcmeBundle\Model\CustomEntityTranslation:
+AppBundle\Model\CustomEntityTranslation:
   type: mappedSuperclass
-  table: acme_custom_entity_translation
+  table: app_custom_entity_translation
   fields:
     id:
       type: integer
@@ -148,7 +148,7 @@ AcmeBundle\Model\CustomEntityTranslation:
 ```php
 <?php
 
-//AcmeBundle/DependencyInjection/Configuration.php
+//AppBundle/DependencyInjection/Configuration.php
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
@@ -160,7 +160,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('acme');
+        $rootNode = $treeBuilder->root('app');
 
         $rootNode
             ->children()
@@ -228,9 +228,9 @@ final class Configuration implements ConfigurationInterface
 ```php
 <?php
 
-//AcmeBundle/DependencyInjection/AcmeExtension.php
+//AppBundle/DependencyInjection/AppExtension.php
 
-final class AcmeExtension extends AbstractModelExtension
+final class AppExtension extends AbstractModelExtension
 {
     /**
      * {@inheritdoc}
@@ -238,8 +238,8 @@ final class AcmeExtension extends AbstractModelExtension
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        //'acme' is the application name
-        $this->registerResources('acme', $config['driver'], $config['resources'], $container);
+        //'app' is the application name
+        $this->registerResources('app', $config['driver'], $config['resources'], $container);
     }
 }
 
@@ -248,9 +248,9 @@ final class AcmeExtension extends AbstractModelExtension
 ```php
 <?php
 
-//AcmeBundle/DependencyInjection/AcmeExtension.php
+//AppBundle/DependencyInjection/AppExtension.php
 
-final class AcmeBundle extends AbstractResourceBundle
+final class AppBundle extends AbstractResourceBundle
 {
     public function getSupportedDrivers()
     {
@@ -261,7 +261,7 @@ final class AcmeBundle extends AbstractResourceBundle
 
     protected function getModelNamespace()
     {
-        return 'AcmeBundle\Model';
+        return 'AppBundle\Model';
     }
 }
 
@@ -271,9 +271,9 @@ final class AcmeBundle extends AbstractResourceBundle
 ## Create Serialization Definition if you want to serialize your Entity
 
 ```yml
-# AcmeBundle/Resources/config/serializer/Model.CustomEntity.yml
+# AppBundle/Resources/config/serializer/Model.CustomEntity.yml
 
-AcmeBundle\Model\CustomEntity:
+AppBundle\Model\CustomEntity:
   exclusion_policy: ALL
   xml_root_name: custom_entity
   properties:
@@ -292,9 +292,9 @@ AcmeBundle\Model\CustomEntity:
 ```
 
 ```yml
-# AcmeBundle/Resources/config/serializer/Model.CustomEntityTranslation.yml
+# AppBundle/Resources/config/serializer/Model.CustomEntityTranslation.yml
 
-AcmeBundle\Model\CustomEntityTranslation:
+AppBundle\Model\CustomEntityTranslation:
   exclusion_policy: ALL
   xml_root_name: custom_entity_translation
   properties:
@@ -306,19 +306,19 @@ AcmeBundle\Model\CustomEntityTranslation:
 
 ## Create Routes to ResourceController
 ```yml
-# AcmeBundle/Resources/config/pimcore/routing.yml
+# AppBundle/Resources/config/pimcore/routing.yml
 
-acme_custom_entity:
+app_custom_entity:
   type: coreshop.resources
   resource: |
-    alias: acme.custom_entity
+    alias: app.custom_entity
 
 ```
 
-This will create all CRUD routes: (acme is the application name specified in AcmeExtension.php)
+This will create all CRUD routes: (app is the application name specified in AppExtension.php)
 
-GET: /admin/acme/custom_entity/list
-GET: /admin/acme/custom_entity/get
-POST: /admin/acme/custom_entity/add
-POST: /admin/acme/custom_entity/save
-DELETE: /admin/acme/custom_entity/delete
+GET: /admin/app/custom_entity/list
+GET: /admin/app/custom_entity/get
+POST: /admin/app/custom_entity/add
+POST: /admin/app/custom_entity/save
+DELETE: /admin/app/custom_entity/delete

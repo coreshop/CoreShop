@@ -2,13 +2,13 @@
 
 1. Add a new Pimcore Class in Pimcore.
 2. Add a Parent Class to your Pimcore Entity
-3. Export Class Definition to ```AcmeBundle/Resources/install/pimcore/classes/PimcoreEntity.json```
+3. Export Class Definition to ```AppBundle/Resources/install/pimcore/classes/PimcoreEntity.json```
 
 ## Create Parent Class
 
 ```php
 <?php
-//AcmeBundle/Model/PimcoreEntityInterface.php
+//AppBundle/Model/PimcoreEntityInterface.php
 
 interface PimcoreEntityInterface extends ResourceInterface
     public function getName($language = null);
@@ -19,7 +19,7 @@ interface PimcoreEntityInterface extends ResourceInterface
 
 ```php
 <?php
-//AcmeBundle/Model/PimcoreEntity.php
+//AppBundle/Model/PimcoreEntity.php
 
 class PimcoreEntity extends AbstractPimcoreModel implements AddressInterface, PimcoreModelInterface {
     public function getName($language = null) {
@@ -36,16 +36,16 @@ class PimcoreEntity extends AbstractPimcoreModel implements AddressInterface, Pi
 
 ```php
 <?php
-//AcmeBundle/DependencyInjection/Configuration.php
+//AppBundle/DependencyInjection/Configuration.php
 
-namespace AcmeBundle\DependencyInjection;
+namespace AppBundle\DependencyInjection;
 
 final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('acme_custom');
+        $rootNode = $treeBuilder->root('app_custom');
 
         $this->addModelsSection($rootNode);
 
@@ -73,7 +73,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->cannotBeEmpty()->end()
-                                        ->scalarNode('install_file')->defaultValue('@AcmeBundle/Resources/install/pimcore/classes/PimcoreEntity.json')->end()
+                                        ->scalarNode('install_file')->defaultValue('@AppBundle/Resources/install/pimcore/classes/PimcoreEntity.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()
@@ -89,15 +89,15 @@ final class Configuration implements ConfigurationInterface
 
 ```php
 <?php
-//AcmeBundle/DependencyInjection/AcmeBundleExtension.php
+//AppBundle/DependencyInjection/AppBundleExtension.php
 
-namespace AcmeBundle\DependencyInjection;
+namespace AppBundle\DependencyInjection;
 
-final class AcmeBundleExtension extends AbstractModelExtension
+final class AppBundleExtension extends AbstractModelExtension
 {
     public function load(array $config, ContainerBuilder $container)
     {
-        $this->registerPimcoreModels('acme', $config['pimcore'], $container);
+        $this->registerPimcoreModels('app', $config['pimcore'], $container);
     }
 }
 
@@ -115,7 +115,7 @@ $list = new Pimcore\Model\Object\PimcoreEntity\Listing();
 or use automated generated Factory/Repository Classes
 
 ```php
-$pimcoreEntityObject = $container->get('acme.repository.pimcore_entity')->findBy($id);
+$pimcoreEntityObject = $container->get('app.repository.pimcore_entity')->findBy($id);
 
-$list = $container->get('acme.repository.pimcore_entity')->getList();
+$list = $container->get('app.repository.pimcore_entity')->getList();
 ```

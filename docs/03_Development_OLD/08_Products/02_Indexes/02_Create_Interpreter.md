@@ -1,22 +1,12 @@
-# CoreShop Index Interpreter
+# Create a Custom Interpreter
 
-To prepare your index and transform data, you use one of the existing Interpreter or create one yourself.
+1. We need to create 2 new files:
+    - FormType for processing the Input Data
+    - And a InterpreterInterface, which interprets the data
 
-CoreShop currently has following Interpreters:
 
- - **Object**: converts an object or and object array to relations. It saves the values to the relations inex
- - **ObjectId**: converts an object to its ID
- - **ObjectIdSum**: calculates the sum of all IDs. (Could be used for similar products)
- - **ObjectProperty**: calls a getter method of the value
- - **Soundex**: calls PHP soundex function (Could be used for similar products)
-
-## Create a Custom Interpreter
-
-**1** We need to create 2 new files:
- - FormType for processing the Input Data
- - And a InterpreterInterface, which interprets the data
-
-```php
+```
+//AppBundle/Index/Form/Type/MyInterpreterType.php
 
 namespace AppBundle\Index\Form\Type;
 
@@ -46,7 +36,9 @@ final class MyInterpreterType extends AbstractType
 
 ```
 
-```php
+```
+//AppBundle/Index/Interpreter/MyInterpreter.php
+
 namespace AppBundle\Index\Interpreter;
 
 class MyInterpreter implements InterpreterInterface
@@ -59,7 +51,7 @@ class MyInterpreter implements InterpreterInterface
 }
 ```
 
-**2** Register MyInterpreter as service with tag ```coreshop.index.interpreter```, type and form
+2. Register MyInterpreter as service with tag ```coreshop.index.interpreter```, type and form
 
 ```
 app.index.interpreter.my_interpreter:

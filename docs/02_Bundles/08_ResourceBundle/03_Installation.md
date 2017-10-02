@@ -17,7 +17,7 @@ To install routes, permissions or execute sql files, configure them in your Bund
 ```php
 <?php
 
-namespace AcmeBundle\DependencyInjection;
+namespace AppBundle\DependencyInjection;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -27,7 +27,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('acmebundle');
+        $rootNode = $treeBuilder->root('AppBundle');
 
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -43,8 +43,8 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
                         ->children()
-                            ->scalarNode('routes')->defaultValue(['@AcmeBundle/Resources/install/pimcore/routes.yml'])->end()
-                            ->scalarNode('sql')->defaultValue(['@AcmeBundle/Resources/install/pimcore/data.sql'])->end()
+                            ->scalarNode('routes')->defaultValue(['@AppBundle/Resources/install/pimcore/routes.yml'])->end()
+                            ->scalarNode('sql')->defaultValue(['@AppBundle/Resources/install/pimcore/data.sql'])->end()
                         ->end()
                     ->end()
                     ->scalarNode('permissions')
@@ -61,11 +61,11 @@ final class Configuration implements ConfigurationInterface
 
 ## Routes Exmaple File
 ```yml
-acme_route:
-  pattern: "/(\\w+)\\/acme/"
-  reverse: "/%_locale/acme"
-  module: AcmeBundle
-  controller: "@acme.frontend.controller.controller"
+yeah_route:
+  pattern: "/(\\w+)\\/yeah-route/"
+  reverse: "/%_locale/yeah\-route"
+  module: AppBundle
+  controller: "@app.frontend.controller.controller"
   action: doSomething
   variables: _locale
   priority: 2

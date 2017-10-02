@@ -1,10 +1,13 @@
-# CoreShop Filter - Create Custom Filter
 
-**1**. We need to create 2 new files:
+#### CoreShop Create Filter Condition
+
+1. We need to create 2 new files:
     - FormType for processing the Input Data
     - And a FilterConditionProcessorInterface, which checks if a cart fulfills the condition.
 
 ```
+//AppBundle/Filter/Form/Type/Condition/MyFilterCondition.php
+
 namespace AppBundle\Filter\Form\Type\Condition;
 
 use Symfony\Component\Form\AbstractType;
@@ -34,6 +37,8 @@ final class MyFilterCondition extends AbstractType
 ```
 
 ```
+//AppBundle/Filter/MyFilterConditionProcessor.php
+
 namespace AppBundle\Filter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -57,7 +62,7 @@ class MyFilterCondition extends FilterConditionProcessorInterface
 }
 ```
 
-**2**. Register MyFilterCondition as service with tag ```coreshop.filter.condition_type```, type and form
+2. Register MyFilterCondition as service with tag ```coreshop.filter.condition_type```, type and form
 
 ```
 app.coreshop.shipping_rule.condition.my_rule:
