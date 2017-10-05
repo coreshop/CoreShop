@@ -4,6 +4,10 @@ CoreShop comes with one pre-installed Product Class (CoreShopProduct), which in 
 
 First of all, we need to create a new DataObject Class in Pimcore. A basic Purchasable Product only needs to implement ```\CoreShop\Component\Order\Model\PurchasableInterface``` but since we want to allow complex price calculation, we need to implement ```CoreShop\Component\Product\Model\ProductInterface``` (more favorable would be ```CoreShop\Component\Core\Model\ProductInterface``` to be taxable as well).
 
+ > **Note**
+ > If your Product is very simple and you do not need complex price calculations
+ > you can only need to implement the ```\CoreShop\Component\Order\Model\PurchasableInterface```
+
 Easiest way to create the new class is:
 
  - **1**: Open Pimcore DataObject Editor
