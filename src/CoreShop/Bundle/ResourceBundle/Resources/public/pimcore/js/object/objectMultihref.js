@@ -217,7 +217,7 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
         if (this.fieldConfig.classes != null && this.fieldConfig.classes.length > 0) {
             allowedClasses = [];
             for (var i = 0; i < this.fieldConfig.classes.length; i++) {
-                allowedClasses.push(this.fieldConfig.classes[i].classes);
+                allowedClasses.push(this.fieldConfig.classes[i]);
             }
         }
 

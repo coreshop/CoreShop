@@ -42,9 +42,12 @@ class ResourceSettingsController extends AdminController
     /**
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
-    public function getClassMapAction()
+    public function getConfigAction()
     {
-        $classMapping = [];
+        $config = [
+            'classMap' => [],
+            'implementations' => []
+        ];
 
         if ($this->container->hasParameter('coreshop.pimcore.classes')) {
             $classes = $this->getParameter('coreshop.pimcore.classes');
@@ -56,10 +59,26 @@ class ResourceSettingsController extends AdminController
                 $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
                 $class = str_replace('\\', '', $class);
 
-                $classMapping[$alias] = $class;
+                $config['classMap'][$alias] = $class;
+            }
+
+
+            if ($this->container->hasParameter('coreshop.implementations')) {
+                $implementations = $this->getParameter('coreshop.implementations');
+
+                foreach ($implementations as $implementation => $interface) {
+                    foreach ($classes as $key => $definition) {
+                        $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
+                        $class = str_replace('\\', '', $class);
+
+                        if (in_array($interface, class_implements($definition['classes']['model']))) {
+                            $config['implementations'][$implementation][] = $class;
+                        }
+                    }
+                }
             }
         }
 
-        return $this->json($classMapping);
+        return $this->json($config);
     }
 }

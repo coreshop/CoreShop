@@ -20,9 +20,7 @@ coreshop.product.pricerule.conditions.categories = Class.create(coreshop.rules.c
 
     getForm: function () {
         this.categories = new coreshop.object.objectMultihref(this.data ? this.data.categories : [], {
-            classes: [
-                {classes: coreshop.class_map.category}
-            ],
+            classes: coreshop.implementations['coreshop.category'],
             name: 'categories',
             title: '',
             height: 200,

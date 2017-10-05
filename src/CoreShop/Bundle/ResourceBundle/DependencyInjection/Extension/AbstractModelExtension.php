@@ -159,4 +159,30 @@ abstract class AbstractModelExtension extends Extension
             $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
         }
     }
+
+    /**
+     * @param $applicationName
+     * @param $implementations
+     * @param ContainerBuilder $container
+     */
+    public function registerImplementations($applicationName, $implementations, ContainerBuilder $container) {
+        $appParameterName = sprintf('%s.coreshop.application.implementations', $applicationName);
+        $globalParameterName = 'coreshop.implementations';
+
+        foreach ([$appParameterName, $globalParameterName] as $parameterName) {
+            $implementationsConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
+
+            foreach ($implementations as $key => $interface) {
+                $key = sprintf('%s.%s', $applicationName, $key);
+
+                if (array_key_exists($key, $implementationsConfig)) {
+                    throw new \RuntimeException(sprintf('Implementations Key %s found twice', $key));
+                }
+
+                $implementationsConfig[$key] = $interface;
+            }
+
+            $container->setParameter($parameterName, $implementationsConfig);
+        }
+    }
 }

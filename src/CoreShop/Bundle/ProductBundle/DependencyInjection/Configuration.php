@@ -52,8 +52,24 @@ final class Configuration implements ConfigurationInterface
 
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
+        $this->addImplementations($rootNode);
 
         return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addImplementations(ArrayNodeDefinition $node) {
+        $node->children()
+            ->arrayNode('implementations')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('product')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('category')->defaultValue(CategoryInterface::class)->cannotBeEmpty()->end()
+                ->end()
+            ->end()
+        ->end();
     }
 
     /**
