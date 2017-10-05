@@ -2,17 +2,17 @@
 
 CoreShop comes with one pre-installed Product Class (CoreShopProduct), which in most cases is enough. In some cases, you might want to use separated classes with different purposes. For example a ProductSet, which consists of multiple Products but also needs to be available for complex price calculations like Price Rules.
 
-First of all, we need to create a new DataObject Class in Pimcore. A basic Purchasable Product only needs to implement ```\CoreShop\Component\Order\Model\PurchasableInterface``` but since we want to allow complex price calculation, we need to implement ```CoreShop\Component\Product\Model\ProductInterface``` (more favorable would be ```CoreShop\Component\Core\Model\ProductInterface``` to be taxable as well).
+First of all, we need to create a new DataObject Class in Pimcore. A basic Purchasable Product only needs to implement [```\CoreShop\Component\Order\Model\PurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PurchasableInterface.php) but since we want to allow complex price calculation, we need to implement [```CoreShop\Component\Core\Model\ProductInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Model/ProductInterface.php).
 
  > **Note**
  > If your Product is very simple and you do not need complex price calculations
- > you can only need to implement the ```\CoreShop\Component\Order\Model\PurchasableInterface```
+ > you then only need to implement [```\CoreShop\Component\Order\Model\PurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PurchasableInterface.php)
 
 Easiest way to create the new class is:
 
  - **1**: Open Pimcore DataObject Editor
  - **2**: Add a new Class called ProductSet
- - **3**: Import CoreShop Default Product Class (/vendor/coreshop/core-shop/src/CoreShop/Bundle/CoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopProduct.json)
+ - **3**: Import CoreShop Default Product Class ([```CoreShopProduct.json```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/CoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopProduct.json))
  - **4**: Adapt to your needs
  - **5**: Register your ProductSet Class to CoreShop:
 
