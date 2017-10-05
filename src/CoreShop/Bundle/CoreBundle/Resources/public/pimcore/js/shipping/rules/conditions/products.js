@@ -18,9 +18,7 @@ coreshop.shippingrule.conditions.products = Class.create(coreshop.rules.conditio
 
     getForm: function () {
         this.products = new coreshop.object.objectMultihref(this.data ? this.data.products : [], {
-            classes: [
-                {classes: coreshop.class_map.product}
-            ],
+            classes: coreshop.implementations['coreshop.product'],
             name: 'products',
             title: '',
             height: 200,

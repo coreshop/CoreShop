@@ -36,10 +36,27 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
             ->end()
         ;
+
+        $this->addImplementations($rootNode);
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addImplementations(ArrayNodeDefinition $node) {
+        $node->children()
+            ->arrayNode('implementations')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('customer')->defaultValue(CustomerInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('customer_group')->defaultValue(CustomerGroupInterface::class)->cannotBeEmpty()->end()
+                ->end()
+            ->end()
+        ->end();
     }
 
     /**

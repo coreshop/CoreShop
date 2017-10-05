@@ -18,9 +18,7 @@ coreshop.shippingrule.conditions.customerGroups = Class.create(coreshop.rules.co
 
     getForm: function () {
         this.customerGroups = new coreshop.object.objectMultihref(this.data ? this.data.customerGroups : [], {
-            classes: [
-                {classes: coreshop.class_map.customerGroup}
-            ],
+            classes: coreshop.implementations['coreshop.customer_group'],
             name: 'customerGroups',
             title: '',
             height: 200,
