@@ -6,7 +6,7 @@ All models in Coreshop are placed in the ```Coreshop\Component\*ComponentName*\M
 
 ## Howto Customize a Model
 
-Let’s take the ```CoreShop\Component\Currency\Model\Currency``` as an example. This one is extended in Core. How can you check that?
+Let’s take the [```CoreShop\Component\Currency\Model\Currency```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Currency/Model/Currency.php) as an example. This one is extended in Core. How can you check that?
 
 First of all, you need to find the current used class by doing following:
 
@@ -14,7 +14,7 @@ First of all, you need to find the current used class by doing following:
 $ php bin/console debug:container --parameter=coreshop.model.currency.class
 ```
 
-As a result you will get the ```CoreShop\Component\Core\Model\Currency``` - this is the class that you need to be extending.
+As a result you will get the [```CoreShop\Component\Core\Model\Currency```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Model/Currency.php) - this is the class that you need to be extending.
 
 Assuming you want to add a field called **flag**
 

@@ -6,7 +6,7 @@ CoreShop uses multiple Price Calculators to determine the correct price for a pr
  - [Property Price Calculator](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ProductBundle/Calculator/PropertyPriceCalculator.php)
 
 These two are only the default implementations, if you need a custom Calculator, you need to implement the Interface
-```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface``` and register your service with the tag
+[```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Calculator/ProductPriceCalculatorInterface.php) and register your service with the tag
 ```coreshop.product.price_calculator```, a ```type``` attribute and a ```priority```
 
 ## Calculator Service

@@ -6,17 +6,17 @@ tag you use and Interface you need to implement for them.
 
 | Action Type               | Tag                                           | Interface |
 | ------------------------- | --------------------------------------------- | --------- |
-| Cart Price Rule           | coreshop.cart_price_rule.action               | CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface   |
-| Product Price Rule        | coreshop.product_price_rule.action            | CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface       |
-| Product Specific Price    | coreshop.product_specific_price_rule.action   | CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface       |
-| Shipping Rule             | coreshop.shipping_rule.action                 | CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface      |
-| Notification Rule         | coreshop.notification_rule.action             | CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface    |
+| Cart Price Rule           | coreshop.cart_price_rule.action               | [```CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Cart/Rule/Action/CartPriceRuleActionProcessorInterface.php)   |
+| Product Price Rule        | coreshop.product_price_rule.action            | [```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Rule/Action/ProductPriceActionProcessorInterface.php)       |
+| Product Specific Price    | coreshop.product_specific_price_rule.action   | [```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Rule/Action/ProductPriceActionProcessorInterface.php)       |
+| Shipping Rule             | coreshop.shipping_rule.action                 | [```CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Shipping/Rule/Action/CarrierPriceActionProcessorInterface.php)      |
+| Notification Rule         | coreshop.notification_rule.action             | [```CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Notification/Rule/Action/NotificationRuleProcessorInterface.php)    |
 
 ## Example Adding a new Action
 Now, lets add a new Action for Product Price Rules.
 
 To do so, we first need to create a new class and implement the interface listed in the table above. For Product Price Rules, we need to use
-```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```
+[```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Rule/Action/ProductPriceActionProcessorInterface.php)
 
 ```php
 //AppBundle/CoreShop/CustomAction.php

@@ -6,18 +6,18 @@ tag you use and Interface you need to implement for them.
 
 | Action Type               | Tag                                              | Interface                                                   |
 | ------------------------- | ------------------------------------------------ | ----------------------------------------------------------- |
-| Cart Price Rule           | coreshop.cart_price_rule.condition               | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
-| Product Price Rule        | coreshop.product_price_rule.condition            | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
-| Product Specific Price    | coreshop.product_specific_price_rule.condition   | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
-| Shipping Rule             | coreshop.shipping_rule.condition                 | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
-| Notification Rule         | coreshop.notification_rule.condition             | CoreShop\Component\Rule\Condition\ConditionCheckerInterface |
+| Cart Price Rule           | coreshop.cart_price_rule.condition               | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
+| Product Price Rule        | coreshop.product_price_rule.condition            | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
+| Product Specific Price    | coreshop.product_specific_price_rule.condition   | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
+| Shipping Rule             | coreshop.shipping_rule.condition                 | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
+| Notification Rule         | coreshop.notification_rule.condition             | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
 
 
 ## Example Adding a new Condition
 Now, lets add a new Condition for Product Price Rules.
 
 To do so, we first need to create a new class and implement the interface listed in the table above. For Product Price Rules, we need to use
-```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```
+[```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php)
 
 ```php
 //AppBundle/CoreShop/CustomCondition.php

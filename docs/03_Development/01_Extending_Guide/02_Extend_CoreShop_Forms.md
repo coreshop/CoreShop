@@ -38,7 +38,7 @@ For the ``StoreType`` run:
 $ php bin/console debug:container coreshop.form.type.store
 ```
 
-As a result you will get the ``CoreShop\Bundle\StoreBundle\Form\Type\StoreType`` - this is the class that you need to be extending.
+As a result you will get the [```CoreShop\Bundle\StoreBundle\Form\Type\StoreType```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Form/Type/StoreType.php) - this is the class that you need to be extending.
 
 ```php
 <?php
