@@ -1,0 +1,23 @@
+services:
+  coreshop.factory.wishlist:
+    class: CoreShop\Component\Resource\Factory\Factory
+    arguments:
+      - 'CoreShop\Component\StorageList\Model\StorageList'
+
+  coreshop.factory.wishlist_item:
+    class: CoreShop\Component\Resource\Factory\Factory
+    arguments:
+      - 'CoreShop\Component\StorageList\Model\StorageListItem'
+
+  coreshop.wishlist.manager:
+    class: CoreShop\Component\StorageList\SessionStorageManager
+    arguments:
+      - '@session'
+      - 'wishlist'
+      - '@coreshop.factory.wishlist'
+
+  coreshop.wishlist.modifier:
+    class: CoreShop\Component\StorageList\SessionStorageListModifier
+    arguments:
+      - '@coreshop.factory.wishlist_item'
+      - '@coreshop.wishlist.manager'

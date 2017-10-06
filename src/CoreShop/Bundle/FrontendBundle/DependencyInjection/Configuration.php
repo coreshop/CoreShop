@@ -24,6 +24,7 @@ use CoreShop\Bundle\FrontendBundle\Controller\QuoteController;
 use CoreShop\Bundle\FrontendBundle\Controller\RegisterController;
 use CoreShop\Bundle\FrontendBundle\Controller\SearchController;
 use CoreShop\Bundle\FrontendBundle\Controller\SecurityController;
+use CoreShop\Bundle\FrontendBundle\Controller\WishlistController;
 use CoreShop\Bundle\PayumBundle\Controller\PaymentController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -63,6 +64,7 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('quote')->defaultValue(QuoteController::class)->end()
                         ->scalarNode('security')->defaultValue(SecurityController::class)->end()
                         ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
+                        ->scalarNode('wishlist')->defaultValue(WishlistController::class)->end()
                     ->end()
                 ->end();
     }

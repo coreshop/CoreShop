@@ -1,0 +1,64 @@
+{% extends '@CoreShopFrontend/layout.html.twig' %}
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
+{% block content %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+
+    {% if wishlist.hasItems() %}
+    <div class="table-responsive shopping-wishlist-table">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td class="text-center">
+                    {{ 'image'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'product_details'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'price'|trans }}
+                </td>
+                <td class="text-center">
+
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in wishlist.getItems %}
+                {% set product = item.getProduct %}
+                {% set productUrl = path('coreshop_product_detail', {name: product.getName, product: product.getId}) %}
+                <tr class="shopping-wishlist-item shopping-wishlist-item-{{ item.getId }}">
+                    <td class="text-center">
+                        {% if item.getProduct and item.getProduct.getImage() %}
+                            <a class="" href="{{ productUrl }}">
+                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ productUrl }}">
+                            {{ product.getName() }}
+                        </a>
+                    </td>
+                    <td class="text-right wishlist-item-price">
+                        {{ currency.getPrice(product) }}
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" type="button" title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromWishlist" data-id="{{ product.getId }}">
+                            <i class="fa fa-times-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p>{{ 'wishlist_empty'|trans }}</p>
+    {% endif %}
+    <br/>
+{% endblock %}

@@ -103,18 +103,12 @@
 
             <div class="options">
                 <div class="cart-button button-group">
-                    <button type="button" title="{{ 'wishlist'|trans }}" class="btn btn-wishlist" data-id="{{ product.getId }}">
+                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" type="button" title="{{ 'wishlist'|trans }}" class="btn btn-wishlist">
                         <i class="fa fa-heart"></i>
-                    </button>
+                    </a>
                     <button type="button" title="{{ 'compare'|trans }}" class="btn btn-compare" data-id="{{ product.getId }}">
                         <i class="fa fa-bar-chart-o"></i>
                     </button>
-
-
-                    <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart" rel="nofollow">
-                        {{ 'add_to_cart'|trans }}
-                        <i class="fa fa-shopping-cart"></i>
-                    </a>
                 </div>
             </div>
 

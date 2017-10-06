@@ -31,11 +31,9 @@
                         {% endif %}
                     </div>
                     <div class="cart-button button-group">
-                        <button type="button" title="" class="btn btn-wishlist"
-                                data-original-title="{{ 'wishlist'|trans }}"
-                                data-id="{{ product.getId }}">
+                        <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" title="" class="btn btn-wishlist">
                             <i class="fa fa-heart"></i>
-                        </button>
+                        </a>
                         <button type="button" title="" class="btn btn-compare"
                                 data-original-title="{{ 'compare'|trans }}"
                                 data-id="{{ product.getId }}">

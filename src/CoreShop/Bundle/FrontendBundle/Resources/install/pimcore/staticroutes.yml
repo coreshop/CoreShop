@@ -277,3 +277,30 @@ routes:
     action: search
     variables: _locale
     priority: 2
+
+  coreshop_wishlist_summary:
+    pattern: "/(\\w+)\\/shop\\/wishlist/"
+    reverse: "/%_locale/shop/wishlist"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.wishlist"
+    action: summary
+    variables: _locale
+    priority: 2
+
+  coreshop_wishlist_add:
+    pattern: "/(\\w+)\\/shop\\/wishlist\\/add\\/([0-9]+)/"
+    reverse: "/%_locale/shop/wishlist/add/%product"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.wishlist"
+    action: addItem
+    variables: _locale,product
+    priority: 3
+
+  coreshop_wishlist_remove:
+    pattern: "/(\\w+)\\/shop\\/wishlist\\/remove\\/([0-9]+)/"
+    reverse: "/%_locale/shop/wishlist/remove/%product"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.wishlist"
+    action: removeItem
+    variables: _locale,product
+    priority: 3
