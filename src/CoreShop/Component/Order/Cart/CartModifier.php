@@ -18,8 +18,14 @@ use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\StorageList\StorageListManagerInterface;
+use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Webmozart\Assert\Assert;
 
-class CartModifier implements CartModifierInterface
+class CartModifier implements CartModifierInterface, StorageListModifierInterface
 {
     /**
      * @var CartManagerInterface
@@ -44,33 +50,52 @@ class CartModifier implements CartModifierInterface
     /**
      * {@inheritdoc}
      */
-    public function addCartItem(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1)
     {
-        $this->cartManager->persistCart($cart);
+        /**
+         * @var $storageList CartInterface
+         * @var $product PurchasableInterface
+         */
+        Assert::isInstanceOf($storageList, CartInterface::class);
+        Assert::isInstanceOf($product, PurchasableInterface::class);
 
-        return $this->updateCartItemQuantity($cart, $product, $quantity, true);
+        $this->cartManager->persistCart($storageList);
+
+        return $this->updateItemQuantity($storageList, $product, $quantity, true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeCartItem(CartInterface $cart, CartItemInterface $cartItem)
+    public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item)
     {
-        $cartItem->delete();
+        /**
+         * @var $storageList CartInterface
+         * @var $item CartItemInterface
+         */
+        Assert::isInstanceOf($storageList, CartInterface::class);
+        Assert::isInstanceOf($item, CartItemInterface::class);
 
-        //$this->processor->process($cart);
+        $item->delete();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function updateCartItemQuantity(CartInterface $cart, PurchasableInterface $product, $quantity = 0, $increaseAmount = false)
+    public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false)
     {
-        $item = $cart->getItemForProduct($product);
+        /**
+         * @var $storageList CartInterface
+         * @var $product PurchasableInterface
+         */
+        Assert::isInstanceOf($storageList, CartInterface::class);
+        Assert::isInstanceOf($product, PurchasableInterface::class);
+
+        $item = $storageList->getItemForProduct($product);
 
         if ($item instanceof CartItemInterface) {
             if ($quantity <= 0) {
-                $this->removeCartItem($cart, $item);
+                $this->removeItem($storageList, $item);
 
                 return false;
             }
@@ -93,16 +118,48 @@ class CartModifier implements CartModifierInterface
              */
             $item = $this->cartItemFactory->createNew();
             $item->setKey(uniqid());
-            $item->setParent($cart);
+            $item->setParent($storageList);
             $item->setQuantity($quantity);
             $item->setProduct($product);
             $item->setPublished(true);
             $item->save();
 
-            $cart->addItem($item);
-            $cart->save();
+            $storageList->addItem($item);
+            $storageList->save();
         }
 
         return $item;
+    }
+
+    /**
+     * @deprecated Use addItem instead, will be removed in 2.0.0-Alpha-3
+     *
+     * {@inheritdoc}
+     */
+    public function addCartItem(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    {
+        $this->cartManager->persistCart($cart);
+
+        return $this->addItem($cart, $product, $quantity);
+    }
+
+    /**
+     * @deprecated Use removeItem instead, will be removed in 2.0.0-Alpha-3
+     *
+     * {@inheritdoc}
+     */
+    public function removeCartItem(CartInterface $cart, CartItemInterface $cartItem)
+    {
+        return $this->removeItem($cart, $cartItem);
+    }
+
+    /**
+     * @deprecated Use updateItemQuantity instead, will be removed in 2.0.0-Alpha-3
+     *
+     * {@inheritdoc}
+     */
+    public function updateCartItemQuantity(CartInterface $cart, PurchasableInterface $product, $quantity = 0, $increaseAmount = false)
+    {
+        return $this->updateItemQuantity($cart, $product, $quantity, $increaseAmount);
     }
 }

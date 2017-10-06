@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
@@ -20,6 +19,7 @@ use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -68,7 +68,7 @@ class CartController extends FrontendController
             $quantity = 1;
         }
 
-        $this->getCartModifier()->addCartItem($this->getCart(), $product, $quantity);
+        $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
 
         $this->addFlash('success', 'item_added');
 
@@ -94,7 +94,7 @@ class CartController extends FrontendController
 
         $this->addFlash('success', 'item_removed');
 
-        $this->getCartModifier()->removeCartItem($this->getCart(), $cartItem);
+        $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -214,7 +214,7 @@ class CartController extends FrontendController
     }
 
     /**
-     * @return CartModifierInterface
+     * @return StorageListModifierInterface
      */
     protected function getCartModifier()
     {

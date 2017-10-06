@@ -47,6 +47,7 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\Models\\Configuration',
             '\\CoreShop\\Test\\Models\\ShippingRule',
             '\\CoreShop\\Test\\Models\\NotificationRule',
+            '\\CoreShop\\Test\\Models\\StorageList',
         ];
 
         shuffle($tests);

@@ -8,38 +8,35 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Order\Model;
+namespace CoreShop\Component\StorageList\Model;
 
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface PurchasableInterface extends StorageListProductInterface
+interface StorageListItemInterface extends ResourceInterface
 {
     /**
-     * @return int
+     * @return StorageListProductInterface
      */
-    public function getId();
+    public function getProduct();
 
     /**
-     * @param string|null $language
-     * @return string
+     * @param StorageListProductInterface $product
+     *
+     * @return static
      */
-    public function getName($language = null);
-
-    /**
-     * @return int
-     */
-    public function getPrice();
+    public function setProduct($product);
 
     /**
      * @return int
      */
-    public function getWholesalePrice();
+    public function getQuantity();
 
     /**
-     * @return TaxRuleGroupInterface
+     * @param $quantity
+     *
+     * @return int
      */
-    public function getTaxRule();
+    public function setQuantity($quantity);
 }

@@ -14,13 +14,33 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
+use Webmozart\Assert\Assert;
 
 class Cart extends AbstractProposal implements CartInterface
 {
     use ProposalPriceRuleTrait;
     use StoreAwareTrait;
     use CurrencyAwareTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemForProduct(StorageListProductInterface $product)
+    {
+        Assert::isInstanceOf($product, PurchasableInterface::class);
+
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof ProposalItemInterface) {
+                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
+                    return $item;
+                }
+            }
+        }
+
+        return null;
+    }
 
     /**
      * {@inheritdoc}

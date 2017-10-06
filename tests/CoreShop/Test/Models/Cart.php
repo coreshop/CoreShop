@@ -91,13 +91,13 @@ class Cart extends Base
          */
         $modifier = $this->get('coreshop.cart.modifier');
 
-        $modifier->addCartItem($cart, Data::$product1);
+        $modifier->addItem($cart, Data::$product1);
         $this->assertEquals(1, count($cart->getItems()));
 
-        $modifier->addCartItem($cart, Data::$product1);
+        $modifier->addItem($cart, Data::$product1);
         $this->assertEquals(1, count($cart->getItems()));
 
-        $modifier->addCartItem($cart, Data::$product2);
+        $modifier->addItem($cart, Data::$product2);
         $this->assertEquals(2, count($cart->getItems()));
     }
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart;
 
@@ -16,19 +16,22 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
+/**
+ * @deprecated Use CoreShop\Component\StorageList\StorageListModifierInterface instead
+ */
 interface CartModifierInterface
 {
     /**
-     * @param CartInterface    $cart
+     * @param CartInterface $cart
      * @param PurchasableInterface $product
-     * @param int              $quantity
+     * @param int $quantity
      *
      * @return mixed
      */
     public function addCartItem(CartInterface $cart, PurchasableInterface $product, $quantity = 1);
 
     /**
-     * @param CartInterface     $cart
+     * @param CartInterface $cart
      * @param CartItemInterface $cartItem
      *
      * @return mixed
@@ -36,10 +39,10 @@ interface CartModifierInterface
     public function removeCartItem(CartInterface $cart, CartItemInterface $cartItem);
 
     /**
-     * @param CartInterface    $cart
+     * @param CartInterface $cart
      * @param PurchasableInterface $product
-     * @param int              $quantity
-     * @param bool             $increaseAmount
+     * @param int $quantity
+     * @param bool $increaseAmount
      *
      * @return mixed
      */

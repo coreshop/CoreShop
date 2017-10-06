@@ -20,13 +20,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface
 {
     /**
-     * @param PurchasableInterface $product
-     *
-     * @return CartItemInterface|null
-     */
-    public function getItemForProduct(PurchasableInterface $product);
-
-    /**
      * @param bool $withTax
      *
      * @return int
@@ -64,7 +57,7 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
     public function setDiscount($discount, $withTax = true);
 
     /**
-     * @return CartItemInterface[]
+     * @return ProposalItemInterface[]
      */
     public function getItems();
 

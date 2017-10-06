@@ -20,6 +20,13 @@ use Pimcore\Model\DataObject\Fieldcollection;
 interface SaleInterface extends ProposalInterface, PimcoreModelInterface
 {
     /**
+     * @param PurchasableInterface $product
+     *
+     * @return CartItemInterface|null
+     */
+    public function getItemForProduct(PurchasableInterface $product);
+
+    /**
      * @return string
      */
     public function getSaleLanguage();

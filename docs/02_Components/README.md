@@ -16,3 +16,4 @@ CoreShop provides several Components which are supposed to be independent.
 12. [Shipping](./12_ShippingComponent.md)
 13. [Store](./13_StoreComponent.md)
 14. [Taxation](./14_TaxationComponent.md)
+15. [Storage List](./15_StorageListComponent.md)

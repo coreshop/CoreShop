@@ -14,6 +14,7 @@ namespace CoreShop\Test;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Core\Model\Product;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
@@ -37,12 +38,12 @@ use Pimcore\Model\Object\Service;
 class Data
 {
     /**
-     * @var ProductInterface
+     * @var Product
      */
     public static $product1;
 
     /**
-     * @var ProductInterface
+     * @var Product
      */
     public static $product2;
 

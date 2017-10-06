@@ -22,6 +22,22 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     /**
      * {@inheritdoc}
      */
+    public function getItemForProduct(PurchasableInterface $product)
+    {
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof ProposalItemInterface) {
+                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
+                    return $item;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBaseCurrency()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

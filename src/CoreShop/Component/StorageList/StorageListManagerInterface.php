@@ -10,25 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Order\Model;
+namespace CoreShop\Component\StorageList;
 
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
 
-interface CartItemInterface extends ProposalItemInterface, PimcoreModelInterface, StorageListItemInterface
+interface StorageListManagerInterface
 {
+    /**
+     * @return StorageListInterface
+     */
+    public function getStorageList();
+
     /**
      * @return bool
      */
-    public function getIsGiftItem();
+    public function hasStorageList();
 
     /**
-     * @param bool $isGiftItem
+     * @param StorageListInterface $storageList
+     *
+     * @return boolean
      */
-    public function setIsGiftItem($isGiftItem);
-
-    /**
-     * @return CartInterface
-     */
-    public function getCart();
+    public function persist(StorageListInterface $storageList);
 }
