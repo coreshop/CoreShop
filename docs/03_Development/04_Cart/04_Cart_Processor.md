@@ -16,7 +16,7 @@ to create a new Processor.
 
 ## Creating a Cart Processor
 
-A Cart Processor needs to implement the Interface ```CoreShop\Component\Order\Processor\CartProcessorInterface``` and registered
+A Cart Processor needs to implement the Interface [```CoreShop\Component\Order\Processor\CartProcessorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Processor/CartProcessorInterface.php) and registered
 into the container with the tag ```coreshop.cart_processor``` and a ```priority``` attribute.
 
 ### Example of a Cart Processor

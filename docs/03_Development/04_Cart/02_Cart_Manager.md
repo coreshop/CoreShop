@@ -7,7 +7,7 @@ The Cart Manager helps you managing Carts. It handles:
  - Persisting Carts
  - Delete Cart
 
-The Cart Manager implements the Interface ```CoreShop\Component\Order\Manager\CartManagerInterface``` and is implemented in the Service
+The Cart Manager implements the Interface [```CoreShop\Component\Order\Manager\CartManagerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Manager/CartManagerInterface.php) and is implemented in the Service
 ```coreshop.cart.manager```:
 
 ## Getting the current Cart
