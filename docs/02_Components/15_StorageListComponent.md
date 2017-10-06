@@ -1,6 +1,6 @@
 # CoreShop Storage List Component
 
-Storage List Component helps you wish Session or DataObject based Lists to create collection of items. For example a Wishlist, or Compare List.
+Storage List Component helps you with Lists/Collections of Objects like a Cart, Wishlist or Compare List.
 
 ## Usage
 To use it you need to have 3 models:
