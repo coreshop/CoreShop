@@ -8,14 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Bundle\CoreBundle\Order\Renderer;
+namespace CoreShop\Bundle\OrderBundle\Renderer;
 
-use CoreShop\Bundle\CoreBundle\Renderer\Pdf\PdfRendererInterface;
-use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
+use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
@@ -28,9 +29,9 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $fragmentRenderer;
 
     /**
-     * @var ConfigurationServiceInterface
+     * @var EventDispatcherInterface
      */
-    private $configurationHelper;
+    private $eventDispatcher;
 
     /**
      * @var PdfRendererInterface
@@ -38,14 +39,14 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $renderer;
 
     /**
-     * @param FragmentRendererInterface     $fragmentRenderer
-     * @param ConfigurationServiceInterface $configurationHelper
-     * @param PdfRendererInterface          $renderer
+     * @param FragmentRendererInterface $fragmentRenderer
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param PdfRendererInterface $renderer
      */
-    public function __construct(FragmentRendererInterface $fragmentRenderer, ConfigurationServiceInterface $configurationHelper, PdfRendererInterface $renderer)
+    public function __construct(FragmentRendererInterface $fragmentRenderer, EventDispatcherInterface $eventDispatcher, PdfRendererInterface $renderer)
     {
         $this->fragmentRenderer = $fragmentRenderer;
-        $this->configurationHelper = $configurationHelper;
+        $this->eventDispatcher = $eventDispatcher;
         $this->renderer = $renderer;
     }
 
@@ -58,7 +59,7 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
             'id' => $orderDocument->getId(),
             'order' => $orderDocument->getOrder(),
             'document' => $orderDocument,
-            'language' => (string) $orderDocument->getOrder()->getOrderLanguage(),
+            'language' => (string)$orderDocument->getOrder()->getOrderLanguage(),
             'type' => $orderDocument::getDocumentType(),
             $orderDocument::getDocumentType() => $orderDocument,
         ];
@@ -81,9 +82,11 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
         $content = $this->fragmentRenderer->render($referenceContent, $request)->getContent();
 
-        $options = $this->configurationHelper->getForStore(sprintf('system.%s.wkhtml', $orderDocument::getDocumentType()), $orderDocument->getOrder()->getStore());
+        $event = new WkhtmlOptionsEvent($orderDocument);
 
-        $pdfContent = $this->renderer->fromString($content, $contentHeader, $contentFooter, ['options' => [$options]]);
+        $this->eventDispatcher->dispatch(sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType()), $event);
+
+        $pdfContent = $this->renderer->fromString($content, $contentHeader, $contentFooter, ['options' => [$event->getOptions()]]);
 
         return $pdfContent;
     }

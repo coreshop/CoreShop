@@ -65,18 +65,6 @@ services:
      - '@coreshop.repository.order_shipment'
      - '@coreshop.renderer.order.pdf'
 
-  coreshop.renderer.order.pdf:
-    class: CoreShop\Bundle\CoreBundle\Order\Renderer\OrderDocumentPdfRenderer
-    arguments:
-      - '@fragment.renderer.inline'
-      - '@coreshop.configuration.service'
-      - '@coreshop.renderer.pdf'
-
-  coreshop.renderer.order.pdf.asset:
-    class: CoreShop\Bundle\CoreBundle\Order\Renderer\AssetOrderDocumentPdfRenderer
-    decorates: coreshop.renderer.order.pdf
-    arguments: ['@coreshop.renderer.order.pdf.asset.inner']
-
   coreshop.event_listener.price_rule_update:
     class: CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener
     arguments: ['@coreshop.configuration.service']
@@ -101,3 +89,11 @@ services:
      - '@pimcore.http.request_helper'
     tags:
       - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  coreshop.order.listener.wkhtml_options:
+    class: CoreShop\Bundle\CoreBundle\EventListener\Order\OrderDocumentWkhtmlPrintOptionsListener
+    arguments:
+      - '@coreshop.configuration.service'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
+      - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }

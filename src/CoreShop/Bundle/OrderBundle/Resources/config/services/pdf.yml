@@ -1,0 +1,17 @@
+services:
+  coreshop.order.renderer.pdf:
+    class: CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf
+    arguments: ['%kernel.cache_dir%']
+
+  coreshop.renderer.order.pdf:
+    class: CoreShop\Bundle\OrderBundle\Renderer\OrderDocumentPdfRenderer
+    arguments:
+      - '@fragment.renderer.inline'
+      - '@event_dispatcher'
+      - '@coreshop.order.renderer.pdf'
+
+  coreshop.renderer.order.pdf.asset:
+    class: CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer
+    decorates: coreshop.renderer.order.pdf
+    arguments:
+      - '@coreshop.renderer.order.pdf.asset.inner'

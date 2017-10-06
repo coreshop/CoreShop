@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('pimcore.plugin.coreshop.shipment.render');
-pimcore.plugin.coreshop.shipment.render = Class.create({
+pimcore.registerNS('coreshop.shipment.render');
+coreshop.shipment.render = Class.create({
     initialize: function (element) {
         this.panels = [];
         this.element = element;
