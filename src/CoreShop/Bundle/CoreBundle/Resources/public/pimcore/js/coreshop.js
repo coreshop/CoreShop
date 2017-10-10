@@ -185,15 +185,13 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        /*if (user.isAllowed('coreshop_permission_order_create')) {
+        if (user.isAllowed('coreshop_permission_order_create')) {
             ordersMenu.push({
                 text: t('coreshop_order_create'),
                 iconCls: 'coreshop_icon_order_create',
-                handler: function () {
-                    coreshop.helpers.createOrder();
-                }.bind(this)
+                handler: this.openCreateOrder
             });
-        }*/
+        }
 
         if (user.isAllowed('coreshop_permission_quote_list')) {
             ordersMenu.push({
@@ -203,15 +201,13 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-        /*if (user.isAllowed('coreshop_permission_quote_create')) {
+        if (user.isAllowed('coreshop_permission_quote_create')) {
             ordersMenu.push({
                 text: t('coreshop_quote_create'),
                 iconCls: 'coreshop_icon_quote_create',
-                handler: function () {
-                    coreshop.helpers.createQuote();
-                }.bind(this)
+                handler: this.openCreateQuote
             });
-        }*/
+        }
 
         if (ordersMenu.length > 0) {
             coreShopMenuItems.push({
@@ -656,8 +652,16 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
         coreshop.global.resource.open('coreshop.order', 'orders');
     },
 
+    openCreateOrder: function () {
+        coreshop.global.resource.open('coreshop.order', 'create_order');
+    },
+
     openQuotes: function () {
         coreshop.global.resource.open('coreshop.order', 'quotes');
+    },
+
+    openCreateQuote: function () {
+        coreshop.global.resource.open('coreshop.order', 'create_quote');
     },
 
     openPriceRules: function () {

@@ -25,6 +25,7 @@ coreshop_admin_cart_price_rule:
           - GET
           - POST
 
+##### ORDERS
 coreshop_order_get_grid_configuration:
   path: /%coreshop.admin.route.base%/order/get-grid-configuration
   defaults: { _controller: 'coreshop.pimcore_controller.order:getGridConfigurationAction'}
@@ -57,6 +58,7 @@ coreshop_order_get_payment_providers:
   path: /%coreshop.admin.route.base%/order/get-payment-providers
   defaults: { _controller: 'coreshop.pimcore_controller.order:getPaymentProvidersAction'}
 
+##### ORDER INVOICE
 coreshop_order_invoice_get_processable_items:
   path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
   defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:getInvoiceAbleItemsAction'}
@@ -69,6 +71,7 @@ coreshop_order_invoice_render:
   path: /%coreshop.admin.route.base%/order-invoice/render
   defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:renderAction'}
 
+##### ORDER SHIPMENT
 coreshop_order_shipment_get_processable_items:
   path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
   defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:getShipAbleItemsAction'}
@@ -81,7 +84,24 @@ coreshop_order_shipment_render:
   path: /%coreshop.admin.route.base%/order-shipment/render
   defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}
 
+##### ORDER CREATION
+coreshop_order_get_product_details:
+  path: /%coreshop.admin.route.base%/order-creation/get-product-details
+  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getProductDetailsAction'}
 
+coreshop_order_get_customer_details:
+  path: /%coreshop.admin.route.base%/order-creation/get-customer-details
+  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getCustomerDetailsAction'}
+
+coreshop_order_get_totals:
+  path: /%coreshop.admin.route.base%/order-creation/get-totals
+  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getTotalsAction'}
+
+coreshop_order_create:
+  path: /%coreshop.admin.route.base%/order-creation/create-sale
+  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:createSaleAction'}
+
+##### QUOTES
 coreshop_quote_get_grid_configuration:
   path: /%coreshop.admin.route.base%/quote/get-grid-configuration
   defaults: { _controller: 'coreshop.pimcore_controller.quote:getGridConfigurationAction'}
@@ -97,3 +117,20 @@ coreshop_quote_get_quote:
 coreshop_quote_find:
   path: /%coreshop.admin.route.base%/quote/find
   defaults: { _controller: 'coreshop.pimcore_controller.quote:findSaleAction'}
+
+##### QUOTE CREATION
+coreshop_quote_get_product_details:
+  path: /%coreshop.admin.route.base%/quote-creation/get-product-details
+  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getProductDetailsAction'}
+
+coreshop_quote_get_customer_details:
+  path: /%coreshop.admin.route.base%/quote-creation/get-customer-details
+  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getCustomerDetailsAction'}
+
+coreshop_quote_get_totals:
+  path: /%coreshop.admin.route.base%/quote-creation/get-totals
+  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getTotalsAction'}
+
+coreshop_quote_create:
+  path: /%coreshop.admin.route.base%/quote-creation/create-sale
+  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:createSaleAction'}

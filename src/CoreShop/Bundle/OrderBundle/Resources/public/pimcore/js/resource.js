@@ -37,6 +37,10 @@ coreshop.order.resource = Class.create(coreshop.resource, {
             this.openOrders();
         } else if (item === 'quotes') {
             this.openQuotes();
+        }else if (item === 'create_order') {
+            this.openCreateOrder();
+        } else if (item === 'create_quote') {
+            this.openCreateQuote();
         } else if (item === 'cart_price_rule') {
             this.openCartPriceRules();
         }
@@ -51,6 +55,10 @@ coreshop.order.resource = Class.create(coreshop.resource, {
         }
     },
 
+    openCreateOrder: function () {
+        new coreshop.order.order.create.panel();
+    },
+
     openQuotes: function () {
         try {
             pimcore.globalmanager.get('coreshop_quote').activate();
@@ -58,6 +66,10 @@ coreshop.order.resource = Class.create(coreshop.resource, {
         catch (e) {
             pimcore.globalmanager.add('coreshop_quote', new coreshop.order.quote.list());
         }
+    },
+
+    openCreateQuote: function () {
+        new coreshop.order.quote.create.panel();
     },
 
     openCartPriceRules: function () {

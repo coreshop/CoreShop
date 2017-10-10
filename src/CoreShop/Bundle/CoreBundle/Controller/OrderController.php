@@ -33,6 +33,9 @@ class OrderController extends BaseOrderController
         return $order;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getDetails(SaleInterface $sale)
     {
         $order = parent::getDetails($sale);

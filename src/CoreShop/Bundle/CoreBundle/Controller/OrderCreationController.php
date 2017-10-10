@@ -10,12 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Bundle\CoreBundle\Controller;
 
-use CoreShop\Component\Order\Model\QuoteInterface as BaseQuoteInterface;
-use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
+use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController as BaseOrderCreationController;
 
-interface QuoteInterface extends BaseQuoteInterface, CarrierAwareInterface
+class OrderCreationController extends BaseOrderCreationController
 {
-
+    use CoreSaleCreationTrait;
 }

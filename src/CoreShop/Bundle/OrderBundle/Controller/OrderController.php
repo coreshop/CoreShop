@@ -28,7 +28,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderController extends AbstractSaleController
+class OrderController extends AbstractSaleDetailController
 {
     /**
      * {@inheritdoc}

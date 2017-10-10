@@ -10,7 +10,9 @@ core_shop_order:
     order:
       path: coreshop/orders
       classes:
-        pimcore_controller: CoreShop\Bundle\CoreBundle\Controller\OrderController
+        pimcore_controller:
+            default: CoreShop\Bundle\CoreBundle\Controller\OrderController
+            creation: CoreShop\Bundle\CoreBundle\Controller\OrderCreationController
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrder.json'
     order_shipment:
       classes:
@@ -19,3 +21,5 @@ core_shop_order:
       path: coreshop/quotes
       classes:
         install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuote.json'
+        pimcore_controller:
+            creation: CoreShop\Bundle\CoreBundle\Controller\QuoteCreationController

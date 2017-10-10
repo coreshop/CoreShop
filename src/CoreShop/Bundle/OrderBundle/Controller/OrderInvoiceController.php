@@ -28,6 +28,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderInvoiceController extends PimcoreController
 {
+    /**
+     * @param Request $request
+     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     */
     public function getInvoiceAbleItemsAction(Request $request)
     {
         $orderId = $request->get('id');

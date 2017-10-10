@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 
 
-class QuoteController extends AbstractSaleController
+class QuoteController extends AbstractSaleDetailController
 {
     /**
      * {@inheritdoc}

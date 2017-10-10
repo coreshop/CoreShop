@@ -134,3 +134,6 @@ coreshop_category_variant_mode_include_parent_object: 'Für Suche verwenden, abe
 coreshop_notification_rules: 'Notification Regeln'
 coreshop_payment_providers: 'Zahlungsanbieter'
 coreshop_action_freeShipping: 'Gratis Versand'
+coreshop_shipping_tax: 'Versand Steuer'
+coreshop_shipping_without_tax: 'Versand (exkl. Steuer)'
+coreshop_order_create_shipping: 'Versand'

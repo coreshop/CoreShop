@@ -14,9 +14,11 @@ namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
+use CoreShop\Bundle\OrderBundle\Controller\QuoteCreationController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartRepository;
@@ -185,9 +187,15 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(OrderInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(OrderRepository::class)->end()
-                                        ->scalarNode('pimcore_controller')->defaultValue(OrderController::class)->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopOrder.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                        ->arrayNode('pimcore_controller')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('default')->defaultValue(OrderController::class)->end()
+                                                ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -313,9 +321,15 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(QuoteInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('pimcore_controller')->defaultValue(QuoteController::class)->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopQuote.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                        ->arrayNode('pimcore_controller')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('default')->defaultValue(QuoteController::class)->end()
+                                                ->scalarNode('creation')->defaultValue(QuoteCreationController::class)->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -369,18 +383,29 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('cart_pricerule_condition_timespan')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/timespan.js')->end()
                             ->scalarNode('sale_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail.js')->end()
                             ->scalarNode('sale_list')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/list.js')->end()
+                            ->scalarNode('sale_creation_event_manager')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/eventManager.js')->end()
+                            ->scalarNode('sale_creation_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/panel.js')->end()
+                            ->scalarNode('sale_creation_abstract_step')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/abstractStep.js')->end()
+                            ->scalarNode('sale_creation_step_preparation')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/preparation.js')->end()
+                            ->scalarNode('sale_creation_step_base')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/base.js')->end()
+                            ->scalarNode('sale_creation_step_products')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/products.js')->end()
+                            ->scalarNode('sale_creation_step_address')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/address.js')->end()
+                            ->scalarNode('sale_creation_step_rules')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/rules.js')->end()
+                            ->scalarNode('sale_creation_step_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/payment.js')->end()
+                            ->scalarNode('sale_creation_step_totals')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/totals.js')->end()
                             ->scalarNode('order_list')->defaultValue('/bundles/coreshoporder/pimcore/js/order/list.js')->end()
-                            ->scalarNode('quote_list')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/list.js')->end()
-                            ->scalarNode('quote_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/detail.js')->end()
+                            ->scalarNode('order_creation')->defaultValue('/bundles/coreshoporder/pimcore/js/order/create/panel.js')->end()
                             ->scalarNode('order_helper')->defaultValue('/bundles/coreshoporder/pimcore/js/helper.js')->end()
                             ->scalarNode('order_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail.js')->end()
                             ->scalarNode('order_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice.js')->end()
                             ->scalarNode('order_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment.js')->end()
                             ->scalarNode('order_create_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/createPayment.js')->end()
                             ->scalarNode('order_edit_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editPayment.js')->end()
-                            ->scalarNode('order_create_order')->defaultValue('/bundles/coreshoporder/pimcore/js/order/create/order.js')->end()
                             ->scalarNode('order_invoice_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice/render.js')->end()
                             ->scalarNode('order_shipment_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment/render.js')->end()
+                            ->scalarNode('quote_list')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/list.js')->end()
+                            ->scalarNode('quote_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/detail.js')->end()
+                            ->scalarNode('quote_create')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/create/panel.js')->end()
                             ->scalarNode('core_extension_data_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/data/coreShopCartPriceRule.js')->end()
                             ->scalarNode('core_extension_tag_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/tags/coreShopCartPriceRule.js')->end()
                         ->end()

@@ -40,7 +40,14 @@ final class PimcoreDriver extends AbstractDriver
         parent::load($container, $metadata);
 
         if ($metadata->hasClass('pimcore_controller')) {
-            $this->addPimcoreController($container, $metadata);
+            if (is_array($metadata->getClass('pimcore_controller'))) {
+                foreach ($metadata->getClass('pimcore_controller') as $suffix => $class) {
+                    $this->addPimcoreController($container, $metadata, $class, $suffix);
+                }
+            }
+            else {
+                $this->addDefaultPimcoreController($container, $metadata);
+            }
         }
 
         if ($metadata->hasParameter('path')) {
@@ -52,9 +59,14 @@ final class PimcoreDriver extends AbstractDriver
      * @param ContainerBuilder $container
      * @param MetadataInterface $metadata
      */
-    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $definition = new Definition($metadata->getClass('pimcore_controller'));
+        $this->addPimcoreController($container, $metadata, $metadata->getClass('pimcore_controller'));
+    }
+
+    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, $classValue, $suffix = null)
+    {
+        $definition = new Definition($classValue);
         $definition
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
@@ -63,7 +75,13 @@ final class PimcoreDriver extends AbstractDriver
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
-        $container->setDefinition($metadata->getServiceId('pimcore_controller'), $definition);
+        $serviceId = $metadata->getServiceId('pimcore_controller');
+
+        if (    'default' !== $suffix) {
+            $serviceId .= '_' . $suffix;
+        }
+
+        $container->setDefinition($serviceId, $definition);
     }
 
     /**
@@ -76,8 +94,7 @@ final class PimcoreDriver extends AbstractDriver
 
         if (!is_array($folder)) {
             $folders[$metadata->getName()] = $folder;
-        }
-        else {
+        } else {
             $folders = $folder;
         }
 

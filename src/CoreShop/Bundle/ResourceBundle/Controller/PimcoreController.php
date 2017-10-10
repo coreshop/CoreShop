@@ -16,6 +16,8 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use Pimcore\Model\DataObject;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
 {
@@ -44,5 +46,27 @@ class PimcoreController extends AdminController
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    protected function isGrantedOr403()
+    {
+        if ($this->getPermission()) {
+            if ($this->getUser()->getPermission($this->getPermission())) {
+                return;
+            }
+
+            throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPermission()
+    {
+        return '';
     }
 }

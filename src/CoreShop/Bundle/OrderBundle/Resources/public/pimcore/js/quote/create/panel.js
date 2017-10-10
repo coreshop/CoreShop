@@ -1,5 +1,4 @@
-<?php
-/**
+/*
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -8,14 +7,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
  */
 
-namespace CoreShop\Component\Core\Model;
-
-use CoreShop\Component\Order\Model\QuoteInterface as BaseQuoteInterface;
-use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
-
-interface QuoteInterface extends BaseQuoteInterface, CarrierAwareInterface
-{
-
-}
+pimcore.registerNS('coreshop.order.quote.create');
+pimcore.registerNS('coreshop.order.quote.create.panel');
+coreshop.order.quote.create.panel = Class.create(coreshop.order.sale.create.panel, {
+    type: 'quote'
+});

@@ -26,6 +26,10 @@
     background: url(../img/order-create.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_quote_create {
+    background: url(../img/quote-create.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_condition_nested {
     background: url(../img/conditions.svg) center center no-repeat !important;
 }
