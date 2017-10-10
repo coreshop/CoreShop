@@ -102,9 +102,23 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     dataIndex: 'price',
                     width: 150,
                     align: 'right',
-                    text: t('coreshop_price'),
+                    text: t('coreshop_base_price'),
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + record.get('priceFormatted') + '</span>';
+                    }.bind(this)
+                    /*field : { TODO: Make price editable
+                        xtype: 'numberfield',
+                        decimalPrecision : 2
+                    }*/
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'priceConverted',
+                    width: 150,
+                    align: 'right',
+                    text: t('coreshop_price'),
+                    renderer: function (value, metaData, record) {
+                        return '<span style="font-weight:bold">' + record.get('priceConvertedFormatted') + '</span>';
                     }.bind(this)
                     /*field : { TODO: Make price editable
                         xtype: 'numberfield',
@@ -126,9 +140,19 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     dataIndex: 'total',
                     width: 150,
                     align: 'right',
-                    text: t('coreshop_total'),
+                    text: t('coreshop_base_total'),
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + record.get('totalFormatted') + '</span>';
+                    }.bind(this)
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'totalConverted',
+                    width: 150,
+                    align: 'right',
+                    text: t('coreshop_total'),
+                    renderer: function (value, metaData, record) {
+                        return '<span style="font-weight:bold">' + record.get('totalConvertedFormatted') + '</span>';
                     }.bind(this)
                 }
             ]

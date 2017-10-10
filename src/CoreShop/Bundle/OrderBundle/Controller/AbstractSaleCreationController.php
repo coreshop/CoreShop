@@ -89,18 +89,26 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
                 $productFlat['quantity'] = $productObject['quantity'] ? $productObject['quantity'] : 1;
 
                 $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, true);
-                $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
-                $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $currency->getIsoCode());
+                $priceFormatted = $this->get('coreshop.money_formatter')->format($price, $currentCurrency);
 
-                $productFlat['price'] = $priceConverted;
+                $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
+                $priceConvertedFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $currency->getIsoCode());
+
+                $productFlat['price'] = $price;
                 $productFlat['priceFormatted'] = $priceFormatted;
+                $productFlat['priceConverted'] = $priceConverted;
+                $productFlat['priceConvertedFormatted'] = $priceConvertedFormatted;
 
                 $total = $price * $productObject['quantity'];
-                $totalConverted = $this->get('coreshop.currency_converter')->convert($total, $currentCurrency, $currency->getIsoCode());
-                $totalFormatted = $this->get('coreshop.money_formatter')->format($totalConverted, $currency->getIsoCode());
+                $totalFormatted = $this->get('coreshop.money_formatter')->format($total, $currentCurrency);
 
-                $productFlat['total'] = $totalConverted;
+                $totalConverted = $this->get('coreshop.currency_converter')->convert($total, $currentCurrency, $currency->getIsoCode());
+                $totalConvertedFormatted = $this->get('coreshop.money_formatter')->format($totalConverted, $currency->getIsoCode());
+
+                $productFlat['total'] = $total;
                 $productFlat['totalFormatted'] = $totalFormatted;
+                $productFlat['totalConverted'] = $totalConverted;
+                $productFlat['totalConvertedFormatted'] = $totalConvertedFormatted;
 
                 $result[] = $productFlat;
             }
