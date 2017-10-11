@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Configuration;
 
@@ -29,17 +29,23 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     protected $storeContext;
 
     /**
-     * @param EntityManagerInterface           $entityManager
+     * @var ConfigurationRepositoryInterface
+     */
+    protected $configurationRepository;
+
+    /**
+     * @param EntityManagerInterface $entityManager
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface                 $configurationFactory
-     * @param StoreContextInterface            $storeContext
+     * @param FactoryInterface $configurationFactory
+     * @param StoreContextInterface $storeContext
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ConfigurationRepositoryInterface $configurationRepository,
         FactoryInterface $configurationFactory,
         StoreContextInterface $storeContext
-    ) {
+    )
+    {
         parent::__construct($entityManager, $configurationRepository, $configurationFactory);
 
         $this->storeContext = $storeContext;
