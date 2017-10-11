@@ -43,7 +43,7 @@ class ProductClassHelper implements ClassHelperInterface
 
             $categories = $indexable->getCategories();
 
-            if ($categories) {
+            if (is_array($categories) && count($categories) > 0) {
                 foreach ($categories as $c) {
                     if ($c instanceof CategoryInterface) {
                         $categoryIds[$c->getId()] = $c->getId();
