@@ -21,19 +21,22 @@ final class ErrorSerializer
      * @param FormInterface $handledForm
      * @return array
      */
-    public function serializeErrorFromHandledForm(FormInterface $handledForm) {
+    public function serializeErrorFromHandledForm(FormInterface $handledForm)
+    {
         $errors = [];
 
         /**
          * @var $e FormError
          */
         foreach ($handledForm->getErrors(true, true) as $e) {
-            $errorMessageTemplate = $e->getMessageTemplate();
-            foreach ($e->getMessageParameters() as $key => $value) {
-                $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
-            }
+            if ($e instanceof FormError) {
+                $errorMessageTemplate = $e->getMessageTemplate();
+                foreach ($e->getMessageParameters() as $key => $value) {
+                    $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
+                }
 
-            $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+                $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+            }
         }
 
         return $errors;
