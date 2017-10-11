@@ -106,7 +106,9 @@ class OrderShipmentController extends PimcoreController
                 $shipment = $this->getShipmentFactory()->createNew();
 
                 foreach ($resource as $key => $value) {
-                    if ($key === 'items' || $key === 'id') continue;
+                    if ($key === 'items' || $key === 'id') {
+                        continue;
+                    }
 
                     $shipment->setValue($key, $value);
                 }
