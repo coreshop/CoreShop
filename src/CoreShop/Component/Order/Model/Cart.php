@@ -32,7 +32,7 @@ class Cart extends AbstractProposal implements CartInterface
         Assert::isInstanceOf($product, PurchasableInterface::class);
 
         foreach ($this->getItems() as $item) {
-            if ($item instanceof ProposalItemInterface) {
+            if ($item instanceof CartItemInterface) {
                 if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
                     return $item;
                 }
