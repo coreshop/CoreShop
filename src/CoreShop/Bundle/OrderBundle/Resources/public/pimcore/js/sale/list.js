@@ -42,8 +42,9 @@ coreshop.order.sale.list = Class.create({
 
 
     prepareConfig: function (columnConfig) {
-        var gridColumns = [];
-        var storeModelFields = [];
+        var me = this,
+            gridColumns = [],
+            storeModelFields = [];
 
         Ext.each(columnConfig, function (column) {
             var newColumn = column;
@@ -52,7 +53,7 @@ coreshop.order.sale.list = Class.create({
                 type: column.type
             };
 
-            newColumn.id = newColumn.dataIndex;
+            newColumn.id = me.type + '_' + newColumn.dataIndex;
             newColumn.text = newColumn.text.split('|').map(function (string) {
                 //text like [foo bar] won't be translated. just remove brackets.
                 return string.match(/\[([^)]+)]/) ? string.replace(/\[|]/gi, '') : t(string);
@@ -122,7 +123,7 @@ coreshop.order.sale.list = Class.create({
                 layout: 'border',
                 closable: true,
                 items: this.getItems(),
-                /*dockedItems: [{
+                dockedItems: [{
                     xtype: 'toolbar',
                     dock: 'top',
                     items: [
@@ -130,11 +131,11 @@ coreshop.order.sale.list = Class.create({
                             iconCls: 'coreshop_icon_'+this.type+'_create',
                             text: t('coreshop_'+this.type+'_create'),
                             handler: function () {
-                                coreshop.helpers['create' + this.type]();
+                                new coreshop.order[this.type].create.panel();
                             }.bind(this)
                         }
                     ]
-                }]*/
+                }]
             });
 
             // add event listener
