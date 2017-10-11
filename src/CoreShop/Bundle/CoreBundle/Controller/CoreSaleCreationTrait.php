@@ -142,4 +142,13 @@ trait CoreSaleCreationTrait
 
         return $cart;
     }
+
+    /**
+     * Gets a container service by its id.
+     *
+     * @param string $id The service id
+     *
+     * @return object The service
+     */
+    protected abstract function get($id);
 }
