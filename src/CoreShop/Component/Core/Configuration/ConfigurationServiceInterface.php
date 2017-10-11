@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Configuration;
 
@@ -21,9 +21,9 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
     /**
      * @param $key
      * @param StoreInterface|null $store
-     * @param bool                $returnObject
+     * @param bool $returnObject
      *
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|string
      */
     public function getForStore($key, StoreInterface $store = null, $returnObject = false);
 
