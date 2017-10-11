@@ -13,7 +13,7 @@ See https://github.com/coreshop/CoreShop/tree/coreshop1**
 
 CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore with eCommerce features.
 
-![CoreShop Interface](docs/img/screenshot.png)
+![CoreShop Interface](docs/img/screenshot5.png)
 
 # Requirements
 * Pimcore 5.0.0
@@ -47,5 +47,5 @@ Copyright: [Dominik Pfaffenbauer](https://www.pfaffenbauer.at)
 For licensing details please visit [LICENSE.md](LICENSE.md) 
 
 ## Screenshots
-![CoreShop Interface](docs/img/screenshot2.png)
-![CoreShop Interface](docs/img/screenshot3.png)
+![CoreShop Interface](docs/img/screenshot5-2.png)
+![CoreShop Interface](docs/img/screenshot5-3.png)
