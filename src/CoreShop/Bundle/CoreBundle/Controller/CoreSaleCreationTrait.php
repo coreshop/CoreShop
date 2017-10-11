@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
@@ -151,4 +152,16 @@ trait CoreSaleCreationTrait
      * @return object The service
      */
     protected abstract function get($id);
+
+    /**
+     * Returns a JsonResponse that uses the serializer component if enabled, or json_encode.
+     *
+     * @param mixed $data    The response data
+     * @param int   $status  The status code to use for the Response
+     * @param array $headers Array of extra headers to add
+     * @param array $context Context to pass to serializer when using serializer component
+     *
+     * @return JsonResponse
+     */
+    protected abstract function json($data, $status = 200, $headers = [], $context = []);
 }
