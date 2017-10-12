@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
 use Pimcore\Model;
 
-class Money extends Model\Object\ClassDefinition\Data
+class Money extends Model\DataObject\ClassDefinition\Data
 {
     /**
      * Static type of this element
@@ -156,10 +156,10 @@ class Money extends Model\Object\ClassDefinition\Data
     }
 
     /**
-     * @see Model\Object\ClassDefinition\Data::getDataFromResource
+     * @see Model\DataObject\ClassDefinition\Data::getDataFromResource
      *
      * @param float $data
-     * @param null|Model\Object\AbstractObject $object
+     * @param null|Model\DataObject\AbstractObject $object
      * @param mixed $params
      *
      * @return float
@@ -174,10 +174,10 @@ class Money extends Model\Object\ClassDefinition\Data
     }
 
     /**
-     * @see Model\Object\ClassDefinition\Data::getDataForQueryResource
+     * @see Model\DataObject\ClassDefinition\Data::getDataForQueryResource
      *
      * @param float $data
-     * @param null|Model\Object\AbstractObject $object
+     * @param null|Model\DataObject\AbstractObject $object
      * @param mixed $params
      *
      * @return float
@@ -188,10 +188,10 @@ class Money extends Model\Object\ClassDefinition\Data
     }
 
     /**
-     * @see Model\Object\ClassDefinition\Data::getDataForEditmode
+     * @see Model\DataObject\ClassDefinition\Data::getDataForEditmode
      *
      * @param float $data
-     * @param null|Model\Object\AbstractObject $object
+     * @param null|Model\DataObject\AbstractObject $object
      * @param mixed $params
      *
      * @return float
@@ -202,10 +202,10 @@ class Money extends Model\Object\ClassDefinition\Data
     }
 
     /**
-     * @see Model\Object\ClassDefinition\Data::getDataFromEditmode
+     * @see Model\DataObject\ClassDefinition\Data::getDataFromEditmode
      *
      * @param float $data
-     * @param null|Model\Object\AbstractObject $object
+     * @param null|Model\DataObject\AbstractObject $object
      * @param mixed $params
      *
      * @return float
@@ -216,10 +216,10 @@ class Money extends Model\Object\ClassDefinition\Data
     }
 
     /**
-     * @see Model\Object\ClassDefinition\Data::getVersionPreview
+     * @see Model\DataObject\ClassDefinition\Data::getVersionPreview
      *
      * @param float $data
-     * @param null|Model\Object\AbstractObject $object
+     * @param null|Model\DataObject\AbstractObject $object
      * @param mixed $params
      *
      * @return float
@@ -269,7 +269,7 @@ class Money extends Model\Object\ClassDefinition\Data
      *
      * @abstract
      *
-     * @param Model\Object\AbstractObject $object
+     * @param Model\DataObject\AbstractObject $object
      * @param array $params
      *
      * @return string
@@ -285,7 +285,7 @@ class Money extends Model\Object\ClassDefinition\Data
      * fills object field data values from CSV Import String
      *
      * @param string $importValue
-     * @param null|Model\Object\AbstractObject $object
+     * @param null|Model\DataObject\AbstractObject $object
      * @param mixed $params
      *
      * @return float
