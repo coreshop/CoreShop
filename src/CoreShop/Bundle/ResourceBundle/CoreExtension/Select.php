@@ -17,7 +17,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 
 
-abstract class Select extends Model\Object\ClassDefinition\Data\Select
+abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
 {
     /**
      * Type for the column to query.

@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
 use Pimcore\Model;
 
-abstract class Multiselect extends Model\Object\ClassDefinition\Data\Multiselect
+abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multiselect
 {
     /**
      * @param $object
