@@ -66,6 +66,9 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
     public function load(ObjectManager $manager)
     {
         if (!count($this->container->get('coreshop.repository.product')->findAll())) {
+            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
+            $stores = $this->container->get('coreshop.repository.store')->findAll();
+
             $productsCount = 25;
             $faker = Factory::create();
             $faker->addProvider(new Lorem($faker));
@@ -106,14 +109,18 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 $product->setCategories([$usedCategory]);
                 $product->setQuantity(10);
                 $product->setWholesalePrice($faker->randomFloat(2, 100, 200) * 100);
-                $product->setPrice($faker->randomFloat(2, 200, 400) * 100);
+
+                foreach ($stores as $store) {
+                    $product->setStorePrice($faker->randomFloat(2, 200, 400) * 100, $store);
+                }
+
                 $product->setTaxRule($this->getReference('taxRule'));
                 $product->setWidth($faker->numberBetween(5, 10));
                 $product->setHeight($faker->numberBetween(5, 10));
                 $product->setDepth($faker->numberBetween(5, 10));
                 $product->setWeight($faker->numberBetween(5, 10));
                 $product->setImages($images);
-                $product->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
+                $product->setStores([$defaultStore]);
                 $product->setParent($this->container->get('coreshop.object_service')->createFolderByPath(sprintf('/demo/products/%s', $usedCategory->getName())));
                 $product->setKey($product->getName());
                 $product->setPublished(true);

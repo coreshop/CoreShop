@@ -5,6 +5,7 @@ imports:
   - { resource: "services/cart-price-rules.yml" }
   - { resource: "services/workflow.yml" }
   - { resource: "services/pdf.yml" }
+  - { resource: "services/purchasable.yml" }
 
 services:
   coreshop.order.configurator.session_cart:

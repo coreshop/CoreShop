@@ -103,3 +103,7 @@
 .coreshop_icon_monitoring {
     background: url(../img/icons/monitor.svg) center center no-repeat !important;
 }
+
+.pimcore_icon_coreShopStorePrice {
+    background: url(../img/icons/money.svg) center center no-repeat !important;
+}

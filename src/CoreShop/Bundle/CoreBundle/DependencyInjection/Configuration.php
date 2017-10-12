@@ -112,6 +112,8 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('cart_pricerule_condition_stores')->defaultValue('/bundles/coreshopcore/pimcore/js/cart/pricerules/conditions/stores.js')->end()
                             ->scalarNode('cart_pricerule_condition_zones')->defaultValue('/bundles/coreshopcore/pimcore/js/cart/pricerules/conditions/zones.js')->end()
                             ->scalarNode('taxrulegroup_item')->defaultValue('/bundles/coreshopcore/pimcore/js/taxation/taxrulegroup/item.js')->end()
+                            ->scalarNode('core_extension_data_store_price')->defaultValue('/bundles/coreshopcore/pimcore/js/coreExtension/data/coreShopStorePrice.js')->end()
+                            ->scalarNode('core_extension_tag_store_price')->defaultValue('/bundles/coreshopcore/pimcore/js/coreExtension/tags/coreShopStorePrice.js')->end()
                             ->scalarNode('settings')->defaultValue('/bundles/coreshopcore/pimcore/js/settings.js')->end()
                             ->scalarNode('helpers')->defaultValue('/bundles/coreshopcore/pimcore/js/helpers.js')->end()
                             ->scalarNode('coreshop')->defaultValue('/bundles/coreshopcore/pimcore/js/coreshop.js')->end()

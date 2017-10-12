@@ -1,0 +1,6 @@
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopStorePrice: CoreShop\Bundle\CoreBundle\CoreExtension\StorePrice

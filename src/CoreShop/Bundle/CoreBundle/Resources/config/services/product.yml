@@ -16,8 +16,10 @@ services:
   coreshop.product.taxed_price_calculator:
     class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
     arguments:
-      - '@coreshop.product.price_calculator'
+      - '@coreshop.order.purchasable.price_calculator'
+      - '@coreshop.order.purchasable.discount_calculator'
       - '@coreshop.product.tax_factory'
+      - '@coreshop.context.store'
 
   coreshop.templating.helper.price:
     class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper
@@ -42,3 +44,23 @@ services:
     arguments: ['@coreshop.templating.helper.discount']
     tags:
       - { name: twig.extension }
+
+  coreshop.core.product.price_calculator.store_price:
+    class: CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator
+    decorates: 'coreshop.product.price_calculator.property_price'
+    arguments:
+       - '@coreshop.context.store'
+
+  coreshop.order.purchasable.price_calculator.product:
+    class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator
+    arguments:
+      - '@coreshop.product.price_calculator'
+    tags:
+     - { name: coreshop.order.purchasable.price_calculator, type: product, priority: 20 }
+
+  coreshop.order.purchasable.discount_calculator.product:
+    class: CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountCalculator
+    arguments:
+      - '@coreshop.product.price_calculator'
+    tags:
+     - { name: coreshop.order.purchasable.discount_calculator, type: product, priority: 20 }
