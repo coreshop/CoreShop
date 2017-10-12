@@ -61,8 +61,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             }
                         ],
                         "name": "localizedfields",

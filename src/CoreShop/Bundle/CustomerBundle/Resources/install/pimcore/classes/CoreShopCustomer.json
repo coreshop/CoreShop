@@ -70,8 +70,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             },
                             {
                                 "fieldtype": "lastname",
@@ -93,8 +93,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             },
                             {
                                 "fieldtype": "email",
@@ -116,8 +116,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             },
                             {
                                 "fieldtype": "password",
@@ -203,8 +203,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             },
                             {
                                 "fieldtype": "gender",
@@ -241,8 +241,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             },
                             {
                                 "fieldtype": "input",

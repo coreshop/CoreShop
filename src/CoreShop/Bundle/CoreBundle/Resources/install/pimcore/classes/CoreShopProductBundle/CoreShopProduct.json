@@ -90,8 +90,8 @@
                                                 "datatype": "data",
                                                 "relationType": false,
                                                 "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
+                                                "visibleGridView": true,
+                                                "visibleSearch": true
                                             },
                                             {
                                                 "fieldtype": "textarea",
@@ -112,8 +112,8 @@
                                                 "datatype": "data",
                                                 "relationType": false,
                                                 "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
+                                                "visibleGridView": true,
+                                                "visibleSearch": true
                                             }
                                         ],
                                         "name": "localizedfields",
@@ -161,8 +161,8 @@
                                         "datatype": "data",
                                         "relationType": false,
                                         "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
+                                        "visibleGridView": true,
+                                        "visibleSearch": true
                                     },
                                     {
                                         "fieldtype": "input",
@@ -184,8 +184,8 @@
                                         "datatype": "data",
                                         "relationType": false,
                                         "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
+                                        "visibleGridView": true,
+                                        "visibleSearch": true
                                     },
                                     {
                                         "fieldtype": "checkbox",
@@ -205,8 +205,8 @@
                                         "datatype": "data",
                                         "relationType": false,
                                         "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
+                                        "visibleGridView": true,
+                                        "visibleSearch": true
                                     },
                                     {
                                         "fieldtype": "href",
@@ -447,8 +447,8 @@
                                 "datatype": "data",
                                 "columnType": null,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             }
                         ],
                         "locked": false

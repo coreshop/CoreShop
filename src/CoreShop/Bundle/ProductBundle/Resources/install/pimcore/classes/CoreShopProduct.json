@@ -90,8 +90,8 @@
                                                 "datatype": "data",
                                                 "relationType": false,
                                                 "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
+                                                "visibleGridView": true,
+                                                "visibleSearch": true
                                             },
                                             {
                                                 "fieldtype": "textarea",
@@ -161,8 +161,8 @@
                                         "datatype": "data",
                                         "relationType": false,
                                         "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
+                                        "visibleGridView": true,
+                                        "visibleSearch": true
                                     },
                                     {
                                         "fieldtype": "input",
@@ -184,8 +184,8 @@
                                         "datatype": "data",
                                         "relationType": false,
                                         "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
+                                        "visibleGridView": true,
+                                        "visibleSearch": true
                                     },
                                     {
                                         "fieldtype": "checkbox",
@@ -205,8 +205,8 @@
                                         "datatype": "data",
                                         "relationType": false,
                                         "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
+                                        "visibleGridView": true,
+                                        "visibleSearch": true
                                     },
                                     {
                                         "fieldtype": "href",
@@ -423,8 +423,8 @@
                                 "datatype": "data",
                                 "columnType": null,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             }
                         ],
                         "locked": false
@@ -538,30 +538,6 @@
                                         "maxValue": null,
                                         "name": "wholesalePrice",
                                         "title": "Wholesale Price",
-                                        "tooltip": "",
-                                        "mandatory": false,
-                                        "noteditable": false,
-                                        "index": false,
-                                        "locked": false,
-                                        "style": "",
-                                        "permissions": null,
-                                        "datatype": "data",
-                                        "relationType": false,
-                                        "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
-                                    },
-                                    {
-                                        "fieldtype": "coreShopMoney",
-                                        "width": "",
-                                        "defaultValue": null,
-                                        "queryColumnType": "int",
-                                        "columnType": "int",
-                                        "phpdocType": "int",
-                                        "minValue": null,
-                                        "maxValue": null,
-                                        "name": "pimcoreBasePrice",
-                                        "title": "Preis",
                                         "tooltip": "",
                                         "mandatory": false,
                                         "noteditable": false,

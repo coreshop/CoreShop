@@ -72,8 +72,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             },
                             {
                                 "fieldtype": "image",
@@ -95,8 +95,8 @@
                                 "datatype": "data",
                                 "relationType": false,
                                 "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleGridView": true,
+                                "visibleSearch": true
                             }
                         ],
                         "locked": false
