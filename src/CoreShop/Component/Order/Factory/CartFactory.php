@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Factory;
 
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;

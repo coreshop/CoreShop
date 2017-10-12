@@ -44,16 +44,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     /**
      * @return int
      */
-    public function getPrice();
-
-    /**
-     * @param int $price
-     */
-    public function setPrice($price);
-
-    /**
-     * @return int
-     */
     public function getWholesalePrice();
 
     /**

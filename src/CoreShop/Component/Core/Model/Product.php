@@ -23,7 +23,6 @@ class Product extends BaseProduct implements ProductInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -36,6 +35,22 @@ class Product extends BaseProduct implements ProductInterface
      * {@inheritdoc}
      */
     public function setStores($stores)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

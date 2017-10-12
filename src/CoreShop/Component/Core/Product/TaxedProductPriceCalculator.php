@@ -8,25 +8,29 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Product;
 
-
 use CoreShop\Component\Core\Model\ProductInterface;
-
-
+use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
+use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
+use CoreShop\Component\Order\Model\PriceAwarePurchasableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
-
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterface
 {
     /**
-     * @var ProductPriceCalculatorInterface
+     * @var PurchasablePriceCalculatorInterface
      */
     private $priceCalculator;
+
+    /**
+     * @var PurchasableDiscountCalculatorInterface
+     */
+    private $discountCalculator;
 
     /**
      * @var ProductTaxCalculatorFactoryInterface
@@ -34,28 +38,41 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     private $taxCalculatorFactory;
 
     /**
-     * @param ProductPriceCalculatorInterface $priceCalculator
-     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
+     * @var StoreContextInterface
      */
-    public function __construct(ProductPriceCalculatorInterface $priceCalculator, ProductTaxCalculatorFactoryInterface $taxCalculatorFactory)
+    private $storeContext;
+
+    /**
+     * @param PurchasablePriceCalculatorInterface $priceCalculator
+     * @param PurchasableDiscountCalculatorInterface $discountCalculator
+     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
+     * @param StoreContextInterface $storeContext
+     */
+    public function __construct(
+        PurchasablePriceCalculatorInterface $priceCalculator,
+        PurchasableDiscountCalculatorInterface $discountCalculator,
+        ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
+        StoreContextInterface $storeContext)
     {
         $this->priceCalculator = $priceCalculator;
+        $this->discountCalculator = $discountCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
+        $this->storeContext = $storeContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $product, $withTax = true) {
-        if ($product instanceof ProductInterface) {
-            $price = $this->priceCalculator->getPrice($product);
-            $discount = $this->priceCalculator->getDiscount($product, $price);
+    public function getPrice(PurchasableInterface $product, $withTax = true)
+    {
+        $price = $this->priceCalculator->getPrice($product);
+        $discount = $this->discountCalculator->getDiscount($product, $price);
 
-            $price = $price - $discount;
+        if (is_null($price)) {
+            throw new \InvalidArgumentException(sprintf("Could not determine a price for Product (%s)", $product->getId()));
         }
-        else {
-            $price = $product->getPrice();
-        }
+
+        $price = $price - $discount;
 
         if ($withTax) {
             return $this->applyTaxes($product, $price);
@@ -67,14 +84,15 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $product, $withTax = true) {
-        if ($product instanceof ProductInterface) {
-            $price = $this->priceCalculator->getPrice($product);
-            $discount = $this->priceCalculator->getDiscount($product, $price);
+    public function getDiscount(PurchasableInterface $product, $withTax = true)
+    {
+        $price = $this->getRetailPrice($product, false);
+
+        if (is_null($price)) {
+            throw new \InvalidArgumentException(sprintf("Could not determine a price for Product (%s)", $product->getId()));
         }
-        else {
-            $discount = 0;
-        }
+
+        $discount = $this->discountCalculator->getDiscount($product, $price);
 
         if ($withTax) {
             return $this->applyTaxes($product, $discount);
@@ -86,8 +104,13 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(PurchasableInterface $product, $withTax = true) {
-        $price = $product->getPrice();
+    public function getRetailPrice(PurchasableInterface $product, $withTax = true)
+    {
+        $price = $this->priceCalculator->getPrice($product);
+
+        if (is_null($price)) {
+            throw new \InvalidArgumentException(sprintf("Could not determine a price for Product (%s)", $product->getId()));
+        }
 
         if ($withTax) {
             return $this->applyTaxes($product, $price);
@@ -101,7 +124,8 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
      * @param $price
      * @return int
      */
-    private function applyTaxes(PurchasableInterface $product, $price) {
+    private function applyTaxes(PurchasableInterface $product, $price)
+    {
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {

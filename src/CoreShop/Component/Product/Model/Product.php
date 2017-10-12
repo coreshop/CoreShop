@@ -25,22 +25,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice()
-    {
-        return $this->getPimcoreBasePrice();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPrice($basePrice)
-    {
-        $this->setPimcoreBasePrice($basePrice);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getImage()
     {
         if (count($this->getImages()) > 0) {
@@ -160,22 +144,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
      * {@inheritdoc}
      */
     public function setWholesalePrice($wholesalePrice)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPimcoreBasePrice()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPimcoreBasePrice($basePrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

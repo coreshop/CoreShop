@@ -18,11 +18,11 @@ use CoreShop\Component\Core\Model\Product;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
-use CoreShop\Component\Customer\Model\CustomerGroupInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerGroupInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
@@ -30,11 +30,8 @@ use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\File;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\DataObject\Service;
 
-/**
- * @TODO: This should be created using fixtures!!
- */
 class Data
 {
     /**
@@ -146,7 +143,7 @@ class Data
             $entityManager = self::get('doctrine.orm.entity_manager');
 
             /**
-             * @var TaxRateInterface
+             * @var $taxRate TaxRateInterface
              */
             $taxRate = $taxRateFactory->createNew();
             $taxRate->setRate(20);
@@ -154,7 +151,7 @@ class Data
             $taxRate->setActive(true);
 
             /**
-             * @var TaxRuleGroupInterface
+             * @var $taxRuleGroup TaxRuleGroupInterface
              */
             $taxRuleGroup = $taxRuleGroupFactory->createNew();
             $taxRuleGroup->setName('20');
@@ -162,7 +159,7 @@ class Data
             $taxRuleGroup->addStore(self::$store);
 
             /**
-             * @var TaxRuleInterface
+             * @var $taxRule TaxRuleInterface
              */
             $taxRule = $taxRuleFactory->createNew();
             $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -194,7 +191,7 @@ class Data
             $shippingRuleGroupFactory = self::get('coreshop.factory.shipping_rule_group');
 
             /**
-             * @var CarrierInterface
+             * @var $carrier CarrierInterface
              */
             $carrier = $carrierFactory->createNew();
             $carrier->setName('Test-Carrier-Weight');
@@ -207,7 +204,7 @@ class Data
             $entityManager->persist($carrier);
 
             /**
-             * @var ConditionInterface
+             * @var $zoneCond ConditionInterface
              * @var $weightCond        ConditionInterface
              * @var $priceAct          ActionInterface
              */
@@ -224,7 +221,7 @@ class Data
             $priceAct->setConfiguration(['price' => 1000]);
 
             /**
-             * @var ShippingRuleInterface
+             * @var $rule1 ShippingRuleInterface
              */
             $rule1 = $shippingRuleFactory->createNew();
             $rule1->setName('carrier1-rule');
@@ -233,7 +230,7 @@ class Data
             $rule1->addCondition($zoneCond);
 
             /**
-             * @var ShippingRuleGroupInterface
+             * @var $ruleGroup ShippingRuleGroupInterface
              */
             $ruleGroup = $shippingRuleGroupFactory->createNew();
             $ruleGroup->setCarrier($carrier);
@@ -261,7 +258,7 @@ class Data
 
         if (!self::$category1 instanceof CategoryInterface) {
             /**
-             * @var CategoryInterface
+             * @var $category1 CategoryInterface
              */
             $category1 = $categoryFactory->createNew();
             $category1->setName('test');
@@ -274,7 +271,7 @@ class Data
 
         if (!self::$category2 instanceof CategoryInterface) {
             /**
-             * @var CategoryInterface
+             * @var $category2 CategoryInterface
              */
             $category2 = $categoryFactory->createNew();
             $category2->setName('test2');
@@ -287,12 +284,12 @@ class Data
 
         if (!self::$product1 instanceof ProductInterface) {
             /**
-             * @var ProductInterface
+             * @var $product1 ProductInterface
              */
             $product1 = $productFactory->createNew();
             $product1->setName('test1');
             $product1->setWholesalePrice(1000);
-            $product1->setPrice(1500);
+            $product1->setStorePrice(1500, static::$store);
             $product1->setCategories([self::$category1]);
             $product1->setHeight(50);
             $product1->setWidth(50);
@@ -309,12 +306,12 @@ class Data
 
         if (!self::$product2 instanceof ProductInterface) {
             /**
-             * @var ProductInterface
+             * @var $product2 ProductInterface
              */
             $product2 = $productFactory->createNew();
             $product2->setName('test2');
             $product2->setWholesalePrice(10000);
-            $product2->setPrice(15000);
+            $product2->setStorePrice(15000, static::$store);
             $product2->setCategories([self::$category2]);
             $product2->setHeight(500);
             $product2->setWidth(500);
@@ -331,12 +328,12 @@ class Data
 
         if (!self::$product3 instanceof ProductInterface) {
             /**
-             * @var ProductInterface
+             * @var $product3 ProductInterface
              */
             $product3 = $productFactory->createNew();
             $product3->setName('test3');
             $product3->setWholesalePrice(5000);
-            $product3->setPrice(7500);
+            $product3->setStorePrice(7500, static::$store);
             $product3->setHeight(100);
             $product3->setWidth(100);
             $product3->setDepth(100);
@@ -389,11 +386,11 @@ class Data
 
         if (!self::$customerGroup1 instanceof CustomerGroupInterface) {
             /**
-             * @var CustomerGroupInterface
+             * @var $customerGroup1 CustomerGroupInterface
              */
             $customerGroup1 = $customerGroupFactory->createNew();
             $customerGroup1->setName('Group1');
-            $customerGroup1->setShops([self::$store->getId()]);
+            $customerGroup1->addStore(self::$store);
             $customerGroup1->setKey('group1');
             $customerGroup1->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup1->save();
@@ -403,11 +400,11 @@ class Data
 
         if (!self::$customerGroup2 instanceof CustomerGroupInterface) {
             /**
-             * @var CustomerGroupInterface
+             * @var $customerGroup2 CustomerGroupInterface
              */
             $customerGroup2 = $customerGroupFactory->createNew();
             $customerGroup2->setName('Group2');
-            $customerGroup2->setShops([self::$store->getId()]);
+            $customerGroup2->addStore(self::$store);
             $customerGroup2->setKey('group2');
             $customerGroup2->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup2->save();
@@ -426,7 +423,7 @@ class Data
 
         if (!self::$customer1 instanceof CustomerInterface) {
             /**
-             * @var CustomerInterface
+             * @var $customer CustomerInterface
              */
             $customer = $customerFactory->createNew();
             $customer->setKey('customer1');
@@ -439,7 +436,7 @@ class Data
             $customer->save();
 
             /**
-             * @var AddressInterface
+             * @var $address AddressInterface
              */
             $address = $addressFactory->createNew();
             $address->setCity('Wels');
@@ -452,7 +449,7 @@ class Data
             $address->setParent(Service::createFolderByPath('/'));
             $address->save();
 
-            $customer->setAddresses([$address]);
+            $customer->addAddress($address);
             $customer->save();
 
             self::$customer1 = $customer;

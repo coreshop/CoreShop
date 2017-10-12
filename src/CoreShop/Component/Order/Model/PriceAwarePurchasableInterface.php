@@ -12,29 +12,10 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
-
-interface PurchasableInterface extends StorageListProductInterface
+interface PriceAwarePurchasableInterface
 {
     /**
      * @return int
      */
-    public function getId();
-
-    /**
-     * @param string|null $language
-     * @return string
-     */
-    public function getName($language = null);
-
-    /**
-     * @return int
-     */
-    public function getWholesalePrice();
-
-    /**
-     * @return TaxRuleGroupInterface
-     */
-    public function getTaxRule();
+    public function getPrice();
 }
