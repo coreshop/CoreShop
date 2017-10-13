@@ -12,11 +12,42 @@
 
 namespace CoreShop\Bundle\OrderBundle\Cart\Rule\Action;
 
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 
 class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
+    /**
+     * @var CurrencyConverterInterface
+     */
+    protected $moneyConverter;
+
+    /**
+     * @var CurrencyRepositoryInterface
+     */
+    protected $currencyRepository;
+
+    /**
+     * @var CurrencyContextInterface
+     */
+    protected $currencyContext;
+
+    /**
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param CurrencyConverterInterface $moneyConverter
+     * @param CurrencyContextInterface $currencyContext
+     */
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
+    {
+        $this->currencyRepository = $currencyRepository;
+        $this->moneyConverter = $moneyConverter;
+        $this->currencyContext = $currencyContext;
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +70,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     public function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
         $amount = $configuration['amount'];
+        $currency = $this->currencyRepository->find($configuration['currency']);
 
         if ($withTax) {
             $subTotalTe = $cart->getSubtotal(false);
@@ -51,6 +83,6 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             }
         }
 
-        return $amount;
+        return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
     }
 }

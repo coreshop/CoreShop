@@ -148,6 +148,7 @@ class Carrier extends RuleTest
         ]);
         $shippingRule->addAction($this->createActionWithForm('price', [
             'price' => 10,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]));
 
         $this->getEntityManager()->persist($shippingRule);

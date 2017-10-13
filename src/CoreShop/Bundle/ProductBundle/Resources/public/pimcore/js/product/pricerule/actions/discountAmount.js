@@ -17,10 +17,11 @@ coreshop.product.pricerule.actions.discountAmount = Class.create(coreshop.rules.
 
     getForm: function () {
         var amountValue = 0;
-        var me = this;
+        var currency = null;
 
         if (this.data) {
             amountValue = this.data.amount / 100;
+            currency = this.data.currency;
         }
 
         var amount = new Ext.form.NumberField({
@@ -32,7 +33,11 @@ coreshop.product.pricerule.actions.discountAmount = Class.create(coreshop.rules.
 
         this.form = new Ext.form.Panel({
             items: [
-                amount
+                amount,
+                {
+                    xtype: 'coreshop.currency',
+                    value: currency
+                }
             ]
         });
 

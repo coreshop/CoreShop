@@ -36,12 +36,20 @@ services:
   # Product Price Rule ACTIONS
   coreshop.product_price_rule.action.price:
     class: CoreShop\Bundle\ProductBundle\Rule\Action\PriceActionProcessor
+    arguments:
+      - '@coreshop.repository.currency'
+      - '@coreshop.currency_converter'
+      - '@coreshop.context.currency'
     tags:
       - { name: coreshop.product_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
       - { name: coreshop.product_specific_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
 
   coreshop.product_price_rule.action.discount_amount:
     class: CoreShop\Bundle\ProductBundle\Rule\Action\DiscountAmountActionProcessor
+    arguments:
+      - '@coreshop.repository.currency'
+      - '@coreshop.currency_converter'
+      - '@coreshop.context.currency'
     tags:
       - { name: coreshop.product_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
       - { name: coreshop.product_specific_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }

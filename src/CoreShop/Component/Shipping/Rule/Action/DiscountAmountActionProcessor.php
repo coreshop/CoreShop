@@ -13,11 +13,41 @@
 namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterface
 {
+    /**
+     * @var CurrencyConverterInterface
+     */
+    protected $moneyConverter;
+
+    /**
+     * @var CurrencyRepositoryInterface
+     */
+    protected $currencyRepository;
+
+    /**
+     * @var CurrencyContextInterface
+     */
+    protected $currencyContext;
+
+    /**
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param CurrencyConverterInterface $moneyConverter
+     * @param CurrencyContextInterface $currencyContext
+     */
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
+    {
+        $this->currencyRepository = $currencyRepository;
+        $this->moneyConverter = $moneyConverter;
+        $this->currencyContext = $currencyContext;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,6 +61,9 @@ class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterf
      */
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
     {
-        return -1 * $configuration['amount'];
+        $amount = $configuration['amount'];
+        $currency = $this->currencyRepository->find($configuration['currency']);
+
+        return -1 * $this->moneyConverter->convert($amount, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
     }
 }

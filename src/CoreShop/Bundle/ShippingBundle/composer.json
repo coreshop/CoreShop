@@ -24,7 +24,8 @@
     "coreshop/address-bundle": "^2.0",
     "coreshop/rule-bundle": "^2.0",
     "coreshop/resource-bundle": "^2.0",
-    "coreshop/money-bundle": "^2.0"
+    "coreshop/money-bundle": "^2.0",
+    "coreshop/currency-bundle": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

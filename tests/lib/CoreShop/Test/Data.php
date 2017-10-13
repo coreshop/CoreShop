@@ -218,7 +218,7 @@ class Data
 
             $priceAct = $actionFactory->createNew();
             $priceAct->setType('price');
-            $priceAct->setConfiguration(['price' => 1000]);
+            $priceAct->setConfiguration(['price' => 1000, 'currency' => self::$store->getCurrency()->getId()]);
 
             /**
              * @var $rule1 ShippingRuleInterface

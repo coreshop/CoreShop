@@ -21,7 +21,8 @@
     "php": "^7.0",
     "coreshop/resource": "^2.0",
     "coreshop/address": "^2.0",
-    "coreshop/rule": "^2.0"
+    "coreshop/rule": "^2.0",
+    "coreshop/currency": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

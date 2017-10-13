@@ -49,6 +49,9 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
     public function load(ObjectManager $manager)
     {
         if (!count($this->container->get('coreshop.repository.shipping_rule')->findAll())) {
+            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
+            $currency = $defaultStore->getCurrency()->getId();
+
             $configuration = [
                 [
                     'name' => 'demo1',
@@ -71,7 +74,8 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'price',
                             'config' => [
-                                'price' => 500
+                                'price' => 500,
+                                'currency' => $currency
                             ]
                         ]
                     ]
@@ -97,7 +101,8 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'price',
                             'config' => [
-                                'price' => 1000
+                                'price' => 1000,
+                                'currency' => $currency
                             ]
                         ]
                     ]
@@ -123,7 +128,8 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                         [
                             'type' => 'price',
                             'config' => [
-                                'price' => 2000
+                                'price' => 2000,
+                                'currency' => $currency
                             ]
                         ]
                     ]

@@ -301,6 +301,7 @@ class CartPriceRule extends RuleTest
 
         $action = $this->createActionWithForm('discountAmount', [
             'amount' => 5,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $rule = $this->createRule();
@@ -333,6 +334,7 @@ class CartPriceRule extends RuleTest
 
         $action = $this->createActionWithForm('discountPercent', [
             'percent' => 10,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $rule = $this->createRule();

@@ -8,12 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action;
 
+use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -32,7 +35,28 @@ final class DiscountAmountConfigurationType extends AbstractType
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
-        ;
+            ->add('currency', CurrencyChoiceType::class, [
+                'constraints' => [
+                    new NotBlank(['groups' => ['coreshop']])
+                ],
+            ]);
+
+        $builder->get('currency')->addModelTransformer(new CallbackTransformer(
+            function ($currency) {
+                if ($currency instanceof CurrencyInterface) {
+                    return $currency->getId();
+                }
+
+                return null;
+            },
+            function ($currency) {
+                if ($currency instanceof CurrencyInterface) {
+                    return $currency->getId();
+                }
+
+                return null;
+            }
+        ));
     }
 
     /**

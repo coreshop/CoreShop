@@ -360,10 +360,12 @@ class ShippingRule extends RuleTest
 
         $action1 = $this->createActionWithForm('price', [
             'price' => 100,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $action2 = $this->createActionWithForm('discountAmount', [
             'amount' => 5,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $rule = $this->createRule();
@@ -399,6 +401,7 @@ class ShippingRule extends RuleTest
 
         $action1 = $this->createActionWithForm('price', [
             'price' => 100,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $action2 = $this->createActionWithForm('discountPercent', [
@@ -438,6 +441,7 @@ class ShippingRule extends RuleTest
 
         $action = $this->createActionWithForm('price', [
             'price' => 100,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $rule = $this->createRule();
@@ -472,10 +476,12 @@ class ShippingRule extends RuleTest
 
         $action1 = $this->createActionWithForm('price', [
             'price' => 100,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $action2 = $this->createActionWithForm('additionAmount', [
             'amount' => 5,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $rule = $this->createRule();
@@ -511,6 +517,7 @@ class ShippingRule extends RuleTest
 
         $action1 = $this->createActionWithForm('price', [
             'price' => 100,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $action2 = $this->createActionWithForm('additionPercent', [

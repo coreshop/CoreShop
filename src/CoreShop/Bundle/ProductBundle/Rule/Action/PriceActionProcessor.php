@@ -12,10 +12,40 @@
 
 namespace CoreShop\Bundle\ProductBundle\Rule\Action;
 
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 
 class PriceActionProcessor implements ProductPriceActionProcessorInterface
 {
+    /**
+     * @var CurrencyConverterInterface
+     */
+    protected $moneyConverter;
+
+    /**
+     * @var CurrencyRepositoryInterface
+     */
+    protected $currencyRepository;
+
+    /**
+     * @var CurrencyContextInterface
+     */
+    protected $currencyContext;
+
+    /**
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param CurrencyConverterInterface $moneyConverter
+     * @param CurrencyContextInterface $currencyContext
+     */
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
+    {
+        $this->currencyRepository = $currencyRepository;
+        $this->moneyConverter = $moneyConverter;
+        $this->currencyContext = $currencyContext;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,6 +59,9 @@ class PriceActionProcessor implements ProductPriceActionProcessorInterface
      */
     public function getPrice($subject, array $configuration)
     {
-        return $configuration['price'];
+        $price = $configuration['price'];
+        $currency = $this->currencyRepository->find($configuration['currency']);
+
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
     }
 }

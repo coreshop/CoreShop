@@ -290,6 +290,7 @@ class SpecificPrice extends RuleTest
 
         $action = $this->createActionWithForm('discountAmount', [
             'amount' => 5,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $rule = $this->createRule();
@@ -346,6 +347,7 @@ class SpecificPrice extends RuleTest
 
         $action = $this->createActionWithForm('price', [
             'price' => 100,
+            'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
         $rule = $this->createRule();

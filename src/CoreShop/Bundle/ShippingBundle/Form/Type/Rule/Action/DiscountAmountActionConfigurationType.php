@@ -12,8 +12,11 @@
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
+use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -30,7 +33,28 @@ class DiscountAmountActionConfigurationType extends AbstractType
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
             ])
-        ;
+            ->add('currency', CurrencyChoiceType::class, [
+                'constraints' => [
+                    new NotBlank(['groups' => ['coreshop']])
+                ],
+            ]);
+
+        $builder->get('currency')->addModelTransformer(new CallbackTransformer(
+            function ($currency) {
+                if ($currency instanceof CurrencyInterface) {
+                    return $currency->getId();
+                }
+
+                return null;
+            },
+            function ($currency) {
+                if ($currency instanceof CurrencyInterface) {
+                    return $currency->getId();
+                }
+
+                return null;
+            }
+        ));
     }
 
     /**
