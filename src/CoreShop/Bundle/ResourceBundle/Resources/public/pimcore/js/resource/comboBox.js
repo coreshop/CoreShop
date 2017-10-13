@@ -9,5 +9,11 @@ Ext.define('CoreShop.resource.ComboBox', {
     valueField: 'id',
     forceSelection: true,
     triggerAction: 'all',
-    queryMode: 'local'
+    queryMode: 'local',
+
+    initComponent: function() {
+        this.callParent();
+
+        this.setStore(coreshop.deepCloneStore(this.getStore()));
+    }
 });
