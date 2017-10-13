@@ -23,17 +23,7 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.s
 
         items.push(
             Ext.create({
-                xtype: 'combo',
-                name: 'store',
-                fieldLabel: t('coreshop_store'),
-                store: pimcore.globalmanager.get('coreshop_stores'),
-                displayField: 'name',
-                valueField: 'id',
-                triggerAction: 'all',
-                typeAhead: false,
-                editable: false,
-                forceSelection: true,
-                queryMode: 'local',
+                xtype: 'coreshop.store',
                 value: pimcore.globalmanager.get('coreshop_stores').getAt(0),
                 listeners: {
                     change: function () {

@@ -16,8 +16,17 @@ coreshop.country.item = Class.create(coreshop.country.item, {
             data = this.data;
 
         panel.down("fieldset").add([
-            coreshop.helpers.getCurrencySelect(data.currency),
-            coreshop.helpers.getMultiStoreSelect(data.stores)
+            {
+                xtype: 'coreshop.currency',
+                value: data.currency
+            },
+            {
+                xtype: 'coreshop.store',
+                multiSelect: true,
+                typeAhead: false,
+                name: 'stores',
+                value: data.stores
+            }
         ]);
 
         this.formPanel = panel;

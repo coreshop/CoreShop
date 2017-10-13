@@ -16,8 +16,16 @@ coreshop.carrier.item  = Class.create(coreshop.carrier.item , {
             data = this.data;
 
         panel.down("fieldset").add([
-            coreshop.helpers.getMultiStoreSelect(data.stores),
-            coreshop.helpers.getTaxRuleGroupSelect(data.taxRule)
+            {
+                xtype: 'coreshop.store',
+                multiSelect: true,
+                typeAhead: false,
+                value: data.stores
+            },
+            {
+                xtype: 'coreshop.taxRuleGroup',
+                value: data.taxRule
+            }
         ]);
 
         this.formPanel = panel;
