@@ -115,6 +115,7 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopcurrency/pimcore/js/resource.js')->end()
+                            ->scalarNode('resource_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/resource/currency.js')->end()
                             ->scalarNode('currency_item')->defaultValue('/bundles/coreshopcurrency/pimcore/js/currency/item.js')->end()
                             ->scalarNode('currency_panel')->defaultValue('/bundles/coreshopcurrency/pimcore/js/currency/panel.js')->end()
                             ->scalarNode('core_extension_data_currency')->defaultValue('/bundles/coreshopcurrency/pimcore/js/coreExtension/data/coreShopCurrency.js')->end()
