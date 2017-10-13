@@ -176,6 +176,8 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshoptaxation/pimcore/js/resource.js')->end()
+                            ->scalarNode('resource_tax_rate')->defaultValue('/bundles/coreshoptaxation/pimcore/js/resource/taxRate.js')->end()
+                            ->scalarNode('resource_tax_rule_group')->defaultValue('/bundles/coreshoptaxation/pimcore/js/resource/taxRuleGroup.js')->end()
                             ->scalarNode('tax_item')->defaultValue('/bundles/coreshoptaxation/pimcore/js/tax/item.js')->end()
                             ->scalarNode('tax_panel')->defaultValue('/bundles/coreshoptaxation/pimcore/js/tax/panel.js')->end()
                             ->scalarNode('taxrulegroup_item')->defaultValue('/bundles/coreshoptaxation/pimcore/js/taxrulegroup/item.js')->end()
