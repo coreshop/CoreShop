@@ -134,6 +134,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/js/resource.js')->end()
                             ->scalarNode('resource_panel')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/panel.js')->end()
                             ->scalarNode('resource_item')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/item.js')->end()
+                            ->scalarNode('resource_combo')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/comboBox.js')->end()
                             ->scalarNode('object_element_href')->defaultValue('/bundles/coreshopresource/pimcore/js/object/elementHref.js')->end()
                             ->scalarNode('object_object_multihref')->defaultValue('/bundles/coreshopresource/pimcore/js/object/objectMultihref.js')->end()
                             ->scalarNode('core_extension_data_data')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/data.js')->end()

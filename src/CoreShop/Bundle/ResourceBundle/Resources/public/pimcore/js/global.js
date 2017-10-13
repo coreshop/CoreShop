@@ -34,7 +34,9 @@ coreshop.global = {
             reader: reader,
             autoload: true,
             fields: fields,
-            sorters: sorters ? sorters : []
+            sorters: sorters ? sorters : [],
+            remoteSort: false,
+            remoteFilter: false
         });
 
         pimcore.globalmanager.add(name, store);
