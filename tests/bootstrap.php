@@ -242,6 +242,9 @@ $fs->mkdir($kernel->getContainer()->getParameter('kernel.project_dir').'/public'
 $installer = $kernel->getContainer()->get(\CoreShop\Bundle\AdminBundle\Installer::class);
 $installer->install();
 
+\Pimcore\Cache::clearAll();
+\Pimcore\Cache\Runtime::clear();
+
 //\Pimcore\ExtensionManager::enable("plugin", "CoreShop");
 //\Pimcore\API\Plugin\Broker::getInstance()->registerPlugin(new \CoreShop\Plugin());
 
