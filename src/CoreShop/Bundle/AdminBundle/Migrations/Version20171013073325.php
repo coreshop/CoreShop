@@ -56,23 +56,23 @@ class Version20171013073325 extends AbstractPimcoreMigration implements Containe
             }
 
             $classUpdater->save();
-        }
 
-        $products = $this->container->get('coreshop.repository.product')->findAll();
-        $stores = $this->container->get('coreshop.repository.store')->findAll();
+            $products = $this->container->get('coreshop.repository.product')->findAll();
+            $stores = $this->container->get('coreshop.repository.store')->findAll();
 
-        /**
-         * @var $product ProductInterface
-         * @var $store StoreInterface
-         */
-        foreach ($products as $product) {
-            foreach ($stores as $store) {
-                if (method_exists($product, 'getPimcoreBasePrice')) {
-                    $product->setStorePrice($product->getPimcoreBasePrice(), $store);
+            /**
+             * @var $product ProductInterface
+             * @var $store StoreInterface
+             */
+            foreach ($products as $product) {
+                foreach ($stores as $store) {
+                    if (method_exists($product, 'getPimcoreBasePrice')) {
+                        $product->setStorePrice($product->getPimcoreBasePrice(), $store);
+                    }
                 }
-            }
 
-            $product->save();
+                $product->save();
+            }
         }
     }
 
