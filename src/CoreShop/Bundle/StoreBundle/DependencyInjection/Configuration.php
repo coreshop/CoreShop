@@ -91,6 +91,7 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopstore/pimcore/js/resource.js')->end()
+                            ->scalarNode('resource_store')->defaultValue('/bundles/coreshopstore/pimcore/js/resource/store.js')->end()
                             ->scalarNode('store_item')->defaultValue('/bundles/coreshopstore/pimcore/js/item.js')->end()
                             ->scalarNode('store_panel')->defaultValue('/bundles/coreshopstore/pimcore/js/panel.js')->end()
                             ->scalarNode('core_extension_data_store')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/data/coreShopStore.js')->end()
