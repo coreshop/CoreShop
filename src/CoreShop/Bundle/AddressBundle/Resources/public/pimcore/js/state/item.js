@@ -90,26 +90,9 @@ coreshop.state.item = Class.create(coreshop.resource.item, {
                             checked: data.active
                         },
                         {
-                            xtype: 'combo',
-                            fieldLabel: t('coreshop_state_country'),
-                            typeAhead: true,
+                            xtype: 'coreshop.country',
                             value: data.country,
-                            mode: 'local',
-                            listWidth: 100,
-                            store: pimcore.globalmanager.get('coreshop_countries'),
-                            displayField: 'name',
-                            valueField: 'id',
-                            forceSelection: true,
-                            triggerAction: 'all',
-                            name: 'country',
-                            listeners: {
-                                change: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this),
-                                select: function () {
-                                    this.forceReloadOnSave = true;
-                                }.bind(this)
-                            }
+                            name: 'country'
                         }
                     ]
                 }
