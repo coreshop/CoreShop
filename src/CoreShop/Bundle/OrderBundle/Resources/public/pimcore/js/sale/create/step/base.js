@@ -35,10 +35,6 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
     },
 
     getBaseItems: function () {
-        var currenciesStore = new Ext.data.JsonStore({
-            data: pimcore.globalmanager.get("coreshop_currencies").getRange()
-        });
-
         var languageStore = [];
         var websiteLanguages = pimcore.settings.websiteLanguages;
 
@@ -47,18 +43,8 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
         }
 
         return [
-            new Ext.form.ComboBox({
-                fieldLabel: t('coreshop_currency'),
-                name: 'currency',
-                width: 500,
-                store: currenciesStore,
-                triggerAction: 'all',
-                typeAhead: false,
-                editable: false,
-                forceSelection: true,
-                queryMode: 'local',
-                valueField: 'id',
-                value: currenciesStore.getAt(0),
+            {
+                xtype: 'coreshop.currency',
                 displayTpl: Ext.create('Ext.XTemplate', '<tpl for=".">', '{name} ({symbol})', '</tpl>'),
                 listConfig: {
                     itemTpl: Ext.create('Ext.XTemplate', '', '{name} ({symbol})', '')
@@ -68,8 +54,9 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
                         this.eventManager.fireEvent('currency.changed');
                         this.eventManager.fireEvent('validation');
                     }.bind(this)
-                }
-            }),
+                },
+                value: pimcore.globalmanager.get('coreshop_currencies').getAt(0)
+            },
             new Ext.form.ComboBox({
                 fieldLabel: t('language'),
                 name: "language",
