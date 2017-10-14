@@ -4,19 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{% block title %}CoreShop Document{% endblock %}</title>
+    <title>CoreShop Document</title>
 
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    {% block metatags %}
-    {% endblock %}
-
-    {% block stylesheets %}
-        {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': 'static/coreshop/css/print.css'} %}
-    {% endblock %}
+    <link rel="stylesheet" href="{{ asset('/bundles/coreshoporder/pimcore/css/print.css') }}">
 </head>
 <body>
-DOC
 {% block content %}
 {% endblock %}
 </body>

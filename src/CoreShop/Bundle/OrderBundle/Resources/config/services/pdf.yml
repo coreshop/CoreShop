@@ -1,7 +1,7 @@
 services:
   coreshop.order.renderer.pdf:
     class: CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf
-    arguments: ['%kernel.cache_dir%']
+    arguments: ['%kernel.cache_dir%', '%kernel.project_dir%']
 
   coreshop.renderer.order.pdf:
     class: CoreShop\Bundle\OrderBundle\Renderer\OrderDocumentPdfRenderer

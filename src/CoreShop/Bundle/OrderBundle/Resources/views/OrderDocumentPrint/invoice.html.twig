@@ -1,1 +1,74 @@
-INVOICE
+{% extends '@CoreShopOrder/layout.html.twig' %}
+
+{% block content %}
+    {% set invoiceAddress = document.order.invoiceAddress %}
+    {% set shippingAddress = document.order.shippingAddress %}
+    {% set date = document.documentDate.format('d.m.Y') %}
+
+<div class="padding">
+
+    <div class="meta-info">
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <strong>{{ 'customer'|trans }}</strong>
+                    </div>
+                    <div class="col-xs-10">
+                        {{ document.order.customer.firstname }} {{ document.order.customer.lastname }}
+                        {{ invoiceAddress.street }} {{ invoiceAddress.number }} <br/>
+                        {{ invoiceAddress.postCode }} {{ invoiceAddress.city }}<br/>
+                        {{ invoiceAddress.country.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="row">
+                    <div class="col-xs-7">
+                        {{ 'date'|trans }}
+                    </div>
+                    <div class="col-xs-5 text-right">
+                        {{ date }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-7">
+                        {{ 'order_number'|trans }}
+                    </div>
+                    <div class="col-xs-5 text-right">
+                        {{ document.order.orderNumber }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-7">
+                        {{ 'invoice_number'|trans }}
+                    </div>
+                    <div class="col-xs-5 text-right">
+                        {{ document.documentNumber }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        {{ 'delivery_date_invoice_date_info' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include '@CoreShopOrder/OrderDocumentPrint/invoice_items.html.twig' with {invoice: document} only %}
+
+    <hr/>
+
+    <p class="bottom">
+        <strong>Bank Information</strong>: CoreShop DEMO<br/>
+        <strong>IBAN</strong>: DEMOIBAN | <strong>BIC</strong>: DEMOBIC
+    </p>
+
+</div>
+{% endblock %}

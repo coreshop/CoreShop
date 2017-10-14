@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 
@@ -22,11 +22,18 @@ final class WkHtmlToPdf implements PdfRendererInterface
     private $kernelCacheDir;
 
     /**
-     * @param string $kernelCacheDir
+     * @var string
      */
-    public function __construct($kernelCacheDir)
+    private $kernelRootDir;
+
+    /**
+     * @param string $kernelCacheDir
+     * @param string $kernelRootDir
+     */
+    public function __construct($kernelCacheDir, $kernelRootDir)
     {
         $this->kernelCacheDir = $kernelCacheDir;
+        $this->kernelRootDir = $kernelRootDir;
     }
 
     /**
@@ -47,6 +54,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
         $pdfContent = $this->convert($bodyHtml, $config);
 
+
         $this->unlinkFile($bodyHtml);
         $this->unlinkFile($headerHtml);
         $this->unlinkFile($footerHtml);
@@ -63,10 +71,56 @@ final class WkHtmlToPdf implements PdfRendererInterface
      */
     private function createHtmlFile($string)
     {
-        $tmpHtmlFile = $this->kernelCacheDir.'/'.uniqid().'.htm';
-        file_put_contents($tmpHtmlFile, $string);
+        $tmpHtmlFile = $this->kernelCacheDir . '/' . uniqid() . '.htm';
+
+        file_put_contents($tmpHtmlFile, $this->replaceUrls($string));
 
         return $tmpHtmlFile;
+    }
+
+    private function replaceUrls($string)
+    {
+        $hostUrl = $this->kernelRootDir . '/web';
+        $replacePrefix = '';
+
+        //matches all links
+        preg_match_all("@(href|src)\s*=[\"']([^(http|mailto|javascript|data:|#)].*?(css|jpe?g|gif|png)?)[\"']@is", $string, $matches);
+        if (!empty($matches[0])) {
+            foreach ($matches[0] as $key => $value) {
+                $path = $matches[2][$key];
+
+                if (strpos($path, '//') === 0) {
+                    $absolutePath = 'http:' . $path;
+                } elseif (strpos($path, '/') === 0) {
+                    $absolutePath = preg_replace('@^' . $replacePrefix . '/@', '/', $path);
+                    $absolutePath = $hostUrl . $absolutePath;
+                } else {
+                    $absolutePath = $hostUrl . "/$path";
+                    if ($path[0] == '?') {
+                        $absolutePath = $hostUrl . $path;
+                    }
+                    $netUrl = new \Net_URL2($absolutePath);
+                    $absolutePath = $netUrl->getNormalizedURL();
+                }
+
+                $path = preg_quote($path);
+                $string = preg_replace("!([\"'])$path([\"'])!is", '\\1' . $absolutePath . '\\2', $string);
+            }
+        }
+
+        preg_match_all("@srcset\s*=[\"'](.*?)[\"']@is", $string, $matches);
+        foreach ((array)$matches[1] as $i => $value) {
+            $parts = explode(',', $value);
+            foreach ($parts as $key => $v) {
+                $parts[$key] = $hostUrl . trim($v);
+            }
+            $s = ' srcset="' . implode(', ', $parts) . '" ';
+            if ($matches[0][$i]) {
+                $string = str_replace($matches[0][$i], $s, $string);
+            }
+        }
+
+        return $string;
     }
 
     /**
@@ -81,7 +135,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
      */
     private function convert($httpSource, $config = [])
     {
-        $tmpPdfFile = $this->kernelCacheDir.'/'.uniqid().'.pdf';
+        $tmpPdfFile = $this->kernelCacheDir . '/' . uniqid() . '.pdf';
         $options = ' ';
         $optionConfig = [];
 
@@ -91,7 +145,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
                 if (is_numeric($argument)) {
                     $optionConfig[] = $value;
                 } else {
-                    $optionConfig[] = $argument.' '.$value;
+                    $optionConfig[] = $argument . ' ' . $value;
                 }
             }
 
@@ -105,7 +159,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
         }
 
         if ($wkhtmltopdfBinary) {
-            Console::exec($wkhtmltopdfBinary.$options.' '.$httpSource.' '.$tmpPdfFile);
+            Console::exec($wkhtmltopdfBinary . $options . ' ' . $httpSource . ' ' . $tmpPdfFile);
 
             $pdfContent = file_get_contents($tmpPdfFile);
 

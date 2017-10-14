@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="invoice-table">
+
+            <table class="table items">
+                <thead>
+                <tr>
+                    <th class="col-xs-1">{{ 'quantity'|trans }}</th>
+                    <th class="col-xs-7">{{ 'description'|trans }}</th>
+                    <th class="col-xs-1 text-right">
+                        {{ 'total'|trans }}
+                        <span>{{ 'excl_tax'|trans }}</span>
+                    </th>
+                    <th class="col-xs-1 text-right">
+                        {{ 'total'|trans }}
+                        <span>{{ 'inc_tax'|trans }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in invoice.getItems %}
+                    <tr style="{% if loop.last %} height:100% {% endif %}">
+                        <td class="text-right">
+                            {{ item.quantity }}
+                        </td>
+                        <td class="text-center">
+                            {{ item.getOrderItem.getProduct.name }}
+
+                            {% if item.getOrderItem.isGiftItem %}
+                                {{ 'gift_item'|trans }}
+                            {% endif %}
+                        </td>
+                        <td class="text-right">
+                            {{ item.getTotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                        <td class="text-right">
+                            {{ item.getTotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

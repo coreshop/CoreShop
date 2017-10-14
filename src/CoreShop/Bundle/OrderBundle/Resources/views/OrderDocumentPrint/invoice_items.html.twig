@@ -1,0 +1,160 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="invoice-table">
+
+            <table class="table items">
+                <thead>
+                <tr>
+                    <th class="col-xs-1">{{ 'quantity'|trans }}</th>
+                    <th class="col-xs-7">{{ 'description'|trans }}</th>
+                    <th class="col-xs-1 text-right">
+                        {{ 'total'|trans }}
+                        <span>{{ 'excl_tax'|trans }}</span>
+                    </th>
+                    <th class="col-xs-1 text-right">
+                        {{ 'total'|trans }}
+                        <span>{{ 'inc_tax'|trans }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in invoice.getItems %}
+                    <tr style="{% if loop.last %} height:100% {% endif %}">
+                        <td class="text-right">
+                            {{ item.quantity }}
+                        </td>
+                        <td class="text-center">
+                            {{ item.getOrderItem.getProduct.name }}
+
+                            {% if item.getOrderItem.isGiftItem %}
+                                {{ 'gift_item'|trans }}
+                            {% endif %}
+                        </td>
+                        <td class="text-right">
+                            {{ item.getTotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                        <td class="text-right">
+                            {{ item.getTotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <table class="table summary">
+                {% set shipping = invoice.getShipping(false) %}
+                {% set shippingIt = invoice.getShipping(true) %}
+                {% set discount = invoice.getDiscount(false) %}
+                {% set discountIt = invoice.getDiscount(true) %}
+                {% set payment = invoice.getPaymentFee() %}
+                {% set taxes = invoice.taxes %}
+                {% set rowspan = 10 + taxes|length %}
+
+                {% if shipping == 0 %}
+                    {% set rowspan = rowspan - 1 %}
+                {% endif %}
+
+                {% if discount == 0 %}
+                    {% set rowspan = rowspan - 2 %}
+                {% endif %}
+
+                {% if payment == 0 %}
+                    {% set rowspan = rowspan - 2 %}
+                {% endif %}
+
+                <tr>
+                    <td class="col-xs-8" rowspan="{{ rowspan }}">
+                        <p>
+
+                        </p>
+                    </td>
+                    <td class="col-xs-8 text-right">
+                        <strong>{{ 'subtotal_inc'|trans }}:</strong>
+                    </td>
+                    <td class="text-right cart-sub-total">
+                        {{ invoice.getSubtotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-8 text-right" >
+                        <strong>{{ 'subtotal_excl'|trans }}:</strong>
+                    </td>
+                    <td class="text-right cart-discount">
+                        {{ invoice.getSubtotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                    </td>
+                </tr>
+                {% if discount > 0 %}
+                    <tr>
+                        <td class="col-xs-8 text-right" >
+                            <strong>{{ 'discount_incl'|trans }}:</strong>
+                        </td>
+                        <td class="text-right cart-discount">
+                            -{{ discountIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-8 text-right" >
+                            <strong>{{ 'discount_excl'|trans }}:</strong>
+                        </td>
+                        <td class="text-right cart-discount">
+                            -{{ discount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if shipping > 0 %}
+                    <tr>
+                        <td class="col-xs-8 text-right" >
+                            <strong>{{ 'shippig_incl'|trans }}:</strong>
+                        </td>
+                        <td class="text-right cart-shipping">
+                            {{ shippingIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-8 text-right" >
+                            <strong>{{ 'shipping_excl'|trans }}:</strong>
+                        </td>
+                        <td class="text-right cart-shipping">
+                            {{ shipping|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if payment > 0 %}
+                    <tr>
+                        <td class="col-xs-8 text-right" >
+                            <strong>{{ 'payment_fee'|trans }}:</strong>
+                        </td>
+                        <td class="text-right cart-payment">
+                            {{ payment|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% for taxItem in taxes %}
+                     <tr>
+                        <td class="col-xs-8 text-right" >
+                            <strong>{{ "tax_name"|trans|format(taxItem.getName) }}:</strong>
+                        </td>
+                        <td class="text-right cart-tax-detail">
+                            {{ taxItem.amount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+               <tr>
+                    <td class="col-xs-8 text-right" >
+                        <strong>{{ 'total_tax'|trans }}:</strong>
+                    </td>
+                    <td class="text-right cart-tax">
+                        {{ invoice.getTotalTax|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-8 text-right" >
+                        <strong>{{ 'total'|trans }}:</strong>
+                    </td>
+                    <td class="text-right cart-total-price">
+                        {{ invoice.getTotal|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

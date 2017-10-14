@@ -1,1 +1,16 @@
-{{ order.getId }}
+{% extends '@CoreShopOrder/layout.html.twig' %}
+
+{% block content %}
+<table class="table borderless">
+    <tr>
+        <td style="width:50%">
+            <img src="/bundles/coreshopfrontend/static/images/logo.png" title="CoreShop Demo" alt="CoreShop Demo" class="logo" />
+        </td>
+        <td class="text-right">
+            CoreShop DEMO Address<br/>
+            Phone: +43 (0) 000 / 00 00 0000
+            <h1>{{ type|upper }}</h1>
+        </td>
+    </tr>
+</table>
+{% endblock %}
