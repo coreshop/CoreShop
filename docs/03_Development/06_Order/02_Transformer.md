@@ -1,6 +1,6 @@
 # CoreShop Transfomers
 
-Transfomers, as the name say, transform Data from different formats. In CoreShop a transform, transforms for example:
+Transfomers, as the name say, transform Data from different formats. A transformer converts between Object Types. For example: Cart -> Order. Following implementation do exist right now:
 
  - [an Cart into an Order](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/OrderBundle/Transformer/CartToOrderTransformer.php)
  - [an Cart into an Quote](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/OrderBundle/Transformer/CartToQuoteTransformer.php)
