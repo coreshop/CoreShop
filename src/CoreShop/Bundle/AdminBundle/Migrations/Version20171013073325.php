@@ -19,7 +19,7 @@ class Version20171013073325 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
-        $className = "CoreShopProduct";
+        $className = str_replace('Pimcore\\Model\\DataObject\\', '', $this->container->getParameter('coreshop.model.product.class'));
 
         $newField = [
             "fieldtype" => "coreShopStorePrice",
