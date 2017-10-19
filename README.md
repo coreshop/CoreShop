@@ -34,6 +34,11 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
  - Activate AdminBundle in Pimcore Extension Manager
  - Optional: Install Demo Data ```php bin/console coreshop:install:demo```
 
+# Further Information
+ - [Website](https://www.coreshop.org)
+ - [Documentation](https://www.coreshop.org/docs/latest)
+ - [Pimcore Forum](https://talk.pimcore.org)
+
 # Demo
 You can see a running demo here [CoreShop Demo](https://demo2.coreshop.org)
 
