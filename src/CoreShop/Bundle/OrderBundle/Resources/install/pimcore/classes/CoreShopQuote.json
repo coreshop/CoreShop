@@ -4094,7 +4094,7 @@
     },
     "icon": null,
     "previewUrl": null,
-    "group": null,
+    "group": "CoreShop",
     "propertyVisibility": {
         "grid": {
             "id": true,
