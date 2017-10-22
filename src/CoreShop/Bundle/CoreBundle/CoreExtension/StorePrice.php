@@ -295,7 +295,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         }
 
         if (!is_array($data)) {
-            throw new Model\Element\ValidationException('expected data to be array [' . $data . ']');
+            $data = [];
         }
 
         foreach ($data as $storeData) {
