@@ -1,6 +1,16 @@
-/* ===========================================================================================
+/*
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
+*//* ===========================================================================================
 Base CSS
-============================================================================================== */
+==============================================================================================*/
 
 body {
     font-family: @font-family-text;
@@ -129,6 +139,26 @@ h1, h2, h3, h4, h5, h6 {
                     padding: 0 0.5em;
                 }
             }
+        }
+    }
+}
+
+.Brand {
+    font: 14px/22px 'Roboto Condensed', sans-serif;
+    line-height:50px;
+    font-size:35px;
+    color: #5cb672;
+
+    &:hover, &:focus, &:visited {
+        color: #5cb672;
+        text-decoration: none;
+    }
+
+    .black {
+        color: white;
+
+        &:hover, &:focus, &:visited {
+            color: white;
         }
     }
 }

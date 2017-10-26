@@ -8,25 +8,4 @@
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
-*///
-// Utility classes
-// --------------------------------------------------
-
-// Floats
-// -------------------------
-
-.clearfix {
-    .clearfix();
-}
-
-.pull-right {
-    float: right !important;
-}
-
-.pull-left {
-    float: left !important;
-}
-
-.hidden {
-    display: none !important;
-}
+*/
