@@ -29,19 +29,42 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @var string
      */
-    public $queryColumnType = 'int(11)';
+    public $queryColumnType = 'int';
 
     /**
      * Type for the column.
      *
      * @var string
      */
-    public $columnType = 'int(11)';
+    public $columnType = 'int';
+
+    /**
+     * Column length
+     *
+     * @var integer
+     */
+    public $columnLength = 11;
 
     /**
      * @var bool
      */
     public $allowEmpty = false;
+
+    /**
+     * @return string
+     */
+    public function getColumnType()
+    {
+        return $this->columnType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQueryColumnType()
+    {
+        return $this->queryColumnType;
+    }
 
     /**
      * @param $object

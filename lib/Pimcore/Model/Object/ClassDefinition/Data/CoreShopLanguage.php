@@ -44,6 +44,22 @@ class CoreShopLanguage extends Model\Object\ClassDefinition\Data\Select
      */
     public $columnType = 'varchar(255)';
 
+    /**
+     * @return string
+     */
+    public function getColumnType()
+    {
+        return $this->columnType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQueryColumnType()
+    {
+        return $this->queryColumnType;
+    }
+
     /** True if change is allowed in edit mode.
      * @param string $object
      * @param mixed $params
