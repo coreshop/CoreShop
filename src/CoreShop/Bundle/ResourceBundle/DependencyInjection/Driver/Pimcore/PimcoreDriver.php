@@ -44,14 +44,26 @@ final class PimcoreDriver extends AbstractDriver
                 foreach ($metadata->getClass('pimcore_controller') as $suffix => $class) {
                     $this->addPimcoreController($container, $metadata, $class, $suffix);
                 }
-            }
-            else {
+            } else {
                 $this->addDefaultPimcoreController($container, $metadata);
             }
         }
 
         if ($metadata->hasParameter('path')) {
             $this->addPimcoreClass($container, $metadata);
+        }
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        parent::setClassesParameters($container, $metadata);
+
+        if ($metadata->hasClass('model')) {
+            $container->setParameter(sprintf('%s.model.%s.pimcore_class_name', $metadata->getApplicationName(), $metadata->getName()), str_replace('Pimcore\Model\DataObject\\', '', $metadata->getClass('model')));
         }
     }
 
