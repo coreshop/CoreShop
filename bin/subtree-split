@@ -107,6 +107,7 @@ split 'src/CoreShop/Component/Shipping' shipping
 split 'src/CoreShop/Component/Store' store
 split 'src/CoreShop/Component/Taxation' taxation
 split 'src/CoreShop/Component/Pimcore' pimcore
+split 'src/CoreShop/Component/StorageList' storage-list
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
 split 'src/CoreShop/Bundle/AdminBundle' admin-bundle
@@ -131,4 +132,3 @@ split 'src/CoreShop/Bundle/StoreBundle' store-bundle
 split 'src/CoreShop/Bundle/TaxationBundle' taxation-bundle
 split 'src/CoreShop/Bundle/TrackingBundle' tracking-bundle
 split 'src/CoreShop/Bundle/FixtureBundle' fixture-bundle
-split 'src/CoreShop/Component/StorageList' storage-list
