@@ -4,7 +4,7 @@ Ext.define('CoreShop.store.TaxRuleGroup', {
 
     name: 'taxRule',
     fieldLabel: t('coreshop_tax_rule_group'),
-    store: pimcore.globalmanager.get('coreshop_taxrulegroups'),
+    storeId: 'coreshop_taxrulegroups',
     listeners: {
         beforerender: function () {
             if (!this.getStore().isLoaded() && !this.getStore().isLoading())

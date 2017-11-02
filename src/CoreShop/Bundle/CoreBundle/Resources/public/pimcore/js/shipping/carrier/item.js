@@ -18,6 +18,7 @@ coreshop.carrier.item  = Class.create(coreshop.carrier.item , {
         panel.down("fieldset").add([
             {
                 xtype: 'coreshop.store',
+                name: 'stores',
                 multiSelect: true,
                 typeAhead: false,
                 value: data.stores

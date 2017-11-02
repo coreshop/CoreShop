@@ -16,7 +16,12 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
             data = this.data;
 
         panel.down("fieldset").add([
-            coreshop.helpers.getMultiStoreSelect(data.stores)
+            {
+                xtype: 'coreshop.store',
+                multiSelect: true,
+                typeAhead: false,
+                value: data.stores
+            }
         ]);
 
         this.formPanel = panel;
