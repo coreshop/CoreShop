@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\PaymentBundle\DependencyInjection;
 
+use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentProviderRepository;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentRepository;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
@@ -76,7 +77,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(PaymentProviderInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(PaymentProviderRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(PaymentProviderType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

@@ -28,6 +28,7 @@ final class PaymentType extends AbstractType
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid()],
+                'store' => $options['store']
             ])
         ;
     }
@@ -38,6 +39,8 @@ final class PaymentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+
+        $resolver->setDefault('store', null);
     }
 
     /**

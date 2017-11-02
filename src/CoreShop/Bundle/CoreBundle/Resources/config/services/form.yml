@@ -29,6 +29,13 @@ services:
     tags:
       - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
 
+  coreshop.form.extension.type.payment_provider_choice:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderChoiceTypeExtension
+    arguments:
+      - '@coreshop.repository.payment_provider'
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType }
+
   coreshop.form.extension.type.order_shipment_creation:
     class: CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension
     tags:

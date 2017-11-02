@@ -31,7 +31,9 @@ services:
 
   coreshop.checkout.step.payment:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep
-    arguments: ['@form.factory']
+    arguments:
+      - '@form.factory'
+      - '@coreshop.context.store'
 
   coreshop.checkout.step.summary:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep

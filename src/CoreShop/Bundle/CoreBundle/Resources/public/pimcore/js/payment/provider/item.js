@@ -18,6 +18,7 @@ coreshop.provider.item = Class.create(coreshop.provider.item, {
         panel.down("fieldset").add([
             {
                 xtype: 'coreshop.store',
+                name: 'stores',
                 multiSelect: true,
                 typeAhead: false,
                 value: data.stores

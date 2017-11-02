@@ -24,3 +24,4 @@ services:
       - '%coreshop.form.type.payment_provider_translation.validation_groups%'
     tags:
       - { name: form.type }
+

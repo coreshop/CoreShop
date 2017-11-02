@@ -17,6 +17,7 @@ use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,11 +29,18 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     private $formFactory;
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @var StoreContextInterface
      */
-    public function __construct(FormFactoryInterface $formFactory)
+    private $storeContext;
+
+    /**
+     * @param FormFactoryInterface $formFactory
+     * @param StoreContextInterface $storeContext
+     */
+    public function __construct(FormFactoryInterface $formFactory, StoreContextInterface $storeContext)
     {
         $this->formFactory = $formFactory;
+        $this->storeContext = $storeContext;
     }
 
     /**
@@ -102,6 +110,8 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     {
         $form = $this->formFactory->createNamed('', PaymentType::class, [
             'paymentProvider' => $cart->getPaymentProvider(),
+        ], [
+            'store' => $this->storeContext->getStore(),
         ]);
 
         return $form;

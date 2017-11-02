@@ -10,15 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\PaymentBundle\Form\Type;
+namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
-use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType;
+use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
+use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class PaymentProviderChoiceType extends AbstractType
+final class PaymentProviderChoiceTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var PaymentProviderRepositoryInterface
@@ -41,7 +41,12 @@ final class PaymentProviderChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
-                    $paymentProvider = $this->paymentProviderRepository->findActive();
+                    if (isset($options['store'])) {
+                        $paymentProvider = $this->paymentProviderRepository->findActiveForStore($options['store']);
+                    }
+                    else {
+                        $paymentProvider = $this->paymentProviderRepository->findActive();
+                    }
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
@@ -53,12 +58,7 @@ final class PaymentProviderChoiceType extends AbstractType
 
                     return $paymentProvider;
                 },
-                'choice_value' => 'id',
-                'choice_label' => function ($paymentProvider) {
-                    return $paymentProvider->getName();
-                },
-                'choice_translation_domain' => false,
-                'active' => true,
+                'store' => null,
             ])
         ;
     }
@@ -66,16 +66,8 @@ final class PaymentProviderChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getExtendedType()
     {
-        return ChoiceType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'coreshop_payment_provider_choice';
+        return PaymentProviderChoiceType::class;
     }
 }
