@@ -8,7 +8,8 @@
 {% block checkout %}
     {{ render(controller('coreshop.frontend.controller.security:loginAction', {renderLayout: false, target: pimcore_url()})) }}
 
-     <h2 class="main-heading text-center">
+    {% if coreshop_configuration('system.guest.checkout') %}
+        <h2 class="main-heading text-center">
             {{ 'guest_register'|trans }} <br/>
         </h2>
 
@@ -23,4 +24,5 @@
                 </div>
             </div>
         </section>
+    {% endif %}
 {% endblock %}

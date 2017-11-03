@@ -39,9 +39,21 @@ services:
     tags:
       - { name: templating.helper, alias: coreshop_product_discount}
 
+  coreshop.templating.helper.configuration:
+    class: CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelper
+    arguments: ['@coreshop.configuration.service']
+    tags:
+      - { name: templating.helper, alias: coreshop_configuration}
+
   coreshop.twig.extension.discount:
     class: CoreShop\Bundle\CoreBundle\Twig\ProductDiscountExtension
     arguments: ['@coreshop.templating.helper.discount']
+    tags:
+      - { name: twig.extension }
+
+  coreshop.twig.extension.configuration:
+    class: CoreShop\Bundle\CoreBundle\Twig\ConfigurationExtension
+    arguments: ['@coreshop.templating.helper.configuration']
     tags:
       - { name: twig.extension }
 
