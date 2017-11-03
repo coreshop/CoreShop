@@ -51,7 +51,6 @@ class ConfigurationFixture extends AbstractFixture implements ContainerAwareInte
             'system.guest.checkout' => true,
             'system.stock.default_out_of_stock.behaviour' => 1,
             'system.taxation.address' => 'shipping',
-            'system.prices.gross' => false,
             'system.shipment.create' => true,
             'system.shipment.prefix' => 'SH',
             'system.shipment.suffix' => '',

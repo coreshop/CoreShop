@@ -390,24 +390,6 @@ coreshop.core.settings = Class.create({
                 },
                 {
                     xtype: 'fieldset',
-                    title: t('coreshop_prices'),
-                    collapsible: true,
-                    collapsed: true,
-                    autoHeight: true,
-                    labelWidth: 250,
-                    defaultType: 'textfield',
-                    defaults: {width: 600},
-                    items: [
-                        {
-                            fieldLabel: t('coreshop_prices_are_gross'),
-                            xtype: 'checkbox',
-                            name: 'system.prices.gross',
-                            checked: this.getValue(shopId, 'system.prices.gross')
-                        }
-                    ]
-                },
-                {
-                    xtype: 'fieldset',
                     title: t('coreshop_product'),
                     collapsible: true,
                     collapsed: true,
