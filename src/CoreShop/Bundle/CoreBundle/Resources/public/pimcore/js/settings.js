@@ -252,7 +252,7 @@ coreshop.core.settings = Class.create({
             shop = store.getById(shopId);
 
         if (!shop) {
-            alert('SHOP NOT FOUND!');
+            alert('STORE NOT FOUND!');
             return;
         }
         shopPanel = Ext.create('Ext.form.Panel', {
@@ -375,6 +375,116 @@ coreshop.core.settings = Class.create({
                             editable: false,
                             forceSelection: true,
                             queryMode: 'local'
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
+                    title: t('coreshop_quote'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: {width: 600},
+                    items: [
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'system.quote.prefix',
+                            value: this.getValue(shopId, 'system.quote.prefix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'system.quote.suffix',
+                            value: this.getValue(shopId, 'system.quote.suffix')
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
+                    title: t('coreshop_order'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: {width: 600},
+                    items: [
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'system.order.prefix',
+                            value: this.getValue(shopId, 'system.order.prefix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'system.order.suffix',
+                            value: this.getValue(shopId, 'system.order.suffix')
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
+                    title: t('coreshop_invoice'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: {width: 600},
+                    items: [
+                        {
+                            fieldLabel: t('coreshop_invoice_create'),
+                            xtype: 'checkbox',
+                            name: 'system.invoice.create',
+                            checked: this.getValue(shopId, 'system.invoice.create')
+                        },
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'system.invoice.prefix',
+                            value: this.getValue(shopId, 'system.invoice.prefix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'system.invoice.suffix',
+                            value: this.getValue(shopId, 'system.invoice.suffix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_wkhtmltopdf_params'),
+                            name: 'system.invoice.wktml',
+                            value: this.getValue(shopId, 'system.invoice.wkhtml')
+                        }
+                    ]
+                },
+                {
+                    xtype: 'fieldset',
+                    title: t('coreshop_shipping'),
+                    collapsible: true,
+                    collapsed: true,
+                    autoHeight: true,
+                    labelWidth: 250,
+                    defaultType: 'textfield',
+                    defaults: {width: 600},
+                    items: [
+                        {
+                            fieldLabel: t('coreshop_shipment_create'),
+                            xtype: 'checkbox',
+                            name: 'system.shipment.create',
+                            checked: this.getValue(shopId, 'system.shipment.create')
+                        },
+                        {
+                            fieldLabel: t('coreshop_prefix'),
+                            name: 'system.shipment.prefix',
+                            value: this.getValue(shopId, 'system.shipment.prefix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_suffix'),
+                            name: 'system.shipment.suffix',
+                            value: this.getValue(shopId, 'system.shipment.suffix')
+                        },
+                        {
+                            fieldLabel: t('coreshop_wkhtmltopdf_params'),
+                            name: 'system.shipment.wkhtml',
+                            value: this.getValue(shopId, 'system.shipment.wkhtml')
                         }
                     ]
                 }

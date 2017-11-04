@@ -54,6 +54,18 @@ class ConfigurationFixture extends AbstractFixture implements ContainerAwareInte
             'system.category.grid.per_page' => [5, 10, 15, 20, 25],
             'system.category.grid.per_page.default' => 10,
             'system.category.variant_mode' => 'hide',
+            'system.order.prefix' => 'O',
+            'system.order.suffix' => '',
+            'system.quote.prefix' => 'Q',
+            'system.quote.suffix' => '',
+            'system.invoice.create' => true,
+            'system.invoice.prefix' => 'IN',
+            'system.invoice.suffix' => '',
+            'system.invoice.wkhtml' => '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5',
+            'system.shipment.create' => true,
+            'system.shipment.prefix' => 'SH',
+            'system.shipment.suffix' => '',
+            'system.shipment.wkhtml' => '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5',
         ];
 
         foreach ($configurations as $key => $value) {
