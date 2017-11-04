@@ -71,6 +71,7 @@
 										"phpdocType":"\\CoreShop\\Model\\Shop",
 										"queryColumnType":"int(11)",
 										"columnType":"int(11)",
+										"columnLength":11,
 										"allowEmpty":false,
 										"options":null,
 										"width":"",
@@ -163,6 +164,7 @@
 										"phpdocType":"\\CoreShop\\Model\\Currency",
 										"queryColumnType":"int(11)",
 										"columnType":"int(11)",
+										"columnLength":11,
 										"allowEmpty":false,
 										"options":null,
 										"width":"",
@@ -484,6 +486,7 @@
 										"phpdocType":"\\CoreShop\\Model\\Carrier",
 										"queryColumnType":"int(11)",
 										"columnType":"int(11)",
+										"columnLength":11,
 										"allowEmpty":false,
 										"options":[
 											{
@@ -1205,8 +1208,9 @@
 								"fieldtype":"objectbricks",
 								"phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
 								"allowedTypes":[
-									"OrderInfo"
+
 								],
+								"maxItems":"",
 								"name":"extraInformation",
 								"title":"extraInformation",
 								"tooltip":"",
@@ -1235,6 +1239,7 @@
 	},
 	"icon":null,
 	"previewUrl":null,
+	"group":null,
 	"propertyVisibility":{
 		"grid":{
 			"id":true,

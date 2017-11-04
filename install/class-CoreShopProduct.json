@@ -87,6 +87,8 @@
 								"height":"",
 								"maxTabs":1,
 								"labelWidth":null,
+								"hideLabelsWhenTabsReached":null,
+								"fieldDefinitionsCache":null,
 								"tooltip":"",
 								"mandatory":false,
 								"noteditable":false,
@@ -248,6 +250,8 @@
 								"height":"",
 								"maxTabs":null,
 								"labelWidth":null,
+								"hideLabelsWhenTabsReached":null,
+								"fieldDefinitionsCache":null,
 								"tooltip":"",
 								"mandatory":false,
 								"noteditable":false,
@@ -284,8 +288,11 @@
 								],
 								"lazyLoading":false,
 								"classes":[
-									"CoreShopManufacturer"
+									{
+										"classes":"CoreShopManufacturer"
+									}
 								],
+								"pathFormatterClass":null,
 								"name":"manufacturer",
 								"title":"Manufacturer",
 								"tooltip":"",
@@ -390,6 +397,7 @@
 								"classes":[
 
 								],
+								"pathFormatterClass":null,
 								"name":"virtualAsset",
 								"title":"Virtual Asset",
 								"tooltip":"",
@@ -434,8 +442,11 @@
 								"relationType":true,
 								"lazyLoading":false,
 								"classes":[
-									"CoreShopCategory"
+									{
+										"classes":"CoreShopCategory"
+									}
 								],
+								"pathFormatterClass":null,
 								"name":"categories",
 								"title":"Categories",
 								"tooltip":"",
@@ -529,6 +540,7 @@
 								"phpdocType":"CoreShop\\Model\\TaxRuleGroup",
 								"queryColumnType":"int(11)",
 								"columnType":"int(11)",
+								"columnLength":11,
 								"allowEmpty":false,
 								"options":[
 									{
@@ -679,8 +691,8 @@
 								],
 								"width":"",
 								"defaultValue":"2",
-								"queryColumnType":"varchar(255)",
-								"columnType":"varchar(255)",
+								"queryColumnType":"varchar",
+								"columnType":"varchar",
 								"phpdocType":"string",
 								"name":"outOfStockBehaviour",
 								"title":"Out of Stock Behaviour",
@@ -797,6 +809,8 @@
 								"height":"",
 								"maxTabs":null,
 								"labelWidth":null,
+								"hideLabelsWhenTabsReached":null,
+								"fieldDefinitionsCache":null,
 								"tooltip":"",
 								"mandatory":false,
 								"noteditable":false,
@@ -976,14 +990,13 @@
 								],
 								"documentsAllowed":false,
 								"documentTypes":[
-									{
-										"documentTypes":""
-									}
+
 								],
 								"lazyLoading":false,
 								"classes":[
 
 								],
+								"pathFormatterClass":null,
 								"name":"images",
 								"title":"Images",
 								"tooltip":"",
@@ -1024,6 +1037,7 @@
 								"allowedTypes":[
 
 								],
+								"maxItems":"",
 								"name":"customProperties",
 								"title":"Custom Properties",
 								"tooltip":"",
@@ -1045,7 +1059,7 @@
 								"fieldtype":"fieldcollections",
 								"phpdocType":"\\Pimcore\\Model\\Object\\Fieldcollection",
 								"allowedTypes":[
-									"CoreShopProductTest"
+
 								],
 								"lazyLoading":true,
 								"maxItems":"",
@@ -1093,8 +1107,9 @@
 								"fieldtype":"objectbricks",
 								"phpdocType":"\\Pimcore\\Model\\Object\\Objectbrick",
 								"allowedTypes":[
-									"CoreShopDimensionTest"
+
 								],
+								"maxItems":"",
 								"name":"variants",
 								"title":"Variants",
 								"tooltip":"",
@@ -1134,6 +1149,8 @@
 							{
 								"fieldtype":"text",
 								"html":"Use the Classification Store to add localized, structured Data.&nbsp;<br><b>Attention: <\/b>You cannot use relation-data here. If you need it, use the \"Custom Properties\" Section.",
+								"renderingClass":null,
+								"renderingData":null,
 								"name":"Layout",
 								"type":null,
 								"region":null,
@@ -1166,6 +1183,7 @@
 								"labelWidth":0,
 								"localized":true,
 								"storeId":"1",
+								"fieldDefinitionsCache":null,
 								"allowedGroupIds":null,
 								"tooltip":"",
 								"mandatory":false,
@@ -1193,6 +1211,7 @@
 	},
 	"icon":null,
 	"previewUrl":null,
+	"group":null,
 	"propertyVisibility":{
 		"grid":{
 			"id":true,

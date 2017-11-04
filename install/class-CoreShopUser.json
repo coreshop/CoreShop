@@ -101,8 +101,8 @@
 						],
 						"width":"",
 						"defaultValue":null,
-						"queryColumnType":"varchar(255)",
-						"columnType":"varchar(255)",
+						"queryColumnType":"varchar",
+						"columnType":"varchar",
 						"phpdocType":"string",
 						"name":"gender",
 						"title":"Gender",
@@ -330,6 +330,7 @@
 	},
 	"icon":null,
 	"previewUrl":null,
+	"group":null,
 	"propertyVisibility":{
 		"grid":{
 			"id":true,

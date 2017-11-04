@@ -10,7 +10,7 @@
 		"title":null,
 		"width":null,
 		"height":null,
-		"collapsible":null,
+		"collapsible":false,
 		"collapsed":null,
 		"bodyStyle":null,
 		"datatype":"layout",
@@ -37,6 +37,8 @@
 						"phpdocType":"CoreShop\\Model\\Cart\\PriceRule",
 						"queryColumnType":"int(11)",
 						"columnType":"int(11)",
+						"columnLength":11,
+						"allowEmpty":false,
 						"options":null,
 						"width":"",
 						"defaultValue":null,
@@ -96,7 +98,7 @@
 						"mandatory":false,
 						"noteditable":true,
 						"index":false,
-						"locked":null,
+						"locked":false,
 						"style":"",
 						"permissions":null,
 						"datatype":"data",
@@ -109,6 +111,6 @@
 				"locked":false
 			}
 		],
-		"locked":null
+		"locked":false
 	}
 }

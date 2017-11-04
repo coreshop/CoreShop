@@ -91,6 +91,7 @@
 	},
 	"icon":null,
 	"previewUrl":null,
+	"group":null,
 	"propertyVisibility":{
 		"grid":{
 			"id":true,
