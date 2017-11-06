@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
@@ -19,20 +19,6 @@ use Pimcore\Model;
 
 abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
 {
-    /**
-     * Type for the column to query.
-     *
-     * @var string
-     */
-    public $queryColumnType = 'int(11)';
-
-    /**
-     * Type for the column.
-     *
-     * @var string
-     */
-    public $columnType = 'int(11)';
-
     /**
      * @var bool
      */
@@ -47,6 +33,22 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      * @return string
      */
     abstract protected function getModel();
+
+     /**
+     * @return string | array
+     */
+    public function getQueryColumnType()
+    {
+        return 'int(11)';
+    }
+
+    /**
+     * @return string | array
+     */
+    public function getColumnType()
+    {
+        return 'int(11)';
+    }
 
     /**
      * {@inheritdoc}
