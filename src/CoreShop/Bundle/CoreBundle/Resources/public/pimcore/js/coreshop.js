@@ -498,31 +498,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                 }
             );*/
         } else if (tab.data.general.o_className === coreshop.class_map.product) {
-
-            tab.toolbar.insert(tab.toolbar.items.length,
-                '-'
-            );
-            tab.toolbar.insert(tab.toolbar.items.length,
-                {
-                    text: t('coreshop_generate_variants'),
-                    scale: 'medium',
-                    iconCls: 'pimcore_icon_tab_variants',
-                    handler: function () {
-                        new coreshop.object.variantGenerator(tab);
-                    }.bind(this, tab)
-                }
-            );
-
-            //tab.tabbar.add(new pimcore.plugin.coreshop.product.specificprice.panel(tab).getLayout());
-
-            /*tab.tab.items.items[0].add({
-             text: t('generate_variants'),
-             iconCls: 'pimcore_icon_tab_variants',
-             scale: 'medium',
-             handler: function(obj){
-             //new pimcore.plugin.VariantGenerator.VariantGeneratorDialog(obj);
-             }.bind(this, tab)
-             });*/
+            
         } else if (tab.data.general.o_className === coreshop.class_map.order) {
             var orderMoreButtons = [];
 

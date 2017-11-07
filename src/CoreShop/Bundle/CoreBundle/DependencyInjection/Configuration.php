@@ -77,7 +77,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('report_reports_sales')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/sales.js')->end()
                             ->scalarNode('dashboard_orders_carts')->defaultValue('/bundles/coreshopcore/pimcore/js/dashboard/portlets/ordersAndCartsFromLastDays.js')->end()
                             ->scalarNode('dashboard_sales')->defaultValue('/bundles/coreshopcore/pimcore/js/dashboard/portlets/salesFromLastDays.js')->end()
-                            ->scalarNode('object_variant_generator')->defaultValue('/bundles/coreshopcore/pimcore/js/object/variantGenerator.js')->end()
                             ->scalarNode('carrier_item')->defaultValue('/bundles/coreshopcore/pimcore/js/shipping/carrier/item.js')->end()
                             ->scalarNode('shipping_rule_conditions_categories')->defaultValue('/bundles/coreshopcore/pimcore/js/shipping/rules/conditions/categories.js')->end()
                             ->scalarNode('shipping_rule_conditions_countries')->defaultValue('/bundles/coreshopcore/pimcore/js/shipping/rules/conditions/countries.js')->end()
