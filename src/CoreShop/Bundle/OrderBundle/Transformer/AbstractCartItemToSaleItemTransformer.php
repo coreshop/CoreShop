@@ -21,6 +21,7 @@ use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
@@ -48,22 +49,30 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     protected $currencyConverter;
 
     /**
+     * @var TranslationLocaleProviderInterface
+     */
+    protected $localeProvider;
+
+    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param CurrencyConverterInterface $currencyConverter
+     * @param TranslationLocaleProviderInterface $localeProvider
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher,
-        CurrencyConverterInterface $currencyConverter
+        CurrencyConverterInterface $currencyConverter,
+        TranslationLocaleProviderInterface $localeProvider
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
         $this->currencyConverter = $currencyConverter;
+        $this->localeProvider = $localeProvider;
     }
 
     /**
@@ -131,6 +140,11 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $saleItem->setItemWeight($cartItem->getItemWeight());
         $saleItem->setTotalWeight($cartItem->getTotalWeight());
+
+        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+            $saleItem->setName($cartItem->getProduct()->getName($locale));
+        }
+
         $saleItem->save();
 
         $sale->addItem($saleItem);

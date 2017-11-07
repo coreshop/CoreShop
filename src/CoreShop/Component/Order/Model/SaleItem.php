@@ -116,6 +116,22 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
     /**
      * {@inheritdoc}
      */
+    public function getName($language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setName($name, $language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getWeight()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

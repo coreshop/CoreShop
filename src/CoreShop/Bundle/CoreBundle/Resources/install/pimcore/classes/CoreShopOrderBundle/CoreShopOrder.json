@@ -2962,7 +2962,7 @@
                                 "title": "Payment Provider",
                                 "tooltip": "",
                                 "mandatory": false,
-                                "noteditable": false,
+                                "noteditable": true,
                                 "index": false,
                                 "locked": false,
                                 "style": "",

@@ -12,9 +12,6 @@
 
 namespace CoreShop\Component\Order\Model;
 
-
-
-
 class OrderItem extends SaleItem implements OrderItemInterface
 {
     /**

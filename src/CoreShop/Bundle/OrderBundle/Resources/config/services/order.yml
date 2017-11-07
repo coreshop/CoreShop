@@ -14,6 +14,7 @@ services:
       - '%coreshop.folder.order_item%'
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.currency_converter'
+      - '@coreshop.translation_locale_provider'
 
   coreshop.order.transformer.cart_to_order:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartToOrderTransformer
@@ -38,6 +39,7 @@ services:
       - '%coreshop.folder.quote_item%'
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.currency_converter'
+      - '@coreshop.translation_locale_provider'
 
   coreshop.order.transformer.cart_to_quote:
     class: CoreShop\Bundle\OrderBundle\Transformer\CartToQuoteTransformer

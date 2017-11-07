@@ -23,6 +23,19 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     public function setTotal($total, $withTax = true);
 
     /**
+     * @param string $language
+     * @return string
+     */
+    public function getName($language = null);
+
+    /**
+     * @param string $name
+     * @param string $language
+     * @return mixed
+     */
+    public function setName($name, $language = null);
+
+    /**
      * @param int $totalTax
      */
     public function setTotalTax($totalTax);
