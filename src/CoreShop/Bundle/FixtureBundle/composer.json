@@ -19,9 +19,9 @@
   ],
   "require": {
     "php": "^7.0",
-    "symfony/framework-bundle": "~2.7|~3.0",
-    "symfony/doctrine-bridge": "~2.7|~3.0",
-    "symfony/twig-bundle": "~2.7|~3.0",
+    "symfony/framework-bundle": "^3.3",
+    "symfony/doctrine-bridge": "^3.3",
+    "symfony/twig-bundle": "^3.3",
     "doctrine/data-fixtures": "^1.0",
     "doctrine/dbal": "^2.1",
     "doctrine/orm": "^2.1"
