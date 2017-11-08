@@ -54,7 +54,7 @@ class ItemBuilder implements ItemBuilderInterface
         $item->setId($product->getId());
         $item->setName($product->getName());
         $item->setQuantity($quantity);
-        $item->setPrice($this->productPriceCalculator->getPrice($product));
+        $item->setPrice($this->productPriceCalculator->getPrice($product) / 100);
 
         return $item;
     }
@@ -70,7 +70,7 @@ class ItemBuilder implements ItemBuilderInterface
         $item = new ImpressionData();
         $item->setId($product->getId());
         $item->setName($product->getName());
-        $item->setPrice($this->productPriceCalculator->getPrice($product));
+        $item->setPrice($this->productPriceCalculator->getPrice($product) / 100);
 
         return $item;
     }
@@ -85,9 +85,9 @@ class ItemBuilder implements ItemBuilderInterface
     {
         $item = new ActionData();
         $item->setId($order->getOrderNumber());
-        $item->setRevenue($order->getTotal());
-        $item->setShipping($order->getShipping());
-        $item->setTax($order->getTotalTax());
+        $item->setRevenue($order->getTotal() / 100);
+        $item->setShipping($order->getShipping() / 100);
+        $item->setTax($order->getTotalTax() / 100);
 
         if ($order->getPriceRuleItems() instanceof Fieldcollection) {
             if ($order->getPriceRuleItems()->getCount() > 0) {
@@ -152,7 +152,7 @@ class ItemBuilder implements ItemBuilderInterface
         $item = new ProductData();
         $item->setId($orderItem->getId());
         $item->setName($orderItem->getProduct()->getName());
-        $item->setPrice($orderItem->getItemPrice());
+        $item->setPrice($orderItem->getItemPrice() / 100);
         $item->setQuantity($orderItem->getQuantity());
 
         return $item;

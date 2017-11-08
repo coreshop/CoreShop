@@ -46,7 +46,7 @@ final class ItemBuilder implements ItemBuilderInterface
         }
 
         if ($product instanceof \CoreShop\Component\Core\Model\ProductInterface) {
-            $item->setPrice($this->taxedProductPriceCalculator->getPrice($product));
+            $item->setPrice($this->taxedProductPriceCalculator->getPrice($product) / 100);
         }
 
         return $item;
@@ -66,7 +66,7 @@ final class ItemBuilder implements ItemBuilderInterface
         }
 
         if ($product instanceof \CoreShop\Component\Core\Model\ProductInterface) {
-            $item->setPrice($this->taxedProductPriceCalculator->getPrice($product));
+            $item->setPrice($this->taxedProductPriceCalculator->getPrice($product) / 100);
         }
 
         return $item;

@@ -130,9 +130,9 @@ final class Piwik extends AbstractClientTracker
         $calls[] = [
             'trackEcommerceCheckout',
             $cart->getId(),
-            $cart->getTotal(),
-            $cart->getSubtotal(),
-            $cart->getTotalTax()
+            $cart->getTotal() / 100,
+            $cart->getSubtotal() / 100,
+            $cart->getTotalTax() / 100
         ];
 
         $this->render($calls);
@@ -165,9 +165,11 @@ final class Piwik extends AbstractClientTracker
         $calls[] = [
             'trackEcommerceOrder',
             $order->getId(),
-            $order->getTotal(),
-            $order->getSubtotal(),
-            $order->getTotalTax()
+            $order->getTotal() / 100,
+            $order->getSubtotal() / 100,
+            $order->getTotalTax() / 100,
+            $order->getShipping() / 100,
+            $order->getDiscount() / 100
         ];
 
         $this->render($calls);
