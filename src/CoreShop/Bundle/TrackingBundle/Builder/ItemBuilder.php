@@ -5,7 +5,7 @@ namespace CoreShop\Bundle\TrackingBundle\Builder;
 use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculator;
+use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -17,14 +17,14 @@ use Pimcore\Model\DataObject\Fieldcollection;
 class ItemBuilder implements ItemBuilderInterface
 {
     /**
-     * @var TaxedProductPriceCalculator
+     * @var PurchasablePriceCalculatorInterface
      */
     private $productPriceCalculator;
 
     /**
-     * @param TaxedProductPriceCalculator $productPriceCalculator
+     * @param PurchasablePriceCalculatorInterface $productPriceCalculator
      */
-    public function __construct(TaxedProductPriceCalculator $productPriceCalculator)
+    public function __construct(PurchasablePriceCalculatorInterface $productPriceCalculator)
     {
         $this->productPriceCalculator = $productPriceCalculator;
     }

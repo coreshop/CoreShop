@@ -57,7 +57,7 @@ interface ItemBuilderInterface
      * Build checkout items by cart
      *
      * @param CartInterface $cart
-     * @return mixed
+     * @return ProductData[]
      */
     public function buildCheckoutItemsByCart(CartInterface $cart);
 

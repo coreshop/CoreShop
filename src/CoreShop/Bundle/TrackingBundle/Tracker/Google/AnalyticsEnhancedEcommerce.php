@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\TrackingBundle;
+namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Builder\ItemBuilderInterface;
 use CoreShop\Bundle\TrackingBundle\Model\ActionData;
@@ -13,7 +13,7 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Google\Analytics;
 use Symfony\Component\Templating\EngineInterface;
 
-class EnhancedEcommerce extends AbstractClientTracker
+class AnalyticsEnhancedEcommerce extends AbstractClientTracker
 {
     /**
      * @var ItemBuilderInterface

@@ -3,6 +3,7 @@
 namespace CoreShop\Bundle\CoreBundle\Tracking\Builder;
 
 use CoreShop\Bundle\TrackingBundle\Builder\ItemBuilderInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -17,11 +18,18 @@ final class ItemBuilder implements ItemBuilderInterface
     protected $decoratedItemBuilder;
 
     /**
-     * @param ItemBuilderInterface $decoratedItemBuilder
+     * @var TaxedProductPriceCalculatorInterface
      */
-    public function __construct(ItemBuilderInterface $decoratedItemBuilder)
+    protected $taxedProductPriceCalculator;
+
+    /**
+     * @param ItemBuilderInterface $decoratedItemBuilder
+     * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
+     */
+    public function __construct(ItemBuilderInterface $decoratedItemBuilder, TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator)
     {
         $this->decoratedItemBuilder = $decoratedItemBuilder;
+        $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
     }
 
     /**
@@ -35,6 +43,10 @@ final class ItemBuilder implements ItemBuilderInterface
             if (count($product->getCategories()) > 0) {
                 $item->setCategory($product->getCategories()[0]->getName());
             }
+        }
+
+        if ($product instanceof \CoreShop\Component\Core\Model\ProductInterface) {
+            $item->setPrice($this->taxedProductPriceCalculator->getPrice($product));
         }
 
         return $item;
@@ -51,6 +63,10 @@ final class ItemBuilder implements ItemBuilderInterface
             if (count($product->getCategories()) > 0) {
                 $item->setCategory($product->getCategories()[0]->getName());
             }
+        }
+
+        if ($product instanceof \CoreShop\Component\Core\Model\ProductInterface) {
+            $item->setPrice($this->taxedProductPriceCalculator->getPrice($product));
         }
 
         return $item;
@@ -100,10 +116,11 @@ final class ItemBuilder implements ItemBuilderInterface
     public function buildCheckoutItem(OrderInterface $order, OrderItemInterface $orderItem)
     {
         $item = $this->decoratedItemBuilder->buildCheckoutItem($order, $orderItem);
-        
-        if ($orderItem->getProduct() instanceof ProductInterface) {
-            if (count($orderItem->getProduct()->getCategories()) > 0) {
-                $item->setCategory($orderItem->getProduct()->getCategories()[0]->getName());
+        $product = $orderItem->getProduct();
+
+        if ($product instanceof ProductInterface) {
+            if (count($product->getCategories()) > 0) {
+                $item->setCategory($product->getCategories()[0]->getName());
             }
         }
 

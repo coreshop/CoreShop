@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\TrackingBundle;
+namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;

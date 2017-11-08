@@ -2,7 +2,6 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
-use CoreShop\Bundle\TrackingBundle\TrackerInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 abstract class AbstractClientTracker implements TrackerInterface

@@ -44,7 +44,7 @@ $this->get('coreshop.tracking.manager')->trackCheckoutStep($step, $cart, $stepNu
 ```
 
 # Add a new Tracker
-To add a new Tracker, implement the Interface: CoreShop\Bundle\TrackingBundle\TrackerInterface and register your Tracker in the container:
+To add a new Tracker, implement the Interface: CoreShop\Bundle\TrackingBundle\Tracker\TrackerInterface and register your Tracker in the container:
 
 ```yaml
 app.tracking.tracker.my_tracker:
