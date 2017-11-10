@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
-use CoreShop\Bundle\OrderBundle\Transformer\OrderToShipmentTransformer;
+use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;

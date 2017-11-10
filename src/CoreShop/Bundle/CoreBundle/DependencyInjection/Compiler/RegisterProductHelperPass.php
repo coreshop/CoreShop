@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\CoreBundle\Index\ProductClassHelper;
+use CoreShop\Component\Core\Index\ProductClassHelper;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

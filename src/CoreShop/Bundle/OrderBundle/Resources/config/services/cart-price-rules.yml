@@ -10,13 +10,16 @@ services:
   # Forms
   coreshop.form.type_cart_price_rule_choice:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleChoiceType
-    arguments: ['@coreshop.repository.cart_price_rule']
+    arguments:
+      - '@coreshop.repository.cart_price_rule'
     tags:
       - { name: form.type }
 
   coreshop.form.type.cart_price_rule_generator:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleGeneratorType
-    arguments: ['CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator', '%coreshop.form.type.cart_price_rule_generator.validation_groups%']
+    arguments:
+      - 'CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator'
+      - '%coreshop.form.type.cart_price_rule_generator.validation_groups%'
     tags:
       - { name: form.type }
 
@@ -24,43 +27,55 @@ services:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.cart_price_rule.class%', '%coreshop.form.type.cart_price_rule.validation_groups%']
+    arguments:
+      - '%coreshop.model.cart_price_rule.class%'
+      - '%coreshop.form.type.cart_price_rule.validation_groups%'
 
   coreshop.form.type.cart_price_rule.rule_action:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.rule_action.class%', '%coreshop.form.type.cart_price_rule.rule_action.validation_groups%', '@coreshop.form_registry.cart_price_rule.actions']
+    arguments:
+      - '%coreshop.model.rule_action.class%'
+      - '%coreshop.form.type.cart_price_rule.rule_action.validation_groups%'
+      - '@coreshop.form_registry.cart_price_rule.actions'
 
   coreshop.form.cart_price_rule.type.rule_action.collection:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionCollectionType
     tags:
         - { name: form.type }
-    arguments: ['@coreshop.registry.cart_price_rule.actions']
+    arguments:
+     - '@coreshop.registry.cart_price_rule.actions'
 
   coreshop.form.cart_price_rule.type.rule_condition.collection:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionCollectionType
     tags:
         - { name: form.type }
-    arguments: ['@coreshop.registry.cart_price_rule.conditions']
+    arguments:
+      - '@coreshop.registry.cart_price_rule.conditions'
 
   coreshop.form.cart_price_rule.type.rule_action_choice:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionChoiceType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.cart_price_rule.actions%']
+    arguments:
+     - '%coreshop.cart_price_rule.actions%'
 
   coreshop.form.cart_rule.type.rule_condition:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.cart_price_rule.rule_condition.validation_groups%', '@coreshop.form_registry.cart_price_rule.conditions']
+    arguments:
+      - '%coreshop.model.rule_condition.class%'
+      - '%coreshop.form.type.cart_price_rule.rule_condition.validation_groups%'
+      - '@coreshop.form_registry.cart_price_rule.conditions'
 
   coreshop.form.cart_price_rule.type.rule_condition_choice:
     class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionChoiceType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.cart_price_rule.conditions%']
+    arguments:
+      - '%coreshop.cart_price_rule.conditions%'
 
   # Services
   coreshop.registry.cart_price_rule.conditions:
@@ -83,37 +98,38 @@ services:
 
   # Price Rule Processor
   coreshop.cart_price_rule.conditions.validation.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleConditionsValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
     shared: false
     arguments:
       - '@coreshop.registry.cart_price_rule.conditions'
 
   coreshop.cart_price_rule.rule_validation.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
     arguments:
       - '@coreshop.cart_price_rule.conditions.validation.processor'
 
   # Cart Price Rule CONDITIONS
   coreshop.cart_price_rule.condition.nested:
     class: CoreShop\Component\Rule\Condition\NestedConditionChecker
-    arguments: ['@coreshop.cart_price_rule.conditions.validation.processor']
+    arguments:
+      - '@coreshop.cart_price_rule.conditions.validation.processor'
     tags:
       - { name: coreshop.cart_price_rule.condition, type: nested, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
   coreshop.cart_price_rule.condition.timespan:
-    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\TimeSpanConditionChecker
+    class: CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
   coreshop.cart_price_rule.condition.amount:
-    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Condition\AmountConditionChecker
+    class: CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: amount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType }
 
   # Product Price Rule ACTIONS
 
   coreshop.cart_price_rule.action.discount_amount:
-    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Action\DiscountAmountActionProcessor
+    class: CoreShop\Component\Order\Cart\Rule\Action\DiscountAmountActionProcessor
     arguments:
       - '@coreshop.repository.currency'
       - '@coreshop.currency_converter'
@@ -122,14 +138,15 @@ services:
       - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
 
   coreshop.cart_price_rule.action.discount_percent:
-    class: CoreShop\Bundle\OrderBundle\Cart\Rule\Action\DiscountPercentActionProcessor
+    class: CoreShop\Component\Order\Cart\Rule\Action\DiscountPercentActionProcessor
     tags:
       - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
   # Voucher Code Generator
   coreshop.generator.cart_price_rule_voucher_codes:
     class: CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
-    arguments: ['@coreshop.factory.cart_price_rule_voucher_code']
+    arguments:
+      - '@coreshop.factory.cart_price_rule_voucher_code'
 
   # Processor
   coreshop.cart_price_rule.processor:

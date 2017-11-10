@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
@@ -60,11 +60,11 @@ final class WorkflowManager implements WorkflowManagerInterface
 
     /**
      * @param PrioritizedServiceRegistryInterface $serviceRegistry
-     * @param EventDispatcherInterface            $eventDispatcher
-     * @param string                              $class
-     * @param TranslatorInterface                 $translator
-     * @param string                              $noteIdentifier
-     * @param TokenStorageInterface               $tokenStorage
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string $class
+     * @param TranslatorInterface $translator
+     * @param string $noteIdentifier
+     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         PrioritizedServiceRegistryInterface $serviceRegistry,
@@ -73,7 +73,8 @@ final class WorkflowManager implements WorkflowManagerInterface
         TranslatorInterface $translator,
         $noteIdentifier,
         TokenStorageInterface $tokenStorage
-    ) {
+    )
+    {
         $this->serviceRegistry = $serviceRegistry;
         $this->eventDispatcher = $eventDispatcher;
         $this->class = $class;
@@ -116,7 +117,7 @@ final class WorkflowManager implements WorkflowManagerInterface
 
         if ($proposal instanceof ProposalInterface) {
             if ($currentState === $newState) {
-                throw new \Exception('Cannot apply same orderState again. ('.$currentState.' => '.$newState.')');
+                throw new \Exception('Cannot apply same orderState again. (' . $currentState . ' => ' . $newState . ')');
             } elseif (!$this->validateNewState($proposal, $currentState, $newState)) {
                 throw new \Exception('New State is not valid.');
             }
@@ -210,12 +211,12 @@ final class WorkflowManager implements WorkflowManagerInterface
         if ($manager->validateAction($params['action'], $params['newState'], $params['newStatus'])) {
             try {
                 $manager->performAction($params['action'], $params);
-                Logger::debug('CoreShop State update. ID: '.$proposal->getId().', newState: "'.$params['newState'].'", newStatus: "'.$params['newStatus'].'"');
+                Logger::debug('CoreShop State update. ID: ' . $proposal->getId() . ', newState: "' . $params['newState'] . '", newStatus: "' . $params['newStatus'] . '"');
             } catch (\Exception $e) {
-                throw new \Exception('changeOrderState Error: '.$e->getMessage());
+                throw new \Exception('changeOrderState Error: ' . $e->getMessage());
             }
         } else {
-            throw new \Exception('changeOrderState Error: '.$manager->getError());
+            throw new \Exception('changeOrderState Error: ' . $manager->getError());
         }
 
         $this->tokenStorage->getToken()->setUser($originalUser);

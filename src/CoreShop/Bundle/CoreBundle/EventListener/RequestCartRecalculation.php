@@ -16,8 +16,6 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Version;
-use Pimcore\Service\Context\PimcoreContextGuesser;
-use Pimcore\Tool;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartRecalculation

@@ -1,6 +1,6 @@
 services:
   coreshop.rule.condition.customers:
-    class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\CustomersConditionChecker
+    class: CoreShop\Component\Core\Product\Rule\Condition\CustomersConditionChecker
     arguments:
       ['@coreshop.context.customer']
     tags:
@@ -9,7 +9,7 @@ services:
       - { name: coreshop.product_specific_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
 
   coreshop.rule.condition.customer_groups:
-    class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\CustomerGroupsConditionChecker
+    class: CoreShop\Component\Core\Product\Rule\Condition\CustomerGroupsConditionChecker
     arguments:
       ['@coreshop.context.customer']
     tags:
@@ -18,7 +18,7 @@ services:
       - { name: coreshop.product_specific_price_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
 
   coreshop.rule.condition.countries:
-    class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\CountriesConditionChecker
+    class: CoreShop\Component\Core\Product\Rule\Condition\CountriesConditionChecker
     arguments:
       ['@coreshop.context.country']
     tags:
@@ -26,7 +26,7 @@ services:
       - { name: coreshop.product_specific_price_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 
   coreshop.rule.condition.zones:
-    class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\ZonesConditionChecker
+    class: CoreShop\Component\Core\Product\Rule\Condition\ZonesConditionChecker
     arguments:
       ['@coreshop.context.country']
     tags:
@@ -35,7 +35,7 @@ services:
       - { name: coreshop.product_specific_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 
   coreshop.rule.condition.stores:
-    class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\StoresConditionChecker
+    class: CoreShop\Component\Core\Product\Rule\Condition\StoresConditionChecker
     arguments:
       ['@coreshop.context.store']
     tags:
@@ -44,7 +44,7 @@ services:
       - { name: coreshop.product_specific_price_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
 
   coreshop.rule.condition.currencies:
-    class: CoreShop\Bundle\CoreBundle\Product\Rule\Condition\CurrenciesConditionChecker
+    class: CoreShop\Component\Core\Product\Rule\Condition\CurrenciesConditionChecker
     arguments:
       ['@coreshop.context.currency']
     tags:
@@ -54,47 +54,49 @@ services:
 
   # Cart Price Rules
   coreshop.rule.cart_price_rule.condition.customers:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CustomersConditionChecker
+    class: CoreShop\Component\Core\Cart\Rule\Condition\CustomersConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
 
   coreshop.rule.cart_price_rule.condition.customer_groups:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CustomerGroupsConditionChecker
+    class: CoreShop\Component\Core\Cart\Rule\Condition\CustomerGroupsConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
 
   coreshop.rule.cart_price_rule.condition.countries:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CountriesConditionChecker
+    class: CoreShop\Component\Core\Cart\Rule\Condition\CountriesConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 
   coreshop.rule.cart_price_rule.condition.zones:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\ZonesConditionChecker
+    class: CoreShop\Component\Core\Cart\Rule\Condition\ZonesConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 
   coreshop.rule.cart_price_rule.condition.stores:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\StoresConditionChecker
+    class: CoreShop\Component\Core\Cart\Rule\Condition\StoresConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
 
   coreshop.rule.cart_price_rule.condition.currencies:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CurrenciesConditionChecker
+    class: CoreShop\Component\Core\Cart\Rule\Condition\CurrenciesConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
 
   coreshop.rule.cart_price_rule.condition.carriers:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Condition\CarriersConditionChecker
+    class: CoreShop\Component\Core\Cart\Rule\Condition\CarriersConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: carriers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
 
   coreshop.rule.cart_price_rule.action.free_shipping:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Action\FreeShippingActionProcessor
+    class: CoreShop\Component\Core\Cart\Rule\Action\FreeShippingActionProcessor
     tags:
       - { name: coreshop.cart_price_rule.action, type: freeShipping, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType }
 
   coreshop.rule.cart_price_rule.action.gift_product:
-    class: CoreShop\Bundle\CoreBundle\Cart\Rule\Action\GiftProductActionProcessor
-    arguments: ['@coreshop.repository.product', '@coreshop.cart.modifier']
+    class: CoreShop\Component\Core\Cart\Rule\Action\GiftProductActionProcessor
+    arguments:
+      - '@coreshop.repository.product'
+      - '@coreshop.cart.modifier'
     tags:
       - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }

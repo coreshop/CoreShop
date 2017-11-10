@@ -19,13 +19,13 @@ services:
 
   # Shipping Rule Processor
   coreshop.shipping_rule.conditions.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleConditionsValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
     shared: false
     arguments:
       - '@coreshop.registry.shipping_rule.conditions'
 
   coreshop.shipping_rule.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
     shared: false
     arguments:
       - '@coreshop.shipping_rule.conditions.processor'
@@ -109,19 +109,19 @@ services:
 
 
   coreshop.carrier.processor.shipping_rules:
-    class: CoreShop\Bundle\ShippingBundle\Processor\ShippingRuleActionProcessor
+    class: CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessor
     shared: false
     arguments:
       - '@coreshop.registry.shipping_rule.actions'
 
   # Validators
   coreshop.shippable_carrier.shipping_rule.validator:
-    class: CoreShop\Bundle\ShippingBundle\Validator\ShippingRuleCarrierValidator
+    class: CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator
     arguments:
       - '@coreshop.carrier.shipping_rule.checker'
     tags:
       - { name: coreshop.shipping.carrier.validator, priority: 10 }
 
   coreshop.carrier.shipping_rule.checker:
-    class: CoreShop\Bundle\ShippingBundle\Checker\CarrierShippingRuleChecker
+    class: CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker
     arguments: ['@coreshop.shipping_rule.processor']

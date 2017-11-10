@@ -70,30 +70,30 @@ services:
 
   # Price Rule Processor
   coreshop.product_price_rule.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
     arguments:
       - '@coreshop.product_price_rule.conditions.processor'
 
   coreshop.product_price_rule.conditions.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleConditionsValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
     shared: false
     arguments:
       - '@coreshop.registry.product_price_rule.conditions'
 
   # Price Calculators
   coreshop.product.price_calculator.product_price_rules_fetcher:
-    class: CoreShop\Bundle\ProductBundle\Calculator\ProductPriceRuleFetcher
+    class: CoreShop\Component\Product\Calculator\ProductPriceRuleFetcher
     arguments:
       - '@coreshop.repository.product_price_rule'
 
   coreshop.product.price_calculator.cached_product_price_rules_fetcher:
-    class: CoreShop\Bundle\ProductBundle\Calculator\CachedProductPriceRuleFetcher
+    class: CoreShop\Component\Product\Calculator\CachedProductPriceRuleFetcher
     decorates: coreshop.product.price_calculator.product_price_rules_fetcher
     arguments:
       - '@coreshop.product.price_calculator.cached_product_price_rules_fetcher.inner'
 
   coreshop.product.price_calculator.product_price_rules:
-    class: CoreShop\Bundle\ProductBundle\Calculator\PriceRuleCalculator
+    class: CoreShop\Component\Product\Calculator\PriceRuleCalculator
     arguments:
       - '@coreshop.product.price_calculator.product_price_rules_fetcher'
       - '@coreshop.product_price_rule.processor'

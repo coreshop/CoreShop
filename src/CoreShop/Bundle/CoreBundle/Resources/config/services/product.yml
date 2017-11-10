@@ -1,6 +1,6 @@
 services:
   coreshop.product_price_rule.condition.quantity:
-    class: CoreShop\Bundle\CoreBundle\Product\ProductPriceRule\Condition\QuantityConditionChecker
+    class: CoreShop\Component\Core\Product\ProductPriceRule\Condition\QuantityConditionChecker
     arguments:
       - '@coreshop.cart.manager'
     tags:

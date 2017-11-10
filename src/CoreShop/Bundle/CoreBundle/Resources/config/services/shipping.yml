@@ -1,6 +1,6 @@
 services:
   coreshop.carrier.price_calculator.free_shipping_rule:
-    class: CoreShop\Bundle\CoreBundle\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
+    class: CoreShop\Component\Core\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
     tags:
       - { name: coreshop.shipping.price_calculator, type: free-shipping-rule, priority: 255 }
 
@@ -20,13 +20,13 @@ services:
       - { name: coreshop.shipping_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 
   coreshop.carrier.price_calculator.taxed:
-    class: CoreShop\Bundle\CoreBundle\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
+    class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
     arguments:
       - '@coreshop.carrier.price_calculator.default'
       - '@coreshop.taxation.factory.tax_calculator'
 
   coreshop.carrier.cart.store_based_processor:
-    class: CoreShop\Bundle\CoreBundle\Shipping\Discover\StoreBasedShippableCarriersDiscovery
+    class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery
     decorates: coreshop.carrier.discovery
     arguments:
       - '@coreshop.repository.carrier'

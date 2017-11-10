@@ -12,10 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Bundle\ShippingBundle\Discover\ShippableCarriersDiscoveryInterface;
-use CoreShop\Bundle\ShippingBundle\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
-use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
@@ -23,7 +20,8 @@ use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
+use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
+use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;

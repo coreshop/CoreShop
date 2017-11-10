@@ -1,10 +1,10 @@
 services:
   coreshop.order_invoice.number_generator.default:
-    class: CoreShop\Bundle\OrderBundle\NumberGenerator\SequenceNumberGenerator
+    class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
     arguments: ['@coreshop.sequence.generator', 'invoice']
 
   coreshop.order_invoice.transformer.cart_item_to_order_item:
-    class: CoreShop\Bundle\OrderBundle\Transformer\OrderItemToInvoiceItemTransformer
+    class: CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer
     arguments:
       - '@coreshop.object_service'
       - '%coreshop.folder.order_invoice_item%'
@@ -13,7 +13,7 @@ services:
       - '@coreshop.factory.tax_item'
 
   coreshop.order.transformer.order_to_invoice:
-    class: CoreShop\Bundle\OrderBundle\Transformer\OrderToInvoiceTransformer
+    class: CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer
     arguments:
       - '@coreshop.order_invoice.transformer.cart_item_to_order_item'
       - '@coreshop.core.key_transformer'

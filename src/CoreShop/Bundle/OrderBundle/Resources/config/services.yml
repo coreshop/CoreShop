@@ -25,13 +25,13 @@ services:
 
   #Cart Discount Calculator
   coreshop.cart.discount_calculator.price_rules:
-    class: CoreShop\Bundle\OrderBundle\Cart\Calculator\CartPriceRuleCalculator
+    class: CoreShop\Component\Order\Cart\Calculator\CartPriceRuleCalculator
     arguments:
       - '@coreshop.registry.cart_price_rule.actions'
       - '@coreshop.cart_price_rule.rule_validation.processor'
 
   coreshop.cart.discount_calculator.composite:
-    class: CoreShop\Bundle\OrderBundle\Cart\Calculator\CompositeCartDiscountCalculator
+    class: CoreShop\Component\Order\Cart\Calculator\CompositeCartDiscountCalculator
     arguments: [['@coreshop.cart.discount_calculator.price_rules']]
 
   coreshop.cart.discount_calculator:
@@ -39,27 +39,33 @@ services:
 
   coreshop.cart.modifier:
     class: CoreShop\Component\Order\Cart\CartModifier
-    arguments: ['@coreshop.cart.manager', '@coreshop.factory.cart_item']
+    arguments:
+      - '@coreshop.cart.manager'
+      - '@coreshop.factory.cart_item'
 
   coreshop.order.invoice.processable:
     class: CoreShop\Component\Order\Processable\ProcessableOrderItems
-    arguments: ['@coreshop.repository.order_invoice']
+    arguments:
+      - '@coreshop.repository.order_invoice'
 
   coreshop.order.shipment.processable:
     class: CoreShop\Component\Order\Processable\ProcessableOrderItems
-    arguments: ['@coreshop.repository.order_shipment']
+    arguments:
+      - '@coreshop.repository.order_shipment'
 
   coreshop.transformer.event_dispatcher:
-    class: CoreShop\Bundle\OrderBundle\Transformer\TransformerEventDispatcher
+    class: CoreShop\Component\Order\Transformer\TransformerEventDispatcher
     public: false
-    arguments: ['@event_dispatcher']
+    arguments:
+      - '@event_dispatcher'
 
   coreshop.cart_processor.composite:
     class: CoreShop\Component\Order\Processor\CompositeCartProcessor
 
   coreshop.event_listener.cart:
     class: CoreShop\Bundle\OrderBundle\EventListener\CartRecalculationUpdate
-    arguments: ['@coreshop.cart_processor']
+    arguments:
+      - '@coreshop.cart_processor'
     tags:
       - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: recalculateCart }
 

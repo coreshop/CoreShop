@@ -8,13 +8,13 @@ services:
     arguments: ['@coreshop.registry.notification_rule.actions']
 
   coreshop.notification_rule.conditions.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleConditionsValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
     shared: false
     arguments:
       - '@coreshop.registry.notification_rule.conditions'
 
   coreshop.notification_rule.validation.processor:
-    class: CoreShop\Bundle\RuleBundle\Condition\RuleValidationProcessor
+    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
     shared: false
     arguments:
       - '@coreshop.notification_rule.conditions.processor'

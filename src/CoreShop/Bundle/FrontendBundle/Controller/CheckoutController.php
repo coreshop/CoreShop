@@ -232,7 +232,7 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Bundle\OrderBundle\Transformer\CartToOrderTransformer
+     * @return \CoreShop\Component\Order\Transformer\CartToOrderTransformer
      */
     protected function getCartToOrderTransformer()
     {

@@ -1,14 +1,14 @@
 services:
   coreshop.core.order.transformer.cart_to_order:
     decorates: coreshop.order.transformer.cart_to_order
-    class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToSaleTransformer
+    class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
     arguments:
       - '@coreshop.core.order.transformer.cart_to_order.inner'
       - '@coreshop.currency_converter'
 
   coreshop.core.order.transformer.cart_to_quote:
     decorates: coreshop.order.transformer.cart_to_quote
-    class: CoreShop\Bundle\CoreBundle\Order\Transformer\CartToSaleTransformer
+    class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
     arguments:
       - '@coreshop.core.order.transformer.cart_to_quote.inner'
       - '@coreshop.currency_converter'
@@ -22,7 +22,7 @@ services:
       - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerCartCleanup }
 
   coreshop.order.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
+    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.order.number_generator.default
     arguments:
       - '@coreshop.order.number_generator.prefix_suffix.inner'
@@ -31,7 +31,7 @@ services:
       - 'system.order.suffix'
 
   coreshop.quote.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
+    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.quote.number_generator.default
     arguments:
       - '@coreshop.quote.number_generator.prefix_suffix.inner'
@@ -40,7 +40,7 @@ services:
       - 'system.quote.suffix'
 
   coreshop.order_invoice.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
+    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.order_invoice.number_generator.default
     arguments:
       - '@coreshop.order_invoice.number_generator.prefix_suffix.inner'
@@ -49,7 +49,7 @@ services:
       - 'system.invoice.suffix'
 
   coreshop.order_shipment.number_generator.prefix_suffix:
-    class: CoreShop\Bundle\CoreBundle\NumberGenerator\SaleNumberGenerator
+    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
     decorates: coreshop.order_shipment.number_generator.default
     arguments:
       - '@coreshop.order_shipment.number_generator.prefix_suffix.inner'

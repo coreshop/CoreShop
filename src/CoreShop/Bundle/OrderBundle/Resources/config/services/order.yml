@@ -1,14 +1,14 @@
 services:
   coreshop.order.number_generator.default:
-    class: CoreShop\Bundle\OrderBundle\NumberGenerator\SequenceNumberGenerator
+    class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
     arguments: ['@coreshop.sequence.generator', 'order']
 
   coreshop.quote.number_generator.default:
-    class: CoreShop\Bundle\OrderBundle\NumberGenerator\SequenceNumberGenerator
+    class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
     arguments: ['@coreshop.sequence.generator', 'quote']
 
   coreshop.order.transformer.cart_item_to_order_item:
-    class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToOrderItemTransformer
+    class: CoreShop\Component\Order\Transformer\CartItemToOrderItemTransformer
     arguments:
       - '@coreshop.object_service'
       - '%coreshop.folder.order_item%'
@@ -17,7 +17,7 @@ services:
       - '@coreshop.translation_locale_provider'
 
   coreshop.order.transformer.cart_to_order:
-    class: CoreShop\Bundle\OrderBundle\Transformer\CartToOrderTransformer
+    class: CoreShop\Component\Order\Transformer\CartToOrderTransformer
     arguments:
       - '@coreshop.order.transformer.cart_item_to_order_item'
       - '@coreshop.core.key_transformer'
@@ -33,7 +33,7 @@ services:
       - '@coreshop.resource.object_cloner'
 
   coreshop.order.transformer.cart_item_to_quote_item:
-    class: CoreShop\Bundle\OrderBundle\Transformer\CartItemToQuoteItemTransformer
+    class: CoreShop\Component\Order\Transformer\CartItemToQuoteItemTransformer
     arguments:
       - '@coreshop.object_service'
       - '%coreshop.folder.quote_item%'
@@ -42,7 +42,7 @@ services:
       - '@coreshop.translation_locale_provider'
 
   coreshop.order.transformer.cart_to_quote:
-    class: CoreShop\Bundle\OrderBundle\Transformer\CartToQuoteTransformer
+    class: CoreShop\Component\Order\Transformer\CartToQuoteTransformer
     arguments:
       - '@coreshop.order.transformer.cart_item_to_quote_item'
       - '@coreshop.core.key_transformer'

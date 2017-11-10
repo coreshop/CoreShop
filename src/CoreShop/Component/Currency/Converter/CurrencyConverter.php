@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Currency\Converter;
 
-use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\ExchangeRateRepository;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
@@ -36,10 +35,10 @@ final class CurrencyConverter implements CurrencyConverterInterface
     private $cache;
 
     /**
-     * @param ExchangeRateRepository $exchangeRateRepository
+     * @param ExchangeRateRepositoryInterface $exchangeRateRepository
      * @param CurrencyRepositoryInterface $currencyRepository
      */
-    public function __construct(ExchangeRateRepository $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
+    public function __construct(ExchangeRateRepositoryInterface $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->exchangeRateRepository = $exchangeRateRepository;
         $this->currencyRepository = $currencyRepository;

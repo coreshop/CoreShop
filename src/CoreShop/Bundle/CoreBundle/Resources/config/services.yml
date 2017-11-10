@@ -23,11 +23,11 @@ services:
     class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
 
   coreshop.taxation.factory.tax_calculator:
-    class: CoreShop\Bundle\CoreBundle\Taxation\TaxCalculatorFactory
+    class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
     arguments: ['@coreshop.repository.tax_rule']
 
   coreshop.taxation.factory.cached_tax_calculator:
-    class: CoreShop\Bundle\CoreBundle\Taxation\CachedTaxCalculatorFactory
+    class: CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory
     decorates: coreshop.taxation.factory.tax_calculator
     arguments: ['@coreshop.taxation.factory.cached_tax_calculator.inner']
 

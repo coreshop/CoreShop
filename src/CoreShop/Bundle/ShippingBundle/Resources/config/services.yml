@@ -5,12 +5,12 @@ imports:
 services:
   # Carrier Validator
   coreshop.shipping.carrier.validator.composite:
-    class: CoreShop\Bundle\ShippingBundle\Validator\CompositeShippableCarrierValidator
+    class: CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator
     public: false
 
   # Carrier Processor
   coreshop.carrier.discovery:
-    class: CoreShop\Bundle\ShippingBundle\Discover\ShippableCarriersDiscovery
+    class: CoreShop\Component\Shipping\Discover\ShippableCarriersDiscovery
     arguments: ['@coreshop.repository.carrier', '@coreshop.shipping.carrier.validator']
 
   # Carrier Price Calculator
@@ -21,11 +21,11 @@ services:
       - shipping-price-calculators
 
   coreshop.carrier.price_calculator:
-    class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierPriceCalculator
+    class: CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator
     arguments: ['@coreshop.registry.shipping.price_calculators']
 
   coreshop.carrier.price_calculator.shipping_rules:
-    class: CoreShop\Bundle\ShippingBundle\Calculator\CarrierShippingRulePriceCalculator
+    class: CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator
     arguments:
       - '@coreshop.carrier.shipping_rule.checker'
       - '@coreshop.carrier.processor.shipping_rules'
@@ -33,5 +33,5 @@ services:
       - { name: coreshop.shipping.price_calculator, type: shipping-rule, priority: 256 }
 
   coreshop.carrier.price_calculator.default:
-    class: CoreShop\Bundle\ShippingBundle\Calculator\CompositePriceCalculator
+    class: CoreShop\Component\Shipping\Calculator\CompositePriceCalculator
     arguments: [['@coreshop.carrier.price_calculator']]
