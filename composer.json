@@ -82,7 +82,8 @@
     "liip/theme-bundle": "^1.4",
     "hampe/zurb-ink-bundle": "^2.2",
     "symfony/twig-bundle": "~2.7|~3.0",
-    "doctrine/data-fixtures": "^1.0"
+    "doctrine/data-fixtures": "^1.0",
+    "pimcore/core-version": "^5.0.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.0",

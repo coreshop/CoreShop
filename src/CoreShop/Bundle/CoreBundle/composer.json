@@ -35,7 +35,8 @@
     "coreshop/fixture-bundle": "^2.0",
     "coreshop/core": "^2.0",
     "fzaninotto/faker": "^1.6",
-    "rinvex/country": "^3.1"
+    "rinvex/country": "^3.1",
+    "pimcore/core-version": "^5.0.2"
   },
   "config": {
     "bin-dir": "bin"

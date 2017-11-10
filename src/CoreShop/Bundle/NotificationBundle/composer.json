@@ -21,7 +21,8 @@
     "php": "^7.0",
     "coreshop/notification": "^2.0",
     "coreshop/registry": "^2.0",
-    "coreshop/rule-bundle": "^2.0"
+    "coreshop/rule-bundle": "^2.0",
+    "pimcore/core-version": "^5.0.2"
   },
   "config": {
     "bin-dir": "bin"

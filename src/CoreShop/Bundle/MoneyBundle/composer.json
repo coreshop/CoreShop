@@ -19,7 +19,8 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/currency-bundle": "^2.0"
+    "coreshop/currency-bundle": "^2.0",
+    "pimcore/core-version": "^5.0.2"
   },
   "config": {
     "bin-dir": "bin"
