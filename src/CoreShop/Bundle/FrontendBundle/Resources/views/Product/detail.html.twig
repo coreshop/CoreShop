@@ -109,6 +109,10 @@
                     <button type="button" title="{{ 'compare'|trans }}" class="btn btn-compare" data-id="{{ product.getId }}">
                         <i class="fa fa-bar-chart-o"></i>
                     </button>
+                    <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart" rel="nofollow">
+                        {{ 'add_to_cart'|trans }}
+                        <i class="fa fa-shopping-cart"></i>
+                    </a>
                 </div>
             </div>
 
