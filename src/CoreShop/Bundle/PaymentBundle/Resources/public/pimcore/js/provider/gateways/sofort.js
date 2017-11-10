@@ -17,7 +17,7 @@ coreshop.provider.gateways.sofort = Class.create(coreshop.provider.gateways.abst
         return [
             {
                 xtype: 'textfield',
-                fieldLabel: t('coreshop_config_key'),
+                fieldLabel: t('coreshop_payment_sofort_config_key'),
                 name: 'gatewayConfig.config.config_key',
                 length: 255,
                 value: config.config_key ? config.config_key : ""
