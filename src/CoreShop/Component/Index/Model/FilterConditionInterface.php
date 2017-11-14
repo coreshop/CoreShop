@@ -76,16 +76,4 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
      * @return static
      */
     public function setConfiguration($configuration);
-
-    /**
-     * @return FilterInterface
-     */
-    public function getFilter();
-
-    /**
-     * @param FilterInterface $filter
-     *
-     * @return static
-     */
-    public function setFilter(FilterInterface $filter);
 }

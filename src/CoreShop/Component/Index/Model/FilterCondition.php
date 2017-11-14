@@ -50,11 +50,6 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     public $configuration;
 
     /**
-     * @var FilterInterface
-     */
-    public $filter;
-
-    /**
      * {@inheritdoc}
      */
     public function getId()
@@ -146,24 +141,6 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilter()
-    {
-        return $this->filter;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilter(FilterInterface $filter)
-    {
-        $this->filter = $filter;
 
         return $this;
     }

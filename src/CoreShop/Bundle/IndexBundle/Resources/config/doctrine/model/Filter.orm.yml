@@ -43,7 +43,6 @@ CoreShop\Component\Index\Model\Filter:
   manyToMany:
     preConditions:
       targetEntity: CoreShop\Component\Index\Model\FilterConditionInterface
-      inversedBy: filter
       joinTable:
         name: coreshop_filter_condition_pre_conditions
         joinColumns:
@@ -58,7 +57,6 @@ CoreShop\Component\Index\Model\Filter:
         - all
     conditions:
       targetEntity: CoreShop\Component\Index\Model\FilterConditionInterface
-      inversedBy: filter
       joinTable:
         name: coreshop_filter_condition_conditions
         joinColumns:
