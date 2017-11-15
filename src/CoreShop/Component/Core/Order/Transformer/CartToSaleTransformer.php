@@ -56,11 +56,11 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(true), $fromCurrency, $toCurrency), true);
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(false), $fromCurrency, $toCurrency), false);
                 $sale->setShippingTaxRate($cart->getShippingTaxRate());
-                $sale->setShippingTax($this->currencyConverter->convert($sale->getShipping(true) - $sale->getShipping(false), $fromCurrency, $toCurrency));
+                $sale->setShippingTax($sale->getShipping(true) - $sale->getShipping(false));
 
                 $sale->setBaseShipping($cart->getShipping(true), true);
                 $sale->setBaseShipping($cart->getShipping(false), false);
-                $sale->setBaseShippingTax($sale->getShipping(true) - $sale->getShipping(false));
+                $sale->setBaseShippingTax($cart->getShipping(true) - $cart->getShipping(false));
             } else {
                 $sale->setShipping(0, true);
                 $sale->setShipping(0, false);
