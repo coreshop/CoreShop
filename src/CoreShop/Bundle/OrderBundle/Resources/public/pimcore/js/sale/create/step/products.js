@@ -41,6 +41,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
     },
 
     getPanel: function () {
+        var me = this;
         var modelName = 'CoreShopCreateOrderCart';
         if (!Ext.ClassManager.isCreated(modelName)) {
             Ext.define(modelName, {
@@ -154,6 +155,32 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + record.get('totalConvertedFormatted') + '</span>';
                     }.bind(this)
+                },
+                {
+                    menuDisabled: true,
+                    sortable: false,
+                    xtype: 'actioncolumn',
+                    width: 50,
+                    items: [
+                        {
+                            iconCls: 'pimcore_icon_open',
+                            tooltip: t('open'),
+                            handler: function (grid, rowIndex) {
+                                var record = grid.getStore().getAt(rowIndex);
+
+                                pimcore.helpers.openObject(record.get('o_id'));
+                            }
+                        },
+                        {
+                            iconCls: 'pimcore_icon_delete',
+                            tooltip: t('delete'),
+                            handler: function (grid, rowIndex) {
+                                var record = grid.getStore().getAt(rowIndex);
+
+                                me.removeProductFromCart(record);
+                            }
+                        }
+                    ]
                 }
             ]
         });
@@ -189,6 +216,13 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                 }.bind(this)
             }
         ];
+    },
+
+    removeProductFromCart: function(product) {
+        this.cartPanelStore.remove(product);
+
+        this.eventManager.fireEvent('products.changed');
+        this.eventManager.fireEvent('validation');
     },
 
     addProductsToCart: function (products, reset) {
