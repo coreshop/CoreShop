@@ -195,7 +195,8 @@ coreshop.index.fields = Class.create({
     /*
      *       FIELD-TREE
      *
-     **/    getClassDefinitionTreePanel: function () {
+     **/
+    getClassDefinitionTreePanel: function () {
         if (!this.classDefinitionTreePanel) {
             this.brickKeys = [];
             this.classDefinitionTreePanel = this.getClassTree('/admin/coreshop/indices/get-class-definition-for-field-selection', this.class);
@@ -323,10 +324,7 @@ coreshop.index.fields = Class.create({
                 iconCls: 'pimcore_icon_' + type,
                 expanded: true,
                 objectType: objectType,
-                className: className,
-                configuration: {
-                    className: className
-                }
+                className: className
             });
 
             newNode = this.appendChild(newNode);

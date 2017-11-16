@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Getter;
 
@@ -25,23 +25,33 @@ class BrickGetter implements GetterInterface
         $columnConfig = $config->getConfiguration();
         $getterConfig = $config->getGetterConfig();
 
-        if (isset($getterConfig['brickField']) && isset($columnConfig['className']) && isset($columnConfig['key'])) {
-            $brickField = $getterConfig['brickField'];
-
-            $brickContainerGetter = 'get'.ucfirst($brickField);
-            $brickContainer = $object->$brickContainerGetter();
-            $brickGetter = 'get'.ucfirst($columnConfig['className']);
-
-            if ($brickContainer) {
-                $brick = $brickContainer->$brickGetter();
-
-                if ($brick) {
-                    $fieldGetter = 'get'.ucfirst($columnConfig['key']);
-
-                    return $brick->$fieldGetter();
-                }
-            }
+        if (!isset($getterConfig['brickField']) || !isset($columnConfig['className']) || !isset($columnConfig['key'])) {
+            return null;
         }
+
+        $brickField = $getterConfig['brickField'];
+
+        $brickContainerGetter = 'get' . ucfirst($brickField);
+
+        if (!method_exists($object, $brickContainerGetter)) {
+            return null;
+        }
+
+        $brickContainer = $object->$brickContainerGetter();
+        $brickGetter = 'get' . ucfirst($columnConfig['className']);
+
+        if (!$brickContainer) {
+            return null;
+
+        }
+        $brick = $brickContainer->$brickGetter();
+
+        if ($brick) {
+            $fieldGetter = 'get' . ucfirst($columnConfig['key']);
+
+            return $brick->$fieldGetter();
+        }
+
 
         return null;
     }

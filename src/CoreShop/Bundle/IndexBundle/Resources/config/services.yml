@@ -145,7 +145,7 @@ services:
   coreshop.index.column_type.field_collection:
     class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType
     tags:
-      - { name: coreshop.index.column_type, type: fieldcollection, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType }
+      - { name: coreshop.index.column_type, type: fieldcollections, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType }
 
   coreshop.index.column_type.localized_fields:
     class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType
@@ -155,7 +155,7 @@ services:
   coreshop.index.column_type.object_brick:
     class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType
     tags:
-      - { name: coreshop.index.column_type, type: objectbrick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType }
+      - { name: coreshop.index.column_type, type: objectbricks, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType }
 
   coreshop.index.column_type.object:
     class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType

@@ -239,17 +239,22 @@ class IndexController extends ResourceController
                 $classDefs = $brickDefinition->getClassDefinitions();
 
                 foreach ($classDefs as $classDef) {
-                    if ($classDef['classname'] === $class->getId()) {
+                    if ($classDef['classname'] === $class->getName()) {
                         $fields = $brickDefinition->getFieldDefinitions();
 
                         $result[$key] = [];
                         $result[$key]['nodeLabel'] = $key;
-                        $result[$key]['className'] = $key;
                         $result[$key]['nodeType'] = 'objectbricks';
                         $result[$key]['childs'] = [];
 
                         foreach ($fields as $field) {
-                            $result[$key]['childs'][] = $this->getFieldConfiguration($field);
+                            $fieldConfig = $this->getFieldConfiguration($field);
+                            $fieldConfig['getter'] = 'brick';
+                            $fieldConfig['configuration'] = [
+                                'className' => $key,
+                                'key' => $field->getName()
+                            ];
+                            $result[$key]['childs'][] = $fieldConfig;
                         }
 
                         break;
@@ -281,12 +286,17 @@ class IndexController extends ResourceController
 
                 $result[$key] = [];
                 $result[$key]['nodeLabel'] = $key;
-                $result[$key]['className'] = $key;
                 $result[$key]['nodeType'] = 'fieldcollections';
                 $result[$key]['childs'] = [];
 
                 foreach ($fieldDefinition as $fieldcollectionField) {
-                    $result[$key]['childs'][] = $this->getFieldConfiguration($fieldcollectionField);
+                    $fieldConfig = $this->getFieldConfiguration($fieldcollectionField);
+                    $fieldConfig['getter'] = 'fieldcollection';
+                    $fieldConfig['configuration'] = [
+                        'className' => $key
+                    ];
+
+                    $result[$key]['childs'][] = $fieldConfig;
                 }
             }
         }
@@ -375,11 +385,14 @@ class IndexController extends ResourceController
     {
         return [
             'name' => $field->getName(),
+            'getter' => 'classificationstore',
             'fieldtype' => $field->getType(),
             'title' => $field->getName(),
             'tooltip' => $field->getDescription(),
-            'keyConfigId' => $field->getId(),
-            'groupConfigId' => $groupConfig->getId(),
+            'configuration' => [
+                'keyConfigId' => $field->getId(),
+                'groupConfigId' => $groupConfig->getId(),
+            ]
         ];
     }
 

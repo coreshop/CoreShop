@@ -247,19 +247,9 @@ abstract class AbstractWorker implements WorkerInterface
         $getterClass = $this->getterServiceRegistry->get($getter);
         $value = null;
 
-        if (Tool::classExists($getterClass)) {
-            $getterObject = new $getterClass();
+        Assert::isInstanceOf($getterClass, GetterInterface::class);
 
-            if ($getterObject instanceof GetterInterface) {
-                $value = $getterObject->get($object, $column);
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf('%s needs to implement "%s", "%s" given.', $getter, GetterInterface::class, $getterClass)
-                );
-            }
-        }
-
-        return $value;
+        return $getterClass->get($object, $column);
     }
 
     /**

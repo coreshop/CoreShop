@@ -25,7 +25,7 @@ final class FieldCollectionGetterFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('className', TextType::class, [
+            ->add('classificationStoreField', TextType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
