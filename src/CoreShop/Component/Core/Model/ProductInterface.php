@@ -32,11 +32,6 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
-     * @return TaxRuleInterface
-     */
-    public function getTaxRule();
-
-    /**
      * @param TaxRuleGroupInterface $taxRule
      */
     public function setTaxRule($taxRule);
