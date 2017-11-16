@@ -103,7 +103,7 @@
                 {% if shipping > 0 %}
                     <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ 'shippig_incl'|trans }}:</strong>
+                            <strong>{{ 'shipping_incl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-shipping">
                             {{ shippingIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
