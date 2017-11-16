@@ -25,11 +25,17 @@ class MailController extends FrontendController
 
     public function orderConfirmationAction(Request $request) {
         $order = $request->get('object');
+        $viewParameters = [];
 
-        Assert::isInstanceOf($order, OrderInterface::class);
+        if ($this->editmode) {
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Mail:order-confirmation.html.twig', [
-            'order' => $order
-        ]);
+        }
+        else {
+            Assert::isInstanceOf($order, OrderInterface::class);
+
+            $viewParameters['order'] = $order;
+        }
+
+        return $this->renderTemplate('CoreShopFrontendBundle:Mail:order-confirmation.html.twig', $viewParameters);
     }
 }
