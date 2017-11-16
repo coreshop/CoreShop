@@ -219,7 +219,7 @@
         {% if shipping > 0 %}
             <tr>
                 <td class="text-right">
-                    <strong>{{ 'shippig_incl'|trans }}:</strong>
+                    <strong>{{ 'shipping_incl'|trans }}:</strong>
                 </td>
                 <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-shipping">
                     {{ currency.convertAndFormat(shippingIt) }}
