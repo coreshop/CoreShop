@@ -163,6 +163,16 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     public function getCategory();
 
     /**
+     * @param bool $enabled
+     */
+    public function setEnabled($enabled);
+
+    /**
+     * @return bool
+     */
+    public function getEnabled();
+
+    /**
      * @param $variantMode
      */
     public function setVariantMode($variantMode);

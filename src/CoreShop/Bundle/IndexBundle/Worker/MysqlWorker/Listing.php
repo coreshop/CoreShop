@@ -77,6 +77,11 @@ class Listing extends AbstractListing
     protected $orderByPrice = false;
 
     /**
+     * @var bool
+     */
+    protected $enabled = true;
+
+    /**
      * @var string[]
      */
     protected $conditions = [];
@@ -279,6 +284,22 @@ class Listing extends AbstractListing
     /**
      * {@inheritdoc}
      */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setVariantMode($variantMode)
     {
         $this->objects = null;
@@ -370,13 +391,17 @@ class Listing extends AbstractListing
             $variantMode = $this->getVariantMode();
         }
 
-        $preCondition = 'active = 1';
+        $preConditions = '';
 
         if ($this->getCategory()) {
-            $preCondition .= " AND parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";
+            $preConditions[] = "parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";
         }
 
-        $condition = $preCondition;
+        if (!is_null($this->getEnabled())) {
+            $preConditions[] = 'active = ' . ($this->getEnabled() ? 1 : 0);
+        }
+
+        $condition = implode(' AND ' , $preConditions);
 
         //variant handling and userspecific conditions
 
