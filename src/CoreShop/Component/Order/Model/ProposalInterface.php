@@ -13,12 +13,25 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface
 {
+
+    /**
+     * @return CurrencyInterface
+     */
+    public function getCurrency();
+
+    /**
+     * @param CurrencyInterface $currency
+     * @return mixed
+     */
+    public function setCurrency($currency);
+
     /**
      * @param bool $withTax
      *
