@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\RequestHandlerInterface;
 use Symfony\Component\Form\Util\ServerParams;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @see \Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
  */
-final class HttpFoundationRequestHandler implements RequestHandlerInterface
+final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
 {
     /**
      * @var ServerParams
@@ -39,6 +38,8 @@ final class HttpFoundationRequestHandler implements RequestHandlerInterface
      */
     public function __construct(ServerParams $serverParams = null)
     {
+        parent::__construct($serverParams);
+
         $this->serverParams = $serverParams ?: new ServerParams();
     }
 
