@@ -135,6 +135,11 @@ services:
     tags:
      - { name: coreshop.index.interpreter, type: objectProperty, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ObjectPropertyInterpreterFormType}
 
+  coreshop.index.interpreter.quantity_value:
+    class: CoreShop\Component\Index\Interpreter\QuantityValueInterpreter
+    tags:
+     - { name: coreshop.index.interpreter, type: quantityValue, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
+
 
   # Index Column Types
   coreshop.index.column_type.classification_store:
