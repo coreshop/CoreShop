@@ -45,7 +45,7 @@ final class StoreProductPriceCalculator implements ProductPriceCalculatorInterfa
         $price = $subject->getStorePrice($this->storeContext->getStore());
 
         if (is_null($price)) {
-            return 0;
+            return false;
         }
 
         return $price;
