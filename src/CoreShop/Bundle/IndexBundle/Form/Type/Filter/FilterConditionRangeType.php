@@ -28,20 +28,17 @@ final class FilterConditionRangeType extends AbstractType
         $builder
             ->add('preSelectMin', NumberType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
             ->add('preSelectMax', NumberType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
 
             ->add('stepCount', NumberType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
