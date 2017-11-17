@@ -29,25 +29,11 @@ class ConfigurationController extends ResourceController
         $values = $this->decodeJson($request->get('values'));
         $values = array_htmlspecialchars($values);
 
-        $diff = call_user_func_array([ArrayHelper::class, 'array_diff_assoc_recursive'], $values);
-
         foreach ($values as $store => $storeValues) {
             $store = $this->get('coreshop.repository.store')->find($store);
 
             foreach ($storeValues as $key => $value) {
-                $this->getConfigurationService()->removeForStore($key, $store);
-            }
-        }
-
-        foreach ($values as $store => $storeValues) {
-            $store = $this->get('coreshop.repository.store')->find($store);
-
-            foreach ($storeValues as $key => $value) {
-                if (array_key_exists($key, $diff)) {
-                    $this->getConfigurationService()->setForStore($key, $value, $store);
-                } else {
-                    $this->getConfigurationService()->set($key, $value);
-                }
+                $this->getConfigurationService()->setForStore($key, $value, $store);
             }
         }
 
