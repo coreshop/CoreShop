@@ -17,9 +17,11 @@ use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Pimcore\Model\Object;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -56,9 +58,9 @@ class CartController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
-        $product = $this->get('coreshop.repository.product')->find($request->get('product'));
+        $product = Object::getById($request->get('product'));
 
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof PurchasableInterface) {
             return $this->redirectToRoute('coreshop_index');
         }
 
