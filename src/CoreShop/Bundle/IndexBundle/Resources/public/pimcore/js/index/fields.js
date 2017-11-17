@@ -33,7 +33,7 @@ coreshop.index.fields = Class.create({
 
     getData: function () {
 
-        var columns = [];
+        var columns = {};
 
         if (this.selectionPanel) {
             var allowedColumns = [
@@ -77,7 +77,7 @@ coreshop.index.fields = Class.create({
                     delete obj['interpreterConfig'];
                 }
 
-                columns.push(obj);
+                columns[obj.name] = obj;
             }.bind(this));
         }
 
