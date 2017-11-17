@@ -367,12 +367,18 @@ class IndexController extends ResourceController
      */
     protected function getFieldConfiguration(DataObject\ClassDefinition\Data $field)
     {
-        return [
+        $definition = [
             'name' => $field->getName(),
             'fieldtype' => $field->getFieldtype(),
             'title' => $field->getTitle(),
             'tooltip' => $field->getTooltip(),
         ];
+
+        if ($field instanceof DataObject\ClassDefinition\Data\QuantityValue) {
+            $definition['interpreter'] = 'quantityValue';
+        }
+
+        return $definition;
     }
 
     /**
@@ -383,7 +389,7 @@ class IndexController extends ResourceController
      */
     protected function getClassificationStoreFieldConfiguration(DataObject\Classificationstore\KeyConfig $field, DataObject\Classificationstore\GroupConfig $groupConfig)
     {
-        return [
+        $definition = [
             'name' => $field->getName(),
             'getter' => 'classificationstore',
             'fieldtype' => $field->getType(),
@@ -394,6 +400,12 @@ class IndexController extends ResourceController
                 'groupConfigId' => $groupConfig->getId(),
             ]
         ];
+
+        if ('quantityValue' === $field->getType()) {
+            $definition['interpreter'] = ' quantityValue';
+        }
+
+        return $definition;
     }
 
     /**
