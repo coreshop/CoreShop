@@ -148,7 +148,7 @@ final class Configuration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->ignoreExtraKeys(false)
                         ->children()
-                            ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/css/resource.js')->end()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/css/resource.css')->end()
                         ->end()
                     ->end()
                 ->end()
