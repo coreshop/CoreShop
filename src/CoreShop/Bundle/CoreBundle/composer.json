@@ -1,6 +1,6 @@
 {
   "name": "coreshop/core-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Core Bundle (Glue Bundle)",
   "keywords": [
     "coreshop",
