@@ -81,7 +81,8 @@
     "fzaninotto/faker": "^1.6",
     "liip/theme-bundle": "^1.4",
     "hampe/zurb-ink-bundle": "^2.2",
-    "symfony/twig-bundle": "~2.7|~3.0",
+    "symfony/twig-bundle": "~3.2",
+    "symfony/intl": "^3.2",
     "doctrine/data-fixtures": "^1.0",
     "pimcore/core-version": "^5.0.2"
   },

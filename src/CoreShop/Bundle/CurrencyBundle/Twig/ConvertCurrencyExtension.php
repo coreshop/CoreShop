@@ -10,21 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\MoneyBundle\Twig;
+namespace CoreShop\Bundle\CurrencyBundle\Twig;
 
-use CoreShop\Bundle\MoneyBundle\Templating\Helper\ConvertMoneyHelperInterface;
+use CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelperInterface;
 
-final class ConvertMoneyExtension extends \Twig_Extension
+final class ConvertCurrencyExtension extends \Twig_Extension
 {
     /**
-     * @var ConvertMoneyHelperInterface
+     * @var ConvertCurrencyHelperInterface
      */
     private $helper;
 
     /**
-     * @param ConvertMoneyHelperInterface $helper
+     * @param ConvertCurrencyHelperInterface $helper
      */
-    public function __construct(ConvertMoneyHelperInterface $helper)
+    public function __construct(ConvertCurrencyHelperInterface $helper)
     {
         $this->helper = $helper;
     }
@@ -35,7 +35,7 @@ final class ConvertMoneyExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_convert_money', [$this->helper, 'convertAmount']),
+            new \Twig_Filter('coreshop_convert_currency', [$this->helper, 'convertAmount']),
         ];
     }
 }

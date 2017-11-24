@@ -18,17 +18,3 @@ services:
         - { name: templating.helper, alias: coreshop_format_money }
     lazy: true
     arguments: ['@coreshop.money_formatter']
-
-  coreshop.templating.helper.convert_money:
-    class: CoreShop\Bundle\MoneyBundle\Templating\Helper\ConvertMoneyHelper
-    tags:
-        - { name: templating.helper, alias: coreshop_convert_money }
-    lazy: true
-    arguments: ['@coreshop.currency_converter']
-
-  coreshop.twig.extension.convert_amount:
-    class: CoreShop\Bundle\MoneyBundle\Twig\ConvertMoneyExtension
-    public: false
-    tags:
-        - { name: twig.extension }
-    arguments: ['@coreshop.templating.helper.convert_money']

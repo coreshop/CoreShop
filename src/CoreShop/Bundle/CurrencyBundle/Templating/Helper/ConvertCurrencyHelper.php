@@ -10,12 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\MoneyBundle\Templating\Helper;
+namespace CoreShop\Bundle\CurrencyBundle\Templating\Helper;
 
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
-class ConvertMoneyHelper extends Helper implements ConvertMoneyHelperInterface
+class ConvertCurrencyHelper extends Helper implements ConvertCurrencyHelperInterface
 {
     /**
      * @var CurrencyConverterInterface
@@ -43,6 +43,6 @@ class ConvertMoneyHelper extends Helper implements ConvertMoneyHelperInterface
      */
     public function getName()
     {
-        return 'coreshop_money_converter';
+        return 'coreshop_currency_converter';
     }
 }

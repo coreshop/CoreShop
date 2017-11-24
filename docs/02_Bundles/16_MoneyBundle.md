@@ -1,5 +1,32 @@
 # CoreShop Money Bundle
 
-    - adds a new field for Currency values to Pimcore, which then translate them to integers
+## Installation
+```bash
+$ composer require coreshop/money-bundle:^2.0
+```
 
-TBD
+### Adding required bundles to kernel
+You need to enable the bundle inside the kernel
+
+```php
+<?php
+
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+        new \CoreShop\Bundle\MoneyBundle\MoneyBundle()
+    );
+}
+```
+
+## Usage
+
+Money Bundle adds a new core-extension to pimcore which allows you to store currency values as integer.
+
+You also get a Twig Extension to format money values.
+
+```twig
+{{ value|coreshop_format_money('€', 'de'); }}
+```

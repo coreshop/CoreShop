@@ -24,6 +24,7 @@
     "coreshop/product-bundle": "^2.0",
     "coreshop/address-bundle": "^2.0",
     "coreshop/currency-bundle": "^2.0",
+    "coreshop/money-bundle": "^2.0",
     "coreshop/taxation-bundle": "^2.0",
     "coreshop/store-bundle": "^2.0",
     "coreshop/index-bundle": "^2.0",

@@ -36,3 +36,18 @@ services:
     class: CoreShop\Component\Currency\Context\FixedCurrencyContext
     tags:
       - { name: 'coreshop.context.currency' }
+
+  coreshop.templating.helper.convert_currency:
+    class: CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelper
+    tags:
+        - { name: templating.helper, alias: coreshop_convert_currency }
+    lazy: true
+    arguments: ['@coreshop.currency_converter']
+
+
+  coreshop.twig.extension.convert_amount:
+    class: CoreShop\Bundle\CurrencyBundle\Twig\ConvertCurrencyExtension
+    public: false
+    tags:
+        - { name: twig.extension }
+    arguments: ['@coreshop.templating.helper.convert_currency']
