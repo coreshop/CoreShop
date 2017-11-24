@@ -16,9 +16,9 @@ to kernel. Don’t worry, everything was automatically installed via Composer.
 
 // app/AppKernel.php
 
-public function registerBundles()
+public function registerBundlesToCollection(BundleCollection $collection)
 {
-    $bundles = array(
+    $collection->addBundles([
         new \JMS\SerializerBundle\JMSSerializerBundle(),
 
         new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
@@ -27,7 +27,7 @@ public function registerBundles()
         new \FOS\RestBundle\FOSRestBundle(),
         new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
         new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-    );
+    ]);
 }
 ```
 

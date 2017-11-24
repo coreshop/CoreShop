@@ -16,20 +16,19 @@ to kernel. Don’t worry, everything was automatically installed via Composer.
 
 // app/AppKernel.php
 
-public function registerBundles()
+public function registerBundlesToCollection(BundleCollection $collection)
 {
-    $bundles = array(
+    $collection->addBundles([
         new \JMS\SerializerBundle\JMSSerializerBundle(),
 
         new \CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle(),
         new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
 
-
         new \FOS\RestBundle\FOSRestBundle(),
         new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
         new \Payum\Bundle\PayumBundle\PayumBundle(),
         new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-    );
+    ]);
 }
 ```
 

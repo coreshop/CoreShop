@@ -21,14 +21,14 @@ You need to enable the bundle inside the kernel
 
 // app/AppKernel.php
 
-public function registerBundles()
+public function registerBundlesToCollection(BundleCollection $collection)
 {
-    $bundles = array(
+    $collection->addBundles([
         new \JMS\SerializerBundle\JMSSerializerBundle(),
         new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
         new \FOS\RestBundle\FOSRestBundle(),
         new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
         new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle()
-    );
+    ]);
 }
 ```

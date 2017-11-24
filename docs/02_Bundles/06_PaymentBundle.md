@@ -16,9 +16,9 @@ to kernel. Don’t worry, everything was automatically installed via Composer.
 
 // app/AppKernel.php
 
-public function registerBundles()
+public function registerBundlesToCollection(BundleCollection $collection)
 {
-    $bundles = array(
+    $collection->addBundles([
         new \JMS\SerializerBundle\JMSSerializerBundle(),
 
         new \CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle(),
@@ -29,7 +29,7 @@ public function registerBundles()
         new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
         new \Payum\Bundle\PayumBundle\PayumBundle(),
         new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-    );
+    ]);
 }
 ```
 
