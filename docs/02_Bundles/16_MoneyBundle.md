@@ -8,6 +8,9 @@ $ composer require coreshop/money-bundle:^2.0
 ### Adding required bundles to kernel
 You need to enable the bundle inside the kernel
 
+If you're not using CoreShop bundles, you will also need to add CoreShopResourceBundle and its dependencies
+to kernel. Don’t worry, everything was automatically installed via Composer.
+
 ```php
 <?php
 
@@ -16,7 +19,14 @@ You need to enable the bundle inside the kernel
 public function registerBundles()
 {
     $bundles = array(
-        new \CoreShop\Bundle\MoneyBundle\MoneyBundle()
+        new \JMS\SerializerBundle\JMSSerializerBundle(),
+
+        new \CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle(),
+        new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
+
+        new \FOS\RestBundle\FOSRestBundle(),
+        new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+        new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
     );
 }
 ```
