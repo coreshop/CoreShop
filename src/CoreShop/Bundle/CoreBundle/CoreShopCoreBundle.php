@@ -8,19 +8,21 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle;
 
-use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCheckoutStepPass;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use PackageVersions\Versions;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopCoreBundle extends AbstractResourceBundle
+final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
     /**
      * {@inheritdoc}
@@ -50,5 +52,87 @@ final class CoreShopCoreBundle extends AbstractResourceBundle
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Core\Model';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNiceName()
+    {
+        return 'CoreShop - Core';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'CoreShop - Pimcore eCommerce';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersion()
+    {
+        return Version::getVersion() . " (" . $this->getComposerVersion() . ")";
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerVersion()
+    {
+        $version = Versions::getVersion('coreshop/core-shop');
+
+        return $version;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInstaller()
+    {
+        return $this->container->get(Installer::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdminIframePath()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCssPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeCssPaths()
+    {
+        return [];
     }
 }

@@ -16,6 +16,10 @@ use CoreShop\Bundle\CoreBundle\Application\Version;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
+/**
+ * @deprecated Don't use anymore, Responsability of this has been moved to CoreBundle instead
+ * will be removed with beta-1
+ */
 final class CoreShopAdminBundle extends AbstractPimcoreBundle
 {
     /**

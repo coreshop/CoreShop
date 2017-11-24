@@ -17,6 +17,7 @@ imports:
   - { resource: "services/settings.yml" }
   - { resource: "services/cart-processor.yml" }
   - { resource: "services/reports.yml" }
+  - { resource: "services/pimcore_installer.yml" }
 
 services:
   coreshop.core.key_transformer:
