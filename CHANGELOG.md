@@ -3,6 +3,9 @@
 ## 2.0.0-alpha-3 to 2.0.0-alpha-4
  - **BC break** decoupled MoneyBundle from CurrencyBundle, therefore the Twig Extension for Money Conversion went to the CurrencyBundle. Therefore the name of that extension was renamed from
    **coreshop_convert_money** to **coreshop_convert_currency**. If you use it directly in your code, please rename all of them.
+ - Deprecated CoreShopAdminBundle which responsability was only handling installation and deliviering pimcore resources like JS and CSS files.
+    * Installation has been moved to CoreShopCoreBundle
+    * Delivering of resources is now handled by CoreShopResourceBundle, this also makes it easier to use CoreShop Bundles without handling resources yourself.
 
 ## 2.0.0-alpha-2 to 2.0.0-alpha-3
  - **BC break** getPrice in PurchasableInterface and ProductInterface has been removed. In favor of this a new coreShopStorePrice editable has been introduced, which stores prices for each store. This makes handling of multiple currencies way more elegant.
