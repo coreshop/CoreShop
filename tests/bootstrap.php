@@ -239,7 +239,7 @@ try {
 $fs = new \Symfony\Component\Filesystem\Filesystem();
 $fs->mkdir($kernel->getContainer()->getParameter('kernel.project_dir').'/public');
 
-$installer = $kernel->getContainer()->get(\CoreShop\Bundle\AdminBundle\Installer::class);
+$installer = $kernel->getContainer()->get(\CoreShop\Bundle\CoreBundle\Installer::class);
 $installer->install();
 
 \Pimcore\Cache::clearAll();
