@@ -20,6 +20,7 @@
   "require": {
     "php": "^7.0",
     "coreshop/currency": "^2.0",
+    "coreshop/resource-bundle": "^2.0",
     "pimcore/core-version": "^5.0.2",
     "symfony/intl": "^3.2"
   },
