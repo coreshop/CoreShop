@@ -144,6 +144,13 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_tag_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js')->end()
                         ->end()
                     ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/css/resource.js')->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();

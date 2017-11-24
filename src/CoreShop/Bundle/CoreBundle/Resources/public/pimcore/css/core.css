@@ -37,11 +37,6 @@
     background: url(/pimcore/static6/img/flat-color-icons/collaboration.svg) center center no-repeat !important;
 }
 
-.pimcore_icon_data_group_coreshop {
-    background: url(../img/logo.svg) center center no-repeat !important;
-}
-
-
 .coreshop_settings_inherited {
     background:#dad9d9 !important;
     filter: Alpha(opacity=60) !important;
