@@ -31,52 +31,6 @@ public function registerBundles()
 }
 ```
 
-### Loading JS/CSS Resources into Pimcore
-
-Since the MoneyBundle is a regular Symfony Bundle and not a Pimcore Bundle, you need to take care of loading JS Resources yourself. CoreShop already comes with a helper of doing that:
-
-1. Extend your AppBundle from ```Pimcore\Extension\Bundle\AbstractPimcoreBundle```
-2. Implement ```getJsPaths``` and ```getCssPaths``` methods:
-
-```php
-<?php
-
-namespace AppBundle;
-
-use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-
-class AppBundle extends AbstractPimcoreBundle
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsPaths()
-    {
-        $jsFiles = [];
-
-        if ($this->container->hasParameter('coreshop.application.pimcore.admin.js')) {
-             $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.application.pimcore.admin.js'));
-        }
-
-        return $jsFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssPaths()
-    {
-        $cssFiles = [];
-
-        if ($this->container->hasParameter('coreshop.application.pimcore.admin.css')) {
-             $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.application.pimcore.admin.css'));
-        }
-
-        return $cssFiles;
-    }
-}
-```
-
 ## Usage
 
 Money Bundle adds a new core-extension to pimcore which allows you to store currency values as integer.
