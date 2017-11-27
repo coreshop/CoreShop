@@ -68,7 +68,7 @@ class ClassLoader
     protected static function loadClass($fileName, $className)
     {
         if (file_exists($fileName) && !class_exists($className)) {
-            require_once $className;
+            require_once $fileName;
         }
     }
 
