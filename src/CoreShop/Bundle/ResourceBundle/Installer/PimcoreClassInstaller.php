@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
-use Composer\Autoload\ClassLoader;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Pimcore\ClassLoader;
 use Pimcore\Model\DataObject;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,9 +46,6 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
             $fieldCollections = [];
             $bricks = [];
             $classes = [];
-
-            $classLoader = new ClassLoader();
-            $classLoader->register(true);
 
             foreach ($pimcoreClasses as $pimcoreModel) {
                 $modelName = explode('\\', $pimcoreModel['classes']['model']);
@@ -116,8 +113,6 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
                 $progress->advance();
             }
 
-            $classLoader->addPsr4("Pimcore\\Model\\DataObject\\", PIMCORE_CLASS_DIRECTORY . "/Object");
-
             $progress->finish();
         }
     }
@@ -138,6 +133,8 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
         $json = file_get_contents($jsonFile);
 
         DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
+
+        ClassLoader::forceLoadBrick($brickName);
 
         return $objectBrick;
     }
@@ -189,9 +186,9 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
                     }
                 }
             }
-
-            return $class;
         }
+
+        ClassLoader::forceLoadDataObjectClass($className);
 
         return $class;
     }
@@ -214,6 +211,8 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
         $json = file_get_contents($jsonFile);
 
         DataObject\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
+
+        ClassLoader::forceLoadFieldCollection($name);
 
         return $fieldCollection;
     }
