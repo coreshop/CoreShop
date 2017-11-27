@@ -37,8 +37,7 @@ class SettingsController extends AdminController
     {
         $settings = [
             'bundle' => [
-                'version' => Version::getVersion(),
-                'build' => Version::getBuild(),
+                'version' => Version::getVersion()
             ],
             'reports' => array_values($this->getParameter('coreshop.reports'))
         ];

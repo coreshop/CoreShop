@@ -34,9 +34,4 @@ final class Version
 
         return $version;
     }
-
-    public static function getBuild()
-    {
-        return self::BUILD_VERSION;
-    }
 }
