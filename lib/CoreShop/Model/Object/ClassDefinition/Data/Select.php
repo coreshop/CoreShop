@@ -51,11 +51,28 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     public $allowEmpty = false;
 
     /**
+     * Correct old column definitions (e.g varchar(255)) to the new format
+     * @param $type
+     */
+    protected function correctColumnDefinition($type)
+    {
+        preg_match("/(.*)\((\d+)\)/i", $this->$type, $matches);
+        if ($matches[2]) {
+            $this->{"set" . ucfirst($type)}($matches[1]);
+            if ($matches[2] > 190) {
+                $matches[2] = 190;
+            }
+            $this->setColumnLength($matches[2] <= 190 ? $matches[2] : 190);
+        }
+    }
+
+    /**
      * @return string
      */
     public function getColumnType()
     {
-        return $this->columnType;
+        $this->correctColumnDefinition('columnType');
+        return $this->columnType . "(" . $this->getColumnLength() . ")";
     }
 
     /**
@@ -63,7 +80,8 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      */
     public function getQueryColumnType()
     {
-        return $this->queryColumnType;
+        $this->correctColumnDefinition('queryColumnType');
+        return $this->queryColumnType . "(" . $this->getColumnLength() . ")";
     }
 
     /**
@@ -130,7 +148,7 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     public function getDataFromResource($data, $object = null, $params = [])
     {
         if (intval($data) > 0) {
-            return call_user_func($this->getPhpdocType().'::getById', $data);
+            return call_user_func($this->getPhpdocType() . '::getById', $data);
         }
 
         return null;
@@ -141,7 +159,7 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @see Object\ClassDefinition\Data::getDataForQueryResource
      *
-     * @param AbstractModel                    $data
+     * @param AbstractModel $data
      * @param null|Model\Object\AbstractObject $object
      * @param mixed $params
      *
@@ -161,7 +179,7 @@ class Select extends Model\Object\ClassDefinition\Data\Select
      *
      * @see Object\ClassDefinition\Data::getDataForEditmode
      *
-     * @param AbstractModel                    $data
+     * @param AbstractModel $data
      * @param null|Model\Object\AbstractObject $object
      * @param mixed $params
      *
@@ -175,9 +193,9 @@ class Select extends Model\Object\ClassDefinition\Data\Select
     /**
      * @see Model\Object\ClassDefinition\Data::getDataFromEditmode
      *
-     * @param int                              $data
+     * @param int $data
      * @param null|Model\Object\AbstractObject $object
-     * @param array                            $params
+     * @param array $params
      *
      * @return string
      */
