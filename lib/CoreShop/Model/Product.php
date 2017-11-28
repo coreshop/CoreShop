@@ -171,7 +171,8 @@ class Product extends Base
      */
     public static function getPriceCacheTag($product)
     {
-        return 'coreshop_product_'.$product->getId().'_price_' . $product->getTaxRate() . '' . \CoreShop::getTools()->getFingerprint();
+        $taxRate = str_replace([',','.'], '_', $product->getTaxRate());
+        return 'coreshop_product_'.$product->getId().'_price_' . $taxRate . '' . \CoreShop::getTools()->getFingerprint();
     }
 
     /**
