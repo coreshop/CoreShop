@@ -66,6 +66,7 @@ coreshop.index.objecttype.abstract = Class.create({
             listeners: {
                 change: function (combo, newValue) {
                     this.getGetterPanel().removeAll();
+                    this.record.set("getterConfig", null)
 
                     this.getGetterPanelLayout(newValue);
                 }.bind(this)
@@ -84,6 +85,7 @@ coreshop.index.objecttype.abstract = Class.create({
             listeners: {
                 change: function (combo, newValue) {
                     this.getInterpreterPanel().removeAll();
+                    this.record.set("interpreterConfig", null)
 
                     this.getInterpreterPanelLayout(newValue);
                 }.bind(this)
