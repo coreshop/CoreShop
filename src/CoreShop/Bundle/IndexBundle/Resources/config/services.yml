@@ -83,6 +83,7 @@ services:
       - '@coreshop.registry.index.class_helpers'
       - '@coreshop.registry.index.getter'
       - '@coreshop.registry.index.interpreter'
+      - '@logger'
     shared: false
     tags:
       - { name: coreshop.index.worker, type: mysql, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Worker\MysqlWorkerType}

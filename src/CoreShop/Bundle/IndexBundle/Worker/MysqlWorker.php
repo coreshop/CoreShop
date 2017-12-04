@@ -20,8 +20,8 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Db;
-use Pimcore\Logger;
 use Pimcore\Tool;
+use Psr\Log\LoggerInterface;
 
 class MysqlWorker extends AbstractWorker
 {
@@ -32,15 +32,25 @@ class MysqlWorker extends AbstractWorker
      */
     protected $database;
 
+    /**
+     * MysqlWorker constructor.
+     *
+     * @param ServiceRegistryInterface $classHelperRegistry
+     * @param ServiceRegistryInterface $getterServiceRegistry
+     * @param ServiceRegistryInterface $interpreterServiceRegistry
+     * @param LoggerInterface          $logger
+     */
     public function __construct(
         ServiceRegistryInterface $classHelperRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
-        ServiceRegistryInterface $interpreterServiceRegistry
+        ServiceRegistryInterface $interpreterServiceRegistry,
+        LoggerInterface $logger
     )
     {
-        parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry);
+        parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $logger);
 
         $this->database = Db::get();
+        $this->logger = $logger;
     }
 
     /**
@@ -278,7 +288,7 @@ QUERY;
 
                 $this->database->query($viewQuery);
             } catch (\Exception $e) {
-                Logger::error($e);
+                $this->logger->error($e);
             }
         }
     }
@@ -299,7 +309,7 @@ QUERY;
             $this->database->query('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
             $this->database->query('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
         } catch (\Exception $e) {
-            Logger::error($e);
+            $this->logger->error($e);
         }
     }
 
@@ -326,13 +336,13 @@ QUERY;
             try {
                 $this->doInsertData($index, $preparedData['data']);
             } catch (\Exception $e) {
-                Logger::warn('Error during updating index table: ' . $e);
+                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
                 $this->doInsertLocalizedData($index, $preparedData['localizedData']);
             } catch (\Exception $e) {
-                Logger::warn('Error during updating index table: ' . $e);
+                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
@@ -341,10 +351,10 @@ QUERY;
                     $this->database->insert($this->getRelationTablename($index), $rd);
                 }
             } catch (\Exception $e) {
-                Logger::warn('Error during updating index relation table: ' . $e->getMessage(), $e);
+                $this->logger->warn('Error during updating index relation table: ' . $e->getMessage(), [$e]);
             }
         } else {
-            Logger::info("Don't adding object " . $object->getId() . ' to index.');
+            $this->logger->info('Don\'t adding object ' . $object->getId() . ' to index.');
 
             $this->deleteFromIndex($index, $object);
         }
