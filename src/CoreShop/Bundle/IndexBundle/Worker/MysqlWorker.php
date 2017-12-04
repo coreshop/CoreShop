@@ -318,9 +318,9 @@ QUERY;
      */
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object)
     {
-        $this->database->delete($this->getTablename($index), 'o_id = ' . $this->database->quote($object->getId()));
-        $this->database->delete($this->getLocalizedTablename($index), 'o_id = ' . $this->database->quote($object->getId()));
-        $this->database->delete($this->getRelationTablename($index), 'src = ' . $this->database->quote($object->getId()));
+        $this->database->delete($this->getTablename($index), ['o_id' => $object->getId()]);
+        $this->database->delete($this->getLocalizedTablename($index), ['oo_id' => $object->getId()]);
+        $this->database->delete($this->getRelationTablename($index), ['src' => $object->getId()]);
     }
 
     /**
@@ -346,7 +346,7 @@ QUERY;
             }
 
             try {
-                $this->database->delete($this->getRelationTablename($index), ['src' => $this->database->quote($object->getId())]);
+                $this->database->delete($this->getRelationTablename($index), ['src' => $object->getId()]);
                 foreach ($preparedData['relation'] as $rd) {
                     $this->database->insert($this->getRelationTablename($index), $rd);
                 }
