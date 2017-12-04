@@ -23,10 +23,10 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Pimcore\Logger;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Tool;
+use Psr\Log\LoggerInterface;
 use Webmozart\Assert\Assert;
 
 abstract class AbstractWorker implements WorkerInterface
@@ -46,15 +46,28 @@ abstract class AbstractWorker implements WorkerInterface
      */
     protected $interpreterServiceRegistry;
 
+    /** @var LoggerInterface */
+    protected $logger;
+
+    /**
+     * AbstractWorker constructor.
+     *
+     * @param ServiceRegistryInterface $classHelperRegistry
+     * @param ServiceRegistryInterface $getterServiceRegistry
+     * @param ServiceRegistryInterface $interpreterServiceRegistry
+     * @param LoggerInterface          $logger
+     */
     public function __construct(
         ServiceRegistryInterface $classHelperRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
-        ServiceRegistryInterface $interpreterServiceRegistry
+        ServiceRegistryInterface $interpreterServiceRegistry,
+        LoggerInterface $logger
     )
     {
         $this->classHelperRegistry = $classHelperRegistry;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
+        $this->logger = $logger;
     }
 
     /**
@@ -156,7 +169,7 @@ abstract class AbstractWorker implements WorkerInterface
                     }
                 }
             } catch (\Exception $e) {
-                Logger::err('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
+                $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
                 throw $e;
             }
         }
@@ -257,22 +270,24 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @param IndexColumnInterface $column
      * @param IndexableInterface $object
-     * @param $value
+     * @param $originalValue
      * @param $virtualObjectId
      * @return array
+     * @throws \Exception
      */
-    protected function processInterpreter(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
+    protected function processInterpreter(IndexColumnInterface $column, IndexableInterface $object, $originalValue, $virtualObjectId)
     {
+        $value = $originalValue;
         $relationData = [];
         $localizedData = [];
 
         $interpreterClass = $this->getInterpreterObject($column);
 
         if ($interpreterClass instanceof InterpreterInterface) {
-            $value = $interpreterClass->interpret($value, $column);
+            $value = $interpreterClass->interpret($originalValue, $column);
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
-                $relationalValue = $interpreterClass->interpretRelational($value, $column);
+                $relationalValue = $interpreterClass->interpretRelational($originalValue, $column);
 
                 $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
             }
