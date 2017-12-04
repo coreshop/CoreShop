@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
 
@@ -20,7 +20,7 @@ class ObjectInterpreter implements RelationInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexColumnInterface $config = null)
+    public function interpretRelational($value, IndexColumnInterface $config = null)
     {
         $result = [];
 
@@ -38,6 +38,26 @@ class ObjectInterpreter implements RelationInterpreterInterface
                 'dest' => $value->getId(),
                 'type' => 'object',
             ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function interpret($value, IndexColumnInterface $config = null)
+    {
+        $result = [];
+
+        if (is_array($value)) {
+            foreach ($value as $v) {
+                if ($v instanceof AbstractObject) {
+                    $result[] = $v->getId();
+                }
+            }
+        } elseif ($value instanceof AbstractObject) {
+            $result[] = $value->getId();
         }
 
         return $result;

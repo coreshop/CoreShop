@@ -194,7 +194,9 @@ abstract class AbstractWorker implements WorkerInterface
                     $value = $interpreterClass->interpret($value, $column);
 
                     if ($interpreterClass instanceof RelationInterpreterInterface) {
-                        $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $value, $virtualObjectId));
+                        $relationalValue = $interpreterClass->interpretRelational($value, $column);
+
+                        $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
                     }
                 }
 
@@ -270,7 +272,9 @@ abstract class AbstractWorker implements WorkerInterface
             $value = $interpreterClass->interpret($value, $column);
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
-                $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $value, $virtualObjectId));
+                $relationalValue = $interpreterClass->interpretRelational($value, $column);
+
+                $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
             }
         } elseif ($interpreterClass instanceof LocalizedInterpreterInterface) {
             $validLanguages = Tool::getValidLanguages();
