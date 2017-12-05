@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Context;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
@@ -49,4 +50,9 @@ interface ShopperContextInterface extends
      * @return bool
      */
     public function hasCustomer();
+
+    /**
+     * @return CartInterface
+     */
+    public function getCart();
 }

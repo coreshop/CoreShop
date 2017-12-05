@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Context;
 
@@ -20,6 +20,7 @@ use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 
@@ -51,24 +52,33 @@ class ShopperContext implements ShopperContextInterface
     private $customerContext;
 
     /**
-     * @param StoreContextInterface    $storeContext
+     * @var CartManagerInterface
+     */
+    private $cartManager;
+
+    /**
+     * @param StoreContextInterface $storeContext
      * @param CurrencyContextInterface $currencyContext
-     * @param LocaleContextInterface   $localeContext
-     * @param CountryContextInterface  $countryContext
+     * @param LocaleContextInterface $localeContext
+     * @param CountryContextInterface $countryContext
      * @param CustomerContextInterface $customerContext
+     * @param CartManagerInterface $cartManager
      */
     public function __construct(
         StoreContextInterface $storeContext,
         CurrencyContextInterface $currencyContext,
         LocaleContextInterface $localeContext,
         CountryContextInterface $countryContext,
-        CustomerContextInterface $customerContext
-    ) {
+        CustomerContextInterface $customerContext,
+        CartManagerInterface $cartManager
+    )
+    {
         $this->storeContext = $storeContext;
         $this->currencyContext = $currencyContext;
         $this->localeContext = $localeContext;
         $this->countryContext = $countryContext;
         $this->customerContext = $customerContext;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -79,16 +89,15 @@ class ShopperContext implements ShopperContextInterface
         return $this->storeContext->getStore();
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
-    public function hasStore() {
+    public function hasStore()
+    {
         try {
             $this->storeContext->getStore();
             return true;
-        }
-        catch (StoreNotFoundException $ex)
-        {
+        } catch (StoreNotFoundException $ex) {
             return false;
         }
     }
@@ -101,16 +110,15 @@ class ShopperContext implements ShopperContextInterface
         return $this->currencyContext->getCurrency();
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
-    public function hasCurrency() {
+    public function hasCurrency()
+    {
         try {
             $this->currencyContext->getCurrency();
             return true;
-        }
-        catch (CurrencyNotFoundException $ex)
-        {
+        } catch (CurrencyNotFoundException $ex) {
             return false;
         }
     }
@@ -123,16 +131,15 @@ class ShopperContext implements ShopperContextInterface
         return $this->localeContext->getLocaleCode();
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
-    public function hasLocaleCode() {
+    public function hasLocaleCode()
+    {
         try {
             $this->localeContext->getLocaleCode();
             return true;
-        }
-        catch (LocaleNotFoundException $ex)
-        {
+        } catch (LocaleNotFoundException $ex) {
             return false;
         }
     }
@@ -148,13 +155,12 @@ class ShopperContext implements ShopperContextInterface
     /**
      * {@inheritdoc}
      */
-    public function hasCountry() {
+    public function hasCountry()
+    {
         try {
             $this->countryContext->getCountry();
             return true;
-        }
-        catch (CountryNotFoundException $ex)
-        {
+        } catch (CountryNotFoundException $ex) {
             return false;
         }
     }
@@ -170,14 +176,21 @@ class ShopperContext implements ShopperContextInterface
     /**
      * {@inheritdoc}
      */
-    public function hasCustomer() {
+    public function hasCustomer()
+    {
         try {
             $this->customerContext->getCustomer();
             return true;
-        }
-        catch (CustomerNotFoundException $ex)
-        {
+        } catch (CustomerNotFoundException $ex) {
             return false;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCart()
+    {
+        return $this->cartManager->getCart();
     }
 }

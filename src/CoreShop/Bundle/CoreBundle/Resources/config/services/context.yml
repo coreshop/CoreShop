@@ -8,6 +8,7 @@ services:
       - '@coreshop.context.locale'
       - '@coreshop.context.country'
       - '@coreshop.context.customer'
+      - '@coreshop.cart.manager'
 
   coreshop.storage.currency:
     class: CoreShop\Component\Core\Currency\CurrencyStorage
