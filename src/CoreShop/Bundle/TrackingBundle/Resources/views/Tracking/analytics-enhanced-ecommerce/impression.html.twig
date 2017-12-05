@@ -1,1 +1,1 @@
-ga('ec:addImpression', {{ productData|json_encode() }});
+ga('ec:addImpression', {{ productData|json_encode|raw }});
