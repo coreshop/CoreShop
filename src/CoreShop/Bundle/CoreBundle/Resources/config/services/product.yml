@@ -33,6 +33,14 @@ services:
     tags:
       - { name: twig.extension }
 
+  coreshop.twig.extension.tax:
+    class: CoreShop\Bundle\CoreBundle\Twig\ProductTaxExtension
+    arguments:
+      - '@coreshop.order.purchasable.price_calculator'
+      - '@coreshop.product.tax_factory'
+    tags:
+      - { name: twig.extension }
+
   coreshop.templating.helper.discount:
     class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductDiscountHelper
     arguments: ['@coreshop.product.taxed_price_calculator']
