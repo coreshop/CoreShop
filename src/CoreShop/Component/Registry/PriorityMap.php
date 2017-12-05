@@ -101,6 +101,7 @@ class PriorityMap implements \Iterator, \Countable
      */
     public function getKeys()
     {
+        uasort($this->list, [$this, $this->order.'SortStrategy']);
         return array_keys($this->list);
     }
 
