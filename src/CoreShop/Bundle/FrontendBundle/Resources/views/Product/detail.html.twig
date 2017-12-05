@@ -96,7 +96,7 @@
                 {#TODO: savings#}
             </div>
             <div class="tax">
-                {#{{ 'incl. %s%% Tax'|format(product.getTaxRate) }} ({{ currency.convertAndFormat(product.getTaxAmount) }})#}
+                {{ 'incl. %s%% Tax'|format(product|coreshop_product_get_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_get_tax_amount) }})
             </div>
 
             <hr/>
