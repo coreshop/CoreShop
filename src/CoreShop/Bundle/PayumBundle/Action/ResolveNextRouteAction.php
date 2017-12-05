@@ -8,16 +8,31 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PayumBundle\Action;
 
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use Payum\Core\Action\ActionInterface;
 
 final class ResolveNextRouteAction implements ActionInterface
 {
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
+
+    /**
+     * @param OrderRepositoryInterface $orderRepository
+     */
+    public function __construct(OrderRepositoryInterface $orderRepository)
+    {
+        $this->orderRepository = $orderRepository;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -27,11 +42,13 @@ final class ResolveNextRouteAction implements ActionInterface
     {
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
+        $order = $this->orderRepository->find($payment->getOrderId());
 
-        if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
-            $request->setRouteName(
-                'coreshop_checkout_confirmation'
-            );
+        if ($order instanceof OrderInterface && $payment->getState() === PaymentInterface::STATE_COMPLETED) {
+            $request->setRouteName('coreshop_checkout_confirmation');
+            $request->setRouteParameters([
+                '_locale' => $order->getOrderLanguage()
+            ]);
 
             return;
         }
@@ -49,7 +66,6 @@ final class ResolveNextRouteAction implements ActionInterface
     {
         return
             $request instanceof ResolveNextRoute &&
-            $request->getFirstModel() instanceof PaymentInterface
-        ;
+            $request->getFirstModel() instanceof PaymentInterface;
     }
 }

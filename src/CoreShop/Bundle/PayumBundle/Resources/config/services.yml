@@ -13,6 +13,8 @@ services:
 
   coreshop.payum_action.resolve_next_route:
     class: CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction
+    arguments:
+      - '@coreshop.repository.order'
     tags:
       - { name: payum.action, all: true, alias: coreshop.resolve_next_route }
 
@@ -24,6 +26,8 @@ services:
 
   coreshop.payum_action.offine.resolve_next_route:
     class: CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction
+    arguments:
+      - '@coreshop.repository.order'
     tags:
       - { name: payum.action, factory: offline, alias: coreshop.offline.resolve_next_route }
 
