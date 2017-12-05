@@ -10,28 +10,28 @@
  *
  */
 
-pimcore.registerNS('coreshop.filter.conditions.select');
+pimcore.registerNS('coreshop.filter.conditions.relational_multiselect');
 
-coreshop.filter.conditions.select = Class.create(coreshop.filter.conditions.abstract, {
-
-    type: 'select',
+coreshop.filter.conditions.relational_multiselect = Class.create(coreshop.filter.conditions.abstract, {
+    type: 'relational_multiselect',
 
     getItems: function () {
         return [
             {
                 xtype: 'combo',
-                fieldLabel: t('coreshop_filters_value'),
-                name: 'preSelect',
+                fieldLabel: t('coreshop_filters_values'),
+                name: 'preSelects',
                 width: 400,
                 store: this.valueStore,
                 displayField: 'value',
+                multiSelect: true,
                 valueField: 'key',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.preSelect
+                value: this.data.configuration.preSelects
             }
         ];
     }

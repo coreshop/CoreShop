@@ -29,6 +29,10 @@ coreshop.filter.abstract = Class.create({
     initialize: function (parent, data) {
         this.parent = parent;
         this.data = data;
+
+        if (!data.hasOwnProperty('configuration')) {
+            data.configuration = {};
+        }
     },
 
     getLayout: function () {
@@ -36,22 +40,34 @@ coreshop.filter.abstract = Class.create({
 
         var items = this.getDefaultItems();
 
-        items.push.apply(items, this.getItems());
-
         this.form = new Ext.form.Panel({
+            items: items
+        });
+
+        this.configurationForm = new Ext.form.Panel({
+            items: this.getItems()
+        });
+
+        return new Ext.panel.Panel({
             xparent: this,
+            bodyPadding: 10,
             id: myId,
             style: 'margin: 10px 0 0 0',
             tbar: this.getTopBar(t('coreshop_filters_' + this.type), myId, this.parent, this.data, 'coreshop_filters_icon_' + this.elementType + '_' + this.type),
+            border: true,
             items: [
-                {
-                    xtype: 'fieldset',
-                    items: items
-                }
+                this.form,
+                this.configurationForm
             ]
         });
+    },
 
-        return this.form;
+    getData: function() {
+        var data = this.form.getForm().getFieldValues();
+
+        data['configuration'] = this.configurationForm.getForm().getFieldValues();
+
+        return data;
     },
 
     getFieldsComboBox: function () {
@@ -62,7 +78,8 @@ coreshop.filter.abstract = Class.create({
                     url: '/admin/coreshop/filters/get-values-for-filter-field'
                 }),
                 reader: new Ext.data.JsonReader({}, [
-                    {name: 'value'}
+                    {name: 'value'},
+                    {name: 'key'}
                 ])
             });
 

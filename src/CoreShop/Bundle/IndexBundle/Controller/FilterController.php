@@ -8,13 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
+use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\WorkerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class FilterController extends ResourceController
@@ -59,23 +61,24 @@ class FilterController extends ResourceController
         $index = $this->get('coreshop.repository.index')->find($request->get('index'));
 
         if ($index instanceof IndexInterface) {
+            /**
+             * @var $worker WorkerInterface
+             */
+            $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
             $list = $this->get('coreshop.factory.index.list')->createList($index);
+            $filterGroupHelper = $worker->getFilterGroupHelper();
+            $field = $request->get('field');
+            $column = null;
 
-            $values = $list->getGroupByValues($request->get('field'));
+            foreach ($index->getColumns() as $column) {
+                if ($column->getName() === $field) {
+                    break;
+                }
+            }
             $returnValues = [];
 
-            foreach ($values as $value) {
-                if ($value) {
-                    $returnValues[] = [
-                        'value' => $value,
-                        'key' => $value,
-                    ];
-                } else {
-                    $returnValues[] = [
-                        'value' => FilterConditionProcessorInterface::EMPTY_STRING,
-                        'key' => 'empty',
-                    ];
-                }
+            if ($column instanceof IndexColumnInterface) {
+                $returnValues = $filterGroupHelper->getGroupByValuesForFilterGroup($column, $list, $field);
             }
 
             return $this->viewHandler->handle($returnValues);

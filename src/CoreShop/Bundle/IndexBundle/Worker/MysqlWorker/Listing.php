@@ -391,7 +391,7 @@ class Listing extends AbstractListing
             $variantMode = $this->getVariantMode();
         }
 
-        $preConditions = '';
+        $preConditions = [];
 
         if ($this->getCategory()) {
             $preConditions[] = "parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";

@@ -77,4 +77,9 @@ interface WorkerInterface
      * @return mixed
      */
     public function renderFieldType($type);
+
+    /**
+     * @return FilterGroupHelperInterface
+     */
+    public function getFilterGroupHelper();
 }

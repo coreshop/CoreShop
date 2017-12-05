@@ -24,15 +24,15 @@ coreshop.filter.conditions.multiselect = Class.create(coreshop.filter.conditions
                 name: 'preSelects',
                 width: 400,
                 store: this.valueStore,
-                displayField: 'key',
+                displayField: 'value',
                 multiSelect: true,
-                valueField: 'value',
+                valueField: 'key',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.preSelects
+                value: this.data.configuration.preSelects
             }
         ];
     }

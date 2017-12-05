@@ -80,7 +80,7 @@ coreshop.filter.conditions.boolean = Class.create(coreshop.filter.conditions.abs
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.preSelects
+                value: this.data.configuration.preSelects
             }
         ];
     }

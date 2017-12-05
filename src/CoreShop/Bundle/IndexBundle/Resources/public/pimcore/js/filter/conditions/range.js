@@ -22,7 +22,7 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
                 fieldLabel: t('coreshop_filters_step_count'),
                 xtype: 'numberfield',
                 name: 'stepCount',
-                value: this.data.stepCount,
+                value: this.data.configuration.stepCount,
                 width: 400,
                 decimalPrecision: 2
             },
@@ -32,14 +32,14 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
                 name: 'preSelectMin',
                 width: 400,
                 store: this.valueStore,
-                displayField: 'key',
-                valueField: 'value',
+                displayField: 'value',
+                valueField: 'key',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.preSelectMin
+                value: this.data.configuration.preSelectMin
             },
             {
                 xtype: 'combo',
@@ -47,14 +47,14 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
                 name: 'preSelectMax',
                 width: 400,
                 store: this.valueStore,
-                displayField: 'key',
-                valueField: 'value',
+                displayField: 'value',
+                valueField: 'key',
                 triggerAction: 'all',
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.preSelectMax
+                value: this.data.configuration.preSelectMax
             }
         ];
     }

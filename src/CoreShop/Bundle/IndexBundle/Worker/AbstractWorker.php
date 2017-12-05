@@ -21,16 +21,20 @@ use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Tool;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Webmozart\Assert\Assert;
 
 abstract class AbstractWorker implements WorkerInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var ServiceRegistryInterface
      */
@@ -46,28 +50,28 @@ abstract class AbstractWorker implements WorkerInterface
      */
     protected $interpreterServiceRegistry;
 
-    /** @var LoggerInterface */
-    protected $logger;
+    /**
+     * @var FilterGroupHelperInterface
+     */
+    protected $filterGroupHelper;
 
     /**
-     * AbstractWorker constructor.
-     *
      * @param ServiceRegistryInterface $classHelperRegistry
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
-     * @param LoggerInterface          $logger
+     * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
         ServiceRegistryInterface $classHelperRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
-        LoggerInterface $logger
+        FilterGroupHelperInterface $filterGroupHelper
     )
     {
         $this->classHelperRegistry = $classHelperRegistry;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
-        $this->logger = $logger;
+        $this->filterGroupHelper = $filterGroupHelper;
     }
 
     /**
@@ -329,6 +333,14 @@ abstract class AbstractWorker implements WorkerInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilterGroupHelper()
+    {
+        return $this->filterGroupHelper;
     }
 
     /**

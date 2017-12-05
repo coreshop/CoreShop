@@ -18,9 +18,11 @@ use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Db;
 use Pimcore\Tool;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
 class MysqlWorker extends AbstractWorker
@@ -33,24 +35,21 @@ class MysqlWorker extends AbstractWorker
     protected $database;
 
     /**
-     * MysqlWorker constructor.
-     *
      * @param ServiceRegistryInterface $classHelperRegistry
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
-     * @param LoggerInterface          $logger
+     * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
         ServiceRegistryInterface $classHelperRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
-        LoggerInterface $logger
+        FilterGroupHelperInterface $filterGroupHelper
     )
     {
-        parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $logger);
+        parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
 
         $this->database = Db::get();
-        $this->logger = $logger;
     }
 
     /**
