@@ -47,8 +47,8 @@ final class ProductTaxExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_get_tax_amount', [$this, 'getTaxAmount']),
-            new \Twig_Filter('coreshop_product_get_tax_rate', [$this, 'getTaxRate']),
+            new \Twig_Filter('coreshop_product_tax_amount', [$this, 'getTaxAmount']),
+            new \Twig_Filter('coreshop_product_tax_rate', [$this, 'getTaxRate']),
         ];
     }
 
