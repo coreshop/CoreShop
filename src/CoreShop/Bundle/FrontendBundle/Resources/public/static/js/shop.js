@@ -11,13 +11,19 @@ $(document).ready(function () {
     };
 
     shop.initChangeAddress = function () {
-        var parseAddress = function () {
+        if ($('select[name=shippingAddress]').find('option:selected').length) {
+            var address = $('select[name=shippingAddress]').find('option:selected').data('address');
             if (address) {
-
+                $('.panel-shipping-address').html(address.html);
             }
+        }
 
-            return '';
-        };
+        if ($('select[name=invoiceAddress]').find('option:selected').length) {
+            var address = $('select[name=invoiceAddress]').find('option:selected').data('address');
+            if (address) {
+                $('.panel-invoice-address').html(address.html);
+            }
+        }
 
         $('select[name=shippingAddress]').change(function () {
             var address = $(this).find('option:selected').data('address');

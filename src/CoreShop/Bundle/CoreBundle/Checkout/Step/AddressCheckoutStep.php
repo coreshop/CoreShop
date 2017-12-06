@@ -135,8 +135,8 @@ class AddressCheckoutStep implements CheckoutStepInterface
         $addresses = $customer->getAddresses();
 
         $values = [
-            'shippingAddress' => $cart->getShippingAddress() instanceof AddressInterface ? $cart->getShippingAddress()->getId() : (count($addresses) > 0 ? $addresses[0]->getId() : null),
-            'invoiceAddress' => $cart->getInvoiceAddress() instanceof AddressInterface ? $cart->getInvoiceAddress()->getId() : (count($addresses) > 0 ? $addresses[0]->getId() : null),
+            'shippingAddress' => $cart->getShippingAddress() instanceof AddressInterface ? $cart->getShippingAddress() : (count($addresses) > 0 ? $addresses[0] : null),
+            'invoiceAddress' => $cart->getInvoiceAddress() instanceof AddressInterface ? $cart->getInvoiceAddress() : (count($addresses) > 0 ? $addresses[0] : null),
         ];
 
         $options = [
