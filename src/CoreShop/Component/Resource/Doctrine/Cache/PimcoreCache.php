@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Resource\Doctrine\Cache;
 
@@ -18,11 +18,24 @@ use Pimcore\Cache;
 class PimcoreCache extends CacheProvider
 {
     /**
+     * @var Cache\Core\CoreHandlerInterface
+     */
+    private $coreHandler;
+
+    /**
+     * @param Cache\Core\CoreHandlerInterface $coreHandler
+     */
+    public function __construct(Cache\Core\CoreHandlerInterface $coreHandler)
+    {
+        $this->coreHandler = $coreHandler;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function doFetch($id)
     {
-        return Cache::load($this->getCacheKey($id));
+        return $this->coreHandler->load($this->getCacheKey($id));
     }
 
     /**
@@ -30,7 +43,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doContains($id)
     {
-        return Cache::load($this->getCacheKey($id)) !== null;
+        return $this->coreHandler->load($this->getCacheKey($id)) !== null;
     }
 
     /**
@@ -38,7 +51,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doSave($id, $data, $lifeTime = 0)
     {
-        Cache::save($data, $this->getCacheKey($id), ['doctrine_pimcore_cache'], $lifeTime);
+        $this->coreHandler->save($this->getCacheKey($id), $data, ['doctrine_pimcore_cache'], $lifeTime);
     }
 
     /**
@@ -46,7 +59,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doDelete($id)
     {
-        Cache::remove($this->getCacheKey($id));
+        $this->coreHandler->remove($this->getCacheKey($id));
     }
 
     /**
@@ -54,7 +67,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doFlush()
     {
-        Cache::clearTag('doctrine_pimcore_cache');
+        $this->coreHandler->clearTag('doctrine_pimcore_cache');
     }
 
     /**
@@ -65,7 +78,8 @@ class PimcoreCache extends CacheProvider
         return [];
     }
 
-    private function getCacheKey($id) {
+    private function getCacheKey($id)
+    {
         return md5($id);
     }
 }

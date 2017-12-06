@@ -50,3 +50,5 @@ services:
 
   coreshop.doctrine.cache.pimcore:
     class: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
+    arguments:
+      - '@Pimcore\Cache\Core\CoreHandlerInterface'
