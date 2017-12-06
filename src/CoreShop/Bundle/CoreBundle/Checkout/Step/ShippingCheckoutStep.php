@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
@@ -52,11 +51,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     private $formFactory;
 
     /**
-     * @var CurrencyContextInterface
-     */
-    private $currencyContext;
-
-    /**
      * @var CurrencyConverterInterface
      */
     private $currencyConverter;
@@ -76,7 +70,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      * @param TaxedShippingCalculatorInterface $taxedShippingCalculator
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      * @param FormFactoryInterface $formFactory
-     * @param CurrencyContextInterface $currencyContext
      * @param MoneyFormatterInterface $moneyFormatter
      * @param CurrencyConverterInterface $currencyConverter
      * @param StoreContextInterface $storeContext
@@ -86,7 +79,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         TaxedShippingCalculatorInterface $taxedShippingCalculator,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
-        CurrencyContextInterface $currencyContext,
         MoneyFormatterInterface $moneyFormatter,
         CurrencyConverterInterface $currencyConverter,
         StoreContextInterface $storeContext
@@ -96,7 +88,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         $this->taxedShippingCalculator = $taxedShippingCalculator;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
-        $this->currencyContext = $currencyContext;
         $this->moneyFormatter = $moneyFormatter;
         $this->currencyConverter = $currencyConverter;
         $this->storeContext = $storeContext;
