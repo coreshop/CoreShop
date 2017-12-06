@@ -17,6 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class PaymentType extends AbstractType
 {
@@ -27,7 +28,7 @@ final class PaymentType extends AbstractType
     {
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
-                'constraints' => [new Valid()],
+                'constraints' => [new Valid(), new NotBlank()],
                 'label' => 'coreshop.ui.payment_provider',
                 'store' => $options['store']
             ]);
