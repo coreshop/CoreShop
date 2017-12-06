@@ -85,7 +85,6 @@ final class CarrierType extends AbstractType
         $builder
             ->add('carrier', CarrierChoiceType::class, [
                 'constraints' => [new Valid()],
-                'compound' => true,
                 'expanded' => true,
                 'label' => 'coreshop.ui.carrier',
                 'choices' => $options['carriers'],
