@@ -80,7 +80,7 @@
     "stof/doctrine-extensions-bundle": "^1.2",
     "fzaninotto/faker": "^1.6",
     "liip/theme-bundle": "^1.4",
-    "hampe/zurb-ink-bundle": "^2.2",
+    "dachcom-digital/emailizr": "~1.0.0",
     "symfony/twig-bundle": "~3.2",
     "symfony/intl": "^3.2",
     "doctrine/data-fixtures": "^1.0",

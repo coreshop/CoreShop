@@ -14,25 +14,28 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Webmozart\Assert\Assert;
 
 class MailController extends FrontendController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function mailAction(Request $request)
     {
         return $this->renderTemplate('CoreShopFrontendBundle:Mail:mail.html.twig');
     }
 
-    public function orderConfirmationAction(Request $request) {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function orderConfirmationAction(Request $request)
+    {
         $order = $request->get('object');
         $viewParameters = [];
 
-        if ($this->editmode) {
-
-        }
-        else {
-            Assert::isInstanceOf($order, OrderInterface::class);
-
+        if (!$this->editmode && $order instanceof OrderInterface) {
             $viewParameters['order'] = $order;
         }
 

@@ -20,7 +20,7 @@
   "require": {
     "php": "^7.0",
     "coreshop/core-bundle": "^2.0",
-    "hampe/zurb-ink-bundle": "^2.2"
+    "dachcom-digital/emailizr": "~1.0.0"
   },
   "config": {
     "bin-dir": "bin"
