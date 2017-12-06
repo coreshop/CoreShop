@@ -202,9 +202,8 @@ class ShippingCheckoutStep implements CheckoutStepInterface
             'choices' => $carriers,
             'expanded' => true,
             'choice_label' => function ($carrier) use ($cart) {
-                $amount = $this->currencyConverter->convert($carrier->price, $this->storeContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
-
-                return $carrier->carrier->getLabel() . ' ' . $this->moneyFormatter->format($amount, $this->currencyContext->getCurrency()->getIsoCode());
+                $label = 'coreshop.ui.carrier.' . strtolower(str_replace(' ', '_', $carrier->carrier->getLabel()));
+                return $label;
             },
         ]);
 
