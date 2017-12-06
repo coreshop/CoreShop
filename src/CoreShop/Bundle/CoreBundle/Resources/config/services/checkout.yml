@@ -24,8 +24,6 @@ services:
       - '@coreshop.carrier.price_calculator.taxed'
       - '@coreshop.shipping.carrier.validator'
       - '@form.factory'
-      - '@coreshop.money_formatter'
-      - '@coreshop.currency_converter'
       - '@coreshop.context.store'
 
   coreshop.checkout.step.payment:
