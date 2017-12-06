@@ -15,12 +15,15 @@ namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ShippingBundle\Controller\ShippingRuleController;
+use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierTranslationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleGroupType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleType;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Shipping\Model\Carrier;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\CarrierTranslation;
+use CoreShop\Component\Shipping\Model\CarrierTranslationInterface;
 use CoreShop\Component\Shipping\Model\ShippingRule;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroup;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
@@ -74,6 +77,22 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(CarrierType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(CarrierTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(CarrierTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(CarrierTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()

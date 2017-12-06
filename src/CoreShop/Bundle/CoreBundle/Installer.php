@@ -21,6 +21,11 @@ use Symfony\Component\Console\Input\ArrayInput;
 class Installer extends MigrationInstaller
 {
     /**
+     * @var bool
+     */
+    protected $runUpdateAfterInstall = false;
+
+    /**
      *
      */
     protected function beforeInstallMigration()

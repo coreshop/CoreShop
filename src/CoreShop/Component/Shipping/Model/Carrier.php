@@ -8,19 +8,22 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Model;
 
-use CoreShop\Component\Resource\Model\SetValuesTrait;
+use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Carrier implements CarrierInterface
+class Carrier extends AbstractResource implements CarrierInterface
 {
     use TimestampableTrait;
-    use SetValuesTrait;
+    use TranslatableTrait {
+        __construct as initializeTranslationsCollection;
+    }
 
     /**
      * @var int
@@ -59,6 +62,8 @@ class Carrier implements CarrierInterface
 
     public function __construct()
     {
+        $this->initializeTranslationsCollection();
+
         $this->shippingRules = new ArrayCollection();
     }
 
@@ -84,6 +89,22 @@ class Carrier implements CarrierInterface
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription($language = null)
+    {
+        return $this->getTranslation($language)->getDescription();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDescription($description, $language = null)
+    {
+        $this->getTranslation($language)->setDescription($description);
     }
 
     /**
@@ -195,5 +216,13 @@ class Carrier implements CarrierInterface
     public function hasShippingRule(ShippingRuleGroupInterface $shippingRuleGroup)
     {
         return $this->shippingRules->contains($shippingRuleGroup);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createTranslation()
+    {
+        return new CarrierTranslation();
     }
 }

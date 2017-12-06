@@ -106,6 +106,11 @@ class Carrier extends RuleTest
             'label' => 'Test',
             'name' => 'Test',
             'rangeBehaviour' => 'deactivate',
+            'translations' => [
+                'en' => [
+                    'description' => 'TEST'
+                ]
+            ]
         ]);
 
         $this->assertNull($carrier->getId());

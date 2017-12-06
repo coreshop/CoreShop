@@ -199,6 +199,7 @@ class Data
             $carrier->setRangeBehaviour(CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
             $carrier->setTaxRule(self::$taxRuleGroup);
             $carrier->setIsFree(false);
+            $carrier->setDescription('TEST', 'en');
             $carrier->addStore(self::$store);
 
             $entityManager->persist($carrier);

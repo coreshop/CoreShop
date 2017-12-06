@@ -1,5 +1,6 @@
 parameters:
   coreshop.form.type.carrier.validation_groups: [coreshop]
+  coreshop.form.type.carrier_translation.validation_groups: [coreshop]
   coreshop.form.type.shipping_rule.validation_groups: [coreshop]
   coreshop.form.type.shipping_rule_group.validation_groups: [coreshop]
   coreshop.form.type.shipping_rule.rule.validation_groups: [coreshop]
@@ -17,7 +18,8 @@ services:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleChoiceType
     tags:
       - { name: form.type }
-    arguments: ['@coreshop.repository.shipping_rule']
+    arguments:
+      - '@coreshop.repository.shipping_rule'
 
   coreshop.form.type.shipping_rule_chollection:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleGroupCollectionType
@@ -28,52 +30,75 @@ services:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleGroupType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.shipping_rule_group.class%', '%coreshop.form.type.shipping_rule_group.validation_groups%']
+    arguments:
+      - '%coreshop.model.shipping_rule_group.class%'
+      - '%coreshop.form.type.shipping_rule_group.validation_groups%'
 
   coreshop.form.type.carrier:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType
     tags:
       - { name: form.type }
-    arguments: ['%coreshop.model.carrier.class%', '%coreshop.form.type.carrier.validation_groups%']
+    arguments:
+      - '%coreshop.model.carrier.class%'
+      - '%coreshop.form.type.carrier.validation_groups%'
+
+  coreshop.form.type.carrier_translation:
+    class: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierTranslationType
+    arguments:
+      - '%coreshop.model.carrier_translation.class%'
+      - '%coreshop.form.type.carrier_translation.validation_groups%'
+    tags:
+      - { name: form.type }
 
   coreshop.form.type.carrier_choice:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType
     tags:
       - { name: form.type }
-    arguments: ['@coreshop.repository.carrier']
+    arguments:
+      - '@coreshop.repository.carrier'
 
   coreshop.form.type.shipping_rule.rule_action:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.rule_action.class%', '%coreshop.form.type.shipping_rule.rule_action.validation_groups%', '@coreshop.form_registry.shipping_rule.actions']
+    arguments:
+      - '%coreshop.model.rule_action.class%'
+      - '%coreshop.form.type.shipping_rule.rule_action.validation_groups%'
+      - '@coreshop.form_registry.shipping_rule.actions'
 
   coreshop.form.shipping_rule.type.rule_action.collection:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionCollectionType
     tags:
         - { name: form.type }
-    arguments: ['@coreshop.registry.shipping_rule.actions']
+    arguments:
+      - '@coreshop.registry.shipping_rule.actions'
 
   coreshop.form.shipping_rule.type.rule_condition.collection:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionCollectionType
     tags:
         - { name: form.type }
-    arguments: ['@coreshop.registry.shipping_rule.conditions']
+    arguments:
+      - '@coreshop.registry.shipping_rule.conditions'
 
   coreshop.form.shipping_rule.type.rule_action_choice:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionChoiceType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.shipping_rule.actions%']
+    arguments:
+      - '%coreshop.shipping_rule.actions%'
 
   coreshop.form.shipping_rule.type.rule_condition:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.model.rule_condition.class%', '%coreshop.form.type.shipping_rule.rule_condition.validation_groups%', '@coreshop.form_registry.shipping_rule.conditions']
+    arguments:
+      - '%coreshop.model.rule_condition.class%'
+      - '%coreshop.form.type.shipping_rule.rule_condition.validation_groups%'
+      - '@coreshop.form_registry.shipping_rule.conditions'
 
   coreshop.form.shipping_rule.type.rule_condition_choice:
     class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionChoiceType
     tags:
         - { name: form.type }
-    arguments: ['%coreshop.shipping_rule.conditions%']
+    arguments:
+      - '%coreshop.shipping_rule.conditions%'

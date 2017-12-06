@@ -17,6 +17,9 @@ use CoreShop\Component\Core\Model\CarrierInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
+use Faker\Provider\Lorem;
+use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -59,6 +62,9 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
     public function load(ObjectManager $manager)
     {
         if (!count($this->container->get('coreshop.repository.carrier')->findAll())) {
+            $faker = Factory::create();
+            $faker->addProvider(new Lorem($faker));
+
             /**
              * @var $carrier CarrierInterface
              */
@@ -68,6 +74,10 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
             $carrier->setTrackingUrl('https://coreshop.at/track/%s');
             $carrier->setIsFree(false);
             $carrier->setTaxRule($this->getReference('taxRule'));
+
+            foreach (Tool::getValidLanguages() as $lang) {
+                $carrier->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
+            }
 
             $manager->persist($carrier);
             $manager->flush();
