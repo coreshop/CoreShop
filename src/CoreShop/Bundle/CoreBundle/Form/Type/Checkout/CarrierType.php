@@ -13,9 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType;
+use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
-
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
@@ -84,19 +85,27 @@ final class CarrierType extends AbstractType
         $builder
             ->add('carrier', CarrierChoiceType::class, [
                 'constraints' => [new Valid()],
-                'compound'  => true,
+                'compound' => true,
                 'expanded' => true,
                 'label' => 'coreshop.ui.carrier',
                 'choices' => $options['carriers'],
                 'choice_value' => function ($carrier) {
-                    return $carrier->getId();
+                    if ($carrier instanceof CarrierInterface) {
+                        return $carrier->getId();
+                    }
+                    return null;
                 },
                 'choice_label' => function ($carrier) use ($cart) {
-                    $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
-                    $amount = $this->currencyConverter->convert($carrierPrice, $this->storeContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
-                    $formattedAmount = $this->moneyFormatter->format($amount, $this->currencyContext->getCurrency()->getIsoCode());
-                    $label = 'coreshop.ui.carrier.' . strtolower(str_replace(' ', '_', $carrier->getLabel()));
-                    return $this->translator->trans($label) . ' ' . $formattedAmount;
+                    if ($carrier instanceof CarrierInterface) {
+                        $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
+                        $amount = $this->currencyConverter->convert($carrierPrice, $this->storeContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
+                        $formattedAmount = $this->moneyFormatter->format($amount, $this->currencyContext->getCurrency()->getIsoCode());
+                        $label = 'coreshop.ui.carrier.' . strtolower(str_replace(' ', '_', $carrier->getLabel()));
+                        return sprintf('%s %s', $this->translator->trans($label), $formattedAmount);
+                    }
+
+
+                    return '';
                 }
             ]);
     }
@@ -107,8 +116,21 @@ final class CarrierType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+
         $resolver->setDefault('carriers', null);
         $resolver->setDefault('cart', null);
+        $resolver->setAllowedTypes('cart', [CartInterface::class]);
+        $resolver->setAllowedTypes('carriers', 'array')
+            ->setAllowedValues('carriers', function (array $carriers) {
+                // we already know it is an array as types are validated first
+                foreach ($carriers as $carrier) {
+                    if (!$carrier instanceof CarrierInterface) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
     }
 
     /**

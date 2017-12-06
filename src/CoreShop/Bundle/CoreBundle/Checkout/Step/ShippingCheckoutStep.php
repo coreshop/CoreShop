@@ -103,7 +103,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $cart->setCarrier($formData['carrier']->carrier);
+                $cart->setCarrier($formData['carrier']);
                 $cart->save();
                 return true;
             } else {
