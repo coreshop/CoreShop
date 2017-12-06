@@ -41,6 +41,8 @@ services:
   # Forms
   coreshop.form.type.checkout_address:
     class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType
+    arguments:
+      - '@coreshop.address.formatter'
     tags:
       - {name: form.type}
 

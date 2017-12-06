@@ -8,11 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +23,19 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddressType extends AbstractType
 {
+    /**
+     * @var AddressFormatterInterface
+     */
+    private $addressFormatHelper;
+
+    /**
+     * @param AddressFormatterInterface $addressFormatHelper
+     */
+    public function __construct(AddressFormatterInterface $addressFormatHelper)
+    {
+        $this->addressFormatHelper = $addressFormatHelper;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,19 +46,36 @@ final class AddressType extends AbstractType
                 'constraints' => [new Valid()],
                 'customer' => $options['customer'],
                 'label' => 'coreshop.form.address.shipping',
+                'choice_attr' => function ($val, $key, $index) {
+                    if ($val instanceof AddressInterface) {
+                        return [
+                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($val)])
+                        ];
+                    }
+
+                    return [];
+                }
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
                 'constraints' => [new Valid()],
                 'customer' => $options['customer'],
                 'label' => 'coreshop.form.address.invoice',
+                'choice_attr' => function ($val, $key, $index) {
+                    if ($val instanceof AddressInterface) {
+                        return [
+                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($val)])
+                        ];
+                    }
+
+                    return [];
+                }
             ])
             ->add('useShippingAsInvoice', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
                 'data' => true,
                 'label' => 'coreshop.form.address.use_shipping_as_invoice',
-            ])
-        ;
+            ]);
     }
 
     /**

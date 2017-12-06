@@ -104,8 +104,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
         $customer = $this->getCustomer();
 
         return [
-            'form' => $this->createForm($cart, $customer)->createView(),
-            'addresses' => $customer->getAddresses(),
+            'form' => $this->createForm($cart, $customer)->createView()
         ];
     }
 

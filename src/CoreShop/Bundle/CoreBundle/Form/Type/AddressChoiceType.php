@@ -62,6 +62,7 @@ final class AddressChoiceType extends AbstractType
                 },
                 'choice_translation_domain' => false,
                 'active' => true,
+                'placeholder' => 'coreshop.form.address.choose_address',
             ])
         ;
     }

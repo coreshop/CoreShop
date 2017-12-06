@@ -1,55 +1,76 @@
-
 addToCartRunning = false;
 
-$(document).ready(function(){
+$(document).ready(function () {
     shop.init();
 });
 
-(function(shop, $, undefined) {
+(function (shop, $, undefined) {
 
-    shop.init = function() {
+    shop.init = function () {
         shop.initChangeAddress();
     };
-    
-    shop.initChangeAddress = function()
-    {
-        $('select[name=shippingAddress]').change(function() {
-            var value = $(this).val();
-            
-            $('.panel-shipping-address').html($('#address-' + value).html());
-            
-            if($('[name=useShippingAsInvoice]').is(":checked"))
-            {
-                $('.panel-invoice-address').html($('#address-' + value).html());
-                
-                $('select[name=invoiceAddress]').val($(this).val());
-            }
-        });
-        
-        $('select[name=invoiceAddress]').change(function(){
-            var value = $(this).val();
-            value = $(this).find("[value='"+value+"']").data("value");
-            
-            $('.panel-invoice-address').html($('#address-' + value).html());
-        });
-        
-        $('[name=useShippingAsInvoice]').change(function(){
-            if($(this).is(":checked"))
-            {
-                $('.invoice-address-selector').slideUp();
-                
-                var value = $('select[name=invoice-address] :selected').val();
-                var htmlValue = $('select[name=shipping-address]').find("[value='"+value+"']").data("value");
 
-                $('.panel-invoice-address').html($('#address-' + htmlValue).html());
-                
-                $('select[name=invoice-address]').val(value);
+    shop.initChangeAddress = function () {
+        var parseAddress = function () {
+            if (address) {
+
             }
-            else
-            {
+
+            return '';
+        };
+
+        $('select[name=shippingAddress]').change(function () {
+            var address = $(this).find('option:selected').data('address');
+
+            if (address) {
+                address = address.html;
+
+                $('.panel-shipping-address').html(address);
+
+                if ($('[name=useShippingAsInvoice]').is(":checked")) {
+                    $('.panel-invoice-address').html(address);
+
+                    $('select[name=invoiceAddress]').val($(this).val());
+                }
+            }
+            else {
+                $('.panel-shipping-address').html('');
+
+                if ($('[name=useShippingAsInvoice]').is(":checked")) {
+                    $('.panel-invoice-address').html('');
+                    $('select[name=invoiceAddress]').val(null);
+                }
+            }
+        });
+
+        $('select[name=invoiceAddress]').change(function () {
+            var address = $(this).find('option:selected').data('address');
+
+            if (address) {
+                address = address.html;
+
+                $('.panel-invoice-address').html(address);
+            }
+            else {
+                $('.panel-invoice-address').html('');
+            }
+        });
+
+        $('[name=useShippingAsInvoice]').change(function () {
+            if ($(this).is(":checked")) {
+                $('.invoice-address-selector').slideUp();
+                var address = $('select[name=shippingAddress] option:selected').data('address');
+                var value = $('select[name=shippingAddress] :selected').val();
+
+                if (address) {
+                    $('.panel-invoice-address').html(address.html);
+                    $('select[name=invoiceAddress]').val(value);
+                }
+            }
+            else {
                 $('.invoice-address-selector').slideDown();
             }
         });
     };
-    
-}( window.shop = window.shop || {}, jQuery ));
+
+}(window.shop = window.shop || {}, jQuery));
