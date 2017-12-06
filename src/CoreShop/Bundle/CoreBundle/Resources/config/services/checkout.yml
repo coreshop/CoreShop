@@ -21,12 +21,8 @@ services:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
     arguments:
       - '@coreshop.carrier.discovery'
-      - '@coreshop.carrier.price_calculator.taxed'
       - '@coreshop.shipping.carrier.validator'
       - '@form.factory'
-      - '@coreshop.context.currency'
-      - '@coreshop.money_formatter'
-      - '@coreshop.currency_converter'
       - '@coreshop.context.store'
 
   coreshop.checkout.step.payment:
@@ -48,5 +44,18 @@ services:
 
   coreshop.form.type.checkout_payment:
     class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType
+    tags:
+      - {name: form.type}
+
+  coreshop.form.type.checkout_carrier:
+    class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType
+    arguments:
+      - '@coreshop.carrier.price_calculator.taxed'
+      - '@coreshop.context.currency'
+      - '@coreshop.money_formatter'
+      - '@coreshop.currency_converter'
+      - '@coreshop.context.store'
+      - '@pimcore.translator'
+
     tags:
       - {name: form.type}
