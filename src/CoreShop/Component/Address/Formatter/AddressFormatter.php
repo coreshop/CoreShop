@@ -23,7 +23,8 @@ class AddressFormatter implements AddressFormatterInterface
     public function formatAddress(AddressInterface $address, $asHtml = true)
     {
         $objectVars = get_object_vars($address);
-
+        $objectVars['country'] = $address->getCountry();
+        
         $placeHolder = new Placeholder();
         $address = $placeHolder->replacePlaceholders($address->getCountry()->getAddressFormat(), $objectVars);
 
