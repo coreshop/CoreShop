@@ -5,23 +5,23 @@
     <div id="main-container" class="container">
 
         <ol class="breadcrumb">
-            <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
-            <li class="active"><a href="{{ path('coreshop_customer_orders') }}">{{ 'orders'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+            <li class="active"><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
         </ol>
 
         <h2 class="main-heading text-center">
-            {{ 'orders'|trans }}
+            {{ 'coreshop.ui.orders'|trans }}
         </h2>
 
         <div class="table-responsive compare-table">
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <td>{{ 'order_number'|trans }}</td>
-                    <td>{{ 'date'|trans }}</td>
-                    <td>{{ 'total'|trans }}</td>
-                    <td>{{ 'state'|trans }}</td>
+                    <td>{{ 'coreshop.ui.order_number'|trans }}</td>
+                    <td>{{ 'coreshop.ui.date'|trans }}</td>
+                    <td>{{ 'coreshop.ui.total'|trans }}</td>
+                    <td>{{ 'coreshop.ui.state'|trans }}</td>
                     <td></td>
                 </tr>
                 </thead>
@@ -40,7 +40,7 @@
                     </td>
                     <td>
                         <a class="btn btn-black" href="{{ path('coreshop_customer_order_detail', {order: order.getId}) }}">
-                            {{ 'show_detail'|trans }}
+                            {{ 'coreshop.ui.show_detail'|trans }}
                         </a>
                     </td>
                 </tr>

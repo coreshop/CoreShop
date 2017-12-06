@@ -5,15 +5,15 @@
             <table class="table items">
                 <thead>
                 <tr>
-                    <th class="col-xs-1">{{ 'quantity'|trans }}</th>
-                    <th class="col-xs-7">{{ 'description'|trans }}</th>
+                    <th class="col-xs-1">{{ 'coreshop.ui.quantity'|trans }}</th>
+                    <th class="col-xs-7">{{ 'coreshop.ui.description'|trans }}</th>
                     <th class="col-xs-1 text-right">
-                        {{ 'total'|trans }}
-                        <span>{{ 'excl_tax'|trans }}</span>
+                        {{ 'coreshop.ui.total'|trans }}
+                        <span>{{ 'coreshop.ui.excl_tax'|trans }}</span>
                     </th>
                     <th class="col-xs-1 text-right">
-                        {{ 'total'|trans }}
-                        <span>{{ 'inc_tax'|trans }}</span>
+                        {{ 'coreshop.ui.total'|trans }}
+                        <span>{{ 'coreshop.ui.inc_tax'|trans }}</span>
                     </th>
                 </tr>
                 </thead>
@@ -27,7 +27,7 @@
                             {{ item.getOrderItem.getProduct.name }}
 
                             {% if item.getOrderItem.isGiftItem %}
-                                {{ 'gift_item'|trans }}
+                                {{ 'coreshop.ui.gift_item'|trans }}
                             {% endif %}
                         </td>
                         <td class="text-right">
@@ -68,7 +68,7 @@
                         </p>
                     </td>
                     <td class="col-xs-8 text-right">
-                        <strong>{{ 'subtotal_inc'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-sub-total">
                         {{ invoice.getSubtotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -76,7 +76,7 @@
                 </tr>
                 <tr>
                     <td class="col-xs-8 text-right" >
-                        <strong>{{ 'subtotal_excl'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-discount">
                         {{ invoice.getSubtotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -85,7 +85,7 @@
                 {% if discount > 0 %}
                     <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ 'discount_incl'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-discount">
                             -{{ discountIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -93,7 +93,7 @@
                     </tr>
                     <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ 'discount_excl'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-discount">
                             -{{ discount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -103,7 +103,7 @@
                 {% if shipping > 0 %}
                     <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ 'shipping_incl'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-shipping">
                             {{ shippingIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -111,7 +111,7 @@
                     </tr>
                     <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ 'shipping_excl'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-shipping">
                             {{ shipping|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -121,7 +121,7 @@
                 {% if payment > 0 %}
                     <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ 'payment_fee'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-payment">
                             {{ payment|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -131,7 +131,7 @@
                 {% for taxItem in taxes %}
                      <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ "tax_name"|trans|format(taxItem.getName) }}:</strong>
+                            <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
                         </td>
                         <td class="text-right cart-tax-detail">
                             {{ taxItem.amount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -140,7 +140,7 @@
                 {% endfor %}
                <tr>
                     <td class="col-xs-8 text-right" >
-                        <strong>{{ 'total_tax'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-tax">
                         {{ invoice.getTotalTax|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
@@ -148,7 +148,7 @@
                 </tr>
                 <tr>
                     <td class="col-xs-8 text-right" >
-                        <strong>{{ 'total'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-total-price">
                         {{ invoice.getTotal|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}

@@ -8,19 +8,19 @@
             <thead>
             <tr>
                 <td class="text-center">
-                    {{ 'image'|trans }}
+                    {{ 'coreshop.ui.image'|trans }}
                 </td>
                 <td class="text-center">
-                    {{ 'product_details'|trans }}
+                    {{ 'coreshop.ui.product_details'|trans }}
                 </td>
                 <td class="text-center">
-                    {{ 'quantity'|trans }}
+                    {{ 'coreshop.ui.quantity'|trans }}
                 </td>
                 <td class="text-center">
-                    {{ 'price'|trans }}
+                    {{ 'coreshop.ui.price'|trans }}
                 </td>
                 <td class="text-center">
-                    {{ 'total'|trans }}
+                    {{ 'coreshop.ui.total'|trans }}
                 </td>
             </tr>
             </thead>
@@ -40,7 +40,7 @@
                             {{ item.getProduct.getName() }}
                         </a>
                         {% if item.getIsGiftItem %}
-                            <br/><span>{{ 'gift_item'|trans }}</span>
+                            <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
                         {% endif %}
                     </td>
                     <td class="text-center">
@@ -104,7 +104,7 @@
 
                 </td>
                 <td class="text-right">
-                    <strong>{{ 'subtota_inc'|trans }}:</strong>
+                    <strong>{{ 'coreshop.ui.subtota_inc'|trans }}:</strong>
                 </td>
                 <td colspan="1" class="text-right cart-sub-total">
                     {{ currency.convertAndFormat(quote.getSubtotal(true)) }}
@@ -112,7 +112,7 @@
             </tr>
             <tr>
                 <td class="text-right">
-                    <strong>{{ 'subtotal_excl'|trans }}:</strong>
+                    <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
                 </td>
                 <td colspan="1" class="text-right cart-discount">
                     {{ currency.convertAndFormat(quote.getSubtotal(false)) }}
@@ -121,7 +121,7 @@
             {% if discount > 0 %}
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'discount_incl'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
                     </td>
                     <td colspan="1" class="text-right cart-discount">
                         -{{ currency.convertAndFormat(discountIt) }}
@@ -129,7 +129,7 @@
                 </tr>
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'discount_excl'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
                     </td>
                     <td colspan="1" class="text-right cart-discount">
                         -{{ currency.convertAndFormat(discount) }}
@@ -139,7 +139,7 @@
             {% if shipping > 0 %}
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'shipping_incl'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
                     </td>
                     <td colspan="1" class="text-right cart-shipping">
                         {{ currency.convertAndFormat(shippingIt) }}
@@ -147,7 +147,7 @@
                 </tr>
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'shipping_excl'|trans }}:</strong>
+                        <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
                     </td>
                     <td colspan="1" class="text-right cart-shipping">
                         {{ currency.convertAndFormat(shipping) }}
@@ -158,7 +158,7 @@
             {% for taxItem in taxes %}
                  <tr>
                     <td class="text-right cart-tax-detail">
-                        <strong>{{ "tax_name"|trans|format(taxItem.getName) }}:</strong>
+                        <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
                     </td>
                     <td colspan="1" class="text-right cart-tax-detail">
                         {{ currency.convertAndFormat(taxItem.amount) }}
@@ -179,7 +179,7 @@
             #}
            <tr>
                 <td class="text-right">
-                    <strong>{{ 'total_tax'|trans }}:</strong>
+                    <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
                 </td>
                 <td colspan="1" class="text-right cart-tax">
                     {{ currency.convertAndFormat(quote.getTotalTax) }}
@@ -187,7 +187,7 @@
             </tr>
             <tr>
                 <td class="text-right">
-                    <strong>{{ 'total'|trans }}:</strong>
+                    <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
                 </td>
                 <td colspan="1" class="text-right cart-total-price">
                     {{ currency.convertAndFormat(quote.getTotal) }}
@@ -197,6 +197,6 @@
         </table>
     </div>
     {% else %}
-        <p>{{ 'quote_empty'|trans }}</p>
+        <p>{{ 'coreshop.ui.quote_empty'|trans }}</p>
     {% endif %}
 {% endblock %}

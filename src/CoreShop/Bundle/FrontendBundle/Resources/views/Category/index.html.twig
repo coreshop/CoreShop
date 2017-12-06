@@ -2,7 +2,7 @@
 
 {% block center %}
     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
         {% for cat in category.getHierarchy() %}
             <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
         {% endfor %}
@@ -17,20 +17,20 @@
             <div class="col-md-4">
                 <div class="display">
                     <a href="{{ pimcore_url({'type': 'list'})  }}" class="{% if type == 'list' %} active {% endif %}">
-                        <i class="fa fa-th-list" title="" data-original-title="{{ 'list_view'|trans }}"></i>
+                        <i class="fa fa-th-list" title="" data-original-title="{{ 'coreshop.ui.list_view'|trans }}"></i>
                     </a>
                     <a href="{{ pimcore_url({'type': 'grid'})  }}" class="{% if type == 'grid' %} active {% endif %}">
-                        <i class="fa fa-th-list" title="" data-original-title="{{ 'grid_view'|trans }}"></i>
+                        <i class="fa fa-th-list" title="" data-original-title="{{ 'coreshop.ui.grid_view'|trans }}"></i>
                     </a>
                 </div>
             </div>
             <div class="col-md-2 text-right">
-                <label class="control-label">{{ 'sort'|trans }}</label>
+                <label class="control-label">{{ 'coreshop.ui.sort'|trans }}</label>
             </div>
             <div class="col-md-3 text-right">
                 {%  set sorting = {
-                        'NAME_DESC': 'name_desc'|trans,
-                        'NAME_ASC': 'name_asc'|trans
+                        'NAME_DESC': 'coreshop.ui.sort.name_desc'|trans,
+                        'NAME_ASC': 'coreshop.ui.sort.name_asc'|trans
                     }
                 %}
                 {#
@@ -43,7 +43,7 @@
                 </select>
             </div>
             <div class="col-md-1 text-right">
-                <label class="control-label">{{ 'show'|trans }}</label>
+                <label class="control-label">{{ 'coreshop.ui.show'|trans }}</label>
             </div>
             <div class="col-md-2 text-right">
                 <select class="form-control site-reload" name="perPage">
@@ -78,7 +78,7 @@
             {% endfor %}
 
                 <div class="list-group-item">
-                    <button type="submit" class="btn btn-main">{{ 'filter'|trans }}</button>
+                    <button type="submit" class="btn btn-main">{{ 'coreshop.ui.filter'|trans }}</button>
                 </div>
             </form>
         {% endif %}

@@ -1,17 +1,18 @@
 {% if not catalogMode %}
 <div class="col-md-2 col-sm-6">
-    <h5>{{ 'my_account'|trans }}</h5>
+    <h5>{{ 'coreshop.ui.account'|trans }}</h5>
     <ul>
         {% if customer %}
-            <li><a href="#">{{ 'my_account'|trans }}</a></li>
-            <li><a href="#">{{ 'my_orders'|trans }}</a></li>
-            <li><a href="#">{{ 'my_addresses'|trans }}</a></li>
-            <li><a href="#">{{ 'my_personal_info'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.account'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.rders'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_addresses') }}">{{ 'coreshop.ui.addresses'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_settings') }}">{{ 'coreshop.ui.personal_info'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_wishlist_summary') }}" >{{ 'coreshop.ui.whishlist' }}</a></li>
         {% else %}
-            <!-- TODO: URL -->
-            <li><a href="#">{{ 'register'|trans }}</a></li>
-            <li><a href="#">{{ 'login'|trans }}</a></li>
-            <li><a href="#">{{ 'product_compare'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_register') }}">{{ 'coreshop.ui.register'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_login') }}">{{ 'coreshop.ui.login'|trans }}</a></li>
+            <!-- TODO -->
+            <li><a href="#">{{ 'Compare' }}</a></li>
         {% endif %}
     </ul>
 </div>

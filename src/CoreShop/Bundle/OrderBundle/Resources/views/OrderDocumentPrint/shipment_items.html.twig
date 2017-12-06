@@ -5,15 +5,15 @@
             <table class="table items">
                 <thead>
                 <tr>
-                    <th class="col-xs-1">{{ 'quantity'|trans }}</th>
-                    <th class="col-xs-7">{{ 'description'|trans }}</th>
+                    <th class="col-xs-1">{{ 'coreshop.ui.quantity'|trans }}</th>
+                    <th class="col-xs-7">{{ 'coreshop.ui.description'|trans }}</th>
                     <th class="col-xs-1 text-right">
-                        {{ 'total'|trans }}
-                        <span>{{ 'excl_tax'|trans }}</span>
+                        {{ 'coreshop.ui.total'|trans }}
+                        <span>{{ 'coreshop.ui.excl_tax'|trans }}</span>
                     </th>
                     <th class="col-xs-1 text-right">
-                        {{ 'total'|trans }}
-                        <span>{{ 'inc_tax'|trans }}</span>
+                        {{ 'coreshop.ui.total'|trans }}
+                        <span>{{ 'coreshop.ui.inc_tax'|trans }}</span>
                     </th>
                 </tr>
                 </thead>
@@ -27,7 +27,7 @@
                             {{ item.getOrderItem.getProduct.name }}
 
                             {% if item.getOrderItem.isGiftItem %}
-                                {{ 'gift_item'|trans }}
+                                {{ 'coreshop.ui.gift_item'|trans }}
                             {% endif %}
                         </td>
                         <td class="text-right">

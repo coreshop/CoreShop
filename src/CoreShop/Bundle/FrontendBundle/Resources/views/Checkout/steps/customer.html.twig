@@ -2,7 +2,7 @@
 {% form_theme guestForm 'bootstrap_3_layout.html.twig' %}
 
 {% block checkout_title %}
-    {{ 'customer'|trans }}
+    {{ 'coreshop.ui.customer'|trans }}
 {% endblock %}
 
 {% block checkout %}
@@ -10,7 +10,7 @@
 
     {% if coreshop_configuration('system.guest.checkout') %}
         <h2 class="main-heading text-center">
-            {{ 'guest_register'|trans }} <br/>
+            {{ 'coreshop.ui.guest_register'|trans }} <br/>
         </h2>
 
         <section class="registration-area">

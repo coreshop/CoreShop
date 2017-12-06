@@ -5,13 +5,13 @@
     <div id="main-container" class="container">
 
         <ol class="breadcrumb">
-            <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_orders') }}">{{ 'orders'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
         </ol>
 
         <h2 class="main-heading text-center">
-            {{ 'order'|trans }} {{ order.getOrderNumber }}
+            {{ 'coreshop.ui.order'|trans }} {{ order.getOrderNumber }}
         </h2>
 
         <div class="row">
@@ -19,7 +19,7 @@
                 <div class="panel panel-smart">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            {{ 'shipping_address'|trans }}
+                            {{ 'coreshop.ui.shipping_address'|trans }}
                         </h4>
                     </div>
                     <div class="panel-body panel-delivery-address">
@@ -31,7 +31,7 @@
                 <div class="panel panel-smart">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            {{ 'invoice_address'|trans }}
+                            {{ 'coreshop.ui.invoice_address'|trans }}
                         </h4>
                     </div>
                     <div class="panel-body panel-delivery-address">
@@ -47,19 +47,19 @@
                     <thead>
                     <tr>
                         <td class="text-center">
-                            {{ 'image'|trans }}
+                            {{ 'coreshop.ui.image'|trans }}
                         </td>
                         <td class="text-center">
-                            {{ 'product_details'|trans }}
+                            {{ 'coreshop.ui.product_details'|trans }}
                         </td>
                         <td class="text-center">
-                            {{ 'quantity'|trans }}
+                            {{ 'coreshop.ui.quantity'|trans }}
                         </td>
                         <td class="text-center">
-                            {{ 'price'|trans }}
+                            {{ 'coreshop.ui.price'|trans }}
                         </td>
                         <td class="text-center">
-                            {{ 'total'|trans }}
+                            {{ 'coreshop.ui.total'|trans }}
                         </td>
                     </tr>
                     </thead>
@@ -86,7 +86,7 @@
                                     {% endif %}
                                 </a>
                                 {% if item.getIsGiftItem %}
-                                    <br/><span>{{ 'gift_item'|trans }}</span>
+                                    <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
                                 {% endif %}
                             </td>
                             <td class="text-center">
@@ -153,7 +153,7 @@
 
                         </td>
                         <td class="text-right">
-                            <strong>{{ 'subtotal_inc'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
                         </td>
                         <td colspan="1" class="text-right cart-sub-total">
                             {{ currency.format(order.getSubtotal(true), order.currency.isoCode) }}
@@ -161,7 +161,7 @@
                     </tr>
                     <tr>
                         <td class="text-right">
-                            <strong>{{ 'subtotal_excl'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
                         </td>
                         <td colspan="1" class="text-right cart-discount">
                             {{ currency.format(order.getSubtotal(false), order.currency.isoCode) }}
@@ -170,7 +170,7 @@
                     {% if discount > 0 %}
                         <tr>
                             <td class="text-right">
-                                <strong>{{ 'discount_incl'|trans }}:</strong>
+                                <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
                             </td>
                             <td colspan="1"
                                 class="text-right cart-discount">
@@ -179,7 +179,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <strong>{{ 'discount_excl'|trans }}:</strong>
+                                <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
                             </td>
                             <td colspan="1"
                                 class="text-right cart-discount">
@@ -190,7 +190,7 @@
                     {% if shipping > 0 %}
                         <tr>
                             <td class="text-right">
-                                <strong>{{ 'shipping_incl'|trans }}:</strong>
+                                <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
                             </td>
                             <td colspan="1"
                                 class="text-right cart-shipping">
@@ -199,7 +199,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <strong>{{ 'shipping_excl'|trans }}:</strong>
+                                <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
                             </td>
                             <td colspan="1"
                                 class="text-right cart-shipping">
@@ -210,7 +210,7 @@
                     {% if payment > 0 %}
                         <tr>
                             <td class="text-right">
-                                <strong>{{ 'payment_fee'|trans }}:</strong>
+                                <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
                             </td>
                             <td colspan="1"
                                 class="text-right cart-payment">
@@ -221,7 +221,7 @@
                     {% for taxItem in taxes %}
                         <tr>
                             <td class="text-right cart-tax-detail">
-                                <strong>{{ "tax_name"|trans|format(taxItem.getName) }}:</strong>
+                                <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
                             </td>
                             <td colspan="1"
                                 class="text-right cart-tax-detail">
@@ -231,7 +231,7 @@
                     {% endfor %}
                     <tr>
                         <td class="text-right">
-                            <strong>{{ 'total_tax'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
                         </td>
                         <td colspan="1" class="text-right cart-tax">
                             {{ currency.format(order.getTotalTax, order.currency.isoCode) }}
@@ -239,7 +239,7 @@
                     </tr>
                     <tr>
                         <td class="text-right">
-                            <strong>{{ 'total'|trans }}:</strong>
+                            <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
                         </td>
                         <td colspan="1"
                             class="text-right cart-total-price">
@@ -250,7 +250,7 @@
                 </table>
             </div>
         {% else %}
-            <p>{{ 'cart_empty'|trans }}</p>
+            <p>{{ 'coreshop.ui.cart_empty'|trans }}</p>
         {% endif %}
 
     </div>

@@ -30,18 +30,18 @@ final class AddressType extends AbstractType
             ->add('shippingAddress', AddressChoiceType::class, [
                 'constraints' => [new Valid()],
                 'customer' => $options['customer'],
-                'label' => 'coreshop.checkout.address.shipping',
+                'label' => 'coreshop.form.address.shipping',
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
                 'constraints' => [new Valid()],
                 'customer' => $options['customer'],
-                'label' => 'coreshop.checkout.address.invoice',
+                'label' => 'coreshop.form.address.invoice',
             ])
             ->add('useShippingAsInvoice', CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
                 'data' => true,
-                'label' => 'coreshop.checkout.address.use_shipping_as_invoice',
+                'label' => 'coreshop.form.address.use_shipping_as_invoice',
             ])
         ;
     }

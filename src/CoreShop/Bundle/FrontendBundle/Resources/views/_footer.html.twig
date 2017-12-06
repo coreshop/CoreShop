@@ -16,7 +16,7 @@
             {{ render(controller('coreshop.frontend.controller.customer:footerAction')) }}
 
             <div class="col-md-2 col-sm-6">
-                <h5>{{ 'service'|trans }}</h5>
+                <h5>{{ 'Services' }}</h5>
                 <ul>
                     <li>{{ 'static link1 TODO' }}</li>
                     <li>{{ 'static link2 TODO' }}</li>
@@ -26,26 +26,26 @@
             </div>
 
             <div class="col-md-2 col-sm-6">
-                <h5>{{ 'follow_me' }}</h5>
+                <h5>{{ 'Follow Me' }}</h5>
                 <ul>
-                    <li><a href="https://www.facebook.com/dominik.pfaffenbauer" target="_blank">Facebook</a></li>
-                    <li><a href="https://www.linkedin.com/profile/view?id=341821585" target="_blank">LinkedIn</a></li>
+                    <li><a href="https://www.facebook.com/dominik.pfaffenbauer" target="_blank">{{ 'Facebook' }}</a></li>
+                    <li><a href="https://www.linkedin.com/profile/view?id=341821585" target="_blank">{{ 'LinkedIn' }}</a></li>
                 </ul>
             </div>
 
             <div class="col-md-4 col-sm-12 last">
-                <h5>{{ 'contact_us'|trans }}</h5>
+                <h5>{{ 'Contact Us' }}</h5>
                 <ul>
-                    <li>{{ 'company_name'|trans }}</li>
+                    <li>{{ 'Company Name' }}</li>
                     <li>
-                        <li>{{ 'company_address'|trans }}</li>
+                        <li>{{ 'Company Address' }}</li>
                     </li>
                     <li>
-                        <li>{{ 'company_email'|trans }}</li>
+                        <li>{{ 'Company Mail' }}</li>
                     </li>
                 </ul>
                 <h4 class="lead">
-                    {{ 'phone'|trans }}: <span>{{ 'company_phone'|trans }}</span>
+                    {{ 'Phone' }}: <span>{{ 'Company Phone' }}</span>
                 </h4>
             </div>
         </div>
@@ -55,7 +55,7 @@
         <div class="container">
 
             <p class="pull-left">
-                &copy; 2017 CoreShop | <a href="http://www.coreshop.org">http://www.coreshop.org</a>.
+                {{ '&copy; 2017 CoreShop | <a href="http://www.coreshop.org">http://www.coreshop.org</a>.' }}
             </p>
 
             <ul class="pull-right list-inline">
