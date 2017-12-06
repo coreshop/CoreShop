@@ -89,7 +89,7 @@ final class CarrierType extends AbstractType
                 'label' => 'coreshop.ui.carrier',
                 'choices' => $options['carriers'],
                 'choice_value' => function ($carrier) {
-                    return $carrier->getLabel();
+                    return $carrier->getId();
                 },
                 'choice_label' => function ($carrier) use ($cart) {
                     $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
