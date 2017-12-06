@@ -43,13 +43,13 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                     name: 'translations.' + lang + '.description',
                     fieldLabel: t('description'),
                     width: 400,
-                    value: data.translations[lang] ? data.translations[lang].name : ''
+                    value: data.translations[lang] ? data.translations[lang].description : ''
                 }, {
                     xtype: 'textarea',
                     name: 'translations.' + lang + '.instructions',
                     fieldLabel: t('coreshop_instructions'),
                     width: 400,
-                    value: data.translations[lang] ? data.translations[lang].name : ''
+                    value: data.translations[lang] ? data.translations[lang].instructions : ''
                 }]
             };
 
