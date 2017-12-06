@@ -28,10 +28,10 @@ final class PaymentType extends AbstractType
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid()],
-                'store' => $options['store'],
-                'label' => 'coreshop.ui.payment_provider'
-            ])
-        ;
+                'compound' => true,
+                'label' => 'coreshop.ui.payment_provider',
+                'store' => $options['store']
+            ]);
     }
 
     /**

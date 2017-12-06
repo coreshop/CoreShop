@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
-use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
@@ -20,11 +20,8 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\Valid;
 
 class ShippingCheckoutStep implements CheckoutStepInterface
 {
@@ -32,11 +29,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      * @var ShippableCarriersDiscoveryInterface
      */
     private $shippableCarriersDiscovery;
-
-    /**
-     * @var TaxedShippingCalculatorInterface
-     */
-    private $taxedShippingCalculator;
 
     /**
      * @var ShippableCarrierValidatorInterface
@@ -55,21 +47,18 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
     /**
      * @param ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery
-     * @param TaxedShippingCalculatorInterface $taxedShippingCalculator
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      * @param FormFactoryInterface $formFactory
      * @param StoreContextInterface $storeContext
      */
     public function __construct(
         ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery,
-        TaxedShippingCalculatorInterface $taxedShippingCalculator,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
         StoreContextInterface $storeContext
     )
     {
         $this->shippableCarriersDiscovery = $shippableCarriersDiscovery;
-        $this->taxedShippingCalculator = $taxedShippingCalculator;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
         $this->storeContext = $storeContext;
@@ -116,7 +105,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface
             if ($form->isValid()) {
                 $cart->setCarrier($formData['carrier']->carrier);
                 $cart->save();
-
                 return true;
             } else {
                 throw new CheckoutException('Shipping Form is invalid', 'coreshop_checkout_shipping_form_invalid');
@@ -148,36 +136,22 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     private function getCarriers(CartInterface $cart)
     {
         $carriers = $this->shippableCarriersDiscovery->discoverCarriers($cart, $cart->getShippingAddress());
-        $availableCarriers = [];
-
-        foreach ($carriers as $carrier) {
-            $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
-
-            $availableCarriers[$carrier->getId()] = new \stdClass();
-            $availableCarriers[$carrier->getId()]->carrier = $carrier;
-            $availableCarriers[$carrier->getId()]->price = $carrierPrice;
-        }
-
-        return $availableCarriers;
+        return $carriers;
     }
 
     /**
      * @param $carriers
+     * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm($carriers, $cart)
+    private function createForm($carriers, CartInterface $cart)
     {
-        $form = $this->formFactory->createNamed('', FormType::class);
-
-        $form->add('carrier', ChoiceType::class, [
-            'constraints' => [new Valid()],
-            'choices' => $carriers,
-            'expanded' => true,
-            'choice_label' => function ($carrier) use ($cart) {
-                $label = 'coreshop.ui.carrier.' . strtolower(str_replace(' ', '_', $carrier->carrier->getLabel()));
-                return $label;
-            },
+        $form = $this->formFactory->createNamed('', CarrierType::class, [
+            'carrier' => $cart->getCarrier(),
+        ], [
+            'carriers' => $carriers,
+            'cart' => $cart
         ]);
 
         return $form;
