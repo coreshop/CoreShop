@@ -5,13 +5,13 @@
     <div id="main-container" class="container">
 
         <ol class="breadcrumb">
-            <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
-            <li class="active">{{ 'settings'|trans }}</li>
+            <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+            <li class="active">{{ 'coreshop.ui.settings'|trans }}</li>
         </ol>
 
         <h2 class="main-heading text-center">
-            {{ 'settings'|trans }} <br/>
+            {{ 'coreshop.ui.settings'|trans }} <br/>
         </h2>
 
         <section class="registration-area">
@@ -24,7 +24,7 @@
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-black">
-                                        {{ 'save'|trans }}
+                                        {{ 'coreshop.ui.save'|trans }}
                                     </button>
                                 </div>
                             {{ form_end(form) }}

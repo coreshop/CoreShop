@@ -14,13 +14,13 @@
             <thead>
             <tr>
                 <td class="text-center">
-                    {{ 'image'|trans }}
+                    {{ 'coreshop.ui.image'|trans }}
                 </td>
                 <td class="text-center">
-                    {{ 'product_details'|trans }}
+                    {{ 'coreshop.ui.product_details'|trans }}
                 </td>
                 <td class="text-center">
-                    {{ 'price'|trans }}
+                    {{ 'coreshop.ui.price'|trans }}
                 </td>
                 <td class="text-center">
 
@@ -48,7 +48,7 @@
                         {{ currency.getPrice(product) }}
                     </td>
                     <td class="text-center">
-                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" type="button" title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromWishlist" data-id="{{ product.getId }}">
+                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" type="button" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromWishlist" data-id="{{ product.getId }}">
                             <i class="fa fa-times-circle"></i>
                         </a>
                     </td>
@@ -58,7 +58,7 @@
         </table>
     </div>
     {% else %}
-        <p>{{ 'wishlist_empty'|trans }}</p>
+        <p>{{ 'coreshop.ui.wishlist_empty'|trans }}</p>
     {% endif %}
     <br/>
 {% endblock %}

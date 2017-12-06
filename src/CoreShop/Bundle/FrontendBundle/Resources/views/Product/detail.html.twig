@@ -4,7 +4,7 @@
 
 {% block center %}
     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
+        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
         {% if product.getCategories|length > 0 %}
             {% for cat in product.getCategories|first.getHierarchy() %}
                 <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
@@ -48,24 +48,24 @@
             <ul class="list-unstyled manufacturer">
                 {% if product.getManufacturer %}
                     <li>
-                        <span>{{ 'brand'|trans }}:</span> {{ product.getManufacturer.getName }}
+                        <span>{{ 'coreshop.ui.brand'|trans }}:</span> {{ product.getManufacturer.getName }}
                     </li>
                 {% endif %}
 
                 {% if product.getEan %}
-                    <li><span>{{ 'ean'|trans }}:</span> {{ product.getEan }}
+                    <li><span>{{ 'coreshop.ui.ean'|trans }}:</span> {{ product.getEan }}
                 {% endif %}
                 <li>
-                    <span>{{ 'availability'|trans }}:</span>
+                    <span>{{ 'coreshop.ui.availability'|trans }}:</span>
                     {%  if product.getQuantity > 0 %}
-                        <strong class="label label-success"> {{ 'in_stock'|trans }}</strong>
+                        <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
                     {% elseif product.getIsAvailableWhenOutOfStock %}
                         <div class="label label-warning">
-                            {{ 'out_of_stock_but_on_backorder'|trans }}
+                            {{ 'coreshop.ui.out_of_stock_but_on_backorder'|trans }}
                         </div>
                     {% else %}
                         <div class="label label-danger">
-                            {{ 'out_of_stock'|trans }}
+                            {{ 'coreshop.ui.out_of_stock'|trans }}
                         </div>
                     {% endif %}
                 </li>
@@ -91,7 +91,7 @@
 
 
             <div class="price">
-                <span class="price-head">{{ 'price'|trans }}:</span>
+                <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
                 <span class="price-new">{{ currency.getPrice(product) }}</span>
                 {#TODO: savings#}
             </div>
@@ -103,14 +103,14 @@
 
             <div class="options">
                 <div class="cart-button button-group">
-                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" type="button" title="{{ 'wishlist'|trans }}" class="btn btn-wishlist">
+                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" type="button" title="{{ 'coreshop.ui.wishlist'|trans }}" class="btn btn-wishlist">
                         <i class="fa fa-heart"></i>
                     </a>
-                    <button type="button" title="{{ 'compare'|trans }}" class="btn btn-compare" data-id="{{ product.getId }}">
+                    <button type="button" title="{{ 'coreshop.ui.compare'|trans }}" class="btn btn-compare" data-id="{{ product.getId }}">
                         <i class="fa fa-bar-chart-o"></i>
                     </button>
                     <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart" rel="nofollow">
-                        {{ 'add_to_cart'|trans }}
+                        {{ 'coreshop.ui.add_to_cart'|trans }}
                         <i class="fa fa-shopping-cart"></i>
                     </a>
                 </div>
@@ -123,7 +123,7 @@
     <div class="tabs-panel panel-smart">
         <ul class="nav nav-tabs">
             <li class="active">
-                <a href="#tab-description">{{ 'description'|trans }}</a>
+                <a href="#tab-description">{{ 'coreshop.ui.description'|trans }}</a>
             </li>
         </ul>
 
@@ -132,7 +132,7 @@
                 {% if product.getDescription|length > 0  %}
                     {{ product.getDescription|raw }}
                 {% else %}
-                    {{ 'no_description_available'|trans }}
+                    {{ 'coreshop.ui.no_description_available'|trans }}
                 {% endif %}
             </div>
         </div>

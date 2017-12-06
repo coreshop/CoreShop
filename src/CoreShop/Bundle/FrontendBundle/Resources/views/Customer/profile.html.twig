@@ -4,26 +4,26 @@
 <div id="main-container" class="container">
 
     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'home'|trans }}</a></li>
-        <li class="active"><a href="{{ path('coreshop_customer_profile') }}">{{ 'profile'|trans }}</a></li>
+        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+        <li class="active"><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
     </ol>
 
     <h2 class="main-heading text-center">
-        {{ 'my_account'|trans }}
+        {{ 'coreshop.ui.account'|trans }}
     </h2>
 
     <div class="list-group">
-        <a href="{{ path('coreshop_customer_orders') }}" title="{{ 'orders'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_orders') }}" title="{{ 'coreshop.ui.orders'|trans }}" class="list-group-item">
             <i class="fa fa-list-ol"></i>
-            <span>{{ 'order_history_and_details'|trans }}</span>
+            <span>{{ 'coreshop.ui.order_history_and_details'|trans }}</span>
         </a>
-        <a href="{{ path('coreshop_customer_addresses') }}" title="{{ 'addresses'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_addresses') }}" title="{{ 'coreshop.ui.addresses'|trans }}" class="list-group-item">
             <i class="fa fa-building"></i>
-            <span>{{ 'my_addresses'|trans }}</span>
+            <span>{{ 'coreshop.ui.addresses'|trans }}</span>
         </a>
-        <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'settings'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'coreshop.ui.settings'|trans }}" class="list-group-item">
             <i class="fa fa-user"></i>
-            <span>{{ 'my_personal_information'|trans }}</span>
+            <span>{{ 'coreshop.ui.personal_information'|trans }}</span>
         </a>
     </div>
 </div>

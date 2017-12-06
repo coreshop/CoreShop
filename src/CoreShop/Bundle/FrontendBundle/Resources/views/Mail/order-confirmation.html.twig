@@ -12,24 +12,24 @@
         <row>
             <columns large="6">
                 <p>
-                    <strong>{{ 'payment_method'|trans }}</strong><br/>
+                    <strong>{{ 'coreshop.ui.payment_method'|trans }}</strong><br/>
                     {{ order.paymentProvider.name }}
                 </p>
                 <p>
-                    <strong>{{ 'email_address'|trans }}</strong><br/>
+                    <strong>{{ 'coreshop.ui.email_address'|trans }}</strong><br/>
                     {{ order.customer.email }}
                 </p>
                 <p>
-                    <strong>{{ 'order_number'|trans }}</strong><br/>
+                    <strong>{{ 'coreshop.ui.order_number'|trans }}</strong><br/>
                     {{ order.orderNumber }}
                 </p>
             </columns>
             <columns large="6">
                 <p>
-                    <strong>{{ 'shipping_method'|trans }}</strong><br/>
+                    <strong>{{ 'coreshop.ui.shipping_method'|trans }}</strong><br/>
                     {{ order.carrier.name }}<br/>
                     {% if order.shippingAddress is defined %}
-                        <strong>{{ 'shipping_address'|trans }}</strong><br/>
+                        <strong>{{ 'coreshop.ui.shipping_address'|trans }}</strong><br/>
                         {{ order.shippingAddress|coreshop_format_address }}
                     {% endif %}
                 </p>

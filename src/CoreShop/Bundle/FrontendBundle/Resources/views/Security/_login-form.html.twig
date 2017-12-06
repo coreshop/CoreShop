@@ -5,14 +5,14 @@
     <div class="col-sm-6">
         <div class="panel panel-smart">
             <div class="panel-heading">
-                <h3 class="panel-title">{{ 'login'|trans }}</h3>
+                <h3 class="panel-title">{{ 'coreshop.ui.login'|trans }}</h3>
             </div>
             <div class="panel-body">
                 {% if last_error %}
                     {{ messages.error(last_error.messageKey|trans(last_error.messageData, 'security')) }}
                 {% endif %}
                 <p>
-                    {{ 'login_with_existing_account'|trans }}
+                    {{ 'coreshop.ui.login_with_existing_account'|trans }}
                 </p>
 
                 {{ form_start(form, {'action': path('coreshop_login_check'), 'attr': {'novalidate': 'novalidate'}}) }}
@@ -25,9 +25,9 @@
                         <input type="hidden" name="_target_path" value="{{ target }}" />
                     {% endif %}
 
-                    <button type="submit" class="ui blue submit button">{{ 'login'|trans }}</button>
+                    <button type="submit" class="ui blue submit button">{{ 'coreshop.ui.login'|trans }}</button>
 
-                    <a class="pull-right" href="{{ path('coreshop_customer_password_reset_request') }}">{{ 'reset_password'|trans }}</a>
+                    <a class="pull-right" href="{{ path('coreshop_customer_password_reset_request') }}">{{ 'coreshop.ui.reset_password'|trans }}</a>
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
         </div>
@@ -35,13 +35,13 @@
     <div class="col-sm-6">
         <div class="panel panel-smart">
             <div class="panel-heading">
-                <h3 class="panel-title">{{ 'create_new_account'|trans }}</h3>
+                <h3 class="panel-title">{{ 'coreshop.ui.create_new_account'|trans }}</h3>
             </div>
             <div class="panel-body">
                 <p>
-                    {{ 'registration_text'|trans }}
+                    {{ 'coreshop.ui.registration_text'|trans }}
                 </p>
-                <a href="{{ path('coreshop_register') }}" class="btn btn-black">{{ 'register'|trans }}</a>
+                <a href="{{ path('coreshop_register') }}" class="btn btn-black">{{ 'coreshop.ui.register'|trans }}</a>
             </div>
         </div>
     </div>
