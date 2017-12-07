@@ -23,6 +23,7 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
+use CoreShop\Component\Pimcore\InheritanceHelper;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
@@ -80,116 +81,117 @@ abstract class AbstractWorker implements WorkerInterface
     protected function prepareData(IndexInterface $index, IndexableInterface $object)
     {
         $inAdmin = \Pimcore::inAdmin();
-        $backupInheritedValues = AbstractObject::doGetInheritedValues();
         \Pimcore::unsetAdminMode();
-        AbstractObject::setGetInheritedValues(true);
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
         AbstractObject::setHideUnpublished(false);
 
-        $classHelper = $this->classHelperRegistry->has($object->getClassName()) ? $this->classHelperRegistry->get($object->getClassName()) : null;
+        $result = InheritanceHelper::useInheritedValues(function () use ($index, $object) {
+            $classHelper = $this->classHelperRegistry->has($object->getClassName()) ? $this->classHelperRegistry->get($object->getClassName()) : null;
 
-        $virtualObjectId = $object->getId();
-        $virtualObjectActive = $object->getEnabled();
-
-        if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
-            $parent = $object->getParent();
-
-            while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
-                $parent = $parent->getParent();
-            }
-
-            $virtualObjectId = $parent->getId();
+            $virtualObjectId = $object->getId();
             $virtualObjectActive = $object->getEnabled();
-        }
 
-        $validLanguages = Tool::getValidLanguages();
+            if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
+                $parent = $object->getParent();
 
-        $data = [
-            'o_id' => $object->getId(),
-            'o_key' => $object->getKey(),
-            'o_classId' => $object->getClassId(),
-            'o_className' => $object->getClassName(),
-            'o_virtualObjectId' => $virtualObjectId,
-            'o_virtualObjectActive' => $virtualObjectActive === null ? false : $virtualObjectActive,
-            'o_type' => $object->getType()
-        ];
-
-        if ($classHelper instanceof ClassHelperInterface) {
-            $data = array_merge($data, $classHelper->getIndexColumns($object));
-        }
-
-        $data['active'] = $object->getEnabled();
-
-        if (!is_bool($data['active'])) {
-            $data['active'] = false;
-        }
-
-        $localizedData = [
-            'oo_id' => $object->getId(),
-            'values' => [],
-        ];
-
-        foreach ($validLanguages as $language) {
-            $localizedData['values'][$language]['name'] = $object->getName($language);
-        }
-
-        $relationData = [];
-        $columnConfig = $index->getColumns();
-
-        foreach ($columnConfig as $column) {
-            Assert::isInstanceOf($column, IndexColumnInterface::class);
-
-            try {
-                $value = null;
-                $getter = $column->getGetter();
-
-                if ($column->getObjectType() === 'localizedfields') {
-                    list ($columnLocalizedData, $columnRelationData) = $this->prepareLocalizedFields($column, $object, $virtualObjectId);
-
-                    $relationData = array_merge_recursive($relationData, $columnRelationData);
-                    $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
-                } else {
-                    if (!empty($getter)) {
-                        $value = $this->processGetter($column, $object);
-                    } else {
-                        $getter = 'get' . ucfirst($column->getObjectKey());
-
-                        if (method_exists($object, $getter)) {
-                            $value = $object->$getter();
-                        }
-                    }
-
-                    list ($columnLocalizedData, $columnRelationData, $value) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
-
-                    $relationData = array_merge_recursive($relationData, $columnRelationData);
-                    $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
-
-                    if ($value) {
-                        if (is_array($value)) {
-                            $value = ',' . implode($value, ',') . ',';
-                        }
-
-                        $data[$column->getName()] = $value;
-                    }
+                while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
+                    $parent = $parent->getParent();
                 }
-            } catch (\Exception $e) {
-                $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
-                throw $e;
+
+                $virtualObjectId = $parent->getId();
+                $virtualObjectActive = $object->getEnabled();
             }
-        }
+
+            $validLanguages = Tool::getValidLanguages();
+
+            $data = [
+                'o_id' => $object->getId(),
+                'o_key' => $object->getKey(),
+                'o_classId' => $object->getClassId(),
+                'o_className' => $object->getClassName(),
+                'o_virtualObjectId' => $virtualObjectId,
+                'o_virtualObjectActive' => $virtualObjectActive === null ? false : $virtualObjectActive,
+                'o_type' => $object->getType()
+            ];
+
+            if ($classHelper instanceof ClassHelperInterface) {
+                $data = array_merge($data, $classHelper->getIndexColumns($object));
+            }
+
+            $data['active'] = $object->getEnabled();
+
+            if (!is_bool($data['active'])) {
+                $data['active'] = false;
+            }
+
+            $localizedData = [
+                'oo_id' => $object->getId(),
+                'values' => [],
+            ];
+
+            foreach ($validLanguages as $language) {
+                $localizedData['values'][$language]['name'] = $object->getName($language);
+            }
+
+            $relationData = [];
+            $columnConfig = $index->getColumns();
+
+            foreach ($columnConfig as $column) {
+                Assert::isInstanceOf($column, IndexColumnInterface::class);
+
+                try {
+                    $value = null;
+                    $getter = $column->getGetter();
+
+                    if ($column->getObjectType() === 'localizedfields') {
+                        list ($columnLocalizedData, $columnRelationData) = $this->prepareLocalizedFields($column, $object, $virtualObjectId);
+
+                        $relationData = array_merge_recursive($relationData, $columnRelationData);
+                        $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
+                    } else {
+                        if (!empty($getter)) {
+                            $value = $this->processGetter($column, $object);
+                        } else {
+                            $getter = 'get' . ucfirst($column->getObjectKey());
+
+                            if (method_exists($object, $getter)) {
+                                $value = $object->$getter();
+                            }
+                        }
+
+                        list ($columnLocalizedData, $columnRelationData, $value) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+
+                        $relationData = array_merge_recursive($relationData, $columnRelationData);
+                        $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
+
+                        if ($value) {
+                            if (is_array($value)) {
+                                $value = ',' . implode($value, ',') . ',';
+                            }
+
+                            $data[$column->getName()] = $value;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
+                    throw $e;
+                }
+            }
+
+            return [
+                'data' => $data,
+                'relation' => $relationData,
+                'localizedData' => $localizedData,
+            ];
+        });
 
         if ($inAdmin) {
             \Pimcore::setAdminMode();
         }
 
-        AbstractObject::setGetInheritedValues($backupInheritedValues);
         AbstractObject::setHideUnpublished($hidePublishedMemory);
 
-        return [
-            'data' => $data,
-            'relation' => $relationData,
-            'localizedData' => $localizedData,
-        ];
+        return $result;
     }
 
     protected function prepareLocalizedFields(IndexColumnInterface $column, IndexableInterface $object, $virtualObjectId)
