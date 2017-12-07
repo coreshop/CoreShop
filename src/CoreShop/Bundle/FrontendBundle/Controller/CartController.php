@@ -72,7 +72,7 @@ class CartController extends FrontendController
 
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
 
-        $this->addFlash('success', 'item_added');
+        $this->addFlash('success', 'coreshop.ui.item_added');
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -94,7 +94,7 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->addFlash('success', 'item_removed');
+        $this->addFlash('success', 'coreshop.ui.item_removed');
 
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
 
@@ -143,9 +143,9 @@ class CartController extends FrontendController
         $priceRule = $voucherCode->getCartPriceRule();
 
         if ($this->getCartPriceRuleProcessor()->process($priceRule, $code, $this->getCartManager()->getCart())) {
-            $this->addFlash('cart_price_rule_success', 'success');
+            $this->addFlash('cart_price_rule_success', 'coreshop.ui.success');
         } else {
-            $this->addFlash('cart_price_rule_error', 'error');
+            $this->addFlash('cart_price_rule_error', 'coreshop.ui.error');
         }
 
         return $this->redirectToRoute('coreshop_cart_summary');
