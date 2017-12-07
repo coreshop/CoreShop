@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -59,6 +61,27 @@ final class CarrierChoiceType extends AbstractType
                 'active' => true,
             ])
         ;
+    }
+
+    /**
+     * @param FormView      $view
+     * @param FormInterface $form
+     * @param array         $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+
+        $description = [];
+        $carriers = $form->getConfig()->getOption('choices');
+        foreach($carriers as $carrier) {
+            if(!empty($carrier->getDescription())) {
+                $description[$carrier->getId()] = $carrier->getDescription();
+            }
+        }
+        $view->vars = array_merge($view->vars, [
+            'choices_description' => $description
+        ]);
     }
 
     /**
