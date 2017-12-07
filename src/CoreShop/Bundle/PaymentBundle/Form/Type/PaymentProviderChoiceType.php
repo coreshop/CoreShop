@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -61,6 +63,33 @@ final class PaymentProviderChoiceType extends AbstractType
                 'active' => true,
             ])
         ;
+    }
+
+    /**
+     * @param FormView      $view
+     * @param FormInterface $form
+     * @param array         $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+
+        $description = [];
+        $instructions = [];
+        $paymentProvider = $form->getConfig()->getOption('choices');
+        foreach($paymentProvider as $payment) {
+            if(!empty($payment->getDescription())) {
+                $description[$payment->getId()] = $payment->getDescription();
+            }
+            if(!empty($payment->getInstructions())) {
+                $instructions[$payment->getId()] = $payment->getInstructions();
+            }
+        }
+
+        $view->vars = array_merge($view->vars, [
+            'choices_description' => $description,
+            'choices_instruction' => $instructions
+        ]);
     }
 
     /**
