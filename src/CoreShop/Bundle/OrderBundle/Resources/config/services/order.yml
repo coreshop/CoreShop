@@ -63,3 +63,15 @@ services:
       - '%coreshop.model.cart.class%'
       - '@coreshop.context.currency'
       - '@coreshop.context.store'
+
+  coreshop.templating.helper.order_state:
+    class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper
+    arguments: ['@coreshop.workflow.manager.order']
+    tags:
+      - { name: templating.helper, alias: coreshop_order_state }
+
+  coreshop.twig.extension.order_state:
+    class: CoreShop\Bundle\OrderBundle\Twig\OrderStateExtension
+    arguments: ['@coreshop.templating.helper.order_state']
+    tags:
+      - { name: twig.extension }
