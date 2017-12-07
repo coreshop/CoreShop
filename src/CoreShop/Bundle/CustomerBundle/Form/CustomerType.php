@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
+use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -50,6 +52,13 @@ class CustomerType extends AbstractResourceType
                 ]);
         }
 
+        if ($options['allow_default_address'] && $options['customer']) {
+            $builder->add('defaultAddress', AddressChoiceType::class, [
+                'customer' => $options['customer'],
+                'label' => 'coreshop.form.customer.default_address',
+            ]);
+        }
+
         $builder
             ->add('gender', ChoiceType::class, [
                 'label' => 'coreshop.form.customer.gender',
@@ -80,6 +89,8 @@ class CustomerType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefault('guest', false);
+        $resolver->setDefault('allow_default_address', false);
+        $resolver->setDefault('customer', false);
     }
 
     /**

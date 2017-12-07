@@ -179,7 +179,10 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $form = $this->get('form.factory')->createNamed('', CustomerType::class, $customer);
+        $form = $this->get('form.factory')->createNamed('', CustomerType::class, $customer, [
+            'customer' => $customer->getId(),
+            'allow_default_address' => true
+        ]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
