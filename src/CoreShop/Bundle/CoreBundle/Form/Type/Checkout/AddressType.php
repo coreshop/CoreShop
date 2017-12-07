@@ -71,9 +71,7 @@ final class AddressType extends AbstractType
                 }
             ])
             ->add('useShippingAsInvoice', CheckboxType::class, [
-                'mapped' => false,
                 'required' => false,
-                'data' => true,
                 'label' => 'coreshop.form.address.use_shipping_as_invoice',
             ]);
     }

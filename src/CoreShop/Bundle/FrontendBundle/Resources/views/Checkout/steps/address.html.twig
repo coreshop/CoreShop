@@ -15,7 +15,7 @@
                         {{ form_row(form.shippingAddress) }}
                     </div>
 
-                    <div class="col-xs-6 invoice-address-selector" style="display:none">
+                    <div class="col-xs-6 invoice-address-selector" style="{% if form.useShippingAsInvoice.vars.data %} display:none {% endif %}">
                         {{ form_row(form.invoiceAddress) }}
                     </div>
                 </div>

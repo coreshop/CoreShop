@@ -132,11 +132,23 @@ class AddressCheckoutStep implements CheckoutStepInterface
      */
     private function createForm(CartInterface $cart, CustomerInterface $customer)
     {
-        $addresses = $customer->getAddresses();
+        $customerDefaultAddress = $customer->getDefaultAddress();
+
+        $shippingAddress = $customerDefaultAddress;
+        $invoiceAddress = $customerDefaultAddress;
+
+        if ($cart->getShippingAddress() instanceof AddressInterface) {
+            $shippingAddress = $cart->getShippingAddress();
+        }
+
+        if ($cart->getInvoiceAddress() instanceof AddressInterface) {
+            $invoiceAddress = $cart->getInvoiceAddress();
+        }
 
         $values = [
-            'shippingAddress' => $cart->getShippingAddress() instanceof AddressInterface ? $cart->getShippingAddress() : (count($addresses) > 0 ? $addresses[0] : null),
-            'invoiceAddress' => $cart->getInvoiceAddress() instanceof AddressInterface ? $cart->getInvoiceAddress() : (count($addresses) > 0 ? $addresses[0] : null),
+            'shippingAddress' => $shippingAddress,
+            'invoiceAddress' => $invoiceAddress,
+            'useShippingAsInvoice' => $shippingAddress->getId() === $invoiceAddress->getId()
         ];
 
         $options = [
