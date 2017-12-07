@@ -72,7 +72,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                     name: 'translations.' + lang + '.description',
                     fieldLabel: t('description'),
                     width: 400,
-                    value: data.translations[lang] ? data.translations[lang].description : ''
+                    value: data.translations && data.translations[lang] ? data.translations[lang].description : ''
                 }]
             };
 
