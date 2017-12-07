@@ -432,7 +432,7 @@ class Data
             $customer->setFirstname('Max');
             $customer->setLastname('Mustermann');
             $customer->setGender("m");
-            $customer->setEmail('mus@coreshop.org');
+            $customer->setEmail('info@coreshop.org');
             $customer->setCustomerGroups([self::$customerGroup1]);
             $customer->save();
 
@@ -450,6 +450,7 @@ class Data
             $address->setParent(Service::createFolderByPath('/'));
             $address->save();
 
+            $customer->setDefaultAddress($address);
             $customer->addAddress($address);
             $customer->save();
 

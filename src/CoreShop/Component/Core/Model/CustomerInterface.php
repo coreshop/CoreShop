@@ -13,9 +13,18 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;
 
 interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface
 {
+    /**
+     * @return AddressInterface
+     */
+    public function getDefaultAddress();
 
+    /**
+     * @param AddressInterface $address
+     */
+    public function setDefaultAddress($address);
 }

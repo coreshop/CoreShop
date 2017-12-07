@@ -14,8 +14,25 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\AddressesAwareTrait;
 use CoreShop\Component\Customer\Model\Customer as BaseCustomer;
+use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
 class Customer extends BaseCustomer implements CustomerInterface
 {
     use AddressesAwareTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultAddress()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultAddress($address)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }
