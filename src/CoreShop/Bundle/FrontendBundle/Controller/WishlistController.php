@@ -41,7 +41,7 @@ class WishlistController extends FrontendController
 
         $this->getWishlistModifier()->addItem($this->getWishlist(), $product, $quantity);
 
-        $this->addFlash('success', 'item_added');
+        $this->addFlash('success', 'coreshop.ui.item_added');
 
         return $this->redirectToRoute('coreshop_wishlist_summary');
     }
@@ -59,7 +59,7 @@ class WishlistController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->addFlash('success', 'item_removed');
+        $this->addFlash('success', 'coreshop.ui.item_removed');
 
         $this->getWishlistModifier()->updateItemQuantity($this->getWishlist(), $product, 0);
 
