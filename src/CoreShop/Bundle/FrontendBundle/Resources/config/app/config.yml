@@ -1,0 +1,3 @@
+twig:
+    form_themes:
+        - '@CoreShopFrontend/Form/fields.html.twig'
