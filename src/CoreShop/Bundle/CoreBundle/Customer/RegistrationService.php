@@ -87,7 +87,9 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->addressFolder = $addressFolder;
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false)
     {
         $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
@@ -108,6 +110,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $address->setParent($this->objectService->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->addressFolder)));
         $address->save();
 
+        $customer->setDefaultAddress($address);
         $customer->addAddress($address);
 
         $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getCustomerGroups());
