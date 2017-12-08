@@ -146,4 +146,15 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      * @param Fieldcollection $taxes
      */
     public function setTaxes($taxes);
+
+    /**
+     * @return string|null
+     */
+    public function getComment();
+
+    /**
+     * @param string $comment
+     */
+    public function setComment($comment);
+
 }

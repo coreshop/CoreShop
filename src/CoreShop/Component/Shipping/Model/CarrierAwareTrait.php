@@ -12,8 +12,6 @@
 
 namespace CoreShop\Component\Shipping\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
-
 trait CarrierAwareTrait
 {
     /**
@@ -35,21 +33,5 @@ trait CarrierAwareTrait
     public function setCarrier($carrier)
     {
         $this->carrier = $carrier;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getComment()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setComment($comment)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }
