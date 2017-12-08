@@ -4,10 +4,10 @@
     <ul>
         {% if customer %}
             <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.account'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.rders'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
             <li><a href="{{ path('coreshop_customer_addresses') }}">{{ 'coreshop.ui.addresses'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_settings') }}">{{ 'coreshop.ui.personal_info'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_wishlist_summary') }}" >{{ 'coreshop.ui.whishlist' }}</a></li>
+            <li><a href="{{ path('coreshop_customer_settings') }}">{{ 'coreshop.ui.personal_information'|trans }}</a></li>
+            <li><a href="{{ path('coreshop_wishlist_summary') }}" >{{ 'coreshop.ui.wishlist' }}</a></li>
         {% else %}
             <li><a href="{{ path('coreshop_register') }}">{{ 'coreshop.ui.register'|trans }}</a></li>
             <li><a href="{{ path('coreshop_login') }}">{{ 'coreshop.ui.login'|trans }}</a></li>

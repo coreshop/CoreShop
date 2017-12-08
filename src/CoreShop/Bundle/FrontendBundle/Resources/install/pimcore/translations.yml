@@ -1,0 +1,462 @@
+translations:
+  coreshop.ui.account:
+    languages:
+        de_CH: 'Benutzerprofil'
+        en: 'Account'
+        de: 'Benutzerprofil'
+
+  coreshop.ui.add:
+      languages:
+          de_CH: 'Hinzufügen'
+          en: 'Add'
+          de: 'Hinzufügen'
+
+  coreshop.ui.add_new_address:
+      languages:
+          de_CH: 'Neue Adresse hinzufügen'
+          en: 'Add a new address'
+          de: 'Neue Adresse hinzufügen'
+
+  coreshop.ui.add_to_cart:
+      languages:
+          de_CH: 'Zum Warenkorb'
+          en: 'Add to Cart'
+          de: 'Zum Warenkorb'
+
+  coreshop.ui.address:
+      languages:
+          de_CH: 'Adresse'
+          en: 'Address'
+          de: 'Adresse'
+
+  coreshop.ui.addresses:
+      languages:
+          de_CH: 'Adressen'
+          en: 'Addresses'
+          de: 'Adressen'
+
+  coreshop.ui.availability:
+      languages:
+          de_CH: 'Verfügbarkeit'
+          en: 'Availability'
+          de: 'Verfügbarkeit'
+
+  coreshop.ui.buy:
+      languages:
+          de_CH: 'Kaufen'
+          en: 'Buy'
+          de: 'Kaufen'
+
+  coreshop.ui.carrier:
+      languages:
+          de_CH: 'Spedition'
+          en: 'Carrier'
+          de: 'Spedition'
+
+  coreshop.ui.carrier.standard:
+      languages:
+          de_CH: 'Standard Spedition'
+          en: 'Default Carrier'
+          de: 'Standard Spedition'
+
+  coreshop.ui.cart:
+      languages:
+          de_CH: 'Warenkorb'
+          en: 'Cart'
+          de: 'Warenkorb'
+
+  coreshop.ui.cart_empty:
+      languages:
+          de_CH: 'Ihr Warenkorb ist leer.'
+          en: 'Your cart is empty.'
+          de: 'Ihr Warenkorb ist leer.'
+
+  coreshop.ui.categories:
+      languages:
+          de_CH: 'Kategorien'
+          en: 'Categories'
+          de: 'Kategorien'
+
+  coreshop.ui.checkout:
+      languages:
+          de_CH: 'Checkout'
+          en: 'Checkout'
+          de: 'Checkout'
+
+  coreshop.ui.compare:
+      languages:
+          de_CH: 'Vergleichen'
+          en: 'Compare'
+          de: 'Vergleichen'
+
+  coreshop.ui.continue_shopping:
+      languages:
+          de_CH: 'Weiter einkaufen'
+          en: 'Continue Shopping'
+          de: 'Weiter einkaufen'
+
+  coreshop.ui.create_new_account:
+      languages:
+          de_CH: 'Neues Benutzerprofil erstellen'
+          en: 'Create a new Account'
+          de: 'Neues Benutzerprofil erstellen'
+
+  coreshop.ui.currency:
+      languages:
+          de_CH: 'Währung'
+          en: 'Currency'
+          de: 'Währung'
+
+  coreshop.ui.customer:
+      languages:
+          de_CH: 'Kunde'
+          en: 'Customer'
+          de: 'Kunde'
+
+  coreshop.ui.date:
+      languages:
+          de_CH: 'Datum'
+          en: 'Date'
+          de: 'Datum'
+
+  coreshop.ui.delete:
+      languages:
+          de_CH: 'Löschen'
+          en: 'Delete'
+          de: 'Löschen'
+
+  coreshop.ui.description:
+      languages:
+          de_CH: 'Beschreibung'
+          en: 'Description'
+          de: 'Beschreibung'
+
+  coreshop.ui.ean:
+      languages:
+          de_CH: 'EAN'
+          en: 'EAN'
+          de: 'EAN'
+
+  coreshop.ui.edit:
+      languages:
+          de_CH: 'Bearbeiten'
+          en: 'Edit'
+          de: 'Bearbeiten'
+
+  coreshop.ui.filter:
+      languages:
+          de_CH: 'Filter'
+          en: 'Filter'
+          de: 'Filter'
+
+  coreshop.ui.grid_view:
+      languages:
+          de_CH: 'Tabellenansicht'
+          en: 'Grid View'
+          de: 'Tabellenansicht'
+
+  coreshop.ui.guest_register:
+      languages:
+          de_CH: 'Gastkunden Registrierung'
+          en: 'Guest Customer Registration'
+          de: 'Gastkunden Registrierung'
+
+  coreshop.ui.home:
+      languages:
+          de_CH: 'Home'
+          en: 'Home'
+          de: 'Home'
+
+  coreshop.ui.image:
+      languages:
+          de_CH: 'Bild'
+          en: 'Image'
+          de: 'Bild'
+
+  coreshop.ui.in_stock:
+      languages:
+          de_CH: 'Auf Lager'
+          en: 'In Stock'
+          de: 'Auf Lager'
+
+  coreshop.ui.invoice_address:
+      languages:
+          de_CH: 'Rechnungsadresse'
+          en: 'Invoice Address'
+          de: 'Rechnungsadresse'
+
+  coreshop.ui.item_added:
+      languages:
+          de_CH: 'Produkt hinzugefügt'
+          en: 'Item added'
+          de: 'Produkt hinzugefügt'
+
+  coreshop.ui.items:
+      languages:
+          de_CH: 'Produkte'
+          en: 'Items'
+          de: 'Produkte'
+
+  coreshop.ui.language:
+      languages:
+          de_CH: 'Sprache'
+          en: 'Language'
+          de: 'Sprache'
+
+  coreshop.ui.latest_products:
+      languages:
+          de_CH: 'Neueste Produkte'
+          en: 'Latest Products'
+          de: 'Neueste Produkte'
+
+  coreshop.ui.list_view:
+      languages:
+          de_CH: 'Listenansicht'
+          en: 'List View'
+          de: 'Listenansicht'
+
+  coreshop.ui.login:
+      languages:
+          de_CH: 'Anmelden'
+          en: 'Login'
+          de: 'Anmelden'
+
+  coreshop.ui.login_with_existing_account:
+      languages:
+          de_CH: 'Anmelden mit bestehendem Profil'
+          en: 'Login with existing account'
+          de: 'Anmelden mit bestehendem Profil'
+
+  coreshop.ui.logout:
+      languages:
+          de_CH: 'Abmelden'
+          en: 'Logout'
+          de: 'Abmelden'
+
+  coreshop.ui.order_history_and_details:
+      languages:
+          de_CH: 'Bestellhistorie'
+          en: 'Order History'
+          de: 'Bestellhistorie'
+
+  coreshop.ui.order_number:
+      languages:
+          de_CH: 'Bestellnummer'
+          en: 'Order Number'
+          de: 'Bestellnummer'
+
+  coreshop.ui.orders:
+      languages:
+          de_CH: 'Bestellungen'
+          en: 'Orders'
+          de: 'Bestellungen'
+
+  coreshop.ui.payment:
+      languages:
+          de_CH: 'Bezahlung'
+          en: 'Payment'
+          de: 'Bezahlung'
+
+  coreshop.ui.payment_provider:
+      languages:
+          de_CH: 'Zahlungsanbieter'
+          en: 'Payment provider'
+          de: 'Zahlungsanbieter'
+
+  coreshop.ui.personal_information:
+      languages:
+          de_CH: 'Persönliche Informationen'
+          en: 'Personal Information'
+          de: 'Persönliche Informationen'
+
+  coreshop.ui.price:
+      languages:
+          de_CH: 'Preis'
+          en: 'Price'
+          de: 'Preis'
+
+  coreshop.ui.proceed:
+      languages:
+          de_CH: 'Weiter'
+          en: 'Proceed'
+          de: 'Weiter'
+
+  coreshop.ui.product_details:
+      languages:
+          de_CH: 'Produkt Details'
+          en: 'Product Details'
+          de: 'Produkt Details'
+
+  coreshop.ui.profile:
+      languages:
+          de_CH: 'Profil'
+          en: 'Profile'
+          de: 'Profil'
+
+  coreshop.ui.quantity:
+      languages:
+          de_CH: 'Menge'
+          en: 'Quantity'
+          de: 'Menge'
+
+  coreshop.ui.quote:
+      languages:
+          de_CH: 'Angebot'
+          en: 'Quote'
+          de: 'Angebot'
+
+  coreshop.ui.register:
+      languages:
+          de_CH: 'Registrierung'
+          en: 'Register'
+          de: 'Registrierung'
+
+  coreshop.ui.registration_text:
+      languages:
+          de_CH: ''
+          en: ''
+          de: ''
+
+  coreshop.ui.reset_password:
+      languages:
+          de_CH: 'Passwort zurücksetzen'
+          en: 'Reset Password'
+          de: 'Passwort zurücksetzen'
+
+  coreshop.ui.save:
+      languages:
+          de_CH: 'Speichern'
+          en: 'Save'
+          de: 'Speichern'
+
+  coreshop.ui.search:
+      languages:
+          de_CH: 'Suche'
+          en: 'Search'
+          de: 'Suche'
+
+  coreshop.ui.settings:
+      languages:
+          de_CH: 'Einstellungen'
+          en: 'Settings'
+          de: 'Einstellungen'
+
+  coreshop.ui.shipping:
+      languages:
+          de_CH: 'Versand'
+          en: 'Shipping'
+          de: 'Versand'
+
+  coreshop.ui.shipping_address:
+      languages:
+          de_CH: 'Versandadresse'
+          en: 'Shipping Address'
+          de: 'Versandadresse'
+
+  coreshop.ui.shipping_excl:
+      languages:
+          de_CH: 'Versand (exkl.)'
+          en: 'Shipping (excl.)'
+          de: 'Versand (exkl.)'
+
+  coreshop.ui.shipping_incl:
+      languages:
+          de_CH: 'Versand (inkl.)'
+          en: 'Shipping (incl.)'
+          de: 'Versand (inkl.)'
+
+  coreshop.ui.shopping_cart:
+      languages:
+          de_CH: 'Warenkorb'
+          en: 'Cart'
+          de: 'Warenkorb'
+
+  coreshop.ui.show:
+      languages:
+          de_CH: 'Anzeigen'
+          en: 'Show'
+          de: 'Anzeigen'
+
+  coreshop.ui.show_detail:
+      languages:
+          de_CH: 'Details anzeigen'
+          en: 'Show Details'
+          de: 'Details anzeigen'
+
+  coreshop.ui.sort:
+      languages:
+          de_CH: 'Sortieren'
+          en: 'Sort'
+          de: 'Sortieren'
+
+  coreshop.ui.sort.name_asc:
+      languages:
+          de_CH: 'Name absteigend'
+          en: 'Name ascending'
+          de: 'Name absteigend'
+
+  coreshop.ui.sort.name_desc:
+      languages:
+          de_CH: 'Name aufsteigend'
+          en: 'Name descending'
+          de: 'Name aufsteigend'
+
+  coreshop.ui.state:
+      languages:
+          de_CH: 'Status'
+          en: 'State'
+          de: 'Status'
+
+  coreshop.ui.subtotal:
+      languages:
+          de_CH: 'Zwischensumme'
+          en: 'Subtotal'
+          de: 'Zwischensumme'
+
+  coreshop.ui.subtotal_excl:
+      languages:
+          de_CH: 'Zwischensumme (exkl.)'
+          en: 'Subtotal (excl.)'
+          de: 'Zwischensumme (exkl.)'
+
+  coreshop.ui.subtotal_inc:
+      languages:
+          de_CH: 'Zwischensumme (inkl.)'
+          en: 'Subtotal (incl.)'
+          de: 'Zwischensumme (inkl.)'
+
+  coreshop.ui.summary:
+      languages:
+          de_CH: 'Zusammenfassung'
+          en: 'Summary'
+          de: 'Zusammenfassung'
+
+  coreshop.ui.toggle_navigation:
+      languages:
+          de_CH: 'Navigation umschalten'
+          en: 'Toggle navigation'
+          de: 'Navigation umschalten'
+
+  coreshop.ui.total:
+      languages:
+          de_CH: 'Gesamt'
+          en: 'Total'
+          de: 'Gesamt'
+
+  coreshop.ui.total_tax:
+      languages:
+          de_CH: 'Gesamt Steuer'
+          en: 'Total Tax'
+          de: 'Gesamt Steuer'
+
+  coreshop.ui.wishlist:
+      languages:
+          de_CH: 'Wunschliste'
+          en: 'Wishlist'
+          de: 'Wunschliste'
+
+  coreshop.ui.wishlist_empty:
+      languages:
+          de_CH: 'Ihre Wunschliste ist leer'
+          en: 'Your wishlist is empty'
+          de: 'Ihre Wunschliste ist leer'

@@ -84,6 +84,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('routes')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/staticroutes.yml'])->end()
                             ->scalarNode('documents')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/documents.yml'])->end()
                             ->scalarNode('image_thumbnails')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/image-thumbnails.yml'])->end()
+                            ->scalarNode('translations')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/translations.yml'])->end()
                         ->end()
                     ->end()
                 ->end()
