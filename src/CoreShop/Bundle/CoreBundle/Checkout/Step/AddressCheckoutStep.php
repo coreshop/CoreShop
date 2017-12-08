@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
@@ -35,13 +35,14 @@ class AddressCheckoutStep implements CheckoutStepInterface
     private $tokenStorage;
 
     /**
-     * @param FormFactoryInterface  $formFactory
+     * @param FormFactoryInterface $formFactory
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         TokenStorageInterface $tokenStorage
-    ) {
+    )
+    {
         $this->formFactory = $formFactory;
         $this->tokenStorage = $tokenStorage;
     }
@@ -76,20 +77,17 @@ class AddressCheckoutStep implements CheckoutStepInterface
     public function commitStep(CartInterface $cart, Request $request)
     {
         $customer = $this->getCustomer();
-        $form = $this->createForm($cart, $customer);
-
-        $form->handleRequest($request);
-        $formData = $form->getData();
+        $form = $this->createForm($request, $cart, $customer);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $cart->setShippingAddress($formData['shippingAddress']);
                 $cart->setInvoiceAddress($formData['invoiceAddress']);
                 $cart->save();
 
                 return true;
-            } else {
-                throw new CheckoutException('Address Form is invalid', 'coreshop_checkout_address_form_invalid');
             }
         }
 
@@ -104,7 +102,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
         $customer = $this->getCustomer();
 
         return [
-            'form' => $this->createForm($cart, $customer)->createView()
+            'form' => $this->createForm($request, $cart, $customer)->createView()
         ];
     }
 
@@ -125,12 +123,13 @@ class AddressCheckoutStep implements CheckoutStepInterface
     }
 
     /**
-     * @param CartInterface     $cart
+     * @param Request $request
+     * @param CartInterface $cart
      * @param CustomerInterface $customer
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm(CartInterface $cart, CustomerInterface $customer)
+    private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer)
     {
         $customerDefaultAddress = $customer->getDefaultAddress();
 
@@ -155,6 +154,12 @@ class AddressCheckoutStep implements CheckoutStepInterface
             'customer' => $customer->getId(),
         ];
 
-        return $this->formFactory->createNamed('', AddressType::class, $values, $options);
+        $form = $this->formFactory->createNamed('', AddressType::class, $values, $options);
+
+        if ($request->isMethod('post')) {
+            $form = $form->handleRequest($request);
+        }
+
+        return $form;
     }
 }
