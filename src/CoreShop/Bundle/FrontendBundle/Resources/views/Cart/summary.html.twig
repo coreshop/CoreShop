@@ -3,10 +3,12 @@
 {% block content %}
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' with {currentStep: 1, steps: checkoutSteps} only %}
 
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message|trans }}
-        </div>
+    {% for label, messages in app.flashes(['success', 'error']) %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'error' ? 'danger' : label }}">
+                {{ message|trans }}
+            </div>
+        {% endfor %}
     {% endfor %}
 
     {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}

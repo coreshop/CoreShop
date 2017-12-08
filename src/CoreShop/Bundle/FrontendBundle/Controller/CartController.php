@@ -64,6 +64,11 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
+        if ($product->getQuantity() <= 0 && $product->getIsAvailableWhenOutOfStock() !== true) {
+            $this->addFlash('error', 'coreshop.ui.item_is_out_of_stock');
+            return $this->redirectToRoute('coreshop_cart_summary');
+        }
+
         $quantity = intval($request->get('quantity', 1));
 
         if (!is_int($quantity)) {
