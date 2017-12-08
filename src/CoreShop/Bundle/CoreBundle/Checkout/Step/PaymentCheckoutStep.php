@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
@@ -72,13 +72,12 @@ class PaymentCheckoutStep implements CheckoutStepInterface
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        $form = $this->createForm($cart);
-
-        $form->handleRequest($request);
-        $formData = $form->getData();
+        $form = $this->createForm($request, $cart);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $formData = $form->getData();
+                
                 $cart->setPaymentProvider($formData['paymentProvider']);
                 $cart->save();
 
@@ -97,22 +96,27 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     public function prepareStep(CartInterface $cart, Request $request)
     {
         return [
-            'form' => $this->createForm($cart)->createView(),
+            'form' => $this->createForm($request, $cart)->createView(),
         ];
     }
 
     /**
+     * @param Request $request ,
      * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm(CartInterface $cart)
+    private function createForm(Request $request, CartInterface $cart)
     {
         $form = $this->formFactory->createNamed('', PaymentType::class, [
             'paymentProvider' => $cart->getPaymentProvider(),
         ], [
             'store' => $this->storeContext->getStore(),
         ]);
+
+        if ($request->isMethod('post')) {
+            $form = $form->handleRequest($request);
+        }
 
         return $form;
     }
