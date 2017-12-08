@@ -83,7 +83,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
 
                 return true;
             } else {
-                throw new CheckoutException('Payment Form is invalid', 'coreshop_checkout_payment_form_invalid');
+                throw new CheckoutException('Payment Form is invalid', 'coreshop.ui.error.coreshop_checkout_payment_form_invalid');
             }
         }
 

@@ -113,14 +113,14 @@ class CustomerCheckoutStep implements CheckoutStepInterface
             try {
                 $this->registrationService->registerCustomer($customer, $address, $formData, true);
             } catch (CustomerAlreadyExistsException $e) {
-                throw new CheckoutException('Customer already exists', 'customer_already_exists');
+                throw new CheckoutException('Customer already exists', 'coreshop.ui.error.customer_already_exists');
             }
 
             return true;
         }
 
         if (!$this->validate($cart)) {
-            throw new CheckoutException('no customer found', 'coreshop_checkout_customer_invalid');
+            throw new CheckoutException('no customer found', 'coreshop.ui.error.coreshop_checkout_customer_invalid');
         }
 
         return true;
