@@ -317,7 +317,7 @@ coreshop.order.sale.detail = Class.create({
                         {
                             xtype: 'label',
                             style: 'display:block',
-                            text: this.sale.comment
+                            html: Ext.util.Format.nl2br(this.sale.comment)
                         }
                     ]
                 });

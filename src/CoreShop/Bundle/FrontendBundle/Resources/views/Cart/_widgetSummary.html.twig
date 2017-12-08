@@ -278,7 +278,7 @@
             {% if cart.getComment is not empty %}
                 <tr>
                     <td colspan="{{ editAllowed ? 6 : 5 }}">
-                       <strong>{{ 'coreshop.ui.comment'|trans }}</strong>: {{ cart.getComment }}
+                       <strong>{{ 'coreshop.ui.comment'|trans }}</strong>: {{ cart.getComment|nl2br }}
                     </td>
                 </tr>
             {% endif %}

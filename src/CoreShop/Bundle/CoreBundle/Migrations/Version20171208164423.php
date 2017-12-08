@@ -42,21 +42,21 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
             'visibleSearch'   => FALSE
         ];
 
-        $cartClass = str_replace('Pimcore\\Model\\DataObject\\', '', $this->container->getParameter(sprintf('coreshop.model.%s.class', 'cart')));
+        $cartClass = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');
         $classUpdater = new ClassUpdate($cartClass);
         if (!$classUpdater->hasField('comment')) {
             $classUpdater->insertFieldAfter('currency', $commentField);
             $classUpdater->save();
         }
 
-        $orderClass = str_replace('Pimcore\\Model\\DataObject\\', '', $this->container->getParameter(sprintf('coreshop.model.%s.class', 'order')));
+        $orderClass = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
         $classUpdater = new ClassUpdate($orderClass);
         if (!$classUpdater->hasField('comment')) {
             $classUpdater->insertFieldAfter('paymentProvider', $commentField);
             $classUpdater->save();
         }
 
-        $quoteClass = str_replace('Pimcore\\Model\\DataObject\\', '', $this->container->getParameter(sprintf('coreshop.model.%s.class', 'quote')));
+        $quoteClass = $this->container->getParameter('coreshop.model.quote.pimcore_class_name');
         $classUpdater = new ClassUpdate($quoteClass);
         if (!$classUpdater->hasField('comment')) {
             $classUpdater->insertFieldAfter('store', $commentField);
