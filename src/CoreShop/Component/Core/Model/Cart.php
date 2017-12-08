@@ -48,7 +48,6 @@ class Cart extends BaseCart implements CartInterface
         return parent::getTotalWithoutDiscount($withTax) + $this->getShipping($withTax);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -93,6 +92,22 @@ class Cart extends BaseCart implements CartInterface
      * {@inheritdoc}
      */
     public function setShippingTaxRate($shippingTaxRate)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getComment()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setComment($comment)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
