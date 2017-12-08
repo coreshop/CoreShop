@@ -96,13 +96,12 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        $form = $this->createForm($this->getCarriers($cart), $cart);
-
-        $form->handleRequest($request);
-        $formData = $form->getData();
+        $form = $this->createForm($request, $this->getCarriers($cart), $cart);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $cart->setCarrier($formData['carrier']);
                 $cart->save();
                 return true;
@@ -124,7 +123,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
         return [
             'carriers' => $carriers,
-            'form' => $this->createForm($carriers, $cart)->createView(),
+            'form' => $this->createForm($request, $carriers, $cart)->createView(),
         ];
     }
 
@@ -140,12 +139,13 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     }
 
     /**
+     * @param Request $request
      * @param $carriers
      * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm($carriers, CartInterface $cart)
+    private function createForm(Request $request, $carriers, CartInterface $cart)
     {
         $form = $this->formFactory->createNamed('', CarrierType::class, [
             'carrier' => $cart->getCarrier(),
@@ -153,6 +153,10 @@ class ShippingCheckoutStep implements CheckoutStepInterface
             'carriers' => $carriers,
             'cart' => $cart
         ]);
+
+        if ($request->isMethod('post')) {
+            $form = $form->handleRequest($request);
+        }
 
         return $form;
     }

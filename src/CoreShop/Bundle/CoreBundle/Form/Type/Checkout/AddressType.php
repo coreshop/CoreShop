@@ -19,7 +19,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class AddressType extends AbstractType
 {
@@ -43,7 +43,7 @@ final class AddressType extends AbstractType
     {
         $builder
             ->add('shippingAddress', AddressChoiceType::class, [
-                'constraints' => [new Valid()],
+                'constraints' => [new NotBlank()],
                 'customer' => $options['customer'],
                 'label' => 'coreshop.form.address.shipping',
                 'choice_attr' => function ($val, $key, $index) {
@@ -57,7 +57,7 @@ final class AddressType extends AbstractType
                 }
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
-                'constraints' => [new Valid()],
+                'constraints' => [new NotBlank()],
                 'customer' => $options['customer'],
                 'label' => 'coreshop.form.address.invoice',
                 'choice_attr' => function ($val, $key, $index) {
