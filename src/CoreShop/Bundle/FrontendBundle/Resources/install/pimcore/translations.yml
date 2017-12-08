@@ -449,6 +449,12 @@ translations:
           en: 'Total Tax'
           de: 'Gesamt Steuer'
 
+  coreshop.ui.comment:
+      languages:
+          de_CH: 'Kommentar'
+          en: 'Comment'
+          de: 'Kommentar'
+
   coreshop.ui.wishlist:
       languages:
           de_CH: 'Wunschliste'

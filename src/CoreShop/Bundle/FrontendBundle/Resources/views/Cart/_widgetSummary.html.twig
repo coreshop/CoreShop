@@ -1,278 +1,290 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 
 {% if cart.hasItems() %}
-<div class="table-responsive shopping-cart-table">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <td class="text-center">
-                {{ 'coreshop.ui.image'|trans }}
-            </td>
-            <td class="text-center">
-                {{ 'coreshop.ui.product_details'|trans }}
-            </td>
-            <td class="text-center">
-                {{ 'coreshop.ui.quantity'|trans }}
-            </td>
-            <td class="text-center">
-                {{ 'coreshop.ui.price'|trans }}
-            </td>
-            <td class="text-center">
-                {{ 'coreshop.ui.total'|trans }}
-            </td>
-            {% if editAllowed %}
+    <div class="table-responsive shopping-cart-table">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
                 <td class="text-center">
-
-                </td>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in cart.getItems %}
-            {% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
-            <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
-                <td class="text-center">
-                    {% if item.getProduct and item.getProduct.getImage() %}
-                        <a class="" href="{{ productUrl }}">
-                            {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
-                        </a>
-                    {% endif %}
+                    {{ 'coreshop.ui.image'|trans }}
                 </td>
                 <td class="text-center">
-                    <a href="{{ productUrl }}">
-                        {{ item.getProduct.getName() }}
-                    </a>
-                    {% if item.getIsGiftItem %}
-                        <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
-                    {% endif %}
-                    {# TODO
-                    <?php if(count($item->product->getValidSpecificPriceRules()) > 0) { ?>
-                        <div class="price-rules">
-                        <?php foreach($item->product->getValidSpecificPriceRules() as $rule) { ?>
-                            <?php foreach($rule->getActions() as $action) { ?>
-                                <?php
-                                    if($action instanceof \CoreShop\Model\PriceRule\Action\DiscountAmount) {
-                                        echo "<br/>" . $this->translate(sprintf("You will get a discount of %s per Product.", $this->cart->formatPrice($action->getAmount())));
-                                    }
-                                    else if($action instanceof \CoreShop\Model\PriceRule\Action\DiscountPercent) {
-                                        echo "<br/>" . $this->translate(sprintf("You will get a discount of %s%% per Product.", $action->getPercent()));
-                                    }
-                                    else if($action instanceof \CoreShop\Model\PriceRule\Action\NewPrice) {
-                                        echo "<br/>" . $this->translate(sprintf("You will get a total new price of %s instead of %s.", $this->cart->formatPrice($action->getPriceWithTax($item->getProduct())), $this->cart->formatPrice($item->getProductRetailPriceWithTax())));
-                                    }
-                                ?>
-                            <?php } ?>
-                        <?php } ?>
-                        </div>
-                    <?php } ?>
-                    #}
+                    {{ 'coreshop.ui.product_details'|trans }}
                 </td>
                 <td class="text-center">
-                    {% if item.getIsGiftItem and not editAllowed %}
-                        <span>{{ item.getQuantity }}</span>
-                    {% else %}
-                        <div class="input-group btn-block">
-                            <input type="number" name="cart-item-amount-{{ item.getId }}" value="{{ item.getQuantity }}" size="1" class="form-control cart-item-amount" data-id="{{ item.getId }}" {% if not editAllowed %} readonly="readonly" {% endif %}  />
-                        </div>
-                    {% endif %}
+                    {{ 'coreshop.ui.quantity'|trans }}
                 </td>
-                <td class="text-right cart-item-price">
-                    {% set price = item.getItemPrice %}
-                    {% set retailPrice = item.getItemRetailPrice %}
-
-                    {% if price != retailPrice %}
-                        <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
-                    {% endif %}
-
-                    {{ currency.convertAndFormat(price) }}
+                <td class="text-center">
+                    {{ 'coreshop.ui.price'|trans }}
                 </td>
-                <td class="text-right cart-item-total-price">
-                    {{ currency.convertAndFormat(item.getTotal) }}
+                <td class="text-center">
+                    {{ 'coreshop.ui.total'|trans }}
                 </td>
                 {% if editAllowed %}
                     <td class="text-center">
-                        {% if not item.getIsGiftItem %}
-                            <a href="{{ path('coreshop_cart_remove', {cartItem: item.getId}) }}" type="button" title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromCart" data-id="{{ item.getId }}">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
-                        {% endif %}
+
                     </td>
                 {% endif %}
             </tr>
-        {% endfor %}
-        {% if cart.hasPriceRules %}
-            {% for priceRule in cart.getPriceRuleItems %}
-                <tr>
-                    <td colspan="2" class="text-center">
-                        {{ priceRule.cartPriceRule.getName }}
+            </thead>
+            <tbody>
+            {% for item in cart.getItems %}
+                {% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
+                <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
+                    <td class="text-center">
+                        {% if item.getProduct and item.getProduct.getImage() %}
+                            <a class="" href="{{ productUrl }}">
+                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                            </a>
+                        {% endif %}
                     </td>
                     <td class="text-center">
+                        <a href="{{ productUrl }}">
+                            {{ item.getProduct.getName() }}
+                        </a>
+                        {% if item.getIsGiftItem %}
+                            <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
+                        {% endif %}
+                        {# TODO
+                        <?php if(count($item->product->getValidSpecificPriceRules()) > 0) { ?>
+                            <div class="price-rules">
+                            <?php foreach($item->product->getValidSpecificPriceRules() as $rule) { ?>
+                                <?php foreach($rule->getActions() as $action) { ?>
+                                    <?php
+                                        if($action instanceof \CoreShop\Model\PriceRule\Action\DiscountAmount) {
+                                            echo "<br/>" . $this->translate(sprintf("You will get a discount of %s per Product.", $this->cart->formatPrice($action->getAmount())));
+                                        }
+                                        else if($action instanceof \CoreShop\Model\PriceRule\Action\DiscountPercent) {
+                                            echo "<br/>" . $this->translate(sprintf("You will get a discount of %s%% per Product.", $action->getPercent()));
+                                        }
+                                        else if($action instanceof \CoreShop\Model\PriceRule\Action\NewPrice) {
+                                            echo "<br/>" . $this->translate(sprintf("You will get a total new price of %s instead of %s.", $this->cart->formatPrice($action->getPriceWithTax($item->getProduct())), $this->cart->formatPrice($item->getProductRetailPriceWithTax())));
+                                        }
+                                    ?>
+                                <?php } ?>
+                            <?php } ?>
+                            </div>
+                        <?php } ?>
+                        #}
+                    </td>
+                    <td class="text-center">
+                        {% if item.getIsGiftItem and not editAllowed %}
+                            <span>{{ item.getQuantity }}</span>
+                        {% else %}
+                            <div class="input-group btn-block">
+                                <input type="number" name="cart-item-amount-{{ item.getId }}" value="{{ item.getQuantity }}"
+                                       size="1" class="form-control cart-item-amount"
+                                       data-id="{{ item.getId }}" {% if not editAllowed %} readonly="readonly" {% endif %} />
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td class="text-right cart-item-price">
+                        {% set price = item.getItemPrice %}
+                        {% set retailPrice = item.getItemRetailPrice %}
 
+                        {% if price != retailPrice %}
+                            <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+                        {% endif %}
+
+                        {{ currency.convertAndFormat(price) }}
                     </td>
-                    <td class="text-right">
-                        -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
-                    </td>
-                    <td class="text-right">
-                        -{{ currency.convertAndFormat(priceRule.getDiscount(false)) }}
+                    <td class="text-right cart-item-total-price">
+                        {{ currency.convertAndFormat(item.getTotal) }}
                     </td>
                     {% if editAllowed %}
-                        <td colspan="1" class="text-left cart-sub-total">
-                            <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart" href="#">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
+                        <td class="text-center">
+                            {% if not item.getIsGiftItem %}
+                                <a href="{{ path('coreshop_cart_remove', {cartItem: item.getId}) }}" type="button"
+                                   title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromCart"
+                                   data-id="{{ item.getId }}">
+                                    <i class="fa fa-times-circle"></i>
+                                </a>
+                            {% endif %}
                         </td>
                     {% endif %}
                 </tr>
             {% endfor %}
-        {% endif %}
+            {% if cart.hasPriceRules %}
+                {% for priceRule in cart.getPriceRuleItems %}
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            {{ priceRule.cartPriceRule.getName }}
+                        </td>
+                        <td class="text-center">
 
-        </tbody>
-        <tfoot>
-        {% set shipping = cart.getShipping(false) %}
-        {% set shippingIt = cart.getShipping(true) %}
-        {% set discount = cart.getDiscount(false) %}
-        {% set discountIt = cart.getDiscount(true) %}
-        {% set payment = cart.getPaymentFee() %}
-        {% set taxes = cart.taxes %}
-        {% set rowspan = 10 + taxes|length %}
+                        </td>
+                        <td class="text-right">
+                            -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
+                        </td>
+                        <td class="text-right">
+                            -{{ currency.convertAndFormat(priceRule.getDiscount(false)) }}
+                        </td>
+                        {% if editAllowed %}
+                            <td colspan="1" class="text-left cart-sub-total">
+                                <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart"
+                                   href="#">
+                                    <i class="fa fa-times-circle"></i>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
 
-        {% if shipping == 0 %}
-            {% set rowspan = rowspan - 1 %}
-        {% endif %}
+            </tbody>
+            <tfoot>
+            {% set shipping = cart.getShipping(false) %}
+            {% set shippingIt = cart.getShipping(true) %}
+            {% set discount = cart.getDiscount(false) %}
+            {% set discountIt = cart.getDiscount(true) %}
+            {% set payment = cart.getPaymentFee() %}
+            {% set taxes = cart.taxes %}
+            {% set rowspan = 10 + taxes|length %}
 
-        {% if discount == 0 %}
-            {% set rowspan = rowspan - 2 %}
-        {% endif %}
+            {% if shipping == 0 %}
+                {% set rowspan = rowspan - 1 %}
+            {% endif %}
 
-        {% if payment == 0 %}
-            {% set rowspan = rowspan - 2 %}
-        {% endif %}
+            {% if discount == 0 %}
+                {% set rowspan = rowspan - 2 %}
+            {% endif %}
 
-        <tr>
-            <td colspan="3" rowspan="{{ rowspan }}">
-                {# TODO
-                <form class="form-inline" role="form" method="post" action="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "pricerule"), "coreshop_cart", true)?>">
-                    <?php if(!$this->edit) { ?>
-                        <input type="hidden" name="redirect" value="<?=\CoreShop::getTools()->url(array("act" => "payment"), "coreshop_checkout")?>" />
-                    <?php } ?>
-                    <div class="form-group">
-                        <h4><?=$this->translate("Voucher")?></h4>
-                    </div><br/>
-                    <div class="form-group">
-                        <input type="text" class="pruceRule form-control" id="priceRule" name="priceRule" value="">
-                    </div>
-                    <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>OK</span></button>
-                </form>
+            {% if payment == 0 %}
+                {% set rowspan = rowspan - 2 %}
+            {% endif %}
 
-                <?php
-                $highlightPriceRules = \CoreShop\Model\Cart\PriceRule::getHighlightItems($this->cart);
+            <tr>
+                <td colspan="3" rowspan="{{ rowspan }}">
+                    {# TODO
+                    <form class="form-inline" role="form" method="post" action="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "pricerule"), "coreshop_cart", true)?>">
+                        <?php if(!$this->edit) { ?>
+                            <input type="hidden" name="redirect" value="<?=\CoreShop::getTools()->url(array("act" => "payment"), "coreshop_checkout")?>" />
+                        <?php } ?>
+                        <div class="form-group">
+                            <h4><?=$this->translate("Voucher")?></h4>
+                        </div><br/>
+                        <div class="form-group">
+                            <input type="text" class="pruceRule form-control" id="priceRule" name="priceRule" value="">
+                        </div>
+                        <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>OK</span></button>
+                    </form>
 
-                if(count($highlightPriceRules) > 0)
-                {
-                ?>
-                <h4><?= $this->translate("Take advantage of our exclusive offers:") ?></h4>
-                <ul class="list">
                     <?php
-                    }
-
-                    foreach($highlightPriceRules as $priceRule) {
-                        echo '<li class="cart-rule"><strong class="cart-rule-code">'.$priceRule->getCode().'</strong> ' . $priceRule->getName() . '</li>';
-                    }
+                    $highlightPriceRules = \CoreShop\Model\Cart\PriceRule::getHighlightItems($this->cart);
 
                     if(count($highlightPriceRules) > 0)
-                    ?></ul><?
-                ?>#}
-            </td>
-            <td class="text-right">
-                <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
-            </td>
-            <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-sub-total">
-                {{ currency.convertAndFormat(cart.getSubtotal(true)) }}
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
-            </td>
-            <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-discount">
-                {{ currency.convertAndFormat(cart.getSubtotal(false)) }}
-            </td>
-        </tr>
-        {% if discount > 0 %}
+                    {
+                    ?>
+                    <h4><?= $this->translate("Take advantage of our exclusive offers:") ?></h4>
+                    <ul class="list">
+                        <?php
+                        }
+
+                        foreach($highlightPriceRules as $priceRule) {
+                            echo '<li class="cart-rule"><strong class="cart-rule-code">'.$priceRule->getCode().'</strong> ' . $priceRule->getName() . '</li>';
+                        }
+
+                        if(count($highlightPriceRules) > 0)
+                        ?></ul><?
+                    ?>#}
+                </td>
+                <td class="text-right">
+                    <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
+                </td>
+                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-sub-total">
+                    {{ currency.convertAndFormat(cart.getSubtotal(true)) }}
+                </td>
+            </tr>
             <tr>
                 <td class="text-right">
-                    <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
+                    <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
                 </td>
                 <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-discount">
-                    -{{ currency.convertAndFormat(discountIt) }}
+                    {{ currency.convertAndFormat(cart.getSubtotal(false)) }}
+                </td>
+            </tr>
+            {% if discount > 0 %}
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
+                    </td>
+                    <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-discount">
+                        -{{ currency.convertAndFormat(discountIt) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
+                    </td>
+                    <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-discount">
+                        -{{ currency.convertAndFormat(discount) }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if shipping > 0 %}
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
+                    </td>
+                    <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-shipping">
+                        {{ currency.convertAndFormat(shippingIt) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
+                    </td>
+                    <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-shipping">
+                        {{ currency.convertAndFormat(shipping) }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if payment > 0 %}
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
+                    </td>
+                    <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-payment">
+                        {{ currency.convertAndFormat(payment) }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% for taxItem in taxes %}
+                <tr>
+                    <td class="text-right cart-tax-detail">
+                        <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
+                    </td>
+                    <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-tax-detail">
+                        {{ currency.convertAndFormat(taxItem.amount) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="text-right">
+                    <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
+                </td>
+                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-tax">
+                    {{ currency.convertAndFormat(cart.getTotalTax) }}
                 </td>
             </tr>
             <tr>
                 <td class="text-right">
-                    <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
+                    <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
                 </td>
-                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-discount">
-                    -{{ currency.convertAndFormat(discount) }}
-                </td>
-            </tr>
-        {% endif %}
-        {% if shipping > 0 %}
-            <tr>
-                <td class="text-right">
-                    <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
-                </td>
-                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-shipping">
-                    {{ currency.convertAndFormat(shippingIt) }}
+                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-total-price">
+                    {{ currency.convertAndFormat(cart.getTotal) }}
                 </td>
             </tr>
-            <tr>
-                <td class="text-right">
-                    <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
-                </td>
-                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-shipping">
-                    {{ currency.convertAndFormat(shipping) }}
-                </td>
-            </tr>
-        {% endif %}
-        {% if payment > 0 %}
-            <tr>
-                <td class="text-right">
-                    <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
-                </td>
-                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-payment">
-                    {{ currency.convertAndFormat(payment) }}
-                </td>
-            </tr>
-        {% endif %}
-        {% for taxItem in taxes %}
-             <tr>
-                <td class="text-right cart-tax-detail">
-                    <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
-                </td>
-                <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-tax-detail">
-                    {{ currency.convertAndFormat(taxItem.amount) }}
-                </td>
-            </tr>
-        {% endfor %}
-       <tr>
-            <td class="text-right">
-                <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
-            </td>
-            <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-tax">
-                {{ currency.convertAndFormat(cart.getTotalTax) }}
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
-            </td>
-            <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-total-price">
-                {{ currency.convertAndFormat(cart.getTotal) }}
-            </td>
-        </tr>
-        </tfoot>
-    </table>
-</div>
+            {% if cart.getComment is not empty %}
+                <tr>
+                    <td colspan="{{ editAllowed ? 6 : 5 }}">
+                       <strong>{{ 'coreshop.ui.comment'|trans }}</strong>: {{ cart.getComment|nl2br }}
+                    </td>
+                </tr>
+            {% endif %}
+            </tfoot>
+        </table>
+    </div>
 {% else %}
     <p>{{ 'coreshop.ui.cart_empty'|trans }}</p>
 {% endif %}

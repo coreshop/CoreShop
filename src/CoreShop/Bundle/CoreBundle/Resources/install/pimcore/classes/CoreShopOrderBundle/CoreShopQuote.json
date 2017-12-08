@@ -2946,6 +2946,28 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "textarea",
+                                "width": 350,
+                                "height": "",
+                                "queryColumnType": "longtext",
+                                "columnType": "longtext",
+                                "phpdocType": "string",
+                                "name": "comment",
+                                "title": "Comment",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false

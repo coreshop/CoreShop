@@ -302,6 +302,27 @@ coreshop.order.sale.detail = Class.create({
                 }
             }
 
+            if (this.sale.comment) {
+                items.push({
+                    xtype: 'panel',
+                    bodyPadding: 10,
+                    margin: '0 0 10px 0',
+                    style: this.borderStyle,
+                    items: [
+                        {
+                            xtype: 'label',
+                            style: 'font-weight:bold;display:block',
+                            text: t('coreshop_comment')
+                        },
+                        {
+                            xtype: 'label',
+                            style: 'display:block',
+                            html: Ext.util.Format.nl2br(this.sale.comment)
+                        }
+                    ]
+                });
+            }
+
             items.push({
                 xtype: 'tabpanel',
                 items: [

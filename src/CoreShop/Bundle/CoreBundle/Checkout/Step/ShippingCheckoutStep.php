@@ -20,6 +20,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -103,6 +104,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
                 $formData = $form->getData();
 
                 $cart->setCarrier($formData['carrier']);
+                $cart->setComment($formData['comment']);
                 $cart->save();
                 return true;
             } else {
@@ -149,9 +151,15 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     {
         $form = $this->formFactory->createNamed('', CarrierType::class, [
             'carrier' => $cart->getCarrier(),
+            'comment' => $cart->getComment()
         ], [
             'carriers' => $carriers,
             'cart' => $cart
+        ]);
+
+        $form->add('comment', TextareaType::class, [
+            'required' => false,
+            'label' => 'coreshop.ui.comment'
         ]);
 
         if ($request->isMethod('post')) {
