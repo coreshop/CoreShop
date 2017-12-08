@@ -23,14 +23,4 @@ interface CarrierAwareInterface
      * @param CarrierInterface $carrier
      */
     public function setCarrier($carrier);
-
-    /**
-     * @return string|null
-     */
-    public function getComment();
-
-    /**
-     * @param string $comment
-     */
-    public function setComment($comment);
 }
