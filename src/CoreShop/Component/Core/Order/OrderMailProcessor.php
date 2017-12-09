@@ -78,7 +78,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = FALSE, $sendShipments = FALSE, $params = [])
     {
         if (!$emailDocument instanceof Document\Email) {
-            return FALSE;
+            return false;
         }
 
         $emailParameters = array_merge($order->getCustomer()->getObjectVars(), $params);
@@ -103,7 +103,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
 
         $mail->setDocument($emailDocument);
         $mail->setParams($emailParameters);
-        $mail->setEnableLayoutOnPlaceholderRendering(FALSE);
+        $mail->setEnableLayoutOnPlaceholderRendering(false);
 
         if ($sendInvoices) {
             $invoices = $this->invoiceRepository->getDocuments($order);
@@ -132,7 +132,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $mail->send();
         $this->addOrderNote($order, $emailDocument, $mail);
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -195,6 +195,6 @@ class OrderMailProcessor implements OrderMailProcessorInterface
 
         $this->noteService->storeNoteForEmail($noteInstance, $emailDocument);
 
-        return TRUE;
+        return true;
     }
 }

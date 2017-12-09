@@ -27,7 +27,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        $rawValues = $list->getGroupByRelationValues($condition->getField(), FALSE);
+        $rawValues = $list->getGroupByRelationValues($condition->getField(), false);
         $objects = [];
 
         foreach ($rawValues as $id) {
@@ -58,7 +58,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         ListingInterface $list,
         $currentFilter,
         ParameterBag $parameterBag,
-        $isPrecondition = FALSE
+        $isPrecondition = false
     ) {
         $values = $parameterBag->get($condition->getField());
 
@@ -69,7 +69,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         $currentFilter[$condition->getField()] = $values;
 
         if ($values === static::EMPTY_STRING) {
-            $values = NULL;
+            $values = null;
         }
 
         if (!empty($values)) {
