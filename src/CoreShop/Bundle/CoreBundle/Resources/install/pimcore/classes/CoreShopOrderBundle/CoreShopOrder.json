@@ -2994,6 +2994,28 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "objectbricks",
+                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
+                                "allowedTypes": [],
+                                "maxItems": "",
+                                "name": "additionalData",
+                                "title": "Additional Data",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "columnType": null,
+                                "queryColumnType": null,
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false
