@@ -29,17 +29,17 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
             'name'            => 'comment',
             'title'           => 'Comment',
             'tooltip'         => '',
-            'mandatory'       => FALSE,
-            'noteditable'     => TRUE,
-            'index'           => FALSE,
-            'locked'          => NULL,
+            'mandatory'       => false,
+            'noteditable'     => true,
+            'index'           => false,
+            'locked'          => null,
             'style'           => '',
-            'permissions'     => NULL,
+            'permissions'     => null,
             'datatype'        => 'data',
-            'relationType'    => FALSE,
-            'invisible'       => FALSE,
-            'visibleGridView' => FALSE,
-            'visibleSearch'   => FALSE
+            'relationType'    => false,
+            'invisible'       => false,
+            'visibleGridView' => false,
+            'visibleSearch'   => false
         ];
 
         $cartClass = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');
