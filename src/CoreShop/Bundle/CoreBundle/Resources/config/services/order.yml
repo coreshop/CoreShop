@@ -64,6 +64,8 @@ services:
      - '@coreshop.repository.order_invoice'
      - '@coreshop.repository.order_shipment'
      - '@coreshop.renderer.order.pdf'
+     - '@translator'
+     - '@coreshop.object_note_service'
 
   coreshop.event_listener.price_rule_update:
     class: CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener

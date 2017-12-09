@@ -11,6 +11,9 @@ services:
   coreshop.object_service:
     class: CoreShop\Component\Resource\Pimcore\ObjectService
 
+  coreshop.object_note_service:
+    class: CoreShop\Component\Resource\Pimcore\DataObjectNoteService
+
   coreshop.resource_registry:
     class: CoreShop\Component\Resource\Metadata\Registry
 

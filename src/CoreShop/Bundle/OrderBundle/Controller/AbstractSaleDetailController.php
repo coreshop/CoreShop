@@ -22,6 +22,7 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
+use CoreShop\Component\Order\Notes;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -375,6 +376,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         $jsonSale['customer'] = $sale->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($sale->getCustomer()) : null;
         $jsonSale['details'] = $this->getItemDetails($sale);
         $jsonSale['summary'] = $this->getSummary($sale);
+        $jsonSale['mailCorrespondence'] = $this->getMailCorrespondence($sale);
         $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ? $sale->getCurrency() : $this->get('coreshop.context.currency')->getCurrency());
         $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
 
@@ -419,6 +421,32 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         }
 
         return $jsonSale;
+    }
+
+    /**
+     * @param SaleInterface $sale
+     * @return array
+     */
+    protected function getMailCorrespondence(SaleInterface $sale)
+    {
+        $list = [];
+        $objectNoteService = $this->get('coreshop.object_note_service');
+        $notes = $objectNoteService->getObjectNotes($sale, Notes::NOTE_EMAIL);
+
+        foreach ($notes as $note) {
+            $noteElement = [
+                'date' => $note->date,
+                'description' => $note->description
+            ];
+
+            foreach ($note->data as $key => $noteData) {
+                $noteElement[$key] = $noteData['data'];
+            }
+
+            $list[] = $noteElement;
+        }
+
+        return $list;
     }
 
     /**
