@@ -23,7 +23,6 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
 {
@@ -48,11 +47,6 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $orderDocumentRenderer;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var DataObjectNoteService
      */
     private $noteService;
@@ -62,7 +56,6 @@ class OrderMailProcessor implements OrderMailProcessorInterface
      * @param OrderInvoiceRepositoryInterface  $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
      * @param OrderDocumentRendererInterface   $orderDocumentRenderer
-     * @param TranslatorInterface              $translator
      * @param DataObjectNoteService              $noteService
      */
     public function __construct(
@@ -70,14 +63,12 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderInvoiceRepositoryInterface $invoiceRepository,
         OrderShipmentRepositoryInterface $shipmentRepository,
         OrderDocumentRendererInterface $orderDocumentRenderer,
-        TranslatorInterface $translator,
         DataObjectNoteService $noteService
     ) {
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
         $this->shipmentRepository = $shipmentRepository;
         $this->orderDocumentRenderer = $orderDocumentRenderer;
-        $this->translator = $translator;
         $this->noteService = $noteService;
     }
 
@@ -192,8 +183,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     {
         $noteInstance = $this->noteService->createNoteInstance($order,Notes::NOTE_EMAIL);
 
-        $noteInstance->setTitle($this->translator->trans('coreshop_note_email', [], 'admin'));
-        $noteInstance->setDescription($this->translator->trans('coreshop_note_email_description', [], 'admin'));
+        $noteInstance->setTitle('Order Mail');
 
         $noteInstance->addData('document', 'text', $emailDocument->getId());
         $noteInstance->addData('recipient', 'text', implode(', ', (array)$mail->getTo()));
