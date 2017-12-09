@@ -30,7 +30,7 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
             'title'           => 'Comment',
             'tooltip'         => '',
             'mandatory'       => FALSE,
-            'noteditable'     => FALSE,
+            'noteditable'     => TRUE,
             'index'           => FALSE,
             'locked'          => NULL,
             'style'           => '',

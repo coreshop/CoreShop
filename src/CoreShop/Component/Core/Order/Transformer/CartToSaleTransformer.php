@@ -54,6 +54,7 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
             if ($cart->getCarrier() instanceof CarrierInterface) {
                 $sale->setCarrier($cart->getCarrier());
                 $sale->setComment($cart->getComment());
+                $sale->setAdditionalData($cart->getAdditionalData());
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(true), $fromCurrency, $toCurrency), true);
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(false), $fromCurrency, $toCurrency), false);
                 $sale->setShippingTaxRate($cart->getShippingTaxRate());

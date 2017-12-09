@@ -157,4 +157,14 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      */
     public function setComment($comment);
 
+    /**
+     * @return \Pimcore\Model\DataObject\Objectbrick|null
+     */
+    public function getAdditionalData();
+
+    /**
+     * @param \Pimcore\Model\DataObject\Objectbrick $additionalData
+     */
+    public function setAdditionalData($additionalData);
+
 }

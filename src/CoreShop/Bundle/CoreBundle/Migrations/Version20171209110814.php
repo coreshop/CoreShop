@@ -28,7 +28,7 @@ class Version20171209110814 extends AbstractPimcoreMigration implements Containe
             'title'           => 'Additional Data',
             'tooltip'         => '',
             'mandatory'       => FALSE,
-            'noteditable'     => FALSE,
+            'noteditable'     => TRUE,
             'index'           => FALSE,
             'locked'          => NULL,
             'style'           => '',
