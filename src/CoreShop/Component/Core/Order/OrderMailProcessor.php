@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Order;
 
@@ -16,9 +16,11 @@ use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
+use CoreShop\Component\Order\Notes;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
+use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 
@@ -45,27 +47,35 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $orderDocumentRenderer;
 
     /**
+     * @var DataObjectNoteService
+     */
+    private $noteService;
+
+    /**
      * @param MoneyFormatterInterface          $priceFormatter
      * @param OrderInvoiceRepositoryInterface  $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
      * @param OrderDocumentRendererInterface   $orderDocumentRenderer
+     * @param DataObjectNoteService              $noteService
      */
     public function __construct(
         MoneyFormatterInterface $priceFormatter,
         OrderInvoiceRepositoryInterface $invoiceRepository,
         OrderShipmentRepositoryInterface $shipmentRepository,
-        OrderDocumentRendererInterface $orderDocumentRenderer
+        OrderDocumentRendererInterface $orderDocumentRenderer,
+        DataObjectNoteService $noteService
     ) {
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
         $this->shipmentRepository = $shipmentRepository;
         $this->orderDocumentRenderer = $orderDocumentRenderer;
+        $this->noteService = $noteService;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = [])
+    public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = FALSE, $sendShipments = FALSE, $params = [])
     {
         if (!$emailDocument instanceof Document\Email) {
             return false;
@@ -81,7 +91,10 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         unset($emailParameters['____pimcore_cache_item__'], $emailParameters['__dataVersionTimestamp']);
 
         $recipient = [
-            [$order->getCustomer()->getEmail(), $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname()],
+            [
+                $order->getCustomer()->getEmail(),
+                $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
+            ],
         ];
 
         $mail = new Mail();
@@ -116,9 +129,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             }
         }
 
-        //$this->addOrderNote($order, $emailDocument, $mail);
-
         $mail->send();
+        $this->addOrderNote($order, $emailDocument, $mail);
 
         return true;
     }
@@ -158,5 +170,31 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         foreach ($toRecipients as $recipient) {
             $mail->addTo($recipient[0], $recipient[1]);
         }
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param Document\Email $emailDocument
+     * @param Mail           $mail
+     * @param array          $params
+     * @return bool
+     */
+    private function addOrderNote(OrderInterface $order, Document\Email $emailDocument, Mail $mail, $params = [])
+    {
+        $noteInstance = $this->noteService->createNoteInstance($order, Notes::NOTE_EMAIL);
+
+        $noteInstance->setTitle('Order Mail');
+
+        $noteInstance->addData('document', 'text', $emailDocument->getId());
+        $noteInstance->addData('recipient', 'text', implode(', ', (array)$mail->getTo()));
+        $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
+
+        foreach ($params as $key => $value) {
+            $noteInstance->addData($key, 'text', $value);
+        }
+
+        $this->noteService->storeNoteForEmail($noteInstance, $emailDocument);
+
+        return true;
     }
 }

@@ -1,5 +1,5 @@
 # Additional Data in Order
-Sometimes you need to implement additional information in yor order (Besides the comment field, which is available by default in the shipping checkout step).
+Sometimes you need to implement additional information in your order (Besides the comment field, which is available by default in the shipping checkout step).
 
 > **Note:** To add custom fields you need a custom checkout step.
 
@@ -36,7 +36,7 @@ if ($form->isSubmitted()) {
             $cart->getAdditionalData()->setAdditionalField($brick);
         }
         $cart->save();
-        return TRUE;
+        return true;
     }
 }
 ```

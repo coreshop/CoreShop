@@ -502,7 +502,7 @@ coreshop.order.sale.detail = Class.create({
                                                             xtype: 'box',
                                                             autoEl: {
                                                                 tag: 'iframe',
-                                                                src: '/admin/email/show-email-log/?id=' + rec.get('email-log') + '&type=html'
+                                                                src: '/admin/email/show-email-log?id=' + rec.get('email-log') + '&type=html'
                                                             }
                                                         }
                                                     ]
@@ -529,7 +529,7 @@ coreshop.order.sale.detail = Class.create({
                                     tooltip: t('open'),
                                     handler: function (grid, rowIndex) {
                                         var record = grid.getStore().getAt(rowIndex);
-                                        pimcore.helpers.openDocument(record.get('emailId'), 'email');
+                                        pimcore.helpers.openDocument(record.get('document'), 'email');
                                     }
                                 }]
                             },
@@ -541,7 +541,7 @@ coreshop.order.sale.detail = Class.create({
                                     tooltip: t('open'),
                                     handler: function (grid, rowIndex) {
                                         var rec = grid.getStore().getAt(rowIndex);
-                                        var threadId = rec.get("threadId");
+                                        var threadId = rec.get('threadId');
 
                                         if (threadId) {
                                             coreshop.helpers.openMessagingThread(threadId);
