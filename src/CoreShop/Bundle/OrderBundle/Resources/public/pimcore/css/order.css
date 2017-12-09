@@ -50,6 +50,10 @@
     background: url(../img/cart.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_additional_data {
+    background: url(../img/info.svg) center center no-repeat !important;
+}
+
 .coreshop_price_rule_vouchers {
     background: url(../img/voucher.svg) center center no-repeat !important;
 }
