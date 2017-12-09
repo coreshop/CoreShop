@@ -10,8 +10,7 @@ See https://github.com/coreshop/CoreShop/tree/coreshop1**
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Pre-Release](https://img.shields.io/packagist/vpre/coreshop/core-shop.svg)](https://www.packagist.org/packages/coreshop/core-shop)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/coreshop/coreshop.svg)](https://www.scrutinizer-ci.com/g/coreshop/CoreShop/)
-
-<span class="badge-bitcoin"><a href="https://bevry.me/bitcoin" title="Donate once-off to this project using Bitcoin"><img src="" alt="Bitcoin donate button" /></a></span>	
+[![Donate](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://www.coreshop.org/bitcoin)
 
 CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore with eCommerce features.
 
