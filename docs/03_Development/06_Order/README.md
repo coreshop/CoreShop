@@ -10,3 +10,4 @@ This guide should lead you through how CoreShop handles Orders.
  - [Shipment](./06_Shipment.md)
  - [Quote](./07_Quote.md)
  - [Template/Twig Helper](./08_TemplateHelper.md)
+ - [Extend Order with additional data](./09_AdditionalData.md)
