@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20171208164423 extends AbstractPimcoreMigration implements ContainerAwareInterface
+class Version20171209110814 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -19,15 +19,13 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
-         $commentField = [
-            'fieldtype'       => 'textarea',
-            'width'           => 350,
-            'height'          => '',
-            'queryColumnType' => 'longtext',
-            'columnType'      => 'longtext',
-            'phpdocType'      => 'string',
-            'name'            => 'comment',
-            'title'           => 'Comment',
+        $additionalDataField = [
+            'fieldtype'       => 'objectbricks',
+            'phpdocType'      => '\\Pimcore\\Model\\DataObject\\Objectbrick',
+            'allowedTypes'    => [],
+            'maxItems'        => '',
+            'name'            => 'additionalData',
+            'title'           => 'Additional Data',
             'tooltip'         => '',
             'mandatory'       => FALSE,
             'noteditable'     => TRUE,
@@ -36,30 +34,32 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
             'style'           => '',
             'permissions'     => NULL,
             'datatype'        => 'data',
+            'columnType'      => NULL,
+            'queryColumnType' => NULL,
             'relationType'    => FALSE,
             'invisible'       => FALSE,
             'visibleGridView' => FALSE,
-            'visibleSearch'   => FALSE
+            'visibleSearch'   => FALSE,
         ];
 
         $cartClass = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');
         $classUpdater = new ClassUpdate($cartClass);
-        if (!$classUpdater->hasField('comment')) {
-            $classUpdater->insertFieldAfter('currency', $commentField);
+        if (!$classUpdater->hasField('additionalData')) {
+            $classUpdater->insertFieldAfter('comment', $additionalDataField);
             $classUpdater->save();
         }
 
         $orderClass = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
         $classUpdater = new ClassUpdate($orderClass);
-        if (!$classUpdater->hasField('comment')) {
-            $classUpdater->insertFieldAfter('paymentProvider', $commentField);
+        if (!$classUpdater->hasField('additionalData')) {
+            $classUpdater->insertFieldAfter('comment', $additionalDataField);
             $classUpdater->save();
         }
 
         $quoteClass = $this->container->getParameter('coreshop.model.quote.pimcore_class_name');
         $classUpdater = new ClassUpdate($quoteClass);
-        if (!$classUpdater->hasField('comment')) {
-            $classUpdater->insertFieldAfter('store', $commentField);
+        if (!$classUpdater->hasField('additionalData')) {
+            $classUpdater->insertFieldAfter('comment', $additionalDataField);
             $classUpdater->save();
         }
 

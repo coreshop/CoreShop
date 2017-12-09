@@ -125,9 +125,26 @@ coreshop.order.sale.detail = Class.create({
     },
 
     getRightItems: function () {
-        return [
-            this.getCustomerInfo()
-        ];
+        var items = [this.getCustomerInfo()];
+        if(typeof coreshop.order.sale.detail.additionalData === 'function') {
+            var additionalData = new coreshop.order.sale.detail.additionalData(this.sale, this.sale.additionalData);
+            if(typeof additionalData.getItems === 'function') {
+                var additionalItems = additionalData.getItems();
+                //custom additional data
+                if(Ext.isArray(additionalItems)) {
+                    var container = Ext.create('Ext.panel.Panel', {
+                        title: t('coreshop_order_additional_data'),
+                        margin: '0 0 20 0',
+                        border: true,
+                        flex: 6,
+                        iconCls: 'coreshop_icon_additional_data',
+                        items: additionalItems
+                    });
+                    items.push(container)
+                }
+            }
+        }
+        return items;
     },
 
     getFullItems: function () {
