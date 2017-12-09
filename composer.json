@@ -62,7 +62,9 @@
     "coreshop/fixture-bundle": "self.version",
     "coreshop/core-bundle": "self.version",
     "coreshop/pimcore": "self.version",
-    "coreshop/storage-list": "self.version"
+    "coreshop/storage-list": "self.version",
+    "coreshop/inventory": "self.version",
+    "coreshop/inventory-bundle": "self.version"
   },
   "require": {
     "doctrine/orm": "^2.5",

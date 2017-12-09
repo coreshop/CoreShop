@@ -32,6 +32,7 @@ class RegisterBundleHelper
             new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(),
             new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),
             new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(),
+            new \CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle(),
             new \CoreShop\Bundle\ProductBundle\CoreShopProductBundle(),
             new \CoreShop\Bundle\AddressBundle\CoreShopAddressBundle(),
             new \CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle(),

@@ -18,6 +18,7 @@ imports:
   - { resource: "services/cart-processor.yml" }
   - { resource: "services/reports.yml" }
   - { resource: "services/pimcore_installer.yml" }
+  - { resource: "services/inventory.yml" }
 
 services:
   coreshop.core.key_transformer:

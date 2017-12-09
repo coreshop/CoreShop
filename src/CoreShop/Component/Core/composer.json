@@ -28,6 +28,7 @@
     "coreshop/locale": "^2.0",
     "coreshop/customer": "^2.0",
     "coreshop/shipping": "^2.0",
+    "coreshop/inventory": "^2.0",
     "coreshop/product": "^2.0",
     "coreshop/index": "^2.0",
     "coreshop/payment": "^2.0",

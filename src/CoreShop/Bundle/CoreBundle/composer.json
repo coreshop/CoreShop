@@ -21,6 +21,7 @@
     "php": "^7.0",
     "coreshop/order-bundle": "^2.0",
     "coreshop/customer-bundle": "^2.0",
+    "coreshop/inventory-bundle": "^2.0",
     "coreshop/product-bundle": "^2.0",
     "coreshop/address-bundle": "^2.0",
     "coreshop/currency-bundle": "^2.0",

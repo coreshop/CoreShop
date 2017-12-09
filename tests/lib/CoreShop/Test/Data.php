@@ -31,6 +31,7 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class Data
 {
@@ -129,6 +130,8 @@ class Data
         self::get('coreshop.context.store.fixed')->setStore(self::$store);
         self::get('coreshop.context.customer.fixed')->setCustomer(self::$customer1);
         self::get('coreshop.context.locale.fixed')->setLocale('en');
+
+        self::get('security.token_storage')->setToken(new UsernamePasswordToken('unit-tests', 'unit-test', 'unit-test'));
     }
 
     /**

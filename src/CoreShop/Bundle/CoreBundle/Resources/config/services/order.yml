@@ -6,6 +6,13 @@ services:
       - '@coreshop.core.order.transformer.cart_to_order.inner'
       - '@coreshop.currency_converter'
 
+  coreshop.core.order.transformer.cart_to_order.workflow:
+    decorates: coreshop.order.transformer.cart_to_order
+    class: CoreShop\Component\Core\Order\Transformer\CartToOrderTransformer
+    arguments:
+      - '@coreshop.core.order.transformer.cart_to_order.inner'
+      - '@coreshop.workflow.manager.order'
+
   coreshop.core.order.transformer.cart_to_quote:
     decorates: coreshop.order.transformer.cart_to_quote
     class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
@@ -98,3 +105,10 @@ services:
     tags:
       - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
       - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }
+
+  coreshop.order.listener.inventory_locking:
+    class: CoreShop\Bundle\CoreBundle\EventListener\Order\InventoryLockingProductsListener
+    arguments:
+      - '@coreshop.inventory.order_operator'
+    tags:
+      - { name: kernel.event_listener, event: coreshop.workflow_manager.before, method: onOrderChangeEvent }

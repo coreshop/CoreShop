@@ -19,11 +19,13 @@
             <span class="price-new">{{ currency.getPrice(product) }}</span>
         </div>
 
+        {% if coreshop_inventory_is_available(product) %}
         <div class="cart-button">
             <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart" rel="nofollow">
                 {{ 'coreshop.ui.add_to_cart'|trans }}
                 <i class="fa fa-shopping-cart"></i>
             </a>
         </div>
+        {% endif %}
     </div>
 </div>

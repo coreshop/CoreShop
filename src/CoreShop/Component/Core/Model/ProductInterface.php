@@ -3,10 +3,11 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductInterface as BaseProductInterface;
 
-interface ProductInterface extends BaseProductInterface, IndexableInterface, PurchasableInterface
+interface ProductInterface extends BaseProductInterface, IndexableInterface, PurchasableInterface, StockableInterface
 {
     /**
      * @return StoreInterface[]
