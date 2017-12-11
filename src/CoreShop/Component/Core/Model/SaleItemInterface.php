@@ -12,10 +12,9 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\CartItemInterface as BaseCartItemInterface;
-use CoreShop\Component\Shipping\Model\ShippableItemInterface;
+use CoreShop\Component\Order\Model\SaleItemInterface as BaseSaleItemInterface;
 
-interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterface
+interface SaleItemInterface extends BaseSaleItemInterface
 {
     /**
      * @return bool

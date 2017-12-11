@@ -156,22 +156,6 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
     /**
      * {@inheritdoc}
      */
-    public function getDigitalProduct()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDigitalProduct($digitalProduct)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getItemPriceNet()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

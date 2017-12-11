@@ -37,6 +37,23 @@ class Cart extends BaseCart implements CartInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasShippableItems()
+    {
+        $shippable = false;
+        /** @var SaleItemInterface $item */
+        foreach ($this->getItems() as $item) {
+            if ($item->getDigitalProduct() !== true) {
+                $shippable = true;
+                break;
+            }
+        }
+
+        return $shippable;
+    }
+
+    /**
      * calculates the total without discount.
      *
      * @param bool $withTax

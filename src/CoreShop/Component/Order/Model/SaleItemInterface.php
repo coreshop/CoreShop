@@ -46,16 +46,6 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     public function getIsGiftItem();
 
     /**
-     * @return bool
-     */
-    public function getDigitalProduct();
-
-    /**
-     *  @param bool $digitalProduct
-     */
-    public function setDigitalProduct($digitalProduct);
-
-    /**
      * @return SaleInterface
      */
     public function getSaleDocument();

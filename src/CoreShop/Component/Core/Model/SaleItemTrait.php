@@ -12,18 +12,23 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\CartItemInterface as BaseCartItemInterface;
-use CoreShop\Component\Shipping\Model\ShippableItemInterface;
+use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
-interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterface
+trait SaleItemTrait
 {
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    public function getDigitalProduct();
+    public function getDigitalProduct()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
     /**
-     * @param bool $digitalProduct
+     * {@inheritdoc}
      */
-    public function setDigitalProduct($digitalProduct);
+    public function setDigitalProduct($digitalProduct)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

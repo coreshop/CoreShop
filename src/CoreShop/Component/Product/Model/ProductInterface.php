@@ -107,16 +107,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setEan($ean);
 
     /**
-     * @return bool
-     */
-    public function getDigitalProduct();
-
-    /**
-     * @param bool $digitalProduct
-     */
-    public function setDigitalProduct($digitalProduct);
-
-    /**
      * @return int
      */
     public function getQuantity();

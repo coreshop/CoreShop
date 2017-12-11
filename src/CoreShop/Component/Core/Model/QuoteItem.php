@@ -12,18 +12,9 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\CartItemInterface as BaseCartItemInterface;
-use CoreShop\Component\Shipping\Model\ShippableItemInterface;
+use CoreShop\Component\Order\Model\QuoteItem as BaseQuoteItem;
 
-interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterface
+class QuoteItem extends BaseQuoteItem implements QuoteItemInterface
 {
-    /**
-     * @return bool
-     */
-    public function getDigitalProduct();
-
-    /**
-     * @param bool $digitalProduct
-     */
-    public function setDigitalProduct($digitalProduct);
+    use SaleItemTrait;
 }

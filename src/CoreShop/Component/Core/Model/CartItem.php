@@ -16,6 +16,8 @@ use CoreShop\Component\Order\Model\CartItem as BaseCartItem;
 
 class CartItem extends BaseCartItem implements CartItemInterface
 {
+    use SaleItemTrait;
+
     /**
      * {@inheritdoc}
      */
