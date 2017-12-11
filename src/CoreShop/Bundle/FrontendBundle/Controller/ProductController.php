@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends FrontendController
 {
@@ -30,6 +31,10 @@ class ProductController extends FrontendController
     {
         $productRepository = $this->get('coreshop.repository.product');
         $product = $productRepository->find($request->get('product'));
+
+        if(!$product->isPublished() || $product->getActive() !== true) {
+            throw new NotFoundHttpException();
+        }
 
         if (!$product instanceof ProductInterface) {
             return $this->redirectToRoute('coreshop_index');
