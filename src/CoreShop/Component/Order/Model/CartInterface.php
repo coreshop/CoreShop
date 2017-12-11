@@ -90,4 +90,9 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Checko
      * @return int
      */
     public function getPaymentFeeTaxRate();
+
+    /**
+     * @return bool
+     */
+    public function hasShippableItems();
 }

@@ -148,6 +148,23 @@ class Cart extends AbstractProposal implements CartInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasShippableItems()
+    {
+        $shippable = false;
+        /** @var SaleItemInterface $item */
+        foreach ($this->getItems() as $item) {
+            if ($item->getDigitalProduct() !== true) {
+                $shippable = true;
+                break;
+            }
+        }
+
+        return $shippable;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDiscountNet()

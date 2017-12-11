@@ -24,16 +24,18 @@
                     {{ order.orderNumber }}
                 </p>
             </columns>
-            <columns large="6">
-                <p>
-                    <strong>{{ 'coreshop.ui.shipping_method'|trans }}</strong><br/>
-                    {{ order.carrier.name }}<br/>
-                    {% if order.shippingAddress is defined %}
-                        <strong>{{ 'coreshop.ui.shipping_address'|trans }}</strong><br/>
-                        {{ order.shippingAddress|coreshop_format_address }}
-                    {% endif %}
-                </p>
-            </columns>
+             {% if order.carrier %}
+                <columns large="6">
+                    <p>
+                        <strong>{{ 'coreshop.ui.shipping_method'|trans }}</strong><br/>
+                        {{ order.carrier.name }}<br/>
+                        {% if order.shippingAddress is defined %}
+                            <strong>{{ 'coreshop.ui.shipping_address'|trans }}</strong><br/>
+                            {{ order.shippingAddress|coreshop_format_address }}
+                        {% endif %}
+                    </p>
+                </columns>
+             {% endif %}
         </row>
     </callout>
     {% endif %}

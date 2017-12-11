@@ -121,6 +121,7 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
             $item->setParent($storageList);
             $item->setQuantity($quantity);
             $item->setProduct($product);
+            $item->setDigitalProduct($product->getDigitalProduct());
             $item->setPublished(true);
             $item->save();
 

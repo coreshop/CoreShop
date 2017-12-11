@@ -20,7 +20,7 @@ class Version20171211121142 extends AbstractPimcoreMigration implements Containe
     {
         $localeField = [
             'fieldtype' => 'input',
-             'width' => NULL,
+             'width' => null,
              'queryColumnType' => 'varchar',
              'columnType' => 'varchar',
              'columnLength' => 190,
@@ -33,9 +33,9 @@ class Version20171211121142 extends AbstractPimcoreMigration implements Containe
              'mandatory' => false,
              'noteditable' => true,
              'index' => false,
-             'locked' => NULL,
+             'locked' => null,
              'style' => '',
-             'permissions' => NULL,
+             'permissions' => null,
              'datatype' => 'data',
              'relationType' => false,
              'invisible' => false,

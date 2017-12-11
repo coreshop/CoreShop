@@ -25,9 +25,11 @@ interface CheckoutStepInterface
     /**
      * Determines if this step should be forward if valid.
      *
+     * @param CartInterface $cart
+     *
      * @return bool
      */
-    public function doAutoForward();
+    public function doAutoForward(CartInterface $cart);
 
     /**
      * Check if Checkout Step is valid.
