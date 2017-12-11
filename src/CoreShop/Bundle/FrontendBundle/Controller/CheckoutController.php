@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStock;
+use CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStockValidator;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
@@ -49,6 +51,7 @@ class CheckoutController extends FrontendController
         $stepIdentifier = $request->get('stepIdentifier');
         $step = $this->checkoutManager->getStep($stepIdentifier);
         $dataForStep = [];
+        $cart = $this->getCart();
 
         if (!$step instanceof CheckoutStepInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -56,12 +59,12 @@ class CheckoutController extends FrontendController
 
         //Check all previous steps if they are valid, if not, redirect back
         foreach ($this->checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
-            if (!$previousStep->validate($this->getCart())) {
+            if (!$previousStep->validate($cart)) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
             }
         }
 
-        if ($step->validate($this->getCart()) && $step->doAutoForward()) {
+        if ($step->validate($cart) && $step->doAutoForward()) {
             $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
 
             if ($nextStep) {
@@ -71,25 +74,26 @@ class CheckoutController extends FrontendController
 
         if ($request->isMethod('POST')) {
             try {
-                if ($step->commitStep($this->getCart(), $request)) {
+                if ($step->commitStep($cart, $request)) {
                     $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
 
                     if ($nextStep) {
                         return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
                     }
                 }
-            }
-            catch(CheckoutException $ex) {
+            } catch (CheckoutException $ex) {
                 $dataForStep['exception'] = $ex->getTranslatableText();
             }
         }
+        
+        //$errors = $this->get('validator')->validate($cart, null, ['coreshop']);
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutStep($this->getCart(), $step);
+        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $step);
 
-        $dataForStep = array_merge($dataForStep, $this->checkoutManager->prepareStep($step, $this->getCart(), $request));
+        $dataForStep = array_merge($dataForStep, $this->checkoutManager->prepareStep($step, $cart, $request));
 
         $dataForStep = array_merge(is_array($dataForStep) ? $dataForStep : [], [
-            'cart' => $this->getCart(),
+            'cart' => $cart,
             'checkoutSteps' => $this->checkoutManager->getSteps(),
             'currentStep' => $this->checkoutManager->getCurrentStepIndex($stepIdentifier),
             'step' => $step,
@@ -112,6 +116,10 @@ class CheckoutController extends FrontendController
         return $this->renderTemplate(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function doCheckoutAction(Request $request)
     {
         /*
@@ -124,11 +132,14 @@ class CheckoutController extends FrontendController
          *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
          *
          * therefore we need the CartToOrderTransformerInterface here
-        */        /*
+        */
+
+        /*
          * Before we do anything else, lets check if the checkout is still valid
          * Check all previous steps if they are valid, if not, redirect back
          */
-        /*
+
+        /**
          * @var $step CheckoutStepInterface
          */
         foreach ($this->checkoutManager->getSteps() as $stepIdentifier) {
@@ -146,6 +157,7 @@ class CheckoutController extends FrontendController
          */
         $order = $this->getOrderFactory()->createNew();
         $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
+
 
         /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/

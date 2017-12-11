@@ -13,15 +13,18 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
+use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use Symfony\Component\Form\AbstractType;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class AddressType extends AbstractType
+final class AddressType extends AbstractResourceType
 {
     /**
      * @var AddressFormatterInterface
@@ -29,10 +32,17 @@ final class AddressType extends AbstractType
     private $addressFormatHelper;
 
     /**
+     * @param string $dataClass FQCN
+     * @param string[] $validationGroups
      * @param AddressFormatterInterface $addressFormatHelper
      */
-    public function __construct(AddressFormatterInterface $addressFormatHelper)
+    public function __construct(
+        $dataClass,
+        array $validationGroups = [],
+        AddressFormatterInterface $addressFormatHelper)
     {
+        parent::__construct($dataClass, $validationGroups);
+
         $this->addressFormatHelper = $addressFormatHelper;
     }
 
@@ -44,7 +54,7 @@ final class AddressType extends AbstractType
         $builder
             ->add('shippingAddress', AddressChoiceType::class, [
                 'constraints' => [new NotBlank()],
-                'customer' => $options['customer'],
+                'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.shipping',
                 'choice_attr' => function ($val, $key, $index) {
                     if ($val instanceof AddressInterface) {
@@ -54,11 +64,12 @@ final class AddressType extends AbstractType
                     }
 
                     return [];
-                }
+                },
+                'empty_data' => $options['customer']->getDefaultAddress()
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
                 'constraints' => [new NotBlank()],
-                'customer' => $options['customer'],
+                'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.invoice',
                 'choice_attr' => function ($val, $key, $index) {
                     if ($val instanceof AddressInterface) {
@@ -68,12 +79,24 @@ final class AddressType extends AbstractType
                     }
 
                     return [];
-                }
+                },
+                'empty_data' => $options['customer']->getDefaultAddress()
             ])
             ->add('useShippingAsInvoice', CheckboxType::class, [
                 'required' => false,
+                'mapped' => false,
                 'label' => 'coreshop.form.address.use_shipping_as_invoice',
-            ]);
+                'empty_data' => true
+            ])
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                $orderData = $event->getData();
+
+                if (isset($orderData['shippingAddress']) && (isset($orderData['useShippingAsInvoice']) && true === $orderData['useShippingAsInvoice'])) {
+                    $orderData['invoiceAddress'] = $orderData['shippingAddress'];
+
+                    $event->setData($orderData);
+                }
+            });
     }
 
     /**
@@ -84,6 +107,7 @@ final class AddressType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setRequired('customer');
+        $resolver->setAllowedTypes('customer', [CustomerInterface::class]);
     }
 
     /**

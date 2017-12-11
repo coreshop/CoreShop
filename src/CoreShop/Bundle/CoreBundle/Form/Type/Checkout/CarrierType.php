@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
+use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
@@ -21,13 +22,14 @@ use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-final class CarrierType extends AbstractType
+final class CarrierType extends AbstractResourceType
 {
     /**
      * @var TaxedShippingCalculatorInterface
@@ -61,13 +63,18 @@ final class CarrierType extends AbstractType
 
 
     public function __construct(
+        $dataClass,
+        array $validationGroups = [],
         TaxedShippingCalculatorInterface $taxedShippingCalculator,
         CurrencyContextInterface $currencyContext,
         MoneyFormatterInterface $moneyFormatter,
         CurrencyConverterInterface $currencyConverter,
         StoreContextInterface $storeContext,
         TranslatorInterface $translator
-    ) {
+    )
+    {
+        parent::__construct($dataClass, $validationGroups);
+
         $this->taxedShippingCalculator = $taxedShippingCalculator;
         $this->translator = $translator;
         $this->currencyContext = $currencyContext;
@@ -107,6 +114,10 @@ final class CarrierType extends AbstractType
 
                     return '';
                 }
+            ])
+            ->add('comment', TextareaType::class, [
+                'required' => false,
+                'label' => 'coreshop.ui.comment'
             ]);
     }
 

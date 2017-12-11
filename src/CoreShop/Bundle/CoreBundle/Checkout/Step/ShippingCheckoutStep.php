@@ -101,10 +101,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $cart->setCarrier($formData['carrier']);
-                $cart->setComment($formData['comment']);
+                $cart = $form->getData();
                 $cart->save();
                 return true;
             } else {
@@ -149,17 +146,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     private function createForm(Request $request, $carriers, CartInterface $cart)
     {
-        $form = $this->formFactory->createNamed('', CarrierType::class, [
-            'carrier' => $cart->getCarrier(),
-            'comment' => $cart->getComment()
-        ], [
+        $form = $this->formFactory->createNamed('', CarrierType::class, $cart, [
             'carriers' => $carriers,
             'cart' => $cart
-        ]);
-
-        $form->add('comment', TextareaType::class, [
-            'required' => false,
-            'label' => 'coreshop.ui.comment'
         ]);
 
         if ($request->isMethod('post')) {

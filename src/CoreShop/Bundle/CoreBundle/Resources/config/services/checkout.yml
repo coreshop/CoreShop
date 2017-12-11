@@ -1,3 +1,8 @@
+parameters:
+  coreshop.form.type.checkout.address.validation_groups: [coreshop]
+  coreshop.form.type.checkout.carrier.validation_groups: [coreshop]
+  coreshop.form.type.checkout.payment.validation_groups: [coreshop]
+
 services:
   coreshop.checkout_manager.default:
     class: CoreShop\Bundle\CoreBundle\Checkout\CheckoutManager
@@ -38,18 +43,25 @@ services:
   coreshop.form.type.checkout_address:
     class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType
     arguments:
+      - '%coreshop.model.cart.class%'
+      - '%coreshop.form.type.checkout.address.validation_groups%'
       - '@coreshop.address.formatter'
     tags:
       - {name: form.type}
 
   coreshop.form.type.checkout_payment:
     class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType
+    arguments:
+      - '%coreshop.model.cart.class%'
+      - '%coreshop.form.type.checkout.payment.validation_groups%'
     tags:
       - {name: form.type}
 
   coreshop.form.type.checkout_carrier:
     class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType
     arguments:
+      - '%coreshop.model.cart.class%'
+      - '%coreshop.form.type.checkout.carrier.validation_groups%'
       - '@coreshop.carrier.price_calculator.taxed'
       - '@coreshop.context.currency'
       - '@coreshop.money_formatter'

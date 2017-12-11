@@ -76,9 +76,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $formData = $form->getData();
-                
-                $cart->setPaymentProvider($formData['paymentProvider']);
+                $cart = $form->getData();
                 $cart->save();
 
                 return true;
@@ -108,9 +106,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
      */
     private function createForm(Request $request, CartInterface $cart)
     {
-        $form = $this->formFactory->createNamed('', PaymentType::class, [
-            'paymentProvider' => $cart->getPaymentProvider(),
-        ], [
+        $form = $this->formFactory->createNamed('', PaymentType::class, $cart, [
             'store' => $this->storeContext->getStore(),
         ]);
 

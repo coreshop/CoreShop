@@ -2,6 +2,13 @@ services:
     coreshop.inventory.availability_checker.default:
         class: CoreShop\Component\Inventory\Checker\AvailabilityChecker
 
+    coreshop.validator.in_stock:
+        class: CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStockValidator
+        arguments:
+          - '@coreshop.inventory.availability_checker.default'
+        tags:
+           - { name: validator.constraint_validator, alias: 'coreshop_in_stock' }
+
     coreshop.templating.helper.inventory:
         class: CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper
         tags:

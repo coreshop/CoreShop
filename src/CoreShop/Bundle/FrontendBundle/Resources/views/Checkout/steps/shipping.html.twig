@@ -7,6 +7,8 @@
 
 {% block checkout %}
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_errors(form) }}
+
         {{ form_row(form.carrier) }}
         {{ form_row(form.comment) }}
         <div class="row">

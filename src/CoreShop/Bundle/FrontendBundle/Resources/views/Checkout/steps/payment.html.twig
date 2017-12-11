@@ -1,4 +1,5 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 {% block checkout_title %}
     {{ 'coreshop.ui.payment'|trans }}
@@ -6,6 +7,8 @@
 
 {% block checkout %}
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_errors(form) }}
+
         {{ form_row(form.paymentProvider) }}
 
         <div class="row">

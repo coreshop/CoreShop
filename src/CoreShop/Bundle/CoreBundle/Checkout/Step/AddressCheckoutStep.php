@@ -81,10 +81,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $cart->setShippingAddress($formData['shippingAddress']);
-                $cart->setInvoiceAddress($formData['invoiceAddress']);
+                $cart = $form->getData();
                 $cart->save();
 
                 return true;
@@ -131,30 +128,11 @@ class AddressCheckoutStep implements CheckoutStepInterface
      */
     private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer)
     {
-        $customerDefaultAddress = $customer->getDefaultAddress();
-
-        $shippingAddress = $customerDefaultAddress;
-        $invoiceAddress = $customerDefaultAddress;
-
-        if ($cart->getShippingAddress() instanceof AddressInterface) {
-            $shippingAddress = $cart->getShippingAddress();
-        }
-
-        if ($cart->getInvoiceAddress() instanceof AddressInterface) {
-            $invoiceAddress = $cart->getInvoiceAddress();
-        }
-
-        $values = [
-            'shippingAddress' => $shippingAddress,
-            'invoiceAddress' => $invoiceAddress,
-            'useShippingAsInvoice' => $shippingAddress->getId() === $invoiceAddress->getId()
-        ];
-
         $options = [
-            'customer' => $customer->getId(),
+            'customer' => $customer,
         ];
 
-        $form = $this->formFactory->createNamed('', AddressType::class, $values, $options);
+        $form = $this->formFactory->createNamed('', AddressType::class, $cart, $options);
 
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);
