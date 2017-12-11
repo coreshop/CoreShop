@@ -51,6 +51,8 @@ final class CartItemProcessor implements CartProcessorInterface
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($item->getProduct(), true), true);
             $item->setItemWholesalePrice($item->getProduct()->getWholesalePrice());
             $item->setItemTax($itemTax);
+            $item->setDigitalProduct($item->getProduct()->getDigitalProduct());
+
             $item->save();
         }
     }
