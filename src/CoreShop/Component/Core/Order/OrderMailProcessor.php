@@ -75,7 +75,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = FALSE, $sendShipments = FALSE, $params = [])
+    public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = [])
     {
         if (!$emailDocument instanceof Document\Email) {
             return false;

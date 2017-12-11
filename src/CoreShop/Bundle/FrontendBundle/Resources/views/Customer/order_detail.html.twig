@@ -65,26 +65,29 @@
                     </thead>
                     <tbody>
                     {% for item in order.getItems %}
+
+                        {% set productIsAvailable = item.getProduct and item.getProduct.isPublished and item.getProduct.getActive != false %}
                         {% set productUrl = '/' %}
 
-                        {% if item.getProduct %}
+                        {% if productIsAvailable %}
                             {% set productUrl = path('coreshop_product_detail', {name: item.getProduct.getName, product: item.getProduct.getId}) %}
                         {% endif %}
 
                         <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
                             <td class="text-center">
-                                {% if item.getProduct and item.getProduct.getImage() %}
+                                {% if productIsAvailable and item.getProduct.getImage() %}
                                     <a class="" href="{{ productUrl }}">
                                         {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
                                     </a>
                                 {% endif %}
                             </td>
                             <td class="text-center">
-                                <a href="{{ productUrl }}">
-                                    {% if item.getProduct %}
-                                        {{ item.getProduct.getName() }}
-                                    {% endif %}
-                                </a>
+                                {% if productIsAvailable %}
+                                    <a href="{{ productUrl }}">{{ item.getName() }}</a>
+                                {% else %}
+                                    {{ item.getName() }}
+                                {% endif %}
+
                                 {% if item.getIsGiftItem %}
                                     <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
                                 {% endif %}
