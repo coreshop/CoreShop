@@ -119,6 +119,22 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
     /**
      * {@inheritdoc}
      */
+    public function getLocale()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIsGuest()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
