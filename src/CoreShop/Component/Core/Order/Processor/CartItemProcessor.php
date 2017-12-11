@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -51,7 +52,10 @@ final class CartItemProcessor implements CartProcessorInterface
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($item->getProduct(), true), true);
             $item->setItemWholesalePrice($item->getProduct()->getWholesalePrice());
             $item->setItemTax($itemTax);
-            $item->setDigitalProduct($item->getProduct()->getDigitalProduct());
+
+            if($item->getProduct() instanceof ProductInterface) {
+                $item->setDigitalProduct($item->getProduct()->getDigitalProduct());
+            }
 
             $item->save();
         }
