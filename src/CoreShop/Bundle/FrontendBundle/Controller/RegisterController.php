@@ -55,9 +55,6 @@ class RegisterController extends FrontendController
                     ]);
                 }
 
-                //store locale to user
-                $customer->setLocale($request->getLocale());
-
                 $registrationService = $this->get('coreshop.customer.registration_service');
 
                 try {

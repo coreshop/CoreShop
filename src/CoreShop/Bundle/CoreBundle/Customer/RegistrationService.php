@@ -16,6 +16,7 @@ use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
@@ -46,6 +47,11 @@ final class RegistrationService implements RegistrationServiceInterface
     private $securityTokenStorage;
 
     /**
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
+
+    /**
      * @var string
      */
     private $customerFolder;
@@ -65,6 +71,7 @@ final class RegistrationService implements RegistrationServiceInterface
      * @param ObjectServiceInterface $objectService
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorage $securityTokenStorage
+     * @param LocaleContextInterface $localeContext
      * @param string $customerFolder
      * @param string $guestFolder
      * @param string $addressFolder
@@ -74,6 +81,7 @@ final class RegistrationService implements RegistrationServiceInterface
         ObjectServiceInterface $objectService,
         EventDispatcherInterface $eventDispatcher,
         TokenStorage $securityTokenStorage,
+        LocaleContextInterface $localeContext,
         $customerFolder,
         $guestFolder,
         $addressFolder)
@@ -82,6 +90,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->objectService = $objectService;
         $this->eventDispatcher = $eventDispatcher;
         $this->securityTokenStorage = $securityTokenStorage;
+        $this->localeContext = $localeContext;
         $this->customerFolder = $customerFolder;
         $this->guestFolder = $guestFolder;
         $this->addressFolder = $addressFolder;
@@ -103,6 +112,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
+        $customer->setLocale($this->localeContext->getLocaleCode());
         $customer->save();
 
         $address->setPublished(true);

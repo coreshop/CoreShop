@@ -9,6 +9,7 @@ services:
       - '@coreshop.object_service'
       - '@event_dispatcher'
       - '@security.token_storage'
+      - '@coreshop.context.locale'
       - '%coreshop.folder.customer%'
       - '%coreshop.folder.guest%'
       - '%coreshop.folder.address%'
