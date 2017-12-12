@@ -110,7 +110,6 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
         $value = $status->getValue();
         if (($payment->getState() !== $value || $payment->getState() === 'new') && PaymentInterface::STATE_UNKNOWN !== $value) {
             try {
-                throw new \Exception('something happended');
                 $this->updateOrderWorkflow($order, $value);
             } catch (\Exception $ex) {
                 $replyException = new ReplyException('reply', 0, $ex);
