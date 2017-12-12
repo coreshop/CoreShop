@@ -8,42 +8,47 @@
 {% block checkout %}
     <div class="panel">
         <div class="panel-body">
-            {% if form.shippingAddress.vars.choices|length > 0 %}
+            {% if form.invoiceAddress.vars.choices|length > 0 or form.shippingAddress.vars.choices|length > 0 %}
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
                 {{ form_errors(form) }}
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                        {{ form_row(form.shippingAddress) }}
-                    </div>
+                    {% if hasShippableItems %}
+                        <div class="col-xs-12 col-sm-6">
+                            {{ form_row(form.shippingAddress) }}
+                        </div>
+                    {% endif %}
 
-                    <div class="col-xs-6 invoice-address-selector" style="{% if form.useShippingAsInvoice.vars.data %} display:none {% endif %}">
+                    <div class="col-xs-6 invoice-address-selector" style="{% if hasShippableItems == true and form.useShippingAsInvoice.vars.data %} display:none {% endif %}">
                         {{ form_row(form.invoiceAddress) }}
                     </div>
                 </div>
 
-
-                <div class="row">
-                    <div class="col-xs-12">
-                        {{ form_row(form.useShippingAsInvoice) }}
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="panel panel-smart">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    {{ 'coreshop.ui.shipping_address'|trans }}
-                                </h4>
-                            </div>
-                            <div class="panel-body panel-shipping-address">
-
-                            </div>
+                {% if hasShippableItems %}
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ form_row(form.useShippingAsInvoice) }}
                         </div>
                     </div>
+                {% endif %}
+
+                <div class="row">
+
+                    {% if hasShippableItems %}
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="panel panel-smart">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        {{ 'coreshop.ui.shipping_address'|trans }}
+                                    </h4>
+                                </div>
+                                <div class="panel-body panel-shipping-address">
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
 
                     <div class="col-xs-12 col-sm-6">
                         <div class="panel panel-smart">
@@ -56,7 +61,6 @@
 
                             </div>
                         </div>
-
                     </div>
                 </div>
 

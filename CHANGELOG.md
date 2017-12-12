@@ -1,5 +1,8 @@
 # Within V2
 
+## 2.0.0-alpha-4 to 2.0.0-alpha-5
+ - **BC break** added Component\Core\Model\OrderItem and Component\Core\Model\QuoteItem. If you already customized them, inherit them from the Core Models.
+
 ## 2.0.0-alpha-3 to 2.0.0-alpha-4
  - **BC break** decoupled MoneyBundle from CurrencyBundle, therefore the Twig Extension for Money Conversion went to the CurrencyBundle. Therefore the name of that extension was renamed from
    **coreshop_convert_money** to **coreshop_convert_currency**. If you use it directly in your code, please rename all of them.

@@ -36,4 +36,14 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
      * @param TaxRuleGroupInterface $taxRule
      */
     public function setTaxRule($taxRule);
+
+    /**
+     * @return bool
+     */
+    public function getDigitalProduct();
+
+    /**
+     * @param bool $digitalProduct
+     */
+    public function setDigitalProduct($digitalProduct);
 }

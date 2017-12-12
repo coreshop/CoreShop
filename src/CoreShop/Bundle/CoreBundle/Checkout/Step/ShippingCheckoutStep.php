@@ -76,9 +76,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward()
+    public function doAutoForward(CartInterface $cart)
     {
-        return false;
+        return $cart->hasShippableItems()  === false;
     }
 
     /**
@@ -86,10 +86,10 @@ class ShippingCheckoutStep implements CheckoutStepInterface
      */
     public function validate(CartInterface $cart)
     {
-        return
-            $cart->hasItems() &&
+        return $cart->hasShippableItems() === false
+            || ($cart->hasItems() &&
             $cart->getCarrier() instanceof CarrierInterface &&
-            $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress());
+            $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress()));
     }
 
     /**

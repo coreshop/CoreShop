@@ -8,22 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\CartItemInterface as BaseCartItemInterface;
-use CoreShop\Component\Shipping\Model\ShippableItemInterface;
+use CoreShop\Component\Order\Model\QuoteItemInterface as BaseQuoteItemInterface;
 
-interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterface
+interface QuoteItemInterface extends BaseQuoteItemInterface, SaleItemInterface
 {
-    /**
-     * @return bool
-     */
-    public function getDigitalProduct();
 
-    /**
-     * @param bool $digitalProduct
-     */
-    public function setDigitalProduct($digitalProduct);
 }

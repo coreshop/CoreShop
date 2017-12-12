@@ -19,6 +19,11 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAwareInterface
 {
     /**
+     * @return bool
+     */
+    public function hasShippableItems();
+
+    /**
      * @param bool $withTax
      *
      * @return float

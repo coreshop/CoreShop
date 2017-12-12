@@ -64,7 +64,7 @@ class CheckoutController extends FrontendController
             }
         }
 
-        if ($step->validate($cart) && $step->doAutoForward()) {
+        if ($step->validate($cart) && $step->doAutoForward($cart)) {
             $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
 
             if ($nextStep) {

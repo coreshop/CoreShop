@@ -54,7 +54,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward()
+    public function doAutoForward(CartInterface $cart)
     {
         return false;
     }
