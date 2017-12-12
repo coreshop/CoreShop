@@ -8,15 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PayumBundle\Extension;
 
+use CoreShop\Bundle\PayumBundle\Exception\ReplyException;
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Test\Models\Order;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\Generic;
@@ -37,7 +39,7 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
 
     /**
      * @param PimcoreRepositoryInterface $orderRepository
-     * @param WorkflowManagerInterface   $orderWorkflowManager
+     * @param WorkflowManagerInterface $orderWorkflowManager
      */
     public function __construct(PimcoreRepositoryInterface $orderRepository, WorkflowManagerInterface $orderWorkflowManager)
     {
@@ -64,6 +66,10 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
      */
     public function onPostExecute(Context $context)
     {
+        if ($context->getException()) {
+            return;
+        }
+
         $previousStack = $context->getPrevious();
         $previousStackSize = count($previousStack);
 
@@ -94,29 +100,36 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
             return;
         }
 
-        $context->getGateway()->execute($status = new GetStatus($payment));
-        $value = $status->getValue();
-        if (($payment->getState() !== $value || $payment->getState() === 'new') && PaymentInterface::STATE_UNKNOWN !== $value) {
-            try {
-                $this->updateOrderWorkflow($payment, $value);
-            } catch (\Exception $ex) {
-                $context->setException($ex);
-            }
-        }
-    }
-
-    /**
-     * @param PaymentInterface $payment
-     * @param string           $nextState
-     */
-    private function updateOrderWorkflow(PaymentInterface $payment, $nextState)
-    {
         $order = $this->orderRepository->find($payment->getOrderId());
 
         if (!$order instanceof OrderInterface) {
             return;
         }
 
+        $context->getGateway()->execute($status = new GetStatus($payment));
+        $value = $status->getValue();
+        if (($payment->getState() !== $value || $payment->getState() === 'new') && PaymentInterface::STATE_UNKNOWN !== $value) {
+            try {
+                throw new \Exception('something happended');
+                $this->updateOrderWorkflow($order, $value);
+            } catch (\Exception $ex) {
+                $replyException = new ReplyException('reply', 0, $ex);
+
+
+                $context->setReply($replyException);
+                $context->setException($ex);
+
+                throw $replyException;
+            }
+        }
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param string $nextState
+     */
+    private function updateOrderWorkflow(OrderInterface $order, $nextState)
+    {
         $params = null;
         if ($nextState === PaymentInterface::STATE_PROCESSING || $nextState === PaymentInterface::STATE_NEW) {
             $params = [
@@ -136,7 +149,12 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
         }
 
         if (is_array($params)) {
-            $this->orderWorkflowManager->changeState($order, 'change_order_state', $params);
+            $this->updateToState($order, $params);
         }
+    }
+
+    private function updateToState(OrderInterface $order, $state)
+    {
+        $this->orderWorkflowManager->changeState($order, 'change_order_state', $state);
     }
 }

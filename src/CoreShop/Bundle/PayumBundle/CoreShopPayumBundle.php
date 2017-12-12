@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\PayumBundle;
 
+use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\PayumReplyToSymfonyPass;
 use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\RegisterGatewayConfigTypePass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -37,6 +38,7 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterGatewayConfigTypePass());
+        $container->addCompilerPass(new PayumReplyToSymfonyPass());
     }
 
     /**
