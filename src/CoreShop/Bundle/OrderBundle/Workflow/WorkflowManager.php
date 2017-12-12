@@ -217,7 +217,7 @@ final class WorkflowManager implements WorkflowManagerInterface
                 $manager->performAction($params['action'], $params);
                 Logger::debug('CoreShop State update. ID: ' . $proposal->getId() . ', newState: "' . $params['newState'] . '", newStatus: "' . $params['newStatus'] . '"');
             } catch (\Exception $e) {
-                throw new \Exception('changeOrderState Error: ' . $e->getMessage());
+                throw new \Exception('changeOrderState Error: ' . $e->getMessage(), $e->getCode(), $e);
             }
             finally {
                 $this->tokenStorage->getToken()->setUser($originalUser);
