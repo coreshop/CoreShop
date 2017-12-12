@@ -219,11 +219,12 @@ final class WorkflowManager implements WorkflowManagerInterface
             } catch (\Exception $e) {
                 throw new \Exception('changeOrderState Error: ' . $e->getMessage());
             }
+            finally {
+                $this->tokenStorage->getToken()->setUser($originalUser);
+            }
         } else {
             throw new \Exception('changeOrderState Error: ' . $manager->getError());
         }
-
-        $this->tokenStorage->getToken()->setUser($originalUser);
 
         return true;
     }
