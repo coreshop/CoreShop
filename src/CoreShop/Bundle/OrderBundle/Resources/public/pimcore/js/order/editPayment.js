@@ -95,7 +95,7 @@ coreshop.order.order.editPayment = {
                         name: 'amount',
                         fieldLabel: t('coreshop_quantity'),
                         disabled: false,
-                        value: payment.get("amount")
+                        value: payment.get("amount") / 100
                     },
                     {
                         xtype: 'combo',

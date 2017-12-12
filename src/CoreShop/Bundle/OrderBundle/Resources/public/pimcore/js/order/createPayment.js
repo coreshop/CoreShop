@@ -152,7 +152,6 @@ coreshop.order.order.createPayment = {
                         name: 'amount',
                         fieldLabel: t('coreshop_quantity'),
                         decimalPrecision: 4,
-                        value: order.total - order.totalPayed,
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],
