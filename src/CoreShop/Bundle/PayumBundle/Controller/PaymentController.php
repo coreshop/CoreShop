@@ -79,6 +79,10 @@ class PaymentController extends Controller
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function prepareCaptureAction(Request $request)
     {
         /**
@@ -129,8 +133,9 @@ class PaymentController extends Controller
      * Here we return from the Payment Provider and process the result.
      *
      * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
+     * @throws \Payum\Core\Reply\ReplyInterface
      */
     public function afterCaptureAction(Request $request)
     {

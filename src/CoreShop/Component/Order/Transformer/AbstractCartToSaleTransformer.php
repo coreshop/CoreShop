@@ -207,13 +207,13 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $shippingAddress = $this->objectCloner->cloneObject(
             $cart->getShippingAddress(),
-            $this->objectService->createFolderByPath(sprintf("%s/addresses", $sale->getFullPath())),
-            "shipping"
+            $this->objectService->createFolderByPath(sprintf('%s/addresses', $sale->getFullPath())),
+            'shipping'
         );
         $invoiceAddress = $this->objectCloner->cloneObject(
             $cart->getInvoiceAddress(),
-            $this->objectService->createFolderByPath(sprintf("%s/addresses", $sale->getFullPath())),
-            "invoice"
+            $this->objectService->createFolderByPath(sprintf('%s/addresses', $sale->getFullPath())),
+            'invoice'
         );
 
         $shippingAddress->save();

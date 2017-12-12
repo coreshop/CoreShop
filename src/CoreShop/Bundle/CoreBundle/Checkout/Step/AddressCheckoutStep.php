@@ -58,7 +58,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward()
+    public function doAutoForward(CartInterface $cart)
     {
         return false;
     }
@@ -102,7 +102,8 @@ class AddressCheckoutStep implements CheckoutStepInterface
         $customer = $this->getCustomer();
 
         return [
-            'form' => $this->createForm($request, $cart, $customer)->createView()
+            'form' => $this->createForm($request, $cart, $customer)->createView(),
+            'hasShippableItems' => $cart->hasShippableItems()
         ];
     }
 
@@ -155,6 +156,11 @@ class AddressCheckoutStep implements CheckoutStepInterface
         ];
 
         $form = $this->formFactory->createNamed('', AddressType::class, $values, $options);
+
+        if($cart->hasShippableItems() === false) {
+            $form->remove('shippingAddress');
+            $form->remove('useShippingAsInvoice');
+        }
 
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);
