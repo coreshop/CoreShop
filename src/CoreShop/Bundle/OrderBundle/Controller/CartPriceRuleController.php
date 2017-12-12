@@ -42,7 +42,7 @@ class CartPriceRuleController extends ResourceController
      */
     public function getVoucherCodesAction(Request $request)
     {
-        $id = $request->get('id');
+        $id = $request->get('cartPriceRule');
         $cartPriceRule = $this->repository->find($id);
 
         if (!$cartPriceRule instanceof CartPriceRuleInterface) {
@@ -121,7 +121,7 @@ class CartPriceRuleController extends ResourceController
      */
     public function exportVoucherCodesAction(Request $request)
     {
-        $id = $request->get('id');
+        $id = $request->get('cartPriceRule');
         $priceRule = $this->repository->find($id);
 
         if ($priceRule instanceof CartPriceRuleInterface) {
@@ -158,6 +158,33 @@ class CartPriceRuleController extends ResourceController
         }
 
         exit;
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function deleteVoucherCodeAction(Request $request)
+    {
+        $cartPriceRuleId = $request->get('cartPriceRule');
+        $id = $request->get('id');
+        $cartPriceRule = $this->repository->find($cartPriceRuleId);
+
+        if (!$cartPriceRule instanceof CartPriceRuleInterface) {
+            throw new NotFoundHttpException();
+        }
+
+        $repository = $this->manager
+            ->getRepository('CoreShop\Component\Order\Model\CartPriceRuleVoucherCode');
+
+        $code = $repository->find(['id' => $id]);
+
+        if ($code instanceof CartPriceRuleVoucherCode) {
+            $repository->remove($code);
+            return $this->viewHandler->handle(['success' => true, 'id' => $id]);
+        }
+
+        return $this->viewHandler->handle(['success' => false]);
     }
 
     /**

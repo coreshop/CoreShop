@@ -29,6 +29,11 @@ coreshop_admin_cart_price_rule:
         methods:
           - GET
           - POST
+      deleteVoucherCode:
+        path: delete-voucher-code
+        action: deleteVoucherCode
+        methods:
+          - POST
 
 ##### ORDERS
 coreshop_order_get_grid_configuration:

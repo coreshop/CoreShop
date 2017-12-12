@@ -107,14 +107,17 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 pageSize: pimcore.helpers.grid.getDefaultPageSize(),
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/coreshop/cart_price_rules/get-voucher-codes',
                     reader: {
                         type: 'json',
                         rootProperty: 'data',
                         totalProperty: 'total'
                     },
+                    api: {
+                        read: '/admin/coreshop/cart_price_rules/get-voucher-codes',
+                        destroy: '/admin/coreshop/cart_price_rules/delete-voucher-code'
+                    },
                     extraParams: {
-                        id: this.data.id
+                        cartPriceRule: this.data.id
                     }
                 },
                 fields: [
@@ -151,6 +154,22 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         text: t('coreshop_cart_pricerule_uses'),
                         dataIndex: 'uses',
                         flex: 1
+                    },
+                    {
+                        xtype: 'actioncolumn',
+                        width: 40,
+                        items: [{
+                            isDisabled: function (grid, rowIndex, colIndex, items, record) {
+                                return record.data.used === true;
+                            },
+                            tooltip: t('remove'),
+                            icon: '/pimcore/static6/img/flat-color-icons/delete.svg',
+                            handler: function (grid, rowIndex) {
+                                var record = grid.getStore().getAt(rowIndex);
+                                grid.getStore().removeAt(rowIndex);
+                                console.log(record);
+                            }.bind(this)
+                        }]
                     }
                 ],
                 region: 'center',
