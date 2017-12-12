@@ -1,6 +1,6 @@
 parameters:
   coreshop.form.type.cart_price_rule.validation_groups: [coreshop]
-  coreshop.form.type.cart_price_rule_generator.validation_groups: [coreshop]
+  coreshop.form.type.voucher.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule_action.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule_condition.validation_groups: [coreshop]
@@ -15,11 +15,19 @@ services:
     tags:
       - { name: form.type }
 
-  coreshop.form.type.cart_price_rule_generator:
-    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleGeneratorType
+  coreshop.form.type.voucher:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\VoucherType
+    arguments:
+      - 'CoreShop\Component\Order\Model\CartPriceRuleVoucherCode'
+      - '%coreshop.form.type.voucher.validation_groups%'
+    tags:
+      - { name: form.type }
+
+  coreshop.form.type.voucher_generator:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType
     arguments:
       - 'CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator'
-      - '%coreshop.form.type.cart_price_rule_generator.validation_groups%'
+      - '%coreshop.form.type.voucher.validation_groups%'
     tags:
       - { name: form.type }
 

@@ -178,6 +178,13 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                     items: [
                         {
                             xtype: 'button',
+                            text: t('coreshop_cart_pricerule_create_voucher'),
+                            handler: function () {
+                                this.openVoucherCreateDialog();
+                            }.bind(this)
+                        },
+                        {
+                            xtype: 'button',
                             text: t('coreshop_cart_pricerule_generate_vouchers'),
                             handler: function () {
                                 this.openVoucherGenerationDialog();
@@ -197,6 +204,62 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
         }
 
         return this.voucherCodesPanel;
+    },
+
+    openVoucherCreateDialog: function () {
+        var window = new Ext.Window({
+            width: 330,
+            height: 170,
+            modal: true,
+            iconCls: 'coreshop_price_rule_vouchers',
+            title: t('coreshop_cart_pricerule_create_voucher'),
+            layout: 'fit',
+            items: [{
+                xtype: 'form',
+                region: 'center',
+                bodyPadding: 20,
+                items: [
+                    {
+                        xtype: 'textfield',
+                        name: 'code',
+                        allowBlank: false,
+                        fieldLabel: t('coreshop_cart_pricerule_voucher_code')
+                    }
+                ],
+                buttons: [{
+                    text: t('create'),
+                    iconCls: 'pimcore_icon_apply',
+                    handler: function (btn) {
+                        btn.setDisabled(true);
+                        var params = btn.up('form').getForm().getFieldValues();
+
+                        params['cartPriceRule'] = this.data.id;
+
+                        Ext.Ajax.request({
+                            url: '/admin/coreshop/cart_price_rules/create-voucher-code',
+                            method: 'post',
+                            jsonData: params,
+                            success: function (response) {
+                                var res = Ext.decode(response.responseText);
+                                if (res.success) {
+                                    pimcore.helpers.showNotification(t('success'), t('success'), 'success');
+                                    window.close();
+                                    this.getVoucherCodes().down('grid').getStore().load();
+                                } else {
+                                    btn.setDisabled(false);
+                                    pimcore.helpers.showNotification(t('error'), (res.message ? res.message : 'error'), 'error');
+                                }
+                            }.bind(this),
+                            failure: function(response) {
+                                btn.setDisabled(false);
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }]
+            }]
+        });
+
+        window.show();
     },
 
     openVoucherGenerationDialog: function () {
@@ -254,6 +317,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                     text: t('create'),
                     iconCls: 'pimcore_icon_apply',
                     handler: function (btn) {
+                        btn.setDisabled(true);
                         var params = btn.up('form').getForm().getFieldValues();
 
                         params['cartPriceRule'] = this.data.id;
@@ -264,15 +328,17 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             jsonData: params,
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
-
                                 if (res.success) {
                                     pimcore.helpers.showNotification(t('success'), t('success'), 'success');
-
                                     window.close();
                                     this.getVoucherCodes().down('grid').getStore().load();
                                 } else {
+                                    btn.setDisabled(false);
                                     pimcore.helpers.showNotification(t('error'), 'error', 'error');
                                 }
+                            }.bind(this),
+                            failure: function(response) {
+                                btn.setDisabled(false);
                             }.bind(this)
                         });
                     }.bind(this)
