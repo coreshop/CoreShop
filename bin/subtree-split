@@ -7,7 +7,7 @@ CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 function split()
 {
-    split_new_repo $1 $2
+#    split_new_repo $1 $2
 
 
     SHA1=`./bin/splitsh-lite --prefix=$1`
