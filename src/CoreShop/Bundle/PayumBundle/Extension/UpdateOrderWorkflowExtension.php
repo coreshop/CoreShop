@@ -18,7 +18,6 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Test\Models\Order;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\Generic;
