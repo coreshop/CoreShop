@@ -69,9 +69,9 @@ class CategoryController extends FrontendController
     {
         $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
         $gridPerPageAllowed = $this->getConfigurationService()->getForStore("system.category.grid.per_page");
-        $gridPerPageDefault = $this->getConfigurationService()->getForStore("system.category.grid.per_page_default");
+        $gridPerPageDefault = $this->getConfigurationService()->getForStore("system.category.grid.per_page.default");
         $listPerPageAllowed = $this->getConfigurationService()->getForStore("system.category.list.per_page");
-        $listPerPageDefault = $this->getConfigurationService()->getForStore("system.category.list.per_page_default");
+        $listPerPageDefault = $this->getConfigurationService()->getForStore("system.category.list.per_page.default");
         $variantMode = $this->getConfigurationService()->getForStore("system.category.variant_mode");
 
         $page = $request->get('page', 0);
