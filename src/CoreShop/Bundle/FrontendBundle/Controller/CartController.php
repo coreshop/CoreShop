@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
@@ -64,15 +65,19 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        if ($product->getQuantity() <= 0 && $product->getIsAvailableWhenOutOfStock() !== true) {
-            $this->addFlash('error', 'coreshop.ui.item_is_out_of_stock');
-            return $this->redirectToRoute('coreshop_cart_summary');
-        }
-
         $quantity = intval($request->get('quantity', 1));
 
         if (!is_int($quantity)) {
             $quantity = 1;
+        }
+
+        if ($product instanceof StockableInterface) {
+            $hasStock = $this->get('coreshop.inventory.availability_checker.default')->isStockSufficient($product, $quantity);
+
+            if (!$hasStock) {
+                $this->addFlash('error', 'coreshop.ui.item_is_out_of_stock');
+                return $this->redirectToRoute('coreshop_cart_summary');
+            }
         }
 
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
