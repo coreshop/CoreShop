@@ -13,10 +13,9 @@
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 use Webmozart\Assert\Assert;
 
 class VoucherConditionChecker extends AbstractConditionChecker
@@ -50,22 +49,19 @@ class VoucherConditionChecker extends AbstractConditionChecker
             return false;
         }
 
-        /**
-         * @var $subject CartInterface
-         * @var $rules RuleInterface[]
-         */
-        $rules = $cart->getPriceRules();
-
         // max usage per code condition
-         if (is_numeric($maxUsagePerCode)) {
-            $cartVoucherCounter = 0; //this is our current state
-            foreach ($rules as $rule) {
-                if ($rule instanceof CartPriceRuleInterface) {
-                    if($rule->hasVoucherCode($storedCode)) {
-                       $cartVoucherCounter++;
+        if (is_numeric($maxUsagePerCode)) {
+            $cartVoucherCounter = 0;
+            if ($cart->hasPriceRules()) {
+                foreach ($cart->getPriceRuleItems() as $rule) {
+                    if ($rule instanceof ProposalCartPriceRuleItemInterface) {
+                        if (!empty($rule->getVoucherCode())) {
+                            $cartVoucherCounter++;
+                        }
                     }
                 }
             }
+
             $fullCounter = $storedCode->getUses() + $cartVoucherCounter;
             if (is_numeric($maxUsagePerCode) && $fullCounter >= $maxUsagePerCode) {
                 return false;
@@ -75,11 +71,13 @@ class VoucherConditionChecker extends AbstractConditionChecker
         // only once per cart condition
         if ($onlyOncePerCart === true) {
             $valid = true;
-            foreach ($rules as $rule) {
-                if ($rule instanceof CartPriceRuleInterface) {
-                    if($rule->hasVoucherCode($storedCode)) {
-                       $valid = false;
-                       break;
+            if ($cart->hasPriceRules()) {
+               foreach ($cart->getPriceRuleItems() as $rule) {
+                   if ($rule instanceof ProposalCartPriceRuleItemInterface) {
+                       if ($rule->getVoucherCode() == $storedCode->getCode()) {
+                           $valid = false;
+                           break;
+                       }
                     }
                 }
             }
