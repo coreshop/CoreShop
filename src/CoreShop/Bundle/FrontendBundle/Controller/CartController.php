@@ -151,7 +151,7 @@ class CartController extends FrontendController
 
         $priceRule = $voucherCode->getCartPriceRule();
 
-        if ($this->getCartPriceRuleProcessor()->process($priceRule, $code, $this->getCartManager()->getCart())) {
+        if ($this->getCartPriceRuleProcessor()->process($priceRule, $voucherCode, $this->getCartManager()->getCart())) {
             $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
         } else {
             $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
@@ -178,7 +178,7 @@ class CartController extends FrontendController
 
         $priceRule = $voucherCode->getCartPriceRule();
 
-        $this->getCartPriceRuleUnProcessor()->unProcess($priceRule, $code, $cart);
+        $this->getCartPriceRuleUnProcessor()->unProcess($priceRule, $voucherCode, $cart);
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }

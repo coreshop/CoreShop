@@ -8,24 +8,21 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
 use Carbon\Carbon;
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
-class TimeSpanConditionChecker implements ConditionCheckerInterface
+class TimeSpanConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
-        Assert::isInstanceOf($subject, CartInterface::class);
-
         $dateFrom = Carbon::createFromTimestamp($configuration['dateFrom'] / 1000);
         $dateTo = Carbon::createFromTimestamp($configuration['dateTo'] / 1000);
 

@@ -19,13 +19,16 @@ use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectCloner;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
@@ -95,6 +98,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $objectCloner;
 
     /**
+     * @var CartPriceRuleVoucherRepositoryInterface
+     */
+    protected $voucherCodeRepository;
+
+    /**
      * @param ProposalItemTransformerInterface $cartItemToSaleItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -107,6 +115,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param CurrencyConverterInterface $currencyConverter
      * @param ObjectCloner $objectCloner
+     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToSaleItemTransformer,
@@ -120,7 +129,8 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter,
-        ObjectCloner $objectCloner
+        ObjectCloner $objectCloner,
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
     )
     {
         $this->cartItemToSaleItemTransformer = $cartItemToSaleItemTransformer;
@@ -135,6 +145,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->eventDispatcher = $eventDispatcher;
         $this->currencyConverter = $currencyConverter;
         $this->objectCloner = $objectCloner;
+        $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
     /**
@@ -195,7 +206,13 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($cart->getPriceRuleItems() as $priceRule) {
                 if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
-                    $this->cartPriceRuleOrderProcessor->process($priceRule->getCartPriceRule(), $priceRule->getVoucherCode(), $cart, $sale);
+                    $voucherCode = $this->voucherCodeRepository->findByCode($priceRule->getVoucherCode());
+
+                    if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
+                        continue;
+                    }
+
+                    $this->cartPriceRuleOrderProcessor->process($priceRule->getCartPriceRule(), $voucherCode, $cart, $sale);
                 }
             }
         }

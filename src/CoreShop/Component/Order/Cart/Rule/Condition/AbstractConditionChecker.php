@@ -10,24 +10,25 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Cart\Rule\Condition;
+namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
-use CoreShop\Component\Core\Model\CurrencyInterface;
-use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use Webmozart\Assert\Assert;
 
-final class CurrenciesConditionChecker extends AbstractConditionChecker
+abstract class AbstractConditionChecker implements CartRuleConditionCheckerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
+    public function isValid($subject, array $configuration)
     {
-        if (!$cart->getCurrency() instanceof CurrencyInterface) {
-            return false;
-        }
+        Assert::isArray($subject);
+        Assert::keyExists($subject, 'cart');
+        Assert::keyExists($subject, 'voucher');
+        Assert::isInstanceOf($subject['cart'], CartInterface::class);
+        Assert::isInstanceOf($subject['voucher'], CartPriceRuleVoucherCodeInterface::class);
 
-        return in_array($cart->getCurrency()->getId(), $configuration['currencies']);
+        return $this->isCartRuleValid($subject['cart'], $subject['voucher'], $configuration);
     }
 }

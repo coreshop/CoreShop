@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Test\Models;
 
@@ -30,6 +30,8 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationTy
 use CoreShop\Component\Order\Cart\Calculator\CartDiscountCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Test\Data;
 use CoreShop\Test\RuleTest;
 
@@ -126,6 +128,27 @@ class CartPriceRule extends RuleTest
         $priceRule->setName('test-rule');
 
         return $priceRule;
+    }
+
+    /**
+     * @param $subject
+     * @param ConditionInterface $condition
+     * @param bool $trueOrFalse
+     */
+    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true)
+    {
+        $rule = $this->createRule();
+        $rule->addCondition($condition);
+
+        /**
+         * @var $voucher CartPriceRuleVoucherCodeInterface
+         */
+        $voucher = $this->get('coreshop.factory.cart_price_rule_voucher_code')->createNew();
+        $voucher->setCode('CoreShop-RULES-' . uniqid());
+        $voucher->setUsed(false);
+        $voucher->setUses(0);
+
+        $this->assertPriceRuleCondition(['cart' => $subject, 'voucher' => $voucher], $rule, $trueOrFalse);
     }
 
     /**
@@ -312,7 +335,18 @@ class CartPriceRule extends RuleTest
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, '', $cart));
+        /**
+         * @var $voucher CartPriceRuleVoucherCodeInterface
+         */
+        $voucher = $this->get('coreshop.factory.cart_price_rule_voucher_code')->createNew();
+        $voucher->setCode('CoreShop-RULES-' . uniqid());
+        $voucher->setUsed(false);
+        $voucher->setUses(0);
+
+        $this->getEntityManager()->persist($voucher);
+        $this->getEntityManager()->flush();
+
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, $voucher, $cart));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
@@ -345,7 +379,18 @@ class CartPriceRule extends RuleTest
 
         $cart = Data::createCartWithProducts();
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, '', $cart));
+        /**
+         * @var $voucher CartPriceRuleVoucherCodeInterface
+         */
+        $voucher = $this->get('coreshop.factory.cart_price_rule_voucher_code')->createNew();
+        $voucher->setCode('CoreShop-RULES-' . uniqid());
+        $voucher->setUsed(false);
+        $voucher->setUses(0);
+
+        $this->getEntityManager()->persist($voucher);
+        $this->getEntityManager()->flush();
+
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, $voucher, $cart));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
@@ -385,7 +430,18 @@ class CartPriceRule extends RuleTest
         $this->assertEquals(1000, $shipping);
         $this->assertEquals(1200, $shippingWt);
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, '', $cart));
+        /**
+         * @var $voucher CartPriceRuleVoucherCodeInterface
+         */
+        $voucher = $this->get('coreshop.factory.cart_price_rule_voucher_code')->createNew();
+        $voucher->setCode('CoreShop-RULES-' . uniqid());
+        $voucher->setUsed(false);
+        $voucher->setUses(0);
+
+        $this->getEntityManager()->persist($voucher);
+        $this->getEntityManager()->flush();
+
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, $voucher, $cart));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);

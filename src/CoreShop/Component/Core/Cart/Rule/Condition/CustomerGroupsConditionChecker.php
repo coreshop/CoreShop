@@ -8,33 +8,28 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
-final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
+final class CustomerGroupsConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
-        /**
-         * @var $subject CartInterface
-         */
-        Assert::isInstanceOf($subject, CartInterface::class);
-
-        if (!$subject->getCustomer() instanceof CustomerInterface) {
+        if (!$cart->getCustomer() instanceof CustomerInterface) {
             return false;
         }
 
-        foreach ($subject->getCustomer()->getCustomerGroups() as $customerGroup) {
+        foreach ($cart->getCustomer()->getCustomerGroups() as $customerGroup) {
             if ($customerGroup instanceof CustomerGroupInterface) {
                 if (in_array($customerGroup->getId(), $configuration['customerGroups'])) {
                     return true;

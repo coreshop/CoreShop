@@ -14,6 +14,7 @@ namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -57,7 +58,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart)
+    public function process(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode, CartInterface $cart)
     {
         $priceRuleItem = null;
 
@@ -76,7 +77,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
             }
         }
 
-        if ($this->cartPriceRuleValidator->isValid($cart, $cartPriceRule)) {
+        if ($this->cartPriceRuleValidator->isValid(['cart' => $cart, 'voucher' => $voucherCode], $cartPriceRule)) {
             $discountNet = 0;
             $discountGross = 0;
 
@@ -99,7 +100,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
             }
 
             $priceRuleItem->setCartPriceRule($cartPriceRule);
-            $priceRuleItem->setVoucherCode($usedCode);
+            $priceRuleItem->setVoucherCode($voucherCode->getCode());
             $priceRuleItem->setDiscount($discountNet, false);
             $priceRuleItem->setDiscount($discountGross, true);
 

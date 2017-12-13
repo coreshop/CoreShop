@@ -8,30 +8,24 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
-class AmountConditionChecker implements ConditionCheckerInterface
+class AmountConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
-        /*
-         * @var $subject CartInterface
-         */
-        Assert::isInstanceOf($subject, CartInterface::class);
-
         if ($configuration['minAmount'] > 0) {
             $minAmount = $configuration['minAmount'];
 
-            $cartTotal = $subject->getSubtotal();
+            $cartTotal = $cart->getSubtotal();
 
             if ($minAmount > $cartTotal) {
                 return false;
@@ -41,7 +35,7 @@ class AmountConditionChecker implements ConditionCheckerInterface
         if ($configuration['maxAmount'] > 0) {
             $maxAmount = $configuration['maxAmount'];
 
-            $cartTotal = $subject->getSubtotal();
+            $cartTotal = $cart->getSubtotal();
 
             if ($maxAmount < $cartTotal) {
                 return false;

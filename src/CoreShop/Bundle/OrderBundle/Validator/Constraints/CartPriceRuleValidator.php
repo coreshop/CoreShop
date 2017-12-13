@@ -14,8 +14,10 @@ namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Symfony\Component\Validator\Constraint;
@@ -30,11 +32,18 @@ final class CartPriceRuleValidator extends ConstraintValidator
     private $ruleValidationProcessor;
 
     /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @var CartPriceRuleVoucherRepositoryInterface
      */
-    public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
+    private $voucherCodeRepository;
+
+    /**
+     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     */
+    public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
+        $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
     /**
@@ -49,15 +58,31 @@ final class CartPriceRuleValidator extends ConstraintValidator
             return;
         }
 
-        $rules = $value->getPriceRules();
+        $ruleItems = $value->getPriceRuleItems();
 
-        foreach ($rules as $cartRule) {
+        if (!$ruleItems instanceof Fieldcollection) {
+            return;
+        }
+
+        foreach ($ruleItems as $ruleItem) {
+            if (!$ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+                return;
+            }
+
+            $cartRule = $ruleItem->getCartPriceRule();
+
             if (!$cartRule instanceof CartPriceRuleInterface) {
                 //Add violation?
                 return;
             }
 
-            if (!$this->ruleValidationProcessor->isValid($value, $cartRule)) {
+            $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
+
+            if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
+                return;
+            }
+
+            if (!$this->ruleValidationProcessor->isValid(['cart' => $value, 'voucher' => $voucherCode], $cartRule)) {
                 $this->context->addViolation(
                     $constraint->message,
                     ['%rule%' => $cartRule->getName()]

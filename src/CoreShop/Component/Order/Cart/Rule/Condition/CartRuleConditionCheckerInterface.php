@@ -10,20 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\Cart\Rule;
+namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-interface CartPriceRuleUnProcessorInterface
+interface CartRuleConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
-     * @param CartPriceRuleInterface $cartPriceRule
-     * @param CartPriceRuleVoucherCodeInterface $voucherCode
      * @param CartInterface $cart
+     * @param CartPriceRuleVoucherCodeInterface $voucher
+     * @param array $configuration
      *
-     * @return mixed
+     * @return boolean
      */
-    public function unProcess(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode, CartInterface $cart);
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration);
 }

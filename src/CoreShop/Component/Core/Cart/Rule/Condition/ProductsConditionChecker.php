@@ -8,28 +8,23 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
+use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
 
-final class ProductsConditionChecker implements ConditionCheckerInterface
+final class ProductsConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
-        /**
-         * @var $subject CartInterface
-         */
-        Assert::isInstanceOf($subject, CartInterface::class);
-
-        foreach ($subject->getItems() as $item) {
+        foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
 
             if ($product instanceof ProductInterface) {

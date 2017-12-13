@@ -2,6 +2,7 @@
 
 ## 2.0.0-alpha-4 to 2.0.0-alpha-5
  - **BC break** added Component\Core\Model\OrderItem and Component\Core\Model\QuoteItem. If you already customized them, inherit them from the Core Models.
+ - **BC break** changed the way CoreShop processes Cart-Rules. If you implemented a custom-condition, inherit from ```CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker``` and implement ```isCartRuleValid``` instead of ```isValid```
 
 ## 2.0.0-alpha-3 to 2.0.0-alpha-4
  - **BC break** decoupled MoneyBundle from CurrencyBundle, therefore the Twig Extension for Money Conversion went to the CurrencyBundle. Therefore the name of that extension was renamed from

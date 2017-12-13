@@ -13,18 +13,15 @@
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
-class VoucherConditionChecker implements ConditionCheckerInterface
+class VoucherConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
-        Assert::isInstanceOf($subject, CartInterface::class);
-
         //@todo: implement validation!
 
         return true;

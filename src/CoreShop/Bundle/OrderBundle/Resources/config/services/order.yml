@@ -31,6 +31,7 @@ services:
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.currency_converter'
       - '@coreshop.resource.object_cloner'
+      - '@coreshop.repository.cart_price_rule_voucher_code'
 
   coreshop.order.transformer.cart_item_to_quote_item:
     class: CoreShop\Component\Order\Transformer\CartItemToQuoteItemTransformer
@@ -56,6 +57,7 @@ services:
       - '@coreshop.transformer.event_dispatcher'
       - '@coreshop.currency_converter'
       - '@coreshop.resource.object_cloner'
+      - '@coreshop.repository.cart_price_rule_voucher_code'
 
   coreshop.factory.cart:
     class: CoreShop\Component\Order\Factory\CartFactory

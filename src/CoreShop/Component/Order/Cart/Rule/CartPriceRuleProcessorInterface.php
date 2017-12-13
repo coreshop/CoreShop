@@ -8,21 +8,22 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 interface CartPriceRuleProcessorInterface
 {
     /**
      * @param CartPriceRuleInterface $cartPriceRule
-     * @param string                 $usedCode
-     * @param CartInterface          $cart
+     * @param CartPriceRuleVoucherCodeInterface $voucherCode
+     * @param CartInterface $cart
      *
      * @return mixed
      */
-    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart);
+    public function process(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode, CartInterface $cart);
 }

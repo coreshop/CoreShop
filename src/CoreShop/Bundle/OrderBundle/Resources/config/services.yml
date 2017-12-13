@@ -29,6 +29,7 @@ services:
     arguments:
       - '@coreshop.registry.cart_price_rule.actions'
       - '@coreshop.cart_price_rule.rule_validation.processor'
+      - '@coreshop.repository.cart_price_rule_voucher_code'
 
   coreshop.cart.discount_calculator.composite:
     class: CoreShop\Component\Order\Cart\Calculator\CompositeCartDiscountCalculator
