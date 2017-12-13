@@ -181,3 +181,11 @@ services:
       - '@doctrine.orm.entity_manager'
       - '@coreshop.registry.cart_price_rule.actions'
       - '@coreshop.factory.cart_price_rule_item'
+
+
+  coreshop.validator.cart_price_rule:
+    class: CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator
+    arguments:
+      - '@coreshop.cart_price_rule.rule_validation.processor'
+    tags:
+       - { name: validator.constraint_validator, alias: 'coreshop_cart_rule_valid' }
