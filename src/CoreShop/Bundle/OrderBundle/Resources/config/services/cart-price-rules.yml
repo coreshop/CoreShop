@@ -129,6 +129,11 @@ services:
     tags:
       - { name: coreshop.cart_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
+  coreshop.cart_price_rule.condition.voucher:
+    class: CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: voucher, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType }
+
   coreshop.cart_price_rule.condition.amount:
     class: CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker
     tags:
