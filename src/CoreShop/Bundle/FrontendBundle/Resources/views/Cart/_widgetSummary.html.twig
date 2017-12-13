@@ -121,8 +121,7 @@
                         </td>
                         {% if editAllowed %}
                             <td colspan="1" class="text-left cart-sub-total">
-                                <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart"
-                                   href="#">
+                                <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart" href="#">
                                     <i class="fa fa-times-circle"></i>
                                 </a>
                             </td>
@@ -155,20 +154,18 @@
 
             <tr>
                 <td colspan="3" rowspan="{{ rowspan }}">
-                    {# TODO
-                    <form class="form-inline" role="form" method="post" action="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "pricerule"), "coreshop_cart", true)?>">
-                        <?php if(!$this->edit) { ?>
-                            <input type="hidden" name="redirect" value="<?=\CoreShop::getTools()->url(array("act" => "payment"), "coreshop_checkout")?>" />
-                        <?php } ?>
+
+                    <form class="form-inline" role="form" method="post" action="{{ path('coreshop_cart_add_price_rule') }}">
                         <div class="form-group">
-                            <h4><?=$this->translate("Voucher")?></h4>
-                        </div><br/>
-                        <div class="form-group">
-                            <input type="text" class="pruceRule form-control" id="priceRule" name="priceRule" value="">
+                            <strong>{{ 'coreshop.ui.voucher.code'|trans }}:</strong>
                         </div>
-                        <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>OK</span></button>
+                        <div class="form-group">
+                            <input type="text" class="priceRule form-control" id="voucherCode" name="code" value="">
+                        </div>
+                        <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>{{ 'coreshop.ui.voucher.apply_code'|trans }}</span></button>
                     </form>
 
+                    {#
                     <?php
                     $highlightPriceRules = \CoreShop\Model\Cart\PriceRule::getHighlightItems($this->cart);
 
@@ -185,8 +182,9 @@
                         }
 
                         if(count($highlightPriceRules) > 0)
-                        ?></ul><?
-                    ?>#}
+                        ?></ul>
+                    #}
+
                 </td>
                 <td class="text-right">
                     <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>

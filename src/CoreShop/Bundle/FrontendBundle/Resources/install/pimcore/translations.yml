@@ -466,3 +466,48 @@ translations:
           de_CH: 'Ihre Wunschliste ist leer'
           en: 'Your wishlist is empty'
           de: 'Ihre Wunschliste ist leer'
+
+  coreshop.ui.error:
+      languages:
+          de_CH: 'Es ist ein Fehler aufgetreten'
+          en: 'There was an Error'
+          de: 'Es ist ein Fehler aufgetreten'
+
+  coreshop.ui.success:
+      languages:
+          de_CH: 'Der Vorgang war erfolgreich'
+          en: 'The operation was successful'
+          de: 'Der Vorgang war erfolgreich'
+
+  coreshop.ui.error.voucher.not_found:
+      languages:
+          de_CH: 'Der angegebene Gutcheincode ist ungültig'
+          en: 'This Voucher is invalid'
+          de: 'Der angegebene Gutcheincode ist ungültig'
+
+  coreshop.ui.error.voucher.invalid:
+      languages:
+          de_CH: 'Der angegebene Gutcheincode ist ungültig'
+          en: 'This Voucher is invalid'
+          de: 'Der angegebene Gutcheincode ist ungültig'
+
+  coreshop.ui.success.voucher.stored:
+      languages:
+          de_CH: 'Gutcheincode wurde erfoglreich angewendet'
+          en: 'Voucher ha been successfully applied'
+          de: 'Gutcheincode wurde erfoglreich angewendet'
+
+  coreshop.ui.voucher.code:
+      languages:
+          de_CH: 'Gutcheincode'
+          en: 'Voucher'
+          de: 'Gutcheincode'
+
+  coreshop.ui.voucher.apply_code:
+      languages:
+          de_CH: 'Einlösen'
+          en: 'Apply'
+          de: 'Einlösen'
+
+
+

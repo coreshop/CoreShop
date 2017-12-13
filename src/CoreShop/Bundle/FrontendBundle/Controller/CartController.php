@@ -146,15 +146,16 @@ class CartController extends FrontendController
         $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
         if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-            throw new NotFoundHttpException();
+            $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
+            return $this->redirectToRoute('coreshop_cart_summary');
         }
 
         $priceRule = $voucherCode->getCartPriceRule();
 
         if ($this->getCartPriceRuleProcessor()->process($priceRule, $code, $this->getCartManager()->getCart())) {
-            $this->addFlash('cart_price_rule_success', 'coreshop.ui.success');
+            $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
         } else {
-            $this->addFlash('cart_price_rule_error', 'coreshop.ui.error');
+            $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
         }
 
         return $this->redirectToRoute('coreshop_cart_summary');
