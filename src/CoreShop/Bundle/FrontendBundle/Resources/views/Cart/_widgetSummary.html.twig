@@ -110,9 +110,7 @@
                         <td colspan="2" class="text-center">
                             {{ priceRule.cartPriceRule.getName }}
                         </td>
-                        <td class="text-center">
-
-                        </td>
+                        <td class="text-center"></td>
                         <td class="text-right">
                             -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
                         </td>
@@ -121,7 +119,7 @@
                         </td>
                         {% if editAllowed %}
                             <td colspan="1" class="text-left cart-sub-total">
-                                <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart" href="#">
+                                <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart" href="{{ path('coreshop_cart_remove_price_rule', {'code' : priceRule.voucherCode }) }}">
                                     <i class="fa fa-times-circle"></i>
                                 </a>
                             </td>
@@ -164,26 +162,6 @@
                         </div>
                         <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>{{ 'coreshop.ui.voucher.apply_code'|trans }}</span></button>
                     </form>
-
-                    {#
-                    <?php
-                    $highlightPriceRules = \CoreShop\Model\Cart\PriceRule::getHighlightItems($this->cart);
-
-                    if(count($highlightPriceRules) > 0)
-                    {
-                    ?>
-                    <h4><?= $this->translate("Take advantage of our exclusive offers:") ?></h4>
-                    <ul class="list">
-                        <?php
-                        }
-
-                        foreach($highlightPriceRules as $priceRule) {
-                            echo '<li class="cart-rule"><strong class="cart-rule-code">'.$priceRule->getCode().'</strong> ' . $priceRule->getName() . '</li>';
-                        }
-
-                        if(count($highlightPriceRules) > 0)
-                        ?></ul>
-                    #}
 
                 </td>
                 <td class="text-right">

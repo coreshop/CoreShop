@@ -131,6 +131,8 @@ services:
 
   coreshop.cart_price_rule.condition.voucher:
     class: CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker
+    arguments:
+      - '@coreshop.repository.cart_price_rule_voucher_code'
     tags:
       - { name: coreshop.cart_price_rule.condition, type: voucher, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType }
 

@@ -192,7 +192,7 @@ class CartController extends FrontendController
         $quote = $this->getQuoteFactory()->createNew();
         $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
 
-        return $this->redirectToRoute('coreshop_quote_detail', ["quote" => $quote->getId()]);
+        return $this->redirectToRoute('coreshop_quote_detail', ['quote' => $quote->getId()]);
     }
 
     /**

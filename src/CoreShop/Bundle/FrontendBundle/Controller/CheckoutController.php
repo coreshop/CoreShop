@@ -12,8 +12,6 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStock;
-use CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStockValidator;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
