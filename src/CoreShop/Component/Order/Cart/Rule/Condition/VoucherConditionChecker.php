@@ -50,18 +50,30 @@ class VoucherConditionChecker extends AbstractConditionChecker
             return false;
         }
 
-        if (is_numeric($maxUsagePerCode) && $storedCode->getUses() >= $maxUsagePerCode) {
-            return false;
+        /**
+         * @var $subject CartInterface
+         * @var $rules RuleInterface[]
+         */
+        $rules = $cart->getPriceRules();
+
+        // max usage per code condition
+         if (is_numeric($maxUsagePerCode)) {
+            $cartVoucherCounter = 0; //this is our current state
+            foreach ($rules as $rule) {
+                if ($rule instanceof CartPriceRuleInterface) {
+                    if($rule->hasVoucherCode($storedCode)) {
+                       $cartVoucherCounter++;
+                    }
+                }
+            }
+            $fullCounter = $storedCode->getUses() + $cartVoucherCounter;
+            if (is_numeric($maxUsagePerCode) && $fullCounter >= $maxUsagePerCode) {
+                return false;
+            }
         }
 
+        // only once per cart condition
         if ($onlyOncePerCart === true) {
-
-            /**
-             * @var $subject CartInterface
-             * @var $rules RuleInterface[]
-             */
-            $rules = $subject->getPriceRules();
-
             $valid = true;
             foreach ($rules as $rule) {
                 if ($rule instanceof CartPriceRuleInterface) {
