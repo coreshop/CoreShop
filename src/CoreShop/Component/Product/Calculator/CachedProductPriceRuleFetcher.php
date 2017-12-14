@@ -25,6 +25,11 @@ class CachedProductPriceRuleFetcher implements ProductPriceRuleFetcherInterface
     protected $productPriceRuleFetcher;
 
     /**
+     * @var array
+     */
+    protected $cache = [];
+
+    /**
      * @param ProductPriceRuleFetcherInterface $productPriceRuleFetcher
      */
     public function __construct(ProductPriceRuleFetcherInterface $productPriceRuleFetcher)
@@ -42,14 +47,14 @@ class CachedProductPriceRuleFetcher implements ProductPriceRuleFetcherInterface
 
         $cacheKey = md5(get_class($subject) . "_" . get_class($this->productPriceRuleFetcher) . "_" . $subject->getId());
 
-        if (!$rules = Cache::load($cacheKey)) {
+        if (!array_key_exists($cacheKey, $this->cache)) {
             $rules = $this->productPriceRuleFetcher->getPriceRules($subject);
 
-            Cache::save($rules, $cacheKey, ['product_price_rule']);
+            $this->cache[$cacheKey] = $rules;
 
             return $rules;
         }
 
-        return $rules;
+        return $this->cache[$cacheKey];
     }
 }
