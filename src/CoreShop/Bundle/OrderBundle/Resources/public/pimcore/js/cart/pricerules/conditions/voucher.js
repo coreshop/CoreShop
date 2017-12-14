@@ -24,10 +24,10 @@ coreshop.cart.pricerules.conditions.voucher = Class.create(coreshop.rules.condit
                 value: this.data.maxUsagePerCode
             },
             {
-                fieldLabel: t('coreshop_action_voucher_only_once_per_cart'),
+                fieldLabel: t('coreshop_action_voucher_only_one_per_cart'),
                 xtype: 'checkbox',
-                name: 'onlyOncePerCart',
-                value: this.data.onlyOncePerCart
+                name: 'onlyOnePerCart',
+                value: this.data.onlyOnePerCart
             }]
         });
 

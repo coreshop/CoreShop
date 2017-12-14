@@ -42,7 +42,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
         Assert::isInstanceOf($cart, CartInterface::class);
 
         $maxUsagePerCode = $configuration['maxUsagePerCode'];
-        $onlyOncePerCart = $configuration['onlyOncePerCart'];
+        $onlyOnePerCart = $configuration['onlyOnePerCart'];
 
         $storedCode = $this->voucherCodeRepository->findByCode($voucher->getCode());
 
@@ -52,30 +52,18 @@ class VoucherConditionChecker extends AbstractConditionChecker
 
         // max usage per code condition
         if (is_numeric($maxUsagePerCode)) {
-            $cartVoucherCounter = 0;
-            if ($cart->hasPriceRules()) {
-                foreach ($cart->getPriceRuleItems() as $rule) {
-                    if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                        if (!empty($rule->getVoucherCode())) {
-                            $cartVoucherCounter++;
-                        }
-                    }
-                }
-            }
-
-            $fullCounter = $storedCode->getUses() + $cartVoucherCounter;
-            if (is_numeric($maxUsagePerCode) && $fullCounter >= $maxUsagePerCode) {
+            if ($maxUsagePerCode != 0 && $storedCode->getUses() >= $maxUsagePerCode) {
                 return false;
             }
         }
 
         // only once per cart condition
-        if ($onlyOncePerCart === true) {
+        if ($onlyOnePerCart === true) {
             $valid = true;
             if ($cart->hasPriceRules()) {
                foreach ($cart->getPriceRuleItems() as $rule) {
                    if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                       if ($rule->getVoucherCode() == $storedCode->getCode()) {
+                       if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode() !== $storedCode->getCode()) {
                            $valid = false;
                            break;
                        }
