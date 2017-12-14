@@ -27,7 +27,7 @@ final class CartPriceRuleType extends RuleType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('highlight', CheckboxType::class)
+            ->add('isVoucherRule', CheckboxType::class)
             ->add('active', CheckboxType::class)
             ->add('description', TextareaType::class)
             ->add('conditions', CartPriceRuleConditionCollectionType::class)

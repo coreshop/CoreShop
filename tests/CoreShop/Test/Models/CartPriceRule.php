@@ -117,15 +117,17 @@ class CartPriceRule extends RuleTest
     }
 
     /**
+     * @param $active bool
      * @return CartPriceRuleInterface
      */
-    protected function createRule()
+    protected function createRule($active = true)
     {
         /**
          * @var CartPriceRuleInterface
          */
         $priceRule = $this->getFactory('cart_price_rule')->createNew();
         $priceRule->setName('test-rule');
+        $priceRule->setActive($active);
 
         return $priceRule;
     }
@@ -148,7 +150,7 @@ class CartPriceRule extends RuleTest
         $voucher->setUsed(false);
         $voucher->setUses(0);
 
-        $this->assertPriceRuleCondition(['cart' => $subject, 'voucher' => $voucher], $rule, $trueOrFalse);
+        $this->assertPriceRuleCondition(['cart' => $subject, 'cartPriceRule' => $rule, 'voucher' => $voucher], $rule, $trueOrFalse);
     }
 
     /**
@@ -346,7 +348,7 @@ class CartPriceRule extends RuleTest
         $this->getEntityManager()->persist($voucher);
         $this->getEntityManager()->flush();
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, $voucher, $cart));
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($cart, $rule, $voucher));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
@@ -390,7 +392,7 @@ class CartPriceRule extends RuleTest
         $this->getEntityManager()->persist($voucher);
         $this->getEntityManager()->flush();
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, $voucher, $cart));
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($cart, $rule, $voucher));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
@@ -441,10 +443,12 @@ class CartPriceRule extends RuleTest
         $this->getEntityManager()->persist($voucher);
         $this->getEntityManager()->flush();
 
-        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($rule, $voucher, $cart));
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($cart, $rule, $voucher));
 
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
+
+        $cart->save();
 
         $this->assertEquals(0, $discount);
         $this->assertEquals(0, $discountWt);

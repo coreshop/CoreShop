@@ -37,7 +37,7 @@ class CartPriceRule implements CartPriceRuleInterface
     /**
      * @var bool
      */
-    protected $highlight = false;
+    protected $isVoucherRule = true;
 
     /**
      * @var int
@@ -85,17 +85,17 @@ class CartPriceRule implements CartPriceRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getHighlight()
+    public function getIsVoucherRule()
     {
-        return $this->highlight;
+        return $this->isVoucherRule;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setHighlight($highlight)
+    public function setIsVoucherRule($isVoucherRule)
     {
-        $this->highlight = $highlight;
+        $this->isVoucherRule = $isVoucherRule;
 
         return $this;
     }

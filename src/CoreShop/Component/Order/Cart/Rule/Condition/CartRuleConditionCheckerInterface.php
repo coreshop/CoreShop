@@ -24,10 +24,11 @@ interface CartRuleConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
      * @param CartInterface $cart
-     * @param CartPriceRuleVoucherCodeInterface $voucher
+     * @param CartPriceRuleInterface $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucher
      * @param array $configuration
      *
      * @return boolean
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration);
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucher = null, array $configuration);
 }

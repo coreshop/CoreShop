@@ -112,7 +112,7 @@ services:
       - '@coreshop.registry.cart_price_rule.conditions'
 
   coreshop.cart_price_rule.rule_validation.processor:
-    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+    class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor
     arguments:
       - '@coreshop.cart_price_rule.conditions.validation.processor'
 

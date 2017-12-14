@@ -15,7 +15,7 @@ CoreShop\Component\Order\Model\CartPriceRule:
       expose: true
       type: string
       groups: [Detailed]
-    highlight:
+    isVoucherRule:
       expose: true
       type: boolean
       groups: [Detailed]

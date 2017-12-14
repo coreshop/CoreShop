@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
@@ -32,14 +32,15 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
      */
     public function __construct(
         ServiceRegistryInterface $actionServiceRegistry
-    ) {
+    )
+    {
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function unProcess(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode, CartInterface $cart)
+    public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
         $priceRuleItem = null;
 
@@ -49,7 +50,11 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
                     $cartsRule = $rule->getCartPriceRule();
 
                     if ($cartsRule instanceof CartPriceRuleInterface) {
-                        if ($cartsRule->getId() === $cartPriceRule->getId() && $voucherCode->getCode() === $rule->getVoucherCode()) {
+                        if ($cartsRule->getId() === $cartPriceRule->getId()) {
+                            if ($voucherCode && $voucherCode->getCode() !== $rule->getVoucherCode()) {
+                                continue;
+                            }
+
                             $priceRuleItem = $rule;
                             break;
                         }
@@ -68,10 +73,6 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
             }
 
             $cart->removePriceRule($cartPriceRule);
-
-            if ($cart->getId()) {
-                $cart->save();
-            }
 
             return true;
         }

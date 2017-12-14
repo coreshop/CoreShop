@@ -15,8 +15,8 @@ CoreShop\Component\Order\Model\CartPriceRule:
       column: description
       type: string
       nullable: true
-    highlight:
-      column: highlight
+    isVoucherRule:
+      column: isVoucherRule
       type: boolean
     active:
       column: active

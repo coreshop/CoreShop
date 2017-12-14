@@ -25,7 +25,7 @@ use CoreShop\Component\Rule\Model\ActionInterface;
 class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 {
     /**
-     * @var RuleValidationProcessorInterface
+     * @var CartPriceRuleValidationProcessorInterface
      */
     private $cartPriceRuleValidator;
 
@@ -40,12 +40,12 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     private $actionServiceRegistry;
 
     /**
-     * @param RuleValidationProcessorInterface $cartPriceRuleValidator
+     * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
      * @param FactoryInterface $cartPriceRuleItemFactory
      * @param ServiceRegistryInterface $actionServiceRegistry
      */
     public function __construct(
-        RuleValidationProcessorInterface $cartPriceRuleValidator,
+        CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
         FactoryInterface $cartPriceRuleItemFactory,
         ServiceRegistryInterface $actionServiceRegistry
     )
@@ -58,26 +58,28 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode, CartInterface $cart)
+    public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
-        $priceRuleItem = null;
+        if ($this->cartPriceRuleValidator->isValidCartRule($cart, $cartPriceRule, $voucherCode)) {
+            $priceRuleItem = null;
+            $existingPriceRule = false;
 
-        if ($cart->hasPriceRules()) {
-            foreach ($cart->getPriceRuleItems() as $rule) {
-                if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                    $cartsRule = $rule->getCartPriceRule();
+            if ($cart->hasPriceRules()) {
+                foreach ($cart->getPriceRuleItems() as $rule) {
+                    if ($rule instanceof ProposalCartPriceRuleItemInterface) {
+                        $cartsRule = $rule->getCartPriceRule();
 
-                    if ($cartsRule instanceof CartPriceRuleInterface) {
-                        if ($cartsRule->getId() === $cartPriceRule->getId()) {
-                            $priceRuleItem = $rule;
-                            break;
+                        if ($cartsRule instanceof CartPriceRuleInterface) {
+                            if ($cartsRule->getId() === $cartPriceRule->getId()) {
+                                $priceRuleItem = $rule;
+                                $existingPriceRule = true;
+                                break;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if ($this->cartPriceRuleValidator->isValid(['cart' => $cart, 'voucher' => $voucherCode], $cartPriceRule)) {
             $discountNet = 0;
             $discountGross = 0;
 
@@ -100,14 +102,15 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
             }
 
             $priceRuleItem->setCartPriceRule($cartPriceRule);
-            $priceRuleItem->setVoucherCode($voucherCode->getCode());
             $priceRuleItem->setDiscount($discountNet, false);
             $priceRuleItem->setDiscount($discountGross, true);
 
-            $cart->addPriceRule($priceRuleItem);
+            if ($voucherCode) {
+                $priceRuleItem->setVoucherCode($voucherCode->getCode());
+            }
 
-            if ($cart->getId()) {
-                $cart->save();
+            if (!$existingPriceRule) {
+                $cart->addPriceRule($priceRuleItem);
             }
 
             return true;

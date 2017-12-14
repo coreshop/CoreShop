@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 class AmountConditionChecker extends AbstractConditionChecker
@@ -20,7 +21,7 @@ class AmountConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucher = null, array $configuration)
     {
         if ($configuration['minAmount'] > 0) {
             $minAmount = $configuration['minAmount'];

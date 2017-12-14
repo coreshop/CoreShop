@@ -77,9 +77,19 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 checked: this.data.active
             }, {
                 xtype: 'checkbox',
-                name: 'highlight',
-                fieldLabel: t('highlight'),
-                checked: this.data.highlight
+                name: 'isVoucherRule',
+                fieldLabel: t('coreshop_is_voucher_rule'),
+                checked: this.data.isVoucherRule,
+                listeners: {
+                    change: function(checkbox, newValue) {
+                        if (newValue) {
+                            this.getVoucherCodes().enable();
+                        }
+                        else {
+                            this.getVoucherCodes().disable();
+                        }
+                    }.bind(this)
+                }
             }]
         });
 
@@ -188,6 +198,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 forceLayout: true,
                 style: 'padding: 10px',
                 layout: 'border',
+                disabled: !this.data.isVoucherRule,
                 items: [
                     grid
                 ],

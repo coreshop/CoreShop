@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use Webmozart\Assert\Assert;
 
@@ -25,10 +26,12 @@ abstract class AbstractConditionChecker implements CartRuleConditionCheckerInter
     {
         Assert::isArray($subject);
         Assert::keyExists($subject, 'cart');
+        Assert::keyExists($subject, 'cartPriceRule');
         Assert::keyExists($subject, 'voucher');
         Assert::isInstanceOf($subject['cart'], CartInterface::class);
-        Assert::isInstanceOf($subject['voucher'], CartPriceRuleVoucherCodeInterface::class);
+        Assert::nullOrIsInstanceOf($subject['voucher'], CartPriceRuleVoucherCodeInterface::class);
+        Assert::isInstanceOf($subject['cartPriceRule'], CartPriceRuleInterface::class);
 
-        return $this->isCartRuleValid($subject['cart'], $subject['voucher'], $configuration);
+        return $this->isCartRuleValid($subject['cart'], $subject['cartPriceRule'], $subject['voucher'], $configuration);
     }
 }

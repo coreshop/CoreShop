@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
 use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -27,7 +28,7 @@ use Webmozart\Assert\Assert;
 final class CartPriceRuleValidator extends ConstraintValidator
 {
     /**
-     * @var RuleValidationProcessorInterface
+     * @var CartPriceRuleValidationProcessorInterface
      */
     private $ruleValidationProcessor;
 
@@ -37,10 +38,10 @@ final class CartPriceRuleValidator extends ConstraintValidator
     private $voucherCodeRepository;
 
     /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */
-    public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
+    public function __construct(CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->voucherCodeRepository = $voucherCodeRepository;
@@ -78,11 +79,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
 
             $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
 
-            if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-                return;
-            }
-
-            if (!$this->ruleValidationProcessor->isValid(['cart' => $value, 'voucher' => $voucherCode], $cartRule)) {
+            if (!$this->ruleValidationProcessor->isValidCartRule($value, $cartRule, $voucherCode)) {
                 $this->context->addViolation(
                     $constraint->message,
                     ['%rule%' => $cartRule->getName()]

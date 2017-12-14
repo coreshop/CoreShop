@@ -8,15 +8,16 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
-interface CartPriceRuleProcessorInterface
+interface CartPriceRuleValidationProcessorInterface extends RuleValidationProcessorInterface
 {
     /**
      * @param CartInterface $cart
@@ -24,5 +25,5 @@ interface CartPriceRuleProcessorInterface
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
      * @return mixed
      */
-    public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
+    public function isValidCartRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 }

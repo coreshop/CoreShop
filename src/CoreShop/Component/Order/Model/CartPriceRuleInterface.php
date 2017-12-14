@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -33,12 +33,12 @@ interface CartPriceRuleInterface extends RuleInterface, ToggleableInterface
     /**
      * @return bool
      */
-    public function getHighlight();
+    public function getIsVoucherRule();
 
     /**
-     * @param bool $highlight
+     * @param bool $isVoucherRule
      */
-    public function setHighlight($highlight);
+    public function setIsVoucherRule($isVoucherRule);
 
     /**
      * @return Collection|CartPriceRuleVoucherCodeInterface[]

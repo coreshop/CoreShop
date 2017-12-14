@@ -6,6 +6,22 @@ services:
     tags:
       - { name: coreshop.cart_processor, priority: 500 }
 
+  coreshop.cart_processor.rule_auto:
+    class: CoreShop\Component\Core\Order\Processor\CartRuleAutoProcessor
+    arguments:
+      - '@coreshop.repository.cart_price_rule'
+      - '@coreshop.cart_price_rule.processor'
+    tags:
+      - { name: coreshop.cart_processor, priority: 470 }
+
+  coreshop.cart_processor.rule_auto_remove:
+    class: CoreShop\Component\Core\Order\Processor\CartRuleAutoRemoverProcessor
+    arguments:
+      - '@coreshop.cart_price_rule.rule_validation.processor'
+      - '@coreshop.cart_price_rule.un_processor'
+    tags:
+      - { name: coreshop.cart_processor, priority: 480 }
+
   coreshop.cart_processor.discount:
     class: CoreShop\Component\Core\Order\Processor\CartDiscountProcessor
     arguments:

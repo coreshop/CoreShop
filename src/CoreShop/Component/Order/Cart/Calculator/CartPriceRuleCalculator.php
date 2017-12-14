@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Order\Cart\Calculator;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
+use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -31,7 +32,7 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
     protected $actionServiceRegistry;
 
     /**
-     * @var RuleValidationProcessorInterface
+     * @var CartPriceRuleValidationProcessorInterface
      */
     protected $ruleValidationProcessor;
 
@@ -42,12 +43,12 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
 
     /**
      * @param ServiceRegistryInterface $actionServiceRegistry
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */
     public function __construct(
         ServiceRegistryInterface $actionServiceRegistry,
-        RuleValidationProcessorInterface $ruleValidationProcessor,
+        CartPriceRuleValidationProcessorInterface $ruleValidationProcessor,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
     )
     {
@@ -85,11 +86,7 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
             $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
             $rule = $ruleItem->getCartPriceRule();
 
-            if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-                continue;
-            }
-
-            if ($this->ruleValidationProcessor->isValid(['cart' => $subject, 'voucher' => $voucherCode], $rule)) {
+            if ($this->ruleValidationProcessor->isValidCartRule($subject, $rule, $voucherCode)) {
                 foreach ($rule->getActions() as $action) {
                     $processor = $this->actionServiceRegistry->get($action->getType());
 
