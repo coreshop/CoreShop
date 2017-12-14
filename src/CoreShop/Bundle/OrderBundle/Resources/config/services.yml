@@ -41,7 +41,6 @@ services:
   coreshop.cart.modifier:
     class: CoreShop\Component\Order\Cart\CartModifier
     arguments:
-      - '@coreshop.cart.manager'
       - '@coreshop.factory.cart_item'
 
   coreshop.order.invoice.processable:

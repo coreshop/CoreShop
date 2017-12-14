@@ -12,38 +12,28 @@
 
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListProductInterface;
-use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Webmozart\Assert\Assert;
 
 class CartModifier implements CartModifierInterface, StorageListModifierInterface
 {
     /**
-     * @var CartManagerInterface
-     */
-    protected $cartManager;
-
-    /**
      * @var FactoryInterface
      */
     protected $cartItemFactory;
 
     /**
-     * @param CartManagerInterface $cartManager
      * @param FactoryInterface $cartItemFactory
      */
-    public function __construct(CartManagerInterface $cartManager, FactoryInterface $cartItemFactory)
+    public function __construct(FactoryInterface $cartItemFactory)
     {
-        $this->cartManager = $cartManager;
         $this->cartItemFactory = $cartItemFactory;
     }
 
@@ -58,8 +48,6 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
          */
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($product, PurchasableInterface::class);
-
-        $this->cartManager->persistCart($storageList);
 
         return $this->updateItemQuantity($storageList, $product, $quantity, true);
     }
@@ -139,8 +127,6 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
      */
     public function addCartItem(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        $this->cartManager->persistCart($cart);
-
         return $this->addItem($cart, $product, $quantity);
     }
 
