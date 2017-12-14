@@ -47,7 +47,7 @@
                         {% endif %}
                     </td>
                     <td class="text-center">
-                        {% if item.getIsGiftItem and not editAllowed %}
+                        {% if item.getIsGiftItem or not editAllowed %}
                             <span>{{ item.getQuantity }}</span>
                         {% else %}
                             <div class="input-group btn-block">
@@ -86,15 +86,12 @@
             {% if cart.hasPriceRules %}
                 {% for priceRule in cart.getPriceRuleItems %}
                     <tr>
-                        <td colspan="2" class="text-center">
+                        <td colspan="2" class="text-left">
                             {{ priceRule.cartPriceRule.getName }}
                         </td>
                         <td class="text-center"></td>
-                        <td class="text-right">
+                        <td class="text-right" colspan="2">
                             -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
-                        </td>
-                        <td class="text-right">
-                            -{{ currency.convertAndFormat(priceRule.getDiscount(false)) }}
                         </td>
                         {% if editAllowed %}
                             <td colspan="1" class="text-left cart-sub-total">

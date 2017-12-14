@@ -526,3 +526,9 @@ translations:
           de_CH: 'Rabatt (exkl. MwSt.)'
           en: 'Discount (excl. VAT)'
           de: 'Rabatt (exkl. MwSt.)'
+
+  coreshop.ui.gift_item:
+      languages:
+          de_CH: 'Geschenkartikel'
+          en: 'Gift Item'
+          de: 'Geschenkartikel'
