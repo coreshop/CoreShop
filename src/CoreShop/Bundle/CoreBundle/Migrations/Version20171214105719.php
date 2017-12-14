@@ -4,12 +4,13 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-class Version20171214105719 extends AbstractPimcoreMigration
+class Version20171214105719 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @param Schema $schema
      * @throws \Doctrine\DBAL\DBALException
@@ -25,6 +26,8 @@ class Version20171214105719 extends AbstractPimcoreMigration
                 $table->addColumn('isVoucherRule', 'boolean', ['expose' => true, 'groups' => ['Detailed']]);
             }
         }
+
+        $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
     }
 
     /**
