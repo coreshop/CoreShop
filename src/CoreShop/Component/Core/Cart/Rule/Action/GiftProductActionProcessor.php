@@ -84,7 +84,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         if ($product instanceof PurchasableInterface) {
             foreach ($cart->getItems() as $item) {
                 if (!$item->getProduct() instanceof PurchasableInterface) {
-                    return false;
+                    continue;
                 }
 
                 if ($item->getProduct()->getId() === $product->getId()) {

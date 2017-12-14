@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in cart.getItems %}
+            {% for item in coreshop.cart.getItems %}
                 {% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
                 <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
                     <td class="text-center">
@@ -84,7 +84,7 @@
                 </tr>
             {% endfor %}
             {% if cart.hasPriceRules %}
-                {% for priceRule in cart.getPriceRuleItems %}
+                {% for priceRule in coreshop.cart.getPriceRuleItems %}
                     <tr>
                         <td colspan="2" class="text-left">
                             {{ priceRule.cartPriceRule.getName }}
