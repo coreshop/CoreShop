@@ -14,9 +14,19 @@ class Version20171213115150 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function up(Schema $schema)
     {
+        //update voucher index
+        if ($schema->hasTable('coreshop_cart_price_rule_voucher_code')) {
+            $table = $schema->getTable('coreshop_cart_price_rule_voucher_code');
+            if (!$table->hasIndex('code')) {
+                $table->changeColumn('code', ['length' => 190]);
+                $table->addUniqueIndex(['code', 'cartPriceRuleId'], 'code');
+            }
+        }
+
         //update translations
         $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
     }
