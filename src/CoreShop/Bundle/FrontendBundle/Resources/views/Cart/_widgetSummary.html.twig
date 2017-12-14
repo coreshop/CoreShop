@@ -45,27 +45,6 @@
                         {% if item.getIsGiftItem %}
                             <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
                         {% endif %}
-                        {# TODO
-                        <?php if(count($item->product->getValidSpecificPriceRules()) > 0) { ?>
-                            <div class="price-rules">
-                            <?php foreach($item->product->getValidSpecificPriceRules() as $rule) { ?>
-                                <?php foreach($rule->getActions() as $action) { ?>
-                                    <?php
-                                        if($action instanceof \CoreShop\Model\PriceRule\Action\DiscountAmount) {
-                                            echo "<br/>" . $this->translate(sprintf("You will get a discount of %s per Product.", $this->cart->formatPrice($action->getAmount())));
-                                        }
-                                        else if($action instanceof \CoreShop\Model\PriceRule\Action\DiscountPercent) {
-                                            echo "<br/>" . $this->translate(sprintf("You will get a discount of %s%% per Product.", $action->getPercent()));
-                                        }
-                                        else if($action instanceof \CoreShop\Model\PriceRule\Action\NewPrice) {
-                                            echo "<br/>" . $this->translate(sprintf("You will get a total new price of %s instead of %s.", $this->cart->formatPrice($action->getPriceWithTax($item->getProduct())), $this->cart->formatPrice($item->getProductRetailPriceWithTax())));
-                                        }
-                                    ?>
-                                <?php } ?>
-                            <?php } ?>
-                            </div>
-                        <?php } ?>
-                        #}
                     </td>
                     <td class="text-center">
                         {% if item.getIsGiftItem and not editAllowed %}
