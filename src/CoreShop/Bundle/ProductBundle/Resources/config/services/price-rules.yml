@@ -86,12 +86,6 @@ services:
     arguments:
       - '@coreshop.repository.product_price_rule'
 
-  coreshop.product.price_calculator.cached_product_price_rules_fetcher:
-    class: CoreShop\Component\Product\Calculator\CachedProductPriceRuleFetcher
-    decorates: coreshop.product.price_calculator.product_price_rules_fetcher
-    arguments:
-      - '@coreshop.product.price_calculator.cached_product_price_rules_fetcher.inner'
-
   coreshop.product.price_calculator.product_price_rules:
     class: CoreShop\Component\Product\Calculator\PriceRuleCalculator
     arguments:
