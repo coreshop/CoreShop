@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
+use CoreShop\Component\Pimcore\InheritanceHelper;
 use CoreShop\Component\Registry\ServiceRegistry;
 use Pimcore\Event\Model\WorkflowEvent;
 
@@ -40,7 +41,9 @@ final class WorkflowHelper
         $currentState = $pimcoreManager->getWorkflowStateForElement()->getState();
         $newState = $data['newState'];
 
-        $workflowManager->beforeWorkflowDispatch($event->getWorkflowManager()->getElement(), $newState, $currentState);
+        InheritanceHelper::useInheritedValues(function () use ($workflowManager, $event, $newState, $currentState) {
+            $workflowManager->beforeWorkflowDispatch($event->getWorkflowManager()->getElement(), $newState, $currentState);
+        });
     }
 
     public static function successDispatchOrderChange(WorkflowEvent $event)
@@ -60,7 +63,9 @@ final class WorkflowHelper
         $oldState = $data['oldState'];
         $newState = $data['newState'];
 
-        $workflowManager->successWorkflowDispatch($event->getWorkflowManager()->getElement(), $newState, $oldState);
+        InheritanceHelper::useInheritedValues(function () use ($workflowManager, $event, $newState, $oldState) {
+            $workflowManager->successWorkflowDispatch($event->getWorkflowManager()->getElement(), $newState, $oldState);
+        });
     }
 
     public static function failureDispatchOrderChange(WorkflowEvent $event)
@@ -80,7 +85,9 @@ final class WorkflowHelper
         $oldState = $data['oldState'];
         $newState = $data['newState'];
 
-        $workflowManager->successWorkflowDispatch($event->getWorkflowManager()->getElement(), $newState, $oldState);
+        InheritanceHelper::useInheritedValues(function () use ($workflowManager, $event, $newState, $oldState) {
+            $workflowManager->successWorkflowDispatch($event->getWorkflowManager()->getElement(), $newState, $oldState);
+        });
     }
 
     private static function get($id)
