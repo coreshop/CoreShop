@@ -66,20 +66,22 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
 
         if (is_array($rules)) {
             foreach ($rules as $rule) {
-                if ($rule->getActive()) {
-                    if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
-                        /**
-                         * @var ActionInterface
-                         */
-                        foreach ($rule->getActions() as $action) {
-                            $processor = $this->actionServiceRegistry->get($action->getType());
+                if (!$rule->getActive()) {
+                    continue;
+                }
 
-                            if ($processor instanceof ProductPriceActionProcessorInterface) {
-                                $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
+                if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
+                    /**
+                     * @var ActionInterface
+                     */
+                    foreach ($rule->getActions() as $action) {
+                        $processor = $this->actionServiceRegistry->get($action->getType());
 
-                                if (false !== $actionPrice && null !== $actionPrice) {
-                                    $price = $actionPrice;
-                                }
+                        if ($processor instanceof ProductPriceActionProcessorInterface) {
+                            $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
+
+                            if (false !== $actionPrice && null !== $actionPrice) {
+                                $price = $actionPrice;
                             }
                         }
                     }
