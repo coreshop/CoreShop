@@ -68,10 +68,7 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
 
         /**
          * @var $subject CartInterface
-         * @var $rules RuleInterface[]
          */
-        $rules = $subject->getPriceRules();
-
         $ruleItems = $subject->getPriceRuleItems();
 
         if (!$ruleItems instanceof Fieldcollection) {
@@ -86,13 +83,15 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
             $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
             $rule = $ruleItem->getCartPriceRule();
 
-            if ($this->ruleValidationProcessor->isValidCartRule($subject, $rule, $voucherCode)) {
-                foreach ($rule->getActions() as $action) {
-                    $processor = $this->actionServiceRegistry->get($action->getType());
+            if (!$this->ruleValidationProcessor->isValidCartRule($subject, $rule, $voucherCode)) {
+                continue;
+            }
 
-                    if ($processor instanceof CartPriceRuleActionProcessorInterface) {
-                        $discount += $processor->getDiscount($subject, $withTax, $action->getConfiguration());
-                    }
+            foreach ($rule->getActions() as $action) {
+                $processor = $this->actionServiceRegistry->get($action->getType());
+
+                if ($processor instanceof CartPriceRuleActionProcessorInterface) {
+                    $discount += $processor->getDiscount($subject, $withTax, $action->getConfiguration());
                 }
             }
         }

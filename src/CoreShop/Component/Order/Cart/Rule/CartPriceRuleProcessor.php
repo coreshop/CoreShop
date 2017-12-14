@@ -15,12 +15,6 @@ namespace CoreShop\Component\Order\Cart\Rule;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
-
-use CoreShop\Component\Registry\ServiceRegistryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
-use CoreShop\Component\Rule\Model\ActionInterface;
 
 class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 {
@@ -30,29 +24,21 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     private $cartPriceRuleValidator;
 
     /**
-     * @var FactoryInterface
+     * @var ProposalCartPriceRuleCalculatorInterface
      */
-    private $cartPriceRuleItemFactory;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $actionServiceRegistry;
+    private $proposalCartPriceRuleCalculator;
 
     /**
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param FactoryInterface $cartPriceRuleItemFactory
-     * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
      */
     public function __construct(
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
-        FactoryInterface $cartPriceRuleItemFactory,
-        ServiceRegistryInterface $actionServiceRegistry
+        ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
     )
     {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
-        $this->cartPriceRuleItemFactory = $cartPriceRuleItemFactory;
-        $this->actionServiceRegistry = $actionServiceRegistry;
+        $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
     }
 
     /**
@@ -61,57 +47,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
         if ($this->cartPriceRuleValidator->isValidCartRule($cart, $cartPriceRule, $voucherCode)) {
-            $priceRuleItem = null;
-            $existingPriceRule = false;
-
-            if ($cart->hasPriceRules()) {
-                foreach ($cart->getPriceRuleItems() as $rule) {
-                    if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                        $cartsRule = $rule->getCartPriceRule();
-
-                        if ($cartsRule instanceof CartPriceRuleInterface) {
-                            if ($cartsRule->getId() === $cartPriceRule->getId()) {
-                                $priceRuleItem = $rule;
-                                $existingPriceRule = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            $discountNet = 0;
-            $discountGross = 0;
-
-            foreach ($cartPriceRule->getActions() as $action) {
-                if ($action instanceof ActionInterface) {
-                    $actionCommand = $this->actionServiceRegistry->get($action->getType());
-
-                    $actionCommand->applyRule($cart, $action->getConfiguration());
-
-                    $discountNet += $actionCommand->getDiscount($cart, false, $action->getConfiguration());
-                    $discountGross += $actionCommand->getDiscount($cart, true, $action->getConfiguration());
-                }
-            }
-
-            /**
-             * @var ProposalCartPriceRuleItemInterface
-             */
-            if ($priceRuleItem === null) {
-                $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
-            }
-
-            $priceRuleItem->setCartPriceRule($cartPriceRule);
-            $priceRuleItem->setDiscount($discountNet, false);
-            $priceRuleItem->setDiscount($discountGross, true);
-
-            if ($voucherCode) {
-                $priceRuleItem->setVoucherCode($voucherCode->getCode());
-            }
-
-            if (!$existingPriceRule) {
-                $cart->addPriceRule($priceRuleItem);
-            }
+            $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $cartPriceRule, $voucherCode);
 
             return true;
         }

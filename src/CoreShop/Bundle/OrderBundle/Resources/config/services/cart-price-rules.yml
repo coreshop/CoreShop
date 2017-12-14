@@ -164,12 +164,17 @@ services:
       - '@coreshop.factory.cart_price_rule_voucher_code'
 
   # Processor
+  coreshop.proposal.cart_price_rule.calculator:
+    class: CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculator
+    arguments:
+      - '@coreshop.factory.cart_price_rule_item'
+      - '@coreshop.registry.cart_price_rule.actions'
+
   coreshop.cart_price_rule.processor:
     class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessor
     arguments:
       - '@coreshop.cart_price_rule.rule_validation.processor'
-      - '@coreshop.factory.cart_price_rule_item'
-      - '@coreshop.registry.cart_price_rule.actions'
+      - '@coreshop.proposal.cart_price_rule.calculator'
 
   coreshop.cart_price_rule.un_processor:
     class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessor
