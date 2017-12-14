@@ -1,19 +1,4 @@
 services:
-  coreshop.cart_processor.items:
-    class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
-    arguments:
-      - '@coreshop.product.taxed_price_calculator'
-    tags:
-      - { name: coreshop.cart_processor, priority: 500 }
-
-  coreshop.cart_processor.rule_auto:
-    class: CoreShop\Component\Core\Order\Processor\CartRuleAutoProcessor
-    arguments:
-      - '@coreshop.repository.cart_price_rule'
-      - '@coreshop.cart_price_rule.processor'
-    tags:
-      - { name: coreshop.cart_processor, priority: 470 }
-
   coreshop.cart_processor.rule_auto_remove:
     class: CoreShop\Component\Core\Order\Processor\CartRuleAutoRemoverProcessor
     arguments:
@@ -21,7 +6,22 @@ services:
       - '@coreshop.cart_price_rule.un_processor'
       - '@coreshop.repository.cart_price_rule_voucher_code'
     tags:
-      - { name: coreshop.cart_processor, priority: 480 }
+      - { name: coreshop.cart_processor, priority: 600 }
+
+  coreshop.cart_processor.rule_auto:
+    class: CoreShop\Component\Core\Order\Processor\CartRuleAutoProcessor
+    arguments:
+      - '@coreshop.repository.cart_price_rule'
+      - '@coreshop.cart_price_rule.processor'
+    tags:
+      - { name: coreshop.cart_processor, priority: 550 }
+
+  coreshop.cart_processor.items:
+    class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
+    arguments:
+      - '@coreshop.product.taxed_price_calculator'
+    tags:
+      - { name: coreshop.cart_processor, priority: 500 }
 
   coreshop.cart_processor.discount:
     class: CoreShop\Component\Core\Order\Processor\CartDiscountProcessor

@@ -380,6 +380,8 @@ class Data
         $cart->setShippingAddress(self::$address);
         $cart->setInvoiceAddress(self::$address);
 
+        self::get('coreshop.cart.manager')->persistCart($cart);
+
         return $cart;
     }
 

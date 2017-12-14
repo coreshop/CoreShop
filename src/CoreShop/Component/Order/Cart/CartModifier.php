@@ -114,7 +114,6 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
             $item->save();
 
             $storageList->addItem($item);
-            $storageList->save();
         }
 
         return $item;
