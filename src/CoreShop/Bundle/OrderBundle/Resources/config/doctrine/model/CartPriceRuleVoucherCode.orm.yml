@@ -11,6 +11,7 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
     code:
       column: code
       type: string
+      length: 190
     used:
       column: used
       type: boolean
@@ -35,3 +36,6 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
       inversedBy: voucherCodes
       joinColumn:
         name: cartPriceRuleId
+  uniqueConstraints:
+    code:
+      columns: [code]

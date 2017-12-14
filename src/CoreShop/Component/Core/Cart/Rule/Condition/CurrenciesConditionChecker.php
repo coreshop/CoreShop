@@ -8,31 +8,27 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
-final class CurrenciesConditionChecker implements ConditionCheckerInterface
+final class CurrenciesConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucher = null, array $configuration)
     {
-        /*
-         * @var $subject CartInterface
-         */
-        Assert::isInstanceOf($subject, CartInterface::class);
-
-        if (!$subject->getCurrency() instanceof CurrencyInterface) {
+        if (!$cart->getCurrency() instanceof CurrencyInterface) {
             return false;
         }
 
-        return in_array($subject->getCurrency()->getId(), $configuration['currencies']);
+        return in_array($cart->getCurrency()->getId(), $configuration['currencies']);
     }
 }

@@ -19,6 +19,7 @@ use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteCreationController;
+use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleRepository;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartRepository;
@@ -110,7 +111,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(CartPriceRuleInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(CartPriceRuleController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(CartPriceRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(CartPriceRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
@@ -381,6 +382,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('cart_pricerule_condition_amount')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/amount.js')->end()
                             ->scalarNode('cart_pricerule_condition_nested')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/nested.js')->end()
                             ->scalarNode('cart_pricerule_condition_timespan')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/timespan.js')->end()
+                            ->scalarNode('cart_pricerule_condition_voucher')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/voucher.js')->end()
                             ->scalarNode('sale_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail.js')->end()
                             ->scalarNode('sale_list')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/list.js')->end()
                             ->scalarNode('sale_creation_event_manager')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/eventManager.js')->end()

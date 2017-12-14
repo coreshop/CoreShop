@@ -25,11 +25,6 @@ class Cart extends AbstractProposal implements CartInterface
     use CurrencyAwareTrait;
 
     /**
-     * @var array
-     */
-    protected $items;
-
-    /**
      * {@inheritdoc}
      */
     public function getItemForProduct(StorageListProductInterface $product)

@@ -355,15 +355,15 @@ translations:
 
   coreshop.ui.shipping_excl:
       languages:
-          de_CH: 'Versand (exkl.)'
-          en: 'Shipping (excl.)'
-          de: 'Versand (exkl.)'
+          de_CH: 'Versand (exkl. MwSt.)'
+          en: 'Shipping (excl. VAT)'
+          de: 'Versand (exkl. MwSt.)'
 
   coreshop.ui.shipping_incl:
       languages:
-          de_CH: 'Versand (inkl.)'
-          en: 'Shipping (incl.)'
-          de: 'Versand (inkl.)'
+          de_CH: 'Versand (inkl. MwSt.)'
+          en: 'Shipping (incl. VAT)'
+          de: 'Versand (inkl. MwSt.)'
 
   coreshop.ui.shopping_cart:
       languages:
@@ -415,15 +415,15 @@ translations:
 
   coreshop.ui.subtotal_excl:
       languages:
-          de_CH: 'Zwischensumme (exkl.)'
-          en: 'Subtotal (excl.)'
-          de: 'Zwischensumme (exkl.)'
+          de_CH: 'Zwischensumme (exkl. MwSt.)'
+          en: 'Subtotal (excl. VAT)'
+          de: 'Zwischensumme (exkl. MwSt.)'
 
   coreshop.ui.subtotal_inc:
       languages:
-          de_CH: 'Zwischensumme (inkl.)'
-          en: 'Subtotal (incl.)'
-          de: 'Zwischensumme (inkl.)'
+          de_CH: 'Zwischensumme (inkl. MwSt.)'
+          en: 'Subtotal (incl. VAT)'
+          de: 'Zwischensumme (inkl. MwSt.)'
 
   coreshop.ui.summary:
       languages:
@@ -466,3 +466,63 @@ translations:
           de_CH: 'Ihre Wunschliste ist leer'
           en: 'Your wishlist is empty'
           de: 'Ihre Wunschliste ist leer'
+
+  coreshop.ui.error:
+      languages:
+          de_CH: 'Es ist ein Fehler aufgetreten'
+          en: 'There was an Error'
+          de: 'Es ist ein Fehler aufgetreten'
+
+  coreshop.ui.success:
+      languages:
+          de_CH: 'Der Vorgang war erfolgreich'
+          en: 'The operation was successful'
+          de: 'Der Vorgang war erfolgreich'
+
+  coreshop.ui.error.voucher.not_found:
+      languages:
+          de_CH: 'Der angegebene Gutscheincode ist ungültig'
+          en: 'This Voucher is invalid'
+          de: 'Der angegebene Gutscheincode ist ungültig'
+
+  coreshop.ui.error.voucher.invalid:
+      languages:
+          de_CH: 'Der angegebene Gutscheincode ist ungültig'
+          en: 'This Voucher is invalid'
+          de: 'Der angegebene Gutscheincode ist ungültig'
+
+  coreshop.ui.success.voucher.stored:
+      languages:
+          de_CH: 'Gutscheincode wurde erfolgreich angewendet'
+          en: 'Voucher ha been successfully applied'
+          de: 'Gutscheincode wurde erfolgreich angewendet'
+
+  coreshop.ui.success.voucher.successfully_removed:
+      languages:
+          de_CH: 'Gutscheincode wurde erfolgreich ausgetragen'
+          en: 'Voucher ha been successfully removed'
+          de: 'Gutscheincode wurde erfolgreich ausgetragen'
+
+  coreshop.ui.voucher.code:
+      languages:
+          de_CH: 'Gutscheincode'
+          en: 'Voucher'
+          de: 'Gutscheincode'
+
+  coreshop.ui.voucher.apply_code:
+      languages:
+          de_CH: 'Einlösen'
+          en: 'Apply'
+          de: 'Einlösen'
+
+  coreshop.ui.discount_incl:
+      languages:
+          de_CH: 'Rabatt (inkl. MwSt.)'
+          en: 'Discount (incl. VAT)'
+          de: 'Rabatt (inkl. MwSt.)'
+
+  coreshop.ui.discount_excl:
+      languages:
+          de_CH: 'Rabatt (exkl. MwSt.)'
+          en: 'Discount (excl. VAT)'
+          de: 'Rabatt (exkl. MwSt.)'

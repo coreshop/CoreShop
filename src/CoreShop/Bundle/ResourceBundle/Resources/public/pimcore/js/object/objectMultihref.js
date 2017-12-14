@@ -151,8 +151,6 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
                     ddGroup: 'element',
                     getTargetFromEvent: function (e) {
                         return this.component.getEl().dom;
-
-                        //return e.getTarget(this.grid.getView().rowSelector);
                     }.bind(this),
                     onNodeOver: function (overHtmlNode, ddSource, e, data) {
                         var record = data.records[0];

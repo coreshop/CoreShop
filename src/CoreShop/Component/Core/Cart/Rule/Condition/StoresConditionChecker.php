@@ -8,31 +8,33 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use Webmozart\Assert\Assert;
 
-final class StoresConditionChecker implements ConditionCheckerInterface
+final class StoresConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucher = null, array $configuration)
     {
         /**
-         * @var $subject CartInterface
+         * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
-        Assert::isInstanceOf($subject, CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
-        if (!$subject->getStore() instanceof StoreInterface) {
+        if (!$cart->getStore() instanceof StoreInterface) {
             return false;
         }
 
-        return in_array($subject->getStore()->getId(), $configuration['stores']);
+        return in_array($cart->getStore()->getId(), $configuration['stores']);
     }
 }

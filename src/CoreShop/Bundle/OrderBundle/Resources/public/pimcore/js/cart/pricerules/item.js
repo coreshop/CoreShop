@@ -77,9 +77,19 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 checked: this.data.active
             }, {
                 xtype: 'checkbox',
-                name: 'highlight',
-                fieldLabel: t('highlight'),
-                checked: this.data.highlight
+                name: 'isVoucherRule',
+                fieldLabel: t('coreshop_is_voucher_rule'),
+                checked: this.data.isVoucherRule,
+                listeners: {
+                    change: function(checkbox, newValue) {
+                        if (newValue) {
+                            this.getVoucherCodes().enable();
+                        }
+                        else {
+                            this.getVoucherCodes().disable();
+                        }
+                    }.bind(this)
+                }
             }]
         });
 
@@ -107,14 +117,17 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 pageSize: pimcore.helpers.grid.getDefaultPageSize(),
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/coreshop/cart_price_rules/get-voucher-codes',
                     reader: {
                         type: 'json',
                         rootProperty: 'data',
                         totalProperty: 'total'
                     },
+                    api: {
+                        read: '/admin/coreshop/cart_price_rules/get-voucher-codes',
+                        destroy: '/admin/coreshop/cart_price_rules/delete-voucher-code'
+                    },
                     extraParams: {
-                        id: this.data.id
+                        cartPriceRule: this.data.id
                     }
                 },
                 fields: [
@@ -151,6 +164,22 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         text: t('coreshop_cart_pricerule_uses'),
                         dataIndex: 'uses',
                         flex: 1
+                    },
+                    {
+                        xtype: 'actioncolumn',
+                        width: 40,
+                        items: [{
+                            isDisabled: function (grid, rowIndex, colIndex, items, record) {
+                                return record.data.used === true;
+                            },
+                            tooltip: t('remove'),
+                            icon: '/pimcore/static6/img/flat-color-icons/delete.svg',
+                            handler: function (grid, rowIndex) {
+                                var record = grid.getStore().getAt(rowIndex);
+                                grid.getStore().removeAt(rowIndex);
+                                console.log(record);
+                            }.bind(this)
+                        }]
                     }
                 ],
                 region: 'center',
@@ -169,6 +198,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 forceLayout: true,
                 style: 'padding: 10px',
                 layout: 'border',
+                disabled: !this.data.isVoucherRule,
                 items: [
                     grid
                 ],
@@ -176,6 +206,13 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                     xtype: 'toolbar',
                     dock: 'top',
                     items: [
+                        {
+                            xtype: 'button',
+                            text: t('coreshop_cart_pricerule_create_voucher'),
+                            handler: function () {
+                                this.openVoucherCreateDialog();
+                            }.bind(this)
+                        },
                         {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_generate_vouchers'),
@@ -187,7 +224,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler: function () {
-                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?id=' + this.data.id);
+                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?cartPriceRule=' + this.data.id);
                             }.bind(this)
                         }
                     ]
@@ -197,6 +234,62 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
         }
 
         return this.voucherCodesPanel;
+    },
+
+    openVoucherCreateDialog: function () {
+        var window = new Ext.Window({
+            width: 330,
+            height: 170,
+            modal: true,
+            iconCls: 'coreshop_price_rule_vouchers',
+            title: t('coreshop_cart_pricerule_create_voucher'),
+            layout: 'fit',
+            items: [{
+                xtype: 'form',
+                region: 'center',
+                bodyPadding: 20,
+                items: [
+                    {
+                        xtype: 'textfield',
+                        name: 'code',
+                        allowBlank: false,
+                        fieldLabel: t('coreshop_cart_pricerule_voucher_code')
+                    }
+                ],
+                buttons: [{
+                    text: t('create'),
+                    iconCls: 'pimcore_icon_apply',
+                    handler: function (btn) {
+                        btn.setDisabled(true);
+                        var params = btn.up('form').getForm().getFieldValues();
+
+                        params['cartPriceRule'] = this.data.id;
+
+                        Ext.Ajax.request({
+                            url: '/admin/coreshop/cart_price_rules/create-voucher-code',
+                            method: 'post',
+                            jsonData: params,
+                            success: function (response) {
+                                var res = Ext.decode(response.responseText);
+                                if (res.success) {
+                                    pimcore.helpers.showNotification(t('success'), t('success'), 'success');
+                                    window.close();
+                                    this.getVoucherCodes().down('grid').getStore().load();
+                                } else {
+                                    btn.setDisabled(false);
+                                    pimcore.helpers.showNotification(t('error'), (res.message ? res.message : 'error'), 'error');
+                                }
+                            }.bind(this),
+                            failure: function(response) {
+                                btn.setDisabled(false);
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }]
+            }]
+        });
+
+        window.show();
     },
 
     openVoucherGenerationDialog: function () {
@@ -254,6 +347,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                     text: t('create'),
                     iconCls: 'pimcore_icon_apply',
                     handler: function (btn) {
+                        btn.setDisabled(true);
                         var params = btn.up('form').getForm().getFieldValues();
 
                         params['cartPriceRule'] = this.data.id;
@@ -264,15 +358,17 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             jsonData: params,
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
-
                                 if (res.success) {
                                     pimcore.helpers.showNotification(t('success'), t('success'), 'success');
-
                                     window.close();
                                     this.getVoucherCodes().down('grid').getStore().load();
                                 } else {
+                                    btn.setDisabled(false);
                                     pimcore.helpers.showNotification(t('error'), 'error', 'error');
                                 }
+                            }.bind(this),
+                            failure: function(response) {
+                                btn.setDisabled(false);
                             }.bind(this)
                         });
                     }.bind(this)

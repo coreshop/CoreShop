@@ -13,6 +13,11 @@ coreshop_admin_cart_price_rule:
         action: getVoucherCodes
         methods:
           - GET
+      createVoucherCodes:
+        path: create-voucher-code
+        action: createVoucherCode
+        methods:
+          - POST
       generateVoucherCodes:
         path: generate-voucher-codes
         action: generateVoucherCodes
@@ -23,6 +28,11 @@ coreshop_admin_cart_price_rule:
         action: exportVoucherCodes
         methods:
           - GET
+          - POST
+      deleteVoucherCode:
+        path: delete-voucher-code
+        action: deleteVoucherCode
+        methods:
           - POST
 
 ##### ORDERS

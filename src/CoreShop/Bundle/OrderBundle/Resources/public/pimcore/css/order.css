@@ -46,6 +46,10 @@
     background: url(../img/time-span.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_voucher {
+    background: url(../img/voucher.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_cart {
     background: url(../img/cart.svg) center center no-repeat !important;
 }

@@ -110,9 +110,7 @@
                         <td colspan="2" class="text-center">
                             {{ priceRule.cartPriceRule.getName }}
                         </td>
-                        <td class="text-center">
-
-                        </td>
+                        <td class="text-center"></td>
                         <td class="text-right">
                             -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
                         </td>
@@ -121,10 +119,11 @@
                         </td>
                         {% if editAllowed %}
                             <td colspan="1" class="text-left cart-sub-total">
-                                <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart"
-                                   href="#">
+                                {% if priceRule.cartPriceRule.isVoucherRule %}
+                                <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart" href="{{ path('coreshop_cart_remove_price_rule', {'code' : priceRule.voucherCode }) }}">
                                     <i class="fa fa-times-circle"></i>
                                 </a>
+                                {% endif %}
                             </td>
                         {% endif %}
                     </tr>
@@ -155,38 +154,17 @@
 
             <tr>
                 <td colspan="3" rowspan="{{ rowspan }}">
-                    {# TODO
-                    <form class="form-inline" role="form" method="post" action="<?=\CoreShop::getTools()->url(array("lang" => $this->language, "act" => "pricerule"), "coreshop_cart", true)?>">
-                        <?php if(!$this->edit) { ?>
-                            <input type="hidden" name="redirect" value="<?=\CoreShop::getTools()->url(array("act" => "payment"), "coreshop_checkout")?>" />
-                        <?php } ?>
-                        <div class="form-group">
-                            <h4><?=$this->translate("Voucher")?></h4>
-                        </div><br/>
-                        <div class="form-group">
-                            <input type="text" class="pruceRule form-control" id="priceRule" name="priceRule" value="">
-                        </div>
-                        <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>OK</span></button>
-                    </form>
-
-                    <?php
-                    $highlightPriceRules = \CoreShop\Model\Cart\PriceRule::getHighlightItems($this->cart);
-
-                    if(count($highlightPriceRules) > 0)
-                    {
-                    ?>
-                    <h4><?= $this->translate("Take advantage of our exclusive offers:") ?></h4>
-                    <ul class="list">
-                        <?php
-                        }
-
-                        foreach($highlightPriceRules as $priceRule) {
-                            echo '<li class="cart-rule"><strong class="cart-rule-code">'.$priceRule->getCode().'</strong> ' . $priceRule->getName() . '</li>';
-                        }
-
-                        if(count($highlightPriceRules) > 0)
-                        ?></ul><?
-                    ?>#}
+                    {% if editAllowed %}
+                        <form class="form-inline" role="form" method="post" action="{{ path('coreshop_cart_add_price_rule') }}">
+                            <div class="form-group">
+                                <strong>{{ 'coreshop.ui.voucher.code'|trans }}:</strong>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="priceRule form-control" id="voucherCode" name="code" value="">
+                            </div>
+                            <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>{{ 'coreshop.ui.voucher.apply_code'|trans }}</span></button>
+                        </form>
+                    {% endif %}
                 </td>
                 <td class="text-right">
                     <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>

@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class CartPriceRuleGeneratorType extends AbstractResourceType
+final class VoucherGeneratorType extends AbstractResourceType
 {
     /**
      * {@inheritdoc}
@@ -48,6 +48,6 @@ final class CartPriceRuleGeneratorType extends AbstractResourceType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_cart_price_rule_generator';
+        return 'coreshop_voucher_generator';
     }
 }

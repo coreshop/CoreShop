@@ -1,6 +1,6 @@
 parameters:
   coreshop.form.type.cart_price_rule.validation_groups: [coreshop]
-  coreshop.form.type.cart_price_rule_generator.validation_groups: [coreshop]
+  coreshop.form.type.voucher.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule_action.validation_groups: [coreshop]
   coreshop.form.type.cart_price_rule.rule_condition.validation_groups: [coreshop]
@@ -15,11 +15,19 @@ services:
     tags:
       - { name: form.type }
 
-  coreshop.form.type.cart_price_rule_generator:
-    class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleGeneratorType
+  coreshop.form.type.voucher:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\VoucherType
+    arguments:
+      - 'CoreShop\Component\Order\Model\CartPriceRuleVoucherCode'
+      - '%coreshop.form.type.voucher.validation_groups%'
+    tags:
+      - { name: form.type }
+
+  coreshop.form.type.voucher_generator:
+    class: CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType
     arguments:
       - 'CoreShop\Component\Order\Model\CartPriceRuleVoucherGenerator'
-      - '%coreshop.form.type.cart_price_rule_generator.validation_groups%'
+      - '%coreshop.form.type.voucher.validation_groups%'
     tags:
       - { name: form.type }
 
@@ -104,7 +112,7 @@ services:
       - '@coreshop.registry.cart_price_rule.conditions'
 
   coreshop.cart_price_rule.rule_validation.processor:
-    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+    class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor
     arguments:
       - '@coreshop.cart_price_rule.conditions.validation.processor'
 
@@ -120,6 +128,13 @@ services:
     class: CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker
     tags:
       - { name: coreshop.cart_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+
+  coreshop.cart_price_rule.condition.voucher:
+    class: CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker
+    arguments:
+      - '@coreshop.repository.cart_price_rule_voucher_code'
+    tags:
+      - { name: coreshop.cart_price_rule.condition, type: voucher, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType }
 
   coreshop.cart_price_rule.condition.amount:
     class: CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker
@@ -168,3 +183,12 @@ services:
       - '@doctrine.orm.entity_manager'
       - '@coreshop.registry.cart_price_rule.actions'
       - '@coreshop.factory.cart_price_rule_item'
+
+
+  coreshop.validator.cart_price_rule:
+    class: CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator
+    arguments:
+      - '@coreshop.cart_price_rule.rule_validation.processor'
+      - '@coreshop.repository.cart_price_rule_voucher_code'
+    tags:
+       - { name: validator.constraint_validator, alias: 'coreshop_cart_rule_valid' }

@@ -13,10 +13,15 @@
 namespace CoreShop\Component\Order\Cart\Calculator;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
+use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
@@ -27,21 +32,29 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
     protected $actionServiceRegistry;
 
     /**
-     * @var RuleValidationProcessorInterface
+     * @var CartPriceRuleValidationProcessorInterface
      */
     protected $ruleValidationProcessor;
 
     /**
+     * @var CartPriceRuleVoucherRepositoryInterface
+     */
+    protected $voucherCodeRepository;
+
+    /**
      * @param ServiceRegistryInterface $actionServiceRegistry
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
+     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */
     public function __construct(
         ServiceRegistryInterface $actionServiceRegistry,
-        RuleValidationProcessorInterface $ruleValidationProcessor
+        CartPriceRuleValidationProcessorInterface $ruleValidationProcessor,
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
     )
     {
         $this->actionServiceRegistry = $actionServiceRegistry;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
+        $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
     /**
@@ -59,8 +72,21 @@ class CartPriceRuleCalculator implements CartDiscountCalculatorInterface
          */
         $rules = $subject->getPriceRules();
 
-        foreach ($rules as $rule) {
-            if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
+        $ruleItems = $subject->getPriceRuleItems();
+
+        if (!$ruleItems instanceof Fieldcollection) {
+            return 0;
+        }
+
+        foreach ($ruleItems->getItems() as $ruleItem) {
+            if (!$ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+                continue;
+            }
+
+            $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
+            $rule = $ruleItem->getCartPriceRule();
+
+            if ($this->ruleValidationProcessor->isValidCartRule($subject, $rule, $voucherCode)) {
                 foreach ($rule->getActions() as $action) {
                     $processor = $this->actionServiceRegistry->get($action->getType());
 

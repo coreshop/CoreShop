@@ -13,26 +13,28 @@
 namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use Webmozart\Assert\Assert;
 
-final class CarriersConditionChecker implements ConditionCheckerInterface
+final class CarriersConditionChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucher = null, array $configuration)
     {
         /**
-         * @var $subject CartInterface
+         * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
-        Assert::isInstanceOf($subject, CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
-        if (!$subject->getCarrier() instanceof CarrierInterface) {
+        if (!$cart->getCarrier() instanceof CarrierInterface) {
             return false;
         }
 
-        return in_array($subject->getCarrier()->getId(), $configuration['carriers']);
+        return in_array($cart->getCarrier()->getId(), $configuration['carriers']);
     }
 }

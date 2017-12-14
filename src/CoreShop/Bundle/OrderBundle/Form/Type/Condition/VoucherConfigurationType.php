@@ -10,15 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\OrderBundle\Form\Type;
+namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
 
-use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class CartPriceRuleType extends RuleType
+final class VoucherConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,12 +25,8 @@ final class CartPriceRuleType extends RuleType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('isVoucherRule', CheckboxType::class)
-            ->add('active', CheckboxType::class)
-            ->add('description', TextareaType::class)
-            ->add('conditions', CartPriceRuleConditionCollectionType::class)
-            ->add('actions', CartPriceRuleActionCollectionType::class)
+            ->add('maxUsagePerCode', NumberType::class)
+            ->add('onlyOnePerCart', CheckboxType::class)
         ;
     }
 
@@ -40,6 +35,6 @@ final class CartPriceRuleType extends RuleType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_cart_price_rule';
+        return 'coreshop_cart_price_rule_condition_voucher';
     }
 }

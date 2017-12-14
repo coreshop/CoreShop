@@ -23,7 +23,6 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Pimcore\Model\Object;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartController extends FrontendController
 {
@@ -146,15 +145,17 @@ class CartController extends FrontendController
         $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
         if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-            throw new NotFoundHttpException();
+            $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
+            return $this->redirectToRoute('coreshop_cart_summary');
         }
 
         $priceRule = $voucherCode->getCartPriceRule();
 
-        if ($this->getCartPriceRuleProcessor()->process($priceRule, $code, $this->getCartManager()->getCart())) {
-            $this->addFlash('cart_price_rule_success', 'coreshop.ui.success');
+        if ($this->getCartPriceRuleProcessor()->process($this->getCartManager()->getCart(), $priceRule, $voucherCode)) {
+            $this->getCartManager()->persistCart($this->getCart());
+            $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
         } else {
-            $this->addFlash('cart_price_rule_error', 'coreshop.ui.error');
+            $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
         }
 
         return $this->redirectToRoute('coreshop_cart_summary');
@@ -178,7 +179,8 @@ class CartController extends FrontendController
 
         $priceRule = $voucherCode->getCartPriceRule();
 
-        $this->getCartPriceRuleUnProcessor()->unProcess($priceRule, $code, $cart);
+        $this->getCartPriceRuleUnProcessor()->unProcess($cart, $priceRule, $voucherCode);
+        $this->getCartManager()->persistCart($this->getCart());
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -192,7 +194,7 @@ class CartController extends FrontendController
         $quote = $this->getQuoteFactory()->createNew();
         $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
 
-        return $this->redirectToRoute('coreshop_quote_detail', ["quote" => $quote->getId()]);
+        return $this->redirectToRoute('coreshop_quote_detail', ['quote' => $quote->getId()]);
     }
 
     /**

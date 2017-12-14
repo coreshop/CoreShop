@@ -67,43 +67,37 @@ class CartPriceRuleOrderProcessor implements CartPriceRuleOrderProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function process(CartPriceRuleInterface $cartPriceRule, $usedCode, CartInterface $cart, SaleInterface $sale)
+    public function process(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode, CartInterface $cart, SaleInterface $sale)
     {
-        $voucherCode = $this->voucherCodeRepository->findByCode($usedCode);
+        $voucherCode->setUses($voucherCode->getUses() + 1);
+        $voucherCode->setUsed(true);
 
-        if ($voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-            $voucherCode->setUses($voucherCode->getUses() + 1);
-            $voucherCode->setUsed(true);
+        $this->entityManager->persist($voucherCode);
+        $this->entityManager->flush();
 
-            $this->entityManager->persist($voucherCode);
-            $this->entityManager->flush();
+        $discountNet = 0;
+        $discountGross = 0;
 
-            $discountNet = 0;
-            $discountGross = 0;
+        foreach ($cartPriceRule->getActions() as $action) {
+            if ($action instanceof ActionInterface) {
+                $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
-            foreach ($cartPriceRule->getActions() as $action) {
-                if ($action instanceof ActionInterface) {
-                    $actionCommand = $this->actionServiceRegistry->get($action->getType());
-
-                    $discountNet += $actionCommand->getDiscount($cart, false, $action->getConfiguration());
-                    $discountGross += $actionCommand->getDiscount($cart, true, $action->getConfiguration());
-                }
+                $discountNet += $actionCommand->getDiscount($cart, false, $action->getConfiguration());
+                $discountGross += $actionCommand->getDiscount($cart, true, $action->getConfiguration());
             }
-
-            /**
-             * @var ProposalCartPriceRuleItemInterface
-             */
-            $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
-            $priceRuleItem->setCartPriceRule($cartPriceRule);
-            $priceRuleItem->setVoucherCode($usedCode);
-            $priceRuleItem->setDiscount($discountNet, false);
-            $priceRuleItem->setDiscount($discountGross, true);
-
-            $sale->addPriceRule($priceRuleItem);
-
-            return true;
         }
 
-        return false;
+        /**
+         * @var ProposalCartPriceRuleItemInterface
+         */
+        $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
+        $priceRuleItem->setCartPriceRule($cartPriceRule);
+        $priceRuleItem->setVoucherCode($voucherCode->getCode());
+        $priceRuleItem->setDiscount($discountNet, false);
+        $priceRuleItem->setDiscount($discountGross, true);
+
+        $sale->addPriceRule($priceRuleItem);
+
+        return true;
     }
 }
