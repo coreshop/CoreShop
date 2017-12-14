@@ -78,6 +78,11 @@ class CartController extends FrontendController
             }
         }
 
+        //if cart is only in session, store it before interact with it.
+        if($this->getCart()->getId() === 0) {
+            $this->getCartManager()->persistCart($this->getCart());
+        }
+
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
         $this->getCartManager()->persistCart($this->getCart());
 
