@@ -119,9 +119,11 @@
                         </td>
                         {% if editAllowed %}
                             <td colspan="1" class="text-left cart-sub-total">
+                                {% if priceRule.cartPriceRule.isVoucherRule %}
                                 <a title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart" href="{{ path('coreshop_cart_remove_price_rule', {'code' : priceRule.voucherCode }) }}">
                                     <i class="fa fa-times-circle"></i>
                                 </a>
+                                {% endif %}
                             </td>
                         {% endif %}
                     </tr>
