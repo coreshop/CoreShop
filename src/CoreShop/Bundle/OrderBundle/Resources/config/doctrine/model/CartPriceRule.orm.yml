@@ -36,6 +36,9 @@ CoreShop\Component\Order\Model\CartPriceRule:
     voucherCodes:
       targetEntity: CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface
       mappedBy: cartPriceRule
+      cascade:
+        - all
+
   manyToMany:
     conditions:
       targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
