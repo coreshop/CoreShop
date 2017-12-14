@@ -1,6 +1,6 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 
-{% if cart.hasItems() %}
+{% if coreshop.cart.hasItems() %}
     <div class="table-responsive shopping-cart-table">
         <table class="table table-bordered">
             <thead>
@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in cart.getItems %}
+            {% for item in coreshop.cart.getItems %}
                 {% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
                 <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
                     <td class="text-center">
@@ -74,7 +74,7 @@
                         <td class="text-center">
                             {% if not item.getIsGiftItem %}
                                 <a href="{{ path('coreshop_cart_remove', {cartItem: item.getId}) }}" type="button"
-                                   title="{{ 'remove'|trans }}" class="btn btn-default tool-tip removeFromCart"
+                                   title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart"
                                    data-id="{{ item.getId }}">
                                     <i class="fa fa-times-circle"></i>
                                 </a>
@@ -83,8 +83,8 @@
                     {% endif %}
                 </tr>
             {% endfor %}
-            {% if cart.hasPriceRules %}
-                {% for priceRule in cart.getPriceRuleItems %}
+            {% if coreshop.cart.hasPriceRules %}
+                {% for priceRule in coreshop.cart.getPriceRuleItems %}
                     <tr>
                         <td colspan="2" class="text-left">
                             {{ priceRule.cartPriceRule.getName }}
@@ -108,12 +108,12 @@
 
             </tbody>
             <tfoot>
-            {% set shipping = cart.getShipping(false) %}
-            {% set shippingIt = cart.getShipping(true) %}
-            {% set discount = cart.getDiscount(false) %}
-            {% set discountIt = cart.getDiscount(true) %}
-            {% set payment = cart.getPaymentFee() %}
-            {% set taxes = cart.taxes %}
+            {% set shipping = coreshop.cart.getShipping(false) %}
+            {% set shippingIt = coreshop.cart.getShipping(true) %}
+            {% set discount = coreshop.cart.getDiscount(false) %}
+            {% set discountIt = coreshop.cart.getDiscount(true) %}
+            {% set payment = coreshop.cart.getPaymentFee() %}
+            {% set taxes = coreshop.cart.taxes %}
             {% set rowspan = 10 + taxes|length %}
 
             {% if shipping == 0 %}
@@ -146,7 +146,7 @@
                     <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
                 </td>
                 <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-sub-total">
-                    {{ currency.convertAndFormat(cart.getSubtotal(true)) }}
+                    {{ currency.convertAndFormat(coreshop.cart.getSubtotal(true)) }}
                 </td>
             </tr>
             <tr>
@@ -154,7 +154,7 @@
                     <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
                 </td>
                 <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-discount">
-                    {{ currency.convertAndFormat(cart.getSubtotal(false)) }}
+                    {{ currency.convertAndFormat(coreshop.cart.getSubtotal(false)) }}
                 </td>
             </tr>
             {% if discount > 0 %}
@@ -218,7 +218,7 @@
                     <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
                 </td>
                 <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-tax">
-                    {{ currency.convertAndFormat(cart.getTotalTax) }}
+                    {{ currency.convertAndFormat(coreshop.cart.getTotalTax) }}
                 </td>
             </tr>
             <tr>
@@ -226,13 +226,13 @@
                     <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
                 </td>
                 <td colspan="{% if editAllowed %} 2 {% else %} 1 {% endif %}" class="text-right cart-total-price">
-                    {{ currency.convertAndFormat(cart.getTotal) }}
+                    {{ currency.convertAndFormat(coreshop.cart.getTotal) }}
                 </td>
             </tr>
-            {% if cart.getComment is not empty %}
+            {% if coreshop.cart.getComment is not empty %}
                 <tr>
                     <td colspan="{{ editAllowed ? 6 : 5 }}">
-                       <strong>{{ 'coreshop.ui.comment'|trans }}</strong>: {{ cart.getComment|nl2br }}
+                       <strong>{{ 'coreshop.ui.comment'|trans }}</strong>: {{ coreshop.cart.getComment|nl2br }}
                     </td>
                 </tr>
             {% endif %}

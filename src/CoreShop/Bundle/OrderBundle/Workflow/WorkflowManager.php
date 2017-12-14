@@ -115,7 +115,7 @@ final class WorkflowManager implements WorkflowManagerInterface
     {
         Assert::isInstanceOf($proposal, $this->class);
 
-        $this->eventDispatcher->dispatch('coreshop.workflow_manager.before', new ProposalWorkflowEvent($proposal, $newState, $cur));
+        $this->eventDispatcher->dispatch('coreshop.workflow_manager.before', new ProposalWorkflowEvent($proposal, $newState, $currentState));
 
         if ($proposal instanceof ProposalInterface) {
             if ($currentState === $newState) {
