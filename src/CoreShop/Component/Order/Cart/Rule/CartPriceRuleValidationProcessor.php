@@ -39,6 +39,10 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
      */
     public function isValidCartRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
+        if ($cartPriceRule->getIsVoucherRule() && null === $voucherCode) {
+            return false;
+        }
+
         return $this->isValid([
             'cart' => $cart,
             'cartPriceRule' => $cartPriceRule,

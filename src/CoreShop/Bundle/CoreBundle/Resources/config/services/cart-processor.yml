@@ -19,6 +19,7 @@ services:
     arguments:
       - '@coreshop.cart_price_rule.rule_validation.processor'
       - '@coreshop.cart_price_rule.un_processor'
+      - '@coreshop.repository.cart_price_rule_voucher_code'
     tags:
       - { name: coreshop.cart_processor, priority: 480 }
 

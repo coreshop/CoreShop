@@ -17,6 +17,7 @@ use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartRuleAutoRemoverProcessor implements CartProcessorInterface
@@ -32,16 +33,24 @@ final class CartRuleAutoRemoverProcessor implements CartProcessorInterface
     private $cartPriceRuleUnProcessor;
 
     /**
+     * @var CartPriceRuleVoucherRepositoryInterface
+     */
+    private $voucherCodeRepository;
+
+    /**
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
      * @param CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
+     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */
     public function __construct(
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
-        CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
+        CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor,
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
     )
     {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
+        $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
 
@@ -61,12 +70,10 @@ final class CartRuleAutoRemoverProcessor implements CartProcessorInterface
                 continue;
             }
 
-            if ($item->getCartPriceRule()->getIsVoucherRule()) {
-                continue;
-            }
+            $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
 
-            if (!$this->cartPriceRuleValidator->isValidCartRule($cart, $item->getCartPriceRule())) {
-                $this->cartPriceRuleUnProcessor->unProcess($cart, $item->getCartPriceRule());
+            if (!$this->cartPriceRuleValidator->isValidCartRule($cart, $item->getCartPriceRule(), $voucherCode)) {
+                $this->cartPriceRuleUnProcessor->unProcess($cart, $item->getCartPriceRule(), $voucherCode);
             }
         }
     }
