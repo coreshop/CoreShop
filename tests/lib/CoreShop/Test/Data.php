@@ -361,6 +361,8 @@ class Data
         $cart->setKey(uniqid());
         $cart->setParent(Service::createFolderByPath('/'));
 
+        self::get('coreshop.cart.manager')->persistCart($cart);
+
         return $cart;
     }
 
