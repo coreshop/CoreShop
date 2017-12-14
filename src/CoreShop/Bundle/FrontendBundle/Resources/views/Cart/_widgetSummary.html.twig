@@ -154,17 +154,17 @@
 
             <tr>
                 <td colspan="3" rowspan="{{ rowspan }}">
-
-                    <form class="form-inline" role="form" method="post" action="{{ path('coreshop_cart_add_price_rule') }}">
-                        <div class="form-group">
-                            <strong>{{ 'coreshop.ui.voucher.code'|trans }}:</strong>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="priceRule form-control" id="voucherCode" name="code" value="">
-                        </div>
-                        <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>{{ 'coreshop.ui.voucher.apply_code'|trans }}</span></button>
-                    </form>
-
+                    {% if editAllowed %}
+                        <form class="form-inline" role="form" method="post" action="{{ path('coreshop_cart_add_price_rule') }}">
+                            <div class="form-group">
+                                <strong>{{ 'coreshop.ui.voucher.code'|trans }}:</strong>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="priceRule form-control" id="voucherCode" name="code" value="">
+                            </div>
+                            <button type="submit" name="submitAddDiscount" class="btn btn-black"><span>{{ 'coreshop.ui.voucher.apply_code'|trans }}</span></button>
+                        </form>
+                    {% endif %}
                 </td>
                 <td class="text-right">
                     <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
