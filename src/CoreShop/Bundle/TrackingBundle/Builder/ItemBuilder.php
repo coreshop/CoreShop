@@ -93,8 +93,8 @@ class ItemBuilder implements ItemBuilderInterface
             if ($order->getPriceRuleItems()->getCount() > 0) {
                 foreach ($order->getPriceRuleItems() as $priceRule) {
                     if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
-                        if ($priceRule->getPriceRule() instanceof CartPriceRuleInterface) {
-                            $item->setCoupon($priceRule->getPriceRule()->getName());
+                        if ($priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                            $item->setCoupon($priceRule->getCartPriceRule()->getName());
                         }
                     }
                 }
