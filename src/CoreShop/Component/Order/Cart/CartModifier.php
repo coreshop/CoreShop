@@ -76,6 +76,7 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($item, CartItemInterface::class);
 
+        $storageList->removeItem($item);
         $item->delete();
     }
 

@@ -48,7 +48,10 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         $product = $this->productRepository->find($configuration['product']);
 
         if ($product instanceof PurchasableInterface) {
-            $this->cartModifier->updateItemQuantity($cart, $product, 1, false);
+            $item = $this->cartModifier->updateItemQuantity($cart, $product, 1, false);
+
+            $item->setIsGiftItem(true);
+            $item->save();
 
             return true;
         }
@@ -77,6 +80,22 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
      */
     public function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
+        $product = $this->productRepository->find($configuration['product']);
+
+        if ($product instanceof PurchasableInterface) {
+            foreach ($cart->getItems() as $item) {
+                if (!$item->getProduct() instanceof PurchasableInterface) {
+                    return false;
+                }
+
+                if ($item->getProduct()->getId() === $product->getId()) {
+                    return $item->getItemPrice($withTax);
+                }
+            }
+
+
+        }
+
         return 0;
     }
 }
