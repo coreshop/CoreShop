@@ -23,7 +23,7 @@ class Version20171213115150 extends AbstractPimcoreMigration implements Containe
             $table = $schema->getTable('coreshop_cart_price_rule_voucher_code');
             if (!$table->hasIndex('code')) {
                 $table->changeColumn('code', ['length' => 190]);
-                $table->addUniqueIndex(['code', 'cartPriceRuleId'], 'code');
+                $table->addUniqueIndex(['code'], 'code');
             }
         }
 

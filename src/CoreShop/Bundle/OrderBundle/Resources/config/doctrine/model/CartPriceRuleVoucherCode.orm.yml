@@ -38,4 +38,4 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
         name: cartPriceRuleId
   uniqueConstraints:
     code:
-      columns: [code, cartPriceRuleId]
+      columns: [code]
