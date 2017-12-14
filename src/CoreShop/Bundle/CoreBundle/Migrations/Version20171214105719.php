@@ -12,15 +12,19 @@ class Version20171214105719 extends AbstractPimcoreMigration
 {
     /**
      * @param Schema $schema
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     public function up(Schema $schema)
     {
-         //update voucher index
-        if ($schema->hasTable('coreshop_cart_price_rule_voucher_code')) {
-            $table = $schema->getTable('coreshop_cart_price_rule_voucher_code');
-            $table->renameColumn('highlight', 'isVoucherRule');
+        //update voucher index
+        if ($schema->hasTable('coreshop_cart_price_rule')) {
+            $table = $schema->getTable('coreshop_cart_price_rule');
+            if (!$table->hasColumn('isVoucherRule') && $table->hasColumn('highlight')) {
+                $table->dropColumn('highlight');
+                $table->addColumn('isVoucherRule', 'boolean', ['expose' => true, 'groups' => ['Detailed']]);
+            }
         }
-        // this up() migration is auto-generated, please modify it to your needs
     }
 
     /**
@@ -29,6 +33,5 @@ class Version20171214105719 extends AbstractPimcoreMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }
