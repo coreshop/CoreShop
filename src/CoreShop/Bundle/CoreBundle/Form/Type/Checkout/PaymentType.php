@@ -31,7 +31,7 @@ final class PaymentType extends AbstractResourceType
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank()],
                 'label' => 'coreshop.ui.payment_provider',
-                'store' => $options['store']
+                'store' => $options['store'],
             ]);
     }
 

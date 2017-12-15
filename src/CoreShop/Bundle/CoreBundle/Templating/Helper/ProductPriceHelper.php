@@ -42,6 +42,14 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
     /**
      * {@inheritdoc}
      */
+    public function getRetailPrice(PurchasableInterface $product, $withTax = true)
+    {
+        return $this->productPriceCalculator->getRetailPrice($product, $withTax);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'coreshop_product_price';

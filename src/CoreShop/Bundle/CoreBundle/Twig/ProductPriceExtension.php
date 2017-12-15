@@ -36,6 +36,7 @@ final class ProductPriceExtension extends \Twig_Extension
     {
         return [
             new \Twig_Filter('coreshop_product_price', [$this->helper, 'getPrice'], ['withTax' => ['with_tax']]),
+            new \Twig_Filter('coreshop_product_retail_price', [$this->helper, 'getRetailPrice'], ['withTax' => ['with_tax']]),
         ];
     }
 }
