@@ -213,7 +213,7 @@ class OrderWorkflowFixture extends AbstractFixture implements ContainerAwareInte
                     'change_order_state' => null,
                 ],
             ],
-            WorkflowManagerInterface::ORDER_STATUS_PENDING_PAYMENT => [
+            WorkflowManagerInterface::ORDER_STATUS_PENDING => [
                 'validActions' => [
                     'change_order_state' => null,
                 ],
