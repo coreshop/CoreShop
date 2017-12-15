@@ -6,6 +6,7 @@ imports:
   - { resource: "services/workflow.yml" }
   - { resource: "services/pdf.yml" }
   - { resource: "services/purchasable.yml" }
+  - { resource: "services/context.yml" }
 
 services:
   coreshop.order.configurator.session_cart:
@@ -16,11 +17,8 @@ services:
   coreshop.cart.manager:
     class: CoreShop\Bundle\OrderBundle\Manager\CartManager
     arguments:
-      - '@coreshop.repository.cart'
-      - '@coreshop.factory.cart'
-      - '@session'
+      - '@coreshop.cart_processor'
       - '@coreshop.object_service'
-      - '@coreshop.context.customer'
       - '%coreshop.folder.cart%'
 
   #Cart Discount Calculator

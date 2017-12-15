@@ -19,7 +19,7 @@ use CoreShop\Test\Data;
 
 class OrderShipment extends Base
 {
-    public function testOrdeShipmentCreation()
+    public function testOrderShipmentCreation()
     {
         $this->printTestName();
 

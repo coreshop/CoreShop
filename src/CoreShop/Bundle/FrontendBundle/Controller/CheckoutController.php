@@ -16,6 +16,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -230,7 +231,15 @@ class CheckoutController extends FrontendController
      */
     protected function getCart()
     {
-        return $this->getCartManager()->getCart();
+        return $this->getCartContext()->getCart();
+    }
+
+    /**
+     * @return CartContextInterface
+     */
+    protected function getCartContext()
+    {
+        return $this->get('coreshop.context.cart');
     }
 
     /**

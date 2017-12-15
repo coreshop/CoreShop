@@ -70,7 +70,8 @@ class Cart extends Base
         $cart->setInvoiceAddress(Data::$customer1->getAddresses()[0]);
         $cart->setShippingAddress(Data::$customer1->getAddresses()[0]);
         $cart->setCarrier(Data::$carrier1);
-        $cart->save();
+
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
         $this->assertEquals(1200, $cart->getShipping());
         $this->assertEquals(1000, $cart->getShipping(false));

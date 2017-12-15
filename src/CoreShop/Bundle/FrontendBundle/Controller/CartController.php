@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
@@ -78,11 +79,6 @@ class CartController extends FrontendController
             }
         }
 
-        //if cart is only in session, store it before interact with it.
-        if($this->getCart()->getId() === 0) {
-            $this->getCartManager()->persistCart($this->getCart());
-        }
-
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
         $this->getCartManager()->persistCart($this->getCart());
 
@@ -138,7 +134,7 @@ class CartController extends FrontendController
     public function addPriceRuleAction(Request $request)
     {
         $code = $request->get('code');
-        $cart = $this->getCartManager()->getCart();
+        $cart = $this->getCart();
 
         if (!$cart->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
@@ -158,8 +154,8 @@ class CartController extends FrontendController
 
         $priceRule = $voucherCode->getCartPriceRule();
 
-        if ($this->getCartPriceRuleProcessor()->process($this->getCartManager()->getCart(), $priceRule, $voucherCode)) {
-            $this->getCartManager()->persistCart($this->getCart());
+        if ($this->getCartPriceRuleProcessor()->process($cart, $priceRule, $voucherCode)) {
+            $this->getCartManager()->persistCart($cart);
             $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
         } else {
             $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
@@ -176,7 +172,7 @@ class CartController extends FrontendController
     public function removePriceRuleAction(Request $request)
     {
         $code = $request->get('code');
-        $cart = $this->getCartManager()->getCart();
+        $cart = $this->getCart();
 
         $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
@@ -187,7 +183,7 @@ class CartController extends FrontendController
         $priceRule = $voucherCode->getCartPriceRule();
 
         $this->getCartPriceRuleUnProcessor()->unProcess($cart, $priceRule, $voucherCode);
-        $this->getCartManager()->persistCart($this->getCart());
+        $this->getCartManager()->persistCart($cart);
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -254,7 +250,15 @@ class CartController extends FrontendController
      */
     protected function getCart()
     {
-        return $this->getCartManager()->getCart();
+        return $this->getCartContext()->getCart();
+    }
+
+    /**
+     * @return CartContextInterface
+     */
+    protected function getCartContext()
+    {
+        return $this->get('coreshop.context.cart');
     }
 
     /**

@@ -8,7 +8,7 @@ services:
       - '@coreshop.context.locale'
       - '@coreshop.context.country'
       - '@coreshop.context.customer'
-      - '@coreshop.cart.manager'
+      - '@coreshop.context.cart'
 
   coreshop.storage.currency:
     class: CoreShop\Component\Core\Currency\CurrencyStorage
@@ -43,4 +43,12 @@ services:
     public: false
     tags:
         - { name: coreshop.context.country.request_based.resolver, priority: 1 } #Highest Priority, is more like the fallback
-    arguments: ['@coreshop.cart.manager']
+    arguments:
+      - '@coreshop.context.cart'
+
+  coreshop.context.cart.new.store_based:
+    decorates: coreshop.context.cart.new
+    class: CoreShop\Component\Core\Context\StoreBasedCartContext
+    arguments:
+      - '@coreshop.context.cart.new.store_based.inner'
+      - '@coreshop.context.shopper'

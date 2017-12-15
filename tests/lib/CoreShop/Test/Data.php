@@ -360,7 +360,8 @@ class Data
         $cart = self::get('coreshop.factory.cart')->createNew();
         $cart->setKey(uniqid());
         $cart->setParent(Service::createFolderByPath('/'));
-
+        $cart->setCustomer(self::get('coreshop.context.customer')->getCustomer());
+        $cart->setStore(self::get('coreshop.context.store')->getStore());
         self::get('coreshop.cart.manager')->persistCart($cart);
 
         return $cart;

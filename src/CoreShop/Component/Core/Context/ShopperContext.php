@@ -20,7 +20,7 @@ use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
-use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 
@@ -52,9 +52,9 @@ class ShopperContext implements ShopperContextInterface
     private $customerContext;
 
     /**
-     * @var CartManagerInterface
+     * @var CartContextInterface
      */
-    private $cartManager;
+    private $cartContext;
 
     /**
      * @param StoreContextInterface $storeContext
@@ -62,7 +62,7 @@ class ShopperContext implements ShopperContextInterface
      * @param LocaleContextInterface $localeContext
      * @param CountryContextInterface $countryContext
      * @param CustomerContextInterface $customerContext
-     * @param CartManagerInterface $cartManager
+     * @param CartContextInterface $cartContext
      */
     public function __construct(
         StoreContextInterface $storeContext,
@@ -70,7 +70,7 @@ class ShopperContext implements ShopperContextInterface
         LocaleContextInterface $localeContext,
         CountryContextInterface $countryContext,
         CustomerContextInterface $customerContext,
-        CartManagerInterface $cartManager
+        CartContextInterface $cartContext
     )
     {
         $this->storeContext = $storeContext;
@@ -78,7 +78,7 @@ class ShopperContext implements ShopperContextInterface
         $this->localeContext = $localeContext;
         $this->countryContext = $countryContext;
         $this->customerContext = $customerContext;
-        $this->cartManager = $cartManager;
+        $this->cartContext = $cartContext;
     }
 
     /**
@@ -191,6 +191,6 @@ class ShopperContext implements ShopperContextInterface
      */
     public function getCart()
     {
-        return $this->cartManager->getCart();
+        return $this->cartContext->getCart();
     }
 }

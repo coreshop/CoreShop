@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\PayumBundle\Controller;
 use Carbon\Carbon;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -172,7 +173,15 @@ class PaymentController extends Controller
      */
     private function getCart()
     {
-        return $this->getCartManager()->getCart();
+        return $this->getCartContext()->getCart();
+    }
+
+    /**
+     * @return CartContextInterface
+     */
+    private function getCartContext()
+    {
+        return $this->get('coreshop.context.cart');
     }
 
     /**

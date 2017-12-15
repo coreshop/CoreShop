@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Version;
@@ -26,6 +27,11 @@ final class RequestCartRecalculation
     private $cartManager;
 
     /**
+     * @var CartContextInterface
+     */
+    private $cartContext;
+
+    /**
      * @var ConfigurationServiceInterface
      */
     private $configurationService;
@@ -37,16 +43,19 @@ final class RequestCartRecalculation
 
     /**
      * @param CartManagerInterface $cartManager
+     * @param CartContextInterface $cartContext
      * @param ConfigurationServiceInterface $configurationService
      * @param RequestHelper $pimcoreRequestHelper
      */
     public function __construct(
         CartManagerInterface $cartManager,
+        CartContextInterface $cartContext,
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper
     )
     {
         $this->cartManager = $cartManager;
+        $this->cartContext = $cartContext;
         $this->configurationService = $configurationService;
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
@@ -56,7 +65,8 @@ final class RequestCartRecalculation
      *
      * @param GetResponseEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event) {
+    public function onKernelRequest(GetResponseEvent $event)
+    {
         if (!$event->isMasterRequest()) {
             return;
         }
@@ -65,17 +75,12 @@ final class RequestCartRecalculation
             return;
         }
 
-        $cart = $this->cartManager->getCart();
+        $cart = $this->cartContext->getCart();
 
-        //This could lead to performance issues,
-        //The main issue is: when should a cart get recalculated
-        //when a price-rule gets invalid? we actually don't know
-        //when a price-rule changes or gets invalid
-        //Maybe a CronJob to recalculate carts every 30 min?
         if ($cart->getId()) {
             if ($this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE') > $cart->getModificationDate()) {
                 Version::disable();
-                $cart->save();
+                $this->cartManager->persistCart($cart);
                 Version::enable();
             }
         }

@@ -105,6 +105,7 @@ services:
     class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
     arguments:
      - '@coreshop.cart.manager'
+     - '@coreshop.context.cart'
      - '@coreshop.configuration.service'
      - '@pimcore.http.request_helper'
     tags:

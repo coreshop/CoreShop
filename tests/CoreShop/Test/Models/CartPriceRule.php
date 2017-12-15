@@ -424,7 +424,7 @@ class CartPriceRule extends RuleTest
         $cart->setCarrier(Data::$carrier1);
         $cart->setCustomer(Data::$customer1);
         $cart->setShippingAddress(Data::$customer1->getAddresses()[0]);
-        $cart->save();
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
         $shipping = $cart->getShipping(false);
         $shippingWt = $cart->getShipping(true);
@@ -448,7 +448,7 @@ class CartPriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($cart, false);
         $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
 
-        $cart->save();
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
         $this->assertEquals(0, $discount);
         $this->assertEquals(0, $discountWt);

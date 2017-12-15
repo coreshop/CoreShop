@@ -29,6 +29,7 @@ security:
                 path: coreshop_logout
                 target: coreshop_login
                 invalidate_session: false
+                success_handler: coreshop.handler.shop_logout
 
 
 #http://stackoverflow.com/questions/11602337/how-to-change-role-hierarchy-storage-in-symfony2

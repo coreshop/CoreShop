@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Product\ProductPriceRule\Condition;
 
-use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
@@ -21,16 +21,16 @@ use Webmozart\Assert\Assert;
 final class QuantityConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var CartManagerInterface
+     * @var CartContextInterface
      */
-    private $cartManager;
+    private $cartContext;
 
     /**
-     * @param CartManagerInterface $cartManager
+     * @param CartContextInterface $cartContext
      */
-    public function __construct(CartManagerInterface $cartManager)
+    public function __construct(CartContextInterface $cartContext)
     {
-        $this->cartManager = $cartManager;
+        $this->cartContext = $cartContext;
     }
 
     /**
@@ -43,7 +43,7 @@ final class QuantityConditionChecker implements ConditionCheckerInterface
          */
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        $cart = $this->cartManager->getCart();
+        $cart = $this->cartContext->getCart();
 
         foreach ($cart->getItems() as $item) {
             if ($item instanceof CartItemInterface) {
