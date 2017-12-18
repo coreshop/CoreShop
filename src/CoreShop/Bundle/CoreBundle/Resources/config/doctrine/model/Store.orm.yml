@@ -4,6 +4,8 @@ CoreShop\Component\Core\Model\Store:
   fields:
     useGrossPrice:
       type: boolean
+      options:
+        default: false
       groups: [List, Detailed]
   manyToOne:
     baseCountry:
