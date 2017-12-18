@@ -12,10 +12,8 @@
 
 namespace CoreShop\Component\Core\Product;
 
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
-use CoreShop\Component\Order\Model\PriceAwarePurchasableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -74,6 +72,16 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
         $price = $price - $discount;
 
+        $useGrossPrice = $this->storeContext->getStore()->getUseGrossPrice();
+
+        if ($useGrossPrice) {
+            if ($withTax) {
+                return $price;
+            }
+
+            return $this->removeTaxes($product, $price);
+        }
+
         if ($withTax) {
             return $this->applyTaxes($product, $price);
         }
@@ -112,6 +120,16 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
             throw new \InvalidArgumentException(sprintf("Could not determine a price for Product (%s)", $product->getId()));
         }
 
+        $useGrossPrice = $this->storeContext->getStore()->getUseGrossPrice();
+
+        if ($useGrossPrice) {
+            if ($withTax) {
+                return $price;
+            }
+
+            return $this->removeTaxes($product, $price);
+        }
+
         if ($withTax) {
             return $this->applyTaxes($product, $price);
         }
@@ -130,6 +148,22 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->applyTaxes($price);
+        }
+
+        return $price;
+    }
+
+    /**
+     * @param PurchasableInterface $product
+     * @param $price
+     * @return int
+     */
+    private function removeTaxes(PurchasableInterface $product, $price)
+    {
+        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
+
+        if ($taxCalculator instanceof TaxCalculatorInterface) {
+            return $taxCalculator->removeTaxes($price);
         }
 
         return $price;

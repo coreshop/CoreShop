@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
@@ -21,7 +21,12 @@ class Store extends BaseStore implements StoreInterface
      * @var CountryInterface
      */
     private $baseCountry;
-    
+
+    /**
+     * @var bool
+     */
+    protected $useGrossPrice;
+
     /**
      * @var Collection|ConfigurationInterface[]
      */
@@ -97,5 +102,21 @@ class Store extends BaseStore implements StoreInterface
     public function setBaseCountry(CountryInterface $baseCountry)
     {
         $this->baseCountry = $baseCountry;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUseGrossPrice()
+    {
+        return $this->useGrossPrice;
+    }
+
+    /**
+     * @param bool $useGrossPrice
+     */
+    public function setUseGrossPrice($useGrossPrice)
+    {
+        $this->useGrossPrice = $useGrossPrice;
     }
 }
