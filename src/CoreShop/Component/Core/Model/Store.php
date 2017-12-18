@@ -25,7 +25,7 @@ class Store extends BaseStore implements StoreInterface
     /**
      * @var bool
      */
-    protected $useGrossPrice;
+    protected $useGrossPrice = false;
 
     /**
      * @var Collection|ConfigurationInterface[]

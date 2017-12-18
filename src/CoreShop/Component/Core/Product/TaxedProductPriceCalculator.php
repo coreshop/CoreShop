@@ -50,7 +50,8 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         PurchasablePriceCalculatorInterface $priceCalculator,
         PurchasableDiscountCalculatorInterface $discountCalculator,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        StoreContextInterface $storeContext)
+        StoreContextInterface $storeContext
+    )
     {
         $this->priceCalculator = $priceCalculator;
         $this->discountCalculator = $discountCalculator;

@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Test\Models;
 
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
@@ -35,6 +36,19 @@ class Product extends Base
         $this->printTestName();
 
         $this->assertEquals(1800, $this->getPriceCalculator()->getPrice(Data::$product1));
+        $this->assertEquals(1500, $this->getPriceCalculator()->getPrice(Data::$product1, false));
+    }
+
+    public function testProductPriceGross()
+    {
+        $this->printTestName();
+
+        self::get('coreshop.context.store.fixed')->setStore(Data::$storeGrossPrices);
+
+        $this->assertEquals(1800, $this->getPriceCalculator()->getPrice(Data::$product1));
+        $this->assertEquals(1500, $this->getPriceCalculator()->getPrice(Data::$product1, false));
+
+        self::get('coreshop.context.store.fixed')->setStore(Data::$store);
     }
 
     /**
@@ -47,7 +61,11 @@ class Product extends Base
         //$this->assertEquals(300, Data::$product1->getTaxAmount());
     }
 
-    private function getPriceCalculator() {
+    /**
+     * @return TaxedProductPriceCalculatorInterface
+     */
+    private function getPriceCalculator()
+    {
         return $this->get('coreshop.product.taxed_price_calculator');
     }
 }
