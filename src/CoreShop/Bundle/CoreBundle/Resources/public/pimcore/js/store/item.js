@@ -15,7 +15,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
     getFormPanel: function ($super) {
         var panel = $super();
 
-        panel.down("fieldset").add(
+        panel.down('fieldset').add(
             [
                 {
                     xtype: 'combo',
@@ -30,6 +30,12 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     forceSelection: true,
                     triggerAction: 'all',
                     name: 'baseCountry'
+                },
+                {
+                    xtype: 'checkbox',
+                    fieldLabel: t('coreshop_base_use_gross_prices'),
+                    value: this.data.useGrossPrice,
+                    name: 'useGrossPrice'
                 }
             ]
         );
