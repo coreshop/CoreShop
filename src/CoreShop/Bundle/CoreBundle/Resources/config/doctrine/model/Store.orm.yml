@@ -4,7 +4,7 @@ CoreShop\Component\Core\Model\Store:
   fields:
     useGrossPrice:
       type: boolean
-      groups: [Detailed]
+      groups: [List, Detailed]
   manyToOne:
     baseCountry:
       targetEntity: CoreShop\Component\Address\Model\CountryInterface

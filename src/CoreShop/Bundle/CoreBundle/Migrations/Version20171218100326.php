@@ -24,7 +24,7 @@ class Version20171218100326 extends AbstractPimcoreMigration implements Containe
         if ($schema->hasTable('coreshop_store')) {
             $table = $schema->getTable('coreshop_store');
             if (!$table->hasColumn('useGrossPrice')) {
-                $table->addColumn('useGrossPrice', 'boolean', ['groups' => ['coreshop']]);
+                $table->addColumn('useGrossPrice', 'boolean', ['groups' => ['List', 'Detailed']]);
             }
         }
 
