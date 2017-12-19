@@ -114,25 +114,6 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function deleteAction(Request $request)
-    {
-        $id = $request->get('id');
-        $resource = $this->repository->find($id);
-        if ($resource instanceof Index && !empty($resource->getWorker())) {
-            /**
-             * @var $worker WorkerInterface
-             */
-            $worker = $this->get('coreshop.registry.index.worker')->get($resource->getWorker());
-            $worker->deleteIndexStructures($resource);
-        }
-
-        return parent::deleteAction($request);
-    }
-
-    /**
      * Get Pimcore Class Definition.
      *
      * @param Request $request
