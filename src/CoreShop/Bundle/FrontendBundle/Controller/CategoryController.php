@@ -115,7 +115,7 @@ class CategoryController extends FrontendController
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? 'NAME' : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? 'ASC' : strtoupper($orderDirection));
+            $sortKey = (empty($orderKey) ? 'name' : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? 'asc' : strtoupper($orderDirection));
             $sort = $request->get('sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
@@ -137,7 +137,7 @@ class CategoryController extends FrontendController
             $viewParameters['conditions'] = $preparedConditions;
         } else {
             //Classic Listing Mode
-            $sort = $request->get('sort', 'NAME_ASC');
+            $sort = $request->get('sort', 'name_asc');
             $sortParsed = $this->parseSorting($sort);
 
             $list = $this->get('coreshop.repository.product')->getList();
@@ -194,8 +194,8 @@ class CategoryController extends FrontendController
             return $sort;
         }
 
-        $name = strtolower($sortString[0]);
-        $direction = strtolower($sortString[1]);
+        $name = $sortString[0];
+        $direction = $sortString[1];
 
         if (in_array($name, $this->validSortProperties) && in_array($direction, ['desc', 'asc'])) {
             return [
