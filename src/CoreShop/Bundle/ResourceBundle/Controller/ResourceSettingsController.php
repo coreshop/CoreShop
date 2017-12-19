@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +35,7 @@ class ResourceSettingsController extends AdminController
             }
         }
 
-        return $this->json(["success" => true, "data" => $result]);
+        return $this->viewHandler->handle(["success" => true, "data" => $result]);
     }
 
     /**
@@ -74,6 +73,6 @@ class ResourceSettingsController extends AdminController
             }
         }
 
-        return $this->json($config);
+        return $this->viewHandler->handle($config);
     }
 }

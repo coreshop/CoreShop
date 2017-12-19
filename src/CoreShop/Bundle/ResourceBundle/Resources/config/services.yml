@@ -40,6 +40,8 @@ services:
 
   coreshop.admin_controller.resource_settings:
     class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
+    arguments:
+      - '@coreshop.resource_controller.view_handler'
     calls:
       - [setContainer, ['@service_container']]
 

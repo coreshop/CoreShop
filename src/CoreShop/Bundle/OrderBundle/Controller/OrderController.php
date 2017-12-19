@@ -65,7 +65,7 @@ class OrderController extends AbstractSaleDetailController
             }
         }
 
-        return $this->json($states);
+        return $this->viewHandler->handle($states);
     }
 
     /**
@@ -78,7 +78,7 @@ class OrderController extends AbstractSaleDetailController
         $payment = $this->getPaymentRepository()->find($request->get('id'));
 
         if (!$payment instanceof PaymentInterface) {
-            return $this->json(['success' => false]);
+            return $this->viewHandler->handle(['success' => false]);
         }
 
         $payment->setValues($request->request->all());
@@ -86,7 +86,7 @@ class OrderController extends AbstractSaleDetailController
         $this->getEntityManager()->persist($payment);
         $this->getEntityManager()->flush();
 
-        return $this->json(['success' => true]);
+        return $this->viewHandler->handle(['success' => true]);
     }
 
     /**
@@ -104,7 +104,7 @@ class OrderController extends AbstractSaleDetailController
                 ];
             }
         }
-        return $this->json(['success' => true, 'data' => $result]);
+        return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
     /**
@@ -121,7 +121,7 @@ class OrderController extends AbstractSaleDetailController
         $paymentProviderId = $request->get('paymentProvider');
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
@@ -132,7 +132,7 @@ class OrderController extends AbstractSaleDetailController
             $payedTotal += $amount;
 
             if ($payedTotal > $order->getTotal()) {
-                return $this->json(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
+                return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
                 /**
                  * @var PaymentInterface|PimcoreModelInterface
@@ -149,10 +149,10 @@ class OrderController extends AbstractSaleDetailController
                 $this->getEntityManager()->persist($payment);
                 $this->getEntityManager()->flush();
 
-                return $this->json(['success' => true, 'payments' => $this->getPayments($order), 'totalPayed' => $order->getTotalPayed()]);
+                return $this->viewHandler->handle(['success' => true, 'payments' => $this->getPayments($order), 'totalPayed' => $order->getTotalPayed()]);
             }
         } else {
-            return $this->json(['success' => false, 'message' => "Payment Provider '$paymentProvider' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Payment Provider '$paymentProvider' not found"]);
         }
     }
 

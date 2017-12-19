@@ -134,6 +134,8 @@ class NotificationRuleController extends ResourceController
 
         $this->manager->flush();
 
-        return $this->json(['success' => true]);
+        return $this->viewHandler->handle([
+            'success' => true,
+        ]);
     }
 }

@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReportsController extends AdminController
@@ -32,7 +32,7 @@ class ReportsController extends AdminController
 
         $reportData = $reportRegistry->get($report)->getData($request->query);
 
-        return $this->json([
+        return $this->viewHandler->handle([
             'success' => true,
             'data' => $reportData
         ]);
