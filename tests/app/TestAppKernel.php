@@ -41,7 +41,7 @@ class TestAppKernel extends Kernel
     public function registerContainerConfiguration(\Symfony\Component\Config\Loader\LoaderInterface $loader)
     {
         parent::registerContainerConfiguration($loader);
-        
+
         $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
             $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass());
         });
