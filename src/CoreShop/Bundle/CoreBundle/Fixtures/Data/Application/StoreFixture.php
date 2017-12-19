@@ -55,6 +55,7 @@ class StoreFixture extends AbstractFixture implements ContainerAwareInterface, V
             $store->setName('Standard');
             $store->setTemplate('Standard');
             $store->setIsDefault(true);
+            $store->setUseGrossPrice(false);
 
             $manager->persist($store);
             $manager->flush();

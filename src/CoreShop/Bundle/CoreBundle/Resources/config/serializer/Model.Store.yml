@@ -6,3 +6,7 @@ CoreShop\Component\Core\Model\Store:
       expose: true
       type: relation
       groups: [List, Detailed]
+    useGrossPrice:
+      expose: true
+      type: boolean
+      groups: [List, Detailed]

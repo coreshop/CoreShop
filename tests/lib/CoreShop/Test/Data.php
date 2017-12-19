@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Test;
 
@@ -101,6 +101,11 @@ class Data
     public static $store;
 
     /**
+     * @var StoreInterface
+     */
+    public static $storeGrossPrices;
+
+    /**
      * @param $serviceId
      *
      * @return object
@@ -117,6 +122,7 @@ class Data
     {
         self::$store = $standardStore = self::get('coreshop.repository.store')->findStandard();
 
+        self::createGrossStore();
         self::createTaxRule();
         self::createTestCarrierWeight();
         //self::createTestCarrierPrice();
@@ -160,6 +166,7 @@ class Data
             $taxRuleGroup->setName('20');
             $taxRuleGroup->setActive(true);
             $taxRuleGroup->addStore(self::$store);
+            $taxRuleGroup->addStore(self::$storeGrossPrices);
 
             /**
              * @var $taxRule TaxRuleInterface
@@ -204,6 +211,7 @@ class Data
             $carrier->setIsFree(false);
             $carrier->setDescription('TEST', 'en');
             $carrier->addStore(self::$store);
+            $carrier->addStore(self::$storeGrossPrices);
 
             $entityManager->persist($carrier);
 
@@ -294,6 +302,7 @@ class Data
             $product1->setName('test1');
             $product1->setWholesalePrice(1000);
             $product1->setStorePrice(1500, static::$store);
+            $product1->setStorePrice(1800, static::$storeGrossPrices);
             $product1->setCategories([self::$category1]);
             $product1->setHeight(50);
             $product1->setWidth(50);
@@ -316,6 +325,7 @@ class Data
             $product2->setName('test2');
             $product2->setWholesalePrice(10000);
             $product2->setStorePrice(15000, static::$store);
+            $product2->setStorePrice(18000, static::$storeGrossPrices);
             $product2->setCategories([self::$category2]);
             $product2->setHeight(500);
             $product2->setWidth(500);
@@ -338,6 +348,7 @@ class Data
             $product3->setName('test3');
             $product3->setWholesalePrice(5000);
             $product3->setStorePrice(7500, static::$store);
+            $product3->setStorePrice(6250, static::$storeGrossPrices);
             $product3->setHeight(100);
             $product3->setWidth(100);
             $product3->setDepth(100);
@@ -400,6 +411,7 @@ class Data
             $customerGroup1 = $customerGroupFactory->createNew();
             $customerGroup1->setName('Group1');
             $customerGroup1->addStore(self::$store);
+            $customerGroup1->addStore(self::$storeGrossPrices);
             $customerGroup1->setKey('group1');
             $customerGroup1->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup1->save();
@@ -414,6 +426,7 @@ class Data
             $customerGroup2 = $customerGroupFactory->createNew();
             $customerGroup2->setName('Group2');
             $customerGroup2->addStore(self::$store);
+            $customerGroup2->addStore(self::$storeGrossPrices);
             $customerGroup2->setKey('group2');
             $customerGroup2->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup2->save();
@@ -465,5 +478,23 @@ class Data
             self::$customer1 = $customer;
             self::$address = $address;
         }
+    }
+
+    public static function createGrossStore()
+    {
+        /**
+         * @var $grossStore StoreInterface
+         */
+        $grossStore = self::get('coreshop.factory.store')->createNew();;
+        $grossStore->setCurrency(self::get('coreshop.repository.currency')->getByCode('EUR'));
+        $grossStore->setBaseCountry(self::get('coreshop.repository.country')->findByCode('AT'));
+        $grossStore->setName('GrossPrice');
+        $grossStore->setUseGrossPrice(true);
+
+        self::$storeGrossPrices = $grossStore;
+
+        $entityManager = self::get('doctrine.orm.entity_manager');
+        $entityManager->persist($grossStore);
+        $entityManager->flush();
     }
 }

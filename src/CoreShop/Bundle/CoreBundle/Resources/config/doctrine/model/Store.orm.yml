@@ -1,6 +1,9 @@
 CoreShop\Component\Core\Model\Store:
   type: mappedSuperclass
   table: coreshop_store
+  fields:
+    useGrossPrice:
+      type: boolean
   manyToOne:
     baseCountry:
       targetEntity: CoreShop\Component\Address\Model\CountryInterface

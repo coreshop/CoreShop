@@ -1,6 +1,7 @@
 services:
   coreshop.core.order.transformer.cart_to_order:
     decorates: coreshop.order.transformer.cart_to_order
+    decoration_priority: 10
     class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
     arguments:
       - '@coreshop.core.order.transformer.cart_to_order.inner'
@@ -8,9 +9,10 @@ services:
 
   coreshop.core.order.transformer.cart_to_order.workflow:
     decorates: coreshop.order.transformer.cart_to_order
+    decoration_priority: 5
     class: CoreShop\Component\Core\Order\Transformer\CartToOrderTransformer
     arguments:
-      - '@coreshop.core.order.transformer.cart_to_order.inner'
+      - '@coreshop.core.order.transformer.cart_to_order.workflow.inner'
       - '@coreshop.workflow.manager.order'
 
   coreshop.core.order.transformer.cart_to_quote:

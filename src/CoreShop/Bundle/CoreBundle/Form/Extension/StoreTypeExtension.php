@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryChoiceType;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class StoreTypeExtension extends AbstractTypeExtension
@@ -25,6 +26,7 @@ final class StoreTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('baseCountry', CountryChoiceType::class);
+        $builder->add('useGrossPrice', CheckboxType::class);
     }
 
     /**

@@ -18,6 +18,16 @@ use Doctrine\Common\Collections\Collection;
 interface StoreInterface extends BaseStoreInterface
 {
     /**
+     * @return bool
+     */
+    public function getUseGrossPrice();
+
+    /**
+     * @param bool $useGrossPrice
+     */
+    public function setUseGrossPrice($useGrossPrice);
+
+    /**
      * @return CountryInterface
      */
     public function getBaseCountry();
