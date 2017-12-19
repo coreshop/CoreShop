@@ -532,3 +532,15 @@ translations:
           de_CH: 'Geschenkartikel'
           en: 'Gift Item'
           de: 'Geschenkartikel'
+
+  coreshop.ui.ascending:
+      languages:
+          de_CH: 'Aufsteigend'
+          en: 'Ascending'
+          de: 'Aufsteigend'
+
+  coreshop.ui.descending:
+      languages:
+          de_CH: 'Absteigend'
+          en: 'Descending'
+          de: 'Absteigend'
