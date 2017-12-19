@@ -28,17 +28,15 @@
                 <label class="control-label">{{ 'coreshop.ui.sort'|trans }}</label>
             </div>
             <div class="col-md-3 text-right">
-                {%  set sorting = {
-                        'NAME_DESC': 'coreshop.ui.sort.name_desc'|trans,
-                        'NAME_ASC': 'coreshop.ui.sort.name_asc'|trans
-                    }
-                %}
                 {#
                     TODO: Maybe use form for this?
                 #}
                 <select class="form-control site-reload" name="sort">
-                    {% for key, value in sorting %}
-                        <option value="{{ key }}" {% if sort == key %} selected="selected" {% endif %}>{{ value }}</option>
+                    {% for value in validSortElements %}
+                        {% set asc = value|upper ~ '_ASC' %}
+                        {% set desc = value|upper ~ '_DESC' %}
+                        <option value="{{ asc }}" {% if sort == asc %} selected="selected" {% endif %}>{{ value ~ ' ' ~ ('coreshop.ui.ascending'|trans) }}</option>
+                        <option value="{{ desc }}" {% if sort == desc %} selected="selected" {% endif %}>{{ value ~ ' ' ~ ('coreshop.ui.descending'|trans) }}</option>
                     {% endfor %}
                 </select>
             </div>

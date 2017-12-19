@@ -29,7 +29,7 @@ class CategoryController extends FrontendController
     /**
      * @var array
      */
-    protected $validSortProperties = ['name', 'price'];
+    protected $validSortProperties = ['name'];
 
     /**
      * @param Request $request
@@ -167,6 +167,7 @@ class CategoryController extends FrontendController
         $viewParameters['type'] = $type;
         $viewParameters['perPageAllowed'] = [10, 20, 30, 40, 50];
         $viewParameters['sort'] = $sort;
+        $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
             $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
