@@ -4,7 +4,7 @@ services:
     tags:
       - { name: coreshop.context.cart, priority: -100 }
 
-coreshop.context.cart.customer_and_store_based:
+  coreshop.context.cart.customer_and_store_based:
     class: CoreShop\Bundle\OrderBundle\Context\CustomerAndStoreBasedCartContext
     arguments:
       - '@coreshop.context.customer'
