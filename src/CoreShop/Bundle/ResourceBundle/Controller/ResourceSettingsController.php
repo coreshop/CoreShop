@@ -62,19 +62,14 @@ class ResourceSettingsController extends AdminController
                 $config['classMap'][$alias] = $class;
             }
 
+            $implementations = $this->container->getParameter('coreshop.implementations.classes');
 
-            if ($this->container->hasParameter('coreshop.implementations')) {
-                $implementations = $this->getParameter('coreshop.implementations');
+            foreach ($implementations as $implementationKey => $classes) {
+                foreach ($classes as $class) {
+                    $class = str_replace('Pimcore\\Model\\DataObject\\', '', $class);
+                    $class = str_replace('\\', '', $class);
 
-                foreach ($implementations as $implementation => $interface) {
-                    foreach ($classes as $key => $definition) {
-                        $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
-                        $class = str_replace('\\', '', $class);
-
-                        if (in_array($interface, class_implements($definition['classes']['model']))) {
-                            $config['implementations'][$implementation][] = $class;
-                        }
-                    }
+                    $config['implementations'][$implementationKey][] = $class;
                 }
             }
         }
