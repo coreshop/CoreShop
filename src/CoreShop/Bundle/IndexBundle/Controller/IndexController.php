@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Index\Model\Index;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Index\Worker\WorkerInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -109,6 +111,25 @@ class IndexController extends ResourceController
                 'classes' => $availableClasses
             ]
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function deleteAction(Request $request)
+    {
+        $id = $request->get('id');
+        $resource = $this->repository->find($id);
+        if ($resource instanceof Index && !empty($resource->getWorker())) {
+            /**
+             * @var $worker WorkerInterface
+             */
+            $worker = $this->get('coreshop.registry.index.worker')->get($resource->getWorker());
+            $worker->deleteIndexStructures($resource);
+        }
+
+        return parent::deleteAction($request);
     }
 
     /**
