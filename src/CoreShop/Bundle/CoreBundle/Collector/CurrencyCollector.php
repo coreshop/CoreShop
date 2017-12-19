@@ -91,6 +91,14 @@ final class CurrencyCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
+    public function reset()
+    {
+        $this->data = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'coreshop.currency_collector';

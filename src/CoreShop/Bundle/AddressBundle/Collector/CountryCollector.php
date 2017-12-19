@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\AddressBundle\Collector;
 
@@ -27,13 +27,14 @@ final class CountryCollector extends DataCollector
     private $countryContext;
 
     /**
-     * @param CountryContextInterface  $countryContext
-     * @param bool                     $countryChangeSupport
+     * @param CountryContextInterface $countryContext
+     * @param bool $countryChangeSupport
      */
     public function __construct(
-        CountryContextInterface  $countryContext,
+        CountryContextInterface $countryContext,
         $countryChangeSupport = false
-    ) {
+    )
+    {
         $this->countryContext = $countryContext;
 
         $this->data = [
@@ -69,6 +70,14 @@ final class CountryCollector extends DataCollector
         } catch (CountryNotFoundException $exception) {
             //If something went wrong, we don't have any country, which we can safely ignore
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data = [];
     }
 
     /**
