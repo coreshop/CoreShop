@@ -219,8 +219,6 @@ class CheckoutController extends FrontendController
             $this->get('security.token_storage')->setToken(null);
         }
 
-        $this->getCartManager()->invalidateSessionCart();
-
         return $this->renderTemplate('@CoreShopFrontend/Checkout/thank-you.html.twig', [
             'order' => $order,
         ]);
