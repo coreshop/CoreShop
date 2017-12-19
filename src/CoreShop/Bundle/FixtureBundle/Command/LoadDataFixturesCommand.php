@@ -2,7 +2,8 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutorInterface;
 
-class LoadDataFixturesCommand extends ContainerAwareCommand
+class LoadDataFixturesCommand extends Command
 {
     const COMMAND_NAME = 'coreshop:fixture:data:load';
 
@@ -19,6 +20,28 @@ class LoadDataFixturesCommand extends ContainerAwareCommand
 
     const MAIN_FIXTURES_PATH = 'Fixtures/Data/Application';
     const DEMO_FIXTURES_PATH = 'Fixtures/Data/Demo';
+
+    /**
+     * @var DataFixturesLoader
+     */
+    protected $fixtureLoader;
+
+    /**
+     * @var DataFixturesExecutorInterface
+     */
+    protected $fixtureExecutor;
+
+    /**
+     * @param DataFixturesLoader $fixtureLoader
+     * @param DataFixturesExecutorInterface $fixtureExecutor
+     */
+    public function __construct(DataFixturesLoader $fixtureLoader, DataFixturesExecutorInterface $fixtureExecutor)
+    {
+        $this->fixtureLoader = $fixtureLoader;
+        $this->fixtureExecutor = $fixtureExecutor;
+
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -87,7 +110,6 @@ class LoadDataFixturesCommand extends ContainerAwareCommand
      */
     protected function getFixtures(InputInterface $input, OutputInterface $output)
     {
-        $loader = $this->getContainer()->get('coreshop.fixture.data.loader');
         $bundles = $input->getOption('bundles');
         $excludeBundles = $input->getOption('exclude');
         $fixtureRelativePath = $this->getFixtureRelativePath($input);
@@ -102,11 +124,11 @@ class LoadDataFixturesCommand extends ContainerAwareCommand
             }
             $path = $bundle->getPath() . $fixtureRelativePath;
             if (is_dir($path)) {
-                $loader->loadFromDirectory($path);
+                $this->fixtureLoader->loadFromDirectory($path);
             }
         }
 
-        return $loader->getFixtures();
+        return $this->fixtureLoader->getFixtures();
     }
 
     /**
@@ -145,13 +167,12 @@ class LoadDataFixturesCommand extends ContainerAwareCommand
             )
         );
 
-        $executor = $this->getContainer()->get('coreshop.fixture.data.executor');
-        $executor->setLogger(
+        $this->fixtureExecutor->setLogger(
             function ($message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
             }
         );
-        $executor->execute($fixtures, $this->getTypeOfFixtures($input));
+        $this->fixtureExecutor->execute($fixtures, $this->getTypeOfFixtures($input));
     }
 
     /**

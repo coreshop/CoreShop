@@ -10,3 +10,11 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@service_container'
+
+    coreshop.command.load_fixtures:
+        class: CoreShop\Bundle\FixtureBundle\Command\LoadDataFixturesCommand
+        arguments:
+            - '@coreshop.fixture.data.loader'
+            - '@coreshop.fixture.data.executor'
+        tags:
+          - { name: console.command, command: 'coreshop:fixture:data:load' }
