@@ -20,7 +20,6 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 

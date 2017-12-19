@@ -82,19 +82,26 @@ final class AddressType extends AbstractResourceType
                 },
                 'empty_data' => $options['customer']->getDefaultAddress()
             ])
-            ->add('useShippingAsInvoice', CheckboxType::class, [
-                'required' => false,
-                'mapped' => false,
-                'label' => 'coreshop.form.address.use_shipping_as_invoice',
-                'empty_data' => true
-            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $cart = $event->getData();
+                $checkboxData = true;
+                if ($cart->getShippingAddress() instanceof AddressInterface && $cart->getInvoiceAddress() instanceof AddressInterface) {
+                    if ($cart->getShippingAddress()->getId() !== $cart->getInvoiceAddress()->getId()) {
+                        $checkboxData = null;
+                    }
+                }
+                $event->getForm()->add('useShippingAsInvoice', CheckboxType::class, [
+                    'required' => false,
+                    'mapped'   => false,
+                    'label'    => 'coreshop.form.address.use_shipping_as_invoice',
+                    'data'     => $checkboxData
+                ]);
+            })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-                $orderData = $event->getData();
-
-                if (isset($orderData['shippingAddress']) && (isset($orderData['useShippingAsInvoice']) && true === $orderData['useShippingAsInvoice'])) {
-                    $orderData['invoiceAddress'] = $orderData['shippingAddress'];
-
-                    $event->setData($orderData);
+                $formData = $event->getData();
+                if (isset($formData['shippingAddress']) && (isset($formData['useShippingAsInvoice']) && '1' === $formData['useShippingAsInvoice'])) {
+                    $formData['invoiceAddress'] = $formData['shippingAddress'];
+                    $event->setData($formData);
                 }
             });
     }
