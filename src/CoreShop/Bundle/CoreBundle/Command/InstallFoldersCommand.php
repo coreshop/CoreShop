@@ -12,12 +12,36 @@
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
+use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
+use CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallFoldersCommand extends AbstractInstallCommand
 {
+    /**
+     * @var FolderInstallerProvider
+     */
+    protected $folderInstaller;
+
+
+    /**
+     * @param KernelInterface $kernel
+     * @param CommandDirectoryChecker $directoryChecker
+     * @param FolderInstallerProvider $folderInstaller
+     */
+    public function __construct(
+        KernelInterface $kernel,
+        CommandDirectoryChecker $directoryChecker,
+        FolderInstallerProvider $folderInstaller)
+    {
+        $this->folderInstaller = $folderInstaller;
+
+        parent::__construct($kernel, $directoryChecker);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -44,10 +68,7 @@ EOT
             $this->getEnvironment()
         ));
 
-        $this
-            ->get('coreshop.installer.executor.folder_installer')
-            ->installFolders()
-        ;
+        $this->folderInstaller->installFolders();
 
         return 0;
     }

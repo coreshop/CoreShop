@@ -1,38 +1,56 @@
 services:
+    coreshop.command.install.abstract:
+        abstract: true
+        class: CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand
+        arguments:
+            - '@kernel'
+            - '@coreshop.installer.checker.command_directory'
+
     coreshop.command.install.assets:
         class: CoreShop\Bundle\CoreBundle\Command\AssetsInstallCommand
+        parent: coreshop.command.install.abstract
         tags:
           - { name: console.command, command: 'coreshop:install:assets' }
 
     coreshop.command.install.classes:
         class: CoreShop\Bundle\CoreBundle\Command\InstallClassesCommand
+        parent: coreshop.command.install.abstract
         tags:
           - { name: console.command, command: 'coreshop:install:classes' }
 
     coreshop.command.install.database:
         class: CoreShop\Bundle\CoreBundle\Command\InstallDatabaseCommand
+        arguments:
+            - '@kernel'
+            - '@coreshop.installer.checker.command_directory'
+            - '@coreshop.commands_provider.database_setup'
         tags:
           - { name: console.command, command: 'coreshop:install:database' }
 
     coreshop.command.install.demo:
         class: CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand
+        parent: coreshop.command.install.abstract
         tags:
           - { name: console.command, command: 'coreshop:install:demo' }
 
     coreshop.command.install.fixture:
         class: CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand
+        parent: coreshop.command.install.abstract
         tags:
           - { name: console.command, command: 'coreshop:install:fixtures' }
 
     coreshop.command.install.folders:
         class: CoreShop\Bundle\CoreBundle\Command\InstallFoldersCommand
+        arguments:
+            - '@kernel'
+            - '@coreshop.installer.checker.command_directory'
+            - '@coreshop.installer.executor.folder_installer'
         tags:
           - { name: console.command, command: 'coreshop:install:folders' }
 
     coreshop.command.install:
         class: CoreShop\Bundle\CoreBundle\Command\InstallCommand
-        arguments:
-            - '%kernel.cache_dir%'
+        parent: coreshop.command.install.abstract
         tags:
           - { name: console.command, command: 'coreshop:install' }
 

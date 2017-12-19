@@ -12,13 +12,14 @@
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
+use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use CoreShop\Bundle\CoreBundle\Installer\Executor\CommandExecutor;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractInstallCommand extends Command
 {
@@ -26,6 +27,28 @@ abstract class AbstractInstallCommand extends Command
      * @var CommandExecutor
      */
     protected $commandExecutor;
+
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * @var CommandDirectoryChecker
+     */
+    protected $directoryChecker;
+
+    /**
+     * @param KernelInterface $kernel
+     * @param CommandDirectoryChecker $directoryChecker
+     */
+    public function __construct(KernelInterface $kernel, CommandDirectoryChecker $directoryChecker)
+    {
+        $this->kernel = $kernel;
+        $this->directoryChecker = $directoryChecker;
+
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -43,21 +66,11 @@ abstract class AbstractInstallCommand extends Command
     }
 
     /**
-     * @param string $id
-     *
-     * @return object
-     */
-    protected function get($id)
-    {
-        return $this->getContainer()->get($id);
-    }
-
-    /**
      * @return string
      */
     protected function getEnvironment()
     {
-        return $this->get('kernel')->getEnvironment();
+        return $this->kernel->getEnvironment();
     }
 
     /**
@@ -65,7 +78,7 @@ abstract class AbstractInstallCommand extends Command
      */
     protected function isDebug()
     {
-        return $this->get('kernel')->isDebug();
+        return $this->kernel->isDebug();
     }
 
     /**
@@ -129,7 +142,7 @@ abstract class AbstractInstallCommand extends Command
 
             // PDO does not always close the connection after Doctrine commands.
             // See https://github.com/symfony/symfony/issues/11750.
-            $this->get('doctrine')->getManager()->getConnection()->close();
+            //$this->get('doctrine')->getManager()->getConnection()->close();
 
             if ($displayProgress && $progress) {
                 $progress->advance();
@@ -147,10 +160,9 @@ abstract class AbstractInstallCommand extends Command
      */
     protected function ensureDirectoryExistsAndIsWritable($directory, OutputInterface $output)
     {
-        $checker = $this->get('coreshop.installer.checker.command_directory');
-        $checker->setCommandName($this->getName());
+        $this->directoryChecker->setCommandName($this->getName());
 
-        $checker->ensureDirectoryExists($directory, $output);
-        $checker->ensureDirectoryIsWritable($directory, $output);
+        $this->directoryChecker->ensureDirectoryExists($directory, $output);
+        $this->directoryChecker->ensureDirectoryIsWritable($directory, $output);
     }
 }

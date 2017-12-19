@@ -20,11 +20,6 @@ use Symfony\Component\Process\Exception\RuntimeException;
 final class InstallCommand extends AbstractInstallCommand
 {
     /**
-     * @var string
-     */
-    protected $kernelCacheDir;
-
-    /**
      * @var array
      */
     private $commands = [
@@ -45,16 +40,6 @@ final class InstallCommand extends AbstractInstallCommand
             'message' => 'Install CoreShop Assets.',
         ]
     ];
-
-    /**
-     * @param string $kernelCacheDir
-     */
-    public function __construct(string $kernelCacheDir)
-    {
-        $this->kernelCacheDir = $kernelCacheDir;
-
-        parent::__construct();
-    }
 
     /**
      * {@inheritdoc}
@@ -80,7 +65,7 @@ EOT
         $outputStyle->writeln('<info>Installing CoreShop...</info>');
         $outputStyle->writeln($this->getCoreShopLogo());
 
-        $this->ensureDirectoryExistsAndIsWritable($this->kernelCacheDir, $output);
+        $this->ensureDirectoryExistsAndIsWritable($this->kernel->getCacheDir(), $output);
 
         $errored = false;
         foreach ($this->commands as $step => $command) {
