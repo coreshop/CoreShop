@@ -1,17 +1,10 @@
 services:
-  coreshop.context.cart.new:
-    class: CoreShop\Component\Order\Context\CartContext
-    arguments:
-      - '@coreshop.factory.cart'
-    tags:
-      - { name: coreshop.context.cart, priority: -999 }
-
   coreshop.context.cart.fixed:
     class: CoreShop\Component\Order\Context\FixedCartContext
     tags:
       - { name: coreshop.context.cart, priority: -100 }
 
-  coreshop.context.cart.customer_and_store_based:
+coreshop.context.cart.customer_and_store_based:
     class: CoreShop\Bundle\OrderBundle\Context\CustomerAndStoreBasedCartContext
     arguments:
       - '@coreshop.context.customer'
@@ -29,6 +22,13 @@ services:
       - '@coreshop.context.store'
     tags:
       - { name: coreshop.context.cart, priority: -777 }
+
+  coreshop.context.cart.new:
+    class: CoreShop\Component\Order\Context\CartContext
+    arguments:
+      - '@coreshop.factory.cart'
+    tags:
+      - { name: coreshop.context.cart, priority: -999 }
 
   coreshop.context.cart.composite:
     class: CoreShop\Component\Order\Context\CompositeCartContext
