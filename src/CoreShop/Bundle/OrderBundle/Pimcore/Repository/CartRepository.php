@@ -4,7 +4,9 @@ namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 class CartRepository extends PimcoreRepository implements CartRepositoryInterface
 {
@@ -26,7 +28,27 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     public function findNamedForCustomer(CustomerInterface $customer, $name)
     {
         $list = $this->getList();
-        $list->setCondition('user__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
+        $list->setCondition('customer__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
+        $list->load();
+
+        if ($list->getTotalCount() > 0) {
+            $objects = $list->getObjects();
+
+            return $objects[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer)
+    {
+        $list = $this->getList();
+        $list->setCondition('customer__id = ? AND store = ? AND order__id is null ', [$customer->getId(), $store->getId()]);
+        $list->setOrderKey('o_creationDate');
+        $list->setOrder('DESC');
         $list->load();
 
         if ($list->getTotalCount() > 0) {

@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -26,11 +27,19 @@ final class CartBlamerListener
     private $cartManager;
 
     /**
-     * @param CartManagerInterface $cartManager
+     * @var CartContextInterface
      */
-    public function __construct(CartManagerInterface $cartManager)
+    private $cartContext;
+
+    /**
+     * CartBlamerListener constructor.
+     * @param CartManagerInterface $cartManager
+     * @param CartContextInterface $cartContext
+     */
+    public function __construct(CartManagerInterface $cartManager, CartContextInterface $cartContext)
     {
         $this->cartManager = $cartManager;
+        $this->cartContext = $cartContext;
     }
 
     /**
@@ -81,6 +90,6 @@ final class CartBlamerListener
      */
     private function getCart()
     {
-        return $this->cartManager->getCart();
+        return $this->cartContext->getCart();
     }
 }

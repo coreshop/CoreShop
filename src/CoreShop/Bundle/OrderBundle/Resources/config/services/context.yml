@@ -1,0 +1,42 @@
+services:
+  coreshop.context.cart.fixed:
+    class: CoreShop\Component\Order\Context\FixedCartContext
+    tags:
+      - { name: coreshop.context.cart, priority: -100 }
+
+coreshop.context.cart.customer_and_store_based:
+    class: CoreShop\Bundle\OrderBundle\Context\CustomerAndStoreBasedCartContext
+    arguments:
+      - '@coreshop.context.customer'
+      - '@coreshop.context.store'
+      - '@coreshop.repository.cart'
+    tags:
+      - { name: coreshop.context.cart, priority: -555 }
+
+  coreshop.context.cart.session_based:
+    class: CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext
+    arguments:
+      - '@session'
+      - 'coreshop.cart'
+      - '@coreshop.repository.cart'
+      - '@coreshop.context.store'
+    tags:
+      - { name: coreshop.context.cart, priority: -777 }
+
+  coreshop.context.cart.new:
+    class: CoreShop\Component\Order\Context\CartContext
+    arguments:
+      - '@coreshop.factory.cart'
+    tags:
+      - { name: coreshop.context.cart, priority: -999 }
+
+  coreshop.context.cart.composite:
+    class: CoreShop\Component\Order\Context\CompositeCartContext
+
+  coreshop.listeners.session_cart:
+    class: CoreShop\Bundle\OrderBundle\EventListener\SessionCartSubscriber
+    arguments:
+      - '@coreshop.context.cart'
+      - 'coreshop.cart'
+    tags:
+      - { name: kernel.event_subscriber }

@@ -2,7 +2,7 @@ services:
   coreshop.product_price_rule.condition.quantity:
     class: CoreShop\Component\Core\Product\ProductPriceRule\Condition\QuantityConditionChecker
     arguments:
-      - '@coreshop.cart.manager'
+      - '@coreshop.context.cart'
     tags:
       - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType }
 

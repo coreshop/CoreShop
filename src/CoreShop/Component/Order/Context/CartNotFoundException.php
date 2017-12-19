@@ -10,16 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Order\Manager;
+namespace CoreShop\Component\Order\Context;
 
-use CoreShop\Component\Order\Model\CartInterface;
-
-interface CartManagerInterface
+class CartNotFoundException extends \RuntimeException
 {
     /**
-     * @param CartInterface $cart
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function persistCart(CartInterface $cart);
+    public function __construct($message = null, \Exception $previousException = null)
+    {
+        parent::__construct($message ?: 'CoreShop was not able to figure out the current cart.', 0, $previousException);
+    }
 }

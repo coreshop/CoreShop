@@ -100,7 +100,6 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
             }
 
             $item->setQuantity($newQuantity);
-            $item->save();
         } else {
             /**
              * @var CartItemInterface
@@ -111,7 +110,6 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
             $item->setQuantity($quantity);
             $item->setProduct($product);
             $item->setPublished(true);
-            $item->save();
 
             $storageList->addItem($item);
         }

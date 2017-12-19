@@ -70,20 +70,24 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
                     continue;
                 }
 
-                if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
-                    /**
-                     * @var ActionInterface
-                     */
-                    foreach ($rule->getActions() as $action) {
-                        $processor = $this->actionServiceRegistry->get($action->getType());
+                if (!$this->ruleValidationProcessor->isValid($subject, $rule)) {
+                    continue;
+                }
 
-                        if ($processor instanceof ProductPriceActionProcessorInterface) {
-                            $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
+                /**
+                 * @var ActionInterface
+                 */
+                foreach ($rule->getActions() as $action) {
+                    $processor = $this->actionServiceRegistry->get($action->getType());
 
-                            if (false !== $actionPrice && null !== $actionPrice) {
-                                $price = $actionPrice;
-                            }
-                        }
+                    if (!$processor instanceof ProductPriceActionProcessorInterface) {
+                        continue;
+                    }
+
+                    $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
+
+                    if (false !== $actionPrice && null !== $actionPrice) {
+                        $price = $actionPrice;
                     }
                 }
             }
@@ -104,16 +108,21 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
          */
         $rules = $this->productPriceRuleFetcher->getPriceRules($subject);
 
-        if (is_array($rules)) {
-            foreach ($rules as $rule) {
-                if ($this->ruleValidationProcessor->isValid($subject, $rule)) {
-                    foreach ($rule->getActions() as $action) {
-                        $processor = $this->actionServiceRegistry->get($action->getType());
+        if (!is_array($rules)) {
+            return $discount;
+        }
 
-                        if ($processor instanceof ProductPriceActionProcessorInterface) {
-                            $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
-                        }
-                    }
+
+        foreach ($rules as $rule) {
+            if (!$this->ruleValidationProcessor->isValid($subject, $rule)) {
+                continue;
+            }
+
+            foreach ($rule->getActions() as $action) {
+                $processor = $this->actionServiceRegistry->get($action->getType());
+
+                if ($processor instanceof ProductPriceActionProcessorInterface) {
+                    $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
                 }
             }
         }

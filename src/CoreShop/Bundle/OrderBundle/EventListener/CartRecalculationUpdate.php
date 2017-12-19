@@ -42,6 +42,6 @@ final class CartRecalculationUpdate
             return;
         }
 
-        $this->cartProcessor->process($cart);
+        //$this->cartProcessor->process($cart);
     }
 }

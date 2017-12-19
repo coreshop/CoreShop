@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 
 interface ShopperContextInterface extends
@@ -24,7 +25,8 @@ interface ShopperContextInterface extends
     CurrencyContextInterface,
     LocaleContextInterface,
     CountryContextInterface,
-    CustomerContextInterface
+    CustomerContextInterface,
+    CartContextInterface
 {
     /**
      * @return bool
@@ -50,9 +52,4 @@ interface ShopperContextInterface extends
      * @return bool
      */
     public function hasCustomer();
-
-    /**
-     * @return CartInterface
-     */
-    public function getCart();
 }

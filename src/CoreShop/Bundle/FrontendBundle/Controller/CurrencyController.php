@@ -42,7 +42,8 @@ class CurrencyController extends FrontendController
         $currencyCode = $request->get('currencyCode');
         $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
         $cartManager = $this->get('coreshop.cart.manager');
-        $cart = $cartManager->getCart();
+        $cartContext = $this->get('coreshop.context.cart');
+        $cart = $cartContext->getCart();
 
         $store = $this->get('coreshop.context.store')->getStore();
         $this->get('coreshop.storage.currency')->set($store, $currency);

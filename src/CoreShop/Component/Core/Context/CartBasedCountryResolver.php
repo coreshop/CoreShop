@@ -14,20 +14,20 @@ namespace CoreShop\Component\Core\Context;
 
 use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class CartBasedCountryResolver implements RequestResolverInterface
 {
     /**
-     * @var CartManagerInterface
+     * @var CartContextInterface
      */
-    private $cartManager;
+    private $cartContext;
 
-    public function __construct(CartManagerInterface $cartManager)
+    public function __construct(CartContextInterface $cartContext)
     {
-        $this->cartManager = $cartManager;
+        $this->cartContext = $cartContext;
     }
 
     /**
@@ -35,7 +35,7 @@ final class CartBasedCountryResolver implements RequestResolverInterface
      */
     public function findCountry(Request $request)
     {
-        $cart = $this->cartManager->getCart();
+        $cart = $this->cartContext->getCart();
 
         if ($cart instanceof CartInterface) {
             if ($cart->getShippingAddress() instanceof AddressInterface) {
