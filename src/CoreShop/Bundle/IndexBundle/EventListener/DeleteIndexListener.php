@@ -17,6 +17,7 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 final class DeleteIndexListener
 {
@@ -40,12 +41,7 @@ final class DeleteIndexListener
     {
         $resource = $event->getSubject();
 
-        if (!$resource instanceof IndexInterface) {
-            throw new UnexpectedTypeException(
-                $resource,
-                IndexInterface::class
-            );
-        }
+        Assert::isInstanceOf($resource, IndexInterface::class);
 
         $worker = $resource->getWorker();
 

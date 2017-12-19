@@ -18,6 +18,7 @@ use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
 final class CreateIndexListener
 {
@@ -43,12 +44,7 @@ final class CreateIndexListener
     {
         $resource = $event->getSubject();
 
-        if (!$resource instanceof IndexInterface) {
-            throw new UnexpectedTypeException(
-                $resource,
-                IndexInterface::class
-            );
-        }
+        Assert::isInstanceOf($resource, IndexInterface::class);
 
         $worker = $resource->getWorker();
 
