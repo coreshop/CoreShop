@@ -12,3 +12,4 @@ services:
       - '@coreshop.index.updater'
     tags:
       - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: onPostUpdate }
+      - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }

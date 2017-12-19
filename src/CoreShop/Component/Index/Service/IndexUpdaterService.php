@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Service;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -32,7 +33,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     private $workerServiceRegistry;
 
     /**
-     * @param RepositoryInterface      $indexRepository
+     * @param RepositoryInterface $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
      */
     public function __construct(RepositoryInterface $indexRepository, ServiceRegistryInterface $workerServiceRegistry)
@@ -41,28 +42,80 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
         $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function updateIndices($subject)
+    {
+        $this->operationOnIndex($subject, 'update');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeIndices($subject)
+    {
+        $this->operationOnIndex($subject, 'remove');
+    }
+
+    /**
+     * @param $subject
+     * @param string $operation
+     */
+    protected function operationOnIndex($subject, $operation = 'update')
     {
         $indices = $this->indexRepository->findAll();
 
         foreach ($indices as $index) {
-            if ($index instanceof IndexInterface) {
-                if ($subject instanceof Concrete) {
-                    if ($subject->getClass()->getName() === $index->getClass()) {
-                        $worker = $index->getWorker();
+            if (!$this->isEligible($index, $subject)) {
+                continue;
+            }
+            /**
+             * @var $index IndexInterface
+             * @var $subject IndexableInterface
+             */
+            $worker = $index->getWorker();
 
-                        if (!$this->workerServiceRegistry->has($worker)) {
-                            throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
-                        }
+            if (!$this->workerServiceRegistry->has($worker)) {
+                throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
+            }
 
-                        /**
-                         * @var WorkerInterface
-                         */
-                        $worker = $this->workerServiceRegistry->get($worker);
-                        $worker->updateIndex($index, $subject);
-                    }
-                }
+            /**
+             * @var $worker WorkerInterface
+             */
+            $worker = $this->workerServiceRegistry->get($worker);
+
+            if ($operation === 'update') {
+                $worker->updateIndex($index, $subject);
+            } else {
+                $worker->deleteFromIndex($index, $subject);
             }
         }
+    }
+
+    /**
+     * @param $index
+     * @param $subject
+     * @return bool
+     */
+    protected function isEligible($index, $subject)
+    {
+        if (!$index instanceof IndexInterface) {
+            return false;
+        }
+
+        if (!$subject instanceof IndexableInterface) {
+            return false;
+        }
+
+        if (!$subject instanceof Concrete) {
+            return false;
+        }
+
+        if ($subject->getClass()->getName() !== $index->getClass()) {
+            return false;
+        }
+
+        return true;
     }
 }

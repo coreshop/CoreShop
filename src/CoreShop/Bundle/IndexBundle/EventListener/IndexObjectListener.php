@@ -32,6 +32,9 @@ final class IndexObjectListener
         $this->indexUpdaterService = $indexUpdaterService;
     }
 
+    /**
+     * @param ElementEventInterface $event
+     */
     public function onPostUpdate(ElementEventInterface $event)
     {
         if ($event instanceof DataObjectEvent) {
@@ -42,6 +45,22 @@ final class IndexObjectListener
             }
 
             $this->indexUpdaterService->updateIndices($object);
+        }
+    }
+
+    /**
+     * @param ElementEventInterface $event
+     */
+    public function onPostDelete(ElementEventInterface $event)
+    {
+        if ($event instanceof DataObjectEvent) {
+            $object = $event->getObject();
+
+            if (!$object instanceof IndexableInterface) {
+                return;
+            }
+
+            $this->indexUpdaterService->removeIndices($object);
         }
     }
 }
