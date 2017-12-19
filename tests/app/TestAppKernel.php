@@ -14,6 +14,7 @@ use Pimcore\Kernel;
 
 class TestAppKernel extends Kernel
 {
+
     /**
      * AppKernel constructor.
      */
@@ -32,5 +33,17 @@ class TestAppKernel extends Kernel
     public function getProjectDir()
     {
         return '../';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerContainerConfiguration(\Symfony\Component\Config\Loader\LoaderInterface $loader)
+    {
+        parent::registerContainerConfiguration($loader);
+        
+        $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
+            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass());
+        });
     }
 }

@@ -51,7 +51,5 @@ EOT
 
         $this->runCommands($commands, $output);
         $outputStyle->newLine();
-
-        $this->commandExecutor->runCommand('coreshop:install:fixtures', [], $output);
     }
 }

@@ -41,7 +41,8 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
     public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
         return array_merge($this->getRequiredCommands($input, $output, $questionHelper), [
-            'cache:clear' => ['--no-warmup' => true]
+            'cache:warmup',
+            'coreshop:install:fixtures'
         ]);
     }
 
