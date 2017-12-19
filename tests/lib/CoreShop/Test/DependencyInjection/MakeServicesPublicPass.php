@@ -25,9 +25,19 @@ class MakeServicesPublicPass implements CompilerPassInterface
         });
 
         foreach ($serviceIds as $serviceId) {
+            if ($container->hasAlias($serviceId)) {
+                $container->getAlias($serviceId)->setPublic(true);
+            }
+
             $container
                 ->findDefinition($serviceId)
                 ->setPublic(true);
         }
+
+        $container->findDefinition('coreshop.context.cart')->setPublic(true);
+        $container->findDefinition('coreshop.context.customer')->setPublic(true);
+        $container->findDefinition('coreshop.context.currency')->setPublic(true);
+        $container->findDefinition('coreshop.context.country')->setPublic(true);
+        $container->findDefinition('coreshop.context.store')->setPublic(true);
     }
 }

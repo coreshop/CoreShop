@@ -14,20 +14,9 @@ use Pimcore\Kernel;
 
 class TestAppKernel extends Kernel
 {
-
-    /**
-     * AppKernel constructor.
-     */
-    public function __construct($environment, $debug)
-    {
-        parent::__construct($environment, $debug);
-    }
-
     public function registerBundlesToCollection(\Pimcore\HttpKernel\BundleCollection\BundleCollection $collection)
     {
         \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
-
-        $collection->addBundle(new \CoreShop\Bundle\AdminBundle\CoreShopAdminBundle());
     }
 
     public function getProjectDir()
@@ -43,7 +32,7 @@ class TestAppKernel extends Kernel
         parent::registerContainerConfiguration($loader);
 
         $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
-            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass());
+            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
         });
     }
 }
