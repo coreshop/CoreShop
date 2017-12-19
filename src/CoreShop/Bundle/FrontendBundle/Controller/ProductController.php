@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Product\Model\ProductInterface;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -37,8 +38,7 @@ class ProductController extends FrontendController
      */
     public function detailAction(Request $request)
     {
-        $productRepository = $this->get('coreshop.repository.product');
-        $product = $productRepository->find($request->get('product'));
+        $product = DataObject::getById($request->get('product'));
 
         if (!$product instanceof ProductInterface) {
             throw new NotFoundHttpException();
