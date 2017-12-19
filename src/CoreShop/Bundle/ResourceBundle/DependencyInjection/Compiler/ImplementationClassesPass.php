@@ -36,7 +36,7 @@ final class ImplementationClassesPass implements CompilerPassInterface
             $classImplementations[$implementation] = [];
 
             foreach ($classes as $key => $definition) {
-                if (!class_exists($definition['classes']['model'])) {
+                if (!@class_exists($definition['classes']['model'])) {
                     continue;
                 }
 
