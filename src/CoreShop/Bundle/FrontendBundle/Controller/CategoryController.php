@@ -27,6 +27,11 @@ use Zend\Paginator\Paginator;
 class CategoryController extends FrontendController
 {
     /**
+     * @var array
+     */
+    protected $validSortProperties = ['name', 'price'];
+
+    /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -68,23 +73,21 @@ class CategoryController extends FrontendController
     public function indexAction(Request $request)
     {
         $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
-        $gridPerPageAllowed = $this->getConfigurationService()->getForStore("system.category.grid.per_page");
-        $gridPerPageDefault = $this->getConfigurationService()->getForStore("system.category.grid.per_page.default");
-        $listPerPageAllowed = $this->getConfigurationService()->getForStore("system.category.list.per_page");
-        $listPerPageDefault = $this->getConfigurationService()->getForStore("system.category.list.per_page.default");
-        $variantMode = $this->getConfigurationService()->getForStore("system.category.variant_mode");
+        $gridPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.grid.per_page');
+        $gridPerPageDefault = $this->getConfigurationService()->getForStore('system.category.grid.per_page.default');
+        $listPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.list.per_page');
+        $listPerPageDefault = $this->getConfigurationService()->getForStore('system.category.list.per_page.default');
+        $variantMode = $this->getConfigurationService()->getForStore('system.category.variant_mode');
 
         $page = $request->get('page', 0);
-        $sort = $request->get('sort', 'NAMEA');
-        $sortParsed = $this->parseSorting($sort);
         $type = $request->get('type', $listModeDefault);
 
-        $defaultPerPage = $type === "list" ? $listPerPageDefault : $gridPerPageDefault;
-        $allowedPerPage = $type === "list" ? $listPerPageAllowed : $gridPerPageAllowed;
+        $defaultPerPage = $type === 'list' ? $listPerPageDefault : $gridPerPageDefault;
+        $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
         $perPage = $request->get('perPage', $defaultPerPage);
 
-        $category = $this->getRepository()->find($request->get("category"));
+        $category = $this->getRepository()->find($request->get('category'));
 
         if (!$category instanceof CategoryInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -103,10 +106,21 @@ class CategoryController extends FrontendController
         $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
+
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
             $filteredList->addCondition(Condition::like('stores', $this->getContext()->getStore()->getId(), 'both'), 'stores');
             $filteredList->setCategory($category);
+
+            $orderDirection = $category->getFilter()->getOrderDirection();
+            $orderKey = $category->getFilter()->getOrderKey();
+
+            $sortKey = (empty($orderKey) ? 'NAME' : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? 'ASC' : strtoupper($orderDirection));
+            $sort = $request->get('sort', $sortKey);
+            $sortParsed = $this->parseSorting($sort);
+
+            $filteredList->setOrderKey($sortParsed['name']);
+            $filteredList->setOrder($sortParsed['direction']);
 
             $currentFilter = $this->get('coreshop.filter.processor')->processConditions($category->getFilter(), $filteredList, $request->query);
             $preparedConditions = $this->get('coreshop.filter.processor')->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
@@ -123,6 +137,9 @@ class CategoryController extends FrontendController
             $viewParameters['conditions'] = $preparedConditions;
         } else {
             //Classic Listing Mode
+            $sort = $request->get('sort', 'NAME_ASC');
+            $sortParsed = $this->parseSorting($sort);
+
             $list = $this->get('coreshop.repository.product')->getList();
 
             $condition = 'active = 1';
@@ -165,7 +182,6 @@ class CategoryController extends FrontendController
      */
     protected function parseSorting($sortString)
     {
-        $allowed = ['name', 'price'];
         $sort = [
             'name' => 'name',
             'direction' => 'asc',
@@ -180,7 +196,7 @@ class CategoryController extends FrontendController
         $name = strtolower($sortString[0]);
         $direction = strtolower($sortString[1]);
 
-        if (in_array($name, $allowed) && in_array($direction, ['desc', 'asc'])) {
+        if (in_array($name, $this->validSortProperties) && in_array($direction, ['desc', 'asc'])) {
             return [
                 'name' => $name,
                 'direction' => $direction,
