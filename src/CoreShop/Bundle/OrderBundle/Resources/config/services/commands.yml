@@ -1,0 +1,7 @@
+services:
+    coreshop.command.order.cart_cleanup:
+        class: CoreShop\Bundle\OrderBundle\Command\CartCleanupCommand
+        arguments:
+          - '@coreshop.cart.cleanup'
+        tags:
+          - { name: console.command, command: 'coreshop:cart:cleanup' }

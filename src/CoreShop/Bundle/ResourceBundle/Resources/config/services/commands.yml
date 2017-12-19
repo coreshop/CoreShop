@@ -1,0 +1,15 @@
+services:
+    coreshop.command.create_object_class:
+        class: CoreShop\Bundle\ResourceBundle\Command\CreateObjectClassCommand
+        arguments:
+            - '@kernel'
+            - '%coreshop.pimcore%'
+        tags:
+            - { name: console.command, command: 'coreshop:generate:class' }
+
+    coreshop.command.resource.installer:
+        class: CoreShop\Bundle\ResourceBundle\Command\InstallResourcesCommand
+        arguments:
+            - '@coreshop.resource.installer'
+        tags:
+            - { name: console.command, command: 'coreshop:resources:install' }

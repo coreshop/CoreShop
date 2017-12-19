@@ -1,0 +1,38 @@
+services:
+    coreshop.command.install.assets:
+        class: CoreShop\Bundle\CoreBundle\Command\AssetsInstallCommand
+        tags:
+          - { name: console.command, command: 'coreshop:install:assets' }
+
+    coreshop.command.install.classes:
+        class: CoreShop\Bundle\CoreBundle\Command\InstallClassesCommand
+        tags:
+          - { name: console.command, command: 'coreshop:install:classes' }
+
+    coreshop.command.install.database:
+        class: CoreShop\Bundle\CoreBundle\Command\InstallDatabaseCommand
+        tags:
+          - { name: console.command, command: 'coreshop:install:database' }
+
+    coreshop.command.install.demo:
+        class: CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand
+        tags:
+          - { name: console.command, command: 'coreshop:install:demo' }
+
+    coreshop.command.install.fixture:
+        class: CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand
+        tags:
+          - { name: console.command, command: 'coreshop:install:fixtures' }
+
+    coreshop.command.install.folders:
+        class: CoreShop\Bundle\CoreBundle\Command\InstallFoldersCommand
+        tags:
+          - { name: console.command, command: 'coreshop:install:folders' }
+
+    coreshop.command.install:
+        class: CoreShop\Bundle\CoreBundle\Command\InstallCommand
+        arguments:
+            - '%kernel.cache_dir%'
+        tags:
+          - { name: console.command, command: 'coreshop:install' }
+

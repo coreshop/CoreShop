@@ -22,10 +22,33 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
 final class CreateObjectClassCommand extends GeneratorCommand
 {
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * @var array
+     */
+    protected $classes;
+
+    /**
+     * @param KernelInterface $kernel
+     * @param array $classes
+     */
+    public function __construct(KernelInterface $kernel, array $classes)
+    {
+        $this->kernel = $kernel;
+        $this->classes = $classes;
+
+        parent::__construct();
+    }
+
     /**
      * configure command.
      */
@@ -97,13 +120,13 @@ final class CreateObjectClassCommand extends GeneratorCommand
             $bundle = Validators::validateBundleName($pluginName);
 
             try {
-                $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
+                $bundle = $this->kernel->getBundle($bundle);
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<bg=red>Bundle "%s" does not exist.</>', $bundle));
             }
         }
 
-        $availableClasses = $this->getContainer()->getParameter('coreshop.pimcore');
+        $availableClasses = $this->classes;
 
         if (!array_key_exists($classType, $availableClasses)) {
             throw new \Exception("Class Type $classType not found. Found these: " . implode(', ', array_keys($availableClasses)));

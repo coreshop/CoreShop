@@ -1,6 +1,7 @@
 imports:
   - { resource: "services/form.yml" }
   - { resource: "services/listeners.yml" }
+  - { resource: "services/commands.yml" }
 
 services:
   coreshop.factory.index.list:

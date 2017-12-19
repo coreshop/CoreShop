@@ -20,6 +20,7 @@ imports:
   - { resource: "services/pimcore_installer.yml" }
   - { resource: "services/inventory.yml" }
   - { resource: "services/handler.yml" }
+  - { resource: "services/commands.yml" }
 
 services:
   coreshop.core.key_transformer:

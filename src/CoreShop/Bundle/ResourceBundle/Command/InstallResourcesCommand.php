@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
+use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,6 +21,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InstallResourcesCommand extends ContainerAwareCommand
 {
+    /**
+     * @var ResourceInstallerInterface
+     */
+    protected $resourceInstaller;
+
+    /**
+     * @param ResourceInstallerInterface $resourceInstaller
+     */
+    public function __construct(ResourceInstallerInterface $resourceInstaller)
+    {
+        $this->resourceInstaller = $resourceInstaller;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -50,9 +66,7 @@ EOT
             $this->getContainer()->get('kernel')->getEnvironment()
         ));
 
-        $this
-            ->getContainer()->get('coreshop.resource.installer')
-            ->installResources($output, $input->getOption('application-name'));
+        $this->resourceInstaller->installResources($output, $input->getOption('application-name'));
 
         return 0;
     }

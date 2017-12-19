@@ -38,5 +38,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->runCommands(['assets:install' => ['--symlink']], $output);
+
+        return 0;
     }
 }
