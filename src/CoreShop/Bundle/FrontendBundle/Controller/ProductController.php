@@ -18,6 +18,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends FrontendController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function latestAction(Request $request)
     {
         $productRepository = $this->get('coreshop.repository.product');
@@ -27,17 +31,21 @@ class ProductController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function detailAction(Request $request)
     {
         $productRepository = $this->get('coreshop.repository.product');
         $product = $productRepository->find($request->get('product'));
 
-        if(!$product->isPublished() || $product->getActive() !== true) {
+        if (!$product instanceof ProductInterface) {
             throw new NotFoundHttpException();
         }
 
-        if (!$product instanceof ProductInterface) {
-            return $this->redirectToRoute('coreshop_index');
+        if (!$product->isPublished() || $product->getActive() !== true) {
+            throw new NotFoundHttpException();
         }
 
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);

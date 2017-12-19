@@ -17,10 +17,9 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
-use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
-final class CreateIndexListener
+final class DeleteIndexListener
 {
     /**
      * @var ServiceRegistryInterface
@@ -36,11 +35,9 @@ final class CreateIndexListener
     }
 
     /**
-     * Prevent channel deletion if no more channels enabled.
-     *
      * @param ResourceControllerEvent $event
      */
-    public function onIndexSavePost(ResourceControllerEvent $event)
+    public function onIndexDeletePre(ResourceControllerEvent $event)
     {
         $resource = $event->getSubject();
 
@@ -48,14 +45,15 @@ final class CreateIndexListener
 
         $worker = $resource->getWorker();
 
+        // do not throw an exception since the worker field could be empty!
         if (!$this->workerServiceRegistry->has($worker)) {
-            throw new InvalidArgumentException(sprintf('%s Worker not found', $worker));
+            return;
         }
 
         /**
          * @var WorkerInterface
          */
         $worker = $this->workerServiceRegistry->get($worker);
-        $worker->createOrUpdateIndexStructures($resource);
+        $worker->deleteIndexStructures($resource);
     }
 }
