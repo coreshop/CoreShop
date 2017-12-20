@@ -13,7 +13,11 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
       groups: [Detailed]
     creationDate:
       expose: true
-      type: datetime
+      type: DateTime
+      groups: [Detailed]
+    modificationDate:
+      expose: true
+      type: DateTime
       groups: [Detailed]
     used:
       expose: true
