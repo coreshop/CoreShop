@@ -148,9 +148,15 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                 },
                 columns: [
                     {
-                        text: t('code'),
+                        text: t('coreshop_cart_pricerule_voucher_code'),
                         dataIndex: 'code',
                         flex: 1
+                    },
+                    {
+                        text: t('ccoreshop_cart_pricerule_creation_date'),
+                        dataIndex: 'creationDate',
+                        flex: 1,
+                        renderer: Ext.util.Format.dateRenderer('d.m.Y H:i')
                     },
                     {
                         xtype: 'booleancolumn',
