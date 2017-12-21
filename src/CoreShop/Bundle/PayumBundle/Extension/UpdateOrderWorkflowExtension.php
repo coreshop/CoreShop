@@ -14,7 +14,9 @@ namespace CoreShop\Bundle\PayumBundle\Extension;
 
 use CoreShop\Bundle\PayumBundle\Exception\ReplyException;
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
@@ -32,6 +34,11 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
     private $orderRepository;
 
     /**
+     * @var CartRepositoryInterface
+     */
+    private $cartRepository;
+
+    /**
      * @var WorkflowManagerInterface
      */
     private $orderWorkflowManager;
@@ -39,11 +46,17 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
     /**
      * @param PimcoreRepositoryInterface $orderRepository
      * @param WorkflowManagerInterface $orderWorkflowManager
+     * @param CartRepositoryInterface $cartRepository
      */
-    public function __construct(PimcoreRepositoryInterface $orderRepository, WorkflowManagerInterface $orderWorkflowManager)
+    public function __construct(
+        PimcoreRepositoryInterface $orderRepository,
+        WorkflowManagerInterface $orderWorkflowManager,
+        CartRepositoryInterface $cartRepository
+    )
     {
         $this->orderRepository = $orderRepository;
         $this->orderWorkflowManager = $orderWorkflowManager;
+        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -144,6 +157,8 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
                 'newState' => WorkflowManagerInterface::ORDER_STATE_PAYMENT_REVIEW,
                 'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PAYMENT_REVIEW,
             ];
+        } else if ($nextState === PaymentInterface::STATE_CANCELLED) {
+            $this->cancelOrder($order);
         }
 
         if (is_array($params)) {
@@ -154,5 +169,20 @@ final class UpdateOrderWorkflowExtension implements ExtensionInterface
     private function updateToState(OrderInterface $order, $state)
     {
         $this->orderWorkflowManager->changeState($order, 'change_order_state', $state);
+    }
+
+    private function cancelOrder(OrderInterface $order)
+    {
+        $cart = $this->cartRepository->findCartByOrder($order);
+
+        if ($cart instanceof CartInterface) {
+            $cart->setOrder(null);
+            $cart->save();
+        }
+
+        $this->orderWorkflowManager->changeState($order, 'change_order_state', [
+            'newState' => WorkflowManagerInterface::ORDER_STATUS_CANCELED,
+            'newStatus' => WorkflowManagerInterface::ORDER_STATUS_CANCELED,
+        ]);
     }
 }

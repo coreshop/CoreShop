@@ -2,6 +2,7 @@
 
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -34,4 +35,10 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      * @return CartInterface|null
      */
     public function findCartById($id);
+
+    /**
+     * @param OrderInterface $order
+     * @return CartInterface|null
+     */
+    public function findCartByOrder(OrderInterface $order);
 }
