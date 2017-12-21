@@ -27,7 +27,7 @@ interface TimestampableInterface
     /**
      * @return \DateTime
      */
-    public function getModificationdate();
+    public function getModificationDate();
 
     /**
      * @param \DateTime $modificationDate

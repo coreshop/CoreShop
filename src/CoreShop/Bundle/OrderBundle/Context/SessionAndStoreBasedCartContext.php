@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\Context;
 
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
@@ -76,7 +78,7 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
             throw new CartNotFoundException('CoreShop was not able to find the cart in session');
         }
 
-        $cart = $this->cartRepository->find($this->session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId())));
+        $cart = $this->cartRepository->findCartById($this->session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId())));
 
         if (null === $cart || null === $cart->getStore() || $cart->getStore()->getId() !== $store->getId()) {
             $cart = null;
