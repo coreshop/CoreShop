@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\PayumBundle\Controller;
 use Carbon\Carbon;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
-use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -104,7 +103,7 @@ class PaymentController extends Controller
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber(uniqid('payment-'));
-        $payment->setPaymentProvider($this->getCart()->getPaymentProvider());
+        $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setCurrency($this->currencyContext->getCurrency());
         $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
@@ -166,30 +165,6 @@ class PaymentController extends Controller
          * Further process the status here, kick-off the pimcore workflow for orders?
         */
         return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
-    }
-
-    /**
-     * @return \CoreShop\Component\Order\Model\CartInterface
-     */
-    private function getCart()
-    {
-        return $this->getCartContext()->getCart();
-    }
-
-    /**
-     * @return CartContextInterface
-     */
-    private function getCartContext()
-    {
-        return $this->get('coreshop.context.cart');
-    }
-
-    /**
-     * @return \CoreShop\Bundle\OrderBundle\Manager\CartManager
-     */
-    private function getCartManager()
-    {
-        return $this->get('coreshop.cart.manager');
     }
 
     /**

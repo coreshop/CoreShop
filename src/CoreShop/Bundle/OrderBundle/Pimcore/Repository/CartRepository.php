@@ -59,4 +59,22 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         return null;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findCartById($id)
+    {
+        $list = $this->getList();
+        $list->setCondition('o_id = ? AND order__id is null ', [$id]);
+        $list->load();
+
+        if ($list->getTotalCount() > 0) {
+            $objects = $list->getObjects();
+
+            return $objects[0];
+        }
+
+        return null;
+    }
 }
