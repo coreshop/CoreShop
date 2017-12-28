@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -21,10 +22,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Payum;
-use Payum\Core\Request\GetHumanStatus;
-use Payum\Core\Request\Sync;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -141,18 +139,10 @@ class PaymentController extends Controller
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
-        $gateway = $this->getPayum()->getGateway($token->getGatewayName());
-
-        try {
-            $gateway->execute(new Sync($token));
-        } catch (RequestNotSupportedException $e) {
-            //Not sure if we should do someting here?
-        }
-
-        $gateway->execute($status = new GetHumanStatus($token));
+        $status = new GetStatus($token);
+        $this->getPayum()->getGateway($token->getGatewayName())->execute($status);
         $resolveNextRoute = new ResolveNextRoute($status->getFirstModel());
         $this->getPayum()->getGateway($token->getGatewayName())->execute($resolveNextRoute);
-
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 
         //if (PaymentInterface::STATE_NEW !== $status->getValue()) {
