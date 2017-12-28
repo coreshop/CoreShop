@@ -165,8 +165,6 @@ final class WorkflowManager implements WorkflowManagerInterface
             $info['state'] = $manager->getWorkflow()->getStateConfig($state);
             $label = 'coreshop.ui.workflow.state.' . strtolower(str_replace(' ', '_', $info['state']['label']));
             $info['state']['translatedLabel'] = $this->translator->trans($label);
-            //$info['state']['color'] = self::$STATE_CONFIG[$state]['color'];
-            $info['state']['color'] = '#00FF00'; //TODO: How to get the color? I mean, where to get it?
         }
 
         if (!is_null($status)) {
