@@ -84,30 +84,29 @@ class PaymentController extends Controller
     public function prepareCaptureAction(Request $request)
     {
         /**
-         * @var OrderInterface
+         * @var $order OrderInterface
          */
-        $orderId = $request->get("order");
+        $orderId = $request->get('order');
         $order = $this->orderRepository->find($orderId);
 
         if (null === $order) {
             throw new NotFoundHttpException(sprintf('Order with id "%s" does not exist.', $orderId));
         }
-        /**
-         * We now have our Order -> So lets do Payment -> Yeah :).
-         */
 
         /**
-         * @var PaymentInterface
+         * We now have our Order -> So lets do Payment -> Yeah :).
+         *
+         * @var $payment PaymentInterface
          */
         $payment = $this->paymentFactory->createNew();
-        $payment->setNumber(uniqid('payment-'));
+        $payment->setNumber($order->getOrderNumber());
         $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setCurrency($this->currencyContext->getCurrency());
         $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
         $payment->setOrderId($order->getId());
-        $payment->setDescription(sprintf("Order %s", $order->getId()));
+        $payment->setDescription(sprintf('Order %s', $order->getId()));
 
         $this->entityManager->persist($payment);
         $this->entityManager->flush();
