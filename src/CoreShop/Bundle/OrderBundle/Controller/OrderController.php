@@ -109,14 +109,16 @@ class OrderController extends AbstractSaleDetailController
 
     /**
      * @param Request $request
-     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function addPaymentAction(Request $request)
     {
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
         $amount = doubleval($request->get('amount', 0));
+
+        /** @deprecated $transactionId */
         $transactionId = $request->get('transactionNumber');
         $paymentProviderId = $request->get('paymentProvider');
 
@@ -138,7 +140,7 @@ class OrderController extends AbstractSaleDetailController
                  * @var PaymentInterface|PimcoreModelInterface
                  */
                 $payment = $this->getPaymentFactory()->createNew();
-                $payment->setNumber($transactionId);
+                $payment->setNumber($order->getOrderNumber());
                 $payment->setPaymentProvider($paymentProvider);
                 $payment->setCurrency($order->getCurrency());
                 $payment->setTotalAmount($order->getTotal());
