@@ -115,15 +115,6 @@ coreshop.order.order.createPayment = {
                         allowBlank: false
                     },
                     {
-                        xtype: 'textfield',
-                        name: 'transactionNumber',
-                        fieldLabel: t('coreshop_transactionNumber'),
-                        afterLabelTextTpl: [
-                            '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
-                        ],
-                        allowBlank: false
-                    },
-                    {
                         xtype: 'combo',
                         fieldLabel: t('coreshop_state'),
                         name: 'state',

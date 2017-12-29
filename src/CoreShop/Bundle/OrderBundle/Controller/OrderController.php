@@ -118,8 +118,6 @@ class OrderController extends AbstractSaleDetailController
         $order = $this->getSaleRepository()->find($orderId);
         $amount = doubleval($request->get('amount', 0));
 
-        /** @deprecated $transactionId */
-        $transactionId = $request->get('transactionNumber');
         $paymentProviderId = $request->get('paymentProvider');
 
         if (!$order instanceof OrderInterface) {
