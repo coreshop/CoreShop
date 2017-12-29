@@ -24,4 +24,4 @@ CoreShop\Component\Core\Model\PaymentProvider:
         referencedColumnName: id
         nullable: true
         onDelete: "SET NULL"
-      cascade: [ persist ]
+      cascade: [ all ]
