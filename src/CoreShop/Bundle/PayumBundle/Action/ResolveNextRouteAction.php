@@ -49,7 +49,10 @@ final class ResolveNextRouteAction implements ActionInterface
                 '_locale' => $order->getOrderLanguage()
             ]);
 
-            if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
+            if (
+                $payment->getState() === PaymentInterface::STATE_COMPLETED ||
+                $payment->getState() === PaymentInterface::STATE_PROCESSING
+            ) {
                 $request->setRouteName('coreshop_checkout_confirmation');
                 return;
             }
