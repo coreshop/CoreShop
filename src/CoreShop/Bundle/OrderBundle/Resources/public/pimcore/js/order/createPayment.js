@@ -116,7 +116,7 @@ coreshop.order.order.createPayment = {
                     },
                     {
                         xtype: 'combo',
-                        fieldLabel: t('coreshop_state'),
+                        fieldLabel: t('state'),
                         name: 'state',
                         value: 'new',
                         store: [
@@ -124,7 +124,7 @@ coreshop.order.order.createPayment = {
                             ['processing', t('coreshop_payment_state_processing')],
                             ['completed', t('coreshop_payment_state_completed')],
                             ['failed', t('coreshop_payment_state_failed')],
-                            ['canceled', t('coreshop_payment_state_canceled')],
+                            ['canceled', t('coreshop_payment_state_cancelled')],
                             ['refunded', t('coreshop_payment_state_refunded')],
                             ['unknown', t('coreshop_payment_state_unknown')]
                         ],

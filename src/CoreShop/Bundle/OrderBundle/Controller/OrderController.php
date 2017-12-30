@@ -214,11 +214,21 @@ class OrderController extends AbstractSaleDetailController
             $noteList->setOrderKey('date');
             $noteList->setOrder('desc');*/
 
+            $details = [];
+            if(is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
+                foreach($payment->getDetails() as $detailName => $detailValue) {
+                    if(empty($detailValue) && $detailValue != 0) {
+                        continue;
+                    }
+                    $details[] = [$detailName, $detailValue];
+                }
+            }
+
             $return[] = [
                 'id' => $payment->getId(),
                 'datePayment' => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
                 'provider' => $payment->getPaymentProvider()->getName(),
-                'transactionIdentifier' => $payment->getNumber(),
+                'details' => $details,
                 //'transactionNotes' => $noteList->load(),
                 'amount' => $payment->getTotalAmount(),
                 'state' => $payment->getState(),

@@ -15,8 +15,8 @@ coreshop.order.order.editPayment = {
 
     showWindow: function (payment, callback) {
         var window = new Ext.window.Window({
-            width: 380,
-            height: 350,
+            width: 600,
+            height: 450,
             resizeable: false,
             layout: 'fit',
             items: [{
@@ -75,39 +75,32 @@ coreshop.order.order.editPayment = {
                         fieldLabel: t('coreshop_date'),
                         name: 'date',
                         disabled: true,
-                        value: payment.get("datePayment")
+                        value: payment.get('datePayment')
                     },
                     {
                         xtype: 'textfield',
                         fieldLabel: t('coreshop_paymentProvider'),
                         disabled: true,
-                        value: payment.get("provider")
-                    },
-                    {
-                        xtype: 'textfield',
-                        name: 'transactionNumber',
-                        fieldLabel: t('coreshop_transactionNumber'),
-                        disabled: true,
-                        value: payment.get("transactionIdentifier")
+                        value: payment.get('provider')
                     },
                     {
                         xtype: 'numberfield',
                         name: 'amount',
                         fieldLabel: t('coreshop_quantity'),
                         disabled: false,
-                        value: payment.get("amount") / 100
+                        value: payment.get('amount') / 100
                     },
                     {
                         xtype: 'combo',
-                        fieldLabel: t('coreshop_state'),
+                        fieldLabel: t('state'),
                         name: 'state',
-                        value: payment.get("state"),
+                        value: payment.get('state'),
                         store: [
                             ['new', t('coreshop_payment_state_new')],
                             ['processing', t('coreshop_payment_state_processing')],
                             ['completed', t('coreshop_payment_state_completed')],
                             ['failed', t('coreshop_payment_state_failed')],
-                            ['canceled', t('coreshop_payment_state_canceled')],
+                            ['cancelled', t('coreshop_payment_state_cancelled')],
                             ['refunded', t('coreshop_payment_state_refunded')],
                             ['unknown', t('coreshop_payment_state_unknown')]
                         ],
@@ -117,6 +110,18 @@ coreshop.order.order.editPayment = {
                         forceSelection: true,
                         queryMode: 'local'
 
+                    },
+                    {
+                        xtype: 'gridpanel',
+                        title: t('details'),
+                        store: new Ext.data.ArrayStore({
+                            data: payment.get('details'),
+                            fields: ['name', 'value']
+                        }),
+                        columns: [
+                            {text: 'Name', dataIndex: 'name', flex: 1 },
+                            {text: 'Value', dataIndex: 'value', flex: 2 }
+                        ]
                     }
                 ]
             }]
