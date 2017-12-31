@@ -83,6 +83,18 @@ translations:
           en: 'Checkout'
           de: 'Checkout'
 
+  coreshop.ui.checkout.error.cancelled:
+      languages:
+          de_CH: 'Der Bezahlvorgang wurde abgebrochen. Kehren Sie zum Warenkorb zurück, um die Bezahlung erneut durchzuführen.'
+          en: 'The Payment has been cancelled. Please go back to cart and start again.'
+          de: 'Der Bezahlvorgang wurde abgebrochen. Kehren Sie zum Warenkorb zurück, um die Bezahlung erneut durchzuführen.'
+
+  coreshop.ui.checkout.error.default:
+      languages:
+          de_CH: 'Während dem Bezahlvorgang ist ein Fehler aufgetreten.'
+          en: 'There was an Error during the payment process.'
+          de: 'Während dem Bezahlvorgang ist ein Fehler aufgetreten.'
+
   coreshop.ui.compare:
       languages:
           de_CH: 'Vergleichen'
@@ -468,6 +480,12 @@ translations:
           de: 'Ihre Wunschliste ist leer'
 
   coreshop.ui.error:
+      languages:
+          de_CH: 'Es ist ein Fehler aufgetreten'
+          en: 'There was an Error'
+          de: 'Es ist ein Fehler aufgetreten'
+
+coreshop.ui.error:
       languages:
           de_CH: 'Es ist ein Fehler aufgetreten'
           en: 'There was an Error'
