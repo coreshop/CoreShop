@@ -94,19 +94,29 @@ class PaymentController extends Controller
         }
 
         /**
-         * We now have our Order -> So lets do Payment -> Yeah :).
+         * Create Payum Payment.
+         * @todo: transfer this to a payum capture action?
          *
          * @var $payment PaymentInterface
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($order->getOrderNumber());
         $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setCurrency($this->currencyContext->getCurrency());
         $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
         $payment->setOrderId($order->getId());
-        $payment->setDescription(sprintf('Order %s', $order->getId()));
+        $payment->setCurrency($this->currencyContext->getCurrency());
+
+        $description = sprintf(
+            'Payment contains %s item(s) for a total of %s.',
+            count($order->getItems()),
+            round($order->getTotal() / 100, 2)
+        );
+
+        //payum setters
+        $payment->setCurrencyCode($this->currencyContext->getCurrency()->getIsoCode());
+        $payment->setDescription($description);
 
         $this->entityManager->persist($payment);
         $this->entityManager->flush();
