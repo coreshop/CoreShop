@@ -17,6 +17,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,16 +36,24 @@ class AddressCheckoutStep implements CheckoutStepInterface
     private $tokenStorage;
 
     /**
+     * @var CartManagerInterface
+     */
+    private $cartManager;
+
+    /**
      * @param FormFactoryInterface $formFactory
      * @param TokenStorageInterface $tokenStorage
+     * @param CartManagerInterface $cartManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        CartManagerInterface $cartManager
     )
     {
         $this->formFactory = $formFactory;
         $this->tokenStorage = $tokenStorage;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -84,7 +93,8 @@ class AddressCheckoutStep implements CheckoutStepInterface
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $cart = $form->getData();
-                $cart->save();
+
+                $this->cartManager->persistCart($cart);
 
                 return true;
             }
