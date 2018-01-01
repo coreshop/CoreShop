@@ -1,0 +1,19 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        {{ include('@CoreShopOrder/Collector/Icon/cart.svg') }}
+        <span class="sf-toolbar-value">
+            {{ collector.cart.total|coreshop_format_money(collector.cart.getCurrency.getIsoCode, collector.locale) }}
+        </span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Cart ID</b>
+            <span class="sf-toolbar-status">{{ collector.cart.id|default('New Cart')}}</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false }) }}
+{% endblock %}
