@@ -25,6 +25,7 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectCloner;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
@@ -220,7 +221,9 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         /*
          * We need to save the sale twice in order to create the object in the tree for pimcore
          */
-        $sale->save();
+        VersionHelper::useVersioning(function () use ($sale) {
+            $sale->save();
+        }, false);
 
         $shippingAddress = $this->objectCloner->cloneObject(
             $cart->hasShippableItems() === false ? $cart->getInvoiceAddress() : $cart->getShippingAddress(),
@@ -233,8 +236,10 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             'invoice'
         );
 
-        $shippingAddress->save();
-        $invoiceAddress->save();
+        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {
+            $shippingAddress->save();
+            $invoiceAddress->save();
+        }, false);
 
         $sale->setShippingAddress($shippingAddress);
         $sale->setInvoiceAddress($invoiceAddress);
@@ -265,7 +270,9 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $this->eventDispatcher->dispatchPostEvent($type, $sale, ['cart' => $cart]);
 
-        $sale->save();
+        VersionHelper::useVersioning(function () use ($sale) {
+            $sale->save();
+        }, false);
 
         //Necessary?
         //$cart->setQuote($quote);

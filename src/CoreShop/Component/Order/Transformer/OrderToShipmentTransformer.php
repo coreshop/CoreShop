@@ -21,6 +21,7 @@ use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
@@ -131,7 +132,9 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        $shipment->save();
+        VersionHelper::useVersioning(function () use ($shipment) {
+            $shipment->save();
+        }, false);
         $items = [];
 
         /*
@@ -148,7 +151,9 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         }
 
         $shipment->setItems($items);
-        $shipment->save();
+        VersionHelper::useVersioning(function () use ($shipment) {
+            $shipment->save();
+        }, false);
 
         $this->eventDispatcher->dispatchPostEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);
 
