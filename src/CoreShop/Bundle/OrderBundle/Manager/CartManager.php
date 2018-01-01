@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Manager;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 
 final class CartManager implements CartManagerInterface
@@ -57,19 +58,21 @@ final class CartManager implements CartManagerInterface
     {
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
 
-        $tempItems = $cart->getItems();
+        VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
+            $tempItems = $cart->getItems();
 
-        $cart->setItems([]);
-        $cart->setParent($cartsFolder);
-        $cart->save();
+            $cart->setItems([]);
+            $cart->setParent($cartsFolder);
+            $cart->save();
 
-        foreach ($tempItems as $index => $item) {
-            $item->setParent($cart);
-            $item->save();
-        }
+            foreach ($tempItems as $index => $item) {
+                $item->setParent($cart);
+                $item->save();
+            }
 
-        $cart->setItems($tempItems);
-        $this->cartProcessor->process($cart);
-        $cart->save();
+            $cart->setItems($tempItems);
+            $this->cartProcessor->process($cart);
+            $cart->save();
+        }, false);
     }
 }
