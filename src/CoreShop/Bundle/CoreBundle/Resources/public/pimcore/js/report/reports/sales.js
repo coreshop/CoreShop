@@ -93,7 +93,10 @@ coreshop.report.reports.sales = Class.create(coreshop.report.abstract, {
                     fields: ['sales'],
                     position: 'left',
                     grid: true,
-                    minimum: 0
+                    minimum: 0,
+                    renderer: function(drawing, value, item) {
+                        return Ext.util.Format.number((value/100));
+                    }
                 }, {
                     type: 'category',
                     fields: 'datetext',

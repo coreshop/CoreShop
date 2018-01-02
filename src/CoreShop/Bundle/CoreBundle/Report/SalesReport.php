@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -36,9 +36,9 @@ class SalesReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * @param Connection $db
+     * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param array $pimcoreClasses
+     * @param array                   $pimcoreClasses
      */
     public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, array $pimcoreClasses)
     {
@@ -50,9 +50,10 @@ class SalesReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getData(ParameterBag $parameterBag) {
+    public function getData(ParameterBag $parameterBag)
+    {
         $groupBy = $parameterBag->get('groupBy', 'day');
-        $fromFilter = $parameterBag->get('from' , strtotime(date('01-m-Y')));
+        $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -67,29 +68,35 @@ class SalesReport implements ReportInterface
         switch ($groupBy) {
             case 'day':
                 $dateFormatter = 'd-m-Y';
-                $groupSelector = 'DATE(FROM_UNIXTIME(orderDate))';
+                $groupSelector = 'DATE(FROM_UNIXTIME(orders.orderDate))';
                 break;
             case 'month':
                 $dateFormatter = 'F Y';
-                $groupSelector = 'MONTH(FROM_UNIXTIME(orderDate))';
+                $groupSelector = 'MONTH(FROM_UNIXTIME(orders.orderDate))';
                 break;
             case 'year':
                 $dateFormatter = 'Y';
-                $groupSelector = 'YEAR(FROM_UNIXTIME(orderDate))';
+                $groupSelector = 'YEAR(FROM_UNIXTIME(orders.orderDate))';
                 break;
 
         }
 
-        $sqlQuery = "SELECT DATE(FROM_UNIXTIME(orderDate)) as dayDate, orderDate, SUM(totalNet) as total FROM object_query_$classId WHERE orderDate > ? AND orderDate < ? GROUP BY " . $groupSelector;
+        $sqlQuery = "
+              SELECT DATE(FROM_UNIXTIME(orderDate)) AS dayDate, orderDate, SUM(totalNet) AS total 
+              FROM object_query_$classId as orders
+              INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
+              WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? 
+              GROUP BY " . $groupSelector;
+
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);
 
             $data[] = [
-                'timestamp' => $date->getTimestamp(),
-                'datetext' => $date->format($dateFormatter),
-                'sales' => $result['total'],
+                'timestamp'      => $date->getTimestamp(),
+                'datetext'       => $date->format($dateFormatter),
+                'sales'          => $result['total'],
                 'salesFormatted' => $this->moneyFormatter->format($result['total'], 'EUR')
             ];
         }
