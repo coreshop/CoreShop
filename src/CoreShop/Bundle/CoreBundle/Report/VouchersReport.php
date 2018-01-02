@@ -70,7 +70,7 @@ class VouchersReport implements ReportInterface
               INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.o_id 
               INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
               LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id 
-              WHERE orderState.ctype = 'object' AND orderState.state != 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
+              WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
               ORDER BY orders.orderDate DESC";
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
