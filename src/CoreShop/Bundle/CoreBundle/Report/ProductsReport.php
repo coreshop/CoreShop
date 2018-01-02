@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 use Carbon\Carbon;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
-use CoreShop\Component\Resource\Translation\Provider\PimcoreTranslationLocaleProvider;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Model\User;
@@ -34,7 +34,7 @@ class ProductsReport implements ReportInterface
     private $tokenStorageUserResolver;
 
     /**
-     * @var PimcoreTranslationLocaleProvider
+     * @var TranslationLocaleProviderInterface
      */
     private $localeProvider;
 
@@ -49,16 +49,16 @@ class ProductsReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * @param Connection                       $db
-     * @param TokenStorageUserResolver         $tokenStorageUserResolver
-     * @param PimcoreTranslationLocaleProvider $localeProvider
-     * @param MoneyFormatterInterface          $moneyFormatter
-     * @param array                            $pimcoreClasses
+     * @param Connection                         $db
+     * @param TokenStorageUserResolver           $tokenStorageUserResolver
+     * @param TranslationLocaleProviderInterface $localeProvider
+     * @param MoneyFormatterInterface            $moneyFormatter
+     * @param array                              $pimcoreClasses
      */
     public function __construct(
         Connection $db,
         TokenStorageUserResolver $tokenStorageUserResolver,
-        PimcoreTranslationLocaleProvider $localeProvider,
+        TranslationLocaleProviderInterface $localeProvider,
         MoneyFormatterInterface $moneyFormatter,
         array $pimcoreClasses
     ) {
@@ -87,11 +87,12 @@ class ProductsReport implements ReportInterface
         $query = "
             SELECT 
               orderItems.product__id,
-              orderItemsTranslated.name AS name,
+              orderItemsTranslated.name AS `name`,
               SUM(orderItems.itemRetailPriceNet * orderItems.quantity) AS sales, 
               AVG(orderItems.itemRetailPriceNet * orderItems.quantity) AS salesPrice,
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
-              COUNT(orderItems.product__id) AS count
+              SUM(orderItems.quantity) AS `quantityCount`,
+              COUNT(orderItems.product__id) AS `orderCount`
             FROM object_query_$orderClassId AS orders
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id

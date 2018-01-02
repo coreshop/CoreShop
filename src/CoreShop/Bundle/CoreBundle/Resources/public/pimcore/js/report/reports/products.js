@@ -43,18 +43,24 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
                     {
                         text: t('name'),
                         dataIndex: 'name',
-                        flex: 1
+                        flex: 3
                     },
                     {
-                        text: t('coreshop_report_products_count'),
-                        dataIndex: 'count',
-                        width: 50,
+                        text: t('coreshop_report_products_order_count'),
+                        dataIndex: 'orderCount',
+                        flex: 1,
+                        align: 'right'
+                    },
+                    {
+                        text: t('coreshop_report_products_quantity_count'),
+                        dataIndex: 'quantityCount',
+                        flex: 1,
                         align: 'right'
                     },
                     {
                         text: t('coreshop_report_products_salesPrice'),
                         dataIndex: 'salesPrice',
-                        width: 100,
+                        flex: 1,
                         align: 'right',
                         renderer: function (value, metadata, record) {
                             return record.get('salesPriceFormatted');
@@ -63,7 +69,7 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
                     {
                         text: t('coreshop_report_products_sales'),
                         dataIndex: 'sales',
-                        width: 100,
+                        flex: 1,
                         align: 'right',
                         renderer: function (value, metadata, record) {
                             return record.get('salesFormatted');
@@ -72,7 +78,7 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
                     {
                         text: t('coreshop_report_products_profit'),
                         dataIndex: 'profit',
-                        width: 100,
+                        flex: 1,
                         align: 'right',
                         renderer: function (value, metadata, record) {
                             return record.get('profitFormatted');
