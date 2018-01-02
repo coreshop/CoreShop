@@ -77,3 +77,12 @@ services:
       - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: payment_providers }
+
+  coreshop.report.vouchers:
+    class: CoreShop\Bundle\CoreBundle\Report\VouchersReport
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '@coreshop.money_formatter'
+      - '%coreshop.pimcore_class_ids%'
+    tags:
+      - { name: coreshop.report, type: vouchers }

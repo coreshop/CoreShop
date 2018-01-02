@@ -70,6 +70,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('report_reports_carrier')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/carriers.js')->end()
                             ->scalarNode('report_reports_carts')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/carts.js')->end()
                             ->scalarNode('report_reports_carts_abandoned')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/carts_abandoned.js')->end()
+                            ->scalarNode('report_reports_vouchers')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/vouchers.js')->end()
                             ->scalarNode('report_reports_categories')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/categories.js')->end()
                             ->scalarNode('report_reports_customers')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/customers.js')->end()
                             ->scalarNode('report_reports_payment_providers')->defaultValue('/bundles/coreshopcore/pimcore/js/report/reports/payment_providers.js')->end()

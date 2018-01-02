@@ -87,6 +87,10 @@
     background: url(../img/icons/cart-abandoned.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_report_vouchers {
+    background: url(../img/icons/cart.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_report_sales {
     background: url(../img/icons/sales.svg) center center no-repeat !important;
 }
