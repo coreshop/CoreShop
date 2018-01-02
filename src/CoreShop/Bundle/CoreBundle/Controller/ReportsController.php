@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
+use CoreShop\Component\Core\Report\ReportInterface;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,11 +31,13 @@ class ReportsController extends AdminController
             throw new \InvalidArgumentException(sprintf('Report %s not found', $report));
         }
 
-        $reportData = $reportRegistry->get($report)->getData($request->query);
+        /** @var ReportInterface $report */
+        $report = $reportRegistry->get($report);
 
         return $this->json([
             'success' => true,
-            'data' => $reportData
+            'data' => $report->getData($request->query),
+            'total' => $report->getTotal()
         ]);
     }
 }

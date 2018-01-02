@@ -22,6 +22,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CarriersReport implements ReportInterface
 {
     /**
+     * @var int
+     */
+    private $totalRecords = 0;
+
+    /**
      * @var Connection
      */
     private $db;
@@ -94,5 +99,13 @@ class CarriersReport implements ReportInterface
         }
 
         return array_values($data);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->totalRecords;
     }
 }

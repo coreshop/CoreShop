@@ -21,6 +21,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class VouchersReport implements ReportInterface
 {
     /**
+     * @var int
+     */
+    private $totalRecords = 0;
+
+    /**
      * @var Connection
      */
     private $db;
@@ -57,12 +62,17 @@ class VouchersReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
+        $page = $parameterBag->get('page', 1);
+        $limit = $parameterBag->get('limit', 25);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page-1)*$limit);
+
         $classId = $this->pimcoreClasses['order'];
 
         $data = [];
 
         $sqlQuery = "
-              SELECT orderVouchers.voucherCode AS code, 
+              SELECT SQL_CALC_FOUND_ROWS
+              orderVouchers.voucherCode AS code, 
               priceRule.name AS rule,
               orderVouchers.discountGross AS discount,
               orders.orderDate
@@ -71,9 +81,11 @@ class VouchersReport implements ReportInterface
               INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
               LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id 
               WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
-              ORDER BY orders.orderDate DESC";
+              ORDER BY orders.orderDate DESC
+              LIMIT $offset,$limit";
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);
@@ -86,5 +98,13 @@ class VouchersReport implements ReportInterface
         }
 
         return array_values($data);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->totalRecords;
     }
 }

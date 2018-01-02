@@ -21,6 +21,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CustomersReport implements ReportInterface
 {
     /**
+     * @var int
+     */
+    private $totalRecords = 0;
+
+    /**
      * @var Connection
      */
     private $db;
@@ -79,5 +84,13 @@ class CustomersReport implements ReportInterface
         }
 
         return array_values($customerSales);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->totalRecords;
     }
 }

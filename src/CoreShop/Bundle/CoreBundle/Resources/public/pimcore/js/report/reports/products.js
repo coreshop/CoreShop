@@ -23,6 +23,20 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
         return 'coreshop_icon_product';
     },
 
+    getObjectTypeField: function () {
+        return this.panel.down('[name=objectType]');
+    },
+
+    getFilterParams: function ($super) {
+        var fields = $super();
+        fields.objectType = this.getObjectTypeField().getValue();
+        return fields;
+    },
+
+    showPaginator: function () {
+        return true;
+    },
+
     getStoreFields: function () {
         return [
             {name: 'sales', type: 'number'},
@@ -30,6 +44,46 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
             {name: 'count', type: 'integer'},
             {name: 'profit', type: 'number'}
         ];
+    },
+
+    getDocketItemsForPanel: function ($super) {
+
+        var fields = $super();
+
+        fields.push(
+            {
+                xtype: 'toolbar',
+                dock: 'top',
+                items: this.getAdditionalFilterFields()
+            }
+        );
+
+        return fields;
+
+    },
+    getAdditionalFilterFields: function () {
+
+        var fields = [];
+
+        fields.push({
+            xtype: 'combo',
+            fieldLabel: t('coreshop_report_products_types'),
+            name: 'objectType',
+            value: 'all',
+            width: 350,
+            store: [
+                ['all', t('coreshop_report_products_types_all')],
+                ['object', t('coreshop_report_products_types_objects')],
+                ['variant', t('coreshop_report_products_types_variants')]
+            ],
+            triggerAction: 'all',
+            typeAhead: false,
+            editable: false,
+            forceSelection: true,
+            queryMode: 'local'
+        });
+
+        return fields;
     },
 
     getGrid: function () {

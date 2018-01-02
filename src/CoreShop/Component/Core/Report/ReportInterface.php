@@ -23,4 +23,12 @@ interface ReportInterface
      * @return array
      */
     public function getData(ParameterBag $parameterBag);
+
+    /**
+     * Get total amount of found records
+     *
+     * @return integer
+     */
+    public function getTotal();
+
 }

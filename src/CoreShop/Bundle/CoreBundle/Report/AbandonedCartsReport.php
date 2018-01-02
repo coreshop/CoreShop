@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -19,6 +19,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class AbandonedCartsReport implements ReportInterface
 {
+    /**
+     * @var int
+     */
+    private $totalRecords = 0;
+
     /**
      * @var Connection
      */
@@ -31,8 +36,9 @@ class AbandonedCartsReport implements ReportInterface
 
     /**
      * AbandonedCartsReport constructor.
+     *
      * @param Connection $db
-     * @param array $pimcoreClasses
+     * @param array      $pimcoreClasses
      */
     public function __construct(Connection $db, array $pimcoreClasses)
     {
@@ -43,8 +49,9 @@ class AbandonedCartsReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getData(ParameterBag $parameterBag) {
-        $fromFilter = $parameterBag->get('from' , strtotime(date('01-m-Y')));
+    public function getData(ParameterBag $parameterBag)
+    {
+        $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -57,8 +64,8 @@ class AbandonedCartsReport implements ReportInterface
         $minFrom = $minToday->subDay(3);
 
         $page = $parameterBag->get('page', 1);
-        $limit = $parameterBag->get('limit', 25);
-        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page-1)*$limit);
+        $limit = $parameterBag->get('limit', 50);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
 
         $userClassId = $this->pimcoreClasses['customer'];
         $cartClassId = $this->pimcoreClasses['cart'];
@@ -94,6 +101,7 @@ class AbandonedCartsReport implements ReportInterface
                      LIMIT $offset,$limit";
 
         $data = $this->db->fetchAll($sqlQuery, [$fromTimestamp, $toTimestamp]);
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
@@ -105,5 +113,13 @@ class AbandonedCartsReport implements ReportInterface
         }
 
         return array_values($data);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->totalRecords;
     }
 }
