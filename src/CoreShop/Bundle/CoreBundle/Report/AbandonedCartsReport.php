@@ -76,13 +76,15 @@ class AbandonedCartsReport implements ReportInterface
         }
 
         $sqlQuery = "SELECT SQL_CALC_FOUND_ROWS
-                         cart.o_creationDate as creationDate,
-                         cart.o_modificationDate as modificationDate,
+                         cart.o_creationDate AS creationDate,
+                         cart.o_modificationDate AS modificationDate,
                          cart.items,
-                         cart.oo_id as cartId,
-                         user.email, CONCAT(user.firstname, ' ', user.lastname) as userName
-                        FROM object_$cartClassId as cart
-                        LEFT JOIN object_$userClassId as user ON user.oo_id = cart.customer__id
+                         cart.oo_id AS cartId,
+                         `user`.email, CONCAT(`user`.firstname, ' ', `user`.lastname) AS userName,
+                         `pg`.identifier AS selectedPayment
+                        FROM object_$cartClassId AS cart
+                        LEFT JOIN object_$userClassId AS `user` ON `user`.oo_id = cart.customer__id
+                        LEFT JOIN coreshop_payment_provider AS `pg` ON `pg`.id = cart.paymentProvider
                         WHERE cart.items <> ''
                           AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
@@ -97,7 +99,7 @@ class AbandonedCartsReport implements ReportInterface
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
             $entry['userName'] = empty($entry['userName']) ? '--' : $entry['userName'];
             $entry['email'] = empty($entry['email']) ? '--' : $entry['email'];
-            //$entry['selectedPayment'] = empty($entry['selectedPayment']) ? '--' : $entry['selectedPayment'];
+            $entry['selectedPayment'] = empty($entry['selectedPayment']) ? '--' : $entry['selectedPayment'];
 
             unset($entry['items']);
         }
