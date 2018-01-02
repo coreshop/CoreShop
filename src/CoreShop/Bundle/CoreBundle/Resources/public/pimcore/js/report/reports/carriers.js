@@ -48,8 +48,6 @@ coreshop.report.reports.carriers = Class.create(coreshop.report.abstract, {
                         calloutLine: {
                             length: 60,
                             width: 3
-
-                            // specifying 'color' is also possible here
                         }
                     },
                     highlight: true,
