@@ -26,6 +26,36 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
+        $objectIdField = [
+            'fieldtype'        => 'numeric',
+            'width'            => '',
+            'defaultValue'     => null,
+            'queryColumnType'  => 'double',
+            'columnType'       => 'double',
+            'phpdocType'       => 'float',
+            'integer'          => false,
+            'unsigned'         => false,
+            'minValue'         => null,
+            'maxValue'         => null,
+            'unique'           => false,
+            'decimalSize'      => null,
+            'decimalPrecision' => null,
+            'name'             => 'objectId',
+            'title'            => 'Object Id',
+            'tooltip'          => '',
+            'mandatory'        => false,
+            'noteditable'      => true,
+            'index'            => false,
+            'locked'           => null,
+            'style'            => '',
+            'permissions'      => null,
+            'datatype'         => 'data',
+            'relationType'     => false,
+            'invisible'        => false,
+            'visibleGridView'  => false,
+            'visibleSearch'    => false,
+        ];
+
         $mainObjectIdField = [
             'fieldtype'        => 'numeric',
             'width'            => '',
@@ -63,6 +93,11 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
             $classUpdater->save();
         }
 
+        if (!$classUpdater->hasField('objectId')) {
+            $classUpdater->insertFieldAfter('product', $objectIdField);
+            $classUpdater->save();
+        }
+
         \Pimcore::collectGarbage();
 
         //update existing orders
@@ -76,7 +111,9 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
                 continue;
             }
 
+            $object->setObjectId($productObject->getId());
             $mainObjectId = null;
+
             if ($productObject->getType() === 'variant') {
                 $mainProduct = $productObject;
                 while ($mainProduct->getType() === 'variant') {

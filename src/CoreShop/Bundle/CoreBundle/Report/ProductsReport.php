@@ -102,10 +102,7 @@ class ProductsReport implements ReportInterface
 
         $localizedTableLanguage = $this->getLanguageForLocalizedTable();
 
-        $productTypeJoinStr = '';
-        $productTypeCondition = '1=1';
-
-        if($objectTypeFilter === 'container') {
+        if ($objectTypeFilter === 'container') {
 
             $objectClassArray = [];
             foreach ($this->productImplementations as $productClass) {
@@ -122,7 +119,7 @@ class ProductsReport implements ReportInterface
 
             $query = "
               SELECT SQL_CALC_FOUND_ROWS
-                products.o_id as product__id,
+                products.o_id as productId,
                 products.`name` as productName,
                 SUM(orderItems.itemRetailPriceNet * orderItems.quantity) AS sales, 
                 AVG(orderItems.itemRetailPriceNet * orderItems.quantity) AS salesPrice,
@@ -134,13 +131,13 @@ class ProductsReport implements ReportInterface
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
                 INNER JOIN element_workflow_state AS orderState ON `order`.oo_id = orderState.cid 
-                
-                WHERE orderState.ctype = 'object' AND `order`.orderDate > ? AND `order`.orderDate < ?
+                WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
-            LIMIT $offset,$limit"; // AND orderState.state != 'complete'
+            LIMIT $offset,$limit";
 
         } else {
 
+            $productTypeCondition = '1=1';
             if ($objectTypeFilter === 'object') {
                 $productTypeCondition = 'orderItems.mainObjectId = NULL';
             } elseif ($objectTypeFilter === 'variant') {
@@ -149,25 +146,23 @@ class ProductsReport implements ReportInterface
 
             $query = "
                 SELECT SQL_CALC_FOUND_ROWS
-                  orderItems.product__id,
+                  orderItems.objectId as productId,
                   orderItemsTranslated.name AS `productName`,
                   SUM(orderItems.itemRetailPriceNet * orderItems.quantity) AS sales, 
                   AVG(orderItems.itemRetailPriceNet * orderItems.quantity) AS salesPrice,
                   SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
                   SUM(orderItems.quantity) AS `quantityCount`,
-                  COUNT(orderItems.product__id) AS `orderCount`
+                  COUNT(orderItems.objectId) AS `orderCount`
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
                 INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $localizedTableLanguage . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-                $productTypeJoinStr
-                WHERE $productTypeCondition AND orderState.ctype = 'object' AND orderState.state != 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
-                GROUP BY orderItems.product__id
+                WHERE $productTypeCondition AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
+                GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
                 LIMIT $offset,$limit";
-
-            }
+        }
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
@@ -177,7 +172,7 @@ class ProductsReport implements ReportInterface
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], 'EUR');
             $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], 'EUR');
             $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], 'EUR');
-            $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['product__id'] . ')';
+            $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
         return array_values($productSales);
