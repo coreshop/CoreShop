@@ -144,7 +144,7 @@ class ProductsReport implements ReportInterface
             INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $localizedTableLanguage . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
             INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
             $productTypeJoinStr
-            WHERE $productTypeCondition AND orderState.ctype = 'object' AND orderState.state != 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE $productTypeCondition AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
             GROUP BY orderItems.product__id
             ORDER BY orderCount DESC
             LIMIT $offset,$limit";
