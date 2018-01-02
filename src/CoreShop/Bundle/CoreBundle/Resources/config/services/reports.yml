@@ -17,18 +17,6 @@ services:
     tags:
       - { name: coreshop.report, type: products }
 
-  coreshop.report.product_container:
-    class: CoreShop\Bundle\CoreBundle\Report\ProductContainerReport
-    arguments:
-      - '@doctrine.dbal.default_connection'
-      - '@pimcore_admin.security.token_storage_user_resolver'
-      - '@coreshop.translation_locale_provider.pimcore'
-      - '@coreshop.money_formatter'
-      - '%coreshop.pimcore_class_ids%'
-      - '%coreshop.implementations.coreshop.product%'
-    tags:
-      - { name: coreshop.report, type: products }
-
   coreshop.report.categories:
     class: CoreShop\Bundle\CoreBundle\Report\CategoriesReport
     arguments:

@@ -74,13 +74,28 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
             store: [
                 ['all', t('coreshop_report_products_types_all')],
                 ['object', t('coreshop_report_products_types_objects')],
-                ['variant', t('coreshop_report_products_types_variants')]
+                ['variant', t('coreshop_report_products_types_variants')],
+                ['container', t('coreshop_report_products_types_container')]
             ],
             triggerAction: 'all',
             typeAhead: false,
             editable: false,
             forceSelection: true,
-            queryMode: 'local'
+            queryMode: 'local',
+            listeners: {
+                change: function (combo, value) {
+                    this.panel.down('[name=dings]').setHidden(value !== 'container');
+                }.bind(this)
+            }
+        });
+
+        fields.push({
+            xtype: 'label',
+            name: 'dings',
+            style: '',
+            hidden: true,
+            height: 40,
+            html: t('coreshop_report_products_types_container_description')
         });
 
         return fields;
