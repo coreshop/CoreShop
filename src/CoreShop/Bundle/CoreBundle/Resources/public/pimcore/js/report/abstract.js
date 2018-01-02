@@ -100,6 +100,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_day'),
+                flex: 1,
                 handler: function () {
                     var today = new Date();
                     var yesterday = new Date();
@@ -115,6 +116,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_month'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -127,6 +129,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_year'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -139,6 +142,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_day_minus'),
+                flex: 1,
                 handler: function () {
                     var today = new Date();
                     var yesterday = new Date();
@@ -155,6 +159,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_month_minus'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -167,6 +172,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_year_minus'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -180,17 +186,24 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'datefield',
                 fieldLabel: t('coreshop_report_year_from'),
+                flex: 3,
                 name: 'from',
+                labelWidth: false,
+                labelStyle: 'width: 70px;',
                 value: this.getFromStartDate()
             },
             {
                 xtype: 'datefield',
                 fieldLabel: t('coreshop_report_year_to'),
+                flex: 3,
                 name: 'to',
+                labelWidth: false,
+                labelStyle: 'width: 70px;',
                 value: this.getToStartDate()
             },
             {
                 xtype: 'button',
+                flex: 1,
                 text: t('coreshop_report_filter'),
                 handler: function () {
                     this.filter();
