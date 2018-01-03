@@ -10,22 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Report;
+namespace CoreShop\Bundle\CoreBundle\Portlet;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SalesReport implements ReportInterface
+class SalesPortlet implements PortletInterface
 {
     /**
-     * @var int
+     * @var Connection
      */
-    private $totalRecords = 0;
+    private $db;
 
     /**
      * @var RepositoryInterface
@@ -33,14 +34,14 @@ class SalesReport implements ReportInterface
     private $storeRepository;
 
     /**
-     * @var Connection
-     */
-    private $db;
-
-    /**
      * @var MoneyFormatterInterface
      */
     private $moneyFormatter;
+
+    /**
+     * @var LocaleContextInterface
+     */
+    private $localeService;
 
     /**
      * @var array
@@ -48,20 +49,25 @@ class SalesReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * @param RepositoryInterface     $storeRepository
+     * CategoriesReport constructor.
+     *
      * @param Connection              $db
+     * @param RepositoryInterface $storeRepository
      * @param MoneyFormatterInterface $moneyFormatter
+     * @param LocaleContextInterface  $localeService
      * @param array                   $pimcoreClasses
      */
     public function __construct(
-        RepositoryInterface $storeRepository,
         Connection $db,
+        RepositoryInterface $storeRepository,
         MoneyFormatterInterface $moneyFormatter,
+        LocaleContextInterface $localeService,
         array $pimcoreClasses
     ) {
-        $this->storeRepository = $storeRepository;
         $this->db = $db;
+        $this->storeRepository = $storeRepository;
         $this->moneyFormatter = $moneyFormatter;
+        $this->localeService = $localeService;
         $this->pimcoreClasses = $pimcoreClasses;
     }
 
@@ -73,26 +79,22 @@ class SalesReport implements ReportInterface
         $groupBy = $parameterBag->get('groupBy', 'day');
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
-        $storeId = $parameterBag->get('store', null);
+        $storeId = $parameterBag->get('store', 2);
 
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
         $classId = $this->pimcoreClasses['order'];
 
+        $store = $this->storeRepository->find($storeId);
+        if(!$store instanceof StoreInterface) {
+            return [];
+        }
+
         $data = [];
 
         $dateFormatter = null;
         $groupSelector = '';
-
-        if (is_null($storeId)) {
-            return [];
-        }
-
-        $store = $this->storeRepository->find($storeId);
-        if (!$store instanceof StoreInterface) {
-            return [];
-        }
 
         switch ($groupBy) {
             case 'day':
@@ -107,7 +109,6 @@ class SalesReport implements ReportInterface
                 $dateFormatter = 'Y';
                 $groupSelector = 'YEAR(FROM_UNIXTIME(orders.orderDate))';
                 break;
-
         }
 
         $sqlQuery = "
@@ -131,13 +132,5 @@ class SalesReport implements ReportInterface
         }
 
         return array_values($data);
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotal()
-    {
-        return $this->totalRecords;
     }
 }

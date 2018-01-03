@@ -16,5 +16,6 @@ use CoreShop\Component\Order\Model\QuoteItem as BaseQuoteItem;
 
 class QuoteItem extends BaseQuoteItem implements QuoteItemInterface
 {
+    use ProposalItemTrait;
     use SaleItemTrait;
 }

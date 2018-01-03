@@ -40,18 +40,18 @@ coreshop.report.reports.customers = Class.create(coreshop.report.abstract, {
                     {
                         text: t('name'),
                         dataIndex: 'name',
-                        flex: 1
+                        flex: 3
                     },
                     {
                         text: t('coreshop_report_customers_count'),
-                        dataIndex: 'count',
-                        width: 50,
+                        dataIndex: 'orderCount',
+                        flex: 1,
                         align: 'right'
                     },
                     {
                         text: t('coreshop_report_customers_sales'),
                         dataIndex: 'sales',
-                        width: 100,
+                        flex: 1,
                         align: 'right',
                         renderer: function (value, metadata, record) {
                             return record.get('salesFormatted');

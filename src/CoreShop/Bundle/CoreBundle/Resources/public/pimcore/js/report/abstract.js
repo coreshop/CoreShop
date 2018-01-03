@@ -33,6 +33,10 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
         return false;
     },
 
+    getStoreField: function () {
+        return this.panel.down('[name=store]');
+    },
+
     getFromField: function () {
         return this.panel.down('[name=from]');
     },
@@ -88,18 +92,56 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             if (grid) {
                 this.panel.add(grid);
             }
-
-            this.filter();
         }
 
         return this.panel;
     },
 
     getFilterFields: function () {
+
+        var _ = this,
+            store = pimcore.globalmanager.get('coreshop_stores');
+
         return [
+            {
+                xtype: 'combo',
+                fieldLabel: null,
+                listWidth: 100,
+                width: 200,
+                store: store,
+                displayField: 'name',
+                valueField: 'id',
+                forceSelection: true,
+                multiselect: false,
+                triggerAction: 'all',
+                name: 'store',
+                queryMode: 'remote',
+                maxHeight: 400,
+                delimiter: false,
+                listeners: {
+                    afterrender: function () {
+                        var first;
+                        if (this.store.isLoaded()) {
+                            first = this.store.getAt(0);
+                            this.setValue(first);
+                        } else {
+                            this.store.load();
+                            this.store.on('load', function (store, records, options) {
+                                first = store.getAt(0);
+                                this.setValue(first);
+                            }.bind(this));
+                        }
+                    },
+                    change: function (combo, value) {
+                        this.getStoreField().setValue(value);
+                        this.filter();
+                    }.bind(this)
+                }
+            },
             {
                 xtype: 'button',
                 text: t('coreshop_report_day'),
+                flex: 1,
                 handler: function () {
                     var today = new Date();
                     var yesterday = new Date();
@@ -115,6 +157,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_month'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -127,6 +170,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_year'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -139,6 +183,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_day_minus'),
+                flex: 1,
                 handler: function () {
                     var today = new Date();
                     var yesterday = new Date();
@@ -155,6 +200,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_month_minus'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -167,6 +213,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'button',
                 text: t('coreshop_report_year_minus'),
+                flex: 1,
                 handler: function () {
                     var now = new Date();
 
@@ -180,17 +227,24 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             {
                 xtype: 'datefield',
                 fieldLabel: t('coreshop_report_year_from'),
+                flex: 3,
                 name: 'from',
+                labelWidth: false,
+                labelStyle: 'width: 70px;',
                 value: this.getFromStartDate()
             },
             {
                 xtype: 'datefield',
                 fieldLabel: t('coreshop_report_year_to'),
+                flex: 3,
                 name: 'to',
+                labelWidth: false,
+                labelStyle: 'width: 70px;',
                 value: this.getToStartDate()
             },
             {
                 xtype: 'button',
+                flex: 1,
                 text: t('coreshop_report_filter'),
                 handler: function () {
                     this.filter();
@@ -241,7 +295,8 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
     getFilterParams: function () {
         return {
             'from': this.getFromField().getValue().getTime() / 1000,
-            'to': this.getToField().getValue().getTime() / 1000
+            'to': this.getToField().getValue().getTime() / 1000,
+            'store': this.getStoreField().getValue()
         };
     }
 });

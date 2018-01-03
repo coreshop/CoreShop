@@ -19,7 +19,7 @@ trait SaleItemTrait
     /**
      * {@inheritdoc}
      */
-    public function getDigitalProduct()
+    public function getObjectId()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -27,7 +27,23 @@ trait SaleItemTrait
     /**
      * {@inheritdoc}
      */
-    public function setDigitalProduct($digitalProduct)
+    public function setObjectId($objectId)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainObjectId()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMainObjectId($mainObjectId)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

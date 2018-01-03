@@ -93,7 +93,10 @@ coreshop.report.reports.sales = Class.create(coreshop.report.abstract, {
                     fields: ['sales'],
                     position: 'left',
                     grid: true,
-                    minimum: 0
+                    minimum: 0,
+                    renderer: function(drawing, value, item) {
+                        return Ext.util.Format.number((value/100));
+                    }
                 }, {
                     type: 'category',
                     fields: 'datetext',
@@ -127,7 +130,7 @@ coreshop.report.reports.sales = Class.create(coreshop.report.abstract, {
                             style: 'background: #01841c',
                             renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
-                                tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get('salesFormatted'));
+                                tooltip.setHtml(title + ' ' + t('coreshop_for') + ' ' + storeItem.get('datetext') + ': ' + storeItem.get('salesFormatted'));
                             }
                         }
                     }

@@ -23,6 +23,20 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
         return 'coreshop_icon_product';
     },
 
+    getObjectTypeField: function () {
+        return this.panel.down('[name=objectType]');
+    },
+
+    getFilterParams: function ($super) {
+        var fields = $super();
+        fields.objectType = this.getObjectTypeField().getValue();
+        return fields;
+    },
+
+    showPaginator: function () {
+        return true;
+    },
+
     getStoreFields: function () {
         return [
             {name: 'sales', type: 'number'},
@@ -30,6 +44,61 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
             {name: 'count', type: 'integer'},
             {name: 'profit', type: 'number'}
         ];
+    },
+
+    getDocketItemsForPanel: function ($super) {
+
+        var fields = $super();
+
+        fields.push(
+            {
+                xtype: 'toolbar',
+                dock: 'top',
+                items: this.getAdditionalFilterFields()
+            }
+        );
+
+        return fields;
+
+    },
+    getAdditionalFilterFields: function () {
+
+        var fields = [];
+
+        fields.push({
+            xtype: 'combo',
+            fieldLabel: t('coreshop_report_products_types'),
+            name: 'objectType',
+            value: 'all',
+            width: 350,
+            store: [
+                ['all', t('coreshop_report_products_types_all')],
+                ['object', t('coreshop_report_products_types_objects')],
+                ['variant', t('coreshop_report_products_types_variants')],
+                ['container', t('coreshop_report_products_types_container')]
+            ],
+            triggerAction: 'all',
+            typeAhead: false,
+            editable: false,
+            forceSelection: true,
+            queryMode: 'local',
+            listeners: {
+                change: function (combo, value) {
+                    this.panel.down('[name=dings]').setHidden(value !== 'container');
+                }.bind(this)
+            }
+        });
+
+        fields.push({
+            xtype: 'label',
+            name: 'dings',
+            style: '',
+            hidden: true,
+            height: 40,
+            html: t('coreshop_report_products_types_container_description')
+        });
+
+        return fields;
     },
 
     getGrid: function () {
@@ -43,18 +112,24 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
                     {
                         text: t('name'),
                         dataIndex: 'name',
-                        flex: 1
+                        flex: 3
                     },
                     {
-                        text: t('coreshop_report_products_count'),
-                        dataIndex: 'count',
-                        width: 50,
+                        text: t('coreshop_report_products_order_count'),
+                        dataIndex: 'orderCount',
+                        flex: 1,
+                        align: 'right'
+                    },
+                    {
+                        text: t('coreshop_report_products_quantity_count'),
+                        dataIndex: 'quantityCount',
+                        flex: 1,
                         align: 'right'
                     },
                     {
                         text: t('coreshop_report_products_salesPrice'),
                         dataIndex: 'salesPrice',
-                        width: 100,
+                        flex: 1,
                         align: 'right',
                         renderer: function (value, metadata, record) {
                             return record.get('salesPriceFormatted');
@@ -63,7 +138,7 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
                     {
                         text: t('coreshop_report_products_sales'),
                         dataIndex: 'sales',
-                        width: 100,
+                        flex: 1,
                         align: 'right',
                         renderer: function (value, metadata, record) {
                             return record.get('salesFormatted');
@@ -72,7 +147,7 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstract, {
                     {
                         text: t('coreshop_report_products_profit'),
                         dataIndex: 'profit',
-                        width: 100,
+                        flex: 1,
                         align: 'right',
                         renderer: function (value, metadata, record) {
                             return record.get('profitFormatted');

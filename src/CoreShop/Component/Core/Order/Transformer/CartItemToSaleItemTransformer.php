@@ -2,18 +2,12 @@
 
 namespace CoreShop\Component\Core\Order\Transformer;
 
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\QuoteInterface;
-use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Core\Model\SaleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
-use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
-use Webmozart\Assert\Assert;
 
 final class CartItemToSaleItemTransformer implements ProposalItemTransformerInterface
 {
@@ -30,10 +24,25 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
         $this->innerCartItemToSaleItemTransformer = $innerCartItemToSaleItemTransformer;
     }
 
+    /**
+     * @param ProposalInterface     $proposal
+     * @param ProposalItemInterface $fromProposalItem
+     * @param ProposalItemInterface $toProposal
+     * @return mixed
+     */
     public function transform(ProposalInterface $proposal, ProposalItemInterface $fromProposalItem, ProposalItemInterface $toProposal)
     {
-        if ($fromProposalItem instanceof ProductInterface && $toProposal instanceof ProductInterface) {
+        if ($fromProposalItem instanceof CartItemInterface && $toProposal instanceof SaleItemInterface) {
             $toProposal->setDigitalProduct($fromProposalItem->getDigitalProduct());
+            $toProposal->setObjectId($fromProposalItem->getProduct()->getId());
+            $mainObjectId = null;
+
+            if ($fromProposalItem->getProduct() instanceof ProductInterface) {
+                if ($fromProposalItem->getProduct()->getType() === 'variant') {
+                    $mainProduct = $fromProposalItem->getProduct()->getVariantMaster();
+                    $toProposal->setMainObjectId($mainProduct->getId());
+                }
+            }
         }
 
         return $this->innerCartItemToSaleItemTransformer->transform($proposal, $fromProposalItem, $toProposal);

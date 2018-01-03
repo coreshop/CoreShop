@@ -48,24 +48,24 @@ coreshop.report.reports.carts_abandoned = Class.create(coreshop.report.abstract,
                 store: this.getStore(),
                 columns: [
                     {
-                        text: t('coreshop_report_customer_name'),
+                        text: t('coreshop_report_user_name'),
                         dataIndex: 'userName',
-                        flex: 1
+                        flex: 2
                     },
                     {
                         text: t('coreshop_report_user_email'),
                         dataIndex: 'email',
-                        flex: 1
+                        flex: 2
                     },
                     {
                         text: t('coreshop_report_selected_payment'),
                         dataIndex: 'selectedPayment',
-                        flex: 1
+                        flex: 2
                     },
                     {
                         text: t('coreshop_report_creation_date'),
                         dataIndex: 'creationDate',
-                        flex: 1,
+                        flex: 2,
                         renderer: function (val) {
                             if (val) {
                                 return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
@@ -76,7 +76,7 @@ coreshop.report.reports.carts_abandoned = Class.create(coreshop.report.abstract,
                     {
                         text: t('coreshop_report_modifiction_date'),
                         dataIndex: 'modificationDate',
-                        flex: 1,
+                        flex: 2,
                         renderer: function (val) {
                             if (val) {
                                 return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
@@ -87,7 +87,7 @@ coreshop.report.reports.carts_abandoned = Class.create(coreshop.report.abstract,
                     {
                         text: t('coreshop_report_items_in_cart'),
                         dataIndex: 'itemsInCart',
-                        flex: 1
+                        flex: 2
                     },
                     {
                         menuDisabled: true,

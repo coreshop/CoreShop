@@ -16,5 +16,6 @@ use CoreShop\Component\Order\Model\OrderItem as BaseOrderItem;
 
 class OrderItem extends BaseOrderItem implements OrderItemInterface
 {
+    use ProposalItemTrait;
     use SaleItemTrait;
 }

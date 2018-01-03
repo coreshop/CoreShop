@@ -17,6 +17,7 @@ imports:
   - { resource: "services/settings.yml" }
   - { resource: "services/cart-processor.yml" }
   - { resource: "services/reports.yml" }
+  - { resource: "services/portlets.yml" }
   - { resource: "services/pimcore_installer.yml" }
   - { resource: "services/inventory.yml" }
   - { resource: "services/handler.yml" }

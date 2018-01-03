@@ -8,27 +8,27 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Core\Report;
+namespace CoreShop\Component\Core\Model;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
-interface ReportInterface
+trait ProposalItemTrait
 {
     /**
-     * Get data for report
-     *
-     * @param ParameterBag $parameterBag
-     * @return array
+     * {@inheritdoc}
      */
-    public function getData(ParameterBag $parameterBag);
+    public function getDigitalProduct()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
     /**
-     * Get total amount of found records
-     *
-     * @return integer
+     * {@inheritdoc}
      */
-    public function getTotal();
-
+    public function setDigitalProduct($digitalProduct)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

@@ -10,25 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Core\Report;
+namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
-interface ReportInterface
+class RegisterPortletsPass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * Get data for report
-     *
-     * @param ParameterBag $parameterBag
-     * @return array
-     */
-    public function getData(ParameterBag $parameterBag);
-
-    /**
-     * Get total amount of found records
-     *
-     * @return integer
-     */
-    public function getTotal();
-
+    public function __construct()
+    {
+        parent::__construct(
+            'coreshop.registry.portlets',
+            'coreshop.portlets',
+            'coreshop.portlet'
+        );
+    }
 }

@@ -12,32 +12,31 @@
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Core\Portlet\PortletInterface;
+use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ReportsController extends AdminController
+class PortletsController extends AdminController
 {
     /**
      * @param Request $request
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
-    public function getReportDataAction(Request $request)
+    public function getPortletDataAction(Request $request)
     {
-        $report = $request->get('report');
-        $reportRegistry = $this->get('coreshop.registry.reports');
+        $portlet = $request->get('portlet');
+        $portletRegistry = $this->get('coreshop.registry.portlets');
 
-        if (!$reportRegistry->has($report)) {
-            throw new \InvalidArgumentException(sprintf('Report %s not found', $report));
+        if (!$portletRegistry->has($portlet)) {
+            throw new \InvalidArgumentException(sprintf('Portlet %s not found', $portlet));
         }
 
-        /** @var ReportInterface $report */
-        $report = $reportRegistry->get($report);
+        /** @var PortletInterface $portlet */
+        $report = $portletRegistry->get($portlet);
 
-        return $this->viewHandler->handle([
+        return $this->json([
             'success' => true,
-            'data' => $report->getData($request->query),
-            'total' => $report->getTotal()
+            'data'    => $report->getData($request->query)
         ]);
     }
 }

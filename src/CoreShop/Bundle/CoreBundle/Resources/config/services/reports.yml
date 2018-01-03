@@ -8,15 +8,20 @@ services:
   coreshop.report.products:
     class: CoreShop\Bundle\CoreBundle\Report\ProductsReport
     arguments:
+      - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
+      - '@pimcore_admin.security.token_storage_user_resolver'
+      - '@coreshop.translation_locale_provider.pimcore'
       - '@coreshop.money_formatter'
       - '%coreshop.pimcore_class_ids%'
+      - '%coreshop.implementations.coreshop.product%'
     tags:
       - { name: coreshop.report, type: products }
 
   coreshop.report.categories:
     class: CoreShop\Bundle\CoreBundle\Report\CategoriesReport
     arguments:
+      - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
       - '@coreshop.context.locale'
@@ -36,6 +41,7 @@ services:
   coreshop.report.carts:
     class: CoreShop\Bundle\CoreBundle\Report\CartsReport
     arguments:
+      - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '%coreshop.pimcore_class_ids%'
     tags:
@@ -44,6 +50,7 @@ services:
   coreshop.report.carts_abandoned:
     class: CoreShop\Bundle\CoreBundle\Report\AbandonedCartsReport
     arguments:
+      - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '%coreshop.pimcore_class_ids%'
     tags:
@@ -52,6 +59,7 @@ services:
   coreshop.report.sales:
     class: CoreShop\Bundle\CoreBundle\Report\SalesReport
     arguments:
+      - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
       - '%coreshop.pimcore_class_ids%'
@@ -75,3 +83,13 @@ services:
       - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: payment_providers }
+
+  coreshop.report.vouchers:
+    class: CoreShop\Bundle\CoreBundle\Report\VouchersReport
+    arguments:
+      - '@coreshop.repository.store'
+      - '@doctrine.dbal.default_connection'
+      - '@coreshop.money_formatter'
+      - '%coreshop.pimcore_class_ids%'
+    tags:
+      - { name: coreshop.report, type: vouchers }

@@ -21,6 +21,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CustomersReport implements ReportInterface
 {
     /**
+     * @var int
+     */
+    private $totalRecords = 0;
+
+    /**
      * @var Connection
      */
     private $db;
@@ -62,22 +67,30 @@ class CustomersReport implements ReportInterface
         $query = "
             SELECT 
               customer.oo_id,
-              customer.email as name,
+              customer.email as `name`,
               SUM(orders.totalNet) as sales, 
-              COUNT(customer.oo_id) as count
+              COUNT(customer.oo_id) as `orderCount`
             FROM object_query_$orderClassId AS orders
             INNER JOIN object_query_$customerClassId AS customer ON orders.customer__id = customer.oo_id
-            WHERE orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL
+            INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
+            WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL
             GROUP BY customer.oo_id
             ORDER BY COUNT(customer.oo_id) DESC
         ";
 
-        $custSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
-
-        foreach ($custSales as &$sale) {
+        $customerSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        foreach ($customerSales as &$sale) {
             $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], 'EUR');
         }
 
-        return array_values($custSales);
+        return array_values($customerSales);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->totalRecords;
     }
 }

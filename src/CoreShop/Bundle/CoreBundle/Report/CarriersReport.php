@@ -22,6 +22,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class CarriersReport implements ReportInterface
 {
     /**
+     * @var int
+     */
+    private $totalRecords = 0;
+
+    /**
      * @var Connection
      */
     private $db;
@@ -75,7 +80,7 @@ class CarriersReport implements ReportInterface
                     ON o.o_id = `order`.oo_id  
                   WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
                 ) t 
-              WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp GROUP BY carrier";
+              WHERE carrier IS NOT NULL AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp GROUP BY carrier";
 
         $results = $this->db->fetchAll($sql);
         $data = [];
@@ -94,5 +99,13 @@ class CarriersReport implements ReportInterface
         }
 
         return array_values($data);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->totalRecords;
     }
 }

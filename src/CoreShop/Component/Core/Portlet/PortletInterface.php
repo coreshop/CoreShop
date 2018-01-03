@@ -10,25 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Core\Report;
+namespace CoreShop\Component\Core\Portlet;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-interface ReportInterface
+interface PortletInterface
 {
     /**
-     * Get data for report
+     * Get data for portlet
      *
      * @param ParameterBag $parameterBag
      * @return array
      */
     public function getData(ParameterBag $parameterBag);
-
-    /**
-     * Get total amount of found records
-     *
-     * @return integer
-     */
-    public function getTotal();
 
 }

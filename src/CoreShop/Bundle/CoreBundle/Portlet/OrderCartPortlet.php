@@ -10,20 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Report;
+namespace CoreShop\Bundle\CoreBundle\Portlet;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Portlet\PortletInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Pimcore\InheritanceHelper;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class CartsReport implements ReportInterface
+class OrderCartPortlet implements PortletInterface
 {
     /**
-     * @var int
+     * @var Connection
      */
-    private $totalRecords = 0;
+    private $db;
 
     /**
      * @var RepositoryInterface
@@ -31,9 +37,14 @@ class CartsReport implements ReportInterface
     private $storeRepository;
 
     /**
-     * @var Connection
+     * @var MoneyFormatterInterface
      */
-    private $db;
+    private $moneyFormatter;
+
+    /**
+     * @var LocaleContextInterface
+     */
+    private $localeService;
 
     /**
      * @var array
@@ -41,22 +52,27 @@ class CartsReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * CartsReport constructor.
+     * CategoriesReport constructor.
      *
-     * @param RepositoryInterface $storeRepository
-     * @param Connection          $db
-     * @param array               $pimcoreClasses
+     * @param Connection              $db
+     * @param RepositoryInterface     $storeRepository
+     * @param MoneyFormatterInterface $moneyFormatter
+     * @param LocaleContextInterface  $localeService
+     * @param array                   $pimcoreClasses
      */
     public function __construct(
-        RepositoryInterface $storeRepository,
         Connection $db,
+        RepositoryInterface $storeRepository,
+        MoneyFormatterInterface $moneyFormatter,
+        LocaleContextInterface $localeService,
         array $pimcoreClasses
     ) {
-        $this->storeRepository = $storeRepository;
         $this->db = $db;
+        $this->storeRepository = $storeRepository;
+        $this->moneyFormatter = $moneyFormatter;
+        $this->localeService = $localeService;
         $this->pimcoreClasses = $pimcoreClasses;
     }
-
 
     /**
      * {@inheritdoc}
@@ -65,7 +81,7 @@ class CartsReport implements ReportInterface
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
-        $storeId = $parameterBag->get('store', null);
+        $storeId = $parameterBag->get('store', 1);
 
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -76,16 +92,13 @@ class CartsReport implements ReportInterface
         $orderClassId = $this->pimcoreClasses['order'];
         $cartClassId = $this->pimcoreClasses['cart'];
 
-        if(is_null($storeId)) {
-            return [];
-        }
+        $queries = [];
 
         $store = $this->storeRepository->find($storeId);
-        if(!$store instanceof StoreInterface) {
+        if (!$store instanceof StoreInterface) {
             return [];
         }
 
-        $queries = [];
         foreach (['LEFT', 'RIGHT'] as $join) {
             $queries[] = "
                 SELECT
@@ -97,7 +110,8 @@ class CartsReport implements ReportInterface
                     COUNT(*) as orderCount,
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
-                  WHERE orderDate > $fromTimestamp AND orderDate < $toTimestamp
+                  INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
+                  WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orderDate > $fromTimestamp AND orderDate < $toTimestamp
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
@@ -105,28 +119,18 @@ class CartsReport implements ReportInterface
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
                   FROM object_$cartClassId AS carts
-                  WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                  WHERE carts.store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
-                ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
-            ";
+                ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp";
         }
 
         $data = $this->db->fetchAll(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
 
         foreach ($data as &$day) {
             $date = Carbon::createFromTimestamp(strtotime($day['timestamp']));
-
             $day['datetext'] = $date->toDateString();
         }
 
-        return array_values($data);
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotal()
-    {
-        return $this->totalRecords;
+        return $data;
     }
 }

@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SalesReport implements ReportInterface
+class VouchersReport implements ReportInterface
 {
     /**
      * @var int
@@ -70,7 +70,6 @@ class SalesReport implements ReportInterface
      */
     public function getData(ParameterBag $parameterBag)
     {
-        $groupBy = $parameterBag->get('groupBy', 'day');
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $storeId = $parameterBag->get('store', null);
@@ -78,12 +77,11 @@ class SalesReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
+        $page = $parameterBag->get('page', 1);
+        $limit = $parameterBag->get('limit', 25);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+
         $classId = $this->pimcoreClasses['order'];
-
-        $data = [];
-
-        $dateFormatter = null;
-        $groupSelector = '';
 
         if (is_null($storeId)) {
             return [];
@@ -94,39 +92,32 @@ class SalesReport implements ReportInterface
             return [];
         }
 
-        switch ($groupBy) {
-            case 'day':
-                $dateFormatter = 'd-m-Y';
-                $groupSelector = 'DATE(FROM_UNIXTIME(orders.orderDate))';
-                break;
-            case 'month':
-                $dateFormatter = 'F Y';
-                $groupSelector = 'MONTH(FROM_UNIXTIME(orders.orderDate))';
-                break;
-            case 'year':
-                $dateFormatter = 'Y';
-                $groupSelector = 'YEAR(FROM_UNIXTIME(orders.orderDate))';
-                break;
-
-        }
+        $data = [];
 
         $sqlQuery = "
-              SELECT DATE(FROM_UNIXTIME(orderDate)) AS dayDate, orderDate, SUM(totalNet) AS total 
-              FROM object_query_$classId as orders
+              SELECT SQL_CALC_FOUND_ROWS
+              orderVouchers.voucherCode AS code, 
+              priceRule.name AS rule,
+              orderVouchers.discountGross AS discount,
+              orders.orderDate
+              FROM object_collection_CoreShopProposalCartPriceRuleItem_$classId as orderVouchers
+              INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.o_id 
               INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-              WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? 
-              GROUP BY " . $groupSelector;
+              LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id 
+              WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
+              ORDER BY orders.orderDate DESC
+              LIMIT $offset,$limit";
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
+        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);
-
             $data[] = [
-                'timestamp'      => $date->getTimestamp(),
-                'datetext'       => $date->format($dateFormatter),
-                'sales'          => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode())
+                'usedDate' => $date->getTimestamp(),
+                'code'     => $result['code'],
+                'rule'     => !empty($result['rule']) ? $result['rule'] : '--',
+                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode())
             ];
         }
 

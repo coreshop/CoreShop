@@ -16,12 +16,16 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class PaymentProvidersReport implements ReportInterface
 {
+    /**
+     * @var int
+     */
+    private $totalRecords = 0;
+
     /**
      * @var Connection
      */
@@ -96,5 +100,13 @@ class PaymentProvidersReport implements ReportInterface
         }
 
         return array_values($data);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->totalRecords;
     }
 }

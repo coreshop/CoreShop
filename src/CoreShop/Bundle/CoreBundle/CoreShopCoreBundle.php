@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
@@ -44,6 +45,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $container->addCompilerPass(new TranslatableEntityLocalePass());
         $container->addCompilerPass(new RegisterProductHelperPass());
         $container->addCompilerPass(new RegisterReportsPass());
+        $container->addCompilerPass(new RegisterPortletsPass());
     }
 
     /**
