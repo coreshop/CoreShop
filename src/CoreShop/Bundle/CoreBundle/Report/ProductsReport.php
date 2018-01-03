@@ -142,8 +142,8 @@ class ProductsReport implements ReportInterface
               SELECT SQL_CALC_FOUND_ROWS
                 products.o_id as productId,
                 products.`name` as productName,
-                SUM(orderItems.itemRetailPriceNet * orderItems.quantity) AS sales, 
-                AVG(orderItems.itemRetailPriceNet * orderItems.quantity) AS salesPrice,
+                SUM(orderItems.totalGross) AS sales, 
+                AVG(orderItems.totalGross) AS salesPrice,
                 SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
                 SUM(orderItems.quantity) AS `quantityCount`,
                 COUNT(`order`.oo_id) AS `orderCount`
