@@ -109,15 +109,15 @@ class OrderController extends AbstractSaleDetailController
 
     /**
      * @param Request $request
-     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function addPaymentAction(Request $request)
     {
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
         $amount = doubleval($request->get('amount', 0));
-        $transactionId = $request->get('transactionNumber');
+
         $paymentProviderId = $request->get('paymentProvider');
 
         if (!$order instanceof OrderInterface) {
@@ -138,7 +138,7 @@ class OrderController extends AbstractSaleDetailController
                  * @var PaymentInterface|PimcoreModelInterface
                  */
                 $payment = $this->getPaymentFactory()->createNew();
-                $payment->setNumber($transactionId);
+                $payment->setNumber($order->getOrderNumber());
                 $payment->setPaymentProvider($paymentProvider);
                 $payment->setCurrency($order->getCurrency());
                 $payment->setTotalAmount($order->getTotal());
@@ -214,11 +214,21 @@ class OrderController extends AbstractSaleDetailController
             $noteList->setOrderKey('date');
             $noteList->setOrder('desc');*/
 
+            $details = [];
+            if(is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
+                foreach($payment->getDetails() as $detailName => $detailValue) {
+                    if(empty($detailValue) && $detailValue != 0) {
+                        continue;
+                    }
+                    $details[] = [$detailName, $detailValue];
+                }
+            }
+
             $return[] = [
                 'id' => $payment->getId(),
                 'datePayment' => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
                 'provider' => $payment->getPaymentProvider()->getName(),
-                'transactionIdentifier' => $payment->getNumber(),
+                'details' => $details,
                 //'transactionNotes' => $noteList->load(),
                 'amount' => $payment->getTotalAmount(),
                 'state' => $payment->getState(),

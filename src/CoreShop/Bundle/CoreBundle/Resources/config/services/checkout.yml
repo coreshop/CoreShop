@@ -20,7 +20,10 @@ services:
 
   coreshop.checkout.step.address:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep
-    arguments: ['@form.factory', '@security.token_storage']
+    arguments:
+        - '@form.factory'
+        - '@security.token_storage'
+        - '@coreshop.cart.manager'
 
   coreshop.checkout.step.shipping:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
@@ -29,12 +32,14 @@ services:
       - '@coreshop.shipping.carrier.validator'
       - '@form.factory'
       - '@coreshop.context.store'
+      - '@coreshop.cart.manager'
 
   coreshop.checkout.step.payment:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep
     arguments:
       - '@form.factory'
       - '@coreshop.context.store'
+      - '@coreshop.cart.manager'
 
   coreshop.checkout.step.summary:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep

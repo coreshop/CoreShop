@@ -16,6 +16,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
@@ -46,22 +47,30 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     private $storeContext;
 
     /**
+     * @var CartManagerInterface
+     */
+    private $cartManager;
+
+    /**
      * @param ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      * @param FormFactoryInterface $formFactory
      * @param StoreContextInterface $storeContext
+     * @param CartManagerInterface $cartManager
      */
     public function __construct(
         ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
-        StoreContextInterface $storeContext
+        StoreContextInterface $storeContext,
+        CartManagerInterface $cartManager
     )
     {
         $this->shippableCarriersDiscovery = $shippableCarriersDiscovery;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
         $this->storeContext = $storeContext;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -101,7 +110,8 @@ class ShippingCheckoutStep implements CheckoutStepInterface
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $cart = $form->getData();
-                $cart->save();
+
+                $this->cartManager->persistCart($cart);
                 return true;
             } else {
                 throw new CheckoutException('Shipping Form is invalid', 'coreshop.ui.error.coreshop_checkout_shipping_form_invalid');

@@ -8,6 +8,7 @@ imports:
   - { resource: "services/purchasable.yml" }
   - { resource: "services/context.yml" }
   - { resource: "services/commands.yml" }
+  - { resource: "services/profiler.yml" }
 
 services:
   coreshop.order.configurator.session_cart:

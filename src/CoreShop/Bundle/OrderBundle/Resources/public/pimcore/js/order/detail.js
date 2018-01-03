@@ -367,13 +367,6 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                     },
                     {
                         xtype: 'gridcolumn',
-                        dataIndex: 'transactionIdentifier',
-                        text: t('coreshop_transactionNumber'),
-                        flex: 1,
-                        align: 'right'
-                    },
-                    {
-                        xtype: 'gridcolumn',
                         dataIndex: 'amount',
                         text: t('coreshop_quantity'),
                         flex: 1,

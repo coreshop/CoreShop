@@ -11,17 +11,21 @@
     </h2>
 
     <div class="content-box text-center">
-        <h4 class="special-heading">{{ 'coreshop.ui.ooops'|trans }}</h4>
-        <h5>
-            {{ 'coreshop.ui.sorry_something_went_wrong'|trans }}
-        </h5>
-        <br>
+
         {% if app.environment == 'dev' %}
             {{ dump(lastPayment) }}
         {% endif %}
 
-        <p>
-            <a href="{{ path('coreshop_index') }}" class="btn btn-black text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
-        </p>
+        {% if lastPayment.state == 'cancelled' %}
+            <p>{{ 'coreshop.ui.checkout.error.cancelled'|trans }}</p>
+            <p>
+                <a href="{{ path('coreshop_cart_summary') }}" class="btn btn-black text-uppercase">{{ 'coreshop.ui.cart'|trans }}</a>
+            </p>
+        {% else %}
+            <p>{{ 'coreshop.ui.checkout.error.default'|trans }}</p>
+            <p>
+                <a href="{{ path('coreshop_index') }}" class="btn btn-black text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
+            </p>
+        {% endif %}
     </div>
 {% endblock %}

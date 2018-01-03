@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
@@ -34,13 +35,24 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     private $storeContext;
 
     /**
+     * @var CartManagerInterface
+     */
+    private $cartManager;
+
+    /**
      * @param FormFactoryInterface $formFactory
      * @param StoreContextInterface $storeContext
+     * @param CartManagerInterface $cartManager
      */
-    public function __construct(FormFactoryInterface $formFactory, StoreContextInterface $storeContext)
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        StoreContextInterface $storeContext,
+        CartManagerInterface $cartManager
+    )
     {
         $this->formFactory = $formFactory;
         $this->storeContext = $storeContext;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -77,7 +89,8 @@ class PaymentCheckoutStep implements CheckoutStepInterface
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $cart = $form->getData();
-                $cart->save();
+
+                $this->cartManager->persistCart($cart);
 
                 return true;
             } else {
