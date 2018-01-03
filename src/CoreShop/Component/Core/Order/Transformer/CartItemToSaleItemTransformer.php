@@ -39,10 +39,7 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
 
             if ($fromProposalItem->getProduct() instanceof ProductInterface) {
                 if ($fromProposalItem->getProduct()->getType() === 'variant') {
-                    $mainProduct = $fromProposalItem->getProduct();
-                    while ($mainProduct->getType() === 'variant') {
-                        $mainProduct = $mainProduct->getParent();
-                    }
+                    $mainProduct = $fromProposalItem->getProduct()->getVariantMaster();
                     $toProposal->setMainObjectId($mainProduct->getId());
                 }
             }

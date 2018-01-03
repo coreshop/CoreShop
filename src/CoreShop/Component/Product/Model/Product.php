@@ -53,14 +53,13 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     }
 
     /**
-     * Return Topmost Master if Object is Variant.
+     * Return topmost master if object is a variant.
      *
      * @return PimcoreModelInterface
      */
-    protected function getVariantMaster()
+    public function getVariantMaster()
     {
         $master = $this;
-
         while ($master->getType() === 'variant') {
             $master = $master->getParent();
         }

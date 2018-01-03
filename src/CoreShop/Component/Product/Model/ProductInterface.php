@@ -14,7 +14,6 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
 {
@@ -133,6 +132,11 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param bool $isAvailableWhenOutOfStock
      */
     public function setIsAvailableWhenOutOfStock($isAvailableWhenOutOfStock);
+
+    /**
+     * @return ProductInterface
+     */
+    public function getVariantMaster();
 
     /**
      * Get all Variants Differences.
