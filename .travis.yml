@@ -22,32 +22,12 @@ matrix:
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.0.2"
+          env: PIMCORE_BRANCH="tags/v5.1.0"
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.0.2"
-
-        - os: linux
-          sudo: required
-          php: 7
-          env: PIMCORE_BRANCH="tags/v5.0.3"
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.0.3"
-
-        - os: linux
-          sudo: required
-          php: 7
-          env: PIMCORE_BRANCH="tags/v5.0.4"
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.0.4"
+          env: PIMCORE_BRANCH="tags/v5.1.0"
 
         - os: linux
           sudo: required
