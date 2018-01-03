@@ -102,7 +102,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                             style: 'background: #01841c',
                             renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
-                                tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
+                                tooltip.setHtml(title + ' ' + t('coreshop_for') + ' ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
                             }
                         }
                     },
