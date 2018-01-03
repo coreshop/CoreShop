@@ -8,3 +8,8 @@ services:
       class: CoreShop\Bundle\CoreBundle\Controller\ReportsController
       calls:
         - [setContainer, ['@service_container']]
+
+    coreshop.admin_controller.portlets:
+      class: CoreShop\Bundle\CoreBundle\Controller\PortletsController
+      calls:
+        - [setContainer, ['@service_container']]

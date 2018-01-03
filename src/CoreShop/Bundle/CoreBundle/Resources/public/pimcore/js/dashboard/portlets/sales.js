@@ -10,19 +10,21 @@
  *
  */
 
-pimcore.registerNS('pimcore.layout.portlets.ordersAndCartsFromLastDays');
-pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout.portlets.abstract, {
+pimcore.registerNS('pimcore.layout.portlets.coreshop_sales');
+pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.abstract, {
+
+    portletType: 'sales',
 
     getType: function () {
-        return 'pimcore.layout.portlets.ordersAndCartsFromLastDays';
+        return 'pimcore.layout.portlets.coreshop_sales';
     },
 
     getName: function () {
-        return t('coreshop_orders_and_carts_from_last_days');
+        return t('coreshop_portlet_sales');
     },
 
     getIcon: function () {
-        return 'pimcore_icon_portlet_modification_statistic';
+        return 'coreshop_carrier_costs_icon';
     },
 
     getLayout: function (portletId) {
@@ -31,7 +33,7 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/reports/get-orders-carts-report',
+                url: '/admin/coreshop/portlet/get-data?portlet=' + this.portletType,
                 extraParams: {
                     'filters[from]': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
                     'filters[to]': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000
@@ -41,7 +43,7 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                     rootProperty: 'data'
                 }
             },
-            fields: ['timestamp', 'datetext', 'carts', 'orders']
+            fields: ['timestamp', 'datetext', 'sales']
         });
 
         store.load();
@@ -63,10 +65,13 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                 ],
                 axes: [{
                     type: 'numeric',
-                    fields: ['carts', 'orders'],
+                    fields: ['sales'],
                     position: 'left',
                     grid: true,
-                    minimum: 0
+                    minimum: 0,
+                    renderer: function(drawing, value, item) {
+                        return Ext.util.Format.number((value/100));
+                    }
                 }, {
                     type: 'category',
                     fields: 'datetext',
@@ -77,9 +82,9 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                     {
                         type: 'line',
                         axis: ' left',
-                        title: t('coreshop_cart'),
+                        title: t('coreshop_sales'),
                         xField: 'datetext',
-                        yField: 'carts',
+                        yField: 'sales',
                         colors: ['#01841c'],
                         style: {
                             lineWidth: 2,
@@ -100,37 +105,7 @@ pimcore.layout.portlets.ordersAndCartsFromLastDays = Class.create(pimcore.layout
                             style: 'background: #01841c',
                             renderer: function (tooltip, storeItem, item) {
                                 var title = item.series.getTitle();
-                                tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
-                            }
-                        }
-                    },
-                    {
-                        type: 'line',
-                        axis: ' left',
-                        title: t('coreshop_order'),
-                        xField: 'datetext',
-                        yField: 'orders',
-                        colors: ['#15428B'],
-                        style: {
-                            lineWidth: 2,
-                            stroke: '#15428B'
-                        },
-                        marker: {
-                            radius: 4,
-                            fillStyle: '#15428B'
-                        },
-                        highlight: {
-                            fillStyle: '#000',
-                            radius: 5,
-                            lineWidth: 2,
-                            strokeStyle: '#fff'
-                        },
-                        tooltip: {
-                            trackMouse: true,
-                            style: 'background: #00bfff',
-                            renderer: function (tooltip, storeItem, item) {
-                                var title = item.series.getTitle();
-                                tooltip.setHtml(title + ' for ' + storeItem.get('datetext') + ': ' + storeItem.get(item.series.getYField()));
+                                tooltip.setHtml(title + ' ' + t('coreshop_for') + ' ' + storeItem.get('datetext') + ': ' + storeItem.get('salesFormatted'));
                             }
                         }
                     }
