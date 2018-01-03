@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.report.reports.customers');
-coreshop.report.reports.customers = Class.create(coreshop.report.abstractStore, {
+coreshop.report.reports.customers = Class.create(coreshop.report.abstract, {
 
     reportType: 'customers',
 

@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
@@ -25,6 +26,11 @@ class CarriersReport implements ReportInterface
      * @var int
      */
     private $totalRecords = 0;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var Connection
@@ -42,12 +48,18 @@ class CarriersReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * @param Connection $db
+     * @param RepositoryInterface $storeRepository
+     * @param Connection          $db
      * @param RepositoryInterface $carrierRepository
-     * @param array $pimcoreClasses
+     * @param array               $pimcoreClasses
      */
-    public function __construct(Connection $db, RepositoryInterface $carrierRepository, array $pimcoreClasses)
-    {
+    public function __construct(
+        RepositoryInterface $storeRepository,
+        Connection $db,
+        RepositoryInterface $carrierRepository,
+        array $pimcoreClasses
+    ) {
+        $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->carrierRepository = $carrierRepository;
         $this->pimcoreClasses = $pimcoreClasses;
@@ -56,15 +68,27 @@ class CarriersReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag) {
-        $fromFilter = $parameterBag->get('from' , strtotime(date('01-m-Y')));
+    public function getReportData(ParameterBag $parameterBag)
+    {
+        $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
+        $storeId = $parameterBag->get('store', null);
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        $tableName = 'object_query_'.$this->pimcoreClasses['order'];
+        if(is_null($storeId)) {
+            return [];
+        }
+
+        $store = $this->storeRepository->find($storeId);
+        if(!$store instanceof StoreInterface) {
+            return [];
+        }
+
+        $tableName = 'object_query_' . $this->pimcoreClasses['order'];
         $sql = "
               SELECT carrier, 
                     COUNT(1) as total, 
@@ -78,9 +102,9 @@ class CarriersReport implements ReportInterface
                   FROM $tableName as `order` 
                   INNER JOIN objects as o 
                     ON o.o_id = `order`.oo_id  
-                  WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
                 ) t 
-              WHERE carrier IS NOT NULL AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp GROUP BY carrier";
+              WHERE store = $storeId AND carrier IS NOT NULL AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp GROUP BY carrier";
 
         $results = $this->db->fetchAll($sql);
         $data = [];
@@ -94,7 +118,7 @@ class CarriersReport implements ReportInterface
 
             $data[] = [
                 'carrier' => $carrier instanceof CarrierInterface ? $carrier->getName() : $result['carrier'],
-                'data' => floatval($result['percentage']),
+                'data'    => floatval($result['percentage']),
             ];
         }
 

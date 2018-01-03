@@ -77,6 +77,7 @@ services:
   coreshop.report.carriers:
     class: CoreShop\Bundle\CoreBundle\Report\CarriersReport
     arguments:
+      - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '@coreshop.repository.carrier'
       - '%coreshop.pimcore_class_ids%'
@@ -86,6 +87,7 @@ services:
   coreshop.report.payment_providers:
     class: CoreShop\Bundle\CoreBundle\Report\PaymentProvidersReport
     arguments:
+      - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '@coreshop.repository.payment_provider'
       - '%coreshop.pimcore_class_ids%'

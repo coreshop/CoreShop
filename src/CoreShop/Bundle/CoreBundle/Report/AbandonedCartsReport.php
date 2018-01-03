@@ -116,6 +116,7 @@ class AbandonedCartsReport implements ReportInterface
                         LEFT JOIN object_$userClassId AS `user` ON `user`.oo_id = cart.customer__id
                         LEFT JOIN coreshop_payment_provider AS `pg` ON `pg`.id = cart.paymentProvider
                         WHERE cart.items <> ''
+                          AND cart.store = $storeId
                           AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
                           AND cart.o_creationDate < ?

@@ -118,7 +118,7 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as orderCount,
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
-                  WHERE orderDate > $fromTimestamp AND orderDate < $toTimestamp
+                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
@@ -126,7 +126,7 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
                   FROM object_$cartClassId AS carts
-                  WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
             ";

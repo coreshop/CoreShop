@@ -58,41 +58,6 @@ coreshop.report.abstractStore = Class.create(coreshop.report.abstract, {
         return filter;
     },
 
-    getStore: function () {
-        if (!this.store) {
-            var me = this,
-                fields = ['timestamp', 'text', 'data'];
-
-            if (Ext.isFunction(this.getStoreFields)) {
-                fields = Ext.apply(fields, this.getStoreFields());
-            }
-
-            this.store = new Ext.data.Store({
-                autoDestroy: true,
-                remoteSort: this.remoteSort,
-                proxy: {
-                    type: 'ajax',
-                    url: '/admin/coreshop/report/get-data?report=' + this.reportType,
-                    actionMethods: {
-                        read: 'GET'
-                    },
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'data',
-                        totalProperty: 'total'
-                    }
-                },
-                fields: fields
-            });
-
-            this.store.on('beforeload', function (store, operation) {
-                store.getProxy().setExtraParams(me.getFilterParams());
-            });
-        }
-
-        return this.store;
-    },
-
     getFilterParams: function ($super) {
         var params = $super();
         params['store'] = this.getStoreField().getValue();
