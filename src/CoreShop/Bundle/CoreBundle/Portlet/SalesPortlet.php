@@ -13,9 +13,11 @@
 namespace CoreShop\Bundle\CoreBundle\Portlet;
 
 use Carbon\Carbon;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -25,6 +27,11 @@ class SalesPortlet implements PortletInterface
      * @var Connection
      */
     private $db;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var MoneyFormatterInterface
@@ -45,17 +52,20 @@ class SalesPortlet implements PortletInterface
      * CategoriesReport constructor.
      *
      * @param Connection              $db
+     * @param RepositoryInterface $storeRepository
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface  $localeService
      * @param array                   $pimcoreClasses
      */
     public function __construct(
         Connection $db,
+        RepositoryInterface $storeRepository,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         array $pimcoreClasses
     ) {
         $this->db = $db;
+        $this->storeRepository = $storeRepository;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
         $this->pimcoreClasses = $pimcoreClasses;
@@ -69,10 +79,17 @@ class SalesPortlet implements PortletInterface
         $groupBy = $parameterBag->get('groupBy', 'day');
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
+        $storeId = $parameterBag->get('store', 2);
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
         $classId = $this->pimcoreClasses['order'];
+
+        $store = $this->storeRepository->find($storeId);
+        if(!$store instanceof StoreInterface) {
+            return [];
+        }
 
         $data = [];
 
@@ -92,14 +109,13 @@ class SalesPortlet implements PortletInterface
                 $dateFormatter = 'Y';
                 $groupSelector = 'YEAR(FROM_UNIXTIME(orders.orderDate))';
                 break;
-
         }
 
         $sqlQuery = "
               SELECT DATE(FROM_UNIXTIME(orderDate)) AS dayDate, orderDate, SUM(totalNet) AS total 
               FROM object_query_$classId as orders
               INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-              WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? 
+              WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? 
               GROUP BY " . $groupSelector;
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
@@ -111,7 +127,7 @@ class SalesPortlet implements PortletInterface
                 'timestamp'      => $date->getTimestamp(),
                 'datetext'       => $date->format($dateFormatter),
                 'sales'          => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], 'EUR')
+                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode())
             ];
         }
 

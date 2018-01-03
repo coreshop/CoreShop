@@ -14,10 +14,12 @@ namespace CoreShop\Bundle\CoreBundle\Portlet;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -28,6 +30,11 @@ class OrderCartPortlet implements PortletInterface
      * @var Connection
      */
     private $db;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var MoneyFormatterInterface
@@ -48,17 +55,20 @@ class OrderCartPortlet implements PortletInterface
      * CategoriesReport constructor.
      *
      * @param Connection              $db
+     * @param RepositoryInterface     $storeRepository
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface  $localeService
      * @param array                   $pimcoreClasses
      */
     public function __construct(
         Connection $db,
+        RepositoryInterface $storeRepository,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         array $pimcoreClasses
     ) {
         $this->db = $db;
+        $this->storeRepository = $storeRepository;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
         $this->pimcoreClasses = $pimcoreClasses;
@@ -71,16 +81,23 @@ class OrderCartPortlet implements PortletInterface
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
+        $storeId = $parameterBag->get('store', 1);
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
+
+        $fromTimestamp = $from->getTimestamp();
+        $toTimestamp = $to->getTimestamp();
 
         $orderClassId = $this->pimcoreClasses['order'];
         $cartClassId = $this->pimcoreClasses['cart'];
 
         $queries = [];
 
-        $fromTimestamp = $from->getTimestamp();
-        $toTimestamp = $to->getTimestamp();
+        $store = $this->storeRepository->find($storeId);
+        if (!$store instanceof StoreInterface) {
+            return [];
+        }
 
         foreach (['LEFT', 'RIGHT'] as $join) {
             $queries[] = "
@@ -94,7 +111,7 @@ class OrderCartPortlet implements PortletInterface
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
                   INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-                  WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orderDate > $fromTimestamp AND orderDate < $toTimestamp
+                  WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orderDate > $fromTimestamp AND orderDate < $toTimestamp
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
@@ -102,7 +119,7 @@ class OrderCartPortlet implements PortletInterface
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
                   FROM object_$cartClassId AS carts
-                  WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                  WHERE carts.store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp";
         }

@@ -29,14 +29,17 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
 
     getLayout: function (portletId) {
 
-        var store = new Ext.data.Store({
+        console.log(this.config);
+
+        this.store = new Ext.data.Store({
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
                 url: '/admin/coreshop/portlet/get-data?portlet=' + this.portletType,
                 extraParams: {
                     'filters[from]': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
-                    'filters[to]': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000
+                    'filters[to]': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000,
+                    'store': this.config
                 },
                 reader: {
                     type: 'json',
@@ -46,14 +49,15 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
             fields: ['timestamp', 'datetext', 'carts', 'orders']
         });
 
-        store.load();
+        this.store.load();
 
         var panel = new Ext.Panel({
             layout: 'fit',
-            height: 275,
-            items: {
+
+            items: [{
                 xtype: 'cartesian',
-                store: store,
+                height: 245,
+                store: this.store,
                 legend: {
                     docked: 'right'
                 },
@@ -137,10 +141,22 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                         }
                     }
                 ]
-            }
+            }]
         });
 
-        this.layout = Ext.create('Portal.view.Portlet', Object.extend(this.getDefaultConfig(), {
+        var defaultConf = this.getDefaultConfig();
+        defaultConf.tools = [
+            {
+                type: 'gear',
+                handler: this.editSettings.bind(this)
+            },
+            {
+                type: 'close',
+                handler: this.remove.bind(this)
+            }
+        ];
+
+        this.layout = Ext.create('Portal.view.Portlet', Object.extend(defaultConf, {
             title: this.getName(),
             iconCls: this.getIcon(),
             height: 275,
@@ -150,5 +166,77 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
 
         this.layout.portletId = portletId;
         return this.layout;
+    },
+
+    editSettings: function () {
+
+        var coreshopStore = pimcore.globalmanager.get('coreshop_stores');
+
+        var win = new Ext.Window({
+            width: 600,
+            height: 150,
+            modal: true,
+            closeAction: 'destroy',
+            items: [
+                {
+                    xtype: 'form',
+                    bodyStyle: 'padding: 10px',
+                    items: [
+                        {
+                            xtype: 'combo',
+                            fieldLabel: t('coreshop_report_store'),
+                            listWidth: 100,
+                            width: 300,
+                            store: coreshopStore,
+                            displayField: 'name',
+                            valueField: 'id',
+                            forceSelection: true,
+                            multiselect: false,
+                            triggerAction: 'all',
+                            name: 'coreshop_portlet_store',
+                            id: 'coreshop_portlet_store',
+                            queryMode: 'remote',
+                            delimiter: false,
+                            listeners: {
+                                afterrender: function () {
+                                    var first;
+                                    if (this.store.isLoaded()) {
+                                        first = this.store.getAt(0);
+                                        this.setValue(first);
+                                    } else {
+                                        this.store.load();
+                                        this.store.on('load', function (store, records, options) {
+                                            first = store.getAt(0);
+                                            this.setValue(first);
+                                        }.bind(this));
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+                            text: t('save'),
+                            handler: function () {
+                                this.config = Ext.getCmp('coreshop_portlet_store').getValue();
+                                Ext.Ajax.request({
+                                    url: '/admin/portal/update-portlet-config',
+                                    params: {
+                                        key: this.portal.key,
+                                        id: this.layout.portletId,
+                                        config: Ext.getCmp('coreshop_portlet_store').getValue()
+                                    },
+                                    success: function () {
+                                        this.store.reload();
+                                    }.bind(this)
+                                });
+                                win.close();
+                            }.bind(this)
+                        }
+                    ]
+                }
+            ]
+        });
+
+        win.show();
     }
 });

@@ -13,7 +13,9 @@
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -23,6 +25,11 @@ class AbandonedCartsReport implements ReportInterface
      * @var int
      */
     private $totalRecords = 0;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var Connection
@@ -37,11 +44,16 @@ class AbandonedCartsReport implements ReportInterface
     /**
      * AbandonedCartsReport constructor.
      *
-     * @param Connection $db
-     * @param array      $pimcoreClasses
+     * @param RepositoryInterface $storeRepository
+     * @param Connection          $db
+     * @param array               $pimcoreClasses
      */
-    public function __construct(Connection $db, array $pimcoreClasses)
-    {
+    public function __construct(
+        RepositoryInterface $storeRepository,
+        Connection $db,
+        array $pimcoreClasses
+    ) {
+        $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->pimcoreClasses = $pimcoreClasses;
     }
@@ -53,6 +65,8 @@ class AbandonedCartsReport implements ReportInterface
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
+        $storeId = $parameterBag->get('store', null);
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
@@ -80,6 +94,15 @@ class AbandonedCartsReport implements ReportInterface
         if ($to->gt($maxTo)) {
             $to = $maxTo;
             $toTimestamp = $to->getTimestamp();
+        }
+
+        if(is_null($storeId)) {
+            return [];
+        }
+
+        $store = $this->storeRepository->find($storeId);
+        if(!$store instanceof StoreInterface) {
+            return [];
         }
 
         $sqlQuery = "SELECT SQL_CALC_FOUND_ROWS

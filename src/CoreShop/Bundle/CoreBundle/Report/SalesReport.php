@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -24,6 +26,11 @@ class SalesReport implements ReportInterface
      * @var int
      */
     private $totalRecords = 0;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var Connection
@@ -41,12 +48,18 @@ class SalesReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
+     * @param RepositoryInterface     $storeRepository
      * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
      * @param array                   $pimcoreClasses
      */
-    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, array $pimcoreClasses)
-    {
+    public function __construct(
+        RepositoryInterface $storeRepository,
+        Connection $db,
+        MoneyFormatterInterface $moneyFormatter,
+        array $pimcoreClasses
+    ) {
+        $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
         $this->pimcoreClasses = $pimcoreClasses;
@@ -60,6 +73,8 @@ class SalesReport implements ReportInterface
         $groupBy = $parameterBag->get('groupBy', 'day');
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
+        $storeId = $parameterBag->get('store', null);
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
@@ -69,6 +84,15 @@ class SalesReport implements ReportInterface
 
         $dateFormatter = null;
         $groupSelector = '';
+
+        if (is_null($storeId)) {
+            return [];
+        }
+
+        $store = $this->storeRepository->find($storeId);
+        if (!$store instanceof StoreInterface) {
+            return [];
+        }
 
         switch ($groupBy) {
             case 'day':
@@ -90,7 +114,7 @@ class SalesReport implements ReportInterface
               SELECT DATE(FROM_UNIXTIME(orderDate)) AS dayDate, orderDate, SUM(totalNet) AS total 
               FROM object_query_$classId as orders
               INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-              WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? 
+              WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? 
               GROUP BY " . $groupSelector;
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
@@ -102,7 +126,7 @@ class SalesReport implements ReportInterface
                 'timestamp'      => $date->getTimestamp(),
                 'datetext'       => $date->format($dateFormatter),
                 'sales'          => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], 'EUR')
+                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode())
             ];
         }
 

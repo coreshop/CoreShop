@@ -8,12 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -23,6 +24,11 @@ class CartsReport implements ReportInterface
      * @var int
      */
     private $totalRecords = 0;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var Connection
@@ -36,11 +42,17 @@ class CartsReport implements ReportInterface
 
     /**
      * CartsReport constructor.
-     * @param Connection $db
-     * @param array $pimcoreClasses
+     *
+     * @param RepositoryInterface $storeRepository
+     * @param Connection          $db
+     * @param array               $pimcoreClasses
      */
-    public function __construct(Connection $db, array $pimcoreClasses)
-    {
+    public function __construct(
+        RepositoryInterface $storeRepository,
+        Connection $db,
+        array $pimcoreClasses
+    ) {
+        $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->pimcoreClasses = $pimcoreClasses;
     }
@@ -49,20 +61,31 @@ class CartsReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getData(ParameterBag $parameterBag) {
-        $fromFilter = $parameterBag->get('from' , strtotime(date('01-m-Y')));
+    public function getData(ParameterBag $parameterBag)
+    {
+        $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
+        $storeId = $parameterBag->get('store', null);
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
-
-        $orderClassId = $this->pimcoreClasses['order'];
-        $cartClassId = $this->pimcoreClasses['cart'];
-
-        $queries = [];
 
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
+        $orderClassId = $this->pimcoreClasses['order'];
+        $cartClassId = $this->pimcoreClasses['cart'];
+
+        if(is_null($storeId)) {
+            return [];
+        }
+
+        $store = $this->storeRepository->find($storeId);
+        if(!$store instanceof StoreInterface) {
+            return [];
+        }
+
+        $queries = [];
         foreach (['LEFT', 'RIGHT'] as $join) {
             $queries[] = "
                 SELECT
@@ -88,7 +111,7 @@ class CartsReport implements ReportInterface
             ";
         }
 
-        $data = $this->db->fetchAll(implode(PHP_EOL . "UNION ALL" . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
+        $data = $this->db->fetchAll(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
 
         foreach ($data as &$day) {
             $date = Carbon::createFromTimestamp(strtotime($day['timestamp']));

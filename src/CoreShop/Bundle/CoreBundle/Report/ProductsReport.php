@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
@@ -27,6 +29,11 @@ class ProductsReport implements ReportInterface
      * @var int
      */
     private $totalRecords = 0;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var Connection
@@ -59,6 +66,7 @@ class ProductsReport implements ReportInterface
     private $productImplementations;
 
     /**
+     * @param RepositoryInterface $storeRepository
      * @param Connection                         $db
      * @param TokenStorageUserResolver           $tokenStorageUserResolver
      * @param TranslationLocaleProviderInterface $localeProvider
@@ -67,6 +75,7 @@ class ProductsReport implements ReportInterface
      * @param array                              $productImplementations
      */
     public function __construct(
+        RepositoryInterface $storeRepository,
         Connection $db,
         TokenStorageUserResolver $tokenStorageUserResolver,
         TranslationLocaleProviderInterface $localeProvider,
@@ -74,6 +83,7 @@ class ProductsReport implements ReportInterface
         array $pimcoreClasses,
         array $productImplementations
     ) {
+        $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
         $this->localeProvider = $localeProvider;
@@ -90,6 +100,8 @@ class ProductsReport implements ReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $objectTypeFilter = $parameterBag->get('objectType', 'all');
+        $storeId = $parameterBag->get('store', null);
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
@@ -102,6 +114,15 @@ class ProductsReport implements ReportInterface
 
         $localizedTableLanguage = $this->getLanguageForLocalizedTable();
 
+        if(is_null($storeId)) {
+            return [];
+        }
+
+        $store = $this->storeRepository->find($storeId);
+        if(!$store instanceof StoreInterface) {
+            return [];
+        }
+
         if ($objectTypeFilter === 'container') {
 
             $objectClassArray = [];
@@ -112,7 +133,7 @@ class ProductsReport implements ReportInterface
 
             $unionData = [];
             foreach ($objectClassArray as $id) {
-                $unionData[] = 'SELECT `o_id`, `name` FROM object_localized_' . $id . '_' . $localizedTableLanguage;
+                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $localizedTableLanguage;
             }
 
             $union = join(' UNION ALL ', $unionData);
@@ -125,13 +146,13 @@ class ProductsReport implements ReportInterface
                 AVG(orderItems.itemRetailPriceNet * orderItems.quantity) AS salesPrice,
                 SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
                 SUM(orderItems.quantity) AS `quantityCount`,
-                COUNT(order.oo_id) AS `orderCount`
+                COUNT(`order`.oo_id) AS `orderCount`
                 FROM ($union) AS products
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON products.o_id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
                 INNER JOIN element_workflow_state AS orderState ON `order`.oo_id = orderState.cid 
-                WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND `order`.orderDate > ? AND `order`.orderDate < ?
+                WHERE products.o_type = 'object' AND `order`.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
 
@@ -148,9 +169,11 @@ class ProductsReport implements ReportInterface
                 SELECT SQL_CALC_FOUND_ROWS
                   orderItems.objectId as productId,
                   orderItemsTranslated.name AS `productName`,
-                  SUM(orderItems.itemRetailPriceNet * orderItems.quantity) AS sales, 
-                  AVG(orderItems.itemRetailPriceNet * orderItems.quantity) AS salesPrice,
+                  
+                  SUM(orderItems.totalGross) AS sales, 
+                  AVG(orderItems.totalGross) AS salesPrice,
                   SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
+                  
                   SUM(orderItems.quantity) AS `quantityCount`,
                   COUNT(orderItems.objectId) AS `orderCount`
                 FROM object_query_$orderClassId AS orders
@@ -158,7 +181,7 @@ class ProductsReport implements ReportInterface
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
                 INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $localizedTableLanguage . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-                WHERE $productTypeCondition AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
+                WHERE orders.store = $storeId AND $productTypeCondition AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
                 LIMIT $offset,$limit";
@@ -169,9 +192,9 @@ class ProductsReport implements ReportInterface
         $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
-            $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], 'EUR');
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], 'EUR');
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], 'EUR');
+            $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode());
+            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode());
+            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode());
             $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 

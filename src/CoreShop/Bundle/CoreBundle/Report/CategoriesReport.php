@@ -14,10 +14,12 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -28,6 +30,11 @@ class CategoriesReport implements ReportInterface
      * @var int
      */
     private $totalRecords = 0;
+
+    /**
+     * @var RepositoryInterface
+     */
+    private $storeRepository;
 
     /**
      * @var Connection
@@ -52,17 +59,20 @@ class CategoriesReport implements ReportInterface
     /**
      * CategoriesReport constructor.
      *
+     * @param RepositoryInterface     $storeRepository
      * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface  $localeService
      * @param array                   $pimcoreClasses
      */
     public function __construct(
+        RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         array $pimcoreClasses
     ) {
+        $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
@@ -76,16 +86,26 @@ class CategoriesReport implements ReportInterface
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
+        $storeId = $parameterBag->get('store', null);
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
         $orderClassId = $this->pimcoreClasses['order'];
         $orderItemClassId = $this->pimcoreClasses['order_item'];
 
+        if (is_null($storeId)) {
+            return [];
+        }
+
+        $store = $this->storeRepository->find($storeId);
+        if (!$store instanceof StoreInterface) {
+            return [];
+        }
+
         $query = "
             SELECT 
               orderItems.product__id,
-              SUM(orderItems.itemRetailPriceNet * orderItems.quantity) AS sales, 
+              SUM(orderItems.totalGross) AS sales, 
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
@@ -93,7 +113,7 @@ class CategoriesReport implements ReportInterface
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
             INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-            WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
             GROUP BY orderItems.product__id
             ORDER BY COUNT(orderItems.product__id) DESC
         ";
@@ -128,13 +148,13 @@ class CategoriesReport implements ReportInterface
 
         });
 
-        usort($catSales, function($a, $b) {
+        usort($catSales, function ($a, $b) {
             return $b['orderCount'] <=> $a['orderCount'];
         });
 
         foreach ($catSales as &$sale) {
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], 'EUR');
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], 'EUR');
+            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode());
+            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode());
         }
 
         return array_values($catSales);
