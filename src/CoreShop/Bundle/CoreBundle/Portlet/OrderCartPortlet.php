@@ -104,8 +104,7 @@ class OrderCartPortlet implements PortletInterface
                   FROM object_$cartClassId AS carts
                   WHERE o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
-                ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
-            ";
+                ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp";
         }
 
         $data = $this->db->fetchAll(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
