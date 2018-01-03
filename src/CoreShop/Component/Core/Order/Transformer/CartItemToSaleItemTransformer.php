@@ -4,7 +4,7 @@ namespace CoreShop\Component\Core\Order\Transformer;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Order\Model\SaleItemInterface;
+use CoreShop\Component\Core\Model\SaleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
