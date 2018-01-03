@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
@@ -144,7 +145,9 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
             $saleItem->setName($cartItem->getProduct()->getName($locale));
         }
 
-        $saleItem->save();
+        VersionHelper::useVersioning(function () use ($saleItem) {
+            $saleItem->save();
+        }, false);
 
         $sale->addItem($saleItem);
 

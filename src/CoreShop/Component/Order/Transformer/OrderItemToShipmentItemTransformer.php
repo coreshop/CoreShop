@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use Webmozart\Assert\Assert;
 
@@ -85,7 +86,9 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
 
         $shipmentItem->setWeight($orderItem->getTotalWeight());
 
-        $shipmentItem->save();
+        VersionHelper::useVersioning(function () use ($shipmentItem) {
+            $shipmentItem->save();
+        }, false);
 
         $this->eventDispatcher->dispatchPostEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 

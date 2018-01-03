@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -16,6 +16,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use Webmozart\Assert\Assert;
 
 class CartToOrderTransformer extends AbstractCartToSaleTransformer
@@ -46,7 +47,10 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         $order = $this->transformSale($cart, $order, 'order');
 
         $cart->setOrder($order);
-        $cart->save();
+
+        VersionHelper::useVersioning(function () use ($cart) {
+            $cart->save();
+        }, false);
 
         return $order;
     }

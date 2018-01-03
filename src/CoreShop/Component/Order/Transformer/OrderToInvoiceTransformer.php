@@ -23,6 +23,7 @@ use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
@@ -152,7 +153,10 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        $invoice->save();
+        VersionHelper::useVersioning(function () use ($invoice) {
+            $invoice->save();
+        }, false);
+
         $items = [];
 
         /**
@@ -169,7 +173,10 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         }
 
         $invoice->setItems($items);
-        $invoice->save();
+
+        VersionHelper::useVersioning(function () use ($invoice) {
+            $invoice->save();
+        }, false);
 
         $this->calculateInvoice($invoice);
 
@@ -194,7 +201,9 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->calculateTotal($invoice, true);
         $this->calculateTotal($invoice, false);
 
-        $invoice->save();
+        VersionHelper::useVersioning(function () use ($invoice) {
+            $invoice->save();
+        }, false);
     }
 
     /**

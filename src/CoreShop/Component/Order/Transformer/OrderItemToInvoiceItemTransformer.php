@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentItemTransformerInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
@@ -110,7 +111,9 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), false);
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), true);
 
-        $invoiceItem->save();
+        VersionHelper::useVersioning(function () use ($invoiceItem) {
+            $invoiceItem->save();
+        }, false);
 
         $this->eventDispatcher->dispatchPostEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
