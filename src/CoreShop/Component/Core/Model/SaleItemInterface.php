@@ -25,4 +25,24 @@ interface SaleItemInterface extends BaseSaleItemInterface
      * @param bool $digitalProduct
      */
     public function setDigitalProduct($digitalProduct);
+
+    /**
+     * @return int
+     */
+    public function getObjectId();
+
+    /**
+     * @param int $objectId
+     */
+    public function setObjectId($objectId);
+
+    /**
+     * @return int
+     */
+    public function getMainObjectId();
+
+    /**
+     * @param int $mainObjectId
+     */
+    public function setMainObjectId($mainObjectId);
 }

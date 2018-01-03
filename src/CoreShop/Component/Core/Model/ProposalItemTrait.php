@@ -14,12 +14,12 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
-trait SaleItemTrait
+trait ProposalItemTrait
 {
     /**
      * {@inheritdoc}
      */
-    public function getObjectId()
+    public function getDigitalProduct()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -27,23 +27,7 @@ trait SaleItemTrait
     /**
      * {@inheritdoc}
      */
-    public function setObjectId($objectId)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMainObjectId()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMainObjectId($mainObjectId)
+    public function setDigitalProduct($digitalProduct)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

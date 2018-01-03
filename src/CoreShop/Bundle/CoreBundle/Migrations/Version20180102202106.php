@@ -86,8 +86,20 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
             'visibleSearch'    => false,
         ];
 
-        $customer = $this->container->getParameter('coreshop.model.order_item.pimcore_class_name');
-        $classUpdater = new ClassUpdate($customer);
+        $orderItem = $this->container->getParameter('coreshop.model.order_item.pimcore_class_name');
+        $classUpdater = new ClassUpdate($orderItem);
+        if (!$classUpdater->hasField('mainObjectId')) {
+            $classUpdater->insertFieldAfter('product', $mainObjectIdField);
+            $classUpdater->save();
+        }
+
+        if (!$classUpdater->hasField('objectId')) {
+            $classUpdater->insertFieldAfter('product', $objectIdField);
+            $classUpdater->save();
+        }
+
+        $quoteItem = $this->container->getParameter('coreshop.model.quote_item.pimcore_class_name');
+        $classUpdater = new ClassUpdate($quoteItem);
         if (!$classUpdater->hasField('mainObjectId')) {
             $classUpdater->insertFieldAfter('product', $mainObjectIdField);
             $classUpdater->save();
