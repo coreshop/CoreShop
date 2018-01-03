@@ -28,9 +28,6 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
     },
 
     getLayout: function (portletId) {
-
-        console.log(this.config);
-
         this.store = new Ext.data.Store({
             autoDestroy: true,
             proxy: {
@@ -75,7 +72,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                     minimum: 0
                 }, {
                     type: 'category',
-                    fields: 'datetext',
+                    fields: 'timestamp',
                     position: 'bottom'
                 }
                 ],
@@ -84,7 +81,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                         type: 'line',
                         axis: ' left',
                         title: t('coreshop_cart'),
-                        xField: 'datetext',
+                        xField: 'timestamp',
                         yField: 'carts',
                         colors: ['#01841c'],
                         style: {
@@ -114,7 +111,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                         type: 'line',
                         axis: ' left',
                         title: t('coreshop_order'),
-                        xField: 'datetext',
+                        xField: 'timestamp',
                         yField: 'orders',
                         colors: ['#15428B'],
                         style: {
@@ -197,18 +194,25 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                             id: 'coreshop_portlet_store',
                             queryMode: 'remote',
                             delimiter: false,
+                            value: this.config,
                             listeners: {
                                 afterrender: function () {
                                     var first;
                                     if (this.store.isLoaded()) {
                                         first = this.store.getAt(0);
-                                        this.setValue(first);
+
+                                        if (!this.getValue()) {
+                                            this.setValue(first);
+                                        }
                                     } else {
                                         this.store.load();
-                                        this.store.on('load', function (store, records, options) {
-                                            first = store.getAt(0);
-                                            this.setValue(first);
-                                        }.bind(this));
+
+                                        if (!this.getValue()) {
+                                            this.store.on('load', function (store, records, options) {
+                                                first = store.getAt(0);
+                                                this.setValue(first);
+                                            }.bind(this));
+                                        }
                                     }
                                 }
                             }
@@ -217,15 +221,17 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                             xtype: 'button',
                             text: t('save'),
                             handler: function () {
-                                this.config = Ext.getCmp('coreshop_portlet_store').getValue();
+                                var storeValue = Ext.getCmp('coreshop_portlet_store').getValue();
+                                this.config = storeValue;
                                 Ext.Ajax.request({
                                     url: '/admin/portal/update-portlet-config',
                                     params: {
                                         key: this.portal.key,
                                         id: this.layout.portletId,
-                                        config: Ext.getCmp('coreshop_portlet_store').getValue()
+                                        config: storeValue
                                     },
                                     success: function () {
+                                        this.store.proxy.extraParams.store = storeValue;
                                         this.store.reload();
                                     }.bind(this)
                                 });

@@ -36,7 +36,7 @@ class ReportsController extends AdminController
 
         return $this->viewHandler->handle([
             'success' => true,
-            'data' => $report->getData($request->query),
+            'data' => $report->getReportData($request->query),
             'total' => $report->getTotal()
         ]);
     }

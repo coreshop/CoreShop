@@ -22,7 +22,7 @@ interface ReportInterface
      * @param ParameterBag $parameterBag
      * @return array
      */
-    public function getData(ParameterBag $parameterBag);
+    public function getReportData(ParameterBag $parameterBag);
 
     /**
      * Get total amount of found records

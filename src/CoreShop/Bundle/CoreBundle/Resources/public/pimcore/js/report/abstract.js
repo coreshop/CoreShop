@@ -98,46 +98,9 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
     },
 
     getFilterFields: function () {
-
-        var _ = this,
-            store = pimcore.globalmanager.get('coreshop_stores');
+        var _ = this;
 
         return [
-            {
-                xtype: 'combo',
-                fieldLabel: null,
-                listWidth: 100,
-                width: 200,
-                store: store,
-                displayField: 'name',
-                valueField: 'id',
-                forceSelection: true,
-                multiselect: false,
-                triggerAction: 'all',
-                name: 'store',
-                queryMode: 'remote',
-                maxHeight: 400,
-                delimiter: false,
-                listeners: {
-                    afterrender: function () {
-                        var first;
-                        if (this.store.isLoaded()) {
-                            first = this.store.getAt(0);
-                            this.setValue(first);
-                        } else {
-                            this.store.load();
-                            this.store.on('load', function (store, records, options) {
-                                first = store.getAt(0);
-                                this.setValue(first);
-                            }.bind(this));
-                        }
-                    },
-                    change: function (combo, value) {
-                        this.getStoreField().setValue(value);
-                        this.filter();
-                    }.bind(this)
-                }
-            },
             {
                 xtype: 'button',
                 text: t('coreshop_report_day'),
@@ -253,41 +216,6 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
         ];
     },
 
-    getStore: function () {
-        if (!this.store) {
-            var me = this,
-                fields = ['timestamp', 'text', 'data'];
-
-            if (Ext.isFunction(this.getStoreFields)) {
-                fields = Ext.apply(fields, this.getStoreFields());
-            }
-
-            this.store = new Ext.data.Store({
-                autoDestroy: true,
-                remoteSort: this.remoteSort,
-                proxy: {
-                    type: 'ajax',
-                    url: '/admin/coreshop/report/get-data?report=' + this.reportType,
-                    actionMethods: {
-                        read: 'GET'
-                    },
-                    reader: {
-                        type: 'json',
-                        rootProperty: 'data',
-                        totalProperty: 'total'
-                    }
-                },
-                fields: fields
-            });
-
-            this.store.on('beforeload', function (store, operation) {
-                store.getProxy().setExtraParams(me.getFilterParams());
-            });
-        }
-
-        return this.store;
-    },
-
     filter: function () {
         this.getStore().load();
     },
@@ -295,8 +223,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
     getFilterParams: function () {
         return {
             'from': this.getFromField().getValue().getTime() / 1000,
-            'to': this.getToField().getValue().getTime() / 1000,
-            'store': this.getStoreField().getValue()
+            'to': this.getToField().getValue().getTime() / 1000
         };
     }
 });

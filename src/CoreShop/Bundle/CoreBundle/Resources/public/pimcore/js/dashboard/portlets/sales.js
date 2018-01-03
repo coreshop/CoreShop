@@ -167,18 +167,25 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
                             id: 'coreshop_portlet_store',
                             queryMode: 'remote',
                             delimiter: false,
+                            value: this.config,
                             listeners: {
                                 afterrender: function () {
                                     var first;
                                     if (this.store.isLoaded()) {
                                         first = this.store.getAt(0);
-                                        this.setValue(first);
+
+                                        if (!this.getValue()) {
+                                            this.setValue(first);
+                                        }
                                     } else {
                                         this.store.load();
-                                        this.store.on('load', function (store, records, options) {
-                                            first = store.getAt(0);
-                                            this.setValue(first);
-                                        }.bind(this));
+
+                                        if (!this.getValue()) {
+                                            this.store.on('load', function (store, records, options) {
+                                                first = store.getAt(0);
+                                                this.setValue(first);
+                                            }.bind(this));
+                                        }
                                     }
                                 }
                             }
@@ -187,15 +194,17 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
                             xtype: 'button',
                             text: t('save'),
                             handler: function () {
-                                this.config = Ext.getCmp('coreshop_portlet_store').getValue();
+                                var storeValue = Ext.getCmp('coreshop_portlet_store').getValue();
+                                this.config = storeValue;
                                 Ext.Ajax.request({
                                     url: '/admin/portal/update-portlet-config',
                                     params: {
                                         key: this.portal.key,
                                         id: this.layout.portletId,
-                                        config: Ext.getCmp('coreshop_portlet_store').getValue()
+                                        config: storeValue
                                     },
                                     success: function () {
+                                        this.store.proxy.extraParams.store = storeValue;
                                         this.store.reload();
                                     }.bind(this)
                                 });

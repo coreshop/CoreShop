@@ -14,13 +14,14 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SalesReport implements ReportInterface
+class SalesReport implements ReportInterface, PortletInterface
 {
     /**
      * @var int
@@ -48,17 +49,18 @@ class SalesReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * @param RepositoryInterface     $storeRepository
-     * @param Connection              $db
+     * @param RepositoryInterface $storeRepository
+     * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param array                   $pimcoreClasses
+     * @param array $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
         array $pimcoreClasses
-    ) {
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -68,7 +70,24 @@ class SalesReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag)
+    {
+        return $this->getData($parameterBag);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPortletData(ParameterBag $parameterBag)
+    {
+        return $this->getData($parameterBag);
+    }
+
+    /**
+     * @param ParameterBag $parameterBag
+     * @return array
+     */
+    protected function getData(ParameterBag $parameterBag)
     {
         $groupBy = $parameterBag->get('groupBy', 'day');
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -123,9 +142,9 @@ class SalesReport implements ReportInterface
             $date = Carbon::createFromTimestamp($result['orderDate']);
 
             $data[] = [
-                'timestamp'      => $date->getTimestamp(),
-                'datetext'       => $date->format($dateFormatter),
-                'sales'          => $result['total'],
+                'timestamp' => $date->getTimestamp(),
+                'datetext' => $date->format($dateFormatter),
+                'sales' => $result['total'],
                 'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode())
             ];
         }

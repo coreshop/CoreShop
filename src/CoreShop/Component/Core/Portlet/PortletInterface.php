@@ -22,6 +22,6 @@ interface PortletInterface
      * @param ParameterBag $parameterBag
      * @return array
      */
-    public function getData(ParameterBag $parameterBag);
+    public function getPortletData(ParameterBag $parameterBag);
 
 }

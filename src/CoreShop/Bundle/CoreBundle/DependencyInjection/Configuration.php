@@ -63,6 +63,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('sale_item')->defaultValue('/bundles/coreshopcore/pimcore/js/store/item.js')->end()
                             ->scalarNode('country_item')->defaultValue('/bundles/coreshopcore/pimcore/js/address/country/item.js')->end()
                             ->scalarNode('report_abstract')->defaultValue('/bundles/coreshopcore/pimcore/js/report/abstract.js')->end()
+                            ->scalarNode('report_abstract_store')->defaultValue('/bundles/coreshopcore/pimcore/js/report/abstractStore.js')->end()
                             ->scalarNode('report_monitoring_abstract')->defaultValue('/bundles/coreshopcore/pimcore/js/report/monitoring/abstract.js')->end()
                             ->scalarNode('report_monitoring_disabled')->defaultValue('/bundles/coreshopcore/pimcore/js/report/monitoring/reports/disabledProducts.js')->end()
                             ->scalarNode('report_monitoring_empty_categories')->defaultValue('/bundles/coreshopcore/pimcore/js/report/monitoring/reports/emptyCategories.js')->end()

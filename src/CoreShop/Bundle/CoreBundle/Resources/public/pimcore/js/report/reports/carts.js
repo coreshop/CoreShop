@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.report.reports.carts');
-coreshop.report.reports.carts = Class.create(coreshop.report.abstract, {
+coreshop.report.reports.carts = Class.create(coreshop.report.abstractStore, {
 
     reportType: 'carts',
 

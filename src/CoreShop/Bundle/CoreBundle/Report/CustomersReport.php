@@ -55,7 +55,7 @@ class CustomersReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getData(ParameterBag $parameterBag) {
+    public function getReportData(ParameterBag $parameterBag) {
         $fromFilter = $parameterBag->get('from' , strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $from = Carbon::createFromTimestamp($fromFilter);

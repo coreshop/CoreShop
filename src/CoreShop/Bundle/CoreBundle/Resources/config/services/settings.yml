@@ -15,5 +15,7 @@ services:
 
     coreshop.admin_controller.portlets:
       class: CoreShop\Bundle\CoreBundle\Controller\PortletsController
+      arguments:
+        - '@coreshop.resource_controller.view_handler'
       calls:
         - [setContainer, ['@service_container']]

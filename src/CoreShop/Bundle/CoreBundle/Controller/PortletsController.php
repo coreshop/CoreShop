@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Portlet\PortletInterface;
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 
 class PortletsController extends AdminController
@@ -24,19 +24,19 @@ class PortletsController extends AdminController
      */
     public function getPortletDataAction(Request $request)
     {
-        $portlet = $request->get('portlet');
+        $portletName = $request->get('portlet');
         $portletRegistry = $this->get('coreshop.registry.portlets');
 
-        if (!$portletRegistry->has($portlet)) {
-            throw new \InvalidArgumentException(sprintf('Portlet %s not found', $portlet));
+        if (!$portletRegistry->has($portletName)) {
+            throw new \InvalidArgumentException(sprintf('Portlet %s not found', $portletName));
         }
 
         /** @var PortletInterface $portlet */
-        $report = $portletRegistry->get($portlet);
+        $portlet = $portletRegistry->get($portletName);
 
-        return $this->json([
+        return $this->viewHandler->handle([
             'success' => true,
-            'data'    => $report->getData($request->query)
+            'data' => $portlet->getPortletData($request->query)
         ]);
     }
 }

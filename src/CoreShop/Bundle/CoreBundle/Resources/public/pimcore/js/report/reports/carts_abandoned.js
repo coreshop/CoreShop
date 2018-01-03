@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.report.reports.carts_abandoned');
-coreshop.report.reports.carts_abandoned = Class.create(coreshop.report.abstract, {
+coreshop.report.reports.carts_abandoned = Class.create(coreshop.report.abstractStore, {
 
     reportType: 'carts_abandoned',
 

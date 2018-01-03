@@ -5,6 +5,12 @@ services:
       - 'CoreShop\Component\Core\Report\ReportInterface'
       - 'coreshop-reports'
 
+  coreshop.registry.portlets:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - 'CoreShop\Component\Core\Portlet\PortletInterface'
+      - 'coreshop-portlets'
+
   coreshop.report.products:
     class: CoreShop\Bundle\CoreBundle\Report\ProductsReport
     arguments:
@@ -46,6 +52,7 @@ services:
       - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: carts }
+      - { name: coreshop.portlet, type: order_cart }
 
   coreshop.report.carts_abandoned:
     class: CoreShop\Bundle\CoreBundle\Report\AbandonedCartsReport
@@ -65,6 +72,7 @@ services:
       - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: sales }
+      - { name: coreshop.portlet, type: sales }
 
   coreshop.report.carriers:
     class: CoreShop\Bundle\CoreBundle\Report\CarriersReport
