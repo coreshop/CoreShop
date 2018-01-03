@@ -2,6 +2,7 @@ imports:
     - { resource: "services/routing.yml" }
     - { resource: "services/controller.yml" }
     - { resource: "services/installer.yml" }
+    - { resource: "services/commands.yml" }
 
 parameters:
   coreshop.admin.route.base: /admin/coreshop
@@ -39,6 +40,8 @@ services:
 
   coreshop.admin_controller.resource_settings:
     class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
+    arguments:
+      - '@coreshop.resource_controller.view_handler'
     calls:
       - [setContainer, ['@service_container']]
 

@@ -110,7 +110,9 @@ class ResourceController extends AdminController
     {
         if ($this->metadata->hasParameter('permission')) {
             $permission =  sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
-            if ($this->getUser()->getPermission($permission)) {
+            $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
+
+            if ($user->getPermission($permission)) {
                 return;
             }
 

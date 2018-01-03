@@ -30,11 +30,12 @@ use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractSaleDetailController extends AbstractSaleController
 {
     /**
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return Response
      */
     public function getGridConfigurationAction()
     {
@@ -194,7 +195,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             }
         }
 
-        return $this->json(['success' => true, 'columns' => $defaultConfiguration]);
+        return $this->viewHandler->handle(['success' => true, 'columns' => $defaultConfiguration]);
 
     }
 
@@ -240,12 +241,12 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $jsonSales[] = $this->prepareSale($sale);
         }
 
-        return $this->json(['success' => true, 'data' => $jsonSales, 'count' => count($jsonSales), 'total' => $list->getTotalCount()]);
+        return $this->viewHandler->handle(['success' => true, 'data' => $jsonSales, 'count' => count($jsonSales), 'total' => $list->getTotalCount()]);
     }
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return Response
      */
     public function detailAction(Request $request)
     {
@@ -255,17 +256,17 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         $sale = $this->getSaleRepository()->find($saleId);
 
         if (!$sale instanceof SaleInterface) {
-            return $this->json(['success' => false, 'message' => "Sale with ID '$saleId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Sale with ID '$saleId' not found"]);
         }
 
         $jsonSale = $this->getDetails($sale);
 
-        return $this->json(['success' => true, 'sale' => $jsonSale]);
+        return $this->viewHandler->handle(['success' => true, 'sale' => $jsonSale]);
     }
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return Response
      */
     public function findSaleAction(Request $request)
     {
@@ -280,11 +281,11 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $sales = $list->load();
 
             if (count($sales) > 0) {
-                return $this->json(['success' => true, 'id' => $sales[0]->getId()]);
+                return $this->viewHandler->handle(['success' => true, 'id' => $sales[0]->getId()]);
             }
         }
 
-        return $this->json(['success' => false]);
+        return $this->viewHandler->handle(['success' => false]);
     }
 
     /**

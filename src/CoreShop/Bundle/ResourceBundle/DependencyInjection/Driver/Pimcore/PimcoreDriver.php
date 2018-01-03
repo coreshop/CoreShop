@@ -83,7 +83,8 @@ final class PimcoreDriver extends AbstractDriver
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
-                new Reference($metadata->getServiceId('factory'))
+                new Reference($metadata->getServiceId('factory')),
+                new Reference('coreshop.resource_controller.view_handler')
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 

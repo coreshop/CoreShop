@@ -38,19 +38,19 @@ class OrderInvoiceController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $itemsToReturn = [];
 
         if (count($order->getPayments()) === 0) {
-            return $this->json(['success' => false, 'message' => 'Can\'t create Invoice without valid order payment']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Can\'t create Invoice without valid order payment']);
         }
 
         try {
             $items = $this->getProcessableHelper()->getProcessableItems($order);
         } catch (\Exception $e) {
-            return $this->json(['success' => false, 'message' => $e->getMessage()]);
+            return $this->viewHandler->handle(['success' => false, 'message' => $e->getMessage()]);
         }
 
         foreach ($items as $item) {
@@ -70,7 +70,7 @@ class OrderInvoiceController extends PimcoreController
             }
         }
 
-        return $this->json(['success' => true, 'items' => $itemsToReturn]);
+        return $this->viewHandler->handle(['success' => true, 'items' => $itemsToReturn]);
     }
 
     /**
@@ -85,7 +85,7 @@ class OrderInvoiceController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         try {
@@ -94,9 +94,9 @@ class OrderInvoiceController extends PimcoreController
             $invoice = $this->getInvoiceFactory()->createNew();
             $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
 
-            return $this->json(['success' => true, 'invoiceId' => $invoice->getId()]);
+            return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);
         } catch (\Exception $ex) {
-            return $this->json(['success' => false, 'message' => $ex->getMessage()]);
+            return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
     }
 

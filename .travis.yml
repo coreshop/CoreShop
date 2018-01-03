@@ -3,69 +3,100 @@
 # Which could be removed at any time from them
 
 notifications:
-  email:
-    - travis-ci@coreshop.org
+    email:
+        - travis-ci@coreshop.org
 
 sudo: false
 language: php
 
-php:
-  - 7
-  - 7.1
-
 services:
-  - redis
+    - redis
 
 addons:
-  mariadb: '10.1'
-  hosts:
-    - pimcore-test.dev
+    mariadb: '10.1'
+    hosts:
+        - pimcore-test.dev
 
 matrix:
-  include:
-    - os: linux
-      sudo: required
-      php: 7
-    - os: linux
-      sudo: required
-      php: 7.1
+    include:
+        - os: linux
+          sudo: required
+          php: 7
+          env: PIMCORE_BRANCH="tags/v5.0.2"
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env: PIMCORE_BRANCH="tags/v5.0.2"
+
+        - os: linux
+          sudo: required
+          php: 7
+          env: PIMCORE_BRANCH="tags/v5.0.3"
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env: PIMCORE_BRANCH="tags/v5.0.3"
+
+        - os: linux
+          sudo: required
+          php: 7
+          env: PIMCORE_BRANCH="tags/v5.0.4"
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env: PIMCORE_BRANCH="tags/v5.0.4"
+
+        - os: linux
+          sudo: required
+          php: 7
+          env: PIMCORE_BRANCH="master"
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env: PIMCORE_BRANCH="master"
+
 
 env:
-  global:
-    - PIMCORE_ENVIRONMENT=test
-    - CORESHOP_TEST=1
-    - CORESHOP_MYSQL_HOST=127.0.0.1
-    - CORESHOP_MYSQL_DB=coreshop_phpunit
-    - CORESHOP_MYSQL_USER=root
+    global:
+        - PIMCORE_ENVIRONMENT=test
+        - CORESHOP_TEST=1
+        - CORESHOP_MYSQL_HOST=127.0.0.1
+        - CORESHOP_MYSQL_DB=coreshop_phpunit
+        - CORESHOP_MYSQL_USER=root
 cache:
     directories:
         - ~/.composer/cache/files
         - vendor
 
 before_install:
- - mkdir $TRAVIS_BUILD_DIR/../lib
- - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
- - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
- - rm -rf $TRAVIS_BUILD_DIR/{.[!.],}*
- - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
- - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gitlab-ci/php.ini
+    - mkdir $TRAVIS_BUILD_DIR/../lib
+    - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
+    - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
+    - rm -rf $TRAVIS_BUILD_DIR/{.[!.],}*
+    - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
+    - git checkout ${PIMCORE_BRANCH} $TRAVIS_BUILD_DIR
+    - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gitlab-ci/php.ini
 
 install:
-  # add config templates
-  - mkdir -p var/config
-  - cp .travis/system.template.php var/config/system.php
-  - cp app/config/parameters.example.yml app/config/parameters.yml
-  - composer install
+    # add config templates
+    - mkdir -p var/config
+    - cp .travis/system.template.php var/config/system.php
+    - cp app/config/parameters.example.yml app/config/parameters.yml
+    - composer install
 
-  # Add path to CoreShop
-  - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
+    # Add path to CoreShop
+    - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
 
-  - composer require doctrine/instantiator:1.0.5
-  # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
-  # this test is kinda stupid
-  - composer require coreshop/core-shop dev-master#$TRAVIS_COMMIT --dev
-  - composer require symfony/phpunit-bridge:^3.3
-  - composer update
+    - composer require doctrine/instantiator:1.0.5
+    # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
+    # this test is kinda stupid
+    - composer require coreshop/core-shop dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT --dev
+    - composer require symfony/phpunit-bridge:^3.3
+    - composer update
 
 script:
-  - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/ --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
+    - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/ --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests

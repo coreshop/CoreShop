@@ -65,7 +65,7 @@ EOT
         $outputStyle->writeln('<info>Installing CoreShop...</info>');
         $outputStyle->writeln($this->getCoreShopLogo());
 
-        $this->ensureDirectoryExistsAndIsWritable($this->getContainer()->getParameter('kernel.cache_dir'), $output);
+        $this->ensureDirectoryExistsAndIsWritable($this->kernel->getCacheDir(), $output);
 
         $errored = false;
         foreach ($this->commands as $step => $command) {

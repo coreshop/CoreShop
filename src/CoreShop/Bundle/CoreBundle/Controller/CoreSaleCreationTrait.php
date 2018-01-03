@@ -12,18 +12,23 @@
 
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 trait CoreSaleCreationTrait
 {
+    /**
+     * @var ViewHandlerInterface
+     */
+    protected $viewHandler;
+
     public function getCarrierDetailsAction(Request $request)
     {
         $productIds = $request->get("products");
@@ -45,19 +50,19 @@ trait CoreSaleCreationTrait
         $result = [];
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
         if (!$shippingAddress instanceof AddressInterface) {
-            return $this->json(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
         }
 
         if (!$invoiceAddress instanceof AddressInterface) {
-            return $this->json(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
         }
 
         if (!$store instanceof StoreInterface) {
-            return $this->json(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
         $this->get('coreshop.context.store.fixed')->setStore($store);
@@ -69,6 +74,7 @@ trait CoreSaleCreationTrait
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
         $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
         $carriers = $this->get('coreshop.carrier.discovery')->discoverCarriers($cart, $cart->getShippingAddress());
 
@@ -92,7 +98,7 @@ trait CoreSaleCreationTrait
 
         $cart->delete();
 
-        return $this->json(['success' => true, 'carriers' => $result]);
+        return $this->viewHandler->handle(['success' => true, 'carriers' => $result]);
     }
 
     protected function getTotalArray(CartInterface $cart)

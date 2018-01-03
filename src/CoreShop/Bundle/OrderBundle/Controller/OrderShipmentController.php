@@ -40,19 +40,20 @@ class OrderShipmentController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->json(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $itemsToReturn = [];
 
         if (count($order->getPayments()) === 0) {
-            return $this->json(['success' => false, 'message' => 'Can\'t create Shipment without valid order payment']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Can\'t create Shipment without valid order payment']);
         }
 
         try {
             $items = $this->getProcessableHelper()->getProcessableItems($order);
         } catch (\Exception $e) {
-            return $this->json(['success' => false, 'message' => $e->getMessage()]);
+            return $this->viewHandler->handle(['success' => false, 'message' => $e->getMessage()]);
         }
 
         foreach ($items as $item) {
@@ -72,7 +73,7 @@ class OrderShipmentController extends PimcoreController
             }
         }
 
-        return $this->json(['success' => true, 'items' => $itemsToReturn]);
+        return $this->viewHandler->handle(['success' => true, 'items' => $itemsToReturn]);
     }
 
     /**
@@ -94,7 +95,7 @@ class OrderShipmentController extends PimcoreController
             $order = $this->getOrderRepository()->find($resource['id']);
 
             if (!$order instanceof OrderInterface) {
-                return $this->json(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+                return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
             }
 
             try {
@@ -115,13 +116,13 @@ class OrderShipmentController extends PimcoreController
 
                 $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
 
-                return $this->json(['success' => true, 'shipmentId' => $shipment->getId()]);
+                return $this->viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
             } catch (\Exception $ex) {
-                return $this->json(['success' => false, 'message' => $ex->getMessage()]);
+                return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
             }
         }
 
-        return $this->json(['success' => false, 'message' => "Method not supported, use POST"]);
+        return $this->viewHandler->handle(['success' => false, 'message' => "Method not supported, use POST"]);
     }
 
     /**

@@ -1,0 +1,8 @@
+services:
+    coreshop.command.index:
+        class: CoreShop\Bundle\IndexBundle\Command\IndexCommand
+        arguments:
+          - '@coreshop.repository.index'
+          - '@coreshop.index.updater'
+        tags:
+          - { name: console.command, command: 'coreshop:index' }

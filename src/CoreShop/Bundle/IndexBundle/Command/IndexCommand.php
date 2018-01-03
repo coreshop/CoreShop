@@ -13,14 +13,39 @@
 namespace CoreShop\Bundle\IndexBundle\Command;
 
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class IndexCommand extends ContainerAwareCommand
+final class IndexCommand extends Command
 {
+    /**
+     * @var RepositoryInterface
+     */
+    protected $indexRepository;
+
+    /**
+     * @var IndexUpdaterServiceInterface
+     */
+    protected $indexUpdater;
+
+    /**
+     * @param RepositoryInterface $indexRepository
+     * @param IndexUpdaterServiceInterface $indexUpdater
+     */
+    public function __construct(RepositoryInterface $indexRepository, IndexUpdaterServiceInterface $indexUpdater)
+    {
+        $this->indexRepository = $indexRepository;
+        $this->indexUpdater = $indexUpdater;
+
+        parent::__construct();
+    }
+
     /**
      * configure command.
      */
@@ -41,7 +66,7 @@ final class IndexCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $indices = $this->getContainer()->get('coreshop.repository.index')->findAll();
+        $indices = $this->indexRepository->findAll();
         $classesToUpdate = [];
 
         /**
@@ -71,7 +96,7 @@ final class IndexCommand extends ContainerAwareCommand
             $progress->start();
 
             foreach ($list as $object) {
-                $this->getContainer()->get('coreshop.index.updater')->updateIndices($object);
+                $this->indexUpdater->updateIndices($object);
 
                 $progress->advance();
             }

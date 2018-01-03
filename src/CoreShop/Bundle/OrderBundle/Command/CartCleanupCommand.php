@@ -12,13 +12,29 @@
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CoreShop\Bundle\OrderBundle\Cart\Maintenance\CleanupInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class CartCleanupCommand extends ContainerAwareCommand
+final class CartCleanupCommand extends Command
 {
+    /**
+     * @var CleanupInterface
+     */
+    protected $cartCleanup;
+
+    /**
+     * @param CleanupInterface $cartCleanup
+     */
+    public function __construct(CleanupInterface $cartCleanup)
+    {
+        $this->cartCleanup = $cartCleanup;
+
+        parent::__construct();
+    }
+
     /**
      * configure command.
      */

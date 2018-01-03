@@ -22,12 +22,13 @@ use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractSaleCreationController extends AbstractSaleController
 {
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return Response
      */
     public function getCustomerDetailsAction(Request $request)
     {
@@ -37,15 +38,15 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
-        return $this->json(['success' => true, 'customer' => $this->getDataForObject($customer)]);
+        return $this->viewHandler->handle(['success' => true, 'customer' => $this->getDataForObject($customer)]);
     }
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return Response
      */
     public function getProductDetailsAction(Request $request)
     {
@@ -60,15 +61,15 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $customer = $this->get('coreshop.repository.customer')->find($request->get('customer'));
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->json(['success' => false, 'message' => "Customer with ID '" . $request->get('customer') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '" . $request->get('customer') . "' not found"]);
         }
 
         if (!$store instanceof StoreInterface) {
-            return $this->json(['success' => false, 'message' => "Store with ID '" . $request->get('store') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '" . $request->get('store') . "' not found"]);
         }
 
         if (!$currency instanceof CurrencyInterface) {
-            return $this->json(['success' => false, 'message' => "Currency with ID '" . $request->get('currency') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '" . $request->get('currency') . "' not found"]);
         }
 
         $this->get('coreshop.context.store.fixed')->setStore($store);
@@ -114,7 +115,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             }
         }
 
-        return $this->json(['success' => true, 'products' => $result]);
+        return $this->viewHandler->handle(['success' => true, 'products' => $result]);
     }
 
     public function getTotalsAction(Request $request)
@@ -138,19 +139,19 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $store = $this->get('coreshop.repository.store')->find($storeId);
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
         if (!$shippingAddress instanceof AddressInterface) {
-            return $this->json(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
         }
 
         if (!$invoiceAddress instanceof AddressInterface) {
-            return $this->json(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
         }
 
         if (!$store instanceof StoreInterface) {
-            return $this->json(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
         $this->get('coreshop.context.store.fixed')->setStore($store);
@@ -164,10 +165,10 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             $this->prepareCart($request, $cart);
         }
         catch (\InvalidArgumentException $ex) {
-            return $this->json(['success' => false, 'message' => $ex->getMessage()]);
+            return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
 
-        $cart->save();
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
         $totals = $this->getTotalArray($cart);
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
@@ -183,7 +184,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         $cart->delete();
 
-        return $this->json(['success' => true, 'summary' => $totals]);
+        return $this->viewHandler->handle(['success' => true, 'summary' => $totals]);
     }
 
     public function createSaleAction(Request $request)
@@ -210,23 +211,23 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $store = $this->get('coreshop.repository.store')->find($storeId);
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->json(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
         }
 
         if (!$shippingAddress instanceof AddressInterface) {
-            return $this->json(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
         }
 
         if (!$invoiceAddress instanceof AddressInterface) {
-            return $this->json(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
         }
 
         if (!$paymentModule instanceof PaymentProviderInterface) {
-            return $this->json(['success' => false, 'message' => "Payment Module with ID '$paymentModuleName' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Payment Module with ID '$paymentModuleName' not found"]);
         }
 
         if (!$store instanceof StoreInterface) {
-            return $this->json(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
         $this->get('coreshop.context.store.fixed')->setStore($store);
@@ -241,11 +242,11 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             $this->prepareCart($request, $cart);
         }
         catch (\InvalidArgumentException $ex) {
-            return $this->json(['success' => false, 'message' => $ex->getMessage()]);
+            return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
 
         $cart->setStore($store);
-        $cart->save();
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
         $sale = $this->factory->createNew();
         $sale = $this->getTransformer()->transform($cart, $sale);
@@ -254,7 +255,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         $cart->delete();
 
-        return $this->json(['success' => true, 'id' => $sale->getId()]);
+        return $this->viewHandler->handle(['success' => true, 'id' => $sale->getId()]);
     }
 
     protected function prepareCart(Request $request, CartInterface $cart)
@@ -317,7 +318,6 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $cart->setCurrency($currency);
         $cart->setCustomer($customer);
         $cart->setCurrency($currency);
-        $cart->save();
 
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];

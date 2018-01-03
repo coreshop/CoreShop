@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
@@ -42,6 +42,6 @@ class SettingsController extends AdminController
             'reports' => array_values($this->getParameter('coreshop.reports'))
         ];
 
-        return $this->json($settings);
+        return $this->viewHandler->handle($settings);
     }
 }

@@ -15,8 +15,6 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
-use Pimcore\Model\DataObject;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
@@ -36,13 +34,22 @@ class PimcoreController extends AdminController
      */
     protected $factory;
 
+
     /**
      * @param MetadataInterface $metadata
      * @param PimcoreRepositoryInterface $repository
      * @param FactoryInterface $factory
+     * @param ViewHandlerInterface $viewHandler
      */
-    public function __construct(MetadataInterface $metadata, PimcoreRepositoryInterface $repository, FactoryInterface $factory)
+    public function __construct(
+        MetadataInterface $metadata,
+        PimcoreRepositoryInterface $repository,
+        FactoryInterface $factory,
+        ViewHandlerInterface $viewHandler
+    )
     {
+        parent::__construct($viewHandler);
+
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
@@ -54,7 +61,9 @@ class PimcoreController extends AdminController
     protected function isGrantedOr403()
     {
         if ($this->getPermission()) {
-            if ($this->getUser()->getPermission($this->getPermission())) {
+            $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
+
+            if ($user->getPermission($this->getPermission())) {
                 return;
             }
 

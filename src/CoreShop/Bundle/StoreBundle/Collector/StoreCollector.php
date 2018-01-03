@@ -85,6 +85,14 @@ final class StoreCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
+    public function reset()
+    {
+        $this->data = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'coreshop.store_collector';
