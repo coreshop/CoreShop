@@ -19,9 +19,8 @@ use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
-use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Paginator\Paginator;
 
 class CategoryController extends FrontendController
@@ -30,6 +29,16 @@ class CategoryController extends FrontendController
      * @var array
      */
     protected $validSortProperties = ['name'];
+
+    /**
+     * @var string
+     */
+    protected $repositoryIdentifier = 'oo_id';
+
+    /**
+     * @var string
+     */
+    protected $requestIdentifier = 'category';
 
     /**
      * @param Request $request
@@ -87,10 +96,9 @@ class CategoryController extends FrontendController
 
         $perPage = $request->get('perPage', $defaultPerPage);
 
-        $category = $this->getRepository()->find($request->get('category'));
-
+        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier)]);
         if (!$category instanceof CategoryInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
         }
 
         if (!in_array($perPage, $allowedPerPage)) {
@@ -98,7 +106,7 @@ class CategoryController extends FrontendController
         }
 
         if (!in_array($this->getContext()->getStore()->getId(), array_values($category->getStores()))) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new NotFoundHttpException(sprintf(sprintf('store (id %s) not available in category', $this->getContext()->getStore()->getId())));
         }
 
         $paginator = null;

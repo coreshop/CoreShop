@@ -38,14 +38,14 @@ class ProductController extends FrontendController
      */
     public function detailAction(Request $request)
     {
-        $product = DataObject::getById($request->get('product'));
+        $product = $this->getProductByRequest($request);
 
         if (!$product instanceof ProductInterface) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('product not found');
         }
 
         if (!$product->isPublished() || $product->getActive() !== true) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('product not found');
         }
 
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
@@ -53,5 +53,14 @@ class ProductController extends FrontendController
         return $this->renderTemplate('CoreShopFrontendBundle:Product:detail.html.twig', [
             'product' => $product,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return DataObject
+     */
+    private function getProductByRequest(Request $request)
+    {
+        return $product = DataObject::getById($request->get('product'));
     }
 }
