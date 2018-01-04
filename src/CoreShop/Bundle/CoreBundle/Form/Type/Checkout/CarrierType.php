@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
@@ -37,11 +38,6 @@ final class CarrierType extends AbstractResourceType
     private $taxedShippingCalculator;
 
     /**
-     * @var CurrencyContextInterface
-     */
-    private $currencyContext;
-
-    /**
      * @var CurrencyConverterInterface
      */
     private $currencyConverter;
@@ -52,9 +48,9 @@ final class CarrierType extends AbstractResourceType
     private $moneyFormatter;
 
     /**
-     * @var StoreContextInterface
+     * @var ShopperContextInterface
      */
-    private $storeContext;
+    private $shopperContext;
 
     /**
      * @var TranslatorInterface
@@ -65,11 +61,10 @@ final class CarrierType extends AbstractResourceType
     public function __construct(
         $dataClass,
         array $validationGroups = [],
+        ShopperContextInterface $shopperContext,
         TaxedShippingCalculatorInterface $taxedShippingCalculator,
-        CurrencyContextInterface $currencyContext,
         MoneyFormatterInterface $moneyFormatter,
         CurrencyConverterInterface $currencyConverter,
-        StoreContextInterface $storeContext,
         TranslatorInterface $translator
     )
     {
@@ -77,10 +72,9 @@ final class CarrierType extends AbstractResourceType
 
         $this->taxedShippingCalculator = $taxedShippingCalculator;
         $this->translator = $translator;
-        $this->currencyContext = $currencyContext;
+        $this->shopperContext = $shopperContext;
         $this->moneyFormatter = $moneyFormatter;
         $this->currencyConverter = $currencyConverter;
-        $this->storeContext = $storeContext;
     }
 
     /**
@@ -105,8 +99,8 @@ final class CarrierType extends AbstractResourceType
                 'choice_label' => function ($carrier) use ($cart) {
                     if ($carrier instanceof CarrierInterface) {
                         $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
-                        $amount = $this->currencyConverter->convert($carrierPrice, $this->storeContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
-                        $formattedAmount = $this->moneyFormatter->format($amount, $this->currencyContext->getCurrency()->getIsoCode());
+                        $amount = $this->currencyConverter->convert($carrierPrice, $this->shopperContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
+                        $formattedAmount = $this->moneyFormatter->format($amount, $this->shopperContext->getCurrency()->getIsoCode(), $this->shopperContext->getLocaleCode());
                         $label = 'coreshop.ui.carrier.' . strtolower(str_replace(' ', '_', $carrier->getLabel()));
                         return sprintf('%s %s', $this->translator->trans($label), $formattedAmount);
                     }

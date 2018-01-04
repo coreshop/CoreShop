@@ -67,11 +67,10 @@ services:
     arguments:
       - '%coreshop.model.cart.class%'
       - '%coreshop.form.type.checkout.carrier.validation_groups%'
+      - '@coreshop.context.shopper'
       - '@coreshop.carrier.price_calculator.taxed'
-      - '@coreshop.context.currency'
       - '@coreshop.money_formatter'
       - '@coreshop.currency_converter'
-      - '@coreshop.context.store'
       - '@pimcore.translator'
 
     tags:
