@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -92,7 +91,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $list = $this->getList();
 
@@ -213,8 +212,8 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     private function normalizeOrderBy($orderBy)
     {
         $normalized = [
-            "key" => "",
-            "direction" => "ASC"
+            'key'       => '',
+            'direction' => 'ASC'
         ];
 
         if (is_array($orderBy)) {
@@ -225,7 +224,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
             if (array_key_exists('direction', $orderBy)) {
                 $normalized['direction'] = $orderBy['direction'];
             }
-        } else if (is_string($orderBy)) {
+        } elseif (is_string($orderBy)) {
             $exploded = explode(" ", $orderBy);
 
             $normalized['key'] = $exploded[0];

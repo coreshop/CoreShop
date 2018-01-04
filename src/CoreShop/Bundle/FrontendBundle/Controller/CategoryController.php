@@ -96,12 +96,10 @@ class CategoryController extends FrontendController
 
         $perPage = $request->get('perPage', $defaultPerPage);
 
-        $categoryList = $this->getRepository()->findBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier)], null, 1);
-        if (empty($categoryList) || !$categoryList[0] instanceof CategoryInterface) {
+        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier)]);
+        if (!$category instanceof CategoryInterface) {
             throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
         }
-
-        $category = $categoryList[0];
 
         if (!in_array($perPage, $allowedPerPage)) {
             $perPage = $defaultPerPage;
