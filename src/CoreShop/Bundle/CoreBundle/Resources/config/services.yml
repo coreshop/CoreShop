@@ -21,6 +21,7 @@ imports:
   - { resource: "services/inventory.yml" }
   - { resource: "services/handler.yml" }
   - { resource: "services/commands.yml" }
+  - { resource: "services/locale.yml" }
 
 services:
   coreshop.core.key_transformer:
