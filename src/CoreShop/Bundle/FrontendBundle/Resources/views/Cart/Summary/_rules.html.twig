@@ -1,3 +1,5 @@
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
 {% if cart.hasPriceRules %}
     {% for priceRule in cart.getPriceRuleItems %}
         <tr>
