@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Rule\Condition;
 
@@ -37,15 +37,23 @@ class NestedConditionChecker implements ConditionCheckerInterface
         foreach ($configuration['conditions'] as $condition) {
             $valid = $this->ruleConditionsValidationProcessor->isValid($subject, [$condition]);
 
-            if ($operator === 'and') {
+            if ('and' === $operator) {
                 if (!$valid) {
                     return false;
                 }
-            } elseif ($operator === 'or') {
+            } else if ('or' === $operator) {
                 if ($valid) {
                     return true;
                 }
+            } else if ('not' === $operator) {
+                 if (!$valid) {
+                    return true;
+                }
             }
+        }
+
+        if ('not' === $operator) {
+            return false;
         }
 
         return true;
