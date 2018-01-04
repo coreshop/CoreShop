@@ -61,6 +61,6 @@ class ProductController extends FrontendController
      */
     private function getProductByRequest(Request $request)
     {
-        return $product = DataObject::getById(2);
+        return $product = DataObject::getById($request->get('product'));
     }
 }
