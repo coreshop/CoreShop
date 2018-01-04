@@ -153,8 +153,8 @@ class CategoriesReport implements ReportInterface
         });
 
         foreach ($catSales as &$sale) {
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode());
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode());
+            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
+            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
         }
 
         return array_values($catSales);

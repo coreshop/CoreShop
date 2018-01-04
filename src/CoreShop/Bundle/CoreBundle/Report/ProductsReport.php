@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Doctrine\DBAL\Connection;
@@ -41,14 +42,9 @@ class ProductsReport implements ReportInterface
     private $db;
 
     /**
-     * @var TokenStorageUserResolver
+     * @var LocaleContextInterface
      */
-    private $tokenStorageUserResolver;
-
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
-    private $localeProvider;
+    private $localeContext;
 
     /**
      * @var MoneyFormatterInterface
@@ -67,27 +63,25 @@ class ProductsReport implements ReportInterface
 
     /**
      * @param RepositoryInterface $storeRepository
-     * @param Connection                         $db
-     * @param TokenStorageUserResolver           $tokenStorageUserResolver
-     * @param TranslationLocaleProviderInterface $localeProvider
-     * @param MoneyFormatterInterface            $moneyFormatter
-     * @param array                              $pimcoreClasses
-     * @param array                              $productImplementations
+     * @param Connection $db
+     * @param MoneyFormatterInterface $moneyFormatter
+     * @param LocaleContextInterface $localeContext
+     * @param array $pimcoreClasses
+     * @param array $productImplementations
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
-        TokenStorageUserResolver $tokenStorageUserResolver,
-        TranslationLocaleProviderInterface $localeProvider,
         MoneyFormatterInterface $moneyFormatter,
+        LocaleContextInterface $localeContext,
         array $pimcoreClasses,
         array $productImplementations
-    ) {
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
-        $this->tokenStorageUserResolver = $tokenStorageUserResolver;
-        $this->localeProvider = $localeProvider;
         $this->moneyFormatter = $moneyFormatter;
+        $this->localeContext = $localeContext;
         $this->pimcoreClasses = $pimcoreClasses;
         $this->productImplementations = $productImplementations;
     }
@@ -112,14 +106,14 @@ class ProductsReport implements ReportInterface
         $orderClassId = $this->pimcoreClasses['order'];
         $orderItemClassId = $this->pimcoreClasses['order_item'];
 
-        $localizedTableLanguage = $this->getLanguageForLocalizedTable();
+        $locale = $this->localeContext->getLocaleCode();
 
-        if(is_null($storeId)) {
+        if (is_null($storeId)) {
             return [];
         }
 
         $store = $this->storeRepository->find($storeId);
-        if(!$store instanceof StoreInterface) {
+        if (!$store instanceof StoreInterface) {
             return [];
         }
 
@@ -133,7 +127,7 @@ class ProductsReport implements ReportInterface
 
             $unionData = [];
             foreach ($objectClassArray as $id) {
-                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $localizedTableLanguage;
+                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
             }
 
             $union = join(' UNION ALL ', $unionData);
@@ -179,7 +173,7 @@ class ProductsReport implements ReportInterface
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
-                INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $localizedTableLanguage . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
+                INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
                 WHERE orders.store = $storeId AND $productTypeCondition AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
                 GROUP BY orderItems.objectId
@@ -192,47 +186,13 @@ class ProductsReport implements ReportInterface
         $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
-            $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode());
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode());
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode());
+            $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
+            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
         return array_values($productSales);
-    }
-
-    /**
-     * Get a valid frontend language which is also the user backend language.
-     * If current users language is not available in backend, use the first valid frontend language.
-     *
-     * @return bool|string
-     */
-    public function getLanguageForLocalizedTable()
-    {
-        $backendLanguage = null;
-        $localizedTableLanguage = null;
-
-        $frontendLanguages = $this->localeProvider->getDefinedLocalesCodes();
-        $user = $this->tokenStorageUserResolver->getUser();
-
-        if ($user instanceof User) {
-            $backendLanguage = $user->getLanguage();
-        }
-
-        // no frontend language defined. this should never happen.
-        if (empty($frontendLanguages)) {
-            return false;
-        }
-
-        if (!empty($backendLanguage) && in_array($backendLanguage, $frontendLanguages)) {
-            $localizedTableLanguage = strtolower($backendLanguage);
-        } else {
-            $first = reset($frontendLanguages);
-            $localizedTableLanguage = strtolower($first);
-        }
-
-        return $localizedTableLanguage;
-
     }
 
     /**

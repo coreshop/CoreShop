@@ -16,9 +16,8 @@ services:
     arguments:
       - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
-      - '@pimcore_admin.security.token_storage_user_resolver'
-      - '@coreshop.translation_locale_provider.pimcore'
       - '@coreshop.money_formatter'
+      - '@coreshop.context.locale'
       - '%coreshop.pimcore_class_ids%'
       - '%coreshop.implementations.coreshop.product%'
     tags:
@@ -40,6 +39,7 @@ services:
     arguments:
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
+      - '@coreshop.context.locale'
       - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: customers }
@@ -69,6 +69,7 @@ services:
       - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
+      - '@coreshop.context.locale'
       - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: sales }
@@ -100,6 +101,7 @@ services:
       - '@coreshop.repository.store'
       - '@doctrine.dbal.default_connection'
       - '@coreshop.money_formatter'
+      - '@coreshop.context.locale'
       - '%coreshop.pimcore_class_ids%'
     tags:
       - { name: coreshop.report, type: vouchers }

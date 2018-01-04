@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -43,25 +44,34 @@ class VouchersReport implements ReportInterface
     private $moneyFormatter;
 
     /**
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
+
+    /**
      * @var array
      */
     private $pimcoreClasses;
 
     /**
-     * @param RepositoryInterface     $storeRepository
-     * @param Connection              $db
+     * @param RepositoryInterface $storeRepository
+     * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param array                   $pimcoreClasses
+     * @param LocaleContextInterface $localeContext
+     * @param array $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
+        LocaleContextInterface $localeContext,
         array $pimcoreClasses
-    ) {
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
+        $this->localeContext = $localeContext;
         $this->pimcoreClasses = $pimcoreClasses;
     }
 
@@ -115,9 +125,9 @@ class VouchersReport implements ReportInterface
             $date = Carbon::createFromTimestamp($result['orderDate']);
             $data[] = [
                 'usedDate' => $date->getTimestamp(),
-                'code'     => $result['code'],
-                'rule'     => !empty($result['rule']) ? $result['rule'] : '--',
-                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode())
+                'code' => $result['code'],
+                'rule' => !empty($result['rule']) ? $result['rule'] : '--',
+                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode())
             ];
         }
 

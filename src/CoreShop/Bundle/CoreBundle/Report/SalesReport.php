@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -44,6 +45,11 @@ class SalesReport implements ReportInterface, PortletInterface
     private $moneyFormatter;
 
     /**
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
+
+    /**
      * @var array
      */
     private $pimcoreClasses;
@@ -52,18 +58,21 @@ class SalesReport implements ReportInterface, PortletInterface
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
+     * @param LocaleContextInterface $localeContext
      * @param array $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
+        LocaleContextInterface $localeContext,
         array $pimcoreClasses
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
+        $this->localeContext = $localeContext;
         $this->pimcoreClasses = $pimcoreClasses;
     }
 
@@ -145,7 +154,7 @@ class SalesReport implements ReportInterface, PortletInterface
                 'timestamp' => $date->getTimestamp(),
                 'datetext' => $date->format($dateFormatter),
                 'sales' => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode())
+                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode())
             ];
         }
 
