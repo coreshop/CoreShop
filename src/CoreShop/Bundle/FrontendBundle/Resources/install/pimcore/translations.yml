@@ -203,6 +203,24 @@ translations:
           en: 'Item added'
           de: 'Produkt hinzugefügt'
 
+  coreshop.ui.cart_updated:
+      languages:
+          de_CH: 'Warenkorb wurde aktualisiert'
+          en: 'Cart has been updated'
+          de: 'Warenkorb wurde aktiviert'
+
+  coreshop.ui.cart_update_error:
+      languages:
+          de_CH: 'Fehler beim aktualisieren des Warenkorbs'
+          en: 'Error updating the cart'
+          de: 'Fehler beim aktualisieren des Warenkorbs'
+
+  coreshop.ui.update_cart:
+      languages:
+          de_CH: 'Warenkorb aktualisieren'
+          en: 'Update Cart'
+          de: 'Warenkorb aktualisieren'
+
   coreshop.ui.items:
       languages:
           de_CH: 'Produkte'

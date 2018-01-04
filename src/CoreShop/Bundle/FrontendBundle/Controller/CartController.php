@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
@@ -45,10 +46,37 @@ class CartController extends FrontendController
      */
     public function widgetSummaryAction(Request $request)
     {
+        $form = $this->createForm(CartType::class, $this->getCart());
+
         return $this->renderTemplate('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
             'cart' => $this->getCart(),
+            'form' => $form->createView(),
             'editAllowed' => true
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateCartAction(Request $request)
+    {
+        $form = $this->createForm(CartType::class, $this->getCart());
+        $form->handleRequest($request);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
+            $cart = $form->getData();
+
+            $this->get('coreshop.cart.manager')->persistCart($cart);
+
+            $this->addFlash('success', 'coreshop.ui.cart_updated');
+
+            return $this->redirectToRoute('coreshop_cart_summary');
+        }
+
+        $this->addFlash('error', 'coreshop.ui.cart_update_error');
+
+        return $this->redirectToRoute('coreshop_cart_summary');
     }
 
     /**

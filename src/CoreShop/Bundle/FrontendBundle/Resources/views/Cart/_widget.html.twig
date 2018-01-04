@@ -1,10 +1,8 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 
-
 <div id="cart" class="btn-group btn-block">
     <button type="button" data-toggle="dropdown" class="btn btn-block btn-lg dropdown-toggle">
         <i class="fa fa-shopping-cart"></i>
-        <!-- TODO: Currency Format and Conversion!!!! -->
         <span id="cart-overview-total">
             <span class="cart-badge">{% if cart.getItems() %} {{ cart.getItems()|length }} {% else %} 0 {% endif %}</span> {{ 'coreshop.ui.items'|trans }} -
             <span class="cart-total"> {{ currency.convertAndFormat(cart.getTotal) }}</span></span>

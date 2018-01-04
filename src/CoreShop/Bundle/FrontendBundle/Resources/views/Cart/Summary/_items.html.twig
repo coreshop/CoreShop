@@ -1,0 +1,44 @@
+<div class="table-responsive shopping-cart-table">
+    {{ form_start(form, {'action': path('coreshop_cart_update')}) }}
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td class="text-center">
+                    {{ 'coreshop.ui.image'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.product_details'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.quantity'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.price'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.total'|trans }}
+                </td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in cart.getItems %}
+                {% include '@CoreShopFrontend/Cart/Summary/_item.html.twig' with {'item': item, 'form': form.items[loop.index0]} %}
+            {% endfor %}
+            <tr>
+                <td colspan="6" class="text-right">
+                    {% include '@CoreShopFrontend/Cart/Summary/_update.html.twig' %}
+                </td>
+            </tr>
+
+            {% include '@CoreShopFrontend/Cart/Summary/_rules.html.twig' %}
+
+            </tbody>
+            <tfoot>
+            {% include '@CoreShopFrontend/Cart/Summary/_summary.html.twig' %}
+            </tfoot>
+        </table>
+
+        {{ form_row(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+</div>
