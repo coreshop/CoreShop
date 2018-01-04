@@ -11,18 +11,14 @@
  */
 
 pimcore.registerNS('coreshop.product.pricerule.conditions.categories');
-
 coreshop.product.pricerule.conditions.categories = Class.create(coreshop.rules.conditions.abstract, {
 
     type: 'categories',
-
     categories: null,
 
     getForm: function () {
         this.categories = new coreshop.object.objectMultihref(this.data ? this.data.categories : [], {
-            classes: [{
-                classes: coreshop.implementations['coreshop.category']
-            }],
+            classes: this.getFormattedImplementationsClasses(coreshop.implementations['coreshop.category']),
             name: 'categories',
             title: '',
             height: 200,

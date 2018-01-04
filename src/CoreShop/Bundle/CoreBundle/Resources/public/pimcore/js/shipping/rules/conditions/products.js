@@ -12,15 +12,13 @@
 
 pimcore.registerNS('coreshop.shippingrule.conditions.products');
 coreshop.shippingrule.conditions.products = Class.create(coreshop.rules.conditions.abstract, {
-    type: 'products',
 
+    type: 'products',
     products: null,
 
     getForm: function () {
         this.products = new coreshop.object.objectMultihref(this.data ? this.data.products : [], {
-            classes: [{
-                classes: coreshop.implementations['coreshop.product']
-            }],
+            classes: this.getFormattedImplementationsClasses(coreshop.implementations['coreshop.product']),
             name: 'products',
             title: '',
             height: 200,

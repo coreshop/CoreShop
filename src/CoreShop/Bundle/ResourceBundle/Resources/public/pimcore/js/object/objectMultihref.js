@@ -212,6 +212,7 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
 
     openSearchEditor: function () {
         var allowedClasses;
+        console.log(this.fieldConfig.classes);
         if (this.fieldConfig.classes != null && this.fieldConfig.classes.length > 0) {
             allowedClasses = [];
             for (var i = 0; i < this.fieldConfig.classes.length; i++) {

@@ -12,13 +12,13 @@
 
 pimcore.registerNS('coreshop.shippingrule.conditions.customerGroups');
 coreshop.shippingrule.conditions.customerGroups = Class.create(coreshop.rules.conditions.abstract, {
-    type: 'customerGroups',
 
+    type: 'customerGroups',
     customerGroups: null,
 
     getForm: function () {
         this.customerGroups = new coreshop.object.objectMultihref(this.data ? this.data.customerGroups : [], {
-            classes: coreshop.implementations['coreshop.customer_group'],
+            classes: this.getFormattedImplementationsClasses(coreshop.implementations['coreshop.customer_group']),
             name: 'customerGroups',
             title: '',
             height: 200,

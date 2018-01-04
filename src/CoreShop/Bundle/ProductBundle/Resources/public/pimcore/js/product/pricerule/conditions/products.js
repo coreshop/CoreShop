@@ -12,15 +12,13 @@
 
 pimcore.registerNS('coreshop.product.pricerule.conditions.products');
 coreshop.product.pricerule.conditions.products = Class.create(coreshop.rules.conditions.abstract, {
-    type: 'products',
 
+    type: 'products',
     products: null,
 
     getForm: function () {
         this.products = new coreshop.object.objectMultihref(this.data ? this.data.products : [], {
-            classes: [{
-                classes: coreshop.implementations['coreshop.product']
-            }],
+            classes: this.getFormattedImplementationsClasses(coreshop.implementations['coreshop.product']),
             name: 'products',
             title: '',
             height: 200,
@@ -38,6 +36,9 @@ coreshop.product.pricerule.conditions.products = Class.create(coreshop.rules.con
             ]
         });
 
+        console.log([{
+                classes: coreshop.implementations['coreshop.product']
+            }]);
         return this.form;
     },
 
