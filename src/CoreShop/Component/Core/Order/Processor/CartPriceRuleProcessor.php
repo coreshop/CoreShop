@@ -49,6 +49,9 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
+        $cart->setDiscount(0, false);
+        $cart->setDiscount(0, true);
+
         $priceRuleItems = $cart->getPriceRuleItems();
 
         if (!$priceRuleItems instanceof Fieldcollection) {
@@ -62,7 +65,12 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
 
             $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
 
-            $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $item->getCartPriceRule(), $voucherCode);
+            $rule = $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $item->getCartPriceRule(), $voucherCode);
+
+            if ($rule instanceof ProposalCartPriceRuleItemInterface) {
+                $cart->setDiscount($cart->getDiscount(false) + $rule->getDiscount(false), false);
+                $cart->setDiscount($cart->getDiscount(true) + $rule->getDiscount(true), true);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule\Action;
 
@@ -71,6 +71,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     {
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
+        $cartAmount = $cart->getSubtotal($withTax) - $cart->getDiscount($withTax);
 
         if ($withTax) {
             $subTotalTe = $cart->getSubtotal(false);
@@ -83,6 +84,16 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             }
         }
 
-        return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+    }
+
+    /**
+     * @param $cartAmount
+     * @param $ruleAmount
+     * @return int
+     */
+    protected function getApplicableAmount($cartAmount, $ruleAmount)
+    {
+        return min($cartAmount, $ruleAmount);
     }
 }

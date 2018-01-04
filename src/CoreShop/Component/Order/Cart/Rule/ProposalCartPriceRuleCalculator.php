@@ -80,6 +80,14 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
             }
         }
 
+        if (0 === $discountGross) {
+            if ($existingPriceRule) {
+                $cart->removePriceRule($cartPriceRule);
+            }
+
+            return false;
+        }
+
         /**
          * @var ProposalCartPriceRuleItemInterface
          */
@@ -99,6 +107,6 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
             $cart->addPriceRule($priceRuleItem);
         }
 
-        return true;
+        return $priceRuleItem;
     }
 }
