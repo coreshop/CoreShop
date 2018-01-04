@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
 use CoreShop\Bundle\ProductBundle\Controller\ProductPriceRuleController;
-use CoreShop\Bundle\ProductBundle\Controller\ProductSpecificPriceRuleController;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductSpecificPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
@@ -109,7 +108,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(ProductSpecificPriceRule::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductSpecificPriceRuleInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ProductSpecificPriceRuleController::class)->cannotBeEmpty()->end()
+                                        //->scalarNode('admin_controller')->defaultValue(ProductSpecificPriceRuleController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductSpecificPriceRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ProductSpecificPriceRuleType::class)->cannotBeEmpty()->end()

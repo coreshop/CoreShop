@@ -29,9 +29,11 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
     dirty: false,
 
     initialize: function (data, fieldConfig) {
-        this.data = data;
+        this.data = data.rules;
         this.fieldConfig = fieldConfig;
         this.panels = [];
+        this.conditions = data.conditions;
+        this.actions = data.actions;
     },
 
     getGridColumnConfig: function (field) {
@@ -87,18 +89,7 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
                 ]
             });
 
-            Ext.Ajax.request({
-                url: '/admin/coreshop/product_specific_price_rules/get-config',
-                method: 'GET',
-                success: function (result) {
-                    var config = Ext.decode(result.responseText);
-
-                    this.conditions = config.conditions;
-                    this.actions = config.actions;
-
-                    this.showPriceRules();
-                }.bind(this)
-            });
+            this.showPriceRules();
         }
 
         return this.layout;

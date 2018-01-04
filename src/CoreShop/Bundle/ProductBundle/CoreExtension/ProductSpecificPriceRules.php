@@ -76,6 +76,22 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
+     * @return array
+     */
+    private function getConfigActions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.actions');
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfigConditions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.conditions');
+    }
+
+    /**
      * @param $object
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -96,6 +112,12 @@ class ProductSpecificPriceRules extends Data
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
+        $data = [
+            'actions' => array_keys($this->getConfigActions()),
+            'conditions' => array_keys($this->getConfigConditions()),
+            'rules' => []
+        ];
+
         if ($object instanceof ProductInterface) {
             $prices = $this->load($object, $params);
 
@@ -105,12 +127,10 @@ class ProductSpecificPriceRules extends Data
 
             $serializedData = $this->getSerializer()->serialize($prices, 'json', $context);
 
-            $data = json_decode($serializedData, true);
-
-            return $data;
+            $data['rules'] = json_decode($serializedData, true);
         }
 
-        return [];
+        return $data;
     }
 
     /**
