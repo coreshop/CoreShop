@@ -33,10 +33,10 @@ final class FixedLocaleContext implements LocaleContextInterface
      */
     public function getLocaleCode()
     {
-        if (null === $this->locale) {
-            throw new LocaleNotFoundException('Fixed Locale not set');
+        if ($this->locale) {
+            return $this->locale;
         }
 
-        return $this->locale;
+        throw new LocaleNotFoundException();
     }
 }
