@@ -18,6 +18,8 @@ use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderIn
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Pimcore\Model\User;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class PimcoreAdminLocaleContext implements LocaleContextInterface
 {
@@ -37,19 +39,27 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
     private $localeProvider;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
      * @param PimcoreContextResolver $pimcoreContextResolver
      * @param TokenStorageUserResolver $tokenStorageUserResolver
      * @param TranslationLocaleProviderInterface $localeProvider
+     * @param RequestStack $requestStack
      */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         TokenStorageUserResolver $tokenStorageUserResolver,
-        TranslationLocaleProviderInterface $localeProvider
+        TranslationLocaleProviderInterface $localeProvider,
+        RequestStack $requestStack
     )
     {
         $this->pimcoreContextResolver = $pimcoreContextResolver;
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
         $this->localeProvider = $localeProvider;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -57,7 +67,13 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
      */
     public function getLocaleCode()
     {
-        if ($this->pimcoreContextResolver->getPimcoreContext() !== PimcoreContextResolver::CONTEXT_ADMIN) {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$request instanceof Request) {
+            throw new LocaleNotFoundException('No Request in RequestStack, cannot determine Pimcore Context');
+        }
+
+        if ($this->pimcoreContextResolver->getPimcoreContext($request) !== PimcoreContextResolver::CONTEXT_ADMIN) {
             throw new LocaleNotFoundException('Not in Admin Mode');
         }
 
