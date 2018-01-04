@@ -29,7 +29,7 @@ abstract class AbstractNestedConfigurationType extends AbstractType
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
-                'choices' => ['and' => 'and', 'or' => 'or'],
+                'choices' => ['and' => 'and', 'or' => 'or', 'not' => 'not'],
             ])
         ;
     }

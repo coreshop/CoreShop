@@ -114,6 +114,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('rule_action')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/action.js')->end()
                             ->scalarNode('rule_action_abstract')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/actions/abstract.js')->end()
                             ->scalarNode('rule_condition_abstract')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/conditions/abstract.js')->end()
+                            ->scalarNode('rule_condition_nested')->defaultValue('/bundles/coreshoprule/pimcore/js/rules/conditions/nested.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')

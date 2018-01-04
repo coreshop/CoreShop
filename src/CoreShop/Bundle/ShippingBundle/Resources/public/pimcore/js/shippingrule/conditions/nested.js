@@ -12,63 +12,6 @@
 
 pimcore.registerNS('coreshop.shippingrule.conditions.nested');
 
-coreshop.shippingrule.conditions.nested = Class.create(coreshop.rules.conditions.abstract, {
+coreshop.shippingrule.conditions.nested = Class.create(coreshop.rules.conditions.nested, {
 
-    type: 'nested',
-
-    operatorCombo: null,
-    conditions: null,
-
-    getForm: function () {
-        var me = this;
-
-        this.conditions = new this.parent.__proto__.constructor(this.parent.conditions);
-
-        var layout = this.conditions.getLayout();
-
-        // add saved conditions
-        if (this.data && this.data.conditions) {
-            Ext.each(this.data.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
-            }.bind(this));
-        }
-
-
-        this.form = new Ext.form.Panel({
-            items: [
-                layout
-            ]
-        });
-
-        return this.form;
-    },
-
-    getTopBarItems: function () {
-        if (!this.operatorCombo) {
-            this.operatorCombo = Ext.create(
-                {
-                    xtype: 'combo',
-                    fieldLabel: t('coreshop_condition_conditions_operator'),
-                    name: 'operator',
-                    width: 500,
-                    store: [['and', t('coreshop_condition_conditions_operator_and')], ['or', t('coreshop_condition_conditions_operator_or')]],
-                    triggerAction: 'all',
-                    typeAhead: false,
-                    editable: false,
-                    forceSelection: true,
-                    queryMode: 'local',
-                    value: this.data ? this.data.operator : 'and'
-                }
-            );
-        }
-
-        return ['-', this.operatorCombo];
-    },
-
-    getValues: function () {
-        return {
-            operator: this.operatorCombo.getValue(),
-            conditions: this.conditions.getConditionsData()
-        };
-    }
 });
