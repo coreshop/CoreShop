@@ -36,9 +36,6 @@ coreshop.product.pricerule.conditions.products = Class.create(coreshop.rules.con
             ]
         });
 
-        console.log([{
-                classes: coreshop.implementations['coreshop.product']
-            }]);
         return this.form;
     },
 
