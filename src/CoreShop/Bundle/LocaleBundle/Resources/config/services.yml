@@ -9,9 +9,9 @@ services:
     class: CoreShop\Component\Locale\Context\PimcoreLocaleContext
     arguments: ['@pimcore.locale']
     tags:
-      - { name: coreshop.context.locale }
+      - { name: coreshop.context.locale, priority: 100 }
 
   coreshop.context.locale.fixed:
     class: CoreShop\Component\Locale\Context\FixedLocaleContext
     tags:
-        - { name: coreshop.context.locale }
+        - { name: coreshop.context.locale, priority: 200 }
