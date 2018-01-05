@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Repository\ProductRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
@@ -43,7 +44,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration)
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
         $product = $this->productRepository->find($configuration['product']);
 
@@ -61,7 +62,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration)
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
         $product = $this->productRepository->find($configuration['product']);
 

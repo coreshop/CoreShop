@@ -16,6 +16,7 @@ use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
@@ -50,15 +51,25 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration)
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
-        return $this->getDiscount($cart, false, $configuration) > 0;
+        $discountNet = $this->getDiscount($cart, false, $configuration);
+        $discountGross = $this->getDiscount($cart, true, $configuration);
+
+        if ($discountGross <= 0) {
+            return false;
+        }
+
+        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(false) + $discountNet, false);
+        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(true) + $discountGross, true);
+
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration)
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
         return true;
     }
@@ -66,7 +77,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(CartInterface $cart, $withTax, array $configuration)
+    protected function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);

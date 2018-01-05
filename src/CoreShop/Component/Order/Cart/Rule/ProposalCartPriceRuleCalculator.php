@@ -66,28 +66,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
             }
         }
 
-        $discountNet = 0;
-        $discountGross = 0;
         $result = false;
-
-        foreach ($cartPriceRule->getActions() as $action) {
-            if ($action instanceof ActionInterface) {
-                $actionCommand = $this->actionServiceRegistry->get($action->getType());
-
-                $result |= $actionCommand->applyRule($cart, $action->getConfiguration());
-
-                $discountNet += $actionCommand->getDiscount($cart, false, $action->getConfiguration());
-                $discountGross += $actionCommand->getDiscount($cart, true, $action->getConfiguration());
-            }
-        }
-
-        if (!$result) {
-            if ($existingPriceRule) {
-                $cart->removePriceRule($cartPriceRule);
-            }
-
-            return false;
-        }
 
         /**
          * @var ProposalCartPriceRuleItemInterface
@@ -97,11 +76,28 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
         }
 
         $priceRuleItem->setCartPriceRule($cartPriceRule);
-        $priceRuleItem->setDiscount($discountNet, false);
-        $priceRuleItem->setDiscount($discountGross, true);
 
         if ($voucherCode) {
             $priceRuleItem->setVoucherCode($voucherCode->getCode());
+        }
+        $priceRuleItem->setDiscount(0, true);
+        $priceRuleItem->setDiscount(0, false);
+
+
+        foreach ($cartPriceRule->getActions() as $action) {
+            if ($action instanceof ActionInterface) {
+                $actionCommand = $this->actionServiceRegistry->get($action->getType());
+
+                $result |= $actionCommand->applyRule($cart, $action->getConfiguration(), $priceRuleItem);
+            }
+        }
+
+        if (!$result) {
+            if ($existingPriceRule) {
+                $cart->removePriceRule($cartPriceRule);
+            }
+
+            return false;
         }
 
         if (!$existingPriceRule) {

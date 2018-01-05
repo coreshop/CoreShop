@@ -8,27 +8,38 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration)
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
-        return $this->getDiscount($cart, false, $configuration) > 0;
+        $discountNet = $this->getDiscount($cart, false, $configuration);
+        $discountGross = $this->getDiscount($cart, true, $configuration);
+
+        if ($discountGross <= 0) {
+            return false;
+        }
+
+        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(false) + $discountNet, false);
+        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(true) + $discountGross, true);
+
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration)
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
         return true;
     }
@@ -36,9 +47,9 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(CartInterface $cart, $withTax, array $configuration)
+    protected function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
-        $amount = (int) round(($configuration['percent'] / 100) * $cart->getSubtotal($withTax));
+        $amount = (int)round(($configuration['percent'] / 100) * $cart->getSubtotal($withTax));
         $cartAmount = $cart->getSubtotal($withTax) - $cart->getDiscount($withTax);
 
         return $this->getApplicableAmount($cartAmount, $amount);

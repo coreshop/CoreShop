@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Order\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 interface CartPriceRuleActionProcessorInterface
 {
@@ -21,29 +22,20 @@ interface CartPriceRuleActionProcessorInterface
      *
      * @param CartInterface $cart
      * @param $configuration
+     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
      *
      * @return bool
      */
-    public function applyRule(CartInterface $cart, array $configuration);
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem);
 
     /**
      * Remove Rule from Cart.
      *
      * @param CartInterface $cart
      * @param $configuration
+     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
      *
      * @return bool
      */
-    public function unApplyRule(CartInterface $cart, array $configuration);
-
-    /**
-     * Calculate discount.
-     *
-     * @param CartInterface $cart
-     * @param bool $withTax
-     * @param $configuration
-     *
-     * @return int
-     */
-    public function getDiscount(CartInterface $cart, $withTax, array $configuration);
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem);
 }

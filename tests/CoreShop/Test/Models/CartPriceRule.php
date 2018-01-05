@@ -109,14 +109,6 @@ class CartPriceRule extends RuleTest
     }
 
     /**
-     * @return CartDiscountCalculatorInterface
-     */
-    protected function getPriceCalculator()
-    {
-        return $this->get('coreshop.cart.discount_calculator.price_rules');
-    }
-
-    /**
      * @param $active bool
      * @return CartPriceRuleInterface
      */
@@ -349,9 +341,10 @@ class CartPriceRule extends RuleTest
         $this->getEntityManager()->flush();
 
         $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($cart, $rule, $voucher));
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
-        $discount = $this->getPriceCalculator()->getDiscount($cart, false);
-        $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
+        $discount = $cart->getDiscount(false);
+        $discountWt = $cart->getDiscount(true);
 
         $this->assertEquals(500, $discount);
         $this->assertEquals(600, $discountWt);
@@ -393,9 +386,10 @@ class CartPriceRule extends RuleTest
         $this->getEntityManager()->flush();
 
         $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($cart, $rule, $voucher));
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
-        $discount = $this->getPriceCalculator()->getDiscount($cart, false);
-        $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
+        $discount = $cart->getDiscount(false);
+        $discountWt = $cart->getDiscount(true);
 
         $this->assertEquals(2400, $discount);
         $this->assertEquals(2880, $discountWt);
@@ -445,8 +439,8 @@ class CartPriceRule extends RuleTest
 
         $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($cart, $rule, $voucher));
 
-        $discount = $this->getPriceCalculator()->getDiscount($cart, false);
-        $discountWt = $this->getPriceCalculator()->getDiscount($cart, true);
+        $discount = $cart->getDiscount(false);
+        $discountWt = $cart->getDiscount(true);
 
         $this->get('coreshop.cart.manager')->persistCart($cart);
 

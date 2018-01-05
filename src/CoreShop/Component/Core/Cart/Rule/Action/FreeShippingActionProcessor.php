@@ -14,13 +14,14 @@ namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration)
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
         return true;
     }
@@ -28,16 +29,8 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration)
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(CartInterface $cart, $withTax, array $configuration)
-    {
-        return 0;
     }
 }
