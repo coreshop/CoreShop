@@ -16,6 +16,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
@@ -24,7 +25,7 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ShippingCheckoutStep implements CheckoutStepInterface
+class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface
 {
     /**
      * @var ShippableCarriersDiscoveryInterface
@@ -79,6 +80,14 @@ class ShippingCheckoutStep implements CheckoutStepInterface
     public function getIdentifier()
     {
         return 'shipping';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRequired(CartInterface $cart)
+    {
+        return $cart->hasShippableItems();
     }
 
     /**

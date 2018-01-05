@@ -14,9 +14,10 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
-use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
+use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,16 +26,16 @@ use Webmozart\Assert\Assert;
 class CheckoutController extends FrontendController
 {
     /**
-     * @var CheckoutManagerInterface
+     * @var CheckoutManagerFactoryInterface
      */
-    protected $checkoutManager;
+    protected $checkoutManagerFactory;
 
     /**
-     * @param CheckoutManagerInterface $checkoutManager
+     * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
      */
-    public function __construct(CheckoutManagerInterface $checkoutManager)
+    public function __construct(CheckoutManagerFactoryInterface $checkoutManagerFactory)
     {
-        $this->checkoutManager = $checkoutManager;
+        $this->checkoutManagerFactory = $checkoutManagerFactory;
     }
 
     /**
@@ -44,11 +45,13 @@ class CheckoutController extends FrontendController
      */
     public function processAction(Request $request)
     {
+        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+        
         /**
          * @var CheckoutStepInterface
          */
         $stepIdentifier = $request->get('stepIdentifier');
-        $step = $this->checkoutManager->getStep($stepIdentifier);
+        $step = $checkoutManager->getStep($stepIdentifier);
         $dataForStep = [];
         $cart = $this->getCart();
 
@@ -57,14 +60,14 @@ class CheckoutController extends FrontendController
         }
 
         //Check all previous steps if they are valid, if not, redirect back
-        foreach ($this->checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
+        foreach ($checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
             if (!$previousStep->validate($cart)) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
             }
         }
 
         if ($step->validate($cart) && $step->doAutoForward($cart)) {
-            $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
+            $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
             if ($nextStep) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
@@ -74,7 +77,7 @@ class CheckoutController extends FrontendController
         if ($request->isMethod('POST')) {
             try {
                 if ($step->commitStep($cart, $request)) {
-                    $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
+                    $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
                     if ($nextStep) {
                         return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
@@ -89,12 +92,12 @@ class CheckoutController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $step);
 
-        $dataForStep = array_merge($dataForStep, $this->checkoutManager->prepareStep($step, $cart, $request));
+        $dataForStep = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
         $dataForStep = array_merge(is_array($dataForStep) ? $dataForStep : [], [
             'cart' => $cart,
-            'checkoutSteps' => $this->checkoutManager->getSteps(),
-            'currentStep' => $this->checkoutManager->getCurrentStepIndex($stepIdentifier),
+            'checkoutSteps' => $checkoutManager->getSteps(),
+            'currentStep' => $checkoutManager->getCurrentStepIndex($stepIdentifier),
             'step' => $step,
             'identifier' => $stepIdentifier,
         ]);
@@ -121,6 +124,8 @@ class CheckoutController extends FrontendController
      */
     public function doCheckoutAction(Request $request)
     {
+        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+
         /*
          * after the last step, we come here
          *
@@ -141,15 +146,15 @@ class CheckoutController extends FrontendController
         /**
          * @var $step CheckoutStepInterface
          */
-        foreach ($this->checkoutManager->getSteps() as $stepIdentifier) {
-            $step = $this->checkoutManager->getStep($stepIdentifier);
+        foreach ($checkoutManager->getSteps($this->getCart()) as $stepIdentifier) {
+            $step = $checkoutManager->getStep($stepIdentifier);
 
             if (!$step->validate($this->getCart())) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($this->checkoutManager->getSteps()));
+        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps($this->getCart())));
 
         /**
          * If everything is valid, we continue with Order-Creation.
@@ -157,6 +162,16 @@ class CheckoutController extends FrontendController
         $order = $this->getOrderFactory()->createNew();
         $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
 
+        if (0 === $order->getTotal()) {
+            $request->getSession()->set('coreshop_order_id', $order->getId());
+            
+            $this->get('coreshop.workflow.manager.order')->changeState($order, 'change_order_state', [
+                'newState' => WorkflowManagerInterface::ORDER_STATE_PROCESSING,
+                'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PROCESSING,
+            ]);
+
+            return $this->redirectToRoute('coreshop_checkout_confirmation');
+        }
 
         /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/

@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Checkout;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutManagerInterface
@@ -24,7 +25,7 @@ interface CheckoutManagerInterface
     public function addCheckoutStep(CheckoutStepInterface $step, $priority);
 
     /**
-     * @return mixed
+     * @return CheckoutStepInterface[]
      */
     public function getSteps();
 
@@ -58,7 +59,7 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param CartInterface $cart
      *
      * @return mixed
      */
@@ -66,7 +67,8 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param CartInterface $cart
+     * @param Request $request
      *
      * @return mixed
      */
@@ -88,8 +90,8 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
-     * @param Request               $request
+     * @param CartInterface $cart
+     * @param Request $request
      *
      * @return mixed
      */

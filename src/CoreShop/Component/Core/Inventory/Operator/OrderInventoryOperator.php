@@ -116,7 +116,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-
     /**
      * @param OrderInterface $order
      */

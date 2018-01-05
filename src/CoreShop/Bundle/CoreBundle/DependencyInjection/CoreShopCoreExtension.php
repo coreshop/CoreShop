@@ -13,14 +13,20 @@
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
+use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
+use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Webmozart\Assert\Assert;
 
 final class CoreShopCoreExtension extends AbstractModelExtension implements PrependExtensionInterface
@@ -65,9 +71,9 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             $this->registerCheckout($container, $config['checkout']);
         }
 
-        if (array_key_exists('checkout_manager', $config)) {
-            $alias = new Alias(sprintf('coreshop.checkout_manager.%s', $config['checkout_manager']));
-            $container->setAlias('coreshop.checkout_manager', $alias);
+        if (array_key_exists('checkout_manager_factory', $config)) {
+            $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $config['checkout_manager_factory']));
+            $container->setAlias('coreshop.checkout_manager.factory', $alias);
         }
         else {
             throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');
@@ -95,26 +101,31 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
      */
     private function registerCheckout(ContainerBuilder $container, $config)
     {
-        $availableCheckoutManagers = [];
+        $availableCheckoutManagerFactories = [];
 
-        foreach ($config as $checkoutManager => $typeConfiguration) {
-            $checkoutManagerId = sprintf(sprintf('coreshop.checkout_manager.%s', $checkoutManager));
-            $managerClass = $typeConfiguration['manager'];
+        foreach ($config as $checkoutIdentifier => $typeConfiguration) {
+            $stepsLocatorId = sprintf('coreshop.checkout_manager.steps.%s', $checkoutIdentifier);
+            $checkoutManagerFactoryId = sprintf('coreshop.checkout_manager.factory.%s', $checkoutIdentifier);
 
-            Assert::classExists($managerClass);
-            Assert::implementsInterface($managerClass, CheckoutManagerInterface::class);
+            $services = [];
+            $priorityMap = [];
 
-            $definition = new Definition($managerClass);
-
-            foreach ($typeConfiguration['steps'] as $step) {
-                $definition->addMethodCall('addCheckoutStep', [new Reference($step['step']), $step['priority']]);
+            foreach ($typeConfiguration['steps'] as $identifier => $step) {
+                $services[$identifier] = new Reference($step['step']);
+                $priorityMap[$identifier] = $step['priority'];
             }
 
-            $container->setDefinition($checkoutManagerId, $definition);
+            $stepsLocator = new Definition(ServiceLocator::class, [$services]);
+            $stepsLocator->addTag('container.service_locator');
+            $container->setDefinition($stepsLocatorId, $stepsLocator);
 
-            $availableCheckoutManagers[] = $checkoutManagerId;
+            $checkoutManagerFactory = new Definition(DefaultCheckoutManagerFactory::class, [new Reference($stepsLocatorId), $priorityMap]);
+
+            $container->setDefinition($checkoutManagerFactoryId, $checkoutManagerFactory);
+
+            $availableCheckoutManagerFactories[] = $checkoutManagerFactoryId;
         }
 
-        $container->setParameter('coreshop.checkout_managers', $availableCheckoutManagers);
+        $container->setParameter('coreshop.checkout_managers', $availableCheckoutManagerFactories);
     }
 }

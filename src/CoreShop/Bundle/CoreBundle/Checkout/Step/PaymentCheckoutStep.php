@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
@@ -22,7 +23,7 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class PaymentCheckoutStep implements CheckoutStepInterface
+class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface
 {
     /**
      * @var FormFactoryInterface
@@ -61,6 +62,14 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     public function getIdentifier()
     {
         return 'payment';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRequired(CartInterface $cart)
+    {
+        return $cart->getTotal() > 0;
     }
 
     /**
