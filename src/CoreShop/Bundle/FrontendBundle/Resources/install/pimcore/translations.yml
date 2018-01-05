@@ -530,7 +530,7 @@ translations:
   coreshop.ui.success.voucher.stored:
       languages:
           de_CH: 'Gutscheincode wurde erfolgreich angewendet'
-          en: 'Voucher ha been successfully applied'
+          en: 'Voucher has been successfully applied'
           de: 'Gutscheincode wurde erfolgreich angewendet'
 
   coreshop.ui.success.voucher.successfully_removed:
