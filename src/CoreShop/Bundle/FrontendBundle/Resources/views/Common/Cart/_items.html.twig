@@ -1,0 +1,34 @@
+<div class="table-responsive shopping-cart-table">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td class="text-center">
+                {{ 'coreshop.ui.image'|trans }}
+            </td>
+            <td class="text-center">
+                {{ 'coreshop.ui.product_details'|trans }}
+            </td>
+            <td class="text-center">
+                {{ 'coreshop.ui.quantity'|trans }}
+            </td>
+            <td class="text-center">
+                {{ 'coreshop.ui.price'|trans }}
+            </td>
+            <td class="text-center">
+                {{ 'coreshop.ui.total'|trans }}
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart.getItems %}
+            {% include '@CoreShopFrontend/Common/Cart/_item.html.twig' with {'item': item} %}
+        {% endfor %}
+
+        {% include '@CoreShopFrontend/Common/Cart/_rules.html.twig' %}
+
+        </tbody>
+        <tfoot>
+        {% include '@CoreShopFrontend/Common/Cart/_summary.html.twig' %}
+        </tfoot>
+    </table>
+</div>

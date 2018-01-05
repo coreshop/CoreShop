@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block checkout %}
-    {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}
+    {% include '@CoreShopFrontend/Common/Cart/_table.html.twig' with {cart: coreshop.cart} %}
 
     <div class="row">
         <div class="col-xs-12 col-sm-1 col-sm-push-10">
