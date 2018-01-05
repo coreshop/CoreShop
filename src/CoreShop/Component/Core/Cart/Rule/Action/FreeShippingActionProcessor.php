@@ -22,7 +22,7 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
      */
     public function applyRule(CartInterface $cart, array $configuration)
     {
-        return false;
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
      */
     public function unApplyRule(CartInterface $cart, array $configuration)
     {
-        return false;
+        return true;
     }
 
     /**

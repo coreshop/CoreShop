@@ -68,19 +68,20 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
 
         $discountNet = 0;
         $discountGross = 0;
+        $result = false;
 
         foreach ($cartPriceRule->getActions() as $action) {
             if ($action instanceof ActionInterface) {
                 $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
-                $actionCommand->applyRule($cart, $action->getConfiguration());
+                $result |= $actionCommand->applyRule($cart, $action->getConfiguration());
 
                 $discountNet += $actionCommand->getDiscount($cart, false, $action->getConfiguration());
                 $discountGross += $actionCommand->getDiscount($cart, true, $action->getConfiguration());
             }
         }
 
-        if (0 === $discountGross) {
+        if (!$result) {
             if ($existingPriceRule) {
                 $cart->removePriceRule($cartPriceRule);
             }

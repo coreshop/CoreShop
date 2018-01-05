@@ -15,7 +15,6 @@ namespace CoreShop\Component\Order\Cart\Rule\Action;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 
 class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
@@ -53,7 +52,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
      */
     public function applyRule(CartInterface $cart, array $configuration)
     {
-        return false;
+        return $this->getDiscount($cart, false, $configuration) > 0;
     }
 
     /**
@@ -61,7 +60,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
      */
     public function unApplyRule(CartInterface $cart, array $configuration)
     {
-        return false;
+        return true;
     }
 
     /**

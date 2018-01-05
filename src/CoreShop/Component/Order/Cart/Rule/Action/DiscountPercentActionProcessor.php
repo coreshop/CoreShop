@@ -22,7 +22,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
      */
     public function applyRule(CartInterface $cart, array $configuration)
     {
-        return false;
+        return $this->getDiscount($cart, false, $configuration) > 0;
     }
 
     /**
@@ -30,7 +30,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
      */
     public function unApplyRule(CartInterface $cart, array $configuration)
     {
-        return false;
+        return true;
     }
 
     /**
