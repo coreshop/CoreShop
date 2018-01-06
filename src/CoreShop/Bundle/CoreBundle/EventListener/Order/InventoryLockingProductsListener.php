@@ -49,14 +49,13 @@ final class InventoryLockingProductsListener
             } elseif ($event->getNewState() === WorkflowManagerInterface::ORDER_STATE_PROCESSING) {
                 $this->orderInventoryOperator->sell($order);
             } elseif ($event->getNewState() === WorkflowManagerInterface::ORDER_STATE_CANCELED) {
-                if (in_array($event->getOldState(),[
+                if (in_array($event->getOldState(), [
                     WorkflowManagerInterface::ORDER_STATE_PROCESSING,
                     WorkflowManagerInterface::ORDER_STATE_COMPLETE
                 ])) {
                     $this->orderInventoryOperator->giveBack($order);
-                }
-                if ($event->getOldState() === WorkflowManagerInterface::ORDER_STATE_INITIALIZED) {
-                    $this->orderInventoryOperator->giveBack($order);
+                } elseif ($event->getOldState() === WorkflowManagerInterface::ORDER_STATE_INITIALIZED) {
+                    $this->orderInventoryOperator->release($order);
                 }
             }
         } catch (\InvalidArgumentException $ex) {
