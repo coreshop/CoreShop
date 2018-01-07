@@ -56,3 +56,8 @@ services:
     class: CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType
     tags:
       - { name: form.type }
+
+  coreshop.form.extension.type.cart:
+    class: CoreShop\Bundle\CoreBundle\Form\Extension\CartTypeExtension
+    tags:
+      - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartType }
