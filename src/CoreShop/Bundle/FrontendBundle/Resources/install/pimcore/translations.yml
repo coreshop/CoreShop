@@ -293,6 +293,12 @@ translations:
           en: 'Payment provider'
           de: 'Zahlungsanbieter'
 
+  coreshop.ui.accept_terms:
+      languages:
+          de_CH: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
+          en: 'I have read and agree to the terms and conditions'
+          de: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
+
   coreshop.ui.personal_information:
       languages:
           de_CH: 'Persönliche Informationen'

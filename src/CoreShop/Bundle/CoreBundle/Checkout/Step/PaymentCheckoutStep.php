@@ -74,6 +74,14 @@ class PaymentCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
+    public function getNextRoute(CartInterface $cart, Request $request)
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function validate(CartInterface $cart)
     {
         return $cart->hasItems() && $cart->getPaymentProvider() instanceof PaymentProviderInterface;

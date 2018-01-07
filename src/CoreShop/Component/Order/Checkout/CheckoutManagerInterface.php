@@ -45,9 +45,23 @@ interface CheckoutManagerInterface
     /**
      * @param $identifier
      *
+     * @return bool
+     */
+    public function hasNextStep($identifier);
+
+    /**
+     * @param $identifier
+     *
      * @return mixed
      */
     public function getPreviousStep($identifier);
+
+    /**
+     * @param $identifier
+     *
+     * @return bool
+     */
+    public function hasPreviousStep($identifier);
 
     /**
      * @param $identifier

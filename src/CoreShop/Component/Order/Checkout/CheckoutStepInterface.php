@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Order\Checkout;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutStepInterface
@@ -49,6 +50,16 @@ interface CheckoutStepInterface
      * @throws CheckoutException
      */
     public function commitStep(CartInterface $cart, Request $request);
+
+    /**
+     * Get Next Route for Step.
+     *
+     * @param CartInterface $cart
+     * @param Request       $request
+     *
+     * @returns bool|RedirectResponse
+     **/
+    public function getNextRoute(CartInterface $cart, Request $request);
 
     /**
      * Prepare Checkout Step.

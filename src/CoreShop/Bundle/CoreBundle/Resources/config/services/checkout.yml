@@ -43,6 +43,8 @@ services:
 
   coreshop.checkout.step.summary:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep
+    arguments:
+      - '@form.factory'
 
   # Forms
   coreshop.form.type.checkout_address:
@@ -56,6 +58,14 @@ services:
 
   coreshop.form.type.checkout_payment:
     class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType
+    arguments:
+      - '%coreshop.model.cart.class%'
+      - '%coreshop.form.type.checkout.payment.validation_groups%'
+    tags:
+      - {name: form.type}
+
+  coreshop.form.type.checkout_summary:
+    class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType
     arguments:
       - '%coreshop.model.cart.class%'
       - '%coreshop.form.type.checkout.payment.validation_groups%'

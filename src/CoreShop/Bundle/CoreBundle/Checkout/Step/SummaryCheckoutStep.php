@@ -12,12 +12,29 @@
 
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
+use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType;
+use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class SummaryCheckoutStep implements CheckoutStepInterface
 {
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @param FormFactoryInterface $formFactory
+     */
+    public function __construct(FormFactoryInterface $formFactory)
+    {
+        $this->formFactory = $formFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,15 +54,16 @@ class SummaryCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function validate(CartInterface $cart)
+    public function getNextRoute(CartInterface $cart, Request $request)
     {
-        return $cart->hasItems();
+        $checkoutFinisherUrl = $request->get('checkout_finisher');
+        return new RedirectResponse($checkoutFinisherUrl);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function validate(CartInterface $cart)
     {
         return true;
     }
@@ -53,8 +71,42 @@ class SummaryCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
+    public function commitStep(CartInterface $cart, Request $request)
+    {
+        $form = $this->createForm($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                return true;
+            } else {
+                throw new CheckoutException('Summary Form is invalid', 'coreshop.ui.error.coreshop_checkout_summary_form_invalid');
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function prepareStep(CartInterface $cart, Request $request)
     {
-        return [];
+        return ['form' => $this->createForm($request)->createView()];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function createForm(Request $request)
+    {
+        $form = $this->formFactory->createNamed('', SummaryType::class);
+
+        if ($request->isMethod('post')) {
+            $form = $form->handleRequest($request);
+        }
+
+        return $form;
     }
 }

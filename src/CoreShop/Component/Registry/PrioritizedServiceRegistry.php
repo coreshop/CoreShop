@@ -129,6 +129,24 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function hasNextTo($identifier)
+    {
+        $keys = $this->priortyMap->getKeys();
+        $nextIndex = -1;
+
+        foreach ($keys as $index => $key) {
+            if ($key === $identifier) {
+                $nextIndex = $index + 1;
+                break;
+            }
+        }
+
+        return $this->has($keys[$nextIndex]);
+    }
+
+    /**
      * @param $identifier
      *
      * @return bool|int|string
@@ -161,6 +179,15 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasPreviousTo($identifier)
+    {
+        $prevIndex = $this->getPreviousIndex($identifier);
+        return $prevIndex >= 0;
     }
 
     /**

@@ -75,9 +75,25 @@ class CheckoutManager implements CheckoutManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function hasNextStep($identifier)
+    {
+        return $this->serviceRegistry->hasNextTo($identifier);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPreviousStep($identifier)
     {
         return $this->serviceRegistry->getPreviousTo($identifier);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasPreviousStep($identifier)
+    {
+        return $this->serviceRegistry->hasPreviousTo($identifier);
     }
 
     /**

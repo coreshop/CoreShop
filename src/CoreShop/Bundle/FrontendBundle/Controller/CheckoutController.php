@@ -74,10 +74,24 @@ class CheckoutController extends FrontendController
         if ($request->isMethod('POST')) {
             try {
                 if ($step->commitStep($cart, $request)) {
-                    $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
-
-                    if ($nextStep) {
-                        return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                    //last step needs to tell us where to go!
+                    if (!$this->checkoutManager->hasNextStep($stepIdentifier)) {
+                        $nextRoute = $step->getNextRoute($cart, $request);
+                        if (!$nextRoute instanceof RedirectResponse) {
+                            throw new CheckoutException('Last step needs to implement a `getNextRoute` method which should return a valid `RedirectResponse`', 'coreshop.ui.error.coreshop_checkout_internal_error');
+                        }
+                        return $nextRoute;
+                    } else {
+                        $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
+                        if ($nextStep) {
+                            // if route does have a custom route for next step, use it!
+                            $nextRoute = $step->getNextRoute($cart, $request);
+                            if ($nextRoute instanceof RedirectResponse) {
+                                return $nextRoute;
+                            } else {
+                                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                            }
+                        }
                     }
                 }
             } catch (CheckoutException $ex) {
