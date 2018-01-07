@@ -15,12 +15,13 @@ namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class SummaryCheckoutStep implements CheckoutStepInterface
+class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStepInterface
 {
     /**
      * @var FormFactoryInterface
@@ -54,7 +55,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function getNextRoute(CartInterface $cart, Request $request)
+    public function getResponse(CartInterface $cart, Request $request)
     {
         $checkoutFinisherUrl = $request->get('checkout_finisher');
         return new RedirectResponse($checkoutFinisherUrl);

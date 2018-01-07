@@ -16,10 +16,12 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
@@ -74,31 +76,31 @@ class CheckoutController extends FrontendController
         if ($request->isMethod('POST')) {
             try {
                 if ($step->commitStep($cart, $request)) {
-                    //last step needs to tell us where to go!
-                    if (!$this->checkoutManager->hasNextStep($stepIdentifier)) {
-                        $nextRoute = $step->getNextRoute($cart, $request);
-                        if (!$nextRoute instanceof RedirectResponse) {
-                            throw new CheckoutException('Last step needs to implement a `getNextRoute` method which should return a valid `RedirectResponse`', 'coreshop.ui.error.coreshop_checkout_internal_error');
-                        }
-                        return $nextRoute;
-                    } else {
+                    $response = null;
+
+                    if ($step instanceof RedirectCheckoutStepInterface) {
+                        $response = $step->getResponse($cart, $request);
+                    }
+                    else {
                         $nextStep = $this->checkoutManager->getNextStep($stepIdentifier);
+
                         if ($nextStep) {
-                            // if route does have a custom route for next step, use it!
-                            $nextRoute = $step->getNextRoute($cart, $request);
-                            if ($nextRoute instanceof RedirectResponse) {
-                                return $nextRoute;
-                            } else {
-                                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
-                            }
+                            $response = $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
                         }
                     }
+
+                    //last step needs to tell us where to go!
+                    if (!$this->checkoutManager->hasNextStep($stepIdentifier) && !$response instanceof Response) {
+                        throw new \InvalidArgumentException(sprintf('Last step was executed, but no Response has been generated. To solve your issue, have a look at the last Checkout step %s and implement %s interface', $step->getIdentifier(), RedirectCheckoutStepInterface::class));
+                    }
+
+                    return $response;
                 }
             } catch (CheckoutException $ex) {
                 $dataForStep['exception'] = $ex->getTranslatableText();
             }
         }
-        
+
         //$errors = $this->get('validator')->validate($cart, null, ['coreshop']);
 
         $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $step);

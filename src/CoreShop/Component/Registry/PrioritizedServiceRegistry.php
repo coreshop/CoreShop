@@ -121,7 +121,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
             }
         }
 
-        if (count($identifier) <= $nextIndex) {
+        if (count($keys) < $nextIndex) {
             return $this->get($keys[$nextIndex]);
         }
 

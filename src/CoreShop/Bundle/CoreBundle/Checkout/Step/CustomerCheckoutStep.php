@@ -74,14 +74,6 @@ class CustomerCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function getNextRoute(CartInterface $cart, Request $request)
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function validate(CartInterface $cart)
     {
         if (!$cart->hasItems()) {

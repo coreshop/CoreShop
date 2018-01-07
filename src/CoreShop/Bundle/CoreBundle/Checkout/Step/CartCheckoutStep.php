@@ -37,14 +37,6 @@ class CartCheckoutStep implements CheckoutStepInterface
     /**
      * {@inheritdoc}
      */
-    public function getNextRoute(CartInterface $cart, Request $request)
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function validate(CartInterface $cart)
     {
         return count($cart->getItems()) > 0;
