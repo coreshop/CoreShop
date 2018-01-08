@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Checkout;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutStepInterface
@@ -44,7 +45,7 @@ interface CheckoutStepInterface
      * Commit Step from Request (validate form or whatever).
      *
      * @param CartInterface $cart
-     * @param Request       $request
+     * @param Request $request
      *
      * @throws CheckoutException
      */
