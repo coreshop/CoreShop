@@ -61,9 +61,11 @@ final class CartManager implements CartManagerInterface
         VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
             $tempItems = $cart->getItems();
 
-            $cart->setItems([]);
-            $cart->setParent($cartsFolder);
-            $cart->save();
+            if (!$cart->getId()) {
+                $cart->setItems([]);
+                $cart->setParent($cartsFolder);
+                $cart->save();
+            }
 
             foreach ($tempItems as $index => $item) {
                 $item->setParent($cart);
