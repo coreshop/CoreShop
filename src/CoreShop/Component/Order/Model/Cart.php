@@ -182,22 +182,6 @@ class Cart extends AbstractProposal implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrentStep()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCurrentStep($name)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setOrder($order)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
