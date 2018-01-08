@@ -61,7 +61,7 @@
                 <a href="{{ path('coreshop_cart_summary') }}">
                     {{ 'coreshop.ui.cart'|trans }}
                 </a>
-                <a href="{{ path('coreshop_checkout', {'stepIdentifier': 'cart'}) }}">
+                <a href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
                     {{ 'coreshop.ui.checkout'|trans }}
                 </a>
             </p>
