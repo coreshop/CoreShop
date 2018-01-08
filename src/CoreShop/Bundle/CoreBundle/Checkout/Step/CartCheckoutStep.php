@@ -55,6 +55,6 @@ class CartCheckoutStep implements CheckoutStepInterface
      */
     public function prepareStep(CartInterface $cart, Request $request)
     {
-        //nothing to do here
+        return [];
     }
 }

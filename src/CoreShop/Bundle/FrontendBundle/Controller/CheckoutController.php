@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,16 +108,15 @@ class CheckoutController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $step);
 
-        $dataForStep = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
+        $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
-        $dataForStep = array_merge(is_array($dataForStep) ? $dataForStep : [], [
+        $dataForStep = array_merge($preparedData, [
             'cart' => $cart,
             'checkoutSteps' => $checkoutManager->getSteps(),
             'currentStep' => $checkoutManager->getCurrentStepIndex($stepIdentifier),
             'step' => $step,
             'identifier' => $stepIdentifier,
         ]);
-
 
         return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
     }
@@ -136,6 +136,7 @@ class CheckoutController extends FrontendController
     /**
      * @param Request $request
      * @return RedirectResponse
+     * @throws \Exception
      */
     public function doCheckoutAction(Request $request)
     {
