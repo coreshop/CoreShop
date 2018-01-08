@@ -23,13 +23,23 @@ services:
     tags:
       - { name: coreshop.cart_processor, priority: 500 }
 
+
+  coreshop.cart_processor.shipping:
+    class: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
+    arguments:
+      - '@coreshop.carrier.price_calculator.taxed'
+      - '@coreshop.taxation.factory.tax_calculator'
+      - '@coreshop.collector.taxes'
+    tags:
+      - { name: coreshop.cart_processor, priority: 450 }
+
   coreshop.cart_processor.rule_calculator:
     class: CoreShop\Component\Core\Order\Processor\CartPriceRuleProcessor
     arguments:
       - '@coreshop.proposal.cart_price_rule.calculator'
       - '@coreshop.repository.cart_price_rule_voucher_code'
     tags:
-      - { name: coreshop.cart_processor, priority: 450 }
+      - { name: coreshop.cart_processor, priority: 400 }
 
   coreshop.cart_processor.item_taxes:
     class: CoreShop\Component\Core\Order\Processor\CartItemTaxProcessor
@@ -45,12 +55,3 @@ services:
       - '@coreshop.collector.taxes'
     tags:
       - { name: coreshop.cart_processor, priority: 300 }
-
-  coreshop.cart_processor.shipping:
-    class: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
-    arguments:
-      - '@coreshop.carrier.price_calculator.taxed'
-      - '@coreshop.taxation.factory.tax_calculator'
-      - '@coreshop.collector.taxes'
-    tags:
-      - { name: coreshop.cart_processor, priority: 250 }

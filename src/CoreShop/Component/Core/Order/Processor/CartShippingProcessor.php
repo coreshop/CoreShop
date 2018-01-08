@@ -62,31 +62,32 @@ final class CartShippingProcessor implements CartProcessorInterface
     public function process(CartInterface $cart)
     {
         if ($cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
-            //TODO: Should we add something like a default carrier determination?
-            if (null === $cart->getCarrier()) {
-                return;
-            }
+            return;
+        }
+        
+        if (null === $cart->getCarrier()) {
+            return;
+        }
 
-            $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), true);
-            $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), false);
+        $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), true);
+        $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), false);
 
-            $cart->setShipping($priceWithTax, true);
-            $cart->setShipping($priceWithoutTax, false);
+        $cart->setShipping($priceWithTax, true);
+        $cart->setShipping($priceWithoutTax, false);
 
-            if ($cart->getCarrier() instanceof Carrier && $cart->getCarrier()->getTaxRule() instanceof TaxRuleGroup) {
-                $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($cart->getCarrier()->getTaxRule(), $cart->getShippingAddress());
+        if ($cart->getCarrier() instanceof Carrier && $cart->getCarrier()->getTaxRule() instanceof TaxRuleGroup) {
+            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($cart->getCarrier()->getTaxRule(), $cart->getShippingAddress());
 
-                if ($taxCalculator instanceof TaxCalculatorInterface) {
-                    $cart->setShippingTaxRate($taxCalculator->getTotalRate());
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                $cart->setShippingTaxRate($taxCalculator->getTotalRate());
 
-                    $usedTaxes = $cart->getTaxes() instanceof Fieldcollection ? $cart->getTaxes()->getItems() : [];
-                    $usedTaxes = $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $cart->getShipping(false)), $usedTaxes);
+                $usedTaxes = $cart->getTaxes() instanceof Fieldcollection ? $cart->getTaxes()->getItems() : [];
+                $usedTaxes = $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $cart->getShipping(false)), $usedTaxes);
 
-                    $fieldCollection = new Fieldcollection();
-                    $fieldCollection->setItems($usedTaxes);
+                $fieldCollection = new Fieldcollection();
+                $fieldCollection->setItems($usedTaxes);
 
-                    $cart->setTaxes($fieldCollection);
-                }
+                $cart->setTaxes($fieldCollection);
             }
         }
     }
