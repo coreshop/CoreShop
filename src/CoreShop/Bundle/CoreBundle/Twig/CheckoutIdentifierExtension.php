@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
+use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -100,7 +101,7 @@ final class CheckoutIdentifierExtension extends \Twig_Extension
         foreach ($checkoutSteps as $identifier) {
             $stepIndex = $checkoutManager->getCurrentStepIndex($identifier);
             $step = $checkoutManager->getStep($identifier);
-            $isDone = $step->validate($cart);
+            $isDone = $step instanceof ValidationCheckoutStepInterface ? $step->validate($cart) : false;
 
             $shopSteps[(string)$identifier] = [
                 'waiting' => is_null($stepIdentifier) || (int)$currentStep < $stepIndex,

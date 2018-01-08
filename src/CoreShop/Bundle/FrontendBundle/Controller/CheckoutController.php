@@ -17,6 +17,7 @@ use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;;
+use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Payum\Core\Payum;
@@ -63,14 +64,14 @@ class CheckoutController extends FrontendController
 
         //Check all previous steps if they are valid, if not, redirect back
         foreach ($checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
-            if (!$previousStep->validate($cart)) {
+            if ($previousStep instanceof ValidationCheckoutStepInterface && !$previousStep->validate($cart)) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
             }
         }
 
-        if ($step->validate($cart) && $step->doAutoForward($cart)) {
+        $isValid = $step instanceof ValidationCheckoutStepInterface ? $step->validate($cart) : true;
+        if ($isValid && $step->doAutoForward($cart)) {
             $nextStep = $checkoutManager->getNextStep($stepIdentifier);
-
             if ($nextStep) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
             }
@@ -103,8 +104,6 @@ class CheckoutController extends FrontendController
                 $dataForStep['exception'] = $ex->getTranslatableText();
             }
         }
-        
-        //$errors = $this->get('validator')->validate($cart, null, ['coreshop']);
 
         $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $step);
 
@@ -163,7 +162,7 @@ class CheckoutController extends FrontendController
         foreach ($checkoutManager->getSteps($this->getCart()) as $stepIdentifier) {
             $step = $checkoutManager->getStep($stepIdentifier);
 
-            if (!$step->validate($this->getCart())) {
+            if ($step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
