@@ -62,15 +62,6 @@ routes:
     variables: _locale
     priority: 3
 
-  coreshop_cart_add_price_rule:
-    pattern: "/(\\w+)\\/shop\\/cart\\/add-price-rule/"
-    reverse: "/%_locale/shop/cart/add-price-rule"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: addPriceRule
-    variables: _locale
-    priority: 3
-
   coreshop_cart_remove_price_rule:
     pattern: "/(\\w+)\\/shop\\/cart\\/remove-price-rule/"
     reverse: "/%_locale/shop/cart/remove-price-rule"
