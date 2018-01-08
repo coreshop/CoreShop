@@ -79,11 +79,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $saleItemFactory;
 
     /**
-     * @var CartPriceRuleOrderProcessorInterface
-     */
-    protected $cartPriceRuleOrderProcessor;
-
-    /**
      * @var TransformerEventDispatcherInterface
      */
     private $eventDispatcher;
@@ -112,7 +107,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param LocaleContextInterface $localeContext
      * @param PimcoreFactoryInterface $saleItemFactory
      * @param StoreContextInterface $storeContext
-     * @param CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param CurrencyConverterInterface $currencyConverter
      * @param ObjectCloner $objectCloner
@@ -127,7 +121,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         LocaleContextInterface $localeContext,
         PimcoreFactoryInterface $saleItemFactory,
         StoreContextInterface $storeContext,
-        CartPriceRuleOrderProcessorInterface $cartPriceRuleOrderProcessor,
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter,
         ObjectCloner $objectCloner,
@@ -207,13 +200,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($cart->getPriceRuleItems() as $priceRule) {
                 if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
-                    $voucherCode = $this->voucherCodeRepository->findByCode($priceRule->getVoucherCode());
-
-                    if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-                        continue;
-                    }
-
-                    $this->cartPriceRuleOrderProcessor->process($priceRule->getCartPriceRule(), $voucherCode, $cart, $sale);
+                    $sale->addPriceRule($priceRule);
                 }
             }
         }

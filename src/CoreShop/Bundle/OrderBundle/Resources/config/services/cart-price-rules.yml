@@ -181,15 +181,6 @@ services:
     arguments:
       - '@coreshop.registry.cart_price_rule.actions'
 
-  coreshop.cart_price_rule.order.processor:
-    class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleOrderProcessor
-    arguments:
-      - '@coreshop.repository.cart_price_rule_voucher_code'
-      - '@doctrine.orm.entity_manager'
-      - '@coreshop.registry.cart_price_rule.actions'
-      - '@coreshop.factory.cart_price_rule_item'
-
-
   coreshop.validator.cart_price_rule:
     class: CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator
     arguments:
