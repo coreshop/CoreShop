@@ -18,14 +18,12 @@ coreshop.cart.pricerules.actions.discountAmount = Class.create(coreshop.rules.ac
     getForm: function () {
         var amountValue = 0;
         var currency = null;
+        var grossValue = false;
 
         if (this.data) {
             amountValue = this.data.amount / 100;
             currency = this.data.currency;
-        }
-
-        if (this.data) {
-            amountValue = this.data.amount / 100;
+            grossValue = this.data.gross;
         }
 
         var amount = new Ext.form.NumberField({
@@ -35,9 +33,16 @@ coreshop.cart.pricerules.actions.discountAmount = Class.create(coreshop.rules.ac
             decimalPrecision: 2
         });
 
+        var gross = new Ext.form.Checkbox({
+            fieldLabel: t('coreshop_action_discountAmount_gross'),
+            name: 'gross',
+            value: grossValue
+        });
+
         this.form = new Ext.form.Panel({
             items: [
                 amount,
+                gross,
                 {
                     xtype: 'coreshop.currency',
                     value: currency

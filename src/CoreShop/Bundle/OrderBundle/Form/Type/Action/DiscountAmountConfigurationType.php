@@ -17,6 +17,7 @@ use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -34,6 +35,9 @@ final class DiscountAmountConfigurationType extends AbstractType
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
+            ])
+            ->add('gross', CheckboxType::class, [
+
             ])
             ->add('currency', CurrencyChoiceType::class, [
                 'constraints' => [

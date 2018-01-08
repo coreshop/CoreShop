@@ -319,6 +319,7 @@ class CartPriceRule extends RuleTest
         $action = $this->createActionWithForm('discountAmount', [
             'amount' => 5,
             'currency' => Data::$store->getCurrency()->getId(),
+            'gross' => false
         ]);
 
         $rule = $this->createRule();
@@ -348,6 +349,52 @@ class CartPriceRule extends RuleTest
 
         $this->assertEquals(500, $discount);
         $this->assertEquals(600, $discountWt);
+
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Test Price Rule Action Discount Amount.
+     */
+    public function testPriceRuleActionDiscountAmountGross()
+    {
+        $this->printTestName();
+        $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
+
+        $action = $this->createActionWithForm('discountAmount', [
+            'amount' => 5,
+            'currency' => Data::$store->getCurrency()->getId(),
+            'gross' => true
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action);
+
+        $this->getEntityManager()->persist($rule);
+        $this->getEntityManager()->flush();
+
+        $cart = Data::createCartWithProducts();
+
+        /**
+         * @var $voucher CartPriceRuleVoucherCodeInterface
+         */
+        $voucher = $this->get('coreshop.factory.cart_price_rule_voucher_code')->createNew();
+        $voucher->setCode('CoreShop-RULES-' . uniqid());
+        $voucher->setUsed(false);
+        $voucher->setUses(0);
+
+        $this->getEntityManager()->persist($voucher);
+        $this->getEntityManager()->flush();
+
+        $this->assertTrue($this->get('coreshop.cart_price_rule.processor')->process($cart, $rule, $voucher));
+        $this->get('coreshop.cart.manager')->persistCart($cart);
+
+        $discount = $cart->getDiscount(false);
+        $discountWt = $cart->getDiscount(true);
+
+        $this->assertEquals(416, $discount);
+        $this->assertEquals(500, $discountWt);
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();

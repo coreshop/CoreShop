@@ -83,18 +83,25 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         $currency = $this->currencyRepository->find($configuration['currency']);
         $cartAmount = $cart->getTotal($withTax) - $cart->getDiscount($withTax);
 
-        if ($withTax) {
-            $subTotalTe = $cart->getTotal(false);
-            $subTotalTax = $cart->getTotalTax();
+        $subTotalTe = $cart->getTotal(false);
+        $subTotalTax = $cart->getTotalTax();
 
-            if ($subTotalTax > 0) {
-                $cartAverageTax = $subTotalTax / $subTotalTe;
+        if ($subTotalTax > 0) {
+            $cartAverageTax = $subTotalTax / $subTotalTe;
 
-                $amount *= 1 + $cartAverageTax;
+            if ($configuration['gross']) {
+                if (!$withTax) {
+                    $amount /= 1 + $cartAverageTax;
+                }
+            }
+            else {
+                if ($withTax) {
+                    $amount *= 1 + $cartAverageTax;
+                }
             }
         }
 
-        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return (int)$this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
     }
 
     /**
