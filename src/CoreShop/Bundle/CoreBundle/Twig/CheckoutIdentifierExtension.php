@@ -88,11 +88,6 @@ final class CheckoutIdentifierExtension extends \Twig_Extension
         //always add cart to checkout
         $isCartStep = $requestAttributes->get('_route') === 'coreshop_cart_summary';
 
-        //@todo: move this to configuration!
-        if (isset($checkoutSteps['cart'])) {
-            throw new \InvalidArgumentException('cart is a coreshop reserved checkout step. please rename your checkout step');
-        }
-
         $shopSteps = [
             'cart' => [
                 'waiting' => false,
