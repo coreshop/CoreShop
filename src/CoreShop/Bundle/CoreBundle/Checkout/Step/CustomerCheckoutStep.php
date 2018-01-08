@@ -71,6 +71,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface
         return true;
     }
 
+
     /**
      * {@inheritdoc}
      */

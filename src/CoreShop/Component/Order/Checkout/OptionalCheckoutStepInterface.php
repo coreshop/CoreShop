@@ -10,15 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Order\Cart\Calculator;
+namespace CoreShop\Component\Order\Checkout;
 
-interface CartDiscountCalculatorInterface
+use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+interface OptionalCheckoutStepInterface
 {
     /**
-     * @param $subject
-     * @param bool $withTax
+     * Determines if this step is required and will therefore be listed
      *
-     * @return mixed
+     * @param CartInterface $cart
+     *
+     * @return bool
      */
-    public function getDiscount($subject, $withTax = true);
+    public function isRequired(CartInterface $cart);
 }

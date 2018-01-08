@@ -8,14 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Bundle\CoreBundle\Checkout;
+namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
-use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,9 +28,12 @@ class CheckoutManager implements CheckoutManagerInterface
      */
     private $steps;
 
-    public function __construct()
+    /**
+     * @param PrioritizedServiceRegistryInterface $serviceRegistry
+     */
+    public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
     {
-        $this->serviceRegistry = new PrioritizedServiceRegistry(CheckoutStepInterface::class, 'checkout-manager');
+        $this->serviceRegistry = $serviceRegistry;
         $this->steps = [];
     }
 

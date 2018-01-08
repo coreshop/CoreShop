@@ -66,10 +66,29 @@ class CartController extends FrontendController
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
             $cart = $form->getData();
+            $code = $form->get('cartRuleCoupon')->getData();
 
-            $this->get('coreshop.cart.manager')->persistCart($cart);
+            if ($code) {
+                $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
-            $this->addFlash('success', 'coreshop.ui.cart_updated');
+                if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
+                    $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
+                    return $this->redirectToRoute('coreshop_cart_summary');
+                }
+
+                $priceRule = $voucherCode->getCartPriceRule();
+
+                if ($this->getCartPriceRuleProcessor()->process($cart, $priceRule, $voucherCode)) {
+                    $this->getCartManager()->persistCart($cart);
+                    $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
+                } else {
+                    $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
+                }
+            } else {
+                $this->addFlash('success', 'coreshop.ui.cart_updated');
+            }
+
+            $this->getCartManager()->persistCart($cart);
 
             return $this->redirectToRoute('coreshop_cart_summary');
         }
@@ -147,49 +166,13 @@ class CartController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
+        $checkoutManager = $this->get('coreshop.checkout_manager.factory.default')->createCheckoutManager($this->getCart());
+
         return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
             'cart' => $this->getCart(),
-            'checkoutSteps' => $this->get('coreshop.checkout_manager')->getSteps(),
+            'checkoutSteps' => $checkoutManager->getSteps(),
             'currentCheckoutStep' => 0
         ]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function addPriceRuleAction(Request $request)
-    {
-        $code = $request->get('code');
-        $cart = $this->getCart();
-
-        if (!$cart->hasItems()) {
-            return $this->redirectToRoute('coreshop_cart_summary');
-        }
-
-        /**
-         * 1. Find PriceRule for Code
-         * 2. Check Validity
-         * 3. Apply Price Rule to Cart.
-         */
-        $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
-
-        if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-            $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
-            return $this->redirectToRoute('coreshop_cart_summary');
-        }
-
-        $priceRule = $voucherCode->getCartPriceRule();
-
-        if ($this->getCartPriceRuleProcessor()->process($cart, $priceRule, $voucherCode)) {
-            $this->getCartManager()->persistCart($cart);
-            $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
-        } else {
-            $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
-        }
-
-        return $this->redirectToRoute('coreshop_cart_summary');
     }
 
     /**

@@ -24,21 +24,6 @@ services:
       - '@coreshop.object_service'
       - '%coreshop.folder.cart%'
 
-  #Cart Discount Calculator
-  coreshop.cart.discount_calculator.price_rules:
-    class: CoreShop\Component\Order\Cart\Calculator\CartPriceRuleCalculator
-    arguments:
-      - '@coreshop.registry.cart_price_rule.actions'
-      - '@coreshop.cart_price_rule.rule_validation.processor'
-      - '@coreshop.repository.cart_price_rule_voucher_code'
-
-  coreshop.cart.discount_calculator.composite:
-    class: CoreShop\Component\Order\Cart\Calculator\CompositeCartDiscountCalculator
-    arguments: [['@coreshop.cart.discount_calculator.price_rules']]
-
-  coreshop.cart.discount_calculator:
-    alias: coreshop.cart.discount_calculator.composite
-
   coreshop.cart.modifier:
     class: CoreShop\Component\Order\Cart\CartModifier
     arguments:

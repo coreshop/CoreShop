@@ -43,7 +43,7 @@ services:
   coreshop.frontend.controller.checkout:
     class: '%coreshop.frontend.controller.checkout%'
     arguments:
-      - '@coreshop.checkout_manager'
+      - '@coreshop.checkout_manager.factory'
     calls:
       - [setContainer, ['@service_container']]
 

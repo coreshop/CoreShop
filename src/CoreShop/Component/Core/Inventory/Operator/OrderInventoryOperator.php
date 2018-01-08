@@ -44,6 +44,14 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
     /**
      * {@inheritdoc}
      */
+    public function cancel(OrderInterface $order)
+    {
+        $this->giveBack($order);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function hold(OrderInterface $order)
     {
         /** @var OrderItemInterface $orderItem */

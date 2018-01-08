@@ -68,7 +68,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
                 if ($action instanceof ActionInterface) {
                     $actionCommand = $this->actionServiceRegistry->get($action->getType());
 
-                    $actionCommand->unApplyRule($cart, $action->getConfiguration());
+                    $actionCommand->unApplyRule($cart, $action->getConfiguration(), $priceRuleItem);
                 }
             }
 

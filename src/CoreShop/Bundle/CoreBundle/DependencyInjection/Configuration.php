@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
-use CoreShop\Bundle\CoreBundle\Checkout\CheckoutManager;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -32,7 +31,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->scalarNode('send_usage_log')->defaultValue(true)->end()
-                ->scalarNode('checkout_manager')->cannotBeEmpty()->end()
+                ->scalarNode('checkout_manager_factory')->cannotBeEmpty()->end()
             ->end()
         ;
         $this->addPimcoreResourcesSection($rootNode);
@@ -144,7 +143,6 @@ final class Configuration implements ConfigurationInterface
                 ->requiresAtLeastOneElement()
                 ->arrayPrototype()
                     ->children()
-                        ->scalarNode('manager')->defaultValue(CheckoutManager::class)->end()
                         ->arrayNode('steps')
                         ->useAttributeAsKey('identifier')
                             ->arrayPrototype()

@@ -1,5 +1,5 @@
 core_shop_core:
-    checkout_manager: default
+    checkout_manager_factory: default
     checkout:
       default:
         steps:
