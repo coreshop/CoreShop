@@ -95,6 +95,12 @@ translations:
           en: 'There was an Error during the payment process.'
           de: 'Während dem Bezahlvorgang ist ein Fehler aufgetreten.'
 
+  coreshop.ui.back_to_home:
+      languages:
+          de_CH: 'Zurück zur Startseite'
+          en: 'Back to Home'
+          de: 'Zurück zur Startseite'
+
   coreshop.ui.compare:
       languages:
           de_CH: 'Vergleichen'
@@ -316,6 +322,12 @@ translations:
           de_CH: 'Weiter'
           en: 'Proceed'
           de: 'Weiter'
+
+  coreshop.ui.back:
+      languages:
+          de_CH: 'Zurück'
+          en: 'Back'
+          de: 'Zurück'
 
   coreshop.ui.product_details:
       languages:

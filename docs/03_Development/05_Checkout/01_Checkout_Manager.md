@@ -26,24 +26,21 @@ core_shop_core:
     checkout:
       my_custom_manager:
         steps:
-          cart:
-            step: coreshop.checkout.step.cart
-            priority: 10
           customer:
             step: coreshop.checkout.step.customer
-            priority: 20
+            priority: 10
           address:
             step: coreshop.checkout.step.address
-            priority: 30
+            priority: 20
           shipping:
             step: coreshop.checkout.step.shipping
-            priority: 40
+            priority: 30
           payment:
             step: coreshop.checkout.step.payment
-            priority: 50
+            priority: 40
           summary:
             step: coreshop.checkout.step.summary
-            priority: 60
+            priority: 50
 ```
 
 ### Modify the default configuration

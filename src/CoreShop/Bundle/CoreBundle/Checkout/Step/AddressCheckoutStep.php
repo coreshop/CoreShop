@@ -17,13 +17,14 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
+use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AddressCheckoutStep implements CheckoutStepInterface
+class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
     /**
      * @var FormFactoryInterface
@@ -126,7 +127,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
         $customer = $this->tokenStorage->getToken()->getUser();
 
         if (!$customer instanceof CustomerInterface) {
-            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', get_class($customer)), 'coreshop.ui.error.coreshop_checkout_internal_error');
+            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
         return $customer;

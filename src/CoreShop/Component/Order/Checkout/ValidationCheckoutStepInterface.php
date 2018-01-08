@@ -8,19 +8,20 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Checkout;
 
-interface CheckoutAwareInterface
+use CoreShop\Component\Order\Model\CartInterface;
+
+interface ValidationCheckoutStepInterface
 {
     /**
-     * @return string
-     */
-    public function getCurrentStep();
-
-    /**
-     * @param string $name
-     */
-    public function setCurrentStep($name);
+     * Validates Step
+     *
+     * @param CartInterface $cart
+     *
+     * @returns bool
+     **/
+     public function validate(CartInterface $cart);
 }

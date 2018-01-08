@@ -125,17 +125,9 @@ class CheckoutManager implements CheckoutManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrentStep(CartInterface $cart)
-    {
-        return $this->serviceRegistry->get($cart->getCurrentStep());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrentStepIndex($identifier)
     {
-        return $this->serviceRegistry->getIndex($identifier) + 1; //Checkout Steps are 1 based
+        return $this->serviceRegistry->getIndex($identifier);
     }
 
     /**

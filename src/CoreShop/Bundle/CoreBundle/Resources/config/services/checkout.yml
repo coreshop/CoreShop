@@ -4,10 +4,25 @@ parameters:
   coreshop.form.type.checkout.payment.validation_groups: [coreshop]
 
 services:
-  #default steps
-  coreshop.checkout.step.cart:
-    class: CoreShop\Bundle\CoreBundle\Checkout\Step\CartCheckoutStep
 
+  coreshop.templating.helper.checkout_identifier:
+    class: CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper
+    arguments:
+      - '@request_stack'
+      - '@router'
+      - '@coreshop.checkout_manager.factory.default'
+      - '@coreshop.context.cart'
+    tags:
+      - { name: templating.helper, alias: coreshop_checkout_identifier}
+
+  coreshop.twig.extension.checkout_identifier:
+    class: CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension
+    arguments:
+      - '@coreshop.templating.helper.checkout_identifier'
+    tags:
+      - { name: twig.extension }
+
+  #default steps
   coreshop.checkout.step.customer:
     class: CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep
     arguments:
@@ -79,6 +94,5 @@ services:
       - '@coreshop.money_formatter'
       - '@coreshop.currency_converter'
       - '@pimcore.translator'
-
     tags:
       - {name: form.type}

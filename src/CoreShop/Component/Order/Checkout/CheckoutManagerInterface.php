@@ -89,13 +89,6 @@ interface CheckoutManagerInterface
     public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
 
     /**
-     * @param CartInterface $cart
-     *
-     * @return mixed
-     */
-    public function getCurrentStep(CartInterface $cart);
-
-    /**
      * @param $identifier
      *
      * @return mixed

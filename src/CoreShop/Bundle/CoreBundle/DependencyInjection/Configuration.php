@@ -152,7 +152,21 @@ final class Configuration implements ConfigurationInterface
                                     ->integerNode('priority')->isRequired()->end()
                                 ->end()
                             ->end()
+                            ->validate()
+                                ->ifTrue(function ($array) {
+                                    $notValid = false;
+                                    foreach ($array as $key => $value) {
+                                        if($key === 'cart') {
+                                            $notValid = true;
+                                            break;
+                                        }
+                                    }
+                                    return $notValid;
+                                })
+                                ->thenInvalid('"cart" is a coreshop reserved checkout step. please use another name.')
+                            ->end()
                         ->end()
+
                     ->end()
                 ->end()
             ->end()

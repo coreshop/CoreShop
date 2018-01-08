@@ -1,9 +1,0 @@
-{% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
-
-{% block checkout_title %}
-    {{ 'coreshop.ui.cart'|trans }}
-{% endblock %}
-
-{% block checkout %}
-    {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}
-{% endblock %}
