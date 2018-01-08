@@ -98,16 +98,16 @@ final class CheckoutIdentifierExtension extends \Twig_Extension
                 $data = null;
                 $request = $this->requestStack->getMasterRequest();
                 $stepIdentifier = $request->get('stepIdentifier');
-                if(!is_null($stepIdentifier)) {
-                    if($identifierGuesser === 'previous_step') {
-                        if($checkoutManager->hasPreviousStep($stepIdentifier)) {
+                if (!is_null($stepIdentifier)) {
+                    if ($identifierGuesser === 'previous_step') {
+                        if ($checkoutManager->hasPreviousStep($stepIdentifier)) {
                             $step = $checkoutManager->getPreviousStep($stepIdentifier);
                             $data = $step->getIdentifier();
                         }
-                    }if($identifierGuesser === 'current_step') {
+                    } elseif ($identifierGuesser === 'current_step') {
                         $data = $stepIdentifier;
-                    }if($identifierGuesser === 'next_step') {
-                        if($checkoutManager->hasNextStep($stepIdentifier)) {
+                    } elseif ($identifierGuesser === 'next_step') {
+                        if ($checkoutManager->hasNextStep($stepIdentifier)) {
                             $step = $checkoutManager->getNextStep($stepIdentifier);
                             $data = $step->getIdentifier();
                         }
