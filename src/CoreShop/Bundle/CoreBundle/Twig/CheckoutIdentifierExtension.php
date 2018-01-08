@@ -13,9 +13,11 @@
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
+use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 
 final class CheckoutIdentifierExtension extends \Twig_Extension
 {
@@ -63,62 +65,16 @@ final class CheckoutIdentifierExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('coreshop_checkout_identifier', [$this, 'getIdentifier']),
-            new \Twig_Function('coreshop_checkout_get_steps', [$this, 'getSteps'])
+            new \Twig_Function('coreshop_checkout_steps', [$this, 'getSteps']),
+            new \Twig_Function('coreshop_checkout_steps_*', [$this, 'getStep'])
         ];
     }
 
     /**
-     * @param string $identifierGuesser
-     * @return mixed
+     * Get all Steps of Checkout (cart is always first step here)
+     *
+     * @return array
      */
-    public function getIdentifier($identifierGuesser = '')
-    {
-        $validGuesser = ['first_step', 'previous_step', 'current_step', 'next_step', 'last_step'];
-
-        if (!in_array($identifierGuesser, $validGuesser)) {
-            throw new \InvalidArgumentException(sprintf('invalid identifier guess, available guesses are: %s', implode(', ', $validGuesser)));
-        }
-
-        $cart = $this->cartContext->getCart();
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
-        $steps = $checkoutManager->getSteps();
-
-        switch ($identifierGuesser) {
-            case 'first_step':
-            default:
-                $data = reset($steps);
-                break;
-            case 'last_step':
-                $data = end($steps);
-                break;
-            case 'previous_step':
-            case 'current_step':
-            case 'next_step':
-                $data = null;
-                $request = $this->requestStack->getMasterRequest();
-                $stepIdentifier = $request->get('stepIdentifier');
-                if (!is_null($stepIdentifier)) {
-                    if ($identifierGuesser === 'previous_step') {
-                        if ($checkoutManager->hasPreviousStep($stepIdentifier)) {
-                            $step = $checkoutManager->getPreviousStep($stepIdentifier);
-                            $data = $step->getIdentifier();
-                        }
-                    } elseif ($identifierGuesser === 'current_step') {
-                        $data = $stepIdentifier;
-                    } elseif ($identifierGuesser === 'next_step') {
-                        if ($checkoutManager->hasNextStep($stepIdentifier)) {
-                            $step = $checkoutManager->getNextStep($stepIdentifier);
-                            $data = $step->getIdentifier();
-                        }
-                    }
-                }
-                break;
-        }
-
-        return $data;
-    }
-
     public function getSteps()
     {
         $cart = $this->cartContext->getCart();
@@ -160,5 +116,104 @@ final class CheckoutIdentifierExtension extends \Twig_Extension
         }
 
         return $shopSteps;
+    }
+
+    /**
+     * @param string $type
+     * @return mixed
+     */
+    public function getStep($type = '')
+    {
+        $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
+
+        $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))) . 'Step';
+        if (!method_exists($this, $getter)) {
+            throw new \InvalidArgumentException(sprintf('invalid identifier guess "%s", available guesses are: %s', $type, implode(', ', $validGuesser)));
+        }
+
+        $cart = $this->cartContext->getCart();
+        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
+        $request = $this->requestStack->getMasterRequest();
+        $stepIdentifier = $request->get('stepIdentifier');
+
+        return $this->$getter($cart, $stepIdentifier, $checkoutManager);
+
+    }
+
+    /**
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
+     * @param CheckoutManagerInterface $checkoutManager
+     * @return mixed
+     */
+    protected function getCurrentStep($cart, $stepIdentifier, $checkoutManager)
+    {
+        return $stepIdentifier;
+
+    }
+
+    /**
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
+     * @param CheckoutManagerInterface $checkoutManager
+     * @return mixed
+     */
+    protected function getFirstStep($cart, $stepIdentifier, $checkoutManager)
+    {
+        $steps = $checkoutManager->getSteps();
+        return reset($steps);
+
+    }
+
+    /**
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
+     * @param CheckoutManagerInterface $checkoutManager
+     * @return mixed
+     */
+    protected function getLastStep($cart, $stepIdentifier, $checkoutManager)
+    {
+        $steps = $checkoutManager->getSteps();
+        return end($steps);
+    }
+
+    /**
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
+     * @param CheckoutManagerInterface $checkoutManager
+     * @return mixed
+     */
+    protected function getPreviousStep($cart, $stepIdentifier, $checkoutManager)
+    {
+        $data = null;
+        $request = $this->requestStack->getMasterRequest();
+        $stepIdentifier = $request->get('stepIdentifier');
+        if (!is_null($stepIdentifier)) {
+            if ($checkoutManager->hasPreviousStep($stepIdentifier)) {
+                $step = $checkoutManager->getPreviousStep($stepIdentifier);
+                $data = $step->getIdentifier();
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
+     * @param CheckoutManagerInterface $checkoutManager
+     * @return mixed
+     */
+    protected function getNextStep($cart, $stepIdentifier, $checkoutManager)
+    {
+        $data = null;
+        if (!is_null($stepIdentifier)) {
+            if ($checkoutManager->hasNextStep($stepIdentifier)) {
+                $step = $checkoutManager->getNextStep($stepIdentifier);
+                $data = $step->getIdentifier();
+            }
+        }
+
+        return $data;
+
     }
 }
