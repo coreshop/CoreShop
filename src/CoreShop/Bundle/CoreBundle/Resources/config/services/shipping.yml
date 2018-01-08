@@ -24,6 +24,7 @@ services:
     arguments:
       - '@coreshop.carrier.price_calculator.default'
       - '@coreshop.taxation.factory.tax_calculator'
+      - '@coreshop.taxation.tax_applicator'
 
   coreshop.carrier.cart.store_based_processor:
     class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery

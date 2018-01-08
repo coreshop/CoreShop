@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Shipping\Calculator;
 
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Core\Taxation\TaxApplicatorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
@@ -30,25 +31,28 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
     private $carrierPriceCalculator;
 
     /**
-     * @var TaxCalculatorInterface
-     */
-    private $taxCalculator;
-
-    /**
      * @var TaxCalculatorFactoryInterface
      */
     private $taxCalculatorFactory;
 
+     /**
+     * @var TaxApplicatorInterface
+     */
+    private $taxApplicator;
+
     /**
      * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
+     * @param TaxApplicatorInterface $taxApplicator
      */
     public function __construct(
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
-        TaxCalculatorFactoryInterface $taxCalculatorFactory
+        TaxCalculatorFactoryInterface $taxCalculatorFactory,
+        TaxApplicatorInterface $taxApplicator
     ) {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
+        $this->taxApplicator = $taxApplicator;
     }
 
     /**
@@ -56,17 +60,19 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
      */
     public function getPrice(BaseCarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true)
     {
-        $netPrice = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address);
+        $price = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address);
 
-        if ($withTax && $carrier instanceof CoreCarrierInterface) {
-            $taxCalculator = $this->getTaxCalculator($carrier, $address);
-
-            if ($taxCalculator instanceof TaxCalculatorInterface) {
-                $netPrice = $taxCalculator->applyTaxes($netPrice);
-            }
+        if (!$carrier instanceof CoreCarrierInterface) {
+            return $price;
         }
 
-        return $netPrice;
+        $taxCalculator = $this->getTaxCalculator($carrier, $address);
+
+        if ($taxCalculator instanceof TaxCalculatorInterface) {
+            return $this->taxApplicator->applyTax($price, $taxCalculator, $withTax);
+        }
+
+        return $price;
     }
 
     /**
@@ -74,16 +80,12 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
      */
     private function getTaxCalculator(CoreCarrierInterface $carrier, AddressInterface $address)
     {
-        if (is_null($this->taxCalculator)) {
-            $taxRuleGroup = $carrier->getTaxRule();
+        $taxRuleGroup = $carrier->getTaxRule();
 
-            if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
-                $this->taxCalculator = $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
-            } else {
-                $this->taxCalculator = null;
-            }
+        if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
+            return $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
         }
 
-        return $this->taxCalculator;
+        return null;
     }
 }

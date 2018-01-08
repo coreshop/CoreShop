@@ -31,6 +31,11 @@ services:
     class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
     arguments: ['@coreshop.repository.tax_rule']
 
+  coreshop.taxation.tax_applicator:
+    class: CoreShop\Component\Core\Taxation\TaxApplicator
+    arguments:
+      - '@coreshop.context.store'
+
   coreshop.taxation.factory.cached_tax_calculator:
     class: CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory
     decorates: coreshop.taxation.factory.tax_calculator

@@ -19,7 +19,7 @@ services:
       - '@coreshop.order.purchasable.price_calculator'
       - '@coreshop.order.purchasable.discount_calculator'
       - '@coreshop.product.tax_factory'
-      - '@coreshop.context.store'
+      - '@coreshop.taxation.tax_applicator'
 
   coreshop.templating.helper.price:
     class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper
