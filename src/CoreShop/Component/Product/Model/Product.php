@@ -230,22 +230,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getQuantity()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQuantity($quantity)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIsAvailableWhenOutOfStock()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

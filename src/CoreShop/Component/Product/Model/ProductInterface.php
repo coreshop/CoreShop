@@ -108,20 +108,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     /**
      * @deprecated has been refactored and now uses the Inventory Bundle
      * @deprecated To be removed with 2.0.0-Beta.1
-     * @return int
-     */
-    public function getQuantity();
-
-    /**
-     * @deprecated has been refactored and now uses the Inventory Bundle
-     * @deprecated To be removed with 2.0.0-Beta.1
-     * @param int $quantity
-     */
-    public function setQuantity($quantity);
-
-    /**
-     * @deprecated has been refactored and now uses the Inventory Bundle
-     * @deprecated To be removed with 2.0.0-Beta.1
      * @return bool
      */
     public function getIsAvailableWhenOutOfStock();

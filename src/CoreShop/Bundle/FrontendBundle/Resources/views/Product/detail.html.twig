@@ -57,16 +57,14 @@
                 {% endif %}
                 <li>
                     <span>{{ 'coreshop.ui.availability'|trans }}:</span>
-                    {%  if product.getQuantity > 0 %}
+                    {%  if product.getIsTracked %}
+                        {%  if coreshop_inventory_is_sufficient(product) %}
                         <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
-                    {% elseif product.getIsAvailableWhenOutOfStock %}
-                        <div class="label label-warning">
-                            {{ 'coreshop.ui.out_of_stock_but_on_backorder'|trans }}
-                        </div>
-                    {% else %}
-                        <div class="label label-danger">
+                        {% elseif product.getIsAvailableWhenOutOfStock %}
                             {{ 'coreshop.ui.out_of_stock'|trans }}
-                        </div>
+                        {% endif %}
+                    {% else %}
+                        <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
                     {% endif %}
                 </li>
             </ul>
