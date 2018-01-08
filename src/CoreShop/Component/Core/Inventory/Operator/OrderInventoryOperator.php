@@ -33,20 +33,12 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
 
     /**
      * @param WorkflowManagerInterface $orderWorkflowManager
-     * @param ObjectManager $productEntityManager
+     * @param ObjectManager            $productEntityManager
      */
     public function __construct(WorkflowManagerInterface $orderWorkflowManager, ObjectManager $productEntityManager)
     {
         $this->orderWorkflowManager = $orderWorkflowManager;
         $this->productEntityManager = $productEntityManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function cancel(OrderInterface $order)
-    {
-        $this->giveBack($order);
     }
 
     /**
@@ -94,7 +86,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 ($product->getOnHold() - $orderItem->getQuantity()),
                 0,
                 sprintf(
-                    'Not enough units to decrease on hold quantity from the inventory of a variant "%s".',
+                    'Not enough units to decrease on hold quantity from the inventory of a product "%s".',
                     $product->getName()
                 )
             );
@@ -103,7 +95,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 ($product->getOnHand() - $orderItem->getQuantity()),
                 0,
                 sprintf(
-                    'Not enough units to decrease on hand quantity from the inventory of a variant "%s".',
+                    'Not enough units to decrease on hand quantity from the inventory of a product "%s".',
                     $product->getName()
                 )
             );
@@ -116,11 +108,42 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
+    /**
+     * @param OrderInterface $order
+     */
+    public function release(OrderInterface $order)
+    {
+        /** @var OrderItemInterface $orderItem */
+        foreach ($order->getItems() as $orderItem) {
+            $product = $orderItem->getProduct();
+
+            if (!$product instanceof StockableInterface) {
+                continue;
+            }
+
+            if (!$product->getIsTracked()) {
+                continue;
+            }
+
+            Assert::greaterThanEq(
+                ($product->getOnHold() - $orderItem->getQuantity()),
+                0,
+                sprintf(
+                    'Not enough units to decrease on hold quantity from the inventory of a product "%s".',
+                    $product->getName()
+                )
+            );
+            $product->setOnHold($product->getOnHold() - $orderItem->getQuantity());
+            $this->productEntityManager->persist($product);
+        }
+
+        $this->productEntityManager->flush();
+    }
 
     /**
      * @param OrderInterface $order
      */
-    private function giveBack(OrderInterface $order)
+    public function giveBack(OrderInterface $order)
     {
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getItems() as $orderItem) {

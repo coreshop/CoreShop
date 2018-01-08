@@ -18,13 +18,6 @@ interface OrderInventoryOperatorInterface
 {
     /**
      * @param OrderInterface $order
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function cancel(OrderInterface $order);
-    
-    /**
-     * @param OrderInterface $order
      */
     public function hold(OrderInterface $order);
 
@@ -34,4 +27,18 @@ interface OrderInventoryOperatorInterface
      * @throws \InvalidArgumentException
      */
     public function sell(OrderInterface $order);
+
+    /**
+     * @param OrderInterface $order
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function release(OrderInterface $order);
+
+    /**
+     * @param OrderInterface $order
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function giveBack(OrderInterface $order);
 }

@@ -46,17 +46,19 @@ final class InventoryLockingProductsListener
         try {
             if ($event->getNewState() === WorkflowManagerInterface::ORDER_STATE_INITIALIZED) {
                 $this->orderInventoryOperator->hold($order);
-            }
-
-            if ($event->getNewState() === WorkflowManagerInterface::ORDER_STATE_PROCESSING) {
+            } elseif ($event->getNewState() === WorkflowManagerInterface::ORDER_STATE_PROCESSING) {
                 $this->orderInventoryOperator->sell($order);
+            } elseif ($event->getNewState() === WorkflowManagerInterface::ORDER_STATE_CANCELED) {
+                if (in_array($event->getOldState(), [
+                    WorkflowManagerInterface::ORDER_STATE_PROCESSING,
+                    WorkflowManagerInterface::ORDER_STATE_COMPLETE
+                ])) {
+                    $this->orderInventoryOperator->giveBack($order);
+                } elseif ($event->getOldState() === WorkflowManagerInterface::ORDER_STATE_INITIALIZED) {
+                    $this->orderInventoryOperator->release($order);
+                }
             }
-
-            if ($event->getNewState() === WorkflowManagerInterface::ORDER_STATE_CANCELED) {
-                $this->orderInventoryOperator->cancel($order);
-            }
-        }
-        catch (\InvalidArgumentException $ex) {
+        } catch (\InvalidArgumentException $ex) {
             //TODO: Not Sure yet what to do :/
         }
     }
