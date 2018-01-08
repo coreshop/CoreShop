@@ -5,13 +5,20 @@ parameters:
 
 services:
 
-  coreshop.twig.extension.checkout_identifier:
-    class: CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension
+  coreshop.templating.helper.checkout_identifier:
+    class: CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper
     arguments:
       - '@request_stack'
       - '@router'
       - '@coreshop.checkout_manager.factory.default'
       - '@coreshop.context.cart'
+    tags:
+      - { name: templating.helper, alias: coreshop_checkout_identifier}
+
+  coreshop.twig.extension.checkout_identifier:
+    class: CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension
+    arguments:
+      - '@coreshop.templating.helper.checkout_identifier'
     tags:
       - { name: twig.extension }
 
