@@ -112,8 +112,6 @@ class CheckoutController extends FrontendController
 
         $dataForStep = array_merge($preparedData, [
             'cart' => $cart,
-            'checkoutSteps' => $checkoutManager->getSteps(),
-            'currentStep' => $checkoutManager->getCurrentStepIndex($stepIdentifier),
             'step' => $step,
             'identifier' => $stepIdentifier,
         ]);

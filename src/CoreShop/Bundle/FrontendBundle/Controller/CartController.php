@@ -166,11 +166,8 @@ class CartController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        $checkoutManager = $this->get('coreshop.checkout_manager.factory.default')->createCheckoutManager($this->getCart());
-
         return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
             'cart' => $this->getCart(),
-            'checkoutSteps' => $checkoutManager->getSteps(),
             'currentCheckoutStep' => 0
         ]);
     }

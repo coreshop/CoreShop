@@ -126,7 +126,7 @@ class AddressCheckoutStep implements CheckoutStepInterface
         $customer = $this->tokenStorage->getToken()->getUser();
 
         if (!$customer instanceof CustomerInterface) {
-            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', get_class($customer)), 'coreshop.ui.error.coreshop_checkout_internal_error');
+            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
         return $customer;

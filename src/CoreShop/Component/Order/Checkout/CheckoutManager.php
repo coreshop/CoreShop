@@ -135,7 +135,7 @@ class CheckoutManager implements CheckoutManagerInterface
      */
     public function getCurrentStepIndex($identifier)
     {
-        return $this->serviceRegistry->getIndex($identifier) + 1; //Checkout Steps are 1 based
+        return $this->serviceRegistry->getIndex($identifier);
     }
 
     /**
