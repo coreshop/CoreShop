@@ -61,7 +61,7 @@ final class CartShippingProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
-        if ($cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
+        if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return;
         }
         
