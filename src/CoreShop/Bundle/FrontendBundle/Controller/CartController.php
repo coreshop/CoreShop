@@ -77,6 +77,7 @@ class CartController extends FrontendController
                     return $this->redirectToRoute('coreshop_cart_summary');
                 }
 
+                // TODO: would be better to do that inside the form
                 foreach ($this->getCart()->getPriceRules() as $rule) {
                     if (!$rule instanceof CartPriceRuleInterface) {
                         continue;
