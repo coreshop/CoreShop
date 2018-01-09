@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
@@ -74,6 +75,17 @@ class CartController extends FrontendController
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                     $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
                     return $this->redirectToRoute('coreshop_cart_summary');
+                }
+
+                foreach ($this->getCart()->getPriceRules() as $rule) {
+                    if (!$rule instanceof CartPriceRuleInterface) {
+                        continue;
+                    }
+
+                    if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
+                        $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
+                        return $this->redirectToRoute('coreshop_cart_summary');
+                    }
                 }
 
                 $priceRule = $voucherCode->getCartPriceRule();
