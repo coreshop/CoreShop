@@ -107,7 +107,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 $product->setEan($faker->ean13);
                 $product->setActive(true);
                 $product->setCategories([$usedCategory]);
-                $product->setQuantity(10);
+                $product->setOnHand(10);
                 $product->setWholesalePrice($faker->randomFloat(2, 100, 200) * 100);
 
                 foreach ($stores as $store) {
