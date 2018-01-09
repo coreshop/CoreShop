@@ -17,6 +17,7 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
@@ -44,6 +45,9 @@ class CustomerRegistrationType extends AbstractType
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
                 'constraints' => new IsTrue(),
+            ))
+            ->add('_redirect', HiddenType::class, array(
+                'mapped' => false,
             ))
             ->add('submit', SubmitType::class);
     }
