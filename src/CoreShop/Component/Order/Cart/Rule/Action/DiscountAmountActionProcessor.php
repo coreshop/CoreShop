@@ -81,7 +81,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     {
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
-        $cartAmount = $cart->getTotal($withTax) - $cart->getDiscount($withTax);
+        $cartAmount = $cart->getTotal($withTax);
 
         $subTotalTe = $cart->getTotal(false);
         $subTotalTax = $cart->getTotalTax();
