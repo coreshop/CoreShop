@@ -123,6 +123,9 @@ class CustomerController extends FrontendController
 
         $form = $this->get('form.factory')->createNamed('address', AddressType::class, $address);
 
+        $redirect = $request->get('_redirect', $this->generateUrl('coreshop_customer_addresses'));
+        $form->get('_redirect')->setData($redirect);
+
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
@@ -137,7 +140,7 @@ class CustomerController extends FrontendController
                 $customer->addAddress($address);
                 $customer->save();
 
-                return $this->redirectToRoute('coreshop_customer_addresses');
+                return $this->redirect($handledForm->get('_redirect')->getData());
             }
         }
 
