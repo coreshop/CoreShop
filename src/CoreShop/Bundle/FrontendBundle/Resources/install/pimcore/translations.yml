@@ -598,3 +598,9 @@ translations:
           de_CH: 'Absteigend'
           en: 'Descending'
           de: 'Absteigend'
+
+  coreshop.cart_item.quantity.min:
+      languages:
+          de_CH: 'Die Menge eines Produktes im Warenkorb kann nicht kleiner als 1 sein.'
+          de: 'Die Menge eines Produktes im Warenkorb kann nicht kleiner als 1 sein.'
+          en: 'Quantity of an order item cannot be lower than 1.'
