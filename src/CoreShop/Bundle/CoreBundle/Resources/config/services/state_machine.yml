@@ -1,0 +1,25 @@
+services:
+  coreshop.state_machine_processor:
+    class: CoreShop\Bundle\CoreBundle\StateMachine\StateMachineProcessor
+
+  coreshop.registry.state_machine_resolver:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - 'CoreShop\Component\Core\StateMachine\StateMachineResolverInterface'
+      - 'coreshop_state_machine_resolver'
+
+  coreshop.state_machine_resolver.order:
+    class: CoreShop\Bundle\CoreBundle\StateMachine\StateResolver\OrderStateResolver
+    arguments:
+      - '@workflow.registry'
+    tags:
+      - { name: coreshop.state_machine_resolver, type: order_resolver }
+
+  ## event handler
+  coreshop.state_machine_listener_processor:
+    class: CoreShop\Bundle\CoreBundle\StateMachine\EventListener\WorkflowListener
+    arguments:
+      - '%coreshop.state_machine.callbacks%'
+      - '@coreshop.registry.state_machine_resolver'
+    tags:
+      - { name: kernel.event_subscriber }

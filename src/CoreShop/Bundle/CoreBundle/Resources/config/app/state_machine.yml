@@ -1,0 +1,28 @@
+framework:
+  workflows:
+    coreshop_order:
+      type: 'state_machine'
+      marking_store:
+        type: 'single_state'
+        arguments: 'orderState'
+      supports: CoreShop\Component\Core\Model\Order
+      places:
+          - new
+          - cancelled
+          - complete
+      transitions:
+        cancel:
+          from: new
+          to:   cancelled
+        complete:
+          from: new
+          to:   complete
+
+core_shop_core:
+  state_machine:
+    callbacks:
+      coreshop_order:
+        after:
+          resolve_state:
+            on: ['complete']
+            do: ['order_resolver', 'resolve'] # first arguments needs to be a valid width "coreshop.state_machine_resolver" tagged service!
