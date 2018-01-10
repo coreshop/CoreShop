@@ -2,13 +2,11 @@
 
 namespace CoreShop\Component\Core\Order\Transformer;
 
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderStates;
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderTransitions;
-use CoreShop\Bundle\CoreBundle\StateMachine\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Resource\Workflow\StateMachineApplier;
 
 final class CartToOrderTransformer implements ProposalTransformerInterface
 {
