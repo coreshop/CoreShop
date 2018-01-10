@@ -71,12 +71,6 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             $this->registerCheckout($container, $config['checkout']);
         }
 
-        if (array_key_exists('state_machine', $config)) {
-            $container->setParameter('coreshop.state_machine.callbacks', $config['state_machine']['callbacks']);
-        } else {
-            throw new \InvalidArgumentException('No valid state_machine section has been configured!');
-        }
-
         if (array_key_exists('checkout_manager_factory', $config)) {
             $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $config['checkout_manager_factory']));
             $container->setAlias('coreshop.checkout_manager.factory', $alias);

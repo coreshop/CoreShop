@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\StateMachine\CallBack;
+namespace CoreShop\Component\Resource\Workflow\Callback;
 
-use CoreShop\Bundle\CoreBundle\StateMachine\StateMachineManager;
+use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\Workflow\Event\Event;
 
 class CascadeTransition

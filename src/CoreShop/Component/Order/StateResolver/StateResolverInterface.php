@@ -10,11 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\StateMachine;
+namespace CoreShop\Component\Order\StateResolver;
 
-final class OrderInvoiceStates
+use CoreShop\Component\Order\Model\OrderInterface;
+
+interface StateResolverInterface
 {
-    const STATE_NEW = 'new';
-    const STATE_CANCELLED = 'cancelled';
-    const STATE_INVOICED = 'invoiced';
+    /**
+     * @param OrderInterface $order
+     * @return mixed
+     */
+    public function resolve(OrderInterface $order);
 }

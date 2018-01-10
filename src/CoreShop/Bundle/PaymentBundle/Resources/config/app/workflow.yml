@@ -28,18 +28,3 @@ framework:
         refund:
           from: [completed]
           to: refunded
-
-core_shop_core:
-  state_machine:
-    callbacks:
-      coreshop_payment:
-        after:
-          # implement processors?
-          #process_order:
-            #on: ['fail', 'cancel']
-            #do: ['@coreshop.order_payment_processor', 'process']
-            #args: ['object.getOrder()']
-          resolve_state:
-            on: ['complete', 'refund']
-            do: ['@coreshop.state_machine_resolver.order_payment', 'resolve']
-            args: ['object.getOrder()']

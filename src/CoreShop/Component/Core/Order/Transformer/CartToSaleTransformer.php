@@ -2,17 +2,17 @@
 
 namespace CoreShop\Component\Core\Order\Transformer;
 
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderInvoiceStates;
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderPaymentStates;
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderShippingStates;
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderStates;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\QuoteInterface;
+use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderShippingStates;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use Webmozart\Assert\Assert;
 

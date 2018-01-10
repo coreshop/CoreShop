@@ -4,6 +4,7 @@ imports:
   - { resource: "services/order_shipment.yml" }
   - { resource: "services/cart-price-rules.yml" }
   - { resource: "services/workflow.yml" }
+  - { resource: "services/workflow_old.yml" }
   - { resource: "services/pdf.yml" }
   - { resource: "services/purchasable.yml" }
   - { resource: "services/context.yml" }

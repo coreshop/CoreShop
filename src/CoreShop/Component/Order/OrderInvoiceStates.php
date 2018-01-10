@@ -10,14 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\StateMachine;
+namespace CoreShop\Component\Order;
 
-final class OrderShippingStates
+final class OrderInvoiceStates
 {
-    const STATE_INITIALIZED = 'initialized';
     const STATE_NEW = 'new';
-    const STATE_READY = 'ready';
     const STATE_CANCELLED = 'cancelled';
-    const STATE_PARTIALLY_SHIPPED = 'partially_shipped';
-    const STATE_SHIPPED = 'shipped';
+    const STATE_INVOICED = 'invoiced';
 }

@@ -12,11 +12,10 @@
 
 namespace CoreShop\Component\Core\Inventory\Operator;
 
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderPaymentStates;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 
@@ -28,7 +27,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
     private $productEntityManager;
 
     /**
-     * @param ObjectManager            $productEntityManager
+     * @param ObjectManager $productEntityManager
      */
     public function __construct(ObjectManager $productEntityManager)
     {

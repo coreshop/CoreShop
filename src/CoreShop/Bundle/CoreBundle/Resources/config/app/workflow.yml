@@ -1,0 +1,4 @@
+imports:
+  - { resource: "workflow/coreshop_order.yml" }
+  - { resource: "workflow/coreshop_payment.yml" }
+  - { resource: "workflow/coreshop_order_payment.yml" }

@@ -37,7 +37,6 @@ final class Configuration implements ConfigurationInterface
         ;
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCheckoutConfigurationSection($rootNode);
-        $this->addStateMachineSection($rootNode);
 
         return $treeBuilder;
     }
@@ -173,48 +172,5 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ->end();
-    }
-
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addStateMachineSection(ArrayNodeDefinition $node)
-    {
-        $callbacks = $node
-            ->children()
-                ->arrayNode('state_machine')
-                    ->children()
-                        ->arrayNode('callbacks')
-                            ->useAttributeAsKey('name')
-                            ->prototype('array')
-                            ->children();
-
-        $this->addSubCallbackSection($callbacks, 'guard');
-        $this->addSubCallbackSection($callbacks, 'before');
-        $this->addSubCallbackSection($callbacks, 'after');
-
-        $callbacks->end()->end()->end()->end()->end();
-
-    }
-
-    /**
-     * @param NodeBuilder $callbacks
-     * @param string      $type
-     */
-    protected function addSubCallbackSection(NodeBuilder $callbacks, $type)
-    {
-        $callbacks
-            ->arrayNode($type)
-                ->useAttributeAsKey('name')
-                ->prototype('array')
-                    ->children()
-                        ->variableNode('on')->end()
-                        ->variableNode('do')->end()
-                        ->scalarNode('priority')->defaultValue(0)->end()
-                        ->arrayNode('args')->performNoDeepMerging()->prototype('scalar')->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
     }
 }

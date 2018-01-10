@@ -33,7 +33,7 @@ framework:
           from: [paid, partially_paid, partially_refunded]
           to: refunded
 
-core_shop_core:
+core_shop_resource:
   state_machine:
     callbacks:
       coreshop_order_payment:

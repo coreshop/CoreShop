@@ -10,11 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\StateMachine;
-
-use Symfony\Component\Workflow\Registry;
-use Symfony\Component\Workflow\Transition;
-use Symfony\Component\Workflow\Workflow;
+namespace CoreShop\Component\Resource\Workflow;
 
 final class StateMachineApplier
 {

@@ -17,7 +17,7 @@ imports:
   - { resource: "@CoreShopCoreBundle/Resources/config/app/security.yml" }
   - { resource: "@CoreShopCoreBundle/Resources/config/app/payum.yml" }
   - { resource: "@CoreShopCoreBundle/Resources/config/app/checkout.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/state_machine.yml" }
+  - { resource: "@CoreShopCoreBundle/Resources/config/app/workflow.yml" }
 
 jms_serializer:
   metadata:

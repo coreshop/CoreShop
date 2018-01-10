@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
-use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
+use CoreShop\Bundle\AddressBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

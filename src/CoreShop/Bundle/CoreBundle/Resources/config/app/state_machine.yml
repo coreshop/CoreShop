@@ -1,4 +1,0 @@
-imports:
-  - { resource: "state_machine/coreshop_order.yml" }
-  - { resource: "state_machine/coreshop_payment.yml" }
-  - { resource: "state_machine/coreshop_order_payment.yml" }

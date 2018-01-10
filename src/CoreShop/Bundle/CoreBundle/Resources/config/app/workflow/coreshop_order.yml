@@ -1,27 +1,9 @@
 framework:
   workflows:
     coreshop_order:
-      type: 'state_machine'
-      marking_store:
-        service: coreshop.state_machine.marking_store.order_pimcore_marketing_store
       supports: CoreShop\Component\Core\Model\Order
-      places:
-          - initialized
-          - new
-          - cancelled
-          - complete
-      transitions:
-        create:
-          from: [initialized]
-          to: new
-        cancel:
-          from: new
-          to:   cancelled
-        complete:
-          from: new
-          to:   complete
 
-core_shop_core:
+core_shop_resource:
   state_machine:
     callbacks:
       coreshop_order:

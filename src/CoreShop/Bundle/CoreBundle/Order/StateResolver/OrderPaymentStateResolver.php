@@ -10,15 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\StateMachine\StateResolver;
+namespace CoreShop\Bundle\CoreBundle\Order\StateResolver;
 
-use CoreShop\Bundle\CoreBundle\StateMachine\OrderPaymentTransitions;
-use CoreShop\Bundle\CoreBundle\StateMachine\StateMachineManager;
-use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\OrderPaymentTransitions;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\Workflow\Workflow;
 
-final class OrderPaymentStateResolver implements StateMachineResolverInterface
+final class OrderPaymentStateResolver implements StateResolverInterface
 {
     /**
      * @var StateMachineManager

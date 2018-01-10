@@ -43,6 +43,12 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        if (array_key_exists('state_machine', $config)) {
+            $container->setParameter('coreshop.state_machine.callbacks', $config['state_machine']['callbacks']);
+        } else {
+            throw new \InvalidArgumentException('No valid state_machine section has been configured!');
+        }
+
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
     }
 

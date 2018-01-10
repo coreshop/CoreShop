@@ -3,6 +3,7 @@ imports:
     - { resource: "services/controller.yml" }
     - { resource: "services/installer.yml" }
     - { resource: "services/commands.yml" }
+    - { resource: "services/workflow.yml" }
 
 parameters:
   coreshop.admin.route.base: /admin/coreshop

@@ -1,0 +1,48 @@
+## TO BE REMOVED WHEN state-machine FINISHED
+
+parameters:
+  coreshop.workflow.manager.order.state_identifier: 'Order State Change'
+
+services:
+  coreshop.workflow.manager.registry:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - 'CoreShop\Component\Order\Workflow\WorkflowManagerInterface'
+      - 'workflow-managers'
+
+  coreshop.workflow.manager.order.validators:
+    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+    arguments:
+      - 'CoreShop\Component\Order\Workflow\ProposalValidatorInterface'
+      - 'workflow-order-manager-validators'
+
+  coreshop.workflow.manager.order:
+    class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowManager
+    arguments:
+      - '@coreshop.workflow.manager.order.validators'
+      - '@event_dispatcher'
+      - 'CoreShop\Component\Order\Model\OrderInterface'
+      - '@pimcore.translator'
+      - '%coreshop.workflow.manager.order.state_identifier%'
+      - '@security.token_storage'
+    tags:
+      - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+
+  coreshop.workflow.manager.order.validator.payment:
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\PaymentValidator
+    tags:
+        - {name: coreshop.workflow.validator, type: payment, priority: 10, manager: coreshop.workflow.manager.order}
+
+  coreshop.workflow.manager.order.validator.invoice:
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\OrderDocumentValidator
+    arguments:
+      - '@coreshop.order.invoice.processable'
+    tags:
+        - {name: coreshop.workflow.validator, type: invoice, priority: 20, manager: coreshop.workflow.manager.order}
+
+  coreshop.workflow.manager.order.validator.shipment:
+    class: CoreShop\Bundle\OrderBundle\Workflow\Order\OrderDocumentValidator
+    arguments:
+      - '@coreshop.order.shipment.processable'
+    tags:
+        - {name: coreshop.workflow.validator, type: shipment, priority: 30, manager: coreshop.workflow.manager.order}

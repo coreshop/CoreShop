@@ -1,0 +1,22 @@
+services:
+    coreshop.state_machine_resolver.order:
+        public: true
+        class: CoreShop\Bundle\CoreBundle\Order\StateResolver\OrderStateResolver
+        arguments:
+          - '@coreshop.state_machine_manager'
+
+    coreshop.state_machine_resolver.order_payment:
+        public: true
+        class: CoreShop\Bundle\CoreBundle\Order\StateResolver\OrderPaymentStateResolver
+        arguments:
+            - '@coreshop.state_machine_manager'
+
+    coreshop.state_machine.marking_store.single_state.order_payment_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - paymentState
+
+    coreshop.state_machine.marking_store.order_payment_pimcore_marketing_store:
+        class: CoreShop\Component\Resource\Workflow\MarketingStore\PimcorePersistentMarkingStore
+        arguments:
+            - '@coreshop.state_machine.marking_store.single_state.order_payment_state'

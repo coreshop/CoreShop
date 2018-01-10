@@ -10,12 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\StateMachine;
+namespace CoreShop\Component\Payment;
 
-final class OrderStates
+final class PaymentTransitions
 {
-    const STATE_INITIALIZED = 'initialized';
-    const STATE_NEW = 'new';
-    const STATE_CANCELLED = 'cancelled';
-    const STATE_COMPLETE = 'complete';
+    const IDENTIFIER = 'coreshop_payment';
+
+    const TRANSITION_CREATE = 'create';
+    const TRANSITION_PROCESS = 'process';
+    const TRANSITION_COMPLETE = 'complete';
+    const TRANSITION_FAIL = 'fail';
+    const TRANSITION_CANCEL = 'cancel';
+    const TRANSITION_REFUND = 'refund';
+    const TRANSITION_VOID = 'void';
 }
