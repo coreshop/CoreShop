@@ -30,7 +30,7 @@ core_shop_resource:
           request_payment:
             on: ['create']
             do: ['@coreshop.state_machine_cascade_transition', 'apply']
-            args: ['object.getPayments()', 'event', '"request_payment"', '"coreshop_order_payment"']
+            args: ['object', 'event', '"request_payment"', '"coreshop_order_payment"']
           hold_inventory:
             on: ['create']
             do: ['@coreshop.inventory.order_operator', 'hold']
