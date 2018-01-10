@@ -18,6 +18,8 @@ use CoreShop\Component\Registry\ServiceRegistry;
 use Pimcore\Event\Model\WorkflowEvent;
 
 /**
+ * @deprecated remove this after state machine is implemented.
+ *
  * This class is kinda special, since Pimcore doesn't yet allow
  * Workflow Event Classes to be services, we need to have this
  * kind of "in-the-middle" class
@@ -26,6 +28,8 @@ final class WorkflowHelper
 {
     public static function beforeDispatchOrderChange(WorkflowEvent $event)
     {
+        return;
+
         $pimcoreManager = $event->getWorkflowManager();
 
         /**
@@ -48,6 +52,8 @@ final class WorkflowHelper
 
     public static function successDispatchOrderChange(WorkflowEvent $event)
     {
+        return;
+
         $pimcoreManager = $event->getWorkflowManager();
 
         /**
@@ -70,6 +76,8 @@ final class WorkflowHelper
 
     public static function failureDispatchOrderChange(WorkflowEvent $event)
     {
+        return;
+
         $pimcoreManager = $event->getWorkflowManager();
 
         /**

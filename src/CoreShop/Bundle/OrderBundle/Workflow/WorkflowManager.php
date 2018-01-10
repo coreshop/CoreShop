@@ -26,6 +26,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 use Pimcore\WorkflowManagement\Workflow;
 
+/**
+ * Class WorkflowManager
+ *
+ * @deprecated remove this after state machine is implemented.
+ * @package CoreShop\Bundle\OrderBundle\Workflow
+ */
 final class WorkflowManager implements WorkflowManagerInterface
 {
     /**

@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\CoreBundle\StateMachine;
 
 final class OrderPaymentTransitions
 {
+    const IDENTIFIER = 'coreshop_order_payment';
+
     const TRANSITION_REQUEST_PAYMENT = 'request_payment';
     const TRANSITION_PARTIALLY_PAY = 'partially_pay';
     const TRANSITION_CANCEL = 'cancel';

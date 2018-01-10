@@ -1,0 +1,45 @@
+framework:
+  workflows:
+    coreshop_payment:
+      type: 'state_machine'
+      marking_store:
+        service: coreshop.state_machine.marking_store.payment_orm_marketing_store
+      supports: CoreShop\Component\Payment\Model\Payment
+      places:
+          - new
+          - processing
+          - completed
+          - failed
+          - cancelled
+          - refunded
+      transitions:
+        process:
+          from: [new]
+          to: processing
+        complete:
+          from: [new, processing]
+          to: completed
+        fail:
+          from: [new, processing]
+          to: failed
+        cancel:
+          from: [new, processing]
+          to: cancelled
+        refund:
+          from: [completed]
+          to: refunded
+
+core_shop_core:
+  state_machine:
+    callbacks:
+      coreshop_payment:
+        after:
+          # implement processors?
+          #process_order:
+            #on: ['fail', 'cancel']
+            #do: ['@coreshop.order_payment_processor', 'process']
+            #args: ['object.getOrder()']
+          resolve_state:
+            on: ['complete', 'refund']
+            do: ['@coreshop.state_machine_resolver.order_payment', 'resolve']
+            args: ['object.getOrder()']

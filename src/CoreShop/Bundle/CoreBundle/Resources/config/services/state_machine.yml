@@ -1,25 +1,70 @@
 services:
-  coreshop.state_machine_processor:
-    class: CoreShop\Bundle\CoreBundle\StateMachine\StateMachineProcessor
 
-  coreshop.registry.state_machine_resolver:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - 'CoreShop\Component\Core\StateMachine\StateMachineResolverInterface'
-      - 'coreshop_state_machine_resolver'
-
-  coreshop.state_machine_resolver.order:
-    class: CoreShop\Bundle\CoreBundle\StateMachine\StateResolver\OrderStateResolver
+  coreshop.state_machine_manager:
+    class: CoreShop\Bundle\CoreBundle\StateMachine\StateMachineManager
     arguments:
       - '@workflow.registry'
-    tags:
-      - { name: coreshop.state_machine_resolver, type: order_resolver }
+
+  coreshop.state_machine_applier:
+    class: CoreShop\Bundle\CoreBundle\StateMachine\StateMachineApplier
+    arguments:
+      - '@coreshop.state_machine_manager'
+
+  coreshop.state_machine_cascade_transition:
+    public: true
+    class: CoreShop\Bundle\CoreBundle\StateMachine\CallBack\CascadeTransition
+    arguments:
+      - '@coreshop.state_machine_manager'
+
+  coreshop.state_machine_resolver.order:
+    public: true
+    class: CoreShop\Bundle\CoreBundle\StateMachine\StateResolver\OrderStateResolver
+    arguments:
+      - '@coreshop.state_machine_manager'
+
+  coreshop.state_machine_resolver.order_payment:
+    public: true
+    class: CoreShop\Bundle\CoreBundle\StateMachine\StateResolver\OrderPaymentStateResolver
+    arguments:
+      - '@coreshop.state_machine_manager'
 
   ## event handler
   coreshop.state_machine_listener_processor:
     class: CoreShop\Bundle\CoreBundle\StateMachine\EventListener\WorkflowListener
     arguments:
       - '%coreshop.state_machine.callbacks%'
-      - '@coreshop.registry.state_machine_resolver'
+      - '@service_container'
     tags:
       - { name: kernel.event_subscriber }
+
+  ## state machine persis
+  coreshop.state_machine.marking_store.single_state.state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - state
+
+  coreshop.state_machine.marking_store.single_state.order_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - orderState
+
+  coreshop.state_machine.marking_store.single_state.order_payment_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - paymentState
+
+  coreshop.state_machine.marking_store.payment_orm_marketing_store:
+        class: CoreShop\Bundle\CoreBundle\StateMachine\MarketingStore\OrmPersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.state'
+          - '@doctrine'
+
+  coreshop.state_machine.marking_store.order_pimcore_marketing_store:
+        class: CoreShop\Bundle\CoreBundle\StateMachine\MarketingStore\PimcorePersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.order_state'
+
+  coreshop.state_machine.marking_store.order_payment_pimcore_marketing_store:
+        class: CoreShop\Bundle\CoreBundle\StateMachine\MarketingStore\PimcorePersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.order_payment_state'

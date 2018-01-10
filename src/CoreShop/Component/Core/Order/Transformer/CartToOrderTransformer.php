@@ -2,10 +2,13 @@
 
 namespace CoreShop\Component\Core\Order\Transformer;
 
+use CoreShop\Bundle\CoreBundle\StateMachine\OrderStates;
+use CoreShop\Bundle\CoreBundle\StateMachine\OrderTransitions;
+use CoreShop\Bundle\CoreBundle\StateMachine\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 
 final class CartToOrderTransformer implements ProposalTransformerInterface
 {
@@ -15,32 +18,33 @@ final class CartToOrderTransformer implements ProposalTransformerInterface
     protected $innerCartToOrderTransformer;
 
     /**
-     * @var WorkflowManagerInterface
+     * @var StateMachineApplier
      */
-    protected $orderWorkflowManager;
+    protected $stateMachineApplier;
 
     /**
      * @param ProposalTransformerInterface $innerCartToOrderTransformer
-     * @param WorkflowManagerInterface $orderWorkflowManager
+     * @param StateMachineApplier          $stateMachineApplier
      */
     public function __construct(
         ProposalTransformerInterface $innerCartToOrderTransformer,
-        WorkflowManagerInterface $orderWorkflowManager
-    )
-    {
+        StateMachineApplier $stateMachineApplier
+    ) {
         $this->innerCartToOrderTransformer = $innerCartToOrderTransformer;
-        $this->orderWorkflowManager = $orderWorkflowManager;
+        $this->stateMachineApplier = $stateMachineApplier;
     }
 
+    /**
+     * @param ProposalInterface $cart
+     * @param ProposalInterface $sale
+     * @return ProposalInterface|mixed
+     */
     public function transform(ProposalInterface $cart, ProposalInterface $sale)
     {
         $sale = $this->innerCartToOrderTransformer->transform($cart, $sale);
 
         if ($sale instanceof OrderInterface) {
-            $this->orderWorkflowManager->changeState($sale, 'change_order_state', [
-                'newState' => WorkflowManagerInterface::ORDER_STATE_INITIALIZED,
-                'newStatus' => WorkflowManagerInterface::ORDER_STATE_INITIALIZED,
-            ]);
+            $this->stateMachineApplier->apply($sale, 'coreshop_order', OrderTransitions::TRANSITION_CREATE);
         }
 
         return $sale;

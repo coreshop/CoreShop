@@ -19,6 +19,9 @@ use CoreShop\Component\Order\Workflow\ProposalValidatorInterface;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @deprecated remove this after state machine is implemented.
+ */
 final class OrderDocumentValidator implements ProposalValidatorInterface
 {
     /**

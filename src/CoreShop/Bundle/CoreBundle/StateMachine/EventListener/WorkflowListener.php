@@ -12,8 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\StateMachine\EventListener;
 
-use CoreShop\Component\Registry\ServiceRegistryInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
+use Pimcore\Model\DataObject\Concrete;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowListener implements EventSubscriberInterface
@@ -24,20 +27,23 @@ class WorkflowListener implements EventSubscriberInterface
     private $callbackConfig;
 
     /**
-     * @var ServiceRegistryInterface
+     * @var ContainerInterface
      */
-    private $serviceRegistry;
+    protected $container;
 
     /**
-     * @param array                    $callbackConfig
-     * @param ServiceRegistryInterface $serviceRegistry
+     * @param array              $callbackConfig
+     * @param ContainerInterface $container
      */
-    public function __construct($callbackConfig = [], ServiceRegistryInterface $serviceRegistry)
+    public function __construct($callbackConfig = [], ContainerInterface $container)
     {
         $this->callbackConfig = $callbackConfig;
-        $this->serviceRegistry = $serviceRegistry;
+        $this->container = $container;
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -67,20 +73,49 @@ class WorkflowListener implements EventSubscriberInterface
                 continue;
             }
 
-            if (empty($callback['do']) || count($callback['do']) !== 2) {
+            if (empty($callback['do'])) {
                 continue;
             }
 
-            $service = $callback['do'][0];
-            $method = $callback['do'][1];
+            $this->call($event, $callback['do'], $callback['args']);
+        }
+    }
 
-            if (!$this->serviceRegistry->has($service)) {
-                continue;
-            }
+    /**
+     * @param Event $event
+     * @param array $callable
+     * @param array $callableArgs
+     * @return mixed
+     */
+    public function call(Event $event, array $callable, $callableArgs = [])
+    {
+        if (
+            is_array($callable)
+            && is_string($callable[0])
+            && 0 === strpos($callable[0], '@')
+        ) {
+            $serviceId = substr($callable[0], 1);
+            $callable[0] = $this->container->get($serviceId);
+        }
 
-            $service = $this->serviceRegistry->get($service);
-            $service->$method($event->getSubject());
+        if (empty($callableArgs)) {
+            $args = [$event];
+        } else {
+            $expr = new ExpressionLanguage();
+            $args = array_map(
+                function ($arg) use ($expr, $event) {
+                    if (!is_string($arg)) {
+                        return $arg;
+                    }
+                    return $expr->evaluate($arg, [
+                        'object' => $event->getSubject(),
+                        'event'  => $event
+                    ]);
+                }, $callableArgs
+            );
 
         }
+
+        call_user_func_array($callable, $args);
     }
 }

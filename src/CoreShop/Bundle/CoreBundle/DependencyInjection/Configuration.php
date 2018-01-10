@@ -211,6 +211,7 @@ final class Configuration implements ConfigurationInterface
                         ->variableNode('on')->end()
                         ->variableNode('do')->end()
                         ->scalarNode('priority')->defaultValue(0)->end()
+                        ->arrayNode('args')->performNoDeepMerging()->prototype('scalar')->end()
                     ->end()
                 ->end()
             ->end()

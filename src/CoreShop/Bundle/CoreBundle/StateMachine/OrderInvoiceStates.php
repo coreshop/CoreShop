@@ -8,23 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
-
-namespace CoreShop\Component\Order\Workflow;
-
-use CoreShop\Component\Order\Model\ProposalInterface;
-
-/**
- * @deprecated remove this after state machine is implemented.
  */
-interface ProposalValidatorInterface
+
+namespace CoreShop\Bundle\CoreBundle\StateMachine;
+
+final class OrderInvoiceStates
 {
-    /**
-     * @param ProposalInterface $proposal
-     * @param $currentState
-     * @param $newState
-     *
-     * @return mixed
-     */
-    public function isValidForState(ProposalInterface $proposal, $currentState, $newState);
+    const STATE_NEW = 'new';
+    const STATE_CANCELLED = 'cancelled';
+    const STATE_INVOICED = 'invoiced';
 }

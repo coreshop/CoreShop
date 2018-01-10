@@ -10,11 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\StateMachine;
+namespace CoreShop\Bundle\CoreBundle\StateMachine;
 
-use CoreShop\Component\Core\Model\OrderInterface;
-
-interface StateMachineResolverInterface
+final class OrderStates
 {
-    public function resolve(OrderInterface $order);
+    const STATE_INITIALIZED = 'initialized';
+    const STATE_NEW = 'new';
+    const STATE_CANCELLED = 'cancelled';
+    const STATE_COMPLETE = 'complete';
 }

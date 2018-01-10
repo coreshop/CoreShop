@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Inventory\Operator;
 
+use CoreShop\Bundle\CoreBundle\StateMachine\OrderPaymentStates;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -22,22 +23,15 @@ use Webmozart\Assert\Assert;
 final class OrderInventoryOperator implements OrderInventoryOperatorInterface
 {
     /**
-     * @var WorkflowManagerInterface
-     */
-    private $orderWorkflowManager;
-
-    /**
      * @var ObjectManager
      */
     private $productEntityManager;
 
     /**
-     * @param WorkflowManagerInterface $orderWorkflowManager
      * @param ObjectManager            $productEntityManager
      */
-    public function __construct(WorkflowManagerInterface $orderWorkflowManager, ObjectManager $productEntityManager)
+    public function __construct(ObjectManager $productEntityManager)
     {
-        $this->orderWorkflowManager = $orderWorkflowManager;
         $this->productEntityManager = $productEntityManager;
     }
 
@@ -46,7 +40,16 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
      */
     public function cancel(OrderInterface $order)
     {
-        $this->giveBack($order);
+        if (in_array(
+            $order->getPaymentState(),
+            [OrderPaymentStates::STATE_PAID, OrderPaymentStates::STATE_REFUNDED],
+            true
+        )) {
+            $this->giveBack($order);
+            return;
+        }
+
+        $this->release($order);
     }
 
     /**

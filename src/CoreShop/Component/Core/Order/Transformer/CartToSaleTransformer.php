@@ -2,6 +2,10 @@
 
 namespace CoreShop\Component\Core\Order\Transformer;
 
+use CoreShop\Bundle\CoreBundle\StateMachine\OrderInvoiceStates;
+use CoreShop\Bundle\CoreBundle\StateMachine\OrderPaymentStates;
+use CoreShop\Bundle\CoreBundle\StateMachine\OrderShippingStates;
+use CoreShop\Bundle\CoreBundle\StateMachine\OrderStates;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -37,6 +41,11 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
         $this->currencyConverter = $currencyConverter;
     }
 
+    /**
+     * @param ProposalInterface $cart
+     * @param ProposalInterface $sale
+     * @return ProposalInterface|mixed
+     */
     public function transform(ProposalInterface $cart, ProposalInterface $sale)
     {
          /**
@@ -49,6 +58,13 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
         
         $fromCurrency = $sale->getBaseCurrency()->getIsoCode();
         $toCurrency = $sale->getCurrency()->getIsoCode();
+
+        if($sale instanceof OrderInterface) {
+            $sale->setOrderState(OrderStates::STATE_INITIALIZED);
+            $sale->setShippingState(OrderShippingStates::STATE_NEW);
+            $sale->setPaymentState(OrderPaymentStates::STATE_NEW);
+            $sale->setInvoiceState(OrderInvoiceStates::STATE_NEW);
+        }
 
         if ($sale instanceof QuoteInterface || $sale instanceof OrderInterface) {
             if ($cart->getCarrier() instanceof CarrierInterface) {

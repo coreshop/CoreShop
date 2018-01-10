@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\CoreBundle\StateMachine;
 
 final class OrderTransitions
 {
+    const IDENTIFIER = 'coreshop_order';
+
     const TRANSITION_CREATE = 'create';
     const TRANSITION_CANCEL = 'cancel';
     const TRANSITION_COMPLETE = 'complete';

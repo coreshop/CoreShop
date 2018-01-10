@@ -15,23 +15,22 @@ namespace CoreShop\Bundle\CoreBundle\StateMachine\StateResolver;
 use CoreShop\Bundle\CoreBundle\StateMachine\OrderPaymentStates;
 use CoreShop\Bundle\CoreBundle\StateMachine\OrderShippingStates;
 use CoreShop\Bundle\CoreBundle\StateMachine\OrderTransitions;
+use CoreShop\Bundle\CoreBundle\StateMachine\StateMachineManager;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\StateMachine\StateMachineResolverInterface;
-use Symfony\Component\Workflow\Registry;
 
 final class OrderStateResolver implements StateMachineResolverInterface
 {
     /**
-     * @var Registry
+     * @var StateMachineManager
      */
-    private $registry;
+    protected $stateMachineManager;
 
     /**
-     * @param Registry $registry
+     * @param StateMachineManager $stateMachineManager
      */
-    public function __construct(Registry $registry)
+    public function __construct(StateMachineManager $stateMachineManager)
     {
-        $this->registry = $registry;
+        $this->stateMachineManager = $stateMachineManager;
     }
 
     /**
@@ -39,9 +38,9 @@ final class OrderStateResolver implements StateMachineResolverInterface
      */
     public function resolve(OrderInterface $order)
     {
-        $stateMachine = $this->registry->get($order, 'coreshop_order');
-        if ($this->canOrderBeFulfilled($order) && $stateMachine->can($order, OrderTransitions::TRANSITION_COMPLETE)) {
-            $stateMachine->apply($order,OrderTransitions::TRANSITION_COMPLETE);
+        $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');
+        if ($this->canOrderBeComplete($order) && $stateMachine->can($order, OrderTransitions::TRANSITION_COMPLETE)) {
+            $stateMachine->apply($order, OrderTransitions::TRANSITION_COMPLETE);
         }
     }
 
@@ -50,7 +49,7 @@ final class OrderStateResolver implements StateMachineResolverInterface
      *
      * @return bool
      */
-    private function canOrderBeFulfilled(OrderInterface $order)
+    private function canOrderBeComplete(OrderInterface $order)
     {
         return
             OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&

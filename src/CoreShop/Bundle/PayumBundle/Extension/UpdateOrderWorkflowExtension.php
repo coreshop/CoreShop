@@ -26,6 +26,12 @@ use Payum\Core\Request\Generic;
 use Payum\Core\Request\GetStatusInterface;
 use Payum\Core\Request\Notify;
 
+/**
+ * Class UpdateOrderWorkflowExtension
+ *
+ * @deprecated remove after state machine is implemented
+ * @package CoreShop\Bundle\PayumBundle\Extension
+ */
 final class UpdateOrderWorkflowExtension implements ExtensionInterface
 {
     /**

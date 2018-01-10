@@ -14,6 +14,12 @@ namespace CoreShop\Component\Order\Workflow;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
 
+/**
+ * Interface WorkflowManagerInterface
+ *
+ * @deprecated remove this after state machine is implemented.
+ * @package CoreShop\Component\Order\Workflow
+ */
 interface WorkflowManagerInterface
 {
     const ORDER_STATE_INITIALIZED = 'initialized';

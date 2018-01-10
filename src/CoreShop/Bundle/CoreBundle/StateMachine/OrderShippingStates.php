@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\StateMachine;
 
 final class OrderShippingStates
 {
+    const STATE_INITIALIZED = 'initialized';
     const STATE_NEW = 'new';
     const STATE_READY = 'ready';
     const STATE_CANCELLED = 'cancelled';
