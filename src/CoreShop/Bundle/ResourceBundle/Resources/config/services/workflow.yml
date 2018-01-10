@@ -1,11 +1,11 @@
 services:
     coreshop.state_machine_manager:
-        class: CoreShop\Component\Resource\StateMachine\StateMachineManager
+        class: CoreShop\Component\Resource\Workflow\StateMachineManager
         arguments:
             - '@workflow.registry'
 
     coreshop.state_machine_applier:
-        class: CoreShop\Component\Resource\StateMachine\StateMachineApplier
+        class: CoreShop\Component\Resource\Workflow\StateMachineApplier
         arguments:
             - '@coreshop.state_machine_manager'
 
