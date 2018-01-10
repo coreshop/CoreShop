@@ -1,6 +1,3 @@
-imports:
-    - { resource: "workflow.yml" }
-
 jms_serializer:
     metadata:
         directories:
