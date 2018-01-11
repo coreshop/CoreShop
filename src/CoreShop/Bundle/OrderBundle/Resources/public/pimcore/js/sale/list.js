@@ -91,14 +91,27 @@ coreshop.order.sale.list = Class.create({
     },
 
     orderStateRenderer: function (orderStateInfo) {
-        if (orderStateInfo.state) {
-            var bgColor = orderStateInfo.state.color,
-                textColor = coreshop.helpers.constrastColor(bgColor);
+        var bgColor = orderStateInfo.color,
+            textColor = coreshop.helpers.constrastColor(bgColor);
+        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderStateInfo.label + '</span>';
+    },
 
-            return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderStateInfo.state.translatedLabel + '</span>';
-        }
+    orderShippingStateRenderer: function (orderStateInfo) {
+        var bgColor = coreshop.helpers.hexToRgb(orderStateInfo.color),
+            textColor = 'black';
+        return '<span class="rounded-color" style="background-color: rgba(' + bgColor.join(',') + ', 0.2); color: ' + textColor + '">' + orderStateInfo.label + '</span>';
+    },
 
-        return null;
+    orderPaymentStateRenderer: function (orderStateInfo) {
+        var bgColor = coreshop.helpers.hexToRgb(orderStateInfo.color),
+            textColor = 'black';
+        return '<span class="rounded-color" style="background-color: rgba(' + bgColor.join(',') + ', 0.2); color: ' + textColor + '">' + orderStateInfo.label + '</span>';
+    },
+
+    orderInvoiceStateRenderer: function (orderStateInfo) {
+        var bgColor = coreshop.helpers.hexToRgb(orderStateInfo.color),
+            textColor = 'black';
+        return '<span class="rounded-color" style="background-color: rgba(' + bgColor.join(',') + ', 0.2); color: ' + textColor + '">' + orderStateInfo.label + '</span>';
     },
 
     storeRenderer: function (val) {

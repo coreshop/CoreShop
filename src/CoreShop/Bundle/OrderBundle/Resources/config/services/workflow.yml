@@ -1,3 +1,6 @@
+parameters:
+  coreshop.workflow.manager.order.state_identifier: 'Order State Change'
+
 services:
     coreshop.state_machine.marking_store.single_state.order_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
@@ -8,3 +11,24 @@ services:
         class: CoreShop\Component\Resource\Workflow\MarketingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_state'
+
+    coreshop.workflow.state_manager:
+        class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
+        arguments:
+          - '@coreshop.state_machine_manager'
+          - '@pimcore.translator'
+          - '%coreshop.workflow.manager.order.state_identifier%'
+          - '%coreshop.state_machine.colors%'
+        tags:
+          - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+
+    coreshop.workflow.state_history_logger:
+        class: CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger
+        arguments:
+          - '@coreshop.repository.order'
+          - '@coreshop.state_machine_manager'
+          - '@coreshop.object_note_service'
+          - '@pimcore.translator'
+          - '%coreshop.workflow.manager.order.state_identifier%'
+        tags:
+          - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }

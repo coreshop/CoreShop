@@ -181,7 +181,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
      */
     private function addOrderNote(OrderInterface $order, Document\Email $emailDocument, Mail $mail, $params = [])
     {
-        $noteInstance = $this->noteService->createNoteInstance($order, Notes::NOTE_EMAIL);
+        $noteInstance = $this->noteService->createPimcoreNoteInstance($order, Notes::NOTE_EMAIL);
 
         $noteInstance->setTitle('Order Mail');
 

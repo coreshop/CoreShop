@@ -1,9 +1,6 @@
 ## TO BE REMOVED WHEN state-machine FINISHED
-
-parameters:
-  coreshop.workflow.manager.order.state_identifier: 'Order State Change'
-
 services:
+
   coreshop.workflow.manager.registry:
     class: CoreShop\Component\Registry\ServiceRegistry
     arguments:
@@ -15,18 +12,6 @@ services:
     arguments:
       - 'CoreShop\Component\Order\Workflow\ProposalValidatorInterface'
       - 'workflow-order-manager-validators'
-
-  coreshop.workflow.manager.order:
-    class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowManager
-    arguments:
-      - '@coreshop.workflow.manager.order.validators'
-      - '@event_dispatcher'
-      - 'CoreShop\Component\Order\Model\OrderInterface'
-      - '@pimcore.translator'
-      - '%coreshop.workflow.manager.order.state_identifier%'
-      - '@security.token_storage'
-    tags:
-      - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 
   coreshop.workflow.manager.order.validator.payment:
     class: CoreShop\Bundle\OrderBundle\Workflow\Order\PaymentValidator

@@ -21,9 +21,14 @@ framework:
           from: new
           to:   complete
 
-
 core_shop_resource:
   state_machine:
+    colors:
+      coreshop_order:
+        initialized: '#d6e1dd'
+        new: '#61c2cb'
+        cancelled: '#f2583e'
+        complete: '#2c5600'
     callbacks:
       coreshop_order:
         after:
@@ -43,3 +48,7 @@ core_shop_resource:
             on: ['cancel']
             do: ['@coreshop.state_machine_cascade_transition', 'apply']
             args: ['object', 'event', '"cancel"', '"coreshop_order_payment"']
+          add_to_history:
+            on: ['create', 'cancel', 'complete']
+            do: ['@coreshop.workflow.state_history_logger', 'log']
+            args: ['object.getId()', 'event']

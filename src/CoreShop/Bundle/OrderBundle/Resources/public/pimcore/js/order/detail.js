@@ -432,28 +432,6 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
 
         return this.paymentInfo;
     },
-    setWorkflowInfo: function () {
-
-        var buttons = [],
-            toolbar;
-
-        //add reload function for worfklow manager!
-        this.objectData.reload = this.reload.bind(this);
-
-        if (this.objectData.workflowManagement) {
-            this.objectData.data.workflowManagement = this.objectData.workflowManagement;
-        }
-
-        pimcore.elementservice.integrateWorkflowManagement('object', this.sale.o_id, this.objectData, buttons);
-
-        toolbar = new Ext.Toolbar({
-            border: false,
-            items: buttons,
-            overflowHandler: 'scroller'
-        });
-
-        this.saleInfo.insert(0, toolbar);
-    },
 
     createInvoice: function () {
         new coreshop.order.order.invoice(this.sale, function () {

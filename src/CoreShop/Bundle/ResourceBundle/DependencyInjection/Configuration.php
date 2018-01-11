@@ -34,7 +34,7 @@ final class Configuration implements ConfigurationInterface
         $this->addTranslationsSection($rootNode);
         $this->addDriversSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
-        $this->addWorkflowSection($rootNode);
+        $this->addStateMachineSection($rootNode);
 
         return $treeBuilder;
     }
@@ -158,27 +158,53 @@ final class Configuration implements ConfigurationInterface
         ->end();
     }
 
-
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addWorkflowSection(ArrayNodeDefinition $node)
+    private function addStateMachineSection(ArrayNodeDefinition $node)
     {
-        $callbacks = $node
+        $stateMachineNode = $node
             ->children()
                 ->arrayNode('state_machine')
-                    ->children()
-                        ->arrayNode('callbacks')
-                            ->useAttributeAsKey('name')
-                            ->prototype('array')
-                            ->children();
+                    ->children();
+
+        $this->addColorSection($stateMachineNode);
+        $this->addCallBackSection($stateMachineNode);
+
+        $stateMachineNode->end()->end()->end();
+
+    }
+
+    /**
+     * @param NodeBuilder $node
+     */
+    private function addColorSection(NodeBuilder $node)
+    {
+        $node
+            ->arrayNode('colors')
+                ->useAttributeAsKey('name')
+                ->arrayPrototype('array')
+                ->prototype('scalar')->end()
+                ->end()
+            ->end();
+    }
+
+    /**
+     * @param NodeBuilder $node
+     */
+    private function addCallBackSection(NodeBuilder $node)
+    {
+        $callbacks = $node
+            ->arrayNode('callbacks')
+                ->useAttributeAsKey('name')
+                ->prototype('array')
+                ->children();
 
         $this->addSubCallbackSection($callbacks, 'guard');
         $this->addSubCallbackSection($callbacks, 'before');
         $this->addSubCallbackSection($callbacks, 'after');
 
-        $callbacks->end()->end()->end()->end()->end();
-
+        $callbacks->end()->end();
     }
 
     /**

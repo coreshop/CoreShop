@@ -18,7 +18,7 @@ use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
+use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
@@ -37,15 +37,39 @@ class OrderController extends AbstractSaleDetailController
     {
         return [
             [
-                'text' => 'coreshop_order_state',
+                'text' => 'coreshop_workflow_order_state',
                 'type' => null,
                 'dataIndex' => 'orderState',
                 'renderAs' => 'orderState',
-                'width' => 200,
+                'flex' => 1
+            ],
+            [
+                'text' => 'coreshop_workflow_order_payment_state',
+                'type' => null,
+                'dataIndex' => 'orderPaymentState',
+                'renderAs' => 'orderPaymentState',
+                'flex' => 1
+            ],
+            [
+                'text' => 'coreshop_workflow_order_shipping_state',
+                'type' => null,
+                'dataIndex' => 'orderShippingState',
+                'renderAs' => 'orderShippingState',
+                'flex' => 1
+            ],
+            [
+                'text' => 'coreshop_workflow_order_invoice_state',
+                'type' => null,
+                'dataIndex' => 'orderInvoiceState',
+                'renderAs' => 'orderInvoiceState',
+                'flex' => 1
             ]
         ];
     }
 
+    /**
+     * @return mixed
+     */
     public function getStatesAction()
     {
         $states = [];
@@ -70,8 +94,8 @@ class OrderController extends AbstractSaleDetailController
 
     /**
      * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return mixed
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function updatePaymentAction(Request $request)
     {
@@ -165,13 +189,11 @@ class OrderController extends AbstractSaleDetailController
     protected function getStatesHistory(OrderInterface $order)
     {
         //Get History
-        $manager = $this->getOrderStateManager();
+        $manager = $this->getWorkflowStateManager();
         $history = $manager->getStateHistory($order);
 
-        // create timeline
-        $statesHistory = [];
-
         $date = Carbon::now();
+        $statesHistory = [];
 
         if (is_array($history)) {
             foreach ($history as $note) {
@@ -181,7 +203,7 @@ class OrderController extends AbstractSaleDetailController
                 $statesHistory[] = [
                     'icon' => 'coreshop_icon_orderstates',
                     'type' => $note->getType(),
-                    'date' => $date->formatLocalized('%A %d %B %Y'),
+                    'date' => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
                     'avatar' => $avatar,
                     'user' => $user ? $user->getName() : null,
                     'description' => $note->getDescription(),
@@ -238,12 +260,25 @@ class OrderController extends AbstractSaleDetailController
         return $return;
     }
 
+    /**
+     * @param SaleInterface $sale
+     * @return array
+     */
     protected function getDetails(SaleInterface $sale)
     {
         $order = parent::getDetails($sale);
 
         if ($sale instanceof OrderInterface) {
+
+            $workflowStateManager = $this->getWorkflowStateManager();
+            $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
+            /** @fixme: remove payment from here?? */
+            $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
+            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipping', $sale->getShippingState(), false);
+            $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
+
             $order['statesHistory'] = $this->getStatesHistory($sale);
+
             $order['payments'] = $this->getPayments($sale);
             $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
             $order['invoices'] = $this->getInvoices($sale);
@@ -255,18 +290,27 @@ class OrderController extends AbstractSaleDetailController
         return $order;
     }
 
+    /**
+     * @param SaleInterface $sale
+     * @return array
+     * @throws \Exception
+     */
     protected function prepareSale(SaleInterface $sale)
     {
         $order = parent::prepareSale($sale);
+        $workflowStateManager = $this->getWorkflowStateManager();
 
         if ($sale instanceof OrderInterface) {
-            $order['orderState'] = $this->getOrderStateManager()->getCurrentState($sale);
+            $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
+            /** @fixme: remove payment from here?? */
+            $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
+            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipping', $sale->getShippingState(), false);
+            $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
             $order['paymentFee'] = $sale->getPaymentFee();
         }
 
         return $order;
     }
-
 
     /**
      * @param OrderInterface $order
@@ -352,11 +396,11 @@ class OrderController extends AbstractSaleDetailController
     }
 
     /**
-     * @return WorkflowManagerInterface
+     * @return WorkflowStateManagerInterface
      */
-    private function getOrderStateManager()
+    private function getWorkflowStateManager()
     {
-        return $this->get('coreshop.workflow.manager.order');
+        return $this->get('coreshop.workflow.state_manager');
     }
 
     /**

@@ -35,6 +35,15 @@ framework:
 
 core_shop_resource:
   state_machine:
+    colors:
+      coreshop_order_payment:
+        new: '#61c2cb'
+        awaiting_payment: '#feb624'
+        partially_paid: '#f27024'
+        cancelled: '#f2583e'
+        paid: '#2c5600'
+        partially_refunded: '#77bed2'
+        refunded: '#004966'
     callbacks:
       coreshop_order_payment:
         after:

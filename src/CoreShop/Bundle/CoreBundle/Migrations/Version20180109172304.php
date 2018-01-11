@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 use CoreShop\Component\Pimcore\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -140,6 +141,9 @@ class Version20180109172304 extends AbstractPimcoreMigration implements Containe
             $classUpdater->insertFieldAfter('Order', $statusFields);
             $classUpdater->save();
         }
+
+        //update translations
+        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
     }
 
     /**

@@ -54,8 +54,6 @@ coreshop.order.sale.detail = Class.create({
             success: function (response) {
                 try {
                     this.objectData = Ext.decode(response.responseText);
-                    this.setWorkflowInfo();
-
                 } catch (e) {
                 }
             }.bind(this)
@@ -221,7 +219,35 @@ coreshop.order.sale.detail = Class.create({
 
     getHeader: function () {
         if (!this.headerPanel) {
-            var items = [
+
+            var items1 = [
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_order_state') + '<br/><span class="coreshop_order_big order_state"><span class="color-dot" style="background-color:' + this.sale.orderState.color + ';"></span> ' + this.sale.orderState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_order_payment_state') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderPaymentState.color + ';"></span>' + this.sale.orderPaymentState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_order_shipping_state') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderShippingState.color + ';"></span>' + this.sale.orderShippingState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_order_invoice_state') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderInvoiceState.color + ';"></span>' +this.sale.orderInvoiceState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                }
+            ];
+
+            var items2 = [
                 {
                     xtype: 'panel',
                     html: t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.sale.saleDate * 1000), t('coreshop_date_time_format')) + '</span>',
@@ -248,10 +274,22 @@ coreshop.order.sale.detail = Class.create({
                 }
             ];
 
-            this.headerPanel = Ext.create('Ext.panel.Panel', {
+             var statusPanel1 = Ext.create('Ext.panel.Panel', {
                 layout: 'hbox',
+                margin: 0,
+                items: items1
+            });
+
+             var statusPanel2 = Ext.create('Ext.panel.Panel', {
+                layout: 'hbox',
+                margin: 0,
+                items: items2
+            });
+
+            this.headerPanel = Ext.create('Ext.panel.Panel', {
+                border: false,
                 margin: '0 0 20 0',
-                items: items
+                items: [statusPanel1, statusPanel2]
             });
         }
 

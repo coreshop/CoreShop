@@ -35,7 +35,8 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class AbstractSaleDetailController extends AbstractSaleController
 {
     /**
-     * @return Response
+     * @return mixed
+     * @throws \Exception
      */
     public function getGridConfigurationAction()
     {
@@ -49,8 +50,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'filter' => [
                     'type' => 'number',
                 ],
-                'hideable' => false,
+                'hidden' => true,
                 'draggable' => false,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_sale_number',
@@ -59,6 +61,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'filter' => [
                     'type' => 'string',
                 ],
+                'flex' => 1
             ],
             [
                 'text' => 'name',
@@ -70,7 +73,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'text' => 'email',
                 'type' => 'string',
                 'dataIndex' => 'customerEmail',
-                'width' => 200,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_total',
@@ -81,6 +84,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                     'type' => 'number',
                 ],
                 'align' => 'right',
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_discount',
@@ -89,6 +93,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'renderAs' => 'currency',
                 'align' => 'right',
                 'hidden' => true,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_subtotal',
@@ -97,6 +102,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'renderAs' => 'currency',
                 'align' => 'right',
                 'hidden' => true,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_shipping',
@@ -105,6 +111,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'renderAs' => 'currency',
                 'align' => 'right',
                 'hidden' => true,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_payment_fee',
@@ -113,6 +120,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'renderAs' => 'currency',
                 'align' => 'right',
                 'hidden' => true,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_total_tax',
@@ -121,6 +129,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'renderAs' => 'currency',
                 'align' => 'right',
                 'hidden' => true,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_currency',
@@ -128,6 +137,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'dataIndex' => 'currencyName',
                 'align' => 'right',
                 'hidden' => true,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_sale_date',
@@ -137,6 +147,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                     'type' => 'date',
                 ],
                 'width' => 150,
+                'flex' => 1
             ],
             [
                 'text' => 'coreshop_store',
@@ -145,7 +156,8 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'renderAs' => 'store',
                 'filter' => [
                     'type' => 'number',
-                ]
+                ],
+                'flex' => 1
             ]
         ];
 
@@ -201,7 +213,8 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param Request $request
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return mixed
+     * @throws \Exception
      */
     public function listAction(Request $request)
     {
@@ -290,8 +303,8 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleInterface $sale
-     *
-     * @return array<string,string|integer>[]
+     * @return array
+     * @throws \Exception
      */
     protected function prepareSale(SaleInterface $sale)
     {
@@ -322,8 +335,8 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     /**
      * @param $address
      * @param $type
-     *
      * @return array
+     * @throws \Exception
      */
     protected function prepareAddress($address, $type)
     {

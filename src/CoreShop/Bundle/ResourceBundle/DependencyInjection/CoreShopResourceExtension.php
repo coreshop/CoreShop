@@ -45,6 +45,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
 
         if (array_key_exists('state_machine', $config)) {
             $container->setParameter('coreshop.state_machine.callbacks', $config['state_machine']['callbacks']);
+            $container->setParameter('coreshop.state_machine.colors', $config['state_machine']['colors']);
         } else {
             throw new \InvalidArgumentException('No valid state_machine section has been configured!');
         }
