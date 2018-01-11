@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 
 class OrderCreationController extends AbstractSaleCreationController
 {
