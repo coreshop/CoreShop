@@ -71,8 +71,8 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true)
     {
-        $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop.admin.workflow.state.';
-        $transValue = $transPrefix . $workflowName . '.' . $value;
+        $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
+        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
         $color = isset($this->stateColors[$workflowName][$value]) ? $this->stateColors[$workflowName][$value] : '#f6f1de';
 
         $data = [
