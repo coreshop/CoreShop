@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 use CoreShop\Component\Pimcore\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Pimcore\Model\Workflow;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -144,6 +145,17 @@ class Version20180109172304 extends AbstractPimcoreMigration implements Containe
 
         //update translations
         $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
+
+        //delete coreshop workflow
+        $list = new Workflow\Listing();
+        $list->load();
+        $storedWorkflowId = null;
+        foreach ($list->getWorkflows() as $workflow) {
+            if ($workflow->getName() === 'OrderState') {
+                $storedWorkflowId = $workflow->getId();
+                $workflow->delete();
+            }
+        }
     }
 
     /**
