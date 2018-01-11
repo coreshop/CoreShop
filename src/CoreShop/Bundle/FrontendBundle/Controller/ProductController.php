@@ -38,11 +38,6 @@ class ProductController extends FrontendController
      */
     public function detailAction(Request $request)
     {
-        $wp = $this->container->get('workflow.registry');
-        $order = DataObject\CoreShopOrder::getById(1546);
-        $workflow = $wp->get($order, 'coreshop_order');
-        $workflow->apply($order, 'create');
-
         $product = $this->getProductByRequest($request);
 
         if (!$product instanceof ProductInterface) {
