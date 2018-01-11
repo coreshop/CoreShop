@@ -54,6 +54,10 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
      */
     public function onPostExecute(Context $context)
     {
+        if ($context->getException()) {
+            return;
+        }
+
         $previousStack = $context->getPrevious();
         $previousStackSize = count($previousStack);
 
