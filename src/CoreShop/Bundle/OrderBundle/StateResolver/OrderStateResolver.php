@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
 use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\OrderShippingStates;
+use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 use CoreShop\Component\Resource\Workflow\StateMachineManager;
@@ -60,6 +60,6 @@ final class OrderStateResolver implements StateResolverInterface
 
         return
             OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&
-            OrderShippingStates::STATE_SHIPPED === $order->getShippingState();
+            OrderShipmentStates::STATE_SHIPPED === $order->getShippingState();
     }
 }

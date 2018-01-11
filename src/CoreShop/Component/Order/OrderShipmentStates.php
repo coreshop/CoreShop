@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order;
 
-final class OrderShippingStates
+final class OrderShipmentStates
 {
     const STATE_INITIALIZED = 'initialized';
     const STATE_NEW = 'new';

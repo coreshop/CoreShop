@@ -473,7 +473,7 @@ translations:
           en: 'Invoice State'
           de: 'Rechnungsstatus'
 
-  coreshop.ui.workflow.state.coreshop_order_shipping:
+  coreshop.ui.workflow.state.coreshop_order_shipment:
       languages:
           de_CH: 'Versandstatus'
           en: 'State'
@@ -545,31 +545,31 @@ translations:
           en: 'Refunded'
           de: 'Zurückerstattet'
 
-  coreshop.ui.workflow.state.coreshop_order_shipping.new:
+  coreshop.ui.workflow.state.coreshop_order_shipment.new:
       languages:
           de_CH: 'Neu'
           en: 'New'
           de: 'Neu'
 
-  coreshop.ui.workflow.state.coreshop_order_shipping.ready:
+  coreshop.ui.workflow.state.coreshop_order_shipment.ready:
       languages:
           de_CH: 'Versand in Vorbereitung'
           en: 'Shipment in Preparation'
           de: 'Versand in Vorbereitung'
 
-  coreshop.ui.workflow.state.coreshop_order_shipping.cancelled:
+  coreshop.ui.workflow.state.coreshop_order_shipment.cancelled:
       languages:
           de_CH: 'Storniert'
           en: 'Cancelled'
           de: 'Storniert'
 
-  coreshop.ui.workflow.state.coreshop_order_shipping.partially_shipped:
+  coreshop.ui.workflow.state.coreshop_order_shipment.partially_shipped:
       languages:
           de_CH: 'Teilweise versendet'
           en: 'Partially Shipped'
           de: 'Teilweise versendet'
 
-  coreshop.ui.workflow.state.coreshop_order_shipping.shipped:
+  coreshop.ui.workflow.state.coreshop_order_shipment.shipped:
       languages:
           de_CH: 'Versendet'
           en: 'Shipped'

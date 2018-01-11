@@ -68,7 +68,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 },
                 {
                     xtype: 'panel',
-                    html: t('coreshop_workflow_name_coreshop_order_shipping') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderShippingState.color + ';"></span>' + this.sale.orderShippingState.label + '</span>',
+                    html: t('coreshop_workflow_name_coreshop_order_shipment') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderShippingState.color + ';"></span>' + this.sale.orderShippingState.label + '</span>',
                     bodyPadding: '10 20',
                     flex: 1
                 },
@@ -137,6 +137,39 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 data: this.sale.statesHistory
             });
 
+            if(this.sale.orderState.state !== 'cancelled') {
+                orderInfo.add({
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    margin: 0,
+                    items: {
+                        xtype: 'button',
+                        iconCls: 'pimcore_icon_delete',
+                        cls: 'coreshop_cancel_order_button',
+                        text: t('coreshop_cancel_order'),
+                        handler: function (btn) {
+                            Ext.MessageBox.confirm(t('info'), t('coreshop_cancel_order_confirm'), function (buttonValue) {
+                                if (buttonValue === 'yes') {
+                                    btn.disable();
+                                    Ext.Ajax.request({
+                                        url: '/admin/coreshop/order/cancel-order',
+                                        params: {
+                                            o_id: this.sale.o_id
+                                        },
+                                        success: function () {
+                                            this.reload();
+                                        }.bind(this),
+                                        failure: function () {
+                                            btn.enable();
+                                        }.bind(this)
+                                    });
+                                }
+                            }.bind(this));
+                        }.bind(this)
+                    }
+                });
+            }
+
             orderInfo.add({
                 xtype: 'grid',
                 margin: '0 0 15 0',
@@ -147,17 +180,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         xtype: 'gridcolumn',
                         flex: 1,
                         dataIndex: 'title',
-                        text: t('coreshop_orderstate'),
-                        renderer: function (value, metaData) {
-
-                            if (value) {
-                                var bgColor = '';
-                                //@fixme: add some colored circle to the left instead of heavy color stuff!
-                                return '<span class="rounded-color" style="background-color:' + bgColor + ';"></span>' + value;
-                            }
-
-                            return '';
-                        }
+                        text: t('coreshop_orderstate')
                     },
                     {
                         xtype: 'gridcolumn',

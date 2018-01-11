@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Templating\Helper;
 
 use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\OrderShippingStates;
+use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use Symfony\Component\Templating\Helper\Helper;
@@ -41,7 +41,7 @@ class OrderStateHelper extends Helper implements OrderStateHelperInterface
     {
         $orderState = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), true);
         $paymentState = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), true);
-        $shippingState = $this->workflowStateManager->getStateInfo('coreshop_order_shipping', $order->getShippingState(), true);
+        $shippingState = $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState(), true);
         $invoiceState = $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), true);
 
         // the calculated state tries to get the recent state for a customer.
@@ -55,7 +55,7 @@ class OrderStateHelper extends Helper implements OrderStateHelperInterface
         } else {
             if ($paymentState['state'] !== OrderPaymentStates::STATE_PAID) {
                 $calculatedState = $paymentState['label'];
-            } elseif ($shippingState['state'] !== OrderShippingStates::STATE_SHIPPED) {
+            } elseif ($shippingState['state'] !== OrderShipmentStates::STATE_SHIPPED) {
                 $calculatedState = $shippingState['label'];
             }
         }

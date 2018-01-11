@@ -100,6 +100,21 @@
     border-radius: 10px;
 }
 
+.coreshop_cancel_order_button {
+    background: #d83a3a;
+    border: none;
+    float: right;
+    margin:5px 0;
+}
+
+.coreshop_cancel_order_button:hover {
+    background: #c72a2a !important;
+}
+
+.coreshop_cancel_order_button .x-btn-inner {
+    font-weight:bold;
+}
+
 .coreshop_order_big {
     font-size: 18px;
     font-weight: bold;

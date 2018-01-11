@@ -11,7 +11,7 @@ use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderShippingStates;
+use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use Webmozart\Assert\Assert;
@@ -61,7 +61,7 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
 
         if($sale instanceof OrderInterface) {
             $sale->setOrderState(OrderStates::STATE_INITIALIZED);
-            $sale->setShippingState(OrderShippingStates::STATE_NEW);
+            $sale->setShippingState(OrderShipmentStates::STATE_NEW);
             $sale->setPaymentState(OrderPaymentStates::STATE_NEW);
             $sale->setInvoiceState(OrderInvoiceStates::STATE_NEW);
         }

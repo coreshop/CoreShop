@@ -26,6 +26,7 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\Workflow\StateMachineApplier;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -52,7 +53,7 @@ class OrderController extends AbstractSaleDetailController
                 'flex' => 1
             ],
             [
-                'text' => 'coreshop_workflow_name_coreshop_order_shipping',
+                'text' => 'coreshop_workflow_name_coreshop_order_shipment',
                 'type' => null,
                 'dataIndex' => 'orderShippingState',
                 'renderAs' => 'orderShippingState',
@@ -69,30 +70,23 @@ class OrderController extends AbstractSaleDetailController
     }
 
     /**
-     * @todo remove after state-machine finished
-     *
-     * @return mixed
+     * @param Request $request
+     * @return bool
+     * @throws \Exception
      */
-    public function getStatesAction()
+    public function cancelOrderAction(Request $request)
     {
-        $states = [];
+        $orderId = $request->get('o_id');
+        $order = $this->getSaleRepository()->find($orderId);
 
-        $list = new \Pimcore\Model\Workflow\Listing();
-        $list->load();
-
-        foreach ($list->getWorkflows() as $workflow) {
-            if (is_array($workflow->getWorkflowSubject())) {
-                $subject = $workflow->getWorkflowSubject();
-
-                if (array_key_exists('classes', $subject)) {
-                    if (in_array($this->getParameter('coreshop.model.order.pimcore_class_id'), $subject['classes'])) {
-                        $states = $workflow->getStates();
-                    }
-                }
-            }
+         if (!$order instanceof OrderInterface) {
+            throw new \Exception('invalid order');
         }
 
-        return $this->viewHandler->handle($states);
+        $this->getStateMachineApplier()->apply($order, 'coreshop_order', 'cancel');
+
+        return $this->viewHandler->handle(['success' => true]);
+
     }
 
     /**
@@ -285,7 +279,7 @@ class OrderController extends AbstractSaleDetailController
             $workflowStateManager = $this->getWorkflowStateManager();
             $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
             $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
-            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipping', $sale->getShippingState(), false);
+            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
 
             $order['statesHistory'] = $this->getStatesHistory($sale);
@@ -314,7 +308,7 @@ class OrderController extends AbstractSaleDetailController
         if ($sale instanceof OrderInterface) {
             $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
             $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
-            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipping', $sale->getShippingState(), false);
+            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
             $order['paymentFee'] = $sale->getPaymentFee();
         }
@@ -411,6 +405,14 @@ class OrderController extends AbstractSaleDetailController
     private function getWorkflowStateManager()
     {
         return $this->get('coreshop.workflow.state_manager');
+    }
+
+    /**
+     * @return StateMachineApplier
+     */
+    private function getStateMachineApplier()
+    {
+        return $this->get('coreshop.state_machine_applier');
     }
 
     /**
