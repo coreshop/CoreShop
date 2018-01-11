@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Pimcore\InheritanceHelper;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -92,6 +93,7 @@ class CategoriesReport implements ReportInterface
 
         $orderClassId = $this->pimcoreClasses['order'];
         $orderItemClassId = $this->pimcoreClasses['order_item'];
+        $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         if (is_null($storeId)) {
             return [];
@@ -101,6 +103,7 @@ class CategoriesReport implements ReportInterface
         if (!$store instanceof StoreInterface) {
             return [];
         }
+
 
         $query = "
             SELECT 
@@ -112,8 +115,7 @@ class CategoriesReport implements ReportInterface
             FROM object_query_$orderClassId AS orders
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
-            INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-            WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
+            WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
             GROUP BY orderItems.product__id
             ORDER BY COUNT(orderItems.product__id) DESC
         ";
