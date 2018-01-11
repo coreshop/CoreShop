@@ -29,10 +29,10 @@ interface WorkflowStateManagerInterface
     public function getStateHistory(ProposalInterface $proposal);
 
     /**
-     * @param      $type
+     * @param      $workflowName
      * @param      $value
      * @param bool $forFrontend
-     * @return mixed
+     * @return array
      */
-    public function getStateInfo($type, $value, $forFrontend = true);
+    public function getStateInfo($workflowName, $value, $forFrontend = true);
 }

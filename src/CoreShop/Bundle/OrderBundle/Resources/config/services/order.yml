@@ -64,15 +64,14 @@ services:
       - '@coreshop.context.currency'
       - '@coreshop.context.store'
 
-  # @todo: rebuild after state_machine is complete.
-  #coreshop.templating.helper.order_state:
-  #  class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper
-  #  arguments: ['@coreshop.workflow.manager.order']
-  #  tags:
-  #    - { name: templating.helper, alias: coreshop_order_state }
+  coreshop.templating.helper.order_state:
+    class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper
+    arguments: ['@coreshop.workflow.state_manager']
+    tags:
+      - { name: templating.helper, alias: coreshop_order_state }
 
-  #coreshop.twig.extension.order_state:
-  #  class: CoreShop\Bundle\OrderBundle\Twig\OrderStateExtension
-  #  arguments: ['@coreshop.templating.helper.order_state']
-  #  tags:
-  #    - { name: twig.extension }
+  coreshop.twig.extension.order_state:
+    class: CoreShop\Bundle\OrderBundle\Twig\OrderStateExtension
+    arguments: ['@coreshop.templating.helper.order_state']
+    tags:
+      - { name: twig.extension }

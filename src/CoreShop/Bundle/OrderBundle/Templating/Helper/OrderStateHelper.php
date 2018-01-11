@@ -12,23 +12,26 @@
 
 namespace CoreShop\Bundle\OrderBundle\Templating\Helper;
 
-use CoreShop\Bundle\OrderBundle\Workflow\WorkflowManager;
+use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\OrderShippingStates;
+use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class OrderStateHelper extends Helper implements OrderStateHelperInterface
 {
     /**
-     * @var WorkflowManager
+     * @var WorkflowStateManagerInterface
      */
-    private $workflowManager;
+    private $workflowStateManager;
 
     /**
-     * @param WorkflowManager $workflowManager
+     * @param WorkflowStateManagerInterface $workflowStateManager
      */
-    public function __construct(WorkflowManager $workflowManager)
+    public function __construct(WorkflowStateManagerInterface $workflowStateManager)
     {
-        $this->workflowManager = $workflowManager;
+        $this->workflowStateManager = $workflowStateManager;
     }
 
     /**
@@ -36,7 +39,34 @@ class OrderStateHelper extends Helper implements OrderStateHelperInterface
      */
     public function getOrderState(OrderInterface $order)
     {
-        return $this->workflowManager->getCurrentState($order);
+        $orderState = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), true);
+        $paymentState = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), true);
+        $shippingState = $this->workflowStateManager->getStateInfo('coreshop_order_shipping', $order->getShippingState(), true);
+        $invoiceState = $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), true);
+
+        // the calculated state tries to get the recent state for a customer.
+        // if order is new, check if payment is in a waiting position.
+        // if payment is done, check if shipping is in a waiting condition. and so on.
+        $calculatedState = $orderState['state'];
+
+        // order has been canceled or is done.
+        if ($calculatedState !== OrderStates::STATE_NEW) {
+            $calculatedState = $orderState['label'];
+        } else {
+            if ($paymentState['state'] !== OrderPaymentStates::STATE_PAID) {
+                $calculatedState = $paymentState['label'];
+            } elseif ($shippingState['state'] !== OrderShippingStates::STATE_SHIPPED) {
+                $calculatedState = $shippingState['label'];
+            }
+        }
+
+        return [
+            'orderState'      => $orderState['label'],
+            'paymentState'    => $paymentState['label'],
+            'shippingState'   => $shippingState['label'],
+            'invoiceState'    => $invoiceState['label'],
+            'calculatedState' => $calculatedState,
+        ];
     }
 
     /**
