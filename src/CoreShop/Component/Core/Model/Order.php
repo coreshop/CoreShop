@@ -13,26 +13,9 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\Order as BaseOrder;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
 class Order extends BaseOrder implements OrderInterface
 {
     use CarrierAwareTrait;
-
-    /**
-     * @return string
-     */
-    public function getPaymentState()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param string $paymentState
-     */
-    public function setPaymentState($paymentState)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 }

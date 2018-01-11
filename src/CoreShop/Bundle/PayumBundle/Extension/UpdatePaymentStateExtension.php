@@ -26,7 +26,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
     protected $entityManager;
 
     /**
-     * @param StateMachineManager    $stateMachineManager
+     * @param StateMachineManager $stateMachineManager
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(StateMachineManager $stateMachineManager, EntityManagerInterface $entityManager)
@@ -95,7 +95,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
 
     /**
      * @param PaymentInterface $payment
-     * @param string           $nextState
+     * @param string $nextState
      */
     private function updatePaymentState(PaymentInterface $payment, string $nextState)
     {
@@ -106,8 +106,8 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
 
         //$cart = $this->cartRepository->findCartByOrder($order);
         //if ($cart instanceof CartInterface) {
-            //$cart->setOrder(null);
-            //$cart->save();
+        //$cart->setOrder(null);
+        //$cart->save();
         //}
     }
 }

@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
@@ -68,6 +69,8 @@ class OrderController extends AbstractSaleDetailController
     }
 
     /**
+     * @todo remove after state-machine finished
+     *
      * @return mixed
      */
     public function getStatesAction()
@@ -100,8 +103,13 @@ class OrderController extends AbstractSaleDetailController
     public function updatePaymentAction(Request $request)
     {
         $payment = $this->getPaymentRepository()->find($request->get('id'));
+        $order = $this->getSaleRepository()->find($payment->getOrderId());
 
         if (!$payment instanceof PaymentInterface) {
+            return $this->viewHandler->handle(['success' => false]);
+        }
+
+        if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false]);
         }
 
@@ -109,6 +117,8 @@ class OrderController extends AbstractSaleDetailController
 
         $this->getEntityManager()->persist($payment);
         $this->getEntityManager()->flush();
+
+        $this->get('coreshop.state_machine_resolver.order_payment')->resolve($order);
 
         return $this->viewHandler->handle(['success' => true]);
     }
@@ -172,6 +182,8 @@ class OrderController extends AbstractSaleDetailController
 
                 $this->getEntityManager()->persist($payment);
                 $this->getEntityManager()->flush();
+
+                $this->get('coreshop.state_machine_resolver.order_payment')->resolve($order);
 
                 return $this->viewHandler->handle(['success' => true, 'payments' => $this->getPayments($order), 'totalPayed' => $order->getTotalPayed()]);
             }
@@ -272,7 +284,6 @@ class OrderController extends AbstractSaleDetailController
 
             $workflowStateManager = $this->getWorkflowStateManager();
             $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
-            /** @fixme: remove payment from here?? */
             $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
             $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipping', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
@@ -283,8 +294,8 @@ class OrderController extends AbstractSaleDetailController
             $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
             $order['invoices'] = $this->getInvoices($sale);
             $order['shipments'] = $this->getShipments($sale);
-            $order['invoiceCreationAllowed'] = !$this->getInvoiceProcessableHelper()->isFullyProcessed($sale) && count($sale->getPayments()) !== 0;
-            $order['shipmentCreationAllowed'] = !$this->getShipmentProcessableHelper()->isFullyProcessed($sale) && count($sale->getPayments()) !== 0;
+            $order['invoiceCreationAllowed'] = !$this->getInvoiceProcessableHelper()->isFullyProcessed($sale) && $sale->getPaymentState() === OrderPaymentStates::STATE_PAID;
+            $order['shipmentCreationAllowed'] = !$this->getShipmentProcessableHelper()->isFullyProcessed($sale) && $sale->getPaymentState() === OrderPaymentStates::STATE_PAID;
         }
 
         return $order;
@@ -302,7 +313,6 @@ class OrderController extends AbstractSaleDetailController
 
         if ($sale instanceof OrderInterface) {
             $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
-            /** @fixme: remove payment from here?? */
             $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
             $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipping', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);

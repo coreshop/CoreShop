@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Order\StateResolver;
+namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
 use CoreShop\Component\Core\OrderPaymentTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;

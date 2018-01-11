@@ -45,7 +45,7 @@ class WorkflowListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.transition' => ['checkCoreShopTransition']
+            'workflow.completed' => ['checkCoreShopTransition']
         ];
     }
 

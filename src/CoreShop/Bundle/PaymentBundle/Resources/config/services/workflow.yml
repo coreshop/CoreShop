@@ -5,7 +5,7 @@ services:
             - state
 
     coreshop.state_machine.marking_store.payment_orm_marketing_store:
-        class: CoreShop\Component\Resource\Workflow\MarketingStore\OrmPersistentMarkingStore
+        class: CoreShop\Component\Resource\Workflow\MarkingStore\OrmPersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.state'
             - '@doctrine'

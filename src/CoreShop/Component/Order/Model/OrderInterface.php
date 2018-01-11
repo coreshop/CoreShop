@@ -50,6 +50,16 @@ interface OrderInterface extends SaleInterface
     /**
      * @return string
      */
+    public function getPaymentState();
+
+    /**
+     * @param string $paymentState
+     */
+    public function setPaymentState($paymentState);
+
+    /**
+     * @return string
+     */
     public function getOrderLanguage();
 
     /**

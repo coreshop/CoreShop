@@ -116,6 +116,8 @@ class OrderShipmentController extends PimcoreController
 
                 $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
 
+                $this->get('coreshop.state_machine_resolver.order_shipment')->resolve($order);
+
                 return $this->viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
             } catch (\Exception $ex) {
                 return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);

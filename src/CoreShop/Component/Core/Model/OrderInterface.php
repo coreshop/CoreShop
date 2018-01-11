@@ -17,13 +17,5 @@ use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 
 interface OrderInterface extends BaseOrderInterface, CarrierAwareInterface
 {
-    /**
-     * @return string
-     */
-    public function getPaymentState();
 
-    /**
-     * @param string $paymentState
-     */
-    public function setPaymentState($paymentState);
 }

@@ -1,4 +1,19 @@
-imports:
-  - { resource: "workflow/coreshop_order.yml" }
-  - { resource: "workflow/coreshop_payment.yml" }
-  - { resource: "workflow/coreshop_order_payment.yml" }
+core_shop_resource:
+    state_machine:
+        callbacks:
+            coreshop_order:
+                after:
+                    hold_inventory:
+                        on: ['create']
+                        do: ['@coreshop.inventory.order_operator', 'hold']
+                        args: ['object']
+
+core_shop_resource:
+    state_machine:
+        callbacks:
+            coreshop_order_payment:
+                after:
+                    order_paid:
+                        on: ['pay']
+                        do: ['@coreshop.inventory.order_operator', 'sell']
+                        args: ['object']

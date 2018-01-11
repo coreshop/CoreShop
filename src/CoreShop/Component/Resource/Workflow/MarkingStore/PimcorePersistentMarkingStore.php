@@ -10,13 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Resource\Workflow\MarketingStore;
+namespace CoreShop\Component\Resource\Workflow\MarkingStore;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 
-class OrmPersistentMarkingStore implements MarkingStoreInterface
+class PimcorePersistentMarkingStore implements MarkingStoreInterface
 {
     /**
      * Origin marking store
@@ -26,22 +26,13 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
     private $originMarkingStore;
 
     /**
-     * Doctrine registry
-     *
-     * @var Registry
-     */
-    private $doctrineRegistry;
-
-    /**
      * OrmPersistentMarkingStore constructor.
      *
      * @param MarkingStoreInterface $originMarkingStore origin marking store
-     * @param Registry              $doctrineRegistry doctrine registry
      */
-    public function __construct(MarkingStoreInterface $originMarkingStore, Registry $doctrineRegistry)
+    public function __construct(MarkingStoreInterface $originMarkingStore)
     {
         $this->originMarkingStore = $originMarkingStore;
-        $this->doctrineRegistry = $doctrineRegistry;
     }
 
     /**
@@ -58,8 +49,8 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
     public function setMarking($subject, Marking $marking)
     {
         $this->originMarkingStore->setMarking($subject, $marking);
-        $manager = $this->doctrineRegistry->getManagerForClass(get_class($subject));
-        $manager->persist($subject);
-        $manager->flush();
+        if($subject instanceof Concrete) {
+            $subject->save();
+        }
     }
 }

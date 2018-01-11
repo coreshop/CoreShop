@@ -12,10 +12,12 @@
 
 namespace CoreShop\Component\Order;
 
-final class OrderInvoiceStates
+final class OrderInvoiceTransitions
 {
-    const STATE_NEW = 'new';
-    const STATE_CANCELLED = 'cancelled';
+    const IDENTIFIER = 'coreshop_order_invoice';
+
+    const TRANSITION_READY = 'ready';
     const TRANSITION_PARTIALLY_INVOICED = 'partially_invoiced';
-    const STATE_INVOICED = 'invoiced';
+    const TRANSITION_CANCEL = 'cancel';
+    const TRANSITION_INVOICED = 'invoiced';
 }

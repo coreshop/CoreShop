@@ -177,6 +177,23 @@ class Order extends Sale implements OrderInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+
+    /**
+     * @return string
+     */
+    public function getPaymentState()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param string $paymentState
+     */
+    public function setPaymentState($paymentState)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
     /**
      * {@inheritdoc}
      */
