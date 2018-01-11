@@ -49,7 +49,7 @@ final class StateMachineManager
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {
             if (in_array($fromState, $transition->getFroms(), true)) {
-                return $transition;
+                return $transition->getName();
             }
         }
 
@@ -64,7 +64,7 @@ final class StateMachineManager
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {
             if (in_array($toState, $transition->getTos(), true)) {
-                return $transition;
+                return $transition->getName();
             }
         }
 
