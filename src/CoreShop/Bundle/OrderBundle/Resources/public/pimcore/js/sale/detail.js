@@ -223,25 +223,25 @@ coreshop.order.sale.detail = Class.create({
             var items1 = [
                 {
                     xtype: 'panel',
-                    html: t('coreshop_workflow_order_state') + '<br/><span class="coreshop_order_big order_state"><span class="color-dot" style="background-color:' + this.sale.orderState.color + ';"></span> ' + this.sale.orderState.label + '</span>',
+                    html: t('coreshop_workflow_name_coreshop_order_payment') + '<br/><span class="coreshop_order_big order_state"><span class="color-dot" style="background-color:' + this.sale.orderState.color + ';"></span> ' + this.sale.orderState.label + '</span>',
                     bodyPadding: '10 20',
                     flex: 1
                 },
                 {
                     xtype: 'panel',
-                    html: t('coreshop_workflow_order_payment_state') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderPaymentState.color + ';"></span>' + this.sale.orderPaymentState.label + '</span>',
+                    html: t('coreshop_workflow_name_coreshop_order_payment') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderPaymentState.color + ';"></span>' + this.sale.orderPaymentState.label + '</span>',
                     bodyPadding: '10 20',
                     flex: 1
                 },
                 {
                     xtype: 'panel',
-                    html: t('coreshop_workflow_order_shipping_state') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderShippingState.color + ';"></span>' + this.sale.orderShippingState.label + '</span>',
+                    html: t('coreshop_workflow_name_coreshop_order_shipping') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderShippingState.color + ';"></span>' + this.sale.orderShippingState.label + '</span>',
                     bodyPadding: '10 20',
                     flex: 1
                 },
                 {
                     xtype: 'panel',
-                    html: t('coreshop_workflow_order_invoice_state') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderInvoiceState.color + ';"></span>' +this.sale.orderInvoiceState.label + '</span>',
+                    html: t('coreshop_workflow_name_coreshop_order_invoice') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderInvoiceState.color + ';"></span>' +this.sale.orderInvoiceState.label + '</span>',
                     bodyPadding: '10 20',
                     flex: 1
                 }

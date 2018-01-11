@@ -101,7 +101,7 @@ final class OrderStateHistoryLogger
         $note = $this->noteService->createPimcoreNoteInstance($order, $this->noteIdentifier);
         $note->setTitle(
             sprintf('%s%s: %s %s %s %s',
-                $this->translator->trans('coreshop.admin.workflow_' . $event->getWorkflowName(), [], 'admin'),
+                $this->translator->trans('coreshop_workflow_name_' . $event->getWorkflowName(), [], 'admin'),
                 $objectIdInfo,
                 $this->translator->trans('coreshop.admin.workflow_changed_from', [], 'admin'),
                 $this->translator->trans($fromValue, [], 'admin'),

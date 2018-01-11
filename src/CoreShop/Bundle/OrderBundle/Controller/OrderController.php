@@ -37,28 +37,28 @@ class OrderController extends AbstractSaleDetailController
     {
         return [
             [
-                'text' => 'coreshop_workflow_order_state',
+                'text' => 'coreshop_workflow_name_coreshop_order',
                 'type' => null,
                 'dataIndex' => 'orderState',
                 'renderAs' => 'orderState',
                 'flex' => 1
             ],
             [
-                'text' => 'coreshop_workflow_order_payment_state',
+                'text' => 'coreshop_workflow_name_coreshop_order_payment',
                 'type' => null,
                 'dataIndex' => 'orderPaymentState',
                 'renderAs' => 'orderPaymentState',
                 'flex' => 1
             ],
             [
-                'text' => 'coreshop_workflow_order_shipping_state',
+                'text' => 'coreshop_workflow_name_coreshop_order_shipping',
                 'type' => null,
                 'dataIndex' => 'orderShippingState',
                 'renderAs' => 'orderShippingState',
                 'flex' => 1
             ],
             [
-                'text' => 'coreshop_workflow_order_invoice_state',
+                'text' => 'coreshop_workflow_name_coreshop_order_invoice',
                 'type' => null,
                 'dataIndex' => 'orderInvoiceState',
                 'renderAs' => 'orderInvoiceState',
