@@ -30,10 +30,6 @@ class OrderCreationController extends AbstractSaleCreationController
      */
     protected function afterSaleCreation(ProposalInterface $sale)
     {
-        $this->get('coreshop.workflow.manager.order')->changeState($sale, 'change_order_state', [
-            'newState' => WorkflowManagerInterface::ORDER_STATE_PENDING_PAYMENT,
-            'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PENDING_PAYMENT,
-        ]);
     }
 
     /**

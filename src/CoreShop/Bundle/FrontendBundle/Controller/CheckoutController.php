@@ -19,7 +19,6 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -143,7 +142,7 @@ class CheckoutController extends FrontendController
          * after the last step, we come here
          *
          * what are we doing here?
-         *  1. Create Order with Workflow State: initialized
+         *  1. Create Order
          *  2. Use Payum and redirect to Payment Provider
          *  3. PayumBundle takes care about payment stuff
          *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
@@ -177,12 +176,6 @@ class CheckoutController extends FrontendController
 
         if (0 === $order->getTotal()) {
             $request->getSession()->set('coreshop_order_id', $order->getId());
-
-            $this->get('coreshop.workflow.manager.order')->changeState($order, 'change_order_state', [
-                'newState' => WorkflowManagerInterface::ORDER_STATE_PROCESSING,
-                'newStatus' => WorkflowManagerInterface::ORDER_STATUS_PROCESSING,
-            ]);
-
             return $this->redirectToRoute('coreshop_checkout_confirmation');
         }
 
