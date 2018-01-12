@@ -56,11 +56,10 @@ final class ResolveNextRouteAction implements ActionInterface
                 $request->setRouteName('coreshop_checkout_confirmation');
                 return;
             }
+
+            $request->setRouteName('coreshop_order_revise');
+            $request->setRouteParameters(array_merge($request->getRouteParameters(), ['token' => $order->getToken()]));
         }
-
-        $request->setRouteName('coreshop_order_revise');
-        $request->setRouteParameters(['token' => $order->getToken()]);
-
     }
 
     /**
