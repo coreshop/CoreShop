@@ -126,22 +126,22 @@ routes:
     priority: 2
 
   coreshop_order_revise:
-    pattern: "/(\\w+)\\/shop\\/order\\/revise\\/(.*)$/"
+    pattern: "/(\\w+)\\/shop\\/order\\/revise\\/(.*)/"
     reverse: "/%_locale/shop/order/revise/%token"
     module: FrontendBundle
     controller: "@coreshop.frontend.controller.order"
     action: revise
     variables: _locale,token
-    priority: 3
+    priority: 2
 
   coreshop_order_revise_pay:
-    pattern: "/(\\w+)\\/shop\\/order\\/revise\\/(.*)\\/pay"
+    pattern: "/(\\w+)\\/shop\\/order\\/revise\\/(.*)\\/pay/"
     reverse: "/%_locale/shop/order/revise/%token/pay"
     module: FrontendBundle
     controller: "@coreshop.frontend.controller.payment"
     action: prepareCapture
     variables: _locale,order
-    priority: 2
+    priority: 3
 
   coreshop_checkout_do:
     pattern: "/(\\w+)\\/shop\\/checkout-do/"

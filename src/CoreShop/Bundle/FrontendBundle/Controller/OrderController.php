@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends FrontendController
 {
@@ -30,12 +31,12 @@ class OrderController extends FrontendController
     {
         $token = $request->get('token');
 
-        if (empty($token)) {
-            return $this->redirectToRoute('coreshop_index');
-        }
-
         /** @var OrderInterface $order */
         $order = $this->getOrderRepository()->findOneBy(['token' => $token]);
+
+        if (!$order instanceof OrderInterface) {
+            throw new NotFoundHttpException();
+        }
 
         $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
             'store' => $order->getStore(),
@@ -44,6 +45,9 @@ class OrderController extends FrontendController
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);
             if ($form->isValid()) {
+                $order = $form->getData();
+                $order->save();
+
                 return $this->redirectToRoute('coreshop_order_revise_pay', ['token' => $token]);
             }
         }
