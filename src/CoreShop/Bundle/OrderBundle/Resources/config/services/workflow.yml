@@ -78,7 +78,6 @@ services:
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
-
     coreshop.workflow.state_manager:
         class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
         arguments:
@@ -99,3 +98,9 @@ services:
           - '%coreshop.workflow.manager.order.state_identifier%'
         tags:
           - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+
+    coreshop.workflow.cart_recoverer:
+        class: CoreShop\Bundle\OrderBundle\Workflow\Cart\CartRecoverer
+        arguments:
+           - '@coreshop.repository.order'
+           - '@coreshop.repository.cart'
