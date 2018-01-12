@@ -20,11 +20,11 @@ services:
         arguments:
           - '@coreshop.state_machine_manager'
           - '@coreshop.order.invoice.processable'
-          - !php/const:CoreShop\Component\Order\OrderInvoiceTransitions::IDENTIFIER
-          - !php/const:CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_READY
-          - !php/const:CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_PARTIALLY_INVOICED
-          - !php/const:CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_CANCEL
-          - !php/const:CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_INVOICED
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::IDENTIFIER
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_READY
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_PARTIALLY_INVOICED
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_CANCEL
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_INVOICED
 
     coreshop.state_machine_resolver.order_shipment:
         public: true
@@ -32,11 +32,11 @@ services:
         arguments:
           - '@coreshop.state_machine_manager'
           - '@coreshop.order.shipment.processable'
-          - !php/const:CoreShop\Component\Order\OrderShipmentTransitions::IDENTIFIER
-          - !php/const:CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_READY
-          - !php/const:CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_PARTIALLY_SHIPPED
-          - !php/const:CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_CANCEL
-          - !php/const:CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_SHIPPED
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::IDENTIFIER
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_READY
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_PARTIALLY_SHIPPED
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_CANCEL
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_SHIPPED
 
     coreshop.state_machine.marking_store.single_state.order_payment_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
@@ -99,3 +99,17 @@ services:
           - '%coreshop.workflow.manager.order.state_identifier%'
         tags:
           - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+
+    coreshop.workflow.order_document.invoice.creation_listener:
+        class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
+        arguments:
+            - '@coreshop.state_machine_resolver.order_invoice'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.invoice.post_transform, method: onOrderDocumentCreated }
+
+    coreshop.workflow.order_document.shipment.creation_listener:
+        class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
+        arguments:
+            - '@coreshop.state_machine_resolver.order_shipment'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: onOrderDocumentCreated }

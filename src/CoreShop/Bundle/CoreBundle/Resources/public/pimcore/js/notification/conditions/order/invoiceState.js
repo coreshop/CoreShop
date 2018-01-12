@@ -10,26 +10,28 @@
  *
  */
 
-pimcore.registerNS('coreshop.notification.rule.conditions.paymentState');
+pimcore.registerNS('coreshop.notification.rule.conditions.invoiceState');
 
-coreshop.notification.rule.conditions.paymentState = Class.create(coreshop.rules.conditions.abstract, {
-    type: 'paymentState',
+coreshop.notification.rule.conditions.invoiceState = Class.create(coreshop.rules.conditions.abstract, {
+    type: 'invoiceState',
 
     getForm: function () {
         this.form = Ext.create('Ext.form.FieldSet', {
             items: [
                 {
                     xtype: 'combo',
-                    fieldLabel: t('coreshop_condition_paymentState'),
-                    name: 'paymentState',
-                    value: this.data ? this.data.paymentState : 1,
+                    fieldLabel: t('coreshop_transition_direction_state'),
+                    name: 'invoiceState',
+                    value: this.data ? this.data.states : [],
                     width: 250,
-                    store: [[1, t('coreshop_payment_partial')], [2, t('coreshop_payment_full')]],
+                    store: pimcore.globalmanager.get('coreshop_states_order_invoice'),
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,
                     forceSelection: true,
-                    queryMode: 'local'
+                    queryMode: 'local',
+                    displayField: 'label',
+                    valueField: 'state'
                 }
             ]
         });

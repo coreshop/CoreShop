@@ -20,16 +20,18 @@ coreshop.notification.rule.conditions.shipmentState = Class.create(coreshop.rule
             items: [
                 {
                     xtype: 'combo',
-                    fieldLabel: t('coreshop_condition_shipmentState'),
+                    fieldLabel: t('coreshop_transition_direction_state'),
                     name: 'shipmentState',
-                    value: this.data ? this.data.shipmentState : 3,
+                    value: this.data ? this.data.states : [],
                     width: 250,
-                    store: [[1, t('coreshop_shipment_partial')], [2, t('coreshop_shipment_full')], [3, t('coreshop_shipment_all')]],
+                    store: pimcore.globalmanager.get('coreshop_states_order_shipment'),
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,
                     forceSelection: true,
-                    queryMode: 'local'
+                    queryMode: 'local',
+                    displayField: 'label',
+                    valueField: 'state'
                 }
             ]
         });

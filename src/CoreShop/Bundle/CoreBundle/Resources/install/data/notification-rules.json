@@ -49,13 +49,13 @@
   },
   {
     "name": "Order Shipped",
-    "type": "shipment",
+    "type": "order",
     "active": true,
     "conditions": [
       {
-        "type": "shipment.shipmentState",
+        "type": "order.shipmentState",
         "configuration": {
-          "shipmentState": 2
+          "shipmentState": "shipped"
         }
       }
     ],
@@ -79,10 +79,13 @@
       {
         "type": "order.orderState",
         "configuration": {
-          "transitionType": 1,
-          "states": [
-            "paymentPending"
-          ]
+          "orderState": "new"
+        }
+      },
+      {
+        "type": "order.paymentState",
+        "configuration": {
+          "paymentState": "paid"
         }
       }
     ],

@@ -147,6 +147,14 @@ try {
             $dbConfig['params']['password'] = $_ENV['CORESHOP_MYSQL_PWD'];
         }
 
+        $dbConfig['params'] = [
+            'host' => 'localhost',
+            'dbname' => 'coreshop2___phpunit',
+            'username' => 'coreshop2',
+            'password' => 'coreshop2',
+            'port' => ''
+        ];
+
         // remove write only config
         if (isset($dbConfig['writeOnly'])) {
             unset($dbConfig['writeOnly']);

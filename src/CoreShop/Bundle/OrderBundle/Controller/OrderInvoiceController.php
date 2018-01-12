@@ -94,8 +94,6 @@ class OrderInvoiceController extends PimcoreController
             $invoice = $this->getInvoiceFactory()->createNew();
             $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
 
-            $this->get('coreshop.state_machine_resolver.order_invoice')->resolve($order);
-
             return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);
         } catch (\Exception $ex) {
             return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
