@@ -3,10 +3,9 @@ core_shop_resource:
         callbacks:
             coreshop_payment:
                 after:
-                  # @todo: wrap getOrder() instead of getOrderId()?
                   resolve_state:
                       on: ['complete', 'refund']
-                      do: ['@coreshop.state_machine_resolver.order_payment', 'resolve']
+                      do: ['@coreshop.workflow.order_id_wrapper_resolver', 'resolveOrder']
                       args: ['object.getOrderId()']
                   restore_cart:
                       on: ['cancel']
