@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

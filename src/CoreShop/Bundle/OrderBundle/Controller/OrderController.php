@@ -31,6 +31,7 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Resource\Workflow\StateMachineApplier;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -198,8 +199,12 @@ class OrderController extends AbstractSaleDetailController
                 /**
                  * @var PaymentInterface|PimcoreModelInterface
                  */
+                $tokenGenerator = new UniqueTokenGenerator(true);
+                $uniqueId = $tokenGenerator->generate(15);
+                $orderNumber = $order->getOrderNumber() . '_' . $uniqueId;
+
                 $payment = $this->getPaymentFactory()->createNew();
-                $payment->setNumber($order->getOrderNumber());
+                $payment->setNumber($orderNumber);
                 $payment->setPaymentProvider($paymentProvider);
                 $payment->setCurrency($order->getCurrency());
                 $payment->setTotalAmount($order->getTotal());

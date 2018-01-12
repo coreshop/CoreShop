@@ -21,6 +21,7 @@ use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Payum;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -106,8 +107,12 @@ class PaymentController extends Controller
          *
          * @var $payment PaymentInterface
          */
+        $tokenGenerator = new UniqueTokenGenerator(true);
+        $uniqueId = $tokenGenerator->generate(15);
+        $orderNumber = $order->getOrderNumber() . '_' . $uniqueId;
+
         $payment = $this->paymentFactory->createNew();
-        $payment->setNumber($order->getOrderNumber());
+        $payment->setNumber($orderNumber);
         $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);

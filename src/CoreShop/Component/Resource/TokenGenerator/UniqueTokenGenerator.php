@@ -15,41 +15,54 @@ namespace CoreShop\Component\Resource\TokenGenerator;
 final class UniqueTokenGenerator
 {
     private $alphabet;
-    private $alphabetLength;
+    private $numbers;
+    private $keys;
+    private $keyLength;
 
-    public function __construct()
+    /**
+     * UniqueTokenGenerator constructor.
+     *
+     * @param bool $onlyNumbers
+     */
+    public function __construct($onlyNumbers = false)
     {
         $this->alphabet =
             implode(range('a', 'z'))
-            .implode(range('A', 'Z'))
-            .implode(range(0, 9))
-        ;
+            . implode(range('A', 'Z'));
 
-        $this->alphabetLength = strlen($this->alphabet);
+        $this->numbers = implode(range(0, 9));
+
+        if ($onlyNumbers === false) {
+            $this->keys = $this->alphabet . $this->numbers;
+        } else {
+            $this->keys = $this->numbers;
+        }
+
+        $this->keyLength = strlen($this->keys);
     }
 
     /**
-    * @param int $length
-    * @return string
-    */
+     * @param int $length
+     * @return string
+     */
     public function generate($length)
     {
         $token = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $randomKey = $this->getRandomInteger(0, $this->alphabetLength);
-            $token .= $this->alphabet[$randomKey];
+            $randomKey = $this->getRandomInteger(0, $this->keyLength);
+            $token .= $this->keys[$randomKey];
         }
 
         return $token;
     }
 
     /**
-    * @param int $min
-    * @param int $max
+     * @param int $min
+     * @param int $max
      *
-    * @return int
-    */
+     * @return int
+     */
     private function getRandomInteger($min, $max)
     {
         $range = ($max - $min);
@@ -59,9 +72,9 @@ final class UniqueTokenGenerator
         }
 
         $log = log($range, 2);
-        $bytes = (int) ($log / 8) + 1;
-        $bits = (int) $log + 1;
-        $filter = (int) (1 << $bits) - 1;
+        $bytes = (int)($log / 8) + 1;
+        $bits = (int)$log + 1;
+        $filter = (int)(1 << $bits) - 1;
 
         do {
             $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
