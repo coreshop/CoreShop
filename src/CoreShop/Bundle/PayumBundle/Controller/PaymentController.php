@@ -86,11 +86,18 @@ class PaymentController extends Controller
         /**
          * @var $order OrderInterface
          */
-        $orderId = $request->get('order');
-        $order = $this->orderRepository->find($orderId);
+        if($request->attributes->has('token')) {
+            $property = 'token';
+            $identifier = $request->attributes->get('token');
+        } else {
+            $property = 'o_id';
+            $identifier = $request->get('order');
+        }
+
+        $order = $this->orderRepository->findOneBy([$property => $identifier]);
 
         if (null === $order) {
-            throw new NotFoundHttpException(sprintf('Order with id "%s" does not exist.', $orderId));
+            throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
         }
 
         /**

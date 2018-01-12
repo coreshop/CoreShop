@@ -305,6 +305,18 @@ translations:
           en: 'I have read and agree to the terms and conditions'
           de: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
 
+  coreshop.ui.order_revise:
+      languages:
+          de_CH: 'Zahlungsmöglichkeit korrigieren'
+          en: 'Change Payment Method'
+          de: 'Zahlungsmöglichkeit korrigieren'
+
+  coreshop.ui.order_revise_payment_change_not_allowed:
+      languages:
+          de_CH: 'Änderung der Zahlungsmöglichkeit dieser Bestellung ist nicht mehr erlaubt'
+          en: 'You can no longer change payment of this order'
+          de: 'Änderung der Zahlungsmöglichkeit dieser Bestellung ist nicht mehr erlaubt'
+
   coreshop.ui.personal_information:
       languages:
           de_CH: 'Persönliche Informationen'

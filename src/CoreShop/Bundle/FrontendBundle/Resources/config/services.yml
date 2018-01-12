@@ -49,8 +49,6 @@ services:
 
   coreshop.frontend.controller.order:
     class: '%coreshop.frontend.controller.order%'
-    arguments:
-      - '@coreshop.repository.order'
     calls:
       - [setContainer, ['@service_container']]
 

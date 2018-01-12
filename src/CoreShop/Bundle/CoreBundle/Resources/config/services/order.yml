@@ -1,4 +1,15 @@
+parameters:
+  coreshop.form.type.order.payment.validation_groups: [coreshop]
+
 services:
+  coreshop.form.type.order_payment:
+    class: CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType
+    arguments:
+      - '%coreshop.model.order.class%'
+      - '%coreshop.form.type.order.payment.validation_groups%'
+    tags:
+      - {name: form.type}
+
   coreshop.core.order.transformer.cart_to_order:
     decorates: coreshop.order.transformer.cart_to_order
     decoration_priority: 10

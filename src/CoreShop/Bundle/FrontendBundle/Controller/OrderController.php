@@ -12,33 +12,21 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use Payum\Core\Payum;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class OrderController extends FrontendController
 {
     /**
-     * @var OrderRepositoryInterface
-     */
-    protected $orderRepository;
-
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     */
-    public function __construct(OrderRepositoryInterface $orderRepository)
-    {
-        $this->orderRepository = $orderRepository;
-    }
-
-    /**
      * @param Request $request
      *
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Request $request)
+    public function reviseAction(Request $request)
     {
         $token = $request->get('token');
 
@@ -46,8 +34,43 @@ class OrderController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $order = $this->orderRepository->findBy(['token' => $token]);
-        $args = ['order' => $order];
+        /** @var OrderInterface $order */
+        $order = $this->getOrderRepository()->findOneBy(['token' => $token]);
+
+        $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
+            'store' => $order->getStore(),
+        ]);
+
+        if ($request->isMethod('post')) {
+            $form = $form->handleRequest($request);
+            if ($form->isValid()) {
+                return $this->redirectToRoute('coreshop_order_revise_pay', ['token' => $token]);
+            }
+        }
+
+        $args = [
+            'order' => $order,
+            'form'  => $form->createView()
+        ];
+
         return $this->renderTemplate('CoreShopFrontendBundle:Order:revise.html.twig', $args);
     }
+
+    /**
+     * @return OrderRepositoryInterface
+     */
+    protected function getOrderRepository()
+    {
+        return $this->get('coreshop.repository.order');
+    }
+
+    /**
+     * @return FormFactoryInterface
+     */
+    protected function getFormFactory()
+    {
+        return $this->get('form.factory');
+    }
 }
+
+

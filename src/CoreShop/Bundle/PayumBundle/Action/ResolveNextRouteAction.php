@@ -58,10 +58,9 @@ final class ResolveNextRouteAction implements ActionInterface
             }
         }
 
-        /*
-         * We could return the Customer to the last checkout page as well?
-         */
-        $request->setRouteName('coreshop_checkout_error');
+        $request->setRouteName('coreshop_order_revise');
+        $request->setRouteParameters(['token' => $order->getToken()]);
+
     }
 
     /**
