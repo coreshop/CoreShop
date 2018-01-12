@@ -107,11 +107,5 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
         if (null !== $transition = $this->stateMachineManager->getTransitionToState($workflow, $payment, $nextState)) {
             $workflow->apply($payment, $transition);
         }
-
-        //$cart = $this->cartRepository->findCartByOrder($order);
-        //if ($cart instanceof CartInterface) {
-        //$cart->setOrder(null);
-        //$cart->save();
-        //}
     }
 }

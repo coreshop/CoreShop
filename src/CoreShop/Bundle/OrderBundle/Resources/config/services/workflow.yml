@@ -78,7 +78,6 @@ services:
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
-
     coreshop.workflow.state_manager:
         class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
         arguments:
@@ -100,6 +99,7 @@ services:
         tags:
           - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 
+
     coreshop.workflow.order_document.invoice.creation_listener:
         class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
         arguments:
@@ -113,3 +113,10 @@ services:
             - '@coreshop.state_machine_resolver.order_shipment'
         tags:
             - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: onOrderDocumentCreated }
+
+    coreshop.workflow.cart_recoverer:
+        class: CoreShop\Bundle\OrderBundle\Workflow\Cart\CartRecoverer
+        arguments:
+           - '@coreshop.repository.order'
+           - '@coreshop.repository.cart'
+

@@ -7,13 +7,13 @@ core_shop_resource:
                         on: ['create']
                         do: ['@coreshop.inventory.order_operator', 'hold']
                         args: ['object']
-
-core_shop_resource:
-    state_machine:
-        callbacks:
+                    cancel_inventory:
+                        on: ['cancel']
+                        do: ['@coreshop.inventory.order_operator', 'cancel']
+                        args: ['object']
             coreshop_order_payment:
                 after:
-                    order_paid:
+                    sell_inventory:
                         on: ['pay']
                         do: ['@coreshop.inventory.order_operator', 'sell']
                         args: ['object']
