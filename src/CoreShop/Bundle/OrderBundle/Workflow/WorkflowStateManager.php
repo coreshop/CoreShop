@@ -18,11 +18,6 @@ use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Pimcore\Model\Element\Note;
 use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * Class WorkflowManager
- *
- * @package CoreShop\Bundle\OrderBundle\Workflow
- */
 final class WorkflowStateManager implements WorkflowStateManagerInterface
 {
     /**
@@ -48,15 +43,16 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     /**
      * @param StateMachineManager $stateMachineManager
      * @param TranslatorInterface $translator
-     * @param string              $noteIdentifier
-     * @param array              $stateColors
+     * @param string $noteIdentifier
+     * @param array $stateColors
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         TranslatorInterface $translator,
         $noteIdentifier,
         $stateColors
-    ) {
+    )
+    {
         $this->stateMachineManager = $stateMachineManager;
         $this->noteIdentifier = $noteIdentifier;
         $this->translator = $translator;

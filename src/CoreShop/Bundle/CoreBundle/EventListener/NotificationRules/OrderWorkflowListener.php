@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Workflow\ProposalWorkflowEvent;
 use Symfony\Component\Workflow\Event\Event;
 
 final class OrderWorkflowListener extends AbstractNotificationRuleListener
