@@ -24,7 +24,7 @@ final class OrderPaymentStateConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('paymentState', TextType::class, [
+            ->add('orderPaymentState', TextType::class, [
 
             ])
         ;

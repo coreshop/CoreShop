@@ -121,6 +121,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule_condition_order_carriers')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/carriers.js')->end()
                             ->scalarNode('notification_rule_condition_order_orderState')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderState.js')->end()
                             ->scalarNode('notification_rule_condition_order_payment')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/payment.js')->end()
+                            ->scalarNode('notification_rule_condition_order_paymentstate')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderPaymentState.js')->end()
                             ->scalarNode('notification_rule_condition_payment_paymentstate')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/payment/paymentState.js')->end()
                             ->scalarNode('notification_rule_condition_shipment_shipmentstate')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/shipmentState.js')->end()
                             ->scalarNode('notification_rule_condition_user_usertype')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/user/userType.js')->end()

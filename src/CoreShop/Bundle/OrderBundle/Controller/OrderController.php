@@ -13,15 +13,12 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\OrderPaymentStates;
-use CoreShop\Component\Core\OrderPaymentTransitions;
+use CoreShop\Component\Order\OrderPaymentStates;
+use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
-use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderShipmentTransitions;
-use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;

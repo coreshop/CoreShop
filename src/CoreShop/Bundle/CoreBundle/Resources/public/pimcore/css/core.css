@@ -111,7 +111,7 @@
     background: url(../img/orders.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_payment, .coreshop_rule_icon_condition_paymentState {
+.coreshop_rule_icon_condition_payment, .coreshop_rule_icon_condition_paymentState, .coreshop_rule_icon_condition_orderPaymentState {
     background: url(../img/payments.svg) center center no-repeat !important;
 }
 

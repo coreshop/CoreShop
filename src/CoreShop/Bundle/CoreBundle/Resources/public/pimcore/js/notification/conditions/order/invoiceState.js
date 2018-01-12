@@ -22,7 +22,7 @@ coreshop.notification.rule.conditions.invoiceState = Class.create(coreshop.rules
                     xtype: 'combo',
                     fieldLabel: t('coreshop_transition_direction_state'),
                     name: 'invoiceState',
-                    value: this.data ? this.data.states : [],
+                    value: this.data ? this.data.invoiceState : [],
                     width: 250,
                     store: pimcore.globalmanager.get('coreshop_states_order_invoice'),
                     triggerAction: 'all',

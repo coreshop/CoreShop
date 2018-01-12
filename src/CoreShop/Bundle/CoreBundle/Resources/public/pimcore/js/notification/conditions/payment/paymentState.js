@@ -22,7 +22,7 @@ coreshop.notification.rule.conditions.paymentState = Class.create(coreshop.rules
                     xtype: 'combo',
                     fieldLabel: t('coreshop_transition_direction_state'),
                     name: 'paymentState',
-                    value: this.data ? this.data.states : [],
+                    value: this.data ? this.data.paymentState : [],
                     width: 250,
                     store: pimcore.globalmanager.get('coreshop_states_payment'),
                     triggerAction: 'all',

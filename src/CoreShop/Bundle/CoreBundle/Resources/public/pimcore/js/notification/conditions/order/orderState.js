@@ -22,7 +22,7 @@ coreshop.notification.rule.conditions.orderState = Class.create(coreshop.rules.c
                     xtype: 'combo',
                     fieldLabel: t('coreshop_transition_direction_state'),
                     name: 'orderState',
-                    value: this.data ? this.data.states : [],
+                    value: this.data ? this.data.orderState : [],
                     width: 250,
                     store: pimcore.globalmanager.get('coreshop_states_order'),
                     triggerAction: 'all',

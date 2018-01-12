@@ -8,7 +8,7 @@ services:
     coreshop.notification_rule.condition.order.order_payment_state:
         class: CoreShop\Component\Core\Notification\Rule\Condition\Order\OrderPaymentStateChecker
         tags:
-            - { name: coreshop.notification_rule.condition, type: paymentState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderPaymentStateConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: orderPaymentState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderPaymentStateConfigurationType }
 
     coreshop.notification_rule.condition.order.shipment_state:
         class: CoreShop\Component\Core\Notification\Rule\Condition\Order\ShipmentStateChecker

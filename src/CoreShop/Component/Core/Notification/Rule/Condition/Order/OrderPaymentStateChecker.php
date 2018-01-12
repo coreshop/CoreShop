@@ -23,7 +23,7 @@ class OrderPaymentStateChecker extends AbstractConditionChecker
     public function isNotificationRuleValid($subject, $params, array $configuration)
     {
         if ($subject instanceof OrderInterface) {
-            return $configuration['paymentState'] === $subject->getPaymentState();
+            return $configuration['orderPaymentState'] === $subject->getPaymentState();
         }
 
         return false;
