@@ -138,7 +138,7 @@ class Version20180109172304 extends AbstractPimcoreMigration implements Containe
 
         $product = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
         $classUpdater = new ClassUpdate($product);
-        if (!$classUpdater->hasField('Status')) {
+        if (!$classUpdater->hasField('orderState')) {
             $classUpdater->insertFieldAfter('Order', $statusFields);
             $classUpdater->save();
         }
