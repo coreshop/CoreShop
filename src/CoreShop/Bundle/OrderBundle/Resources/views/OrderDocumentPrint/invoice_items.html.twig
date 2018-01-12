@@ -45,7 +45,6 @@
                 {% set shippingIt = invoice.getShipping(true) %}
                 {% set discount = invoice.getDiscount(false) %}
                 {% set discountIt = invoice.getDiscount(true) %}
-                {% set payment = invoice.getPaymentFee() %}
                 {% set taxes = invoice.taxes %}
                 {% set rowspan = 10 + taxes|length %}
 
@@ -54,10 +53,6 @@
                 {% endif %}
 
                 {% if discount == 0 %}
-                    {% set rowspan = rowspan - 2 %}
-                {% endif %}
-
-                {% if payment == 0 %}
                     {% set rowspan = rowspan - 2 %}
                 {% endif %}
 
@@ -115,16 +110,6 @@
                         </td>
                         <td class="text-right cart-shipping">
                             {{ shipping|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
-                        </td>
-                    </tr>
-                {% endif %}
-                {% if payment > 0 %}
-                    <tr>
-                        <td class="col-xs-8 text-right" >
-                            <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
-                        </td>
-                        <td class="text-right cart-payment">
-                            {{ payment|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
                         </td>
                     </tr>
                 {% endif %}

@@ -135,7 +135,6 @@
                     {% set shippingIt = order.getShipping(true) %}
                     {% set discount = order.getDiscount(false) %}
                     {% set discountIt = order.getDiscount(true) %}
-                    {% set payment = order.getPaymentFee() %}
                     {% set taxes = order.getTaxes() %}
                     {% set rowspan = 10 + taxes|length %}
 
@@ -144,10 +143,6 @@
                     {% endif %}
 
                     {% if discount == 0 %}
-                        {% set rowspan = rowspan - 2 %}
-                    {% endif %}
-
-                    {% if payment == 0 %}
                         {% set rowspan = rowspan - 2 %}
                     {% endif %}
 
@@ -207,17 +202,6 @@
                             <td colspan="1"
                                 class="text-right cart-shipping">
                                 {{ currency.format(shipping, order.getCurrency.isoCode) }}
-                            </td>
-                        </tr>
-                    {% endif %}
-                    {% if payment > 0 %}
-                        <tr>
-                            <td class="text-right">
-                                <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
-                            </td>
-                            <td colspan="1"
-                                class="text-right cart-payment">
-                                {{ currency.format(payment, order.getCurrency.isoCode) }}
                             </td>
                         </tr>
                     {% endif %}

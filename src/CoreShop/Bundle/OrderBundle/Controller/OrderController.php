@@ -348,7 +348,6 @@ class OrderController extends AbstractSaleDetailController
             $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
             $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
-            $order['paymentFee'] = $sale->getPaymentFee();
         }
 
         return $order;
@@ -391,16 +390,6 @@ class OrderController extends AbstractSaleDetailController
     protected function getSummary(SaleInterface $sale)
     {
         $summary = parent::getSummary($sale);
-
-        if ($sale instanceof OrderInterface) {
-            if ($sale->getPaymentFee() > 0) {
-                $summary[] = [
-                    'key' => 'payment',
-                    'value' => $sale->getPaymentFee(),
-                ];
-            }
-        }
-
         return $summary;
     }
 

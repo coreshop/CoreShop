@@ -4,7 +4,6 @@
 {% set shippingIt = cart.getShipping(true) %}
 {% set discount = cart.getDiscount(false) %}
 {% set discountIt = cart.getDiscount(true) %}
-{% set payment = cart.getPaymentFee() %}
 {% set taxes = cart.taxes %}
 {% set rowspan = 10 + taxes|length %}
 
@@ -15,11 +14,6 @@
 {% if discount == 0 %}
     {% set rowspan = rowspan - 2 %}
 {% endif %}
-
-{% if payment == 0 %}
-    {% set rowspan = rowspan - 2 %}
-{% endif %}
-
 <tr>
     <td class="text-right" colspan="3">
         <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
@@ -69,16 +63,6 @@
         </td>
         <td colspan="2" class="text-right cart-shipping">
             {{ currency.convertAndFormat(shipping) }}
-        </td>
-    </tr>
-{% endif %}
-{% if payment > 0 %}
-    <tr>
-        <td class="text-right" colspan="3">
-            <strong>{{ 'coreshop.ui.payment_fee'|trans }}:</strong>
-        </td>
-        <td colspan="2" class="text-right cart-payment">
-            {{ currency.convertAndFormat(payment) }}
         </td>
     </tr>
 {% endif %}

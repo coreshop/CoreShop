@@ -114,15 +114,6 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 'flex' => 1
             ],
             [
-                'text' => 'coreshop_payment_fee',
-                'type' => 'float',
-                'dataIndex' => 'paymentFee',
-                'renderAs' => 'currency',
-                'align' => 'right',
-                'hidden' => true,
-                'flex' => 1
-            ],
-            [
                 'text' => 'coreshop_total_tax',
                 'type' => 'float',
                 'dataIndex' => 'totalTax',

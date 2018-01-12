@@ -113,30 +113,6 @@ interface OrderInterface extends SaleInterface
     public function getIsPayed();
 
     /**
-     * @param int $paymentFee
-     * @param bool $withTax
-     */
-    public function setPaymentFee($paymentFee, $withTax = true);
-
-    /**
-     * @param bool $withTax
-     * @return int
-     */
-    public function getPaymentFee($withTax = true);
-
-    /**
-     * @param int $paymentFee
-     * @param bool $withTax
-     */
-    public function setBasePaymentFee($paymentFee, $withTax = true);
-
-    /**
-     * @param bool $withTax
-     * @return int
-     */
-    public function getBasePaymentFee($withTax = true);
-
-    /**
      * @return mixed
      */
     public function getPaymentProvider();
@@ -147,14 +123,4 @@ interface OrderInterface extends SaleInterface
      * @return mixed
      */
     public function setPaymentProvider($paymentProvider);
-
-    /**
-     * @return int
-     */
-    public function getPaymentFeeTaxRate();
-
-    /**
-     * @param int $paymentFeeTaxRate
-     */
-    public function setPaymentFeeTaxRate($paymentFeeTaxRate);
 }

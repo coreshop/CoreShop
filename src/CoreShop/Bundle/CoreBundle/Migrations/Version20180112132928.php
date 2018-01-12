@@ -50,6 +50,49 @@ class Version20180112132928 extends AbstractPimcoreMigration implements Containe
             $classUpdater->save();
         }
 
+        if ($classUpdater->hasField('paymentFeeNet')) {
+            $classUpdater->removeField('paymentFeeNet');
+        }
+        if ($classUpdater->hasField('paymentFeeGross')) {
+            $classUpdater->removeField('paymentFeeGross');
+        }
+        if ($classUpdater->hasField('paymentFeeTaxRate')) {
+            $classUpdater->removeField('paymentFeeTaxRate');
+        }
+        if ($classUpdater->hasField('basePaymentFeeNet')) {
+            $classUpdater->removeField('basePaymentFeeNet');
+        }
+        if ($classUpdater->hasField('basePaymentFeeGross')) {
+            $classUpdater->removeField('basePaymentFeeGross');
+        }
+
+        $classUpdater->save();
+
+        $cart = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');
+        $classUpdater = new ClassUpdate($cart);
+        if ($classUpdater->hasField('paymentFeeGross')) {
+            $classUpdater->removeField('paymentFeeGross');
+        }
+        if ($classUpdater->hasField('paymentFeeNet')) {
+            $classUpdater->removeField('paymentFeeNet');
+        }
+
+        $classUpdater->save();
+
+        $orderInvoice = $this->container->getParameter('coreshop.model.order_invoice.pimcore_class_name');
+        $classUpdater = new ClassUpdate($orderInvoice);
+        if ($classUpdater->hasField('basePaymentFeeGross')) {
+            $classUpdater->removeField('basePaymentFeeGross');
+        }
+        if ($classUpdater->hasField('basePaymentFeeTax')) {
+            $classUpdater->removeField('basePaymentFeeTax');
+        }
+        if ($classUpdater->hasField('basePaymentFeeNet')) {
+            $classUpdater->removeField('basePaymentFeeNet');
+        }
+
+        $classUpdater->save();
+
         //update static routes (order controller added)
         $this->container->get('coreshop.resource.installer.routes')->installResources(new NullOutput(), 'coreshop');
     }
