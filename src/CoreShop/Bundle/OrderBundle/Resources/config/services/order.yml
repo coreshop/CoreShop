@@ -32,6 +32,13 @@ services:
       - '@coreshop.resource.object_cloner'
       - '@coreshop.repository.cart_price_rule_voucher_code'
 
+  coreshop.order.transformer.cart_to_order.workflow_applier:
+    class: CoreShop\Component\Order\Transformer\CartToOrderTransformerWorkflowApplier
+    decorates: 'coreshop.order.transformer.cart_to_order'
+    arguments:
+      - '@coreshop.order.transformer.cart_to_order.workflow_applier.inner'
+      - '@coreshop.state_machine_applier'
+
   coreshop.order.transformer.cart_item_to_quote_item:
     class: CoreShop\Component\Order\Transformer\CartItemToQuoteItemTransformer
     arguments:

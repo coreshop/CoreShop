@@ -16,7 +16,9 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
+use CoreShop\Component\Order\TokenAssigner\OrderTokenAssignerInterface;
 use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Webmozart\Assert\Assert;
 
 class CartToOrderTransformer extends AbstractCartToSaleTransformer
@@ -33,6 +35,8 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($order, OrderInterface::class);
 
+        $tokenGenerator = new UniqueTokenGenerator();
+
         $fromCurrency = $this->storeContext->getStore()->getCurrency()->getIsoCode();
         $toCurrency = $cart->getCurrency() instanceof CurrencyInterface ? $cart->getCurrency()->getIsoCode() : $fromCurrency;
 
@@ -43,6 +47,8 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
 
         $order->setBasePaymentFee($cart->getPaymentFee(true), true);
         $order->setBasePaymentFee($cart->getPaymentFee(false), false);
+
+        $order->setToken($tokenGenerator->generate(10));
 
         $order = $this->transformSale($cart, $order, 'order');
 
