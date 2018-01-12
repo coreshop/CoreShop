@@ -125,6 +125,15 @@ routes:
     variables: _locale,stepIdentifier
     priority: 2
 
+  coreshop_order_revise:
+    pattern: "/(\\w+)\\/shop\\/order\\/revise\\/(.*)/"
+    reverse: "/%_locale/shop/order/revise/%token"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.order"
+    action: revise
+    variables: _locale,token
+    priority: 2
+
   coreshop_checkout_do:
     pattern: "/(\\w+)\\/shop\\/checkout-do/"
     reverse: "/%_locale/shop/checkout-do"

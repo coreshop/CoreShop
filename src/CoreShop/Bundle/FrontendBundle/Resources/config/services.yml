@@ -47,6 +47,13 @@ services:
     calls:
       - [setContainer, ['@service_container']]
 
+  coreshop.frontend.controller.order:
+    class: '%coreshop.frontend.controller.order%'
+    arguments:
+      - '@coreshop.repository.order'
+    calls:
+      - [setContainer, ['@service_container']]
+
   coreshop.frontend.controller.category:
     class: '%coreshop.frontend.controller.category%'
     calls:

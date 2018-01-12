@@ -1,0 +1,9 @@
+{% extends '@CoreShopFrontend/Order/layout.html.twig' %}
+
+{% block checkout_title %}
+    {{ 'coreshop.ui.order_revise'|trans }}
+{% endblock %}
+
+{% block order %}
+    {{ dump(order) }}
+{% endblock %}

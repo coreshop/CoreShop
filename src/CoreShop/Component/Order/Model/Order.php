@@ -245,6 +245,22 @@ class Order extends Sale implements OrderInterface
     /**
      * {@inheritdoc}
      */
+    public function getToken()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToken($token)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBasePaymentFeeNet()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

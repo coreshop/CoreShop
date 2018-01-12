@@ -8,7 +8,7 @@ core_shop_resource:
                       do: ['@coreshop.workflow.order_id_wrapper_resolver', 'resolveOrder']
                       args: ['object.getOrderId()']
                   restore_cart:
-                      on: ['cancel']
+                      on: ['failed']
                       do: ['@coreshop.workflow.cart_recoverer', 'recover']
                       args: ['object.getOrderId()']
                   add_to_history:

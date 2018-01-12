@@ -88,6 +88,16 @@ interface OrderInterface extends SaleInterface
     public function setOrderNumber($orderNumber);
 
     /**
+     * @return string
+     */
+    public function getToken();
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token);
+
+    /**
      * @return PaymentInterface[]
      */
     public function getPayments();
