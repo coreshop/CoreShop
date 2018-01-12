@@ -16,7 +16,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class InvoiceStateConfigurationType extends AbstractType
+final class OrderPaymentStateConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -24,7 +24,7 @@ final class InvoiceStateConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('invoiceState', TextType::class, [
+            ->add('paymentState', TextType::class, [
 
             ])
         ;
@@ -35,6 +35,6 @@ final class InvoiceStateConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_notification_condition_invoice_state';
+        return 'coreshop_notification_condition_order_payment_state';
     }
 }

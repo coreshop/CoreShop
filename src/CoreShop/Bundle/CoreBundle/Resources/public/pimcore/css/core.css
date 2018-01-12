@@ -106,3 +106,15 @@
 .pimcore_icon_coreShopStorePrice {
     background: url(../img/icons/money.svg) center center no-repeat !important;
 }
+
+.coreshop_rule_icon_condition_orderState {
+    background: url(../img/orders.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_payment, .coreshop_rule_icon_condition_paymentState {
+    background: url(../img/payments.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_action_orderMail {
+    background: url(../img/mail.svg) center center no-repeat !important;
+}

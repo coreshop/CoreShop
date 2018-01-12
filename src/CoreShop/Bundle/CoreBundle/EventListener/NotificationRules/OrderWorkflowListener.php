@@ -8,34 +8,42 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Workflow\ProposalWorkflowEvent;
+use Symfony\Component\Workflow\Event\Event;
 
 final class OrderWorkflowListener extends AbstractNotificationRuleListener
 {
-    public function applyRule(ProposalWorkflowEvent $event)
+    /**
+     * @param Event $event
+     */
+    public function applyOrderWorkflowRule(Event $event)
     {
-        $order = $event->getProposal();
+        $order = $event->getSubject();
 
-        if ($order instanceof OrderInterface) {
-            $customer = $order->getCustomer();
-
-            if ($customer instanceof CustomerInterface) {
-                $this->rulesProcessor->applyRules('order', $event->getProposal(), [
-                    'fromState' => $event->getOldState(),
-                    'toState' => $event->getNewState(),
-                    '_locale' => $order->getOrderLanguage(),
-                    'recipient' => $customer->getEmail(),
-                    'firstname' => $customer->getFirstname(),
-                    'lastname' => $customer->getLastname(),
-                    'orderNumber' => $order->getOrderNumber()
-                ]);
-            }
+        if (!$order instanceof OrderInterface) {
+            return;
         }
+
+        $customer = $order->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return;
+        }
+
+        $this->rulesProcessor->applyRules('order', $order, [
+            'fromState' => implode(', ', array_keys($event->getMarking()->getPlaces())),
+            'toState' => implode(', ', $event->getTransition()->getTos()),
+            '_locale' => $order->getOrderLanguage(),
+            'recipient' => $customer->getEmail(),
+            'firstname' => $customer->getFirstname(),
+            'lastname' => $customer->getLastname(),
+            'orderNumber' => $order->getOrderNumber()
+        ]);
     }
 }

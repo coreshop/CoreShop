@@ -14,17 +14,22 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\OrderPaymentStates;
+use CoreShop\Component\Core\OrderPaymentTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderShipmentStates;
+use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
@@ -79,44 +84,25 @@ class OrderController extends AbstractSaleDetailController
      */
     public function getStatesAction(Request $request)
     {
+        $identifiers = [
+            OrderTransitions::IDENTIFIER,
+            OrderShipmentTransitions::IDENTIFIER,
+            OrderPaymentTransitions::IDENTIFIER,
+            OrderInvoiceTransitions::IDENTIFIER,
+            PaymentTransitions::IDENTIFIER
+        ];
+        $states = [];
         $workflowStateManager = $this->getWorkflowStateManager();
 
-        $orderStateClass = new \ReflectionClass(OrderStates::class);
-        $orderStates = $orderStateClass->getConstants();
-        $readableOrderStates = [];
-        foreach ($orderStates as $state) {
-            $readableOrderStates[] = $workflowStateManager->getStateInfo('coreshop_order', $state, false);
+        foreach ($identifiers as $identifier) {
+            $places = $this->get(sprintf('state_machine.%s', $identifier))->getDefinition()->getPlaces();
+
+            foreach ($places as $place) {
+                $states[$identifier][] = $workflowStateManager->getStateInfo($identifier, $place, false);
+            }
         }
 
-        $orderShipmentStateClass = new \ReflectionClass(OrderShipmentStates::class);
-        $orderShipmentStates = $orderShipmentStateClass->getConstants();
-        $readableOrderShipmentStates = [];
-        foreach ($orderShipmentStates as $state) {
-            $readableOrderShipmentStates[] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $state, false);
-        }
-
-        $orderPaymentStateClass = new \ReflectionClass(OrderPaymentStates::class);
-        $orderPaymentStates = $orderPaymentStateClass->getConstants();
-        $readableOrderPaymentStates = [];
-        foreach ($orderPaymentStates as $state) {
-            $readableOrderPaymentStates[] = $workflowStateManager->getStateInfo('coreshop_order_payment', $state, false);
-        }
-
-        $orderInvoiceStateClass = new \ReflectionClass(OrderInvoiceStates::class);
-        $orderInvoiceStates = $orderInvoiceStateClass->getConstants();
-        $readableOrderInvoiceStates = [];
-        foreach ($orderInvoiceStates as $state) {
-            $readableOrderInvoiceStates[] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $state, false);
-        }
-
-        $states = [
-            'coreshop_order'          => $readableOrderStates,
-            'coreshop_order_shipment' => $readableOrderShipmentStates,
-            'coreshop_order_payment'  => $readableOrderPaymentStates,
-            'coreshop_order_invoice'  => $readableOrderInvoiceStates
-        ];
-
-        return $this->viewHandler->handle(['states' => $states]);
+        return $this->viewHandler->handle(['success' => true, 'states' => $states]);
     }
 
     /**

@@ -10,20 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Core\Notification\Rule\Condition\Payment;
+namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
 
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 
-class PaymentStateChecker extends AbstractConditionChecker
+class OrderPaymentStateChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
      */
     public function isNotificationRuleValid($subject, $params, array $configuration)
     {
-        if ($subject instanceof PaymentInterface) {
-            return $subject->getState() === $configuration['paymentState'];
+        if ($subject instanceof OrderInterface) {
+            return $configuration['paymentState'] === $subject->getPaymentState();
         }
 
         return false;
