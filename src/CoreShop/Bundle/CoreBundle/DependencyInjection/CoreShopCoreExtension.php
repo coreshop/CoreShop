@@ -74,8 +74,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         if (array_key_exists('checkout_manager_factory', $config)) {
             $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $config['checkout_manager_factory']));
             $container->setAlias('coreshop.checkout_manager.factory', $alias);
-        }
-        else {
+        } else {
             throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');
         }
     }
@@ -97,7 +96,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
     /**
      * @param ContainerBuilder $container
-     * @param $config
+     * @param                  $config
      */
     private function registerCheckout(ContainerBuilder $container, $config)
     {
@@ -119,7 +118,10 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             $stepsLocator->addTag('container.service_locator');
             $container->setDefinition($stepsLocatorId, $stepsLocator);
 
-            $checkoutManagerFactory = new Definition(DefaultCheckoutManagerFactory::class, [new Reference($stepsLocatorId), $priorityMap]);
+            $checkoutManagerFactory = new Definition(DefaultCheckoutManagerFactory::class, [
+                new Reference($stepsLocatorId),
+                $priorityMap
+            ]);
 
             $container->setDefinition($checkoutManagerFactoryId, $checkoutManagerFactory);
 

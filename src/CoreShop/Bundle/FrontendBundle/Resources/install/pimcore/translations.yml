@@ -455,6 +455,144 @@ translations:
           en: 'State'
           de: 'Status'
 
+  coreshop.ui.workflow.state.coreshop_order:
+      languages:
+          de_CH: 'Status'
+          en: 'State'
+          de: 'Status'
+
+  coreshop.ui.workflow.state.coreshop_order_payment:
+      languages:
+          de_CH: 'Zahlungsstatus'
+          en: 'Payment State'
+          de: 'Zahlungsstatus'
+
+  coreshop.ui.workflow.state.coreshop_order_invoice:
+      languages:
+          de_CH: 'Rechnungsstatus'
+          en: 'Invoice State'
+          de: 'Rechnungsstatus'
+
+  coreshop.ui.workflow.state.coreshop_order_shipment:
+      languages:
+          de_CH: 'Versandstatus'
+          en: 'State'
+          de: 'Versandstatus'
+
+  coreshop.ui.workflow.state.coreshop_order.new:
+      languages:
+          de_CH: 'Neu'
+          en: 'New'
+          de: 'Neu'
+
+  coreshop.ui.workflow.state.coreshop_order.initialized:
+      languages:
+          de_CH: 'Initialisiert'
+          en: 'Initialized'
+          de: 'Initialisiert'
+
+  coreshop.ui.workflow.state.coreshop_order.cancelled:
+      languages:
+          de_CH: 'Storniert'
+          en: 'Cancelled'
+          de: 'Storniert'
+
+  coreshop.ui.workflow.state.coreshop_order.complete:
+      languages:
+          de_CH: 'Abgeschlossen'
+          en: 'Complete'
+          de: 'Abgeschlossen'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.new:
+      languages:
+          de_CH: 'Neu'
+          en: 'New'
+          de: 'Neu'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.awaiting_payment:
+      languages:
+          de_CH: 'Warten auf Zahlung'
+          en: 'Awaiting Payment'
+          de: 'Warten auf Zahlung'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.partially_paid:
+      languages:
+          de_CH: 'Zahlung teilweise eingegangen'
+          en: 'Partially Paid'
+          de: 'Zahlung teilweise eingegangen'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.cancelled:
+      languages:
+          de_CH: 'Storniert'
+          en: 'Cancelled'
+          de: 'Storniert'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.paid:
+      languages:
+          de_CH: 'Bezahlt'
+          en: 'Paid'
+          de: 'Bezahlt'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.partially_refunded:
+      languages:
+          de_CH: 'Zahlung teilweise zurückerstattet'
+          en: 'Partially Refunded'
+          de: 'Zahlung teilweise zurückerstattet'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.refunded:
+      languages:
+          de_CH: 'Zurückerstattet'
+          en: 'Refunded'
+          de: 'Zurückerstattet'
+
+  coreshop.ui.workflow.state.coreshop_order_shipment.new:
+      languages:
+          de_CH: 'Neu'
+          en: 'New'
+          de: 'Neu'
+
+  coreshop.ui.workflow.state.coreshop_order_shipment.ready:
+      languages:
+          de_CH: 'Versand in Vorbereitung'
+          en: 'Shipment in Preparation'
+          de: 'Versand in Vorbereitung'
+
+  coreshop.ui.workflow.state.coreshop_order_shipment.cancelled:
+      languages:
+          de_CH: 'Storniert'
+          en: 'Cancelled'
+          de: 'Storniert'
+
+  coreshop.ui.workflow.state.coreshop_order_shipment.partially_shipped:
+      languages:
+          de_CH: 'Teilweise versendet'
+          en: 'Partially Shipped'
+          de: 'Teilweise versendet'
+
+  coreshop.ui.workflow.state.coreshop_order_shipment.shipped:
+      languages:
+          de_CH: 'Versendet'
+          en: 'Shipped'
+          de: 'Versendet'
+
+  coreshop.ui.workflow.state.coreshop_order_invoice.new:
+      languages:
+          de_CH: 'Neu'
+          en: 'New'
+          de: 'Neu'
+
+  coreshop.ui.workflow.state.coreshop_order_invoice.cancelled:
+      languages:
+          de_CH: 'Storniert'
+          en: 'Cancelled'
+          de: 'Storniert'
+
+  coreshop.ui.workflow.state.coreshop_order_invoice.invoiced:
+      languages:
+          de_CH: 'Fakturiert'
+          en: 'Invoiced'
+          de: 'Fakturiert'
+
   coreshop.ui.subtotal:
       languages:
           de_CH: 'Zwischensumme'

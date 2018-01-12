@@ -77,7 +77,7 @@
 }
 
 .rounded-color {
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 0 10px;
 }
 
@@ -100,9 +100,49 @@
     border-radius: 10px;
 }
 
+.coreshop_cancel_order_button {
+    background: #d83a3a;
+    border: none;
+    float: right;
+    margin:5px 0;
+}
+
+.coreshop_cancel_order_button:hover {
+    background: #c72a2a !important;
+}
+
+.coreshop_cancel_order_button .x-btn-inner {
+    font-weight:bold;
+}
+
 .coreshop_order_big {
     font-size: 18px;
     font-weight: bold;
+}
+.coreshop_order_big.order_state {
+    margin-top: 2px;
+}
+
+.coreshop_order_big.order_state .color-dot {
+    margin-top: -1px;
+}
+
+.coreshop_order_medium {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.color-dot {
+    width: 10px;
+    height: 10px;
+    display: block;
+    margin: 3px 10px 0 0;
+    float: left;
+}
+
+.coreshop_order_big .color-dot {
+    width: 20px;
+    height: 20px;
 }
 
 .x-panel.coreshop-panel > .x-panel-default-outer-border-trl,

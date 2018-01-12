@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderStates;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -71,6 +72,7 @@ class CustomersReport implements ReportInterface
 
         $orderClassId = $this->pimcoreClasses['order'];
         $customerClassId = $this->pimcoreClasses['customer'];
+        $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $query = "
             SELECT 
@@ -80,8 +82,7 @@ class CustomersReport implements ReportInterface
               COUNT(customer.oo_id) as `orderCount`
             FROM object_query_$orderClassId AS orders
             INNER JOIN object_query_$customerClassId AS customer ON orders.customer__id = customer.oo_id
-            INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-            WHERE orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL
+            WHERE  orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL
             GROUP BY customer.oo_id
             ORDER BY COUNT(customer.oo_id) DESC
         ";

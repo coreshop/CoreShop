@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Doctrine\DBAL\Connection;
@@ -105,6 +106,7 @@ class ProductsReport implements ReportInterface
 
         $orderClassId = $this->pimcoreClasses['order'];
         $orderItemClassId = $this->pimcoreClasses['order_item'];
+        $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $locale = $this->localeContext->getLocaleCode();
 
@@ -145,8 +147,7 @@ class ProductsReport implements ReportInterface
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON products.o_id = orderItems.mainObjectId
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderClassId AS `order` ON `order`.oo_id = orderRelations.src_id
-                INNER JOIN element_workflow_state AS orderState ON `order`.oo_id = orderState.cid 
-                WHERE products.o_type = 'object' AND `order`.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND `order`.orderDate > ? AND `order`.orderDate < ?
+                WHERE products.o_type = 'object' AND `order`.store = $storeId AND `order`.orderState = '$orderCompleteState' AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
 
@@ -174,8 +175,7 @@ class ProductsReport implements ReportInterface
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
                 INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
-                INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
-                WHERE orders.store = $storeId AND $productTypeCondition AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
+                WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
                 LIMIT $offset,$limit";

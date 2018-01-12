@@ -15,6 +15,7 @@ namespace CoreShop\Test\Models;
 use Carbon\Carbon;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceStateConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderPaymentStateConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderStateConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\PaymentStateConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentStateConfigurationType;
@@ -27,11 +28,15 @@ use CoreShop\Component\Core\Notification\Rule\Condition\Order\InvoiceStateChecke
 use CoreShop\Component\Core\Notification\Rule\Condition\Order\OrderStateChecker;
 use CoreShop\Component\Core\Notification\Rule\Condition\Order\PaymentStateChecker;
 use CoreShop\Component\Core\Notification\Rule\Condition\Order\ShipmentStateChecker;
+use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderShipmentStates;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Test\Data;
@@ -179,7 +184,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(InvoiceStateConfigurationType::class, 'order.invoiceState');
 
         $condition = $this->createConditionWithForm('order.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_PARTIAL,
+            'invoiceState' => OrderInvoiceStates::STATE_PARTIALLY_INVOICED,
         ]);
 
         $invoice = $this->createOrderInvoice();
@@ -196,7 +201,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(InvoiceStateConfigurationType::class, 'order.invoiceState');
 
         $condition = $this->createConditionWithForm('order.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_FULL,
+            'invoiceState' => OrderInvoiceStates::STATE_INVOICED,
         ]);
 
         $invoice = $this->createOrderInvoice();
@@ -213,7 +218,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(ShipmentStateConfigurationType::class, 'order.shipmentState');
 
         $condition = $this->createConditionWithForm('order.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_PARTIAL,
+            'shipmentState' => OrderShipmentStates::STATE_PARTIALLY_SHIPPED,
         ]);
 
         $shipment = $this->createOrderShipment();
@@ -230,7 +235,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(ShipmentStateConfigurationType::class, 'order.shipmentState');
 
         $condition = $this->createConditionWithForm('order.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_FULL,
+            'shipmentState' => OrderShipmentStates::STATE_SHIPPED,
         ]);
 
         $shipment = $this->createOrderShipment();
@@ -247,16 +252,10 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(OrderStateConfigurationType::class, 'order.orderState');
 
         $condition = $this->createConditionWithForm('order.orderState', [
-            'transitionType' => OrderStateChecker::TRANSITION_FROM,
-            'states' => [
-                WorkflowManagerInterface::ORDER_STATUS_INITIALIZED,
-            ],
+            'orderState' => OrderStates::STATE_NEW
         ]);
 
-        $this->assertRuleCondition(['subject' => $this->createOrder(), 'params' => [
-            'fromState' => WorkflowManagerInterface::ORDER_STATUS_INITIALIZED,
-            'toState' => WorkflowManagerInterface::ORDER_STATUS_PENDING_PAYMENT,
-        ]], $condition);
+        $this->assertRuleCondition(['subject' => $this->createOrder(), 'params' => []], $condition);
     }
 
     /**
@@ -283,102 +282,31 @@ class NotificationRule extends RuleTest
     public function testNotificationRuleOrderPayment()
     {
         $this->printTestName();
-        $this->assertConditionForm(PaymentStateConfigurationType::class, 'order.paymentState');
+        $this->assertConditionForm(OrderPaymentStateConfigurationType::class, 'order.paymentState');
 
         $condition = $this->createConditionWithForm('order.paymentState', [
-            'paymentState' => PaymentStateChecker::PAYMENT_TYPE_PARTIAL,
+            'paymentState' => OrderPaymentStates::STATE_AWAITING_PAYMENT,
         ]);
 
         $order = $this->createOrder();
 
-        $this->assertRuleCondition(['subject' => $order, 'params' => []], $condition, false);
-    }
-
-    /**
-     * Test Rule Condition Invoice State.
-     */
-    public function testNotificationRuleInvoiceInvoiceStatePartial()
-    {
-        $this->printTestName();
-        $this->assertConditionForm(InvoiceStateConfigurationType::class, 'invoice.invoiceState');
-
-        $condition = $this->createConditionWithForm('invoice.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_PARTIAL,
-        ]);
-
-        $invoice = $this->createOrderInvoice();
-
-        $this->assertRuleCondition(['subject' => $invoice, 'params' => []], $condition, false);
-    }
-
-    /**
-     * Test Rule Condition Invoice State.
-     */
-    public function testNotificationRuleInvoiceInvoiceStateFull()
-    {
-        $this->printTestName();
-        $this->assertConditionForm(InvoiceStateConfigurationType::class, 'invoice.invoiceState');
-
-        $condition = $this->createConditionWithForm('invoice.invoiceState', [
-            'invoiceState' => InvoiceStateChecker::INVOICE_TYPE_FULL,
-        ]);
-
-        $invoice = $this->createOrderInvoice();
-
-        $this->assertRuleCondition(['subject' => $invoice, 'params' => []], $condition);
-    }
-
-    /**
-     * Test Rule Condition Invoice State.
-     */
-    public function testNotificationRuleShipmentShipmentStatePartial()
-    {
-        $this->printTestName();
-        $this->assertConditionForm(ShipmentStateConfigurationType::class, 'shipment.shipmentState');
-
-        $condition = $this->createConditionWithForm('shipment.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_PARTIAL,
-        ]);
-
-        $shipment = $this->createOrderShipment();
-
-        $this->assertRuleCondition(['subject' => $shipment, 'params' => []], $condition, false);
-    }
-
-    /**
-     * Test Rule Condition Invoice State.
-     */
-    public function testNotificationRuleShipmentShipmentStateFull()
-    {
-        $this->printTestName();
-        $this->assertConditionForm(ShipmentStateConfigurationType::class, 'shipment.shipmentState');
-
-        $condition = $this->createConditionWithForm('shipment.shipmentState', [
-            'shipmentState' => ShipmentStateChecker::SHIPMENT_TYPE_FULL,
-        ]);
-
-        $shipment = $this->createOrderShipment();
-
-        $this->assertRuleCondition(['subject' => $shipment, 'params' => []], $condition);
+        $this->assertRuleCondition(['subject' => $order, 'params' => []], $condition);
     }
 
     /**
      * Test Rule Condition Payment.
      */
-    public function testNotificationRulePaymentPayment()
+    /*public function testNotificationRulePaymentPayment()
     {
         $this->printTestName();
         $this->assertConditionForm(PaymentStateConfigurationType::class, 'payment.paymentState');
 
         $condition = $this->createConditionWithForm('payment.paymentState', [
-            'paymentState' => PaymentStateChecker::PAYMENT_TYPE_PARTIAL,
+            'paymentState' => PaymentInterface::PAYMENT_TYPE_PARTIAL,
         ]);
 
         $order = $this->createOrder();
 
-        /**
-         * @var PaymentInterface
-         */
         $payment = $this->getFactory('payment')->createNew();
         $payment->setCurrency($order->getCurrency());
         $payment->setOrderId($order->getId());
@@ -390,7 +318,7 @@ class NotificationRule extends RuleTest
         $this->getEntityManager()->flush();
 
         $this->assertRuleCondition(['subject' => $payment, 'params' => []], $condition);
-    }
+    }*/
 
     /**
      * Test Rule Condition Payment.

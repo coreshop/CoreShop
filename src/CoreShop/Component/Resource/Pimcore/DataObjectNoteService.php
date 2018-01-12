@@ -24,10 +24,23 @@ class DataObjectNoteService
      * @param string                $noteType
      * @return Note
      */
-    public function createNoteInstance(PimcoreModelInterface $object, $noteType)
+    public function createPimcoreNoteInstance(PimcoreModelInterface $object, $noteType)
     {
         $note = new Note();
         $note->setElement($object);
+        $note->setDate(time());
+        $note->setType($noteType);
+
+        return $note;
+    }
+
+    /**
+     * @param string $noteType
+     * @return Note
+     */
+    public function createAnonymousNoteInstance($noteType)
+    {
+        $note = new Note();
         $note->setDate(time());
         $note->setType($noteType);
 

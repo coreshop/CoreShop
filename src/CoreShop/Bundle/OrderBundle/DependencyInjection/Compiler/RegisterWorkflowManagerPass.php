@@ -16,6 +16,12 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Class RegisterWorkflowManagerPass
+ *
+ * @deprecated remove after state_machine is implemented
+ * @package CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler
+ */
 class RegisterWorkflowManagerPass implements CompilerPassInterface
 {
     /**

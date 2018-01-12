@@ -90,6 +90,15 @@ coreshop.helpers.constrastColor = function (color) {
     return (parseInt(color.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
 };
 
+coreshop.helpers.hexToRgb = function (hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ] : null;
+};
+
 coreshop.helpers.openMessagingThread = function (id) {
     var panelKey = 'coreshop_messaging_thread_' + id;
 

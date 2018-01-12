@@ -54,8 +54,6 @@ coreshop.order.sale.detail = Class.create({
             success: function (response) {
                 try {
                     this.objectData = Ext.decode(response.responseText);
-                    this.setWorkflowInfo();
-
                 } catch (e) {
                 }
             }.bind(this)
@@ -248,10 +246,16 @@ coreshop.order.sale.detail = Class.create({
                 }
             ];
 
-            this.headerPanel = Ext.create('Ext.panel.Panel', {
+             var statusPanel = Ext.create('Ext.panel.Panel', {
                 layout: 'hbox',
-                margin: '0 0 20 0',
+                margin: 0,
                 items: items
+            });
+
+            this.headerPanel = Ext.create('Ext.panel.Panel', {
+                border: false,
+                margin: '0 0 20 0',
+                items: [statusPanel]
             });
         }
 

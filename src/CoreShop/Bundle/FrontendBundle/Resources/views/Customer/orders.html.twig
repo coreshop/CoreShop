@@ -36,7 +36,7 @@
                         {{ currency.format(order.getTotal, order.getCurrency.getIsoCode) }}
                     </td>
                     <td>
-                        <span class="label label-default">{{ order|coreshop_order_state.state.translatedLabel }}</span>
+                        <span class="label label-default">{{ order|coreshop_order_state.calculatedState }}</span>
                     </td>
                     <td>
                         <a class="btn btn-black" href="{{ path('coreshop_customer_order_detail', {order: order.getId}) }}">

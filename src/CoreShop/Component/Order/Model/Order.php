@@ -130,6 +130,71 @@ class Order extends Sale implements OrderInterface
     }
 
     /**
+     * @return string
+     */
+    public function getOrderState()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param string $orderState
+     */
+    public function setOrderState($orderState)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingState()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param string $shippingState
+     */
+    public function setShippingState($shippingState)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceState()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param string $invoiceState
+     */
+    public function setInvoiceState($invoiceState)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getPaymentState()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param string $paymentState
+     */
+    public function setPaymentState($paymentState)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getOrderLanguage()

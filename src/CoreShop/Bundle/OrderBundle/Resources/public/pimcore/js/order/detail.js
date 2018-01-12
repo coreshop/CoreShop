@@ -50,6 +50,85 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
         ];
     },
 
+    getHeader: function () {
+        if (!this.headerPanel) {
+
+            var items1 = [
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_name_coreshop_order_payment') + '<br/><span class="coreshop_order_big order_state"><span class="color-dot" style="background-color:' + this.sale.orderState.color + ';"></span> ' + this.sale.orderState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_name_coreshop_order_payment') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderPaymentState.color + ';"></span>' + this.sale.orderPaymentState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_name_coreshop_order_shipment') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderShippingState.color + ';"></span>' + this.sale.orderShippingState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_workflow_name_coreshop_order_invoice') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderInvoiceState.color + ';"></span>' +this.sale.orderInvoiceState.label + '</span>',
+                    bodyPadding: '10 20',
+                    flex: 1
+                }
+            ];
+
+            var items2 = [
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(this.sale.saleDate * 1000), t('coreshop_date_time_format')) + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_sale_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(this.sale.currency.symbol, this.sale.totalGross) + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_product_count') + '<br/><span class="coreshop_order_big">' + this.sale.items.length + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
+                },
+                {
+                    xtype: 'panel',
+                    html: t('coreshop_store') + '<br/><span class="coreshop_order_big">' + this.sale.store.name + '</span>',
+                    bodyPadding: 20,
+                    flex: 1
+                }
+            ];
+
+             var statusPanel1 = Ext.create('Ext.panel.Panel', {
+                layout: 'hbox',
+                margin: 0,
+                items: items1
+            });
+
+             var statusPanel2 = Ext.create('Ext.panel.Panel', {
+                layout: 'hbox',
+                margin: 0,
+                items: items2
+            });
+
+            this.headerPanel = Ext.create('Ext.panel.Panel', {
+                border: false,
+                margin: '0 0 20 0',
+                items: [statusPanel1, statusPanel2]
+            });
+        }
+
+        return this.headerPanel;
+    },
+
     getSaleInfo: function ($super) {
         if (!this.saleInfo) {
             var orderInfo = $super();
@@ -57,6 +136,39 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
             this.saleStatesStore = new Ext.data.JsonStore({
                 data: this.sale.statesHistory
             });
+
+            if(this.sale.orderState.state !== 'cancelled') {
+                orderInfo.add({
+                    xtype: 'panel',
+                    layout: 'hbox',
+                    margin: 0,
+                    items: {
+                        xtype: 'button',
+                        iconCls: 'pimcore_icon_delete',
+                        cls: 'coreshop_cancel_order_button',
+                        text: t('coreshop_cancel_order'),
+                        handler: function (btn) {
+                            Ext.MessageBox.confirm(t('info'), t('coreshop_cancel_order_confirm'), function (buttonValue) {
+                                if (buttonValue === 'yes') {
+                                    btn.disable();
+                                    Ext.Ajax.request({
+                                        url: '/admin/coreshop/order/cancel-order',
+                                        params: {
+                                            o_id: this.sale.o_id
+                                        },
+                                        success: function () {
+                                            this.reload();
+                                        }.bind(this),
+                                        failure: function () {
+                                            btn.enable();
+                                        }.bind(this)
+                                    });
+                                }
+                            }.bind(this));
+                        }.bind(this)
+                    }
+                });
+            }
 
             orderInfo.add({
                 xtype: 'grid',
@@ -68,17 +180,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         xtype: 'gridcolumn',
                         flex: 1,
                         dataIndex: 'title',
-                        text: t('coreshop_orderstate'),
-                        renderer: function (value, metaData) {
-
-                            if (value) {
-                                var bgColor = '';
-                                //@fixme: add some colored circle to the left instead of heavy color stuff!
-                                return '<span class="rounded-color" style="background-color:' + bgColor + ';"></span>' + value;
-                            }
-
-                            return '';
-                        }
+                        text: t('coreshop_orderstate')
                     },
                     {
                         xtype: 'gridcolumn',
@@ -431,28 +533,6 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
         }
 
         return this.paymentInfo;
-    },
-    setWorkflowInfo: function () {
-
-        var buttons = [],
-            toolbar;
-
-        //add reload function for worfklow manager!
-        this.objectData.reload = this.reload.bind(this);
-
-        if (this.objectData.workflowManagement) {
-            this.objectData.data.workflowManagement = this.objectData.workflowManagement;
-        }
-
-        pimcore.elementservice.integrateWorkflowManagement('object', this.sale.o_id, this.objectData, buttons);
-
-        toolbar = new Ext.Toolbar({
-            border: false,
-            items: buttons,
-            overflowHandler: 'scroller'
-        });
-
-        this.saleInfo.insert(0, toolbar);
     },
 
     createInvoice: function () {

@@ -40,9 +40,14 @@ coreshop_order_get_grid_configuration:
   path: /%coreshop.admin.route.base%/order/get-grid-configuration
   defaults: { _controller: 'coreshop.pimcore_controller.order:getGridConfigurationAction'}
 
+# remove !
 coreshop_order_get_states:
   path: /%coreshop.admin.route.base%/order/get-states
   defaults: { _controller: 'coreshop.pimcore_controller.order:getStatesAction'}
+
+coreshop_order_cancel_order:
+  path: /%coreshop.admin.route.base%/order/cancel-order
+  defaults: { _controller: 'coreshop.pimcore_controller.order:cancelOrderAction'}
 
 coreshop_order_get_orders:
   path: /%coreshop.admin.route.base%/order/list

@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -83,6 +84,7 @@ class VouchersReport implements ReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $storeId = $parameterBag->get('store', null);
+        $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -112,9 +114,8 @@ class VouchersReport implements ReportInterface
               orders.orderDate
               FROM object_collection_CoreShopProposalCartPriceRuleItem_$classId as orderVouchers
               INNER JOIN object_query_$classId as orders ON orders.oo_id = orderVouchers.o_id 
-              INNER JOIN element_workflow_state AS orderState ON orders.oo_id = orderState.cid 
               LEFT JOIN coreshop_cart_price_rule AS priceRule ON orderVouchers.cartPriceRule = priceRule.id 
-              WHERE orders.store = $storeId AND orderState.ctype = 'object' AND orderState.state = 'complete' AND orders.orderDate > ? AND orders.orderDate < ?
+              WHERE orderVouchers.voucherCode <> '' AND orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ?
               ORDER BY orders.orderDate DESC
               LIMIT $offset,$limit";
 

@@ -90,17 +90,6 @@ coreshop.order.sale.list = Class.create({
         return coreshop.util.format.currency(currency, value);
     },
 
-    orderStateRenderer: function (orderStateInfo) {
-        if (orderStateInfo.state) {
-            var bgColor = orderStateInfo.state.color,
-                textColor = coreshop.helpers.constrastColor(bgColor);
-
-            return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderStateInfo.state.translatedLabel + '</span>';
-        }
-
-        return null;
-    },
-
     storeRenderer: function (val) {
         var stores = pimcore.globalmanager.get('coreshop_stores');
         var store = stores.getById(val);

@@ -16,5 +16,29 @@ coreshop.order.order.list = Class.create(coreshop.order.sale.list, {
 
     open: function (record, callback) {
         coreshop.order.helper.openOrder(record.get('o_id'), callback);
+    },
+
+    orderStateRenderer: function (orderStateInfo) {
+        var bgColor = orderStateInfo.color,
+            textColor = coreshop.helpers.constrastColor(bgColor);
+        return '<span class="rounded-color" style="background-color:' + bgColor + '; color: ' + textColor + '">' + orderStateInfo.label + '</span>';
+    },
+
+    orderShippingStateRenderer: function (orderStateInfo) {
+        var bgColor = coreshop.helpers.hexToRgb(orderStateInfo.color),
+            textColor = 'black';
+        return '<span class="rounded-color" style="background-color: rgba(' + bgColor.join(',') + ', 0.2); color: ' + textColor + '">' + orderStateInfo.label + '</span>';
+    },
+
+    orderPaymentStateRenderer: function (orderStateInfo) {
+        var bgColor = coreshop.helpers.hexToRgb(orderStateInfo.color),
+            textColor = 'black';
+        return '<span class="rounded-color" style="background-color: rgba(' + bgColor.join(',') + ', 0.2); color: ' + textColor + '">' + orderStateInfo.label + '</span>';
+    },
+
+    orderInvoiceStateRenderer: function (orderStateInfo) {
+        var bgColor = coreshop.helpers.hexToRgb(orderStateInfo.color),
+            textColor = 'black';
+        return '<span class="rounded-color" style="background-color: rgba(' + bgColor.join(',') + ', 0.2); color: ' + textColor + '">' + orderStateInfo.label + '</span>';
     }
 });

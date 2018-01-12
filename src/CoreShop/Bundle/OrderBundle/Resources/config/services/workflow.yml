@@ -2,45 +2,126 @@ parameters:
   coreshop.workflow.manager.order.state_identifier: 'Order State Change'
 
 services:
-  coreshop.workflow.manager.registry:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - 'CoreShop\Component\Order\Workflow\WorkflowManagerInterface'
-      - 'workflow-managers'
+    coreshop.state_machine_resolver.order:
+        public: true
+        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver
+        arguments:
+          - '@coreshop.state_machine_manager'
 
-  coreshop.workflow.manager.order.validators:
-    class: CoreShop\Component\Registry\PrioritizedServiceRegistry
-    arguments:
-      - 'CoreShop\Component\Order\Workflow\ProposalValidatorInterface'
-      - 'workflow-order-manager-validators'
+    coreshop.state_machine_resolver.order_payment:
+        public: true
+        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver
+        arguments:
+            - '@coreshop.state_machine_manager'
 
-  coreshop.workflow.manager.order:
-    class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowManager
-    arguments:
-      - '@coreshop.workflow.manager.order.validators'
-      - '@event_dispatcher'
-      - 'CoreShop\Component\Order\Model\OrderInterface'
-      - '@pimcore.translator'
-      - '%coreshop.workflow.manager.order.state_identifier%'
-      - '@security.token_storage'
-    tags:
-      - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+    coreshop.state_machine_resolver.order_invoice:
+        public: true
+        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderDocumentStateResolver
+        arguments:
+          - '@coreshop.state_machine_manager'
+          - '@coreshop.order.invoice.processable'
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::IDENTIFIER
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_READY
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_PARTIALLY_INVOICED
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_CANCEL
+          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_INVOICED
 
-  coreshop.workflow.manager.order.validator.payment:
-    class: CoreShop\Bundle\OrderBundle\Workflow\Order\PaymentValidator
-    tags:
-        - {name: coreshop.workflow.validator, type: payment, priority: 10, manager: coreshop.workflow.manager.order}
+    coreshop.state_machine_resolver.order_shipment:
+        public: true
+        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderDocumentStateResolver
+        arguments:
+          - '@coreshop.state_machine_manager'
+          - '@coreshop.order.shipment.processable'
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::IDENTIFIER
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_READY
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_PARTIALLY_SHIPPED
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_CANCEL
+          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_SHIPPED
 
-  coreshop.workflow.manager.order.validator.invoice:
-    class: CoreShop\Bundle\OrderBundle\Workflow\Order\OrderDocumentValidator
-    arguments:
-      - '@coreshop.order.invoice.processable'
-    tags:
-        - {name: coreshop.workflow.validator, type: invoice, priority: 20, manager: coreshop.workflow.manager.order}
+    coreshop.state_machine.marking_store.single_state.order_payment_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - paymentState
 
-  coreshop.workflow.manager.order.validator.shipment:
-    class: CoreShop\Bundle\OrderBundle\Workflow\Order\OrderDocumentValidator
-    arguments:
-      - '@coreshop.order.shipment.processable'
-    tags:
-        - {name: coreshop.workflow.validator, type: shipment, priority: 30, manager: coreshop.workflow.manager.order}
+    coreshop.state_machine.marking_store.order_payment_pimcore_marking_store:
+        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+            - '@coreshop.state_machine.marking_store.single_state.order_payment_state'
+
+    coreshop.state_machine.marking_store.single_state.order_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - orderState
+
+    coreshop.state_machine.marking_store.order_pimcore_marking_store:
+        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.order_state'
+
+    coreshop.state_machine.marking_store.single_state.order_shipment_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - shippingState
+
+    coreshop.state_machine.marking_store.order_shipment_pimcore_marking_store:
+        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.order_shipment_state'
+
+    coreshop.state_machine.marking_store.single_state.order_invoice_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - invoiceState
+
+    coreshop.state_machine.marking_store.order_invoice_pimcore_marking_store:
+        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
+
+    coreshop.workflow.state_manager:
+        class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
+        arguments:
+          - '@coreshop.state_machine_manager'
+          - '@pimcore.translator'
+          - '%coreshop.workflow.manager.order.state_identifier%'
+          - '%coreshop.state_machine.colors%'
+        tags:
+          - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+
+    coreshop.workflow.state_history_logger:
+        class: CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger
+        arguments:
+          - '@coreshop.repository.order'
+          - '@coreshop.state_machine_manager'
+          - '@coreshop.object_note_service'
+          - '@pimcore.translator'
+          - '%coreshop.workflow.manager.order.state_identifier%'
+        tags:
+          - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
+
+
+    coreshop.workflow.order_document.invoice.creation_listener:
+        class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
+        arguments:
+            - '@coreshop.state_machine_resolver.order_invoice'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.invoice.post_transform, method: onOrderDocumentCreated }
+
+    coreshop.workflow.order_document.shipment.creation_listener:
+        class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
+        arguments:
+            - '@coreshop.state_machine_resolver.order_shipment'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: onOrderDocumentCreated }
+
+    coreshop.workflow.cart_recoverer:
+        class: CoreShop\Bundle\OrderBundle\Workflow\Cart\CartRecoverer
+        arguments:
+           - '@coreshop.repository.order'
+           - '@coreshop.repository.cart'
+
+    coreshop.workflow.order_id_wrapper_resolver:
+        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderIdPaymentStateResolver
+        arguments:
+            - '@coreshop.repository.order'
+            - '@coreshop.state_machine_resolver.order_payment'
