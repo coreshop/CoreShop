@@ -15,7 +15,9 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,12 +32,20 @@ class OrderController extends FrontendController
     public function reviseAction(Request $request)
     {
         $token = $request->get('token');
+        $payment = null;
 
         /** @var OrderInterface $order */
         $order = $this->getOrderRepository()->findOneBy(['token' => $token]);
 
         if (!$order instanceof OrderInterface) {
             throw new NotFoundHttpException();
+        }
+
+        if ($request->query->has('paymentId')) {
+            $paymentObject = $this->getPaymentRepository()->find($request->query->get('paymentId'));
+            if ($paymentObject instanceof PaymentInterface) {
+                $payment = $paymentObject;
+            }
         }
 
         $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
@@ -53,8 +63,9 @@ class OrderController extends FrontendController
         }
 
         $args = [
-            'order' => $order,
-            'form'  => $form->createView()
+            'order'   => $order,
+            'payment' => $payment,
+            'form'    => $form->createView()
         ];
 
         return $this->renderTemplate('CoreShopFrontendBundle:Order:revise.html.twig', $args);
@@ -66,6 +77,14 @@ class OrderController extends FrontendController
     protected function getOrderRepository()
     {
         return $this->get('coreshop.repository.order');
+    }
+
+    /**
+     * @return RepositoryInterface
+     */
+    private function getPaymentRepository()
+    {
+        return $this->get('coreshop.repository.payment');
     }
 
     /**

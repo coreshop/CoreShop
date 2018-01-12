@@ -58,7 +58,7 @@ final class ResolveNextRouteAction implements ActionInterface
             }
 
             $request->setRouteName('coreshop_order_revise');
-            $request->setRouteParameters(array_merge($request->getRouteParameters(), ['token' => $order->getToken()]));
+            $request->setRouteParameters(array_merge($request->getRouteParameters(), ['token' => $order->getToken(), 'paymentId' => $payment->getId()]));
         }
     }
 
