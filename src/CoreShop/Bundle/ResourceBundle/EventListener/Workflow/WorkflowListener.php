@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener\Workflow;
 
+use CoreShop\Component\Pimcore\InheritanceHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -75,7 +76,9 @@ class WorkflowListener implements EventSubscriberInterface
                 continue;
             }
 
-            $this->call($event, $callback['do'], $callback['args']);
+            InheritanceHelper::useInheritedValues(function () use ($event, $callback) {
+                $this->call($event, $callback['do'], $callback['args']);
+            });
         }
     }
 
