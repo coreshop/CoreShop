@@ -62,7 +62,6 @@ final class CartRecoverer
             VersionHelper::useVersioning(function () use ($cart) {
                 $cart->save();
             }, false);
-            $cart->save();
         }
     }
 }
