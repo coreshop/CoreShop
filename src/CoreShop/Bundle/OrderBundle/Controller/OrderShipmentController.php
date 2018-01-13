@@ -168,6 +168,10 @@ class OrderShipmentController extends PimcoreController
         $workflow = $this->getStateMachineManager()->get($shipment, ShipmentStates::IDENTIFIER);
         if (null !== $transition = $this->getStateMachineManager()->getTransitionToState($workflow, $shipment, $request->request->get('state'))) {
             $workflow->apply($shipment, $transition);
+        } else {
+            if ($request->request->get('state') !== $shipment->getState()) {
+                return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+            }
         }
 
         $values = $request->request->all();

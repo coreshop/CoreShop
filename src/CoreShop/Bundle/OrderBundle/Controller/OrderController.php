@@ -33,6 +33,7 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Resource\Workflow\StateMachineApplier;
+use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -141,12 +142,23 @@ class OrderController extends AbstractSaleDetailController
             return $this->viewHandler->handle(['success' => false]);
         }
 
-        $payment->setValues($request->request->all());
+        //apply state machine
+        $workflow = $this->getStateMachineManager()->get($payment, 'coreshop_payment');
+        if (null !== $transition = $this->getStateMachineManager()->getTransitionToState($workflow, $payment, $request->request->get('state'))) {
+            $workflow->apply($payment, $transition);
+        } else {
+            if ($request->request->get('state') !== $payment->getState()) {
+                return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+            }
+        }
+
+        $values = $request->request->all();
+        unset($values['state']);
+
+        $payment->setValues($values);
 
         $this->getEntityManager()->persist($payment);
         $this->getEntityManager()->flush();
-
-        $this->get('coreshop.state_machine_resolver.order_payment')->resolve($order);
 
         return $this->viewHandler->handle(['success' => true]);
     }
@@ -482,6 +494,13 @@ class OrderController extends AbstractSaleDetailController
         return $this->get('coreshop.factory.payment');
     }
 
+    /**
+     * @return StateMachineManager
+     */
+    protected function getStateMachineManager()
+    {
+        return $this->get('coreshop.state_machine_manager');
+    }
 
     /**
      * {@inheritdoc}

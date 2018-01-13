@@ -47,14 +47,14 @@ coreshop.order.order.editPayment = {
                                         try {
                                             response = Ext.decode(response.responseText);
 
-                                            if (response.success) {
+                                            if (response.success === true) {
                                                 window.close();
                                                 window.destroy();
 
                                                 if (callback) {
                                                     callback(response);
                                                 }
-                                            } else {
+                                            } else if(response.success === false) {
                                                 Ext.Msg.alert(t('error'), response.message);
                                             }
                                         }

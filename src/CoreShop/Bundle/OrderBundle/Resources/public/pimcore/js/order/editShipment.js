@@ -48,16 +48,15 @@ coreshop.order.order.editShipment = {
                                         try {
                                             response = Ext.decode(response.responseText);
 
-                                            if (response.success) {
+                                            if (response.success === true) {
                                                 window.close();
                                                 window.destroy();
 
                                                 if (callback) {
                                                     callback(response);
                                                 }
-                                            } else {
-                                                //pimcore returns a error window. don't do this twice.
-                                                //Ext.Msg.alert(t('error'), response.message);
+                                            } else if(response.success === false) {
+                                                Ext.Msg.alert(t('error'), response.message);
                                             }
                                         }
                                         catch (e) {
