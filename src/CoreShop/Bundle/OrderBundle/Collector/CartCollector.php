@@ -18,6 +18,8 @@ use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
+use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -35,20 +37,29 @@ final class CartCollector extends DataCollector
     private $localeContext;
 
     /**
+     * @var PimcoreContextResolver
+     */
+    private $pimcoreContext;
+
+    /**
      * @param CartContextInterface $cartContext
      * @param LocaleContextInterface $localeContext
+     * @param PimcoreContextResolver $pimcoreContext
      */
     public function __construct(
         CartContextInterface $cartContext,
-        LocaleContextInterface $localeContext
+        LocaleContextInterface $localeContext,
+        PimcoreContextResolver $pimcoreContext
     )
     {
         $this->cartContext = $cartContext;
         $this->localeContext = $localeContext;
+        $this->pimcoreContext = $pimcoreContext;
 
         $this->data = [
             'cart' => null,
-            'locale' => 'en'
+            'locale' => 'en',
+            'admin' => false
         ];
     }
 
@@ -69,16 +80,37 @@ final class CartCollector extends DataCollector
     }
 
     /**
+     * @return mixed
+     */
+    public function getAdmin()
+    {
+        return $this->data['admin'];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
+        if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
+            $this->data['admin'] = true;
+            return;
+        }
+
         try {
             $this->data['cart'] = $this->cartContext->getCart();
             $this->data['locale'] = $this->localeContext->getLocaleCode();
         } catch (CountryNotFoundException $exception) {
             //If something went wrong, we don't have any country, which we can safely ignore
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data = [];
     }
 
     /**

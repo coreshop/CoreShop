@@ -65,13 +65,6 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
     public function hasPriceRule($priceRule);
 
     /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getPaymentFee($withTax = true);
-
-    /**
      * @return mixed
      */
     public function getPaymentProvider();
@@ -82,9 +75,4 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
      * @return mixed
      */
     public function setPaymentProvider($paymentProvider);
-
-    /**
-     * @return int
-     */
-    public function getPaymentFeeTaxRate();
 }

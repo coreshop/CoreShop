@@ -59,13 +59,6 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
         $fromCurrency = $sale->getBaseCurrency()->getIsoCode();
         $toCurrency = $sale->getCurrency()->getIsoCode();
 
-        if($sale instanceof OrderInterface) {
-            $sale->setOrderState(OrderStates::STATE_INITIALIZED);
-            $sale->setShippingState(OrderShipmentStates::STATE_NEW);
-            $sale->setPaymentState(OrderPaymentStates::STATE_NEW);
-            $sale->setInvoiceState(OrderInvoiceStates::STATE_NEW);
-        }
-
         if ($sale instanceof QuoteInterface || $sale instanceof OrderInterface) {
             if ($cart->getCarrier() instanceof CarrierInterface) {
                 $sale->setCarrier($cart->getCarrier());

@@ -21,6 +21,7 @@ use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Payum;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -86,11 +87,18 @@ class PaymentController extends Controller
         /**
          * @var $order OrderInterface
          */
-        $orderId = $request->get('order');
-        $order = $this->orderRepository->find($orderId);
+        if($request->attributes->has('token')) {
+            $property = 'token';
+            $identifier = $request->attributes->get('token');
+        } else {
+            $property = 'o_id';
+            $identifier = $request->get('order');
+        }
+
+        $order = $this->orderRepository->findOneBy([$property => $identifier]);
 
         if (null === $order) {
-            throw new NotFoundHttpException(sprintf('Order with id "%s" does not exist.', $orderId));
+            throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
         }
 
         /**
@@ -99,8 +107,12 @@ class PaymentController extends Controller
          *
          * @var $payment PaymentInterface
          */
+        $tokenGenerator = new UniqueTokenGenerator(true);
+        $uniqueId = $tokenGenerator->generate(15);
+        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+
         $payment = $this->paymentFactory->createNew();
-        $payment->setNumber($order->getOrderNumber());
+        $payment->setNumber($orderNumber);
         $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);

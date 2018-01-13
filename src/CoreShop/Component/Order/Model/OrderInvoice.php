@@ -159,26 +159,6 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      *
      * {@inheritdoc}
      */
-    public function getPaymentFee($withTax = true)
-    {
-        return $withTax ? $this->getPaymentFeeGross() : $this->getPaymentFeeNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setPaymentFee($paymentFee, $withTax = true)
-    {
-        return $withTax ? $this->setPaymentFeeGross($paymentFee) : $this->setPaymentFeeNet($paymentFee);
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getDiscount($withTax = true)
     {
         return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
@@ -479,90 +459,6 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeNet($paymentFeeNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeGross($paymentFeGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeTaxRate()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeTaxRate($taxRate)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeTax($paymentFeeTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function getBasePaymentFee($withTax = true)
-    {
-        return $withTax ? $this->getBasePaymentFeeGross() : $this->getBasePaymentFeeNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setBasePaymentFee($basePaymentFee, $withTax = true)
-    {
-        return $withTax ? $this->setBasePaymentFeeGross($basePaymentFee) : $this->setBasePaymentFeeNet($basePaymentFee);
-    }
-
-    /**
      * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
@@ -846,54 +742,6 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      * {@inheritdoc}
      */
     public function setBaseTaxes($taxes)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBasePaymentFeeNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBasePaymentFeeNet($basePaymentFeeNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBasePaymentFeeGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBasePaymentFeeGross($basePaymentFeGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBasePaymentFeeTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBasePaymentFeeTax($basePaymentFeeTax)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

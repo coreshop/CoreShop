@@ -305,6 +305,30 @@ translations:
           en: 'I have read and agree to the terms and conditions'
           de: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
 
+  coreshop.ui.order_revise:
+      languages:
+          de_CH: 'Zahlungsmöglichkeit korrigieren'
+          en: 'Change Payment Method'
+          de: 'Zahlungsmöglichkeit korrigieren'
+
+  coreshop.ui.order.revise.transaction_cancelled:
+      languages:
+          de_CH: 'Sie haben die Transaktion auf Ihren Wunsch abgebrochen. Sie können eine andere Zahlungsmöglichkeit wählen und erneut die Zahlung durchführen oder die Bestellung abbrechen.'
+          en: 'You have cancelled the transaction. Change the payment method and start again or cancel the order.'
+          de: 'Sie haben die Transaktion auf Ihren Wunsch abgebrochen. Sie können eine andere Zahlungsmöglichkeit wählen und erneut die Zahlung durchführen oder die Bestellung abbrechen.'
+
+  coreshop.ui.order.revise.transaction_failed:
+      languages:
+          de_CH: 'Während der Transaktion ist ein Fehler aufgetreten. Sie können die Zahlungsmöglichkeit ändern, die Zahlung erneut durchführen oder die Bestellung abbrechen.'
+          en: 'There was an error during the transaction. Change the payment method, start again or cancel the order.'
+          de: 'Während der Transaktion ist ein Fehler aufgetreten. Sie können die Zahlungsmöglichkeit ändern, die Zahlung erneut durchführen oder die Bestellung abbrechen.'
+
+  coreshop.ui.order_revise_payment_change_not_allowed:
+      languages:
+          de_CH: 'Änderung der Zahlungsmöglichkeit dieser Bestellung ist nicht mehr erlaubt'
+          en: 'You can no longer change payment of this order'
+          de: 'Änderung der Zahlungsmöglichkeit dieser Bestellung ist nicht mehr erlaubt'
+
   coreshop.ui.personal_information:
       languages:
           de_CH: 'Persönliche Informationen'

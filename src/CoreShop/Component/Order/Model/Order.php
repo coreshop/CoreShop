@@ -18,46 +18,6 @@ use CoreShop\Component\Resource\ImplementedByPimcoreException;
 class Order extends Sale implements OrderInterface
 {
     /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function getPaymentFee($withTax = true)
-    {
-        return $withTax ? $this->getPaymentFeeGross() : $this->getPaymentFeeNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setPaymentFee($paymentFee, $withTax = true)
-    {
-        return $withTax ? $this->setPaymentFeeGross($paymentFee) : $this->setPaymentFeeNet($paymentFee);
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function getBasePaymentFee($withTax = true)
-    {
-        $withTax ? $this->getBasePaymentFeeGross() : $this->getBasePaymentFeeNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setBasePaymentFee($paymentFee, $withTax = true)
-    {
-        return $withTax ? $this->setBasePaymentFeeGross($paymentFee) : $this->setBasePaymentFeeNet($paymentFee);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getTotalPayed()
@@ -245,7 +205,7 @@ class Order extends Sale implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getBasePaymentFeeNet()
+    public function getToken()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -253,70 +213,7 @@ class Order extends Sale implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setBasePaymentFeeNet($paymentFeeNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBasePaymentFeeGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBasePaymentFeeGross($paymentFeeGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-/**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeNet($paymentFeeNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeGross($paymentFeeGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-     /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFeeTaxRate()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentFeeTaxRate($paymentFeeTaxRate)
+    public function setToken($token)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

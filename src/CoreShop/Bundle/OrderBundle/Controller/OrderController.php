@@ -31,6 +31,7 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Resource\Workflow\StateMachineApplier;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -198,8 +199,12 @@ class OrderController extends AbstractSaleDetailController
                 /**
                  * @var PaymentInterface|PimcoreModelInterface
                  */
+                $tokenGenerator = new UniqueTokenGenerator(true);
+                $uniqueId = $tokenGenerator->generate(15);
+                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+
                 $payment = $this->getPaymentFactory()->createNew();
-                $payment->setNumber($order->getOrderNumber());
+                $payment->setNumber($orderNumber);
                 $payment->setPaymentProvider($paymentProvider);
                 $payment->setCurrency($order->getCurrency());
                 $payment->setTotalAmount($order->getTotal());
@@ -343,7 +348,6 @@ class OrderController extends AbstractSaleDetailController
             $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
             $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
-            $order['paymentFee'] = $sale->getPaymentFee();
         }
 
         return $order;
@@ -386,16 +390,6 @@ class OrderController extends AbstractSaleDetailController
     protected function getSummary(SaleInterface $sale)
     {
         $summary = parent::getSummary($sale);
-
-        if ($sale instanceof OrderInterface) {
-            if ($sale->getPaymentFee() > 0) {
-                $summary[] = [
-                    'key' => 'payment',
-                    'value' => $sale->getPaymentFee(),
-                ];
-            }
-        }
-
         return $summary;
     }
 

@@ -51,23 +51,6 @@ class Cart extends AbstractProposal implements CartInterface
     }
 
     /**
-     *  {@inheritdoc}
-     */
-    public function getPaymentFeeTaxRate()
-    {
-        //TODO: Use PaymentProvider TaxRule (still not implemented) to determine TaxRate
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentFee($withTax = true)
-    {
-        return $withTax ? $this->getPaymentFeeGross() : $this->getPaymentFeeNet();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getTotal($withTax = true)
@@ -88,9 +71,7 @@ class Cart extends AbstractProposal implements CartInterface
     protected function getTotalWithoutDiscount($withTax = true)
     {
         $subtotal = $this->getSubtotal($withTax);
-        $payment = $this->getPaymentFee($withTax);
-
-        return $subtotal + $payment;
+        return $subtotal;
     }
 
     /**

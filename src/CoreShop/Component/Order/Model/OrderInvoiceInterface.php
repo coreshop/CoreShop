@@ -101,38 +101,6 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
     public function setShippingTax($shippingTax);
 
     /**
-     * @param bool $withTax
-     * @return int
-     */
-    public function getPaymentFee($withTax = true);
-
-    /**
-     * @param int $paymentFee
-     * @param bool $withTax
-     */
-    public function setPaymentFee($paymentFee, $withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getPaymentFeeTaxRate();
-
-    /**
-     * @param int $paymentFeeTaxRate
-     */
-    public function setPaymentFeeTaxRate($paymentFeeTaxRate);
-
-    /**
-     * @return int
-     */
-    public function getPaymentFeeTax();
-
-    /**
-     * @param int $paymentFeeTax
-     */
-    public function setPaymentFeeTax($paymentFeeTax);
-
-    /**
      * @return int
      */
     public function getTotalTax();
@@ -230,28 +198,6 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
      * @param int $baseShippingTax
      */
     public function setBaseShippingTax($baseShippingTax);
-
-    /**
-     * @param bool $withTax
-     * @return int
-     */
-    public function getBasePaymentFee($withTax = true);
-
-    /**
-     * @param int $basePaymentFee
-     * @param bool $withTax
-     */
-    public function setBasePaymentFee($basePaymentFee, $withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getBasePaymentFeeTax();
-
-    /**
-     * @param int $basePaymentFeeTax
-     */
-    public function setBasePaymentFeeTax($basePaymentFeeTax);
 
     /**
      * @return int

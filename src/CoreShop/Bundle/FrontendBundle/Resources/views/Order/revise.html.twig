@@ -1,0 +1,32 @@
+{% extends '@CoreShopFrontend/Order/layout.html.twig' %}
+{% import "@CoreShopFrontend/Common/Macro/messages.html.twig" as messages %}
+
+{% block checkout_title %}
+    {{ 'coreshop.ui.order_revise'|trans }}
+{% endblock %}
+
+{% block order %}
+
+    {% if order.paymentState in ['awaiting_payment'] %}
+
+        {% if payment is not null %}
+            {% if payment.state == 'cancelled' %}
+                {{ messages.info('coreshop.ui.order.revise.transaction_cancelled') }}
+            {% elseif payment.state == 'failed' %}
+                {{ messages.info('coreshop.ui.order.revise.transaction_failed') }}
+            {% endif %}
+        {% endif %}
+
+        {{ form_start(form, {'action': path('coreshop_order_revise', {'token': order.token}), 'attr': {'novalidate': 'novalidate'}}) }}
+
+        {{ form_row(form.paymentProvider) }}
+
+        <button type="submit" class="btn btn-main">{{ 'coreshop.ui.buy'|trans }}</button>
+
+        {{ form_end(form) }}
+
+    {% else %}
+        {{ messages.info('coreshop.ui.order_revise_payment_change_not_allowed') }}
+    {% endif %}
+
+{% endblock %}

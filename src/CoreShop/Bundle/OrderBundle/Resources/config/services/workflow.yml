@@ -114,12 +114,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: onOrderDocumentCreated }
 
-    coreshop.workflow.cart_recoverer:
-        class: CoreShop\Bundle\OrderBundle\Workflow\Cart\CartRecoverer
-        arguments:
-           - '@coreshop.repository.order'
-           - '@coreshop.repository.cart'
-
     coreshop.workflow.order_id_wrapper_resolver:
         class: CoreShop\Bundle\OrderBundle\StateResolver\OrderIdPaymentStateResolver
         arguments:
