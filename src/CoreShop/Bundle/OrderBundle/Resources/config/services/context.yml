@@ -36,6 +36,7 @@ services:
   coreshop.listeners.session_cart:
     class: CoreShop\Bundle\OrderBundle\EventListener\SessionCartSubscriber
     arguments:
+      - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
       - '@coreshop.context.cart'
       - 'coreshop.cart'
     tags:

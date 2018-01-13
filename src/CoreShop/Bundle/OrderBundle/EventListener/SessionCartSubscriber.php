@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\EventListener;
 
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -21,6 +22,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class SessionCartSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var PimcoreContextResolver
+     */
+    private $pimcoreContext;
+
     /**
      * @var CartContextInterface
      */
@@ -32,11 +38,13 @@ final class SessionCartSubscriber implements EventSubscriberInterface
     private $sessionKeyName;
 
     /**
+     * @param PimcoreContextResolver $pimcoreContextResolver
      * @param CartContextInterface $cartContext
      * @param string $sessionKeyName
      */
-    public function __construct(CartContextInterface $cartContext, $sessionKeyName)
+    public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, $sessionKeyName)
     {
+        $this->pimcoreContext = $pimcoreContextResolver;
         $this->cartContext = $cartContext;
         $this->sessionKeyName = $sessionKeyName;
     }
@@ -56,6 +64,10 @@ final class SessionCartSubscriber implements EventSubscriberInterface
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
+        if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {
+            return;
+        }
+
         if (!$event->isMasterRequest()) {
             return;
         }
