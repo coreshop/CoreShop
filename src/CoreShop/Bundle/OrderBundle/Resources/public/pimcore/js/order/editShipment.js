@@ -10,10 +10,10 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.order.editPayment');
-coreshop.order.order.editPayment = {
+pimcore.registerNS('coreshop.order.order.editShipment');
+coreshop.order.order.editShipment = {
 
-    showWindow: function (payment, callback) {
+    showWindow: function (shipment, callback) {
         var window = new Ext.window.Window({
             width: 600,
             height: 450,
@@ -25,6 +25,7 @@ coreshop.order.order.editPayment = {
                 border: false,
                 autoScroll: true,
                 forceLayout: true,
+                anchor: '100%',
                 fieldDefaults: {
                     labelWidth: 150
                 },
@@ -37,10 +38,10 @@ coreshop.order.order.editPayment = {
                             if (form.isValid()) {
                                 var formValues = form.getFieldValues();
 
-                                formValues['id'] = payment.getId();
+                                formValues['id'] = shipment.get('o_id');
 
                                 Ext.Ajax.request({
-                                    url: '/admin/coreshop/order/update-payment',
+                                    url: '/admin/coreshop/order-shipment/update-shipment',
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {
@@ -55,11 +56,12 @@ coreshop.order.order.editPayment = {
                                                     callback(response);
                                                 }
                                             } else {
-                                                Ext.Msg.alert(t('error'), response.message);
+                                                //pimcore returns a error window. don't do this twice.
+                                                //Ext.Msg.alert(t('error'), response.message);
                                             }
                                         }
                                         catch (e) {
-                                            Ext.Msg.alert(t('error'), e);
+                                            //pimcore returns a error window. don't do this twice.
                                         }
                                     }
                                 });
@@ -77,52 +79,69 @@ coreshop.order.order.editPayment = {
                         fieldLabel: t('coreshop_date'),
                         name: 'date',
                         disabled: true,
-                        value: payment.get('datePayment')
+                        value: shipment.get('shipmentDate')
                     },
                     {
                         xtype: 'textfield',
-                        fieldLabel: t('coreshop_paymentProvider'),
-                        disabled: true,
-                        value: payment.get('provider')
+                        fieldLabel: t('coreshop_tracking_code'),
+                        name: 'trackingCode',
+                        disabled: false,
+                        value: shipment.get('trackingCode')
                     },
                     {
-                        xtype: 'numberfield',
-                        name: 'amount',
-                        fieldLabel: t('coreshop_quantity'),
-                        disabled: false,
-                        value: payment.get('amount') / 100
+                        xtype: 'textfield',
+                        fieldLabel: t('coreshop_shipment_number'),
+                        name: 'shipmentNumber',
+                        disabled: true,
+                        value: shipment.get('shipmentNumber')
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: t('coreshop_carrier'),
+                        disabled: true,
+                        value: shipment.get('carrierName')
                     },
                     {
                         xtype: 'combo',
                         fieldLabel: t('state'),
                         name: 'state',
-                        value: payment.get('state'),
+                        value: shipment.get('state'),
                         store: [
-                            ['new', t('coreshop_payment_state_new')],
-                            ['processing', t('coreshop_payment_state_processing')],
-                            ['completed', t('coreshop_payment_state_completed')],
-                            ['failed', t('coreshop_payment_state_failed')],
-                            ['cancelled', t('coreshop_payment_state_cancelled')],
-                            ['refunded', t('coreshop_payment_state_refunded')],
-                            ['unknown', t('coreshop_payment_state_unknown')]
+                            ['ready', t('coreshop_shipment_state_ready')],
+                            ['cancelled', t('coreshop_shipment_state_cancelled')],
+                            ['shipped', t('coreshop_shipment_state_shipped')]
                         ],
                         triggerAction: 'all',
                         typeAhead: false,
-                        editable: false,
+                        editable: true,
                         forceSelection: true,
                         queryMode: 'local'
-
+                    },
+                    {
+                        xtype: 'button',
+                        fieldLabel: '',
+                        style: 'margin: 5px 0;',
+                        tooltip: t('open'),
+                        handler: function (widgetColumn) {
+                            pimcore.helpers.openObject(shipment.get('o_id'), 'object');
+                        },
+                        listeners: {
+                            beforerender: function (widgetColumn) {
+                                widgetColumn.setText(Ext.String.format(t('coreshop_shipment_order'), shipment.get('shipmentNumber')));
+                            }
+                        }
                     },
                     {
                         xtype: 'gridpanel',
-                        title: t('details'),
-                        store: new Ext.data.ArrayStore({
-                            data: payment.get('details'),
-                            fields: ['name', 'value']
+                        title: t('coreshop_products'),
+                        editable: true,
+                        store: new Ext.data.JsonStore({
+                            data: shipment.get('items'),
+                            fields: ['_itemName', 'quantity']
                         }),
                         columns: [
-                            {text: 'Name', dataIndex: 'name', flex: 1 },
-                            {text: 'Value', dataIndex: 'value', flex: 2 }
+                            {text: 'Item', dataIndex: '_itemName', flex: 2 },
+                            {text: 'Quantity', dataIndex: 'quantity', flex: 1 }
                         ]
                     }
                 ]

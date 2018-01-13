@@ -377,14 +377,22 @@ class OrderController extends AbstractSaleDetailController
      */
     protected function getShipments($order)
     {
-        $invoices = $this->getOrderShipmentRepository()->getDocuments($order);
-        $invoiceArray = [];
+        $shipments = $this->getOrderShipmentRepository()->getDocuments($order);
+        $shipmentArray = [];
 
-        foreach ($invoices as $invoice) {
-            $invoiceArray[] = $this->getDataForObject($invoice);
+        foreach ($shipments as $shipment) {
+            $data = $this->getDataForObject($shipment);
+            $data['carrierName'] = $shipment->getCarrier()->getName();
+
+            // better solution?
+            foreach($shipment->getItems() as $index => $item) {
+                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+            }
+
+            $shipmentArray[] = $data;
         }
 
-        return $invoiceArray;
+        return $shipmentArray;
     }
 
     protected function getSummary(SaleInterface $sale)

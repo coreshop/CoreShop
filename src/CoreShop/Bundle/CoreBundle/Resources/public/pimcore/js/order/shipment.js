@@ -15,7 +15,7 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
     cb: null,
 
     show: function ($super, shipAbleItems) {
-        pimcore.globalmanager.get("coreshop_carriers").load();
+        pimcore.globalmanager.get('coreshop_carriers').load();
 
         var window = $super(shipAbleItems);
 
@@ -23,7 +23,7 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
             xtype: 'combo',
             fieldLabel: t('coreshop_carrier'),
             mode: 'local',
-            store: pimcore.globalmanager.get("coreshop_carriers"),
+            store: pimcore.globalmanager.get('coreshop_carriers'),
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -37,7 +37,7 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
             required: true
         });
 
-        window.down("form").insert(0, carrier);
+        window.down('form').insert(0, carrier);
 
         return window;
     }

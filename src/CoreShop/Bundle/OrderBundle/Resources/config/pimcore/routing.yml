@@ -40,7 +40,6 @@ coreshop_order_get_grid_configuration:
   path: /%coreshop.admin.route.base%/order/get-grid-configuration
   defaults: { _controller: 'coreshop.pimcore_controller.order:getGridConfigurationAction'}
 
-# remove !
 coreshop_order_get_states:
   path: /%coreshop.admin.route.base%/order/get-states
   defaults: { _controller: 'coreshop.pimcore_controller.order:getStatesAction'}
@@ -94,6 +93,10 @@ coreshop_order_shipment_get_processable_items:
 coreshop_order_shipment_create:
   path: /%coreshop.admin.route.base%/order-shipment/create-shipment
   defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:createShipmentAction'}
+
+coreshop_order_shipment_update:
+  path: /%coreshop.admin.route.base%/order-shipment/update-shipment
+  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateShipmentAction'}
 
 coreshop_order_shipment_render:
   path: /%coreshop.admin.route.base%/order-shipment/render

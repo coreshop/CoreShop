@@ -15,8 +15,8 @@ coreshop.order.order.detail = Class.create(coreshop.order.order.detail, {
 
     getLeftItems: function ($super) {
         var leftItems = $super();
-
-        return leftItems.concat([this.getCarrierDetails()]);
+        leftItems.unshift(this.getCarrierDetails());
+        return leftItems;
     },
 
     getCarrierDetails: function () {
@@ -67,7 +67,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.order.detail, {
             });
 
             this.carrierDetails = Ext.create('Ext.panel.Panel', {
-                title: t('coreshop_carrier') + '/' + t('coreshop_paymentProvider'),
+                title: t('coreshop_order') + ': ' + t('coreshop_carrier') + '/' + t('coreshop_paymentProvider'),
                 margin: '0 20 20 0',
                 border: true,
                 flex: 6,

@@ -47,11 +47,11 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
         var deliveryCarrierChoose = Ext.create({
             xtype: 'combo',
             fieldLabel: t('coreshop_carrier'),
-            name: "carrier",
+            name: 'carrier',
             store: this.carriersStore,
             editable: false,
             triggerAction: 'all',
-            queryMode: "local",
+            queryMode: 'local',
             width: 500,
             displayField: 'name',
             valueField: 'id',
@@ -59,7 +59,7 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
                 change: function (combo, value) {
                     var carrier = this.carriersStore.getById(value);
 
-                    deliveryPriceField.setValue(carrier.get("priceFormatted"));
+                    deliveryPriceField.setValue(carrier.get('priceFormatted'));
 
                     this.eventManager.fireEvent('carrier.changed');
                     this.eventManager.fireEvent('totals.reload');

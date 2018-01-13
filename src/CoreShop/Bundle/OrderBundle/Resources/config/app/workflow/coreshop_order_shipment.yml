@@ -6,24 +6,19 @@ framework:
                 service: coreshop.state_machine.marking_store.order_shipment_pimcore_marking_store
             supports: CoreShop\Component\Order\Model\Order
             places:
-                - initialized
                 - new
-                - ready
                 - cancelled
                 - partially_shipped
                 - shipped
             transitions:
-                ready:
-                    from: [initialized, new]
-                    to: ready
-                partially_shipped:
-                    from: [new, ready]
+                partially_ship:
+                    from: [new]
                     to: partially_shipped
                 cancel:
-                    from: [new, ready]
+                    from: [new]
                     to: cancelled
-                shipped:
-                    from: [new, ready, partially_shipped]
+                ship:
+                    from: [new, partially_shipped]
                     to: shipped
 
 core_shop_resource:

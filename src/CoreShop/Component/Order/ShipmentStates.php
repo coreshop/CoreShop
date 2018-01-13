@@ -12,11 +12,12 @@
 
 namespace CoreShop\Component\Order;
 
-final class OrderShipmentStates
+final class ShipmentStates
 {
+    const IDENTIFIER = 'coreshop_shipment';
+
     const STATE_NEW = 'new';
     const STATE_READY = 'ready';
     const STATE_CANCELLED = 'cancelled';
-    const STATE_PARTIALLY_SHIPPED = 'partially_shipped';
     const STATE_SHIPPED = 'shipped';
 }
