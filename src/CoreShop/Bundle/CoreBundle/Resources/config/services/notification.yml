@@ -31,6 +31,7 @@ services:
           class: CoreShop\Component\Core\Notification\Rule\Condition\Payment\PaymentStateChecker
           tags:
             - { name: coreshop.notification_rule.condition, type: paymentState, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\PaymentStateConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: paymentState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\PaymentStateConfigurationType }
 
     coreshop.notification_rule.condition.user.user_type:
         class: CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker
