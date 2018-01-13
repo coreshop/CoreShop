@@ -3,9 +3,16 @@
 {% block toolbar %}
     {% set icon %}
         {{ include('@CoreShopOrder/Collector/Icon/cart.svg') }}
-        <span class="sf-toolbar-value">
-            {{ collector.cart.total|coreshop_format_money(collector.cart.getCurrency.getIsoCode, collector.locale) }}
-        </span>
+
+        {% if collector.admin %}
+            <span class="sf-toolbar-value">
+                -
+            </span>
+        {% else %}
+            <span class="sf-toolbar-value">
+                {{ collector.cart.total|coreshop_format_money(collector.cart.getCurrency.getIsoCode, collector.locale) }}
+            </span>
+        {% endif %}
     {% endset %}
 
     {% set text %}
