@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Notification\Rule\Condition\Payment;
 
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 
@@ -24,6 +25,10 @@ class PaymentStateChecker extends AbstractConditionChecker
     {
         if ($subject instanceof PaymentInterface) {
             return $subject->getState() === $configuration['paymentState'];
+        } elseif ($subject instanceof OrderInterface) {
+            if (array_key_exists('paymentState', $params)) {
+                return $configuration['paymentState'] === $params['paymentState'];
+            }
         }
 
         return false;
