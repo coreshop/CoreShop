@@ -19,7 +19,7 @@ coreshop.order.order.createPayment = {
         var paymentProvidersStore = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/order/get-payment-providers',
+                url: '/admin/coreshop/order-payment/get-payment-providers',
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
@@ -55,7 +55,7 @@ coreshop.order.order.createPayment = {
                                 formValues['o_id'] = orderId;
 
                                 Ext.Ajax.request({
-                                    url: '/admin/coreshop/order/add-payment',
+                                    url: '/admin/coreshop/order-payment/add-payment',
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {
@@ -113,30 +113,6 @@ coreshop.order.order.createPayment = {
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],
                         allowBlank: false
-                    },
-                    {
-                        xtype: 'combo',
-                        fieldLabel: t('state'),
-                        name: 'state',
-                        value: 'new',
-                        store: [
-                            ['new', t('coreshop_payment_state_new')],
-                            ['processing', t('coreshop_payment_state_processing')],
-                            ['completed', t('coreshop_payment_state_completed')],
-                            ['failed', t('coreshop_payment_state_failed')],
-                            ['canceled', t('coreshop_payment_state_cancelled')],
-                            ['refunded', t('coreshop_payment_state_refunded')],
-                            ['unknown', t('coreshop_payment_state_unknown')]
-                        ],
-                        triggerAction: 'all',
-                        typeAhead: false,
-                        editable: false,
-                        forceSelection: true,
-                        queryMode: 'local',
-                        allowBlank: false,
-                        afterLabelTextTpl: [
-                            '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
-                        ]
                     },
                     {
                         xtype: 'numberfield',

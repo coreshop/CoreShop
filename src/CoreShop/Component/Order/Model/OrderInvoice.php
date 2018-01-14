@@ -121,6 +121,22 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getState()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setState($state)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
 
     /**
      * {@inheritdoc}

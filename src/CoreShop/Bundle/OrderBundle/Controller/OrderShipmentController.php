@@ -25,7 +25,6 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
 use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -132,14 +131,6 @@ class OrderShipmentController extends PimcoreController
                 $workflow = $this->getStateMachineManager()->get($shipment, ShipmentStates::IDENTIFIER);
                 $workflow->apply($shipment, ShipmentTransitions::TRANSITION_CREATE);
 
-                //apply state machine, if user has applied
-                if ($resource['state'] !== ShipmentStates::STATE_NEW) {
-                    $workflow = $this->getStateMachineManager()->get($shipment, ShipmentStates::IDENTIFIER);
-                    if (null !== $transition = $this->getStateMachineManager()->getTransitionToState($workflow, $shipment, $resource['state'])) {
-                        $workflow->apply($shipment, $transition);
-                    }
-                }
-
                 return $this->viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
             } catch (\Exception $ex) {
                 return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
@@ -148,7 +139,6 @@ class OrderShipmentController extends PimcoreController
 
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
-
 
     /**
      * @param Request $request
@@ -185,6 +175,29 @@ class OrderShipmentController extends PimcoreController
 
         return $this->viewHandler->handle(['success' => true]);
 
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function updateStateAction(Request $request)
+    {
+        $shipment = $this->getOrderShipmentRepository()->find($request->get('id'));
+        $transition = $request->get('transition');
+
+        if (!$shipment instanceof OrderShipmentInterface) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'invalid shipment']);
+        }
+
+        //apply state machine
+        $workflow = $this->getStateMachineManager()->get($shipment, 'coreshop_shipment');
+        if (!$workflow->can($shipment, $transition)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+        }
+
+        $workflow->apply($shipment, $transition);
+        return $this->viewHandler->handle(['success' => true]);
     }
 
     /**

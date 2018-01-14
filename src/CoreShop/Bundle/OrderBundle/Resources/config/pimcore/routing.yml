@@ -56,21 +56,26 @@ coreshop_order_get_order:
   path: /%coreshop.admin.route.base%/order/detail
   defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}
 
-coreshop_order_update_payment:
-  path: /%coreshop.admin.route.base%/order/update-payment
-  defaults: { _controller: 'coreshop.pimcore_controller.order:updatePaymentAction'}
-
-coreshop_order_add_payment:
-  path: /%coreshop.admin.route.base%/order/add-payment
-  defaults: { _controller: 'coreshop.pimcore_controller.order:addPaymentAction'}
-
 coreshop_order_find:
   path: /%coreshop.admin.route.base%/order/find
   defaults: { _controller: 'coreshop.pimcore_controller.order:findSaleAction'}
 
+##### ORDER PAYMENT
+coreshop_order_payment_add:
+  path: /%coreshop.admin.route.base%/order-payment/add-payment
+  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:addPaymentAction'}
+
+coreshop_order_payment_update:
+  path: /%coreshop.admin.route.base%/order-payment/update-payment
+  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updatePaymentAction'}
+
+coreshop_order_payment_update_state:
+  path: /%coreshop.admin.route.base%/order-payment/update-payment-state
+  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updateStateAction'}
+
 coreshop_order_get_payment_providers:
-  path: /%coreshop.admin.route.base%/order/get-payment-providers
-  defaults: { _controller: 'coreshop.pimcore_controller.order:getPaymentProvidersAction'}
+  path: /%coreshop.admin.route.base%/order-payment/get-payment-providers
+  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:getPaymentProvidersAction'}
 
 ##### ORDER INVOICE
 coreshop_order_invoice_get_processable_items:
@@ -80,6 +85,10 @@ coreshop_order_invoice_get_processable_items:
 coreshop_order_invoice_create:
   path: /%coreshop.admin.route.base%/order-invoice/create-invoice
   defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:createInvoiceAction'}
+
+coreshop_order_invoice_update_state:
+  path: /%coreshop.admin.route.base%/order-invoice/update-invoice-state
+  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:updateStateAction'}
 
 coreshop_order_invoice_render:
   path: /%coreshop.admin.route.base%/order-invoice/render
@@ -97,6 +106,10 @@ coreshop_order_shipment_create:
 coreshop_order_shipment_update:
   path: /%coreshop.admin.route.base%/order-shipment/update-shipment
   defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateShipmentAction'}
+
+coreshop_order_shipment_update_state:
+  path: /%coreshop.admin.route.base%/order-shipment/update-shipment-state
+  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateStateAction'}
 
 coreshop_order_shipment_render:
   path: /%coreshop.admin.route.base%/order-shipment/render

@@ -1,46 +1,46 @@
 framework:
     workflows:
-        coreshop_shipment:
+        coreshop_invoice:
             type: 'state_machine'
             marking_store:
-                service: coreshop.state_machine.marking_store.shipment_pimcore_marking_store
-            supports: CoreShop\Component\Order\Model\OrderShipment
+                service: coreshop.state_machine.marking_store.invoice_pimcore_marking_store
+            supports: CoreShop\Component\Order\Model\OrderInvoice
             places:
                 - new
                 - ready
                 - cancelled
-                - shipped
+                - complete
             transitions:
                 create:
                     from: [new]
                     to: ready
-                ship:
-                    from: [ready]
-                    to: shipped
                 cancel:
                     from: [ready]
-                    to: cancelled
+                    to:   cancelled
+                complete:
+                    from: [ready]
+                    to:   complete
 
 core_shop_resource:
     state_machine:
         colors:
-            coreshop_shipment:
+            coreshop_invoice:
                 new: '#feb624'
                 ready: '#feb624'
                 cancelled: '#f2583e'
-                shipped: '#2c5600'
-            coreshop_shipment_transition:
+                complete: '#2c5600'
+            coreshop_invoice_transition:
                 create: '#feb624'
-                ship: '#2c5600'
                 cancel: '#f2583e'
+                complete: '#2c5600'
         callbacks:
-            coreshop_shipment:
+            coreshop_invoice:
                 after:
                   resolve_state:
-                      on: ['ship']
-                      do: ['@coreshop.state_machine_resolver.order_shipment', 'resolve']
+                      on: ['complete']
+                      do: ['@coreshop.state_machine_resolver.order_invoice', 'resolve']
                       args: ['object.getOrder()']
                   add_to_history:
-                      on: ['ship', 'cancel']
+                      on: ['cancel', 'complete']
                       do: ['@coreshop.workflow.state_history_logger', 'log']
                       args: ['object.getOrder().getId()', 'event']

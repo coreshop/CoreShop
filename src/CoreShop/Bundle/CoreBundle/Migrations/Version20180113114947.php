@@ -18,7 +18,7 @@ class Version20180113114947 extends AbstractPimcoreMigration implements Containe
 
     public function up(Schema $schema)
     {
-        $tokenField = [
+        $stateField = [
             'fieldtype'       => 'input',
             'width'           => null,
             'queryColumnType' => 'varchar',
@@ -46,7 +46,14 @@ class Version20180113114947 extends AbstractPimcoreMigration implements Containe
         $orderShipment = $this->container->getParameter('coreshop.model.order_shipment.pimcore_class_name');
         $classUpdater = new ClassUpdate($orderShipment);
         if (!$classUpdater->hasField('state')) {
-            $classUpdater->insertFieldAfter('shipmentNumber', $tokenField);
+            $classUpdater->insertFieldAfter('shipmentNumber', $stateField);
+            $classUpdater->save();
+        }
+
+        $orderInvoice = $this->container->getParameter('coreshop.model.order_invoice.pimcore_class_name');
+        $classUpdater = new ClassUpdate($orderInvoice);
+        if (!$classUpdater->hasField('state')) {
+            $classUpdater->insertFieldAfter('invoiceNumber', $stateField);
             $classUpdater->save();
         }
 

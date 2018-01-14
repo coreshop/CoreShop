@@ -82,13 +82,6 @@ coreshop.order.order.editShipment = {
                     },
                     {
                         xtype: 'textfield',
-                        fieldLabel: t('coreshop_tracking_code'),
-                        name: 'trackingCode',
-                        disabled: false,
-                        value: shipment.get('trackingCode')
-                    },
-                    {
-                        xtype: 'textfield',
                         fieldLabel: t('coreshop_shipment_number'),
                         name: 'shipmentNumber',
                         disabled: true,
@@ -96,25 +89,23 @@ coreshop.order.order.editShipment = {
                     },
                     {
                         xtype: 'textfield',
+                        fieldLabel: t('coreshop_tracking_code'),
+                        name: 'trackingCode',
+                        disabled: false,
+                        value: shipment.get('trackingCode')
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: t('coreshop_weight'),
+                        name: 'weight',
+                        disabled: true,
+                        value: shipment.get('weight')
+                    },
+                    {
+                        xtype: 'textfield',
                         fieldLabel: t('coreshop_carrier'),
                         disabled: true,
                         value: shipment.get('carrierName')
-                    },
-                    {
-                        xtype: 'combo',
-                        fieldLabel: t('state'),
-                        name: 'state',
-                        value: shipment.get('state'),
-                        store: [
-                            ['ready', t('coreshop_shipment_state_ready')],
-                            ['cancelled', t('coreshop_shipment_state_cancelled')],
-                            ['shipped', t('coreshop_shipment_state_shipped')]
-                        ],
-                        triggerAction: 'all',
-                        typeAhead: false,
-                        editable: true,
-                        forceSelection: true,
-                        queryMode: 'local'
                     },
                     {
                         xtype: 'button',
@@ -126,7 +117,7 @@ coreshop.order.order.editShipment = {
                         },
                         listeners: {
                             beforerender: function (widgetColumn) {
-                                widgetColumn.setText(Ext.String.format(t('coreshop_shipment_order'), shipment.get('shipmentNumber')));
+                                widgetColumn.setText(Ext.String.format(t('coreshop_open_order_shipment'), shipment.get('shipmentNumber')));
                             }
                         }
                     },

@@ -43,16 +43,15 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     /**
      * @param StateMachineManager $stateMachineManager
      * @param TranslatorInterface $translator
-     * @param string $noteIdentifier
-     * @param array $stateColors
+     * @param string              $noteIdentifier
+     * @param array               $stateColors
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         TranslatorInterface $translator,
         $noteIdentifier,
         $stateColors
-    )
-    {
+    ) {
         $this->stateMachineManager = $stateMachineManager;
         $this->noteIdentifier = $noteIdentifier;
         $this->translator = $translator;
@@ -78,6 +77,47 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
         ];
 
         return $data;
+    }
+
+    /**
+     * @param      $workflowName
+     * @param      $transition
+     * @param bool $forFrontend
+     * @return array
+     */
+    public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
+    {
+        $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
+        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
+        $color = isset($this->stateColors[$workflowName . '_transition'][$transition]) ? $this->stateColors[$workflowName . '_transition'][$transition] : '#999999';
+
+        $data = [
+            'label'      => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
+            'transition' => $transition,
+            'color'      => $color
+        ];
+
+        return $data;
+    }
+
+    /**
+     * @param       $subject
+     * @param       $workflowName
+     * @param array $transitions
+     * @param bool  $forFrontend
+     * @return array
+     */
+    public function fulfillTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)
+    {
+        $valid = [];
+        $workflow = $this->stateMachineManager->get($subject, $workflowName);
+        foreach ($transitions as $transition) {
+            if ($workflow->can($subject, $transition)) {
+                $valid[] = $this->getTransitionInfo($workflowName, $transition, $forFrontend);
+            }
+        }
+
+        return $valid;
     }
 
     /**

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Workflow;
 
@@ -35,4 +35,13 @@ interface WorkflowStateManagerInterface
      * @return array
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true);
+
+    /**
+     * @param       $subject
+     * @param       $workflowName
+     * @param array $transitions
+     * @param bool  $forFrontend
+     * @return mixed
+     */
+    public function fulfillTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);
 }

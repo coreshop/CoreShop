@@ -28,7 +28,6 @@ final class OrderShipmentCreationType extends AbstractType
     {
         $builder
             ->add('trackingCode', TextType::class)
-            ->add('state', TextType::class)
             ->add('id', IntegerType::class)
             ->add('items', CollectionType::class, [
                 'entry_type' => OrderDocumentCreationItemsType::class,

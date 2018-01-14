@@ -10,10 +10,10 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.order.editPayment');
-coreshop.order.order.editPayment = {
+pimcore.registerNS('coreshop.order.order.editInvoice');
+coreshop.order.order.editInvoice = {
 
-    showWindow: function (payment, callback) {
+    showWindow: function (invoice, currency, callback) {
         var window = new Ext.window.Window({
             width: 600,
             height: 450,
@@ -37,10 +37,10 @@ coreshop.order.order.editPayment = {
                             if (form.isValid()) {
                                 var formValues = form.getFieldValues();
 
-                                formValues['id'] = payment.getId();
+                                formValues['id'] = invoice.get('o_id');
 
                                 Ext.Ajax.request({
-                                    url: '/admin/coreshop/order-payment/update-payment',
+                                    url: '/admin/coreshop/order-invoice/update-invoice',
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {
@@ -77,32 +77,49 @@ coreshop.order.order.editPayment = {
                         fieldLabel: t('coreshop_date'),
                         name: 'date',
                         disabled: true,
-                        value: payment.get('datePayment')
+                        value: invoice.get('invoiceDate')
                     },
                     {
                         xtype: 'textfield',
-                        fieldLabel: t('coreshop_payment_number'),
+                        fieldLabel: t('coreshop_invoice_number'),
                         disabled: true,
-                        value: payment.get('paymentNumber')
+                        value: invoice.get('invoiceNumber')
                     },
                     {
                         xtype: 'textfield',
-                        fieldLabel: t('coreshop_paymentProvider'),
-                        disabled: true,
-                        value: payment.get('provider')
-                    },
-                    {
-                        xtype: 'numberfield',
                         name: 'amount',
-                        fieldLabel: t('coreshop_quantity'),
-                        disabled: false,
-                        value: payment.get('amount') / 100
+                        fieldLabel: t('coreshop_total_without_tax'),
+                        disabled: true,
+                        value: invoice.get('totalNet') / 100,
+                        renderer: coreshop.util.format.currency.bind(this, currency.symbol)
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'amount',
+                        fieldLabel: t('coreshop_total'),
+                        disabled: true,
+                        value: invoice.get('totalGross') / 100,
+                        renderer: coreshop.util.format.currency.bind(this, currency.symbol)
+                    },
+                    {
+                        xtype: 'button',
+                        fieldLabel: '',
+                        style: 'margin: 5px 0;',
+                        tooltip: t('open'),
+                        handler: function (widgetColumn) {
+                            pimcore.helpers.openObject(invoice.get('o_id'), 'object');
+                        },
+                        listeners: {
+                            beforerender: function (widgetColumn) {
+                                widgetColumn.setText(Ext.String.format(t('coreshop_open_order_invoice'), invoice.get('invoiceNumber')));
+                            }
+                        }
                     },
                     {
                         xtype: 'gridpanel',
                         title: t('details'),
                         store: new Ext.data.ArrayStore({
-                            data: payment.get('details'),
+                            data: invoice.get('details'),
                             fields: ['name', 'value']
                         }),
                         columns: [

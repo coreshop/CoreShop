@@ -29,7 +29,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
     protected $stateMachineManager;
 
     /**
-     * @var StateMachineManager
+     * @var OrderShipmentRepositoryInterface
      */
     protected $orderShipmentRepository;
 

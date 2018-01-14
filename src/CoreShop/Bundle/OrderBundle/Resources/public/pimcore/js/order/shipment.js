@@ -106,30 +106,12 @@ coreshop.order.order.shipment = Class.create({
             name: 'trackingCode'
         });
 
-        var status = new Ext.form.ComboBox({
-            fieldLabel: t('state'),
-            name: 'state',
-            store: [
-                ['ready', t('coreshop_shipment_state_ready')],
-                ['cancelled', t('coreshop_shipment_state_cancelled')],
-                ['shipped', t('coreshop_shipment_state_shipped')]
-            ],
-            triggerAction: 'all',
-            typeAhead: false,
-            editable: false,
-            forceSelection: true,
-            required: true,
-            allowEmpty: false,
-            value: 'ready',
-            queryMode: 'local'
-        });
-
         var panel = Ext.create('Ext.form.Panel', {
             title: t('coreshop_products'),
             border: true,
             iconCls: 'coreshop_icon_product',
             bodyPadding: 10,
-            items: [trackingCode, status, itemsGrid]
+            items: [trackingCode, itemsGrid]
         });
 
         var window = new Ext.window.Window({
