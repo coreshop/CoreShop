@@ -1,5 +1,6 @@
 {% extends '@CoreShopFrontend/Order/layout.html.twig' %}
 {% import "@CoreShopFrontend/Common/Macro/messages.html.twig" as messages %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 {% block checkout_title %}
     {{ 'coreshop.ui.order_revise'|trans }}
