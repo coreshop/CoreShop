@@ -269,6 +269,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                             var record = widgetColumn.getWidgetRecord(),
                                                 cursor = record.data.transitions.length > 0 ? 'pointer' : 'default';
                                             widgetColumn.setText(record.data.stateInfo.label);
+                                            widgetColumn.setIconCls(record.data.transitions.length !== 0 ? 'pimcore_icon_open' : '');
                                             widgetColumn.setStyle('border-radius:2px; cursor:' + cursor + '; background-color:' + record.data.stateInfo.color + ';');
                                         }
                                     }
@@ -382,6 +383,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                             var record = widgetColumn.getWidgetRecord(),
                                                 cursor = record.data.transitions.length > 0 ? 'pointer' : 'default';
                                             widgetColumn.setText(record.data.stateInfo.label);
+                                            widgetColumn.setIconCls(record.data.transitions.length !== 0 ? 'pimcore_icon_open' : '');
                                             widgetColumn.setStyle('border-radius:2px; cursor:' + cursor + '; background-color:' + record.data.stateInfo.color + ';');
                                         }
                                     }
@@ -530,6 +532,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                     var record = widgetColumn.getWidgetRecord(),
                                         cursor = record.data.transitions.length > 0 ? 'pointer' : 'default';
                                     widgetColumn.setText(record.data.stateInfo.label);
+                                    widgetColumn.setIconCls(record.data.transitions.length !== 0 ? 'pimcore_icon_open' : '');
                                     widgetColumn.setStyle('border-radius:2px; cursor:' + cursor + '; background-color:' + record.data.stateInfo.color + ';');
                                 }
                             }
