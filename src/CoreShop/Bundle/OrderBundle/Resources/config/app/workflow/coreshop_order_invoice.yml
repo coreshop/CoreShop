@@ -29,7 +29,7 @@ core_shop_resource:
                 new: '#feb624'
                 ready: '#feb624'
                 partially_invoiced: '#f27024'
-                invoiced: '#2c5600'
+                invoiced: '#5b981a'
                 cancelled: '#f2583e'
         callbacks:
             coreshop_order_invoice:

@@ -28,11 +28,11 @@ core_shop_resource:
                 new: '#feb624'
                 ready: '#feb624'
                 cancelled: '#f2583e'
-                complete: '#2c5600'
+                complete: '#5b981a'
             coreshop_invoice_transition:
                 create: '#feb624'
                 cancel: '#f2583e'
-                complete: '#2c5600'
+                complete: '#5b981a'
         callbacks:
             coreshop_invoice:
                 after:

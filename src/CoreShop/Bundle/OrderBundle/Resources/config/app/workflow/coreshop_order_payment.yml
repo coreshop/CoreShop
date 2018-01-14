@@ -41,7 +41,7 @@ core_shop_resource:
                 awaiting_payment: '#feb624'
                 partially_paid: '#f27024'
                 cancelled: '#f2583e'
-                paid: '#2c5600'
+                paid: '#5b981a'
                 partially_refunded: '#77bed2'
                 refunded: '#004966'
         callbacks:

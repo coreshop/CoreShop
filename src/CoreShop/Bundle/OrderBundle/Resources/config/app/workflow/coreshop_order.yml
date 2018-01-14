@@ -28,7 +28,7 @@ core_shop_resource:
                 initialized: '#d6e1dd'
                 new: '#61c2cb'
                 cancelled: '#f2583e'
-                complete: '#2c5600'
+                complete: '#5b981a'
         callbacks:
             coreshop_order:
                 after:
