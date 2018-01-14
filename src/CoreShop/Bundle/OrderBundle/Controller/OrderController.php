@@ -275,6 +275,11 @@ class OrderController extends AbstractSaleDetailController
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_invoice', $invoice->getState(), false);
             $data['transitions'] = $availableTransitions;
 
+            // better solution?
+            foreach ($invoice->getItems() as $index => $item) {
+                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+            }
+
             $invoiceArray[] = $data;
         }
 

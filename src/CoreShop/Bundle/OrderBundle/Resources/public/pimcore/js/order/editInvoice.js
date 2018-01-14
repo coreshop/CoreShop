@@ -118,13 +118,13 @@ coreshop.order.order.editInvoice = {
                     {
                         xtype: 'gridpanel',
                         title: t('details'),
-                        store: new Ext.data.ArrayStore({
-                            data: invoice.get('details'),
-                            fields: ['name', 'value']
+                        store: new Ext.data.JsonStore({
+                            data: invoice.get('items'),
+                            fields: ['_itemName', 'quantity']
                         }),
                         columns: [
-                            {text: 'Name', dataIndex: 'name', flex: 1 },
-                            {text: 'Value', dataIndex: 'value', flex: 2 }
+                            {text: 'Item', dataIndex: '_itemName', flex: 2 },
+                            {text: 'Quantity', dataIndex: 'quantity', flex: 1 }
                         ]
                     }
                 ]
