@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
@@ -227,10 +229,42 @@ class Order extends Sale implements OrderInterface
     }
 
     /**
+     * @return OrderInvoiceRepositoryInterface
+     */
+    private function getOrderInvoiceRepository()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.order_invoice');
+    }
+
+    /**
+     * @return OrderShipmentRepositoryInterface
+     */
+    private function getOrderShipmentRepository()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.order_shipment');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getPayments()
     {
         return $this->getPaymentRepository()->findForOrderId($this->getId());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShipments()
+    {
+        return $this->getOrderShipmentRepository()->getDocuments($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInvoices()
+    {
+        return $this->getOrderInvoiceRepository()->getDocuments($this);
     }
 }
