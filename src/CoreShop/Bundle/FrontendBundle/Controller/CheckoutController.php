@@ -46,37 +46,6 @@ class CheckoutController extends FrontendController
      *
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function ajaxStepAction(Request $request)
-    {
-         if (!$request->isXmlHttpRequest()) {
-             throw new NotFoundHttpException();
-         }
-
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
-
-        /**
-         * @var CheckoutStepInterface
-         */
-        $stepIdentifier = $request->get('stepIdentifier');
-        $step = $checkoutManager->getStep($stepIdentifier);
-        $dataForStep = [];
-        $cart = $this->getCart();
-
-        $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
-
-        $dataForStep = array_merge($preparedData, [
-            'cart' => $cart,
-            'step' => $step,
-            'identifier' => $stepIdentifier,
-        ]);
-
-        return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
-    }
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
     public function processAction(Request $request)
     {
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());

@@ -26,18 +26,7 @@ $(document).ready(function () {
         }
 
         $checkoutStep.on('change', validStepChanger.join(','), function(ev) {
-            var $actionForm =  $(this).closest('form');
-            $(this).closest('form').css('opacity', .3).addClass('ajax-loading');
-            $.post({
-                url: '/de/shop/checkout-ajax/payment',
-                method: 'POST',
-                data: $('form').serialize(),
-                dataType: 'html',
-                success: function(data) {
-                    $actionForm.css('opacity', 1).removeClass('ajax-loading');
-                    $actionForm.replaceWith(data);
-                }
-            });
+            //implement change here
         });
     };
 

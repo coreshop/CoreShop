@@ -116,8 +116,6 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
      */
     public function prepareStep(CartInterface $cart, Request $request)
     {
-        //@todo: add settings view here!
-
         return [
             'form' => $this->createForm($request, $cart)->createView(),
         ];

@@ -63,10 +63,6 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
 
         $file = $this->container->get('kernel')->locateResource('@CoreShopPaymentBundle/Resources/install/pimcore/objectbricks/CoreShopPaymentData.json');
         $this->createBrick($file, 'CoreShopPaymentData');
-
-        //update static routes (checkout ajax action)
-        $this->container->get('coreshop.resource.installer.routes')->installResources(new NullOutput(), 'coreshop');
-
     }
 
     /**
