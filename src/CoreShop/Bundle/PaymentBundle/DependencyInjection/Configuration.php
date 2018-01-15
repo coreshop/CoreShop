@@ -16,6 +16,7 @@ use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentProviderRepository;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentRepository;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
+use CoreShop\Bundle\PaymentBundle\Model\PaymentDataInterface;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Payment\Model\Payment;
@@ -154,6 +155,25 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
                         ->defaultValue(['payment_provider'])
+                    ->end()
+                ->end()
+            ->end()
+            ->arrayNode('pimcore')
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('payment_data')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->variableNode('options')->end()
+                        ->arrayNode('classes')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\Objectbrick\Data\CoreShopPaymentData')->cannotBeEmpty()->end()
+                                ->scalarNode('interface')->defaultValue(PaymentDataInterface::class)->cannotBeEmpty()->end()
+                                ->scalarNode('install_file')->defaultValue('@CoreShopPaymentBundle/Resources/install/pimcore/objectbricks/CoreShopPaymentData.json')->end()
+                                ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK)->cannotBeOverwritten(true)->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()

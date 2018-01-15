@@ -67,12 +67,12 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
     /**
      * @return mixed
      */
-    public function getPaymentProvider();
+    public function getPaymentData();
 
     /**
-     * @param $paymentProvider
+     * @param $paymentData
      *
      * @return mixed
      */
-    public function setPaymentProvider($paymentProvider);
+    public function setPaymentData($paymentData);
 }

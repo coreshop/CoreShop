@@ -98,7 +98,7 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
       /**
      * {@inheritdoc}
      */
-    public function getPaymentProvider()
+    public function getPaymentData()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -106,7 +106,7 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     /**
      * {@inheritdoc}
      */
-    public function setPaymentProvider($store)
+    public function setPaymentData($paymentData)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

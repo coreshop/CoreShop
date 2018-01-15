@@ -125,7 +125,7 @@ interface OrderInterface extends SaleInterface
     /**
      * @return mixed
      */
-    public function getPaymentProvider();
+    public function getPaymentData();
 
     /**
      * @param $paymentProvider

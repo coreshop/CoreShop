@@ -43,7 +43,6 @@ use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\QuoteItemInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
