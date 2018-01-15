@@ -13,7 +13,10 @@
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\PaymentBundle\Model\PaymentSettings;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use Pimcore\Model\DataObject\CoreShopOrder\PaymentData;
 
 interface OrderInterface extends SaleInterface
 {
@@ -123,14 +126,36 @@ interface OrderInterface extends SaleInterface
     public function getIsPayed();
 
     /**
-     * @return mixed
+     * @return PaymentData
      */
     public function getPaymentData();
 
     /**
-     * @param $paymentProvider
+     * @param $paymentData
      *
      * @return mixed
      */
-    public function setPaymentProvider($paymentProvider);
+    public function setPaymentData($paymentData);
+
+    /**
+     * @return PaymentProviderInterface
+     */
+    public function getPaymentProvider();
+
+    /**
+     * @param PaymentProviderInterface $paymentProvider
+     * @return PaymentProviderInterface
+     */
+    public function setPaymentProvider(PaymentProviderInterface $paymentProvider);
+
+    /**
+     * @return PaymentSettings
+     */
+    public function getPaymentProviderSettings();
+
+    /**
+     * @param PaymentSettings $paymentSettings
+     * @return mixed
+     */
+    public function setPaymentProviderSettings(PaymentSettings $paymentSettings);
 }

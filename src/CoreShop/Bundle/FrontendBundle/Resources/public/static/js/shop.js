@@ -8,6 +8,37 @@ $(document).ready(function () {
 
     shop.init = function () {
         shop.initChangeAddress();
+        shop.initAjaxSteps();
+    };
+
+    shop.initAjaxSteps = function () {
+
+        var $checkoutStep = $('.checkout-step'),
+            validStepChanger = ['#paymentProvider'];
+
+        if($checkoutStep.length === 0) {
+            return;
+        }
+
+        var $form = $checkoutStep.find('form');
+        if($form.length === 0) {
+            return;
+        }
+
+        $checkoutStep.on('change', validStepChanger.join(','), function(ev) {
+            var $actionForm =  $(this).closest('form');
+            $(this).closest('form').css('opacity', .3).addClass('ajax-loading');
+            $.post({
+                url: '/de/shop/checkout-ajax/payment',
+                method: 'POST',
+                data: $('form').serialize(),
+                dataType: 'html',
+                success: function(data) {
+                    $actionForm.css('opacity', 1).removeClass('ajax-loading');
+                    $actionForm.replaceWith(data);
+                }
+            });
+        });
     };
 
     shop.initChangeAddress = function () {

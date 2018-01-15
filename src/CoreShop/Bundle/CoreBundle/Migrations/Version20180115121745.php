@@ -63,6 +63,10 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
 
         $file = $this->container->get('kernel')->locateResource('@CoreShopPaymentBundle/Resources/install/pimcore/objectbricks/CoreShopPaymentData.json');
         $this->createBrick($file, 'CoreShopPaymentData');
+
+        //update static routes (checkout ajax action)
+        $this->container->get('coreshop.resource.installer.routes')->installResources(new NullOutput(), 'coreshop');
+
     }
 
     /**
@@ -76,6 +80,7 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
      * @param $jsonFile
      * @param $brickName
      * @return mixed|DataObject\Objectbrick\Definition
+     * @throws \Exception
      */
     private function createBrick($jsonFile, $brickName) {
         try {
@@ -88,11 +93,14 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
         $json = file_get_contents($jsonFile);
 
         try {
-            DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
-            ClassLoader::forceLoadBrick($brickName);
+            DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, false);
+            $objectBrick->save();
         } catch(\Exception $e) {
             //keep quite.
         }
+
+        \Pimcore::collectGarbage();
+        $objectBrick->save();
 
         return $objectBrick;
     }

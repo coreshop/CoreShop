@@ -23,6 +23,7 @@ use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
@@ -40,6 +41,37 @@ class CheckoutController extends FrontendController
         $this->checkoutManagerFactory = $checkoutManagerFactory;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxStepAction(Request $request)
+    {
+         if (!$request->isXmlHttpRequest()) {
+             throw new NotFoundHttpException();
+         }
+
+        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+
+        /**
+         * @var CheckoutStepInterface
+         */
+        $stepIdentifier = $request->get('stepIdentifier');
+        $step = $checkoutManager->getStep($stepIdentifier);
+        $dataForStep = [];
+        $cart = $this->getCart();
+
+        $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
+
+        $dataForStep = array_merge($preparedData, [
+            'cart' => $cart,
+            'step' => $step,
+            'identifier' => $stepIdentifier,
+        ]);
+
+        return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
+    }
     /**
      * @param Request $request
      *

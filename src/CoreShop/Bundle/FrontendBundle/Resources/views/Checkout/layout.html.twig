@@ -6,7 +6,8 @@
 
 {% block content %}
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
-
-    {% block checkout %}
-    {% endblock %}
+    <div class="checkout-step step-{{ identifier }}">
+        {% block checkout %}
+        {% endblock %}
+    </div>
 {% endblock %}

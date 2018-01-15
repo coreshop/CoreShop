@@ -12,9 +12,10 @@
 
 namespace CoreShop\Bundle\PaymentBundle\Model;
 
+use Pimcore\Model\DataObject;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
-class PaymentData implements PaymentDataInterface
+class PaymentData extends DataObject\Objectbrick\Data\AbstractData implements PaymentDataInterface
 {
     /**
      * {@inheritdoc}

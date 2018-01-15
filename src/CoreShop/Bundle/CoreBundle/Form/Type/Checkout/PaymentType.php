@@ -8,12 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -29,8 +31,13 @@ final class PaymentType extends AbstractResourceType
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
-                'label' => 'coreshop.ui.payment_provider',
-                'store' => $options['store'],
+                'label'       => 'coreshop.ui.payment_provider',
+                'store'       => $options['store'],
+            ])
+            ->add('paymentProviderSettings', CollectionType::class, [
+                'entry_type' => TextType::class,
+                'allow_add'  => true,
+                'label'      => false
             ]);
     }
 

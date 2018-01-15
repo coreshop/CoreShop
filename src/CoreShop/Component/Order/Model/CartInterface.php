@@ -12,8 +12,11 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Bundle\PaymentBundle\Model\PaymentSettings;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use Pimcore\Model\DataObject\CoreShopCart\PaymentData;
 
 interface CartInterface extends ProposalInterface, PimcoreModelInterface, StorageListInterface
 {
@@ -65,7 +68,7 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
     public function hasPriceRule($priceRule);
 
     /**
-     * @return mixed
+     * @return PaymentData
      */
     public function getPaymentData();
 
@@ -75,4 +78,26 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
      * @return mixed
      */
     public function setPaymentData($paymentData);
+
+    /**
+     * @return PaymentProviderInterface
+     */
+    public function getPaymentProvider();
+
+    /**
+     * @param PaymentProviderInterface $paymentProvider
+     * @return PaymentProviderInterface
+     */
+    public function setPaymentProvider(PaymentProviderInterface $paymentProvider);
+
+    /**
+     * @return PaymentSettings
+     */
+    public function getPaymentProviderSettings();
+
+    /**
+     * @param PaymentSettings $paymentSettings
+     * @return mixed
+     */
+    public function setPaymentProviderSettings(PaymentSettings $paymentSettings);
 }

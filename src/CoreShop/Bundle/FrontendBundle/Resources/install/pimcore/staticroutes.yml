@@ -152,6 +152,15 @@ routes:
     variables: _locale
     priority: 2
 
+  coreshop_checkout_ajax:
+    pattern: "/(\\w+)\\/shop\\/checkout-ajax\\/(.*)/"
+    reverse: "/%_locale/shop/checkout-ajax/%stepIdentifier"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.checkout"
+    action: ajaxStep
+    variables: _locale,stepIdentifier
+    priority: 2
+
   coreshop_checkout_confirmation:
     pattern: "/(\\w+)\\/shop\\/checkout-thank-you/"
     reverse: "/%_locale/shop/checkout-thank-you"

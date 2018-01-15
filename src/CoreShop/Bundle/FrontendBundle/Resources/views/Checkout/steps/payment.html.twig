@@ -1,4 +1,6 @@
-{% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
+{% set layout = app.request.isXmlHttpRequest() ? 'layout_ajax' : 'layout' %}
+{% extends '@CoreShopFrontend/Checkout/' ~ layout ~ '.html.twig' %}
+
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 {% block checkout_title %}
@@ -10,6 +12,13 @@
         {{ form_errors(form) }}
 
         {{ form_row(form.paymentProvider) }}
+
+        {#
+            {{ form_row(form.paymentProviderSettings) }}
+
+            <input type="text" name="paymentProviderSettings[type]"  value="my_value_1"/>
+            <input type="text" name="paymentProviderSettings[super_type]" class="form-control" value="my_value_2"/>
+        #}
 
         <div class="row">
             {% set previousStep = coreshop_checkout_steps_get_previous() %}

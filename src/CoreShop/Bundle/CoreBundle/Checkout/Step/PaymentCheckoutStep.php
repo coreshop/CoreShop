@@ -116,13 +116,15 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
      */
     public function prepareStep(CartInterface $cart, Request $request)
     {
+        //@todo: add settings view here!
+
         return [
             'form' => $this->createForm($request, $cart)->createView(),
         ];
     }
 
     /**
-     * @param Request $request ,
+     * @param Request $request
      * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface
