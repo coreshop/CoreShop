@@ -14,8 +14,9 @@ namespace CoreShop\Bundle\ProductBundle\Templating\Helper;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
+use Symfony\Component\Templating\Helper\Helper;
 
-class ValidPriceRulesHelper implements ValidPriceRulesHelperInterface
+class ValidPriceRulesHelper extends Helper implements ValidPriceRulesHelperInterface
 {
     /**
      * @var ValidRulesFetcherInterface
@@ -36,5 +37,13 @@ class ValidPriceRulesHelper implements ValidPriceRulesHelperInterface
     public function getValidRules(ProductInterface $product)
     {
         return $this->validPriceRulesFetcher->getValidRules($product);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'coreshop_product_price_rules';
     }
 }
