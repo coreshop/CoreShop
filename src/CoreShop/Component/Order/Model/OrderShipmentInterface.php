@@ -37,6 +37,16 @@ interface OrderShipmentInterface extends OrderDocumentInterface
     /**
      * @return string
      */
+    public function getState();
+
+    /**
+     * @param string $state
+     */
+    public function setState($state);
+
+    /**
+     * @return string
+     */
     public function getTrackingCode();
 
     /**

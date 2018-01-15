@@ -14,29 +14,20 @@ services:
         arguments:
             - '@coreshop.state_machine_manager'
 
-    coreshop.state_machine_resolver.order_invoice:
-        public: true
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderDocumentStateResolver
-        arguments:
-          - '@coreshop.state_machine_manager'
-          - '@coreshop.order.invoice.processable'
-          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::IDENTIFIER
-          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_READY
-          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_PARTIALLY_INVOICED
-          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_CANCEL
-          - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::TRANSITION_INVOICED
-
     coreshop.state_machine_resolver.order_shipment:
         public: true
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderDocumentStateResolver
+        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver
         arguments:
           - '@coreshop.state_machine_manager'
-          - '@coreshop.order.shipment.processable'
-          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::IDENTIFIER
-          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_READY
-          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_PARTIALLY_SHIPPED
-          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_CANCEL
-          - !php/const CoreShop\Component\Order\OrderShipmentTransitions::TRANSITION_SHIPPED
+          - '@coreshop.repository.order_shipment'
+
+    # @coreshop.order.invoice.processable
+    coreshop.state_machine_resolver.order_invoice:
+        public: true
+        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver
+        arguments:
+          - '@coreshop.state_machine_manager'
+          - '@coreshop.repository.order_invoice'
 
     coreshop.state_machine.marking_store.single_state.order_payment_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
@@ -78,6 +69,26 @@ services:
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
+    coreshop.state_machine.marking_store.single_state.shipment_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - state
+
+    coreshop.state_machine.marking_store.single_state.invoice_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - state
+
+    coreshop.state_machine.marking_store.shipment_pimcore_marking_store:
+        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.shipment_state'
+
+    coreshop.state_machine.marking_store.invoice_pimcore_marking_store:
+        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+          - '@coreshop.state_machine.marking_store.single_state.invoice_state'
+
     coreshop.workflow.state_manager:
         class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
         arguments:
@@ -100,19 +111,19 @@ services:
           - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 
 
-    coreshop.workflow.order_document.invoice.creation_listener:
-        class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
-        arguments:
-            - '@coreshop.state_machine_resolver.order_invoice'
-        tags:
-            - { name: kernel.event_listener, event: coreshop.invoice.post_transform, method: onOrderDocumentCreated }
+    #coreshop.workflow.order_document.invoice.creation_listener:
+    #    class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
+    #    arguments:
+    #        - '@coreshop.state_machine_resolver.order_invoice'
+    #    tags:
+    #        - { name: kernel.event_listener, event: coreshop.invoice.post_transform, method: onOrderDocumentCreated }
 
-    coreshop.workflow.order_document.shipment.creation_listener:
-        class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
-        arguments:
-            - '@coreshop.state_machine_resolver.order_shipment'
-        tags:
-            - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: onOrderDocumentCreated }
+    #coreshop.workflow.order_document.shipment.creation_listener:
+    #    class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
+    #    arguments:
+    #        - '@coreshop.state_machine_resolver.order_shipment'
+    #    tags:
+    #        - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: onOrderDocumentCreated }
 
     coreshop.workflow.order_id_wrapper_resolver:
         class: CoreShop\Bundle\OrderBundle\StateResolver\OrderIdPaymentStateResolver

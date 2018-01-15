@@ -31,12 +31,16 @@ final class StateMachineApplier
      * @param      $subject
      * @param null $workflowName
      * @param null $transition
+     * @param bool $soft
      */
-    public function apply($subject, $workflowName = null, $transition = null)
+    public function apply($subject, $workflowName = null, $transition = null, $soft = true)
     {
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
-        if ($workflow->can($subject, $transition)) {
-            $workflow->apply($subject, $transition);
+        if($soft === true) {
+            if (!$workflow->can($subject, $transition)) {
+                return;
+            }
         }
+        $workflow->apply($subject, $transition);
     }
 }

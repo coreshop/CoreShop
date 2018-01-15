@@ -476,6 +476,7 @@ coreshop.order.sale.detail = Class.create({
                                 xtype: 'gridcolumn',
                                 text: t('coreshop_messaging_message_read'),
                                 width: 100,
+                                hidden: true,
                                 renderer: function (value, metaData, rec) {
                                     if (Ext.isDefined(rec.get('read'))) {
                                         return rec.get('read') ? t('yes') : t('no');

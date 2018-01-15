@@ -48,7 +48,6 @@ coreshop.order.order.shipment = Class.create({
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing');
 
-
         var itemsGrid = {
             xtype: 'grid',
             cls: 'coreshop-order-detail-grid',
@@ -131,10 +130,10 @@ coreshop.order.order.shipment = Class.create({
                         var itemsToShip = [];
 
                         positionStore.getRange().forEach(function (item) {
-                            if (item.get("toShip") > 0) {
+                            if (item.get('toShip') > 0) {
                                 itemsToShip.push({
-                                    orderItemId: item.get("orderItemId"),
-                                    quantity: item.get("toShip")
+                                    orderItemId: item.get('orderItemId'),
+                                    quantity: item.get('toShip')
                                 });
                             }
                         });

@@ -43,9 +43,9 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
     getLeftItems: function() {
         return [
             this.getSaleInfo(),
+            this.getPaymentDetails(),
             this.getShipmentDetails(),
             this.getInvoiceDetails(),
-            this.getPaymentDetails(),
             this.getMailDetails()
         ];
     },
@@ -137,7 +137,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 data: this.sale.statesHistory
             });
 
-            if(this.sale.orderState.state !== 'cancelled') {
+            if(this.sale.orderState.state === 'new') {
                 orderInfo.add({
                     xtype: 'panel',
                     layout: 'hbox',
@@ -197,25 +197,6 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
 
     getShipmentDetails: function () {
         if (!this.shippingInfo) {
-            var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-                listeners: {
-                    edit: function (editor, context, eOpts) {
-                        var trackingCode = context.record.get('trackingCode');
-
-                        Ext.Ajax.request({
-                            url: '/admin/coreshop/order-shipment/change-tracking-code',
-                            params: {
-                                shipmentId: context.record.get("o_id"),
-                                trackingCode: trackingCode
-                            },
-                            success: function (response) {
-                                context.record.commit();
-
-                            }.bind(this)
-                        });
-                    }.bind(this)
-                }
-            });
 
             this.shipmentsStore = new Ext.data.JsonStore({
                 data: this.sale.shipments
@@ -232,23 +213,66 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         margin: '0 0 15 0',
                         cls: 'coreshop-detail-grid',
                         store: this.shipmentsStore,
-                        plugins: [
-                            cellEditing
-                        ],
                         columns: [
                             {
                                 xtype: 'gridcolumn',
                                 flex: 1,
-                                dataIndex: 'weight',
-                                text: t('coreshop_weight')
+                                dataIndex: 'shipmentDate',
+                                text: t('coreshop_date'),
+                                renderer: function (val) {
+                                    if (val) {
+                                        return Ext.Date.format(new Date(val * 1000), t('coreshop_date_time_format'));
+                                    }
+                                    return '';
+                                }
+                            },
+                            {
+                                xtype: 'gridcolumn',
+                                flex: 1,
+                                dataIndex: 'carrierName',
+                                text: t('coreshop_carrier')
                             },
                             {
                                 xtype: 'gridcolumn',
                                 dataIndex: 'trackingCode',
                                 text: t('coreshop_tracking_code'),
-                                flex: 2,
+                                flex: 1,
                                 field: {
                                     xtype: 'textfield'
+                                }
+                            },
+                            {
+                                xtype: 'widgetcolumn',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'button',
+                                    margin: '3 0',
+                                    padding: '1 2',
+                                    border: 0,
+                                    defaultBindProperty: null,
+                                    handler: function (widgetColumn) {
+                                        var record = widgetColumn.getWidgetRecord();
+                                        var url = '/admin/coreshop/order-shipment/update-shipment-state',
+                                            transitions = record.get('transitions'),
+                                            id = record.get('o_id');
+                                        if(transitions.length !== 0) {
+                                            coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
+                                                if (result.success) {
+                                                    this.reload();
+                                                }
+                                            }.bind(this));
+                                        }
+                                    }.bind(this),
+
+                                    listeners: {
+                                        beforerender: function (widgetColumn) {
+                                            var record = widgetColumn.getWidgetRecord(),
+                                                cursor = record.data.transitions.length > 0 ? 'pointer' : 'default';
+                                            widgetColumn.setText(record.data.stateInfo.label);
+                                            widgetColumn.setIconCls(record.data.transitions.length !== 0 ? 'pimcore_icon_open' : '');
+                                            widgetColumn.setStyle('border-radius:2px; cursor:' + cursor + '; background-color:' + record.data.stateInfo.color + ';');
+                                        }
+                                    }
                                 }
                             },
                             {
@@ -257,37 +281,16 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                 xtype: 'actioncolumn',
                                 width: 32,
                                 items: [{
-                                    iconCls: 'pimcore_icon_edit',
-                                    tooltip: t('Edit'),
-                                    handler: function (grid, rowIndex, colIndex) {
-                                        cellEditing.startEditByPosition({
-                                            row: rowIndex,
-                                            column: colIndex - 1
-                                        });
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip: t('open'),
+                                    handler: function (grid, rowIndex) {
+                                        coreshop.order.order.editShipment.showWindow(grid.getStore().getAt(rowIndex), function (result) {
+                                            if (result.success) {
+                                                this.reload();
+                                            }
+                                        }.bind(this));
                                     }.bind(this)
                                 }]
-                            },
-                            {
-                                xtype: 'widgetcolumn',
-                                flex: 2,
-                                widget: {
-                                    xtype: 'button',
-                                    margin: '5 0 5 0',
-                                    padding: '3 4 3 4',
-                                    _btnText: '',
-                                    tooltip: t('open'),
-                                    defaultBindProperty: null,
-                                    handler: function (widgetColumn) {
-                                        var record = widgetColumn.getWidgetRecord();
-                                        pimcore.helpers.openObject(record.data.o_id, 'object');
-                                    },
-                                    listeners: {
-                                        beforerender: function (widgetColumn) {
-                                            var record = widgetColumn.getWidgetRecord();
-                                            widgetColumn.setText(Ext.String.format(t('coreshop_shipment_order'), record.data.shipmentNumber));
-                                        }
-                                    }
-                                }
                             }
                         ]
                     }
@@ -327,13 +330,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         columns: [
                             {
                                 xtype: 'gridcolumn',
-                                dataIndex: 'invoiceNumber',
-                                text: t('coreshop_invoice_number'),
-                                flex: 1
-                            },
-                            {
-                                xtype: 'gridcolumn',
-                                flex: 2,
+                                flex: 1,
                                 dataIndex: 'invoiceDate',
                                 text: t('coreshop_invoice_date'),
                                 renderer: function (val) {
@@ -348,38 +345,66 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                 xtype: 'gridcolumn',
                                 dataIndex: 'totalNet',
                                 text: t('coreshop_total_without_tax'),
-                                flex: 2,
-                                align: 'right',
+                                flex: 1,
                                 renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                             },
                             {
                                 xtype: 'gridcolumn',
                                 dataIndex: 'totalGross',
                                 text: t('coreshop_total'),
-                                flex: 2,
-                                align: 'right',
+                                flex: 1,
                                 renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                             },
                             {
                                 xtype: 'widgetcolumn',
-                                flex: 2,
+                                flex: 1,
                                 widget: {
                                     xtype: 'button',
-                                    margin: '5 0 5 0',
-                                    padding: '3 4 3 4',
-                                    _btnText: '',
+                                    margin: '3 0',
+                                    padding: '1 2',
+                                    border: 0,
                                     defaultBindProperty: null,
                                     handler: function (widgetColumn) {
                                         var record = widgetColumn.getWidgetRecord();
-                                        pimcore.helpers.openObject(record.data.o_id, 'object');
-                                    },
+                                        var url = '/admin/coreshop/order-invoice/update-invoice-state',
+                                            transitions = record.get('transitions'),
+                                            id = record.get('o_id');
+                                        if(transitions.length !== 0) {
+                                            coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
+                                                if (result.success) {
+                                                    this.reload();
+                                                }
+                                            }.bind(this));
+                                        }
+                                    }.bind(this),
+
                                     listeners: {
-                                        beforerender: function (widgetColumn) {
-                                            var record = widgetColumn.getWidgetRecord();
-                                            widgetColumn.setText(Ext.String.format(t('coreshop_invoice_order'), record.data.invoiceNumber));
+                                            beforerender: function (widgetColumn) {
+                                            var record = widgetColumn.getWidgetRecord(),
+                                                cursor = record.data.transitions.length > 0 ? 'pointer' : 'default';
+                                            widgetColumn.setText(record.data.stateInfo.label);
+                                            widgetColumn.setIconCls(record.data.transitions.length !== 0 ? 'pimcore_icon_open' : '');
+                                            widgetColumn.setStyle('border-radius:2px; cursor:' + cursor + '; background-color:' + record.data.stateInfo.color + ';');
                                         }
                                     }
                                 }
+                            },
+                            {
+                                menuDisabled: true,
+                                sortable: false,
+                                xtype: 'actioncolumn',
+                                width: 32,
+                                items: [{
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip: t('open'),
+                                    handler: function (grid, rowIndex) {
+                                        coreshop.order.order.editInvoice.showWindow(grid.getStore().getAt(rowIndex), this.sale.currency, function (result) {
+                                            if (result.success) {
+                                                this.reload();
+                                            }
+                                        }.bind(this));
+                                    }.bind(this)
+                                }]
                             }
                         ]
                     }
@@ -412,6 +437,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
     },
 
     getPaymentDetails: function () {
+
         if (!this.paymentInfo) {
             this.paymentsStore = new Ext.data.JsonStore({
                 data: this.sale.payments
@@ -423,6 +449,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 bodyPadding: 5,
                 hidden: true
             });
+
             this.updatePaymentInfoAlert();
 
             var items = [
@@ -456,19 +483,6 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                     },
                     {
                         xtype: 'gridcolumn',
-                        flex: 1,
-                        dataIndex: 'state',
-                        text: t('state'),
-                        renderer: function (val) {
-                            if (val) {
-                                return t('coreshop_payment_state_' + val);
-                            }
-
-                            return '';
-                        }
-                    },
-                    {
-                        xtype: 'gridcolumn',
                         dataIndex: 'amount',
                         text: t('coreshop_quantity'),
                         flex: 1,
@@ -491,6 +505,40 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                      }]
                      },*/
                     {
+                        xtype: 'widgetcolumn',
+                        flex: 1,
+                        widget: {
+                            xtype: 'button',
+                            margin: '3 0',
+                            padding: '1 2',
+                            border: 0,
+                            defaultBindProperty: null,
+                            handler: function (widgetColumn) {
+                                var record = widgetColumn.getWidgetRecord();
+                                var url = '/admin/coreshop/order-payment/update-payment-state',
+                                    transitions = record.get('transitions'),
+                                    id = record.get('id');
+                                if(transitions.length !== 0) {
+                                    coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
+                                        if (result.success) {
+                                            this.reload();
+                                        }
+                                    }.bind(this));
+                                }
+                            }.bind(this),
+
+                            listeners: {
+                                beforerender: function (widgetColumn) {
+                                    var record = widgetColumn.getWidgetRecord(),
+                                        cursor = record.data.transitions.length > 0 ? 'pointer' : 'default';
+                                    widgetColumn.setText(record.data.stateInfo.label);
+                                    widgetColumn.setIconCls(record.data.transitions.length !== 0 ? 'pimcore_icon_open' : '');
+                                    widgetColumn.setStyle('border-radius:2px; cursor:' + cursor + '; background-color:' + record.data.stateInfo.color + ';');
+                                }
+                            }
+                        }
+                    },
+                    {
                         menuDisabled: true,
                         sortable: false,
                         xtype: 'actioncolumn',
@@ -507,7 +555,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                             }.bind(this)
                         }]
                     }
-                ]
+                ],
             });
 
             this.paymentInfo = Ext.create('Ext.panel.Panel', {

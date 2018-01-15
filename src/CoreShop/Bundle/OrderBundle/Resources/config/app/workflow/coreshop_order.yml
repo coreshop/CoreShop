@@ -28,7 +28,7 @@ core_shop_resource:
                 initialized: '#d6e1dd'
                 new: '#61c2cb'
                 cancelled: '#f2583e'
-                complete: '#2c5600'
+                complete: '#5b981a'
         callbacks:
             coreshop_order:
                 after:
@@ -40,18 +40,26 @@ core_shop_resource:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
                         args: ['object.getPayments()', 'event', '"cancel"', '"coreshop_payment"']
+                    cancel_shipment:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object.getShipments()', 'event', '"cancel"', '"coreshop_shipment"']
+                    cancel_invoice:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object.getInvoices()', 'event', '"cancel"', '"coreshop_invoice"']
                     cancel_order_payment:
-                          on: ['cancel']
-                          do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                          args: ['object', 'event', '"cancel"', '"coreshop_order_payment"']
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object', 'event', '"cancel"', '"coreshop_order_payment"']
                     cancel_order_shipment:
-                          on: ['cancel']
-                          do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                          args: ['object', 'event', '"cancel"', '"coreshop_order_shipment"']
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object', 'event', '"cancel"', '"coreshop_order_shipment"']
                     cancel_order_invoice:
-                          on: ['cancel']
-                          do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                          args: ['object', 'event', '"cancel"', '"coreshop_order_invoice"']
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object', 'event', '"cancel"', '"coreshop_order_invoice"']
                     add_to_history:
                           on: ['create', 'cancel', 'complete']
                           do: ['@coreshop.workflow.state_history_logger', 'log']

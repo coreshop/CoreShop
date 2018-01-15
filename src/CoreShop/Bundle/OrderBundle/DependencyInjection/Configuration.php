@@ -16,6 +16,7 @@ use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderPaymentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteCreationController;
@@ -42,6 +43,7 @@ use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\QuoteItemInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -195,6 +197,7 @@ final class Configuration implements ConfigurationInterface
                                             ->children()
                                                 ->scalarNode('default')->defaultValue(OrderController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
+                                                ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
                                             ->end()
                                         ->end()
                                     ->end()
@@ -403,8 +406,11 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment.js')->end()
                             ->scalarNode('order_create_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/createPayment.js')->end()
                             ->scalarNode('order_edit_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editPayment.js')->end()
+                            ->scalarNode('order_edit_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editShipment.js')->end()
+                            ->scalarNode('order_edit_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editInvoice.js')->end()
                             ->scalarNode('order_invoice_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice/render.js')->end()
                             ->scalarNode('order_shipment_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment/render.js')->end()
+                            ->scalarNode('order_change_state')->defaultValue('/bundles/coreshoporder/pimcore/js/order/state/changeState.js')->end()
                             ->scalarNode('quote_list')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/list.js')->end()
                             ->scalarNode('quote_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/detail.js')->end()
                             ->scalarNode('quote_create')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/create/panel.js')->end()

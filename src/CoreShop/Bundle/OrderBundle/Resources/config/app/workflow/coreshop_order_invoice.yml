@@ -6,24 +6,19 @@ framework:
                 service: coreshop.state_machine.marking_store.order_invoice_pimcore_marking_store
             supports: CoreShop\Component\Order\Model\Order
             places:
-                - initialized
                 - new
-                - ready
                 - cancelled
                 - partially_invoiced
                 - invoiced
             transitions:
-                ready:
-                    from: [initialized, new]
-                    to: ready
-                partially_invoiced:
-                    from: [new, ready]
+                partially_invoice:
+                    from: [new]
                     to: partially_invoiced
                 cancel:
-                    from: [new, ready]
+                    from: [new]
                     to: cancelled
-                invoiced:
-                    from: [new, ready, partially_invoiced]
+                invoice:
+                    from: [new, partially_invoiced]
                     to: invoiced
 
 core_shop_resource:
@@ -34,7 +29,7 @@ core_shop_resource:
                 new: '#feb624'
                 ready: '#feb624'
                 partially_invoiced: '#f27024'
-                invoiced: '#2c5600'
+                invoiced: '#5b981a'
                 cancelled: '#f2583e'
         callbacks:
             coreshop_order_invoice:

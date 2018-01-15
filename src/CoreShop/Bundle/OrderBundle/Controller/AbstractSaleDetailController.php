@@ -535,8 +535,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     {
         return [
             'o_id' => $item->getId(),
-            'product' => $item->getProduct() instanceof PurchasableInterface ? $item->getProduct()->getId() : null,
-            'product_name' => $item->getProduct() instanceof PurchasableInterface ? $item->getProduct()->getName() : null,
+            'product_name' => $item->getName(),
             'product_image' => null, //TODO: ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage()->getPath() : null,
             'wholesale_price' => $item->getItemWholesalePrice(),
             'price_without_tax' => $item->getItemPrice(false),

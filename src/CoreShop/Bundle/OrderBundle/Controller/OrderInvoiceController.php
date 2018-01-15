@@ -13,15 +13,17 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Component\Order\InvoiceStates;
+use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -65,7 +67,7 @@ class OrderInvoiceController extends PimcoreController
                     'toInvoice' => $item['quantity'],
                     'tax' => $orderItem->getTotalTax(),
                     'total' => $orderItem->getTotal(),
-                    'name' => $orderItem->getProduct() instanceof PurchasableInterface ? $orderItem->getProduct()->getName() : '',
+                    'name' => $orderItem->getName(),
                 ];
             }
         }
@@ -92,12 +94,41 @@ class OrderInvoiceController extends PimcoreController
             $items = $this->decodeJson($items);
 
             $invoice = $this->getInvoiceFactory()->createNew();
+            $invoice->setState(InvoiceStates::STATE_NEW);
+
             $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
+
+            $workflow = $this->getStateMachineManager()->get($invoice, InvoiceStates::IDENTIFIER);
+            $workflow->apply($invoice, InvoiceTransitions::TRANSITION_CREATE);
 
             return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);
         } catch (\Exception $ex) {
             return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function updateStateAction(Request $request)
+    {
+        $invoiceId = $request->get('id');
+        $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
+        $transition = $request->get('transition');
+
+        if (!$invoice instanceof OrderInvoiceInterface) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'invalid shipment']);
+        }
+
+        //apply state machine
+        $workflow = $this->getStateMachineManager()->get($invoice, InvoiceStates::IDENTIFIER);
+        if (!$workflow->can($invoice, $transition)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+        }
+
+        $workflow->apply($invoice, $transition);
+        return $this->viewHandler->handle(['success' => true]);
     }
 
     /**
@@ -170,5 +201,13 @@ class OrderInvoiceController extends PimcoreController
     private function getOrderToInvoiceTransformer()
     {
         return $this->get('coreshop.order.transformer.order_to_invoice');
+    }
+
+    /**
+     * @return StateMachineManager
+     */
+    protected function getStateMachineManager()
+    {
+        return $this->get('coreshop.state_machine_manager');
     }
 }

@@ -24,15 +24,9 @@ use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Resource\Workflow\StateMachineApplier;
+use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,32 +39,32 @@ class OrderController extends AbstractSaleDetailController
     {
         return [
             [
-                'text' => 'coreshop_workflow_name_coreshop_order',
-                'type' => null,
+                'text'      => 'coreshop_workflow_name_coreshop_order',
+                'type'      => null,
                 'dataIndex' => 'orderState',
-                'renderAs' => 'orderState',
-                'flex' => 1
+                'renderAs'  => 'orderState',
+                'flex'      => 1
             ],
             [
-                'text' => 'coreshop_workflow_name_coreshop_order_payment',
-                'type' => null,
+                'text'      => 'coreshop_workflow_name_coreshop_order_payment',
+                'type'      => null,
                 'dataIndex' => 'orderPaymentState',
-                'renderAs' => 'orderPaymentState',
-                'flex' => 1
+                'renderAs'  => 'orderPaymentState',
+                'flex'      => 1
             ],
             [
-                'text' => 'coreshop_workflow_name_coreshop_order_shipment',
-                'type' => null,
+                'text'      => 'coreshop_workflow_name_coreshop_order_shipment',
+                'type'      => null,
                 'dataIndex' => 'orderShippingState',
-                'renderAs' => 'orderShippingState',
-                'flex' => 1
+                'renderAs'  => 'orderShippingState',
+                'flex'      => 1
             ],
             [
-                'text' => 'coreshop_workflow_name_coreshop_order_invoice',
-                'type' => null,
+                'text'      => 'coreshop_workflow_name_coreshop_order_invoice',
+                'type'      => null,
                 'dataIndex' => 'orderInvoiceState',
-                'renderAs' => 'orderInvoiceState',
-                'flex' => 1
+                'renderAs'  => 'orderInvoiceState',
+                'flex'      => 1
             ]
         ];
     }
@@ -113,7 +107,7 @@ class OrderController extends AbstractSaleDetailController
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
 
-         if (!$order instanceof OrderInterface) {
+        if (!$order instanceof OrderInterface) {
             throw new \Exception('invalid order');
         }
 
@@ -122,108 +116,6 @@ class OrderController extends AbstractSaleDetailController
         return $this->viewHandler->handle(['success' => true]);
 
     }
-
-    /**
-     * @param Request $request
-     * @return mixed
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function updatePaymentAction(Request $request)
-    {
-        $payment = $this->getPaymentRepository()->find($request->get('id'));
-        $order = $this->getSaleRepository()->find($payment->getOrderId());
-
-        if (!$payment instanceof PaymentInterface) {
-            return $this->viewHandler->handle(['success' => false]);
-        }
-
-        if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false]);
-        }
-
-        $payment->setValues($request->request->all());
-
-        $this->getEntityManager()->persist($payment);
-        $this->getEntityManager()->flush();
-
-        $this->get('coreshop.state_machine_resolver.order_payment')->resolve($order);
-
-        return $this->viewHandler->handle(['success' => true]);
-    }
-
-    /**
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getPaymentProvidersAction()
-    {
-        $providers = $this->getPaymentProviderRepository()->findAll();
-        $result = [];
-        foreach ($providers as $provider) {
-            if ($provider instanceof PaymentProviderInterface) {
-                $result[] = [
-                    'name' => $provider->getName(),
-                    'id' => $provider->getId(),
-                ];
-            }
-        }
-        return $this->viewHandler->handle(['success' => true, 'data' => $result]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function addPaymentAction(Request $request)
-    {
-        $orderId = $request->get('o_id');
-        $order = $this->getSaleRepository()->find($orderId);
-        $amount = doubleval($request->get('amount', 0));
-
-        $paymentProviderId = $request->get('paymentProvider');
-
-        if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
-        }
-
-        $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
-
-        if ($paymentProvider instanceof PaymentProviderInterface) {
-            $payedTotal = $order->getTotalPayed();
-
-            $payedTotal += $amount;
-
-            if ($payedTotal > $order->getTotal()) {
-                return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
-            } else {
-                /**
-                 * @var PaymentInterface|PimcoreModelInterface
-                 */
-                $tokenGenerator = new UniqueTokenGenerator(true);
-                $uniqueId = $tokenGenerator->generate(15);
-                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
-
-                $payment = $this->getPaymentFactory()->createNew();
-                $payment->setNumber($orderNumber);
-                $payment->setPaymentProvider($paymentProvider);
-                $payment->setCurrency($order->getCurrency());
-                $payment->setTotalAmount($order->getTotal());
-                $payment->setState(PaymentInterface::STATE_NEW);
-                $payment->setDatePayment(Carbon::now());
-                $payment->setOrderId($order->getId());
-
-                $this->getEntityManager()->persist($payment);
-                $this->getEntityManager()->flush();
-
-                $this->get('coreshop.state_machine_resolver.order_payment')->resolve($order);
-
-                return $this->viewHandler->handle(['success' => true, 'payments' => $this->getPayments($order), 'totalPayed' => $order->getTotalPayed()]);
-            }
-        } else {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Payment Provider '$paymentProvider' not found"]);
-        }
-    }
-
 
     /**
      * @param OrderInterface $order
@@ -245,14 +137,14 @@ class OrderController extends AbstractSaleDetailController
                 $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
 
                 $statesHistory[] = [
-                    'icon' => 'coreshop_icon_orderstates',
-                    'type' => $note->getType(),
-                    'date' => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
-                    'avatar' => $avatar,
-                    'user' => $user ? $user->getName() : null,
+                    'icon'        => 'coreshop_icon_orderstates',
+                    'type'        => $note->getType(),
+                    'date'        => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
+                    'avatar'      => $avatar,
+                    'user'        => $user ? $user->getName() : null,
                     'description' => $note->getDescription(),
-                    'title' => $note->getTitle(),
-                    'data' => $note->getData(),
+                    'title'       => $note->getTitle(),
+                    'data'        => $note->getData(),
                 ];
             }
         }
@@ -281,23 +173,31 @@ class OrderController extends AbstractSaleDetailController
             $noteList->setOrder('desc');*/
 
             $details = [];
-            if(is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
-                foreach($payment->getDetails() as $detailName => $detailValue) {
-                    if(empty($detailValue) && $detailValue != 0) {
+            if (is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
+                foreach ($payment->getDetails() as $detailName => $detailValue) {
+                    if (empty($detailValue) && $detailValue != 0) {
                         continue;
                     }
                     $details[] = [$detailName, $detailValue];
                 }
             }
 
+            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($payment, 'coreshop_payment', [
+                'cancel',
+                'complete',
+                'refund'
+            ], false);
+
             $return[] = [
-                'id' => $payment->getId(),
-                'datePayment' => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
-                'provider' => $payment->getPaymentProvider()->getName(),
-                'details' => $details,
+                'id'            => $payment->getId(),
+                'datePayment'   => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
+                'provider'      => $payment->getPaymentProvider()->getName(),
+                'paymentNumber' => $payment->getNumber(),
+                'details'       => $details,
                 //'transactionNotes' => $noteList->load(),
-                'amount' => $payment->getTotalAmount(),
-                'state' => $payment->getState(),
+                'amount'        => $payment->getTotalAmount(),
+                'stateInfo'     => $this->getWorkflowStateManager()->getStateInfo('coreshop_payment', $payment->getState(), false),
+                'transitions'   => $availableTransitions
             ];
         }
 
@@ -364,7 +264,23 @@ class OrderController extends AbstractSaleDetailController
         $invoiceArray = [];
 
         foreach ($invoices as $invoice) {
-            $invoiceArray[] = $this->getDataForObject($invoice);
+
+            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($invoice, 'coreshop_invoice', [
+                'complete',
+                'cancel'
+            ], false);
+
+            $data = $this->getDataForObject($invoice);
+
+            $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_invoice', $invoice->getState(), false);
+            $data['transitions'] = $availableTransitions;
+
+            // better solution?
+            foreach ($invoice->getItems() as $index => $item) {
+                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+            }
+
+            $invoiceArray[] = $data;
         }
 
         return $invoiceArray;
@@ -377,14 +293,34 @@ class OrderController extends AbstractSaleDetailController
      */
     protected function getShipments($order)
     {
-        $invoices = $this->getOrderShipmentRepository()->getDocuments($order);
-        $invoiceArray = [];
+        $shipments = $this->getOrderShipmentRepository()->getDocuments($order);
+        $shipmentArray = [];
 
-        foreach ($invoices as $invoice) {
-            $invoiceArray[] = $this->getDataForObject($invoice);
+        foreach ($shipments as $shipment) {
+            $data = $this->getDataForObject($shipment);
+            $data['carrierName'] = $shipment->getCarrier()->getName();
+
+            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($shipment, 'coreshop_shipment', [
+                'hold',
+                'release',
+                'prepare',
+                'ship',
+                'cancel',
+                'return'
+            ], false);
+
+            $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
+            $data['transitions'] = $availableTransitions;
+
+            // better solution?
+            foreach ($shipment->getItems() as $index => $item) {
+                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+            }
+
+            $shipmentArray[] = $data;
         }
 
-        return $invoiceArray;
+        return $shipmentArray;
     }
 
     protected function getSummary(SaleInterface $sale)
@@ -443,37 +379,12 @@ class OrderController extends AbstractSaleDetailController
     }
 
     /**
-     * @return RepositoryInterface
+     * @return StateMachineManager
      */
-    private function getPaymentRepository()
+    protected function getStateMachineManager()
     {
-        return $this->get('coreshop.repository.payment');
+        return $this->get('coreshop.state_machine_manager');
     }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager|object
-     */
-    private function getEntityManager()
-    {
-        return $this->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return PaymentRepositoryInterface
-     */
-    private function getPaymentProviderRepository()
-    {
-        return $this->get('coreshop.repository.payment_provider');
-    }
-
-    /**
-     * @return FactoryInterface
-     */
-    private function getPaymentFactory()
-    {
-        return $this->get('coreshop.factory.payment');
-    }
-
 
     /**
      * {@inheritdoc}
