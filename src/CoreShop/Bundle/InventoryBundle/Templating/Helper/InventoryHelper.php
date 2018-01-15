@@ -16,7 +16,7 @@ use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
-class InventoryHelper extends Helper
+class InventoryHelper extends Helper implements InventoryHelperInterface
 {
     /**
      * @var AvailabilityCheckerInterface
@@ -32,9 +32,7 @@ class InventoryHelper extends Helper
     }
 
     /**
-     * @param StockableInterface $stockable
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isStockAvailable(StockableInterface $stockable)
     {
@@ -42,10 +40,7 @@ class InventoryHelper extends Helper
     }
 
     /**
-     * @param StockableInterface $stockable
-     * @param int $quantity
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isStockSufficient(StockableInterface $stockable, $quantity)
     {
