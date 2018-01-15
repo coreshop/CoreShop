@@ -8,18 +8,18 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Product\Calculator;
+namespace CoreShop\Component\Product\Rule\Fetcher;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Model\PriceRuleInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface ProductPriceRuleFetcherInterface
+interface ValidRulesFetcherInterface
 {
     /**
-     * @param ProductInterface $subject
-     * @return PriceRuleInterface[]
+     * @param ProductInterface $product
+     * @return RuleInterface[]
      */
-    public function getPriceRules(ProductInterface $subject);
+    public function getValidRules(ProductInterface $product);
 }

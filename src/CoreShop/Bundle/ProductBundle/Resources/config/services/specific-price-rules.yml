@@ -81,14 +81,17 @@ services:
       - '@coreshop.product_specific_price_rule.conditions.processor'
 
   # Price Calculators
-  coreshop.product.price_calculator.product_specific_price_rules_fetcher:
-    class: CoreShop\Component\Product\Calculator\ProductSpecificPriceRuleFetcher
+  coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher:
+    class: CoreShop\Component\Product\Rule\Fetcher\ValidProductSpecificPriceRuleFetcher
+    arguments:
+        - '@coreshop.product_specific_price_rule.processor'
+    tags:
+      - { name: 'coreshop.product.rules.fetcher', type: 'product-specific-rules' }
 
   coreshop.product.price_calculator.product_specific_price_rules:
     class: CoreShop\Component\Product\Calculator\PriceRuleCalculator
     arguments:
-      - '@coreshop.product.price_calculator.product_specific_price_rules_fetcher'
-      - '@coreshop.product_specific_price_rule.processor'
+      - '@coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher'
       - '@coreshop.registry.product_specific_price_rule.actions'
     tags:
       - { name: coreshop.product.price_calculator, type: product_specific_price_rules, priority: 30 }

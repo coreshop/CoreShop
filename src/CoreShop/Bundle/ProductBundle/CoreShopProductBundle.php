@@ -17,6 +17,7 @@ use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleA
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleConditionPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleActionPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleConditionPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductValidPriceRuleFetcherPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -42,6 +43,7 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductSpecificPriceRuleConditionPass());
         $container->addCompilerPass(new ProductSpecificPriceRuleActionPass());
         $container->addCompilerPass(new ProductPriceCalculatorsPass());
+        $container->addCompilerPass(new ProductValidPriceRuleFetcherPass());
     }
 
     /**

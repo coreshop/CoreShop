@@ -14,6 +14,7 @@ namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
+use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -22,14 +23,9 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 final class PriceRuleCalculator implements ProductPriceCalculatorInterface
 {
     /**
-     * @var ProductPriceRuleFetcherInterface
+     * @var ValidRulesFetcherInterface
      */
-    protected $productPriceRuleFetcher;
-
-    /**
-     * @var RuleValidationProcessorInterface
-     */
-    protected $ruleValidationProcessor;
+    protected $validRulesFetcher;
 
     /**
      * @var ServiceRegistryInterface
@@ -37,18 +33,15 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
     protected $actionServiceRegistry;
 
     /**
-     * @param ProductPriceRuleFetcherInterface $productPriceRuleFetcher
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param ValidRulesFetcherInterface $validRulesFetcher
      * @param ServiceRegistryInterface $actionServiceRegistry
      */
     public function __construct(
-        ProductPriceRuleFetcherInterface $productPriceRuleFetcher,
-        RuleValidationProcessorInterface $ruleValidationProcessor,
+        ValidRulesFetcherInterface $validRulesFetcher,
         ServiceRegistryInterface $actionServiceRegistry
     )
     {
-        $this->productPriceRuleFetcher = $productPriceRuleFetcher;
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
+        $this->validRulesFetcher = $validRulesFetcher;
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
@@ -62,18 +55,10 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
         /**
          * @var RuleInterface[]
          */
-        $rules = $this->productPriceRuleFetcher->getPriceRules($subject);
+        $rules = $this->validRulesFetcher->getValidRules($subject);
 
         if (is_array($rules)) {
             foreach ($rules as $rule) {
-                if (!$rule->getActive()) {
-                    continue;
-                }
-
-                if (!$this->ruleValidationProcessor->isValid($subject, $rule)) {
-                    continue;
-                }
-
                 /**
                  * @var ActionInterface
                  */
@@ -106,7 +91,7 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
         /**
          * @var RuleInterface[]
          */
-        $rules = $this->productPriceRuleFetcher->getPriceRules($subject);
+        $rules = $this->validRulesFetcher->getValidRules($subject);
 
         if (!is_array($rules)) {
             return $discount;
@@ -114,10 +99,6 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
 
 
         foreach ($rules as $rule) {
-            if (!$this->ruleValidationProcessor->isValid($subject, $rule)) {
-                continue;
-            }
-
             foreach ($rule->getActions() as $action) {
                 $processor = $this->actionServiceRegistry->get($action->getType());
 

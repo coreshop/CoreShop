@@ -1,5 +1,6 @@
 imports:
   - { resource: "services/form.yml" }
+  - { resource: "services/rules.yml" }
   - { resource: "services/price-rules.yml" }
   - { resource: "services/specific-price-rules.yml" }
 
