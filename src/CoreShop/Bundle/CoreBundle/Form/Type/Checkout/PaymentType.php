@@ -130,7 +130,7 @@ final class PaymentType extends AbstractResourceType
     protected function getRegistryIdentifier(FormInterface $form, $data = null)
     {
         if ($data instanceof CartInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
-            return $data->getPaymentProvider()->getGatewayConfig()->getFacotryName();
+            return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
         }
 
         return 'offline';
