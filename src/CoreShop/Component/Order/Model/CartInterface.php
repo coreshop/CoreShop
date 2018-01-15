@@ -68,18 +68,6 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
     public function hasPriceRule($priceRule);
 
     /**
-     * @return PaymentData
-     */
-    public function getPaymentData();
-
-    /**
-     * @param $paymentData
-     *
-     * @return mixed
-     */
-    public function setPaymentData($paymentData);
-
-    /**
      * @return PaymentProviderInterface
      */
     public function getPaymentProvider();
@@ -88,16 +76,5 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
      * @param PaymentProviderInterface $paymentProvider
      * @return PaymentProviderInterface
      */
-    public function setPaymentProvider(PaymentProviderInterface $paymentProvider);
-
-    /**
-     * @return PaymentSettings
-     */
-    public function getPaymentProviderSettings();
-
-    /**
-     * @param PaymentSettings $paymentSettings
-     * @return mixed
-     */
-    public function setPaymentProviderSettings(PaymentSettings $paymentSettings);
+    public function setPaymentProvider($paymentProvider);
 }

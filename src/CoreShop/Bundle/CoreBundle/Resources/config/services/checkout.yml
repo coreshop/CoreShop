@@ -73,6 +73,8 @@ services:
     arguments:
       - '%coreshop.model.cart.class%'
       - '%coreshop.form.type.checkout.payment.validation_groups%'
+      - '@coreshop.form_registry.payment.settings'
+      - '@coreshop.repository.payment_provider'
     tags:
       - {name: form.type}
 

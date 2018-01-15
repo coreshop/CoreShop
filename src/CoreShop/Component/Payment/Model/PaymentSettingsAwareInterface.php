@@ -10,27 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\PaymentBundle\Model;
+namespace CoreShop\Component\Payment\Model;
 
-interface PaymentDataInterface
+use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
+
+interface PaymentSettingsAwareInterface
 {
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function getPaymentProvider();
+    public function getPaymentSettings();
 
     /**
-     * {@inheritdoc}
+     * @param $paymentSettings
+     * @return mixed
      */
-    public function setPaymentProvider($name);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSettings();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSettings($settings);
+    public function setPaymentSettings($paymentSettings);
 }

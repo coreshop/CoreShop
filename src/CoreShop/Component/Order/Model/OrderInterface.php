@@ -126,18 +126,6 @@ interface OrderInterface extends SaleInterface
     public function getIsPayed();
 
     /**
-     * @return PaymentData
-     */
-    public function getPaymentData();
-
-    /**
-     * @param $paymentData
-     *
-     * @return mixed
-     */
-    public function setPaymentData($paymentData);
-
-    /**
      * @return PaymentProviderInterface
      */
     public function getPaymentProvider();
@@ -146,16 +134,5 @@ interface OrderInterface extends SaleInterface
      * @param PaymentProviderInterface $paymentProvider
      * @return PaymentProviderInterface
      */
-    public function setPaymentProvider(PaymentProviderInterface $paymentProvider);
-
-    /**
-     * @return PaymentSettings
-     */
-    public function getPaymentProviderSettings();
-
-    /**
-     * @param PaymentSettings $paymentSettings
-     * @return mixed
-     */
-    public function setPaymentProviderSettings(PaymentSettings $paymentSettings);
+    public function setPaymentProvider($paymentProvider);
 }

@@ -14,8 +14,10 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use Pimcore\Model\DataObject\CoreShopOrder\PaymentData;
 
 class Order extends Sale implements OrderInterface
 {
@@ -266,5 +268,21 @@ class Order extends Sale implements OrderInterface
     public function getInvoices()
     {
         return $this->getOrderInvoiceRepository()->getDocuments($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentProvider()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentProvider($paymentProvider)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }

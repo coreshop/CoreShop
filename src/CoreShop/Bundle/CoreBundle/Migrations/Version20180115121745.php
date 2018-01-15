@@ -21,14 +21,14 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $payment = [
-            'fieldtype'       => 'objectbricks',
-            'phpdocType'      => '\\Pimcore\\Model\\DataObject\\Objectbrick',
+            'fieldtype'       => 'coreShopSerializedData',
+            'phpdocType'      => 'array',
             'allowedTypes'    =>
                 [
                 ],
             'maxItems'        => 1,
-            'name'            => 'paymentData',
-            'title'           => 'Payment Data',
+            'name'            => 'paymentSettings',
+            'title'           => 'Payment Settings',
             'tooltip'         => '',
             'mandatory'       => false,
             'noteditable'     => true,
@@ -47,22 +47,17 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
 
         $cart = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');
         $classUpdater = new ClassUpdate($cart);
-        if (!$classUpdater->hasField('paymentData')) {
-            $classUpdater->removeField('paymentProvider');
-            $classUpdater->insertFieldAfter('carrier', $payment);
+        if (!$classUpdater->hasField('paymentSettings')) {
+            $classUpdater->insertFieldAfter('paymentProvider', $payment);
             $classUpdater->save();
         }
 
         $order = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
         $classUpdater = new ClassUpdate($order);
-        if (!$classUpdater->hasField('paymentData')) {
-            $classUpdater->removeField('paymentProvider');
-            $classUpdater->insertFieldAfter('carrier', $payment);
+        if (!$classUpdater->hasField('paymentSettings')) {
+            $classUpdater->insertFieldAfter('paymentProvider', $payment);
             $classUpdater->save();
         }
-
-        $file = $this->container->get('kernel')->locateResource('@CoreShopPaymentBundle/Resources/install/pimcore/objectbricks/CoreShopPaymentData.json');
-        $this->createBrick($file, 'CoreShopPaymentData');
     }
 
     /**

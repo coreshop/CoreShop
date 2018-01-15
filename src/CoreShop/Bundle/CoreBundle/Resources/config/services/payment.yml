@@ -1,0 +1,3 @@
+services:
+    coreshop.form_registry.payment.settings:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

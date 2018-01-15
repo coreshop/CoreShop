@@ -5,7 +5,6 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Bundle\PaymentBundle\Model\PaymentDataInterface;
 use CoreShop\Bundle\PaymentBundle\Model\PaymentSettings;
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
@@ -97,82 +96,6 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     public function setStore($store)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentData()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentData($paymentData)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentProvider()
-    {
-        $paymentData = $this->getPaymentData()->getCoreShopPaymentData();
-        if ($paymentData instanceof PaymentDataInterface) {
-            return $paymentData->getPaymentProvider();
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentProvider(PaymentProviderInterface $paymentProvider)
-    {
-        $paymentData = $this->getPaymentData()->getCoreShopPaymentData();
-        if (!$paymentData instanceof PaymentDataInterface) {
-            $paymentData = new CoreShopPaymentData($this);
-        }
-
-        $paymentData->setPaymentProvider($paymentProvider);
-        $this->getPaymentData()->setCoreShopPaymentData($paymentData);
-
-        return $paymentData;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentProviderSettings()
-    {
-        $paymentData = $this->getPaymentData()->getCoreShopPaymentData();
-        $settings = [];
-        if ($paymentData instanceof PaymentDataInterface) {
-            $settings = $paymentData->getSettings();
-        }
-
-        $data = new PaymentSettings($settings);
-        return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentProviderSettings(PaymentSettings $paymentSettings)
-    {
-        $paymentData = $this->getPaymentData()->getCoreShopPaymentData();
-        if (!$paymentData instanceof PaymentDataInterface) {
-            $paymentData = new CoreShopPaymentData($this);
-        }
-
-        $paymentData->setSettings($paymentSettings->getValuesForDb());
-        $this->getPaymentData()->setCoreShopPaymentData($paymentData);
-
-        return $paymentData;
     }
 
     /**
