@@ -20,13 +20,6 @@
             {% endif %}
         </div>
 
-        {#
-            {{ form_row(form.paymentProviderSettings) }}
-
-            <input type="text" name="paymentProviderSettings[type]"  value="my_value_1"/>
-            <input type="text" name="paymentProviderSettings[super_type]" class="form-control" value="my_value_2"/>
-        #}
-
         {% for name, paymentSettingConfigurationPrototype in form.vars.prototypes %}
             <div id="{{ form.paymentProvider.vars.id }}_{{ name }}" data-container=".configuration"
                  data-prototype="{{ form_widget(paymentSettingConfigurationPrototype)|e }}">
