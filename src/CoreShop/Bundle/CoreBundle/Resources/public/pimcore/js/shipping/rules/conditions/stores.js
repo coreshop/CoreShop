@@ -18,7 +18,7 @@ coreshop.shippingrule.conditions.stores = Class.create(coreshop.rules.conditions
         var me = this;
         var store = pimcore.globalmanager.get('coreshop_stores');
 
-        var shops = {
+        var storesSelect = {
             fieldLabel: t('coreshop_condition_stores'),
             typeAhead: true,
             listWidth: 100,
@@ -37,21 +37,21 @@ coreshop.shippingrule.conditions.stores = Class.create(coreshop.rules.conditions
                     if (!store.isLoaded() && !store.isLoading())
                         store.load();
 
-                    if (me.data && me.data.shops)
-                        this.setValue(me.data.shops);
+                    if (me.data && me.data.stores)
+                        this.setValue(me.data.stores);
                 }
             }
         };
 
-        if (this.data && this.data.shops) {
-            shops.value = this.data.shops;
+        if (this.data && this.data.stores) {
+            storesSelect.value = this.data.stores;
         }
 
-        shops = new Ext.ux.form.MultiSelect(shops);
+        storesSelect = new Ext.ux.form.MultiSelect(storesSelect);
 
         this.form = new Ext.form.Panel({
             items: [
-                shops
+                storesSelect
             ]
         });
 
