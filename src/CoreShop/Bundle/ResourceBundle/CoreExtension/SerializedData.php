@@ -73,7 +73,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        return $this->getDataFromResource($data, $object, $params);
+        return $data;
     }
 
     /**
@@ -89,7 +89,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromGridEditor($data, $object = null, $params = [])
     {
-        return $this->getDataFromResource($data, $object, $params);
+        return $data;
     }
 
     /**
