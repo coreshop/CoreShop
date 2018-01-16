@@ -13,10 +13,8 @@
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
-use CoreShop\Bundle\PaymentBundle\Model\PaymentSettings;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use Pimcore\Model\DataObject\CoreShopOrder\PaymentData;
 
 interface OrderInterface extends SaleInterface
 {

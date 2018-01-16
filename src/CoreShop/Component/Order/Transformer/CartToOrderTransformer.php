@@ -16,7 +16,6 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\TokenAssigner\OrderTokenAssignerInterface;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Webmozart\Assert\Assert;

@@ -12,11 +12,9 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Bundle\PaymentBundle\Model\PaymentSettings;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use Pimcore\Model\DataObject\CoreShopCart\PaymentData;
 
 interface CartInterface extends ProposalInterface, PimcoreModelInterface, StorageListInterface
 {
