@@ -8,32 +8,11 @@ $(document).ready(function () {
 
     shop.init = function () {
         shop.initChangeAddress();
-        shop.initAjaxSteps();
-
 
         $('#paymentProvider').handlePrototypes({
             'prototypePrefix': 'paymentProvider',
             'containerSelector': '.paymentSettings',
             'selectorAttr': 'data-factory'
-        });
-    };
-
-    shop.initAjaxSteps = function () {
-
-        var $checkoutStep = $('.checkout-step'),
-            validStepChanger = ['#paymentProvider'];
-
-        if($checkoutStep.length === 0) {
-            return;
-        }
-
-        var $form = $checkoutStep.find('form');
-        if($form.length === 0) {
-            return;
-        }
-
-        $checkoutStep.on('change', validStepChanger.join(','), function(ev) {
-            //implement change here
         });
     };
 
