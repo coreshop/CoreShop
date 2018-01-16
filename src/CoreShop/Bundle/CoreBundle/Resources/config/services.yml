@@ -22,6 +22,7 @@ imports:
   - { resource: "services/handler.yml" }
   - { resource: "services/commands.yml" }
   - { resource: "services/locale.yml" }
+  - { resource: "services/payment.yml" }
 
 services:
   coreshop.core.key_transformer:
@@ -58,3 +59,6 @@ services:
       - '@coreshop.repository.configuration'
       - '@coreshop.factory.configuration'
       - '@coreshop.context.store'
+
+
+

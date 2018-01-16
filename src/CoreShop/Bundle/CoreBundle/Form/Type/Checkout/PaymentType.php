@@ -8,19 +8,60 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Component\Core\Model\PaymentProviderInterface;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class PaymentType extends AbstractResourceType
 {
+    /**
+     * @var FormTypeRegistryInterface
+     */
+    private $formTypeRegistry;
+
+    /**
+     * @var PaymentProviderRepositoryInterface
+     */
+    private $paymentProviderRepository;
+
+    /**
+     * @var array
+     */
+    private $gatewayFactories;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(
+        $dataClass,
+        array $validationGroups = [],
+        FormTypeRegistryInterface $formTypeRegistry,
+        PaymentProviderRepositoryInterface $paymentProviderRepository,
+        array $gatewayFactories
+    )
+    {
+        parent::__construct($dataClass, $validationGroups);
+
+        $this->formTypeRegistry = $formTypeRegistry;
+        $this->paymentProviderRepository = $paymentProviderRepository;
+        $this->gatewayFactories = $gatewayFactories;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,9 +70,76 @@ final class PaymentType extends AbstractResourceType
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
-                'label' => 'coreshop.ui.payment_provider',
-                'store' => $options['store'],
-            ]);
+                'label'       => 'coreshop.ui.payment_provider',
+                'store'       => $options['store'],
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+                $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
+                if (null === $type) {
+                    return;
+                }
+
+                if ($this->formTypeRegistry->has($type, 'default')) {
+                    $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
+                }
+            })
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+                $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
+                if (null === $type) {
+                    return;
+                }
+
+                $event->getForm()->get('paymentProvider')->setData($type);
+            })
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
+                $data = $event->getData();
+
+                if (!isset($data['paymentProvider'])) {
+                    return;
+                }
+
+                $provider = $this->paymentProviderRepository->find($data['paymentProvider']);
+
+                if (!$provider instanceof PaymentProviderInterface) {
+                    return;
+                }
+
+                $factory = $provider->getGatewayConfig()->getFactoryName();
+
+                if ($this->formTypeRegistry->has($factory, 'default')) {
+                    $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($factory, 'default'));
+                }
+            })
+        ;
+
+        $prototypes = [];
+        foreach (array_keys($this->gatewayFactories) as $type) {
+            if (!$this->formTypeRegistry->has($type, 'default')) {
+                continue;
+            }
+
+            $formBuilder = $builder->create(
+                'paymentSettings',
+                $this->formTypeRegistry->get($type, 'default')
+            );
+
+            $prototypes[$type] = $formBuilder->getForm();
+        }
+
+        $builder->setAttribute('prototypes', $prototypes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['prototypes'] = [];
+
+        foreach ($form->getConfig()->getAttribute('prototypes') as $type => $prototype) {
+            /* @var FormInterface $prototype */
+            $view->vars['prototypes'][$type] = $prototype->createView($view);
+        }
     }
 
     /**
@@ -39,9 +147,33 @@ final class PaymentType extends AbstractResourceType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
-
         $resolver->setDefault('store', null);
+    }
+
+    /**
+     * @param FormInterface $form
+     * @param string $configurationType
+     */
+    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    {
+        $form->add('paymentSettings', $configurationType, [
+            'label' => false,
+        ]);
+    }
+
+    /**
+     * @param FormInterface $form
+     * @param mixed $data
+     *
+     * @return string|null
+     */
+    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    {
+        if ($data instanceof CartInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
+            return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
+        }
+
+        return 'offline';
     }
 
     /**

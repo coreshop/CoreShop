@@ -16,6 +16,7 @@ use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentProviderRepository;
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentRepository;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType;
 use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType;
+use CoreShop\Bundle\PaymentBundle\Model\PaymentDataInterface;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Payment\Model\Payment;

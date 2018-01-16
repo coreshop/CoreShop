@@ -122,7 +122,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     }
 
     /**
-     * @param Request $request ,
+     * @param Request $request
      * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface

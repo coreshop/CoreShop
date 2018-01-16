@@ -128,4 +128,20 @@ class Cart extends BaseCart implements CartInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentSettings()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentSettings($paymentSettings)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

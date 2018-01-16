@@ -8,6 +8,12 @@ $(document).ready(function () {
 
     shop.init = function () {
         shop.initChangeAddress();
+
+        $('#paymentProvider').handlePrototypes({
+            'prototypePrefix': 'paymentProvider',
+            'containerSelector': '.paymentSettings',
+            'selectorAttr': 'data-factory'
+        });
     };
 
     shop.initChangeAddress = function () {

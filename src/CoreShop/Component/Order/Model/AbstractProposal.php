@@ -2,10 +2,13 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Bundle\PaymentBundle\Model\PaymentDataInterface;
+use CoreShop\Bundle\PaymentBundle\Model\PaymentSettings;
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
+use Pimcore\Model\DataObject\Objectbrick\Data\CoreShopPaymentData;
 use Webmozart\Assert\Assert;
 
 abstract class AbstractProposal extends AbstractPimcoreModel implements ProposalInterface
@@ -91,22 +94,6 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
      * {@inheritdoc}
      */
     public function setStore($store)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-      /**
-     * {@inheritdoc}
-     */
-    public function getPaymentProvider()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentProvider($store)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

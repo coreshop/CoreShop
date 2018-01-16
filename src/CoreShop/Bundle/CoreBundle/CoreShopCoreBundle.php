@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPaymentSettingsFormsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
@@ -46,6 +47,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $container->addCompilerPass(new RegisterProductHelperPass());
         $container->addCompilerPass(new RegisterReportsPass());
         $container->addCompilerPass(new RegisterPortletsPass());
+        $container->addCompilerPass(new RegisterPaymentSettingsFormsPass());
     }
 
     /**
