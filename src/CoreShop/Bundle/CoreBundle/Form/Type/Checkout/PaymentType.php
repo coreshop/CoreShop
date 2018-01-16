@@ -83,14 +83,6 @@ final class PaymentType extends AbstractResourceType
                     $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
                 }
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
-                if (null === $type) {
-                    return;
-                }
-
-                $event->getForm()->get('paymentProvider')->setData($type);
-            })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
                 $data = $event->getData();
 
