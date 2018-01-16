@@ -59,6 +59,10 @@ final class PaymentProviderChoiceType extends AbstractType
                 'choice_label' => function ($paymentProvider) {
                     return $paymentProvider->getName();
                 },
+                'choice_attr' => function($val, $key, $index) {
+                    // adds a class like attending_yes, attending_no, etc
+                    return ['data-factory' => $val->getGatewayConfig()->getFactoryName()];
+                },
                 'choice_translation_domain' => false,
                 'active' => true,
             ])

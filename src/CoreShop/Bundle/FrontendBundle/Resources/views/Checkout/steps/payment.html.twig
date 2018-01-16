@@ -12,12 +12,26 @@
 
         {{ form_row(form.paymentProvider) }}
 
+        <div class="paymentSettings">
+            {% if form.paymentSettings is defined %}
+                {% for field in form.paymentSettings %}
+                    {{ form_row(field) }}
+                {% endfor %}
+            {% endif %}
+        </div>
+
         {#
             {{ form_row(form.paymentProviderSettings) }}
 
             <input type="text" name="paymentProviderSettings[type]"  value="my_value_1"/>
             <input type="text" name="paymentProviderSettings[super_type]" class="form-control" value="my_value_2"/>
         #}
+
+        {% for name, paymentSettingConfigurationPrototype in form.vars.prototypes %}
+            <div id="{{ form.paymentProvider.vars.id }}_{{ name }}" data-container=".configuration"
+                 data-prototype="{{ form_widget(paymentSettingConfigurationPrototype)|e }}">
+            </div>
+        {% endfor %}
 
         <div class="row">
             {% set previousStep = coreshop_checkout_steps_get_previous() %}

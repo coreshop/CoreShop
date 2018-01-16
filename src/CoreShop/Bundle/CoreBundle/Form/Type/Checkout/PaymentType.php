@@ -22,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -36,17 +37,29 @@ final class PaymentType extends AbstractResourceType
     /**
      * @var PaymentProviderRepositoryInterface
      */
-    private $paymentProviderRepostiory;
+    private $paymentProviderRepository;
+
+    /**
+     * @var array
+     */
+    private $gatewayFactories;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($dataClass, array $validationGroups = [], FormTypeRegistryInterface $formTypeRegistry, PaymentProviderRepositoryInterface $paymentProviderRepostiory)
+    public function __construct(
+        $dataClass,
+        array $validationGroups = [],
+        FormTypeRegistryInterface $formTypeRegistry,
+        PaymentProviderRepositoryInterface $paymentProviderRepository,
+        array $gatewayFactories
+    )
     {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
-        $this->paymentProviderRepostiory = $paymentProviderRepostiory;
+        $this->paymentProviderRepository = $paymentProviderRepository;
+        $this->gatewayFactories = $gatewayFactories;
     }
 
     /**
@@ -85,7 +98,7 @@ final class PaymentType extends AbstractResourceType
                     return;
                 }
 
-                $provider = $this->paymentProviderRepostiory->find($data['paymentProvider']);
+                $provider = $this->paymentProviderRepository->find($data['paymentProvider']);
 
                 if (!$provider instanceof PaymentProviderInterface) {
                     return;
@@ -98,6 +111,35 @@ final class PaymentType extends AbstractResourceType
                 }
             })
         ;
+
+        $prototypes = [];
+        foreach (array_keys($this->gatewayFactories) as $type) {
+            if (!$this->formTypeRegistry->has($type, 'default')) {
+                continue;
+            }
+
+            $formBuilder = $builder->create(
+                'paymentSettings',
+                $this->formTypeRegistry->get($type, 'default')
+            );
+
+            $prototypes[$type] = $formBuilder->getForm();
+        }
+
+        $builder->setAttribute('prototypes', $prototypes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['prototypes'] = [];
+
+        foreach ($form->getConfig()->getAttribute('prototypes') as $type => $prototype) {
+            /* @var FormInterface $prototype */
+            $view->vars['prototypes'][$type] = $prototype->createView($view);
+        }
     }
 
     /**
@@ -105,8 +147,6 @@ final class PaymentType extends AbstractResourceType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
-
         $resolver->setDefault('store', null);
     }
 
