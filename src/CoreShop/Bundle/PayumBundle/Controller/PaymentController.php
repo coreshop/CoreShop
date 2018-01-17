@@ -18,6 +18,7 @@ use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
@@ -119,6 +120,10 @@ class PaymentController extends Controller
         $payment->setDatePayment(Carbon::now());
         $payment->setOrderId($order->getId());
         $payment->setCurrency($this->currencyContext->getCurrency());
+
+        if ($order instanceof PaymentSettingsAwareInterface) {
+            $payment->setDetails($order->getPaymentSettings());
+        }
 
         $description = sprintf(
             'Payment contains %s item(s) for a total of %s.',
