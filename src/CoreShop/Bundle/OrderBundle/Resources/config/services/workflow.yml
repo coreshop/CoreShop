@@ -110,21 +110,6 @@ services:
         tags:
           - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 
-
-    #coreshop.workflow.order_document.invoice.creation_listener:
-    #    class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
-    #    arguments:
-    #        - '@coreshop.state_machine_resolver.order_invoice'
-    #    tags:
-    #        - { name: kernel.event_listener, event: coreshop.invoice.post_transform, method: onOrderDocumentCreated }
-
-    #coreshop.workflow.order_document.shipment.creation_listener:
-    #    class: CoreShop\Bundle\OrderBundle\EventListener\OrderDocumentCreationListener
-    #    arguments:
-    #        - '@coreshop.state_machine_resolver.order_shipment'
-    #    tags:
-    #        - { name: kernel.event_listener, event: coreshop.shipment.post_transform, method: onOrderDocumentCreated }
-
     coreshop.workflow.order_id_wrapper_resolver:
         class: CoreShop\Bundle\OrderBundle\StateResolver\OrderIdPaymentStateResolver
         arguments:
