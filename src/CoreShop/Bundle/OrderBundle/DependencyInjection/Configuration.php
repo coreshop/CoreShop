@@ -428,6 +428,12 @@ final class Configuration implements ConfigurationInterface
                         ->cannotBeOverwritten()
                         ->defaultValue(['cart_price_rule', 'order_list', 'order_detail', 'order_create', 'quote_list', 'quote_detail', 'quote_create'])
                     ->end()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('admin_translations')->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/admin-translations.yml'])->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();

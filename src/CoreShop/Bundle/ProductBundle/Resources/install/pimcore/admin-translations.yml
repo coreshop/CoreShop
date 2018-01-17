@@ -1,0 +1,15 @@
+translations:
+    CoreShopCategory:
+        languages:
+            en: 'Category'
+            de: 'Kategorie'
+
+    CoreShopManufacturer:
+        languages:
+            en: 'Manufacturer'
+            de: 'Hersteller'
+
+    CoreShopProduct:
+        languages:
+            en: 'Product'
+            de: 'Produkt'

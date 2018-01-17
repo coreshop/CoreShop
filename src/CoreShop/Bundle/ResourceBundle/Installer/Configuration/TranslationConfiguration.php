@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\ResourceBundle\Installer\Configuration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-final class SharedTranslationConfiguration implements ConfigurationInterface
+final class TranslationConfiguration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}

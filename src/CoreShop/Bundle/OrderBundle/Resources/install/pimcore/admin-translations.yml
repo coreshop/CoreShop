@@ -1,0 +1,50 @@
+translations:
+    CoreShopOrder:
+        languages:
+            en: 'Order'
+            de: 'Bestellung'
+
+    CoreShopOrderItem:
+        languages:
+            en: 'Order Item'
+            de: 'Bestellung Element'
+
+    CoreShopCart:
+        languages:
+            en: 'Cart'
+            de: 'Warenkorb'
+
+    CoreShopCartItem:
+        languages:
+            en: 'Cart Item'
+            de: 'Warenkorb Element'
+
+    CoreShopOrderInvoice:
+        languages:
+            en: 'Invoice'
+            de: 'Rechnung'
+
+    CoreShopOrderInvoiceItem:
+        languages:
+            en: 'Invoice Item'
+            de: 'Rechnung Element'
+
+    CoreShopOrderShipment:
+        languages:
+            en: 'Shipment'
+            de: 'Versendung'
+
+    CoreShopOrderShipmentItem:
+        languages:
+            en: 'Shipment Item'
+            de: 'Versendung Item'
+
+    CoreShopQuote:
+        languages:
+            en: 'Quote'
+            de: 'Angebot'
+
+    CoreShopQuoteItem:
+        languages:
+            en: 'Quote Item'
+            de: 'Angebot Element'

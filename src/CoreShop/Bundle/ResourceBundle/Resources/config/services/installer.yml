@@ -52,8 +52,17 @@ services:
         class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller
         arguments:
             - '@kernel'
+            - 'Pimcore\Model\Translation\Website'
         tags:
            - { name: 'coreshop.resource.installer', type: 'translations', priority: 450}
+
+    coreshop.resource.installer.admin_translations:
+        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller
+        arguments:
+            - '@kernel'
+            - 'Pimcore\Model\Translation\Admin'
+        tags:
+           - { name: 'coreshop.resource.installer', type: 'admin_translations', priority: 500}
 
     coreshop.resource.installer:
         class: CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller

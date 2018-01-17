@@ -12,13 +12,13 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
-final class PimcoreSharedTranslationsInstaller extends AbstractTranslationInstaller
+final class PimcoreAdminTranslationsInstaller extends AbstractTranslationInstaller
 {
     /**
      * {@inheritdoc}
      */
     protected function getIdentifier($applicationName = null)
     {
-        return $applicationName ? sprintf('%s.application.pimcore.admin.install.translations', $applicationName) : 'resources.admin.install.translations';
+        return $applicationName ? sprintf('%s.application.pimcore.admin.install.admin_translations', $applicationName) : 'resources.admin.install.admin_translations';
     }
 }

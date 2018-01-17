@@ -1,0 +1,10 @@
+translations:
+    CoreShopCustomer:
+        languages:
+            en: 'Customer'
+            de: 'Kunde'
+
+    CoreShopCustomerGroup:
+        languages:
+            en: 'Customer Group'
+            de: 'Kundengruppe'

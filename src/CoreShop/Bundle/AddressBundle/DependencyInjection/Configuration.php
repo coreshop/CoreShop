@@ -226,6 +226,12 @@ final class Configuration implements ConfigurationInterface
                         ->cannotBeOverwritten()
                         ->defaultValue(['country', 'state', 'zone'])
                     ->end()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('admin_translations')->defaultValue(['@CoreShopAddressBundle/Resources/install/pimcore/admin-translations.yml'])->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();

@@ -231,6 +231,12 @@ final class Configuration implements ConfigurationInterface
                         ->cannotBeOverwritten()
                         ->defaultValue(['product_price_rule'])
                     ->end()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('admin_translations')->defaultValue(['@CoreShopProductBundle/Resources/install/pimcore/admin-translations.yml'])->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();

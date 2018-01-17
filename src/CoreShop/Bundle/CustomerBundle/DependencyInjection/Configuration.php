@@ -139,6 +139,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule')->defaultValue('/bundles/coreshopcustomer/pimcore/css/customer.css')->end()
                         ->end()
                     ->end()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('admin_translations')->defaultValue(['@CoreShopCustomerBundle/Resources/install/pimcore/admin-translations.yml'])->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();
