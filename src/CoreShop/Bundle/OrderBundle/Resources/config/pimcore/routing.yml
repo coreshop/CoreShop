@@ -45,8 +45,8 @@ coreshop_order_get_states:
   defaults: { _controller: 'coreshop.pimcore_controller.order:getStatesAction'}
 
 coreshop_order_cancel_order:
-  path: /%coreshop.admin.route.base%/order/cancel-order
-  defaults: { _controller: 'coreshop.pimcore_controller.order:cancelOrderAction'}
+  path: /%coreshop.admin.route.base%/order/update-order-state
+  defaults: { _controller: 'coreshop.pimcore_controller.order:updateOrderStateAction'}
 
 coreshop_order_get_orders:
   path: /%coreshop.admin.route.base%/order/list

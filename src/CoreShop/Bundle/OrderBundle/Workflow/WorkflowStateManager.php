@@ -12,14 +12,21 @@
 
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
+use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Pimcore\Model\Element\Note;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class WorkflowStateManager implements WorkflowStateManagerInterface
 {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
     /**
      * @var StateMachineManager
      */
@@ -41,17 +48,20 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     private $stateColors;
 
     /**
-     * @param StateMachineManager $stateMachineManager
-     * @param TranslatorInterface $translator
-     * @param string              $noteIdentifier
-     * @param array               $stateColors
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param StateMachineManager      $stateMachineManager
+     * @param TranslatorInterface      $translator
+     * @param string                   $noteIdentifier
+     * @param array                    $stateColors
      */
     public function __construct(
+        EventDispatcherInterface $eventDispatcher,
         StateMachineManager $stateMachineManager,
         TranslatorInterface $translator,
         $noteIdentifier,
         $stateColors
     ) {
+        $this->eventDispatcher = $eventDispatcher;
         $this->stateMachineManager = $stateMachineManager;
         $this->noteIdentifier = $noteIdentifier;
         $this->translator = $translator;
@@ -109,9 +119,12 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      */
     public function fulfillTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)
     {
+        $event = new WorkflowTransitionEvent($transitions, $workflowName);
+        $this->eventDispatcher->dispatch('coreshop.workflow.valid_transitions', $event);
+
         $valid = [];
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
-        foreach ($transitions as $transition) {
+        foreach ($event->getAllowedTransitions() as $transition) {
             if ($workflow->can($subject, $transition)) {
                 $valid[] = $this->getTransitionInfo($workflowName, $transition, $forFrontend);
             }
