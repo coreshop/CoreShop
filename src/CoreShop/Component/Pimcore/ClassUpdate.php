@@ -14,7 +14,7 @@ namespace CoreShop\Component\Pimcore;
 
 use Pimcore\Model\DataObject;
 
-class ClassUpdate
+class ClassUpdate implements ClassUpdateInterface
 {
     /**
      * @var string
@@ -54,9 +54,7 @@ class ClassUpdate
     }
 
     /**
-     * Save Field Definition
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function save()
     {
@@ -64,10 +62,7 @@ class ClassUpdate
     }
 
     /**
-     * Check if Class has field
-     *
-     * @param $fieldName
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasField($fieldName)
     {
@@ -75,12 +70,7 @@ class ClassUpdate
     }
 
     /**
-     * Insert Field before another field
-     *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
+     * {@inheritdoc}
      */
     public function insertFieldBefore($fieldName, $jsonFieldDefinition)
     {
@@ -98,12 +88,7 @@ class ClassUpdate
     }
 
     /**
-     * Insert Field after another field
-     *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
+     * {@inheritdoc}
      */
     public function insertFieldAfter($fieldName, $jsonFieldDefinition)
     {
@@ -117,12 +102,7 @@ class ClassUpdate
     }
 
     /**
-     * Replace existing Field with a new Definition
-     *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
+     * {@inheritdoc}
      */
     public function replaceField($fieldName, $jsonFieldDefinition)
     {
@@ -132,12 +112,7 @@ class ClassUpdate
     }
 
     /**
-     * Replace Properties from any field
-     *
-     * @param $fieldName
-     * @param array $keyValues
-     *
-     * @throws ClassDefinitionFieldNotFoundException
+     * {@inheritdoc}
      */
     public function replaceFieldProperties($fieldName, array $keyValues)
     {
@@ -149,11 +124,7 @@ class ClassUpdate
     }
 
     /**
-     * Remove existing Field
-     *
-     * @param $fieldName
-     *
-     * @throws ClassDefinitionFieldNotFoundException
+     * {@inheritdoc}
      */
     public function removeField($fieldName)
     {
