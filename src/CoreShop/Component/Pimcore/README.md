@@ -28,6 +28,7 @@ Migrate::migrateClass($currentClassName, $newClassName, $options);
 //This function migrates all data from $currentClassName to $newClassName
 //It uses SQL Commands to increase performance of migration
 Migrate::migrateData($currentClassName, $newClassName);
+```
 
 ## Class Installer
 
