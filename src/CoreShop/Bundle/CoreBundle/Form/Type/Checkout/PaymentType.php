@@ -165,7 +165,7 @@ final class PaymentType extends AbstractResourceType
             return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
         }
 
-        return 'offline';
+        return null;
     }
 
     /**
