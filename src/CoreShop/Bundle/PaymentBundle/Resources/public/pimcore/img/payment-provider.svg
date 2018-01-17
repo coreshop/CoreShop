@@ -10,7 +10,7 @@
   ~
   -->
 
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
 <rect x="6" y="13" style="fill:#546E7A;" width="36" height="24"/>
 <rect x="8" y="15" style="fill:#BBDEFB;" width="32" height="19"/>
 <rect x="21" y="37" style="fill:#455A64;" width="6" height="3"/>

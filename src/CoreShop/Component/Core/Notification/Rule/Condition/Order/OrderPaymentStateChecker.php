@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
 
-use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 
 class OrderPaymentStateChecker extends AbstractConditionChecker
 {

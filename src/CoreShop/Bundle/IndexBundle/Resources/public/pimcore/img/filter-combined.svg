@@ -10,7 +10,7 @@
   ~
   -->
 
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
 <path fill="#B0BEC5" d="M9,40H7V8h2V40z M41,8h-2v32h2V8z M41,7H8v2h33V7z M41,39H8v2h33V39z"/>
 <path fill="#2196F3" d="M11,11H5V5h6V11z M11,43H5v-6h6V43z M43,11h-6V5h6V11z M43,43h-6v-6h6V43z"/>
 <rect x="20" y="20" fill="#9C27B0" width="13" height="13"/>
