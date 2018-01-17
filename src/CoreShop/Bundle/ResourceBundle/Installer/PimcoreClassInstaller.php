@@ -13,8 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\Pimcore\ClassLoader;
-use Pimcore\Model\DataObject;
+use CoreShop\Component\Pimcore\ClassInstallerInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -27,11 +26,21 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
     protected $kernel;
 
     /**
-     * @param KernelInterface $kernel
+     * @var ClassInstallerInterface
      */
-    public function __construct(KernelInterface $kernel)
+    protected $classInstaller;
+
+    /**
+     * @param KernelInterface $kernel
+     * @param ClassInstallerInterface $classInstaller
+     */
+    public function __construct(
+        KernelInterface $kernel,
+        ClassInstallerInterface $classInstaller
+    )
     {
         $this->kernel = $kernel;
+        $this->classInstaller = $classInstaller;
     }
 
     /**
@@ -92,7 +101,7 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
             foreach ($fieldCollections as $fc) {
                 $progress->setMessage(sprintf('<error>Install Fieldcollection %s (%s)</error>', $fc['model'], $fc['file']));
 
-                $this->createFieldCollection($fc['file'], $fc['model']);
+                $this->classInstaller->createFieldCollection($fc['file'], $fc['model']);
 
                 $progress->advance();
             }
@@ -100,7 +109,7 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
             foreach ($classes as $class) {
                 $progress->setMessage(sprintf('<error>Install Class %s (%s)</error>', $class['model'], $class['file']));
 
-                $this->createClass($class['file'], $class['model']);
+                $this->classInstaller->createClass($class['file'], $class['model']);
 
                 $progress->advance();
             }
@@ -108,112 +117,12 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
             foreach ($bricks as $brick) {
                 $progress->setMessage(sprintf('<error>Install Brick %s (%s)</error>', $brick['model'], $brick['file']));
 
-                $this->createBrick($brick['file'], $brick['model']);
+                $this->classInstaller->createBrick($brick['file'], $brick['model']);
 
                 $progress->advance();
             }
 
             $progress->finish();
         }
-    }
-
-    /**
-     * @param $jsonFile
-     * @param $brickName
-     * @return mixed|DataObject\Objectbrick\Definition
-     */
-    private function createBrick($jsonFile, $brickName) {
-        try {
-            $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
-        } catch (\Exception $e) {
-            $objectBrick = new DataObject\Objectbrick\Definition();
-            $objectBrick->setKey($brickName);
-        }
-
-        $json = file_get_contents($jsonFile);
-
-        DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
-
-        ClassLoader::forceLoadBrick($brickName);
-
-        return $objectBrick;
-    }
-
-    /**
-     * @param $jsonFile
-     * @param $className
-     * @param bool $updateClass
-     *
-     * @return DataObject\ClassDefinition
-     */
-    private function createClass($jsonFile, $className, $updateClass = false)
-    {
-        $tempClass = new DataObject\ClassDefinition();
-        $id = $tempClass->getDao()->getIdByName($className);
-        $class = null;
-
-        if ($id) {
-            $class = DataObject\ClassDefinition::getById($id);
-        }
-
-        if (!$class || $updateClass) {
-            $json = file_get_contents($jsonFile);
-
-            if (!$class) {
-                $class = DataObject\ClassDefinition::create();
-            }
-
-            $class->setName($className);
-            $class->setUserOwner(0);
-
-            DataObject\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
-
-            /**
-             * Fixes Object Brick Stuff.
-             */
-            $list = new DataObject\Objectbrick\Definition\Listing();
-            $list = $list->load();
-
-            if (!empty($list)) {
-                foreach ($list as $brickDefinition) {
-                    $clsDefs = $brickDefinition->getClassDefinitions();
-                    if (!empty($clsDefs)) {
-                        foreach ($clsDefs as $cd) {
-                            if ($cd['classname'] == $class->getId()) {
-                                $brickDefinition->save();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        ClassLoader::forceLoadDataObjectClass($className);
-
-        return $class;
-    }
-
-    /**
-     * @param $name
-     * @param null $jsonFile
-     *
-     * @return mixed|null|DataObject\Fieldcollection\Definition
-     */
-    private function createFieldCollection($jsonFile, $name)
-    {
-        try {
-            $fieldCollection = DataObject\Fieldcollection\Definition::getByKey($name);
-        } catch (\Exception $e) {
-            $fieldCollection = new DataObject\Fieldcollection\Definition();
-            $fieldCollection->setKey($name);
-        }
-
-        $json = file_get_contents($jsonFile);
-
-        DataObject\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
-
-        ClassLoader::forceLoadFieldCollection($name);
-
-        return $fieldCollection;
     }
 }

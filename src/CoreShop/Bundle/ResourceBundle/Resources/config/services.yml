@@ -19,6 +19,9 @@ services:
   coreshop.resource_registry:
     class: CoreShop\Component\Resource\Metadata\Registry
 
+  coreshop.class_installer:
+    class: CoreShop\Component\Pimcore\ClassInstaller
+
   coreshop.jms_serializer.handler.relation:
       class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
       arguments:
