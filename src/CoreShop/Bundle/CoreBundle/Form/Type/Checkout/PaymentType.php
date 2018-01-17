@@ -70,8 +70,8 @@ final class PaymentType extends AbstractResourceType
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
-                'label'       => 'coreshop.ui.payment_provider',
-                'store'       => $options['store'],
+                'label' => 'coreshop.ui.payment_provider',
+                'store' => $options['store'],
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
@@ -81,6 +81,8 @@ final class PaymentType extends AbstractResourceType
 
                 if ($this->formTypeRegistry->has($type, 'default')) {
                     $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
+                } else {
+                    $this->removeConfigurationFields($event->getForm());
                 }
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
@@ -100,9 +102,10 @@ final class PaymentType extends AbstractResourceType
 
                 if ($this->formTypeRegistry->has($factory, 'default')) {
                     $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($factory, 'default'));
+                } else {
+                    $this->removeConfigurationFields($event->getForm());
                 }
-            })
-        ;
+            });
 
         $prototypes = [];
         foreach (array_keys($this->gatewayFactories) as $type) {
@@ -151,6 +154,18 @@ final class PaymentType extends AbstractResourceType
         $form->add('paymentSettings', $configurationType, [
             'label' => false,
         ]);
+    }
+
+    /**
+     * @param FormInterface $form
+     */
+    protected function removeConfigurationFields(FormInterface $form)
+    {
+        if (!$form->has('paymentSettings')) {
+            return;
+        }
+
+        $form->remove('paymentSettings');
     }
 
     /**
