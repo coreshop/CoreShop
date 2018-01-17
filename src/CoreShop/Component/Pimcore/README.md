@@ -28,3 +28,24 @@ Migrate::migrateClass($currentClassName, $newClassName, $options);
 //This function migrates all data from $currentClassName to $newClassName
 //It uses SQL Commands to increase performance of migration
 Migrate::migrateData($currentClassName, $newClassName);
+
+## Class Installer
+
+Class Installer helps you importing Classes/FieldCollections/ObjectBricks into Pimcore based of a JSON Definition:
+
+```php
+
+use CoreShop\Component\Pimcore\ClassInstaller;
+
+$installer = new ClassInstaller();
+
+// For Bricks use
+$installer->createBrick($pathToJson, $brickName);
+
+// For Classes use
+$installer->createClass($pathToJson, $className, $updateExistingClass);
+
+// For FieldCollections use
+$installer->createFieldCollection($pathToJson, $fcName);
+
+```
