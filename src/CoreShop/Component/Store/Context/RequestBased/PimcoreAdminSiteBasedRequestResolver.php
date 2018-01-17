@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Store\Context\RequestBased;
 
-use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Document;

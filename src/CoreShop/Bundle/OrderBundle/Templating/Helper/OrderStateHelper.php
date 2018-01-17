@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\Templating\Helper;
 
-use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;

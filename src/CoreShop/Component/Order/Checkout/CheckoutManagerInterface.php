@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Order\Checkout;
 
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutManagerInterface

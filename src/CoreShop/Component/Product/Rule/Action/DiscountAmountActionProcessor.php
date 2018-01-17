@@ -16,7 +16,6 @@ use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 use Webmozart\Assert\Assert;
 
 class DiscountAmountActionProcessor implements ProductPriceActionProcessorInterface

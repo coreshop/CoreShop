@@ -3,9 +3,7 @@
 namespace CoreShop\Bundle\CoreBundle\Event;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Form\FormInterface;
 
 final class CustomerRegistrationEvent extends GenericEvent
 {

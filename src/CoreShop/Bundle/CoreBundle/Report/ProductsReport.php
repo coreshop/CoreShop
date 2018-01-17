@@ -19,10 +19,7 @@ use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Doctrine\DBAL\Connection;
-use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
-use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ProductsReport implements ReportInterface

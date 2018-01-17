@@ -7,7 +7,6 @@ use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\Yaml\Yaml;
 
 class Version20171208125422 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {

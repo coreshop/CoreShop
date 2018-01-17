@@ -22,8 +22,6 @@ use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Db;
 use Pimcore\Tool;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 
 class MysqlWorker extends AbstractWorker
 {

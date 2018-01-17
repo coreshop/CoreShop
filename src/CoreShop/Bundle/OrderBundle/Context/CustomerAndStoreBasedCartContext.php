@@ -12,11 +12,11 @@
 
 namespace CoreShop\Bundle\OrderBundle\Context;
 
-use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
+use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 

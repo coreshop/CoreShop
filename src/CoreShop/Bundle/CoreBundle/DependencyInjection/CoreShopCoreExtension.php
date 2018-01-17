@@ -13,21 +13,15 @@
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
-use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
-use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
-use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
-use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Webmozart\Assert\Assert;
 
 final class CoreShopCoreExtension extends AbstractModelExtension implements PrependExtensionInterface
 {

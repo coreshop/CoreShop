@@ -12,9 +12,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
+use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\Condition;
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

@@ -15,7 +15,6 @@ namespace CoreShop\Component\Core\Order\NumberGenerator;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {

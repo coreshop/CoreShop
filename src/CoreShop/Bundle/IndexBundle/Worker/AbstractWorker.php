@@ -29,7 +29,6 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Tool;
 use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 use Webmozart\Assert\Assert;
 
 abstract class AbstractWorker implements WorkerInterface

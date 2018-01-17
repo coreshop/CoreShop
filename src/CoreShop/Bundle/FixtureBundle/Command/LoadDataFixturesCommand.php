@@ -2,14 +2,13 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Command;
 
+use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutorInterface;
 use CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-
-use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutorInterface;
 
 class LoadDataFixturesCommand extends Command
 {

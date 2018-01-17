@@ -14,8 +14,8 @@ namespace CoreShop\Bundle\IndexBundle\EventListener;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
-use Pimcore\Event\Model\ElementEventInterface;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Event\Model\ElementEventInterface;
 
 final class IndexObjectListener
 {

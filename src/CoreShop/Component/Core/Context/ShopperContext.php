@@ -20,9 +20,11 @@ use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
-use CoreShop\Component\Order\Context\CartContextInterface;;
+use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
+
+;
 
 class ShopperContext implements ShopperContextInterface
 {

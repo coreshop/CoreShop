@@ -12,12 +12,7 @@
 
 namespace CoreShop\Component\Currency\Context;
 
-use CoreShop\Component\Core\Currency\CurrencyStorageInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
-use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CachedCurrencyContext implements CurrencyContextInterface
 {

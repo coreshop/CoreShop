@@ -13,8 +13,8 @@
 namespace CoreShop\Component\Order\Transformer;
 
 use Carbon\Carbon;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;

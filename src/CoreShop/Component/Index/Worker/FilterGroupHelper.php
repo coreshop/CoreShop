@@ -12,16 +12,12 @@
 
 namespace CoreShop\Component\Index\Worker;
 
-use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\Listing\AbstractListing;
 
 class FilterGroupHelper implements FilterGroupHelperInterface
 {

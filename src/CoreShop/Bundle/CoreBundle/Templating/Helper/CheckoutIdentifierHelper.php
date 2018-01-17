@@ -16,9 +16,9 @@ use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelperInterface

@@ -2,11 +2,11 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture;
 
+use CoreShop\Bundle\FixtureBundle\Event\DataFixturesEvent;
+use CoreShop\Bundle\FixtureBundle\Event\FixturesEvents;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use CoreShop\Bundle\FixtureBundle\Event\DataFixturesEvent;
-use CoreShop\Bundle\FixtureBundle\Event\FixturesEvents;
 
 final class DataFixturesExecutor implements DataFixturesExecutorInterface
 {

@@ -3,8 +3,6 @@
 namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
 use CoreShop\Bundle\TrackingBundle\Builder\ItemBuilderInterface;
-use CoreShop\Bundle\TrackingBundle\Model\ActionData;
-use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;

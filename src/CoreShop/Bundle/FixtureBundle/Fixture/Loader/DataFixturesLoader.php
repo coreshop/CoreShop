@@ -2,14 +2,14 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Loader;
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use CoreShop\Bundle\FixtureBundle\Entity\DataFixture;
+use CoreShop\Bundle\FixtureBundle\Fixture\LoadedFixtureVersionAwareInterface;
 use CoreShop\Bundle\FixtureBundle\Fixture\Sorter\DataFixturesSorter;
 use CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use CoreShop\Bundle\FixtureBundle\Fixture\LoadedFixtureVersionAwareInterface;
+use Doctrine\ORM\EntityManager;
+use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DataFixturesLoader extends ContainerAwareLoader
 {

@@ -7,7 +7,6 @@ use CoreShop\Component\Pimcore\ClassUpdate;
 use CoreShop\Component\Product\Model\ProductInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
-use Pimcore\Model\DataObject\CoreShopProduct;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;

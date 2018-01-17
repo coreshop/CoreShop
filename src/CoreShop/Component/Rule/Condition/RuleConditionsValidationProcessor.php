@@ -13,8 +13,6 @@
 namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 
 class RuleConditionsValidationProcessor implements RuleConditionsValidationProcessorInterface

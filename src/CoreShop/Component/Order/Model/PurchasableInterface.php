@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 interface PurchasableInterface extends StorageListProductInterface
 {

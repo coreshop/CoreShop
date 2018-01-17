@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 use Webmozart\Assert\Assert;
 
 class DiscountPercentActionProcessor implements ProductPriceActionProcessorInterface

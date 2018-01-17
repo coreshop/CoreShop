@@ -15,7 +15,6 @@ namespace CoreShop\Component\Product\Rule\Action;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 
 class PriceActionProcessor implements ProductPriceActionProcessorInterface
 {

@@ -13,9 +13,9 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;

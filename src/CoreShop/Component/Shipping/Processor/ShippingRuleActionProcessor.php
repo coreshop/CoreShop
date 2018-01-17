@@ -17,8 +17,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
-use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
+use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 
 class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterface
 {

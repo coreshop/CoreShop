@@ -2,11 +2,11 @@
 
 namespace CoreShop\Component\Order\Repository;
 
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 interface CartRepositoryInterface extends PimcoreRepositoryInterface
 {

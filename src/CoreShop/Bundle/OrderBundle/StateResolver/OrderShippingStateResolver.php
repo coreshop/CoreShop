@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
-use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;

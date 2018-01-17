@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\ProductBundle\EventListener;
 
 use CoreShop\Component\Product\Model\CategoryInterface;
-use Pimcore\Event\Model\ElementEventInterface;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Event\Model\ElementEventInterface;
 
 final class CategoryPersistEventListener
 {

@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
 
-use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Core\Model\CountryInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

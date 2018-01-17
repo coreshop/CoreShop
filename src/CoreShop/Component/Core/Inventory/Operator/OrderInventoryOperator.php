@@ -13,9 +13,9 @@
 namespace CoreShop\Component\Core\Inventory\Operator;
 
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\OrderPaymentStates;
 use Doctrine\Common\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 

@@ -12,10 +12,6 @@
 
 namespace CoreShop\Component\Payment\Model;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Resource\Model\TimestampableInterface;
-
 interface PaymentSettingsAwareInterface
 {
     /**

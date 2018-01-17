@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 
 class PropertyPriceCalculator implements ProductPriceCalculatorInterface
 {

@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\NumberGenerator;
 
-use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 

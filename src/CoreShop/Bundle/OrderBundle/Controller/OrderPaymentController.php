@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
@@ -24,8 +25,6 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
-
-use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 
 
 class OrderPaymentController extends PimcoreController

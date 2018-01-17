@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Index\Interpreter;
 
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Data\QuantityValue;
 
 class QuantityValueInterpreter implements InterpreterInterface

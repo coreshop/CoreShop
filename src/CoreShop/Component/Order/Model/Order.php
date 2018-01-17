@@ -14,10 +14,8 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use Pimcore\Model\DataObject\CoreShopOrder\PaymentData;
 
 class Order extends Sale implements OrderInterface
 {

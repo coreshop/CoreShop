@@ -12,14 +12,11 @@
 
 namespace CoreShop\Bundle\OrderBundle\Collector;
 
-use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Context\CountryNotFoundException;
-use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
-use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;

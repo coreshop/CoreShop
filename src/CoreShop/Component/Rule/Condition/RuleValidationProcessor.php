@@ -12,8 +12,6 @@
 
 namespace CoreShop\Component\Rule\Condition;
 
-use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
-use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleValidationProcessor implements RuleValidationProcessorInterface

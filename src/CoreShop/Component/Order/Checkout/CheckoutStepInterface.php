@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Order\Checkout;
 
 use CoreShop\Component\Order\Model\CartInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutStepInterface

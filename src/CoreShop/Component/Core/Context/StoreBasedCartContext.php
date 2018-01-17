@@ -12,15 +12,14 @@
 
 namespace CoreShop\Component\Core\Context;
 
-use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
+use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
-use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 
 final class StoreBasedCartContext implements CartContextInterface
 {

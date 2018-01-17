@@ -13,15 +13,15 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
-use CoreShop\Component\Order\ShipmentStates;
-use CoreShop\Component\Order\ShipmentTransitions;
-use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\ShipmentStates;
+use CoreShop\Component\Order\ShipmentTransitions;
+use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;

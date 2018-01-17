@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
-use CoreShop\Component\Core\Helper\ArrayHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConfigurationController extends ResourceController

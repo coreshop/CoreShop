@@ -12,9 +12,7 @@
 
 namespace CoreShop\Bundle\InventoryBundle\Templating\Helper;
 
-use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use Symfony\Component\Templating\Helper\Helper;
 
 interface InventoryHelperInterface
 {

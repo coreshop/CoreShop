@@ -12,10 +12,10 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject\ClassDefinition;
-use Pimcore\Model\DataObject\Objectbrick;
-use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Cache;
+use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Objectbrick;
 use Pimcore\Tool;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 

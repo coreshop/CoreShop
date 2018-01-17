@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
-use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Workflow\StateMachineManager;

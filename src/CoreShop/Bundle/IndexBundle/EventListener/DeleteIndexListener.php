@@ -16,7 +16,6 @@ use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
 use Webmozart\Assert\Assert;
 
 final class DeleteIndexListener

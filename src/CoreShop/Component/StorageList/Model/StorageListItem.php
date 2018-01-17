@@ -13,7 +13,6 @@
 namespace CoreShop\Component\StorageList\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use Webmozart\Assert\Assert;
 
 class StorageListItem extends AbstractPimcoreModel implements StorageListItemInterface
 {

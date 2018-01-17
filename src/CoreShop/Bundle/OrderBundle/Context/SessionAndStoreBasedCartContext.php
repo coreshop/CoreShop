@@ -12,13 +12,11 @@
 
 namespace CoreShop\Bundle\OrderBundle\Context;
 
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
+use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Store\Context\StoreNotFoundException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionAndStoreBasedCartContext implements CartContextInterface

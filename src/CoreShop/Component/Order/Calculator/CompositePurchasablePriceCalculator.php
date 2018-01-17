@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Calculator;
 
-use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 

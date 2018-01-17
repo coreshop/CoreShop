@@ -2,9 +2,9 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture;
 
+use CoreShop\Bundle\FixtureBundle\Entity\DataFixture;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use CoreShop\Bundle\FixtureBundle\Entity\DataFixture;
 
 class UpdateDataFixturesFixture extends AbstractFixture
 {

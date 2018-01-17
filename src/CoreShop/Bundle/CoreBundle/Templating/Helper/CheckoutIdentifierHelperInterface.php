@@ -12,8 +12,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\Templating\Helper\HelperInterface;
 
 interface CheckoutIdentifierHelperInterface extends HelperInterface

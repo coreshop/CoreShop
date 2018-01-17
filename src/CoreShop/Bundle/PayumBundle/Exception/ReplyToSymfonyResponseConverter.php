@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\Exception;
 
-use \Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter as BaseReplyToSymfonyResponseConverter;
+use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter as BaseReplyToSymfonyResponseConverter;
 use Payum\Core\Reply\ReplyInterface;
 
 class ReplyToSymfonyResponseConverter extends BaseReplyToSymfonyResponseConverter

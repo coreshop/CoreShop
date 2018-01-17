@@ -2,8 +2,8 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use CoreShop\Bundle\FixtureBundle\Entity\DataFixture;
+use Doctrine\ORM\EntityRepository;
 
 class DataFixtureRepository extends EntityRepository
 {
