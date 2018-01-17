@@ -12,33 +12,29 @@
 
 namespace CoreShop\Test\Models;
 
-use Carbon\Carbon;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceStateConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderPaymentStateConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderStateConfigurationType;
-use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\PaymentStateConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentStateConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType;
 use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleActionType;
 use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleConditionType;
 use CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Notification\Rule\Condition\Order\InvoiceStateChecker;
-use CoreShop\Component\Core\Notification\Rule\Condition\Order\OrderStateChecker;
-use CoreShop\Component\Core\Notification\Rule\Condition\Order\PaymentStateChecker;
-use CoreShop\Component\Core\Notification\Rule\Condition\Order\ShipmentStateChecker;
-use CoreShop\Component\Core\OrderPaymentStates;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
+use CoreShop\Component\Order\InvoiceStates;
+use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Order\Workflow\WorkflowManagerInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Order\ShipmentStates;
+use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Test\Data;
 use CoreShop\Test\RuleTest;
 
@@ -154,6 +150,10 @@ class NotificationRule extends RuleTest
         $invoice = $this->getFactory('order_invoice')->createNew();
         $invoice = $this->get('coreshop.order.transformer.order_to_invoice')->transform($order, $invoice, $processableItems);
 
+        $workflow = $this->get('coreshop.state_machine_manager')->get($invoice, InvoiceStates::IDENTIFIER);
+        $workflow->apply($invoice, InvoiceTransitions::TRANSITION_CREATE);
+        $workflow->apply($invoice, InvoiceTransitions::TRANSITION_COMPLETE);
+
         return $invoice;
     }
 
@@ -171,6 +171,11 @@ class NotificationRule extends RuleTest
          */
         $shipment = $this->getFactory('order_shipment')->createNew();
         $shipment = $this->get('coreshop.order.transformer.order_to_shipment')->transform($order, $shipment, $processableItems);
+
+        $workflow = $this->get('coreshop.state_machine_manager')->get($shipment, ShipmentStates::IDENTIFIER);
+        $workflow->apply($shipment, ShipmentTransitions::TRANSITION_CREATE);
+        $workflow->apply($shipment, ShipmentTransitions::TRANSITION_SHIP);
+
 
         return $shipment;
     }
@@ -282,10 +287,10 @@ class NotificationRule extends RuleTest
     public function testNotificationRuleOrderPayment()
     {
         $this->printTestName();
-        $this->assertConditionForm(OrderPaymentStateConfigurationType::class, 'order.paymentState');
+        $this->assertConditionForm(OrderPaymentStateConfigurationType::class, 'order.orderPaymentState');
 
-        $condition = $this->createConditionWithForm('order.paymentState', [
-            'paymentState' => OrderPaymentStates::STATE_AWAITING_PAYMENT,
+        $condition = $this->createConditionWithForm('order.orderPaymentState', [
+            'orderPaymentState' => OrderPaymentStates::STATE_AWAITING_PAYMENT,
         ]);
 
         $order = $this->createOrder();
