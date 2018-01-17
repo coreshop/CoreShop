@@ -61,7 +61,7 @@
     ],
     "actions": [
       {
-        "type": "shipment.orderMail",
+        "type": "order.orderMail",
         "configuration": {
           "mails": {
             "de": "/de/shop/email/order-shipped",
