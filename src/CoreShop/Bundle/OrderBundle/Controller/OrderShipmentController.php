@@ -128,9 +128,6 @@ class OrderShipmentController extends PimcoreController
 
                 $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
 
-                $workflow = $this->getStateMachineManager()->get($shipment, ShipmentStates::IDENTIFIER);
-                $workflow->apply($shipment, ShipmentTransitions::TRANSITION_CREATE);
-
                 return $this->viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
             } catch (\Exception $ex) {
                 return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);

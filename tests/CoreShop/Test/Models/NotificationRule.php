@@ -151,7 +151,6 @@ class NotificationRule extends RuleTest
         $invoice = $this->get('coreshop.order.transformer.order_to_invoice')->transform($order, $invoice, $processableItems);
 
         $workflow = $this->get('coreshop.state_machine_manager')->get($invoice, InvoiceStates::IDENTIFIER);
-        $workflow->apply($invoice, InvoiceTransitions::TRANSITION_CREATE);
         $workflow->apply($invoice, InvoiceTransitions::TRANSITION_COMPLETE);
 
         return $invoice;
@@ -173,7 +172,6 @@ class NotificationRule extends RuleTest
         $shipment = $this->get('coreshop.order.transformer.order_to_shipment')->transform($order, $shipment, $processableItems);
 
         $workflow = $this->get('coreshop.state_machine_manager')->get($shipment, ShipmentStates::IDENTIFIER);
-        $workflow->apply($shipment, ShipmentTransitions::TRANSITION_CREATE);
         $workflow->apply($shipment, ShipmentTransitions::TRANSITION_SHIP);
 
 

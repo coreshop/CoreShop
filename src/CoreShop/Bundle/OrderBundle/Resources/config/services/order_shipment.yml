@@ -1,33 +1,45 @@
 services:
-  coreshop.order_shipment.number_generator.default:
-    class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
-    arguments: ['@coreshop.sequence.generator', 'shipment']
+    coreshop.order_shipment.number_generator.default:
+        class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
+        arguments:
+            - '@coreshop.sequence.generator'
+            - 'shipment'
 
-  coreshop.order_shipment.transformer.order_item_to_shipment_item:
-    class: CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer
-    arguments:
-      - '@coreshop.object_service'
-      - '%coreshop.folder.order_shipment_item%'
-      - '@coreshop.transformer.event_dispatcher'
+    coreshop.order_shipment.transformer.order_item_to_shipment_item:
+        class: CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer
+        arguments:
+            - '@coreshop.object_service'
+            - '%coreshop.folder.order_shipment_item%'
+            - '@coreshop.transformer.event_dispatcher'
 
-  coreshop.order.transformer.order_to_shipment:
-    class: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
-    arguments:
-      - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
-      - '@coreshop.core.key_transformer'
-      - '@coreshop.order_shipment.number_generator.default'
-      - '%coreshop.folder.order_shipment%'
-      - '@coreshop.object_service'
-      - '@coreshop.repository.order_item'
-      - '@coreshop.factory.order_shipment_item'
-      - '@coreshop.transformer.event_dispatcher'
+    coreshop.order.transformer.order_to_shipment:
+        class: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
+        arguments:
+            - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
+            - '@coreshop.core.key_transformer'
+            - '@coreshop.order_shipment.number_generator.default'
+            - '%coreshop.folder.order_shipment%'
+            - '@coreshop.object_service'
+            - '@coreshop.repository.order_item'
+            - '@coreshop.factory.order_shipment_item'
+            - '@coreshop.transformer.event_dispatcher'
 
-  coreshop.form.type.order_document_items:
-    class: CoreShop\Bundle\OrderBundle\Form\Type\OrderDocumentCreationItemsType
-    tags:
-      - { name: form.type }
+    coreshop.order.transformer.order_to_shipment.state_applier:
+        class: CoreShop\Component\Order\Transformer\OrderToOrderDocumentTransformerWorkflowApplier
+        decorates: 'coreshop.order.transformer.order_to_shipment'
+        arguments:
+             - '@coreshop.order.transformer.order_to_shipment.state_applier.inner'
+             - '@coreshop.state_machine_manager'
+             - !php/const CoreShop\Component\Order\ShipmentStates::STATE_NEW
+             - !php/const CoreShop\Component\Order\ShipmentTransitions::IDENTIFIER
+             - !php/const CoreShop\Component\Order\ShipmentTransitions::TRANSITION_CREATE
 
-  coreshop.form.type.shipment_creation:
-    class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType
-    tags:
-      - { name: form.type }
+    coreshop.form.type.order_document_items:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderDocumentCreationItemsType
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.shipment_creation:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType
+        tags:
+           - { name: form.type }
