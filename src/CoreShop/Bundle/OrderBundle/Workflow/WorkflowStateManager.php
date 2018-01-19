@@ -117,7 +117,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      * @param bool  $forFrontend
      * @return array
      */
-    public function fulfillTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)
+    public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)
     {
         $event = new WorkflowTransitionEvent($transitions, $workflowName);
         $this->eventDispatcher->dispatch('coreshop.workflow.valid_transitions', $event);

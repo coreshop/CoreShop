@@ -49,6 +49,14 @@ final class WorkflowTransitionEvent extends Event
     /**
      * @param array $allowedTransitions
      */
+    public function addAllowedTransitions(array $allowedTransitions)
+    {
+        $this->allowedTransitions = array_merge($this->allowedTransitions, $allowedTransitions);
+    }
+
+    /**
+     * @param array $allowedTransitions
+     */
     public function setAllowedTransitions(array $allowedTransitions)
     {
         $this->allowedTransitions = $allowedTransitions;

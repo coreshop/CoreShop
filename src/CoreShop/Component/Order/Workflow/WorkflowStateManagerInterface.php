@@ -43,5 +43,5 @@ interface WorkflowStateManagerInterface
      * @param bool  $forFrontend
      * @return mixed
      */
-    public function fulfillTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);
+    public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);
 }

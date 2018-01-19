@@ -189,7 +189,7 @@ class OrderController extends AbstractSaleDetailController
                 }
             }
 
-            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($payment, 'coreshop_payment', [
+            $availableTransitions = $this->getWorkflowStateManager()->getAvailableTransitionsForWorkflow($payment, 'coreshop_payment', [
                 'cancel',
                 'complete',
                 'refund'
@@ -227,7 +227,7 @@ class OrderController extends AbstractSaleDetailController
             $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
 
-            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($sale, 'coreshop_order', [
+            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($sale, 'coreshop_order', [
                 'cancel'
             ], false);
 
@@ -277,7 +277,7 @@ class OrderController extends AbstractSaleDetailController
 
         foreach ($invoices as $invoice) {
 
-            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($invoice, 'coreshop_invoice', [
+            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($invoice, 'coreshop_invoice', [
                 'complete',
                 'cancel'
             ], false);
@@ -312,7 +312,7 @@ class OrderController extends AbstractSaleDetailController
             $data = $this->getDataForObject($shipment);
             $data['carrierName'] = $shipment->getCarrier()->getName();
 
-            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($shipment, 'coreshop_shipment', [
+            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'hold',
                 'release',
                 'prepare',
