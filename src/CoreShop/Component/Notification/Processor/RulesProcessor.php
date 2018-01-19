@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Notification\Processor;
 
+use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
@@ -54,8 +55,11 @@ class RulesProcessor implements RulesProcessorInterface
     {
         $rules = $this->ruleRepository->findForType($type);
 
+        /**
+         * @var $rule NotificationRuleInterface
+         */
         foreach ($rules as $rule) {
-            if ($this->ruleValidationProcessor->isValid(['subject' => $subject, 'params' => $params], $rule)) {
+            if ($rule->getActive() && $this->ruleValidationProcessor->isValid(['subject' => $subject, 'params' => $params], $rule)) {
                 $this->ruleApplier->applyRule($rule, $subject, $params);
             }
         }

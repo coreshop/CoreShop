@@ -36,6 +36,22 @@ coreshop.order.resource = Class.create(coreshop.resource, {
                             data: states
                         }));
                     });
+                    
+                    Ext.Object.each(res.transitions, function(identifier, transitions) {
+                        pimcore.globalmanager.add('coreshop_transitions' + identifier.replace('coreshop', ''), new Ext.data.Store({
+                            restful: false,
+                            proxy: {
+                                type: 'memory'
+                            },
+                            reader: {
+                                type: 'json'
+                            },
+                            fields: [
+                                 'name', 'froms', 'tos'
+                            ],
+                            data: transitions
+                        }));
+                    });
                 }
             }.bind(this)
         });

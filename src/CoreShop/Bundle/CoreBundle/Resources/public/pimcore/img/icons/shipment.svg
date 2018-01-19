@@ -1,0 +1,31 @@
+﻿<!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<path style="fill:#B71C1C;" d="M38,29V8c0-0.553-0.448-1-1-1H11c-0.552,0-1,0.447-1,1v21H38z"/>
+<path style="fill:#37474F;" d="M40,20v3h-5v2h5c0.97,0,2-0.701,2-2v-3H40z"/>
+<path style="fill:#FF5722;" d="M43,21c0,0.553-0.448,1-1,1h-2c-0.552,0-1-0.447-1-1v-6c0-0.553,0.448-1,1-1h2c0.552,0,1,0.447,1,1&#10;&#9;V21z"/>
+<path style="fill:#37474F;" d="M13,23H8v-3H6v3c0,1.299,1.03,2,2,2h5V23z"/>
+<path style="fill:#FF5722;" d="M5,21c0,0.553,0.448,1,1,1h2c0.552,0,1-0.447,1-1v-6c0-0.553-0.448-1-1-1H6c-0.552,0-1,0.447-1,1V21z&#10;&#9;"/>
+<path style="fill:#FF5722;" d="M35,29H13V14c0-1.104,0.895-2,2-2h18c1.104,0,2,0.896,2,2V29z"/>
+<path style="fill:#7A1A04;" d="M33,15c0-0.553-0.448-1-1-1H16c-0.552,0-1,0.447-1,1v8c0,0.553,0.448,1,1,1h16c0.552,0,1-0.447,1-1&#10;&#9;V15z"/>
+<path style="fill:#37474F;" d="M15,37c0-0.553-0.447-1-1-1h-3c-0.553,0-1,0.447-1,1v5c0,0.553,0.447,1,1,1h3c0.553,0,1-0.447,1-1V37&#10;&#9;z"/>
+<path style="fill:#37474F;" d="M38,37c0-0.553-0.447-1-1-1h-3c-0.553,0-1,0.447-1,1v5c0,0.553,0.447,1,1,1h3c0.553,0,1-0.447,1-1V37&#10;&#9;z"/>
+<path style="fill:#FF5722;" d="M39,29c0-1.104-0.896-2-2-2H11c-1.105,0-2,0.896-2,2v8c0,1.104,0.895,2,2,2h26c1.104,0,2-0.896,2-2&#10;&#9;V29z"/>
+<rect x="16" y="27" style="fill:#37474F;" width="16" height="10"/>
+<rect x="16" y="29" style="fill:#546E7A;" width="16" height="2"/>
+<rect x="16" y="33" style="fill:#546E7A;" width="16" height="2"/>
+<circle style="fill:#FFFFFF;" cx="12" cy="32" r="2"/>
+<circle style="fill:#FFFFFF;" cx="36" cy="32" r="2"/>
+<circle style="fill:#4CAF50;" cx="38" cy="38" r="10"/>
+<polygon style="fill:#FFFFFF;" points="43.04,33.517 36.578,39.987 33.911,37.326 32.565,38.674 36.58,42.68 44.388,34.864 "/>
+</svg>

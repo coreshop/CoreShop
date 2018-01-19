@@ -107,11 +107,30 @@
     background: url(../img/icons/money.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_orderState {
+.coreshop_rule_icon_condition_orderState,
+.coreshop_rule_icon_condition_orderStateTransition {
     background: url(../img/orders.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_condition_payment, .coreshop_rule_icon_condition_paymentState, .coreshop_rule_icon_condition_orderPaymentState {
+.coreshop_rule_icon_condition_orderInvoiceState,
+.coreshop_rule_icon_condition_invoiceState,
+.coreshop_rule_icon_condition_orderInvoiceTransition,
+.coreshop_rule_icon_condition_invoiceTransition {
+    background: url(../img/icons/invoice.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_orderShippingState,
+.coreshop_rule_icon_condition_shippingState,
+.coreshop_rule_icon_condition_orderShippingTransition,
+.coreshop_rule_icon_condition_shipmentTransition {
+    background: url(../img/icons/shipment.svg) center center no-repeat !important;
+}
+
+.coreshop_rule_icon_condition_payment,
+.coreshop_rule_icon_condition_paymentState,
+.coreshop_rule_icon_condition_orderPaymentState,
+.coreshop_rule_icon_condition_paymentTransition,
+.coreshop_rule_icon_condition_orderPaymentTransition {
     background: url(../img/payments.svg) center center no-repeat !important;
 }
 

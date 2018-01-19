@@ -10,9 +10,9 @@
  *
  */
 
-pimcore.registerNS('coreshop.notification.rule.conditions.invoiceState');
+pimcore.registerNS('coreshop.notification.rule.conditions.orderInvoiceState');
 
-coreshop.notification.rule.conditions.invoiceState = Class.create(coreshop.rules.conditions.abstract, {
+coreshop.notification.rule.conditions.orderInvoiceState = Class.create(coreshop.rules.conditions.abstract, {
     type: 'invoiceState',
 
     getForm: function () {
@@ -21,8 +21,8 @@ coreshop.notification.rule.conditions.invoiceState = Class.create(coreshop.rules
                 {
                     xtype: 'combo',
                     fieldLabel: t('coreshop_transition_direction_state'),
-                    name: 'invoiceState',
-                    value: this.data ? this.data.invoiceState : [],
+                    name: 'orderInvoiceState',
+                    value: this.data ? this.data.orderInvoiceState : [],
                     width: 250,
                     store: pimcore.globalmanager.get('coreshop_states_order_invoice'),
                     triggerAction: 'all',

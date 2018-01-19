@@ -10,28 +10,30 @@
  *
  */
 
-pimcore.registerNS('coreshop.notification.rule.conditions.shipmentState');
+pimcore.registerNS('coreshop.notification.rule.conditions.abstractTransition');
 
-coreshop.notification.rule.conditions.shipmentState = Class.create(coreshop.rules.conditions.abstract, {
-    type: 'shipmentState',
+coreshop.notification.rule.conditions.abstractTransition = Class.create(coreshop.rules.conditions.abstract, {
+    getRepoName: function() {
+        return '';
+    },
 
     getForm: function () {
         this.form = Ext.create('Ext.form.FieldSet', {
             items: [
                 {
                     xtype: 'combo',
-                    fieldLabel: t('coreshop_transition_direction_state'),
-                    name: 'shipmentState',
-                    value: this.data ? this.data.shipmentState : [],
+                    fieldLabel: t('coreshop_transition_to'),
+                    name: 'transition',
+                    value: this.data ? this.data.transition : [],
                     width: 250,
-                    store: pimcore.globalmanager.get('coreshop_states_order_shipment'),
+                    store: pimcore.globalmanager.get(this.getRepoName()),
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,
                     forceSelection: true,
                     queryMode: 'local',
-                    displayField: 'label',
-                    valueField: 'state'
+                    displayField: 'name',
+                    valueField: 'name'
                 }
             ]
         });

@@ -8,24 +8,37 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
+namespace CoreShop\Component\Core\Notification\Rule\Condition;
 
-use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Webmozart\Assert\Assert;
 
-class ShipmentStateChecker extends AbstractConditionChecker
+final class StateTransitionChecker extends AbstractConditionChecker
 {
+    /**
+     * @var string
+     */
+    private $interface;
+
+
+    /**
+     * @param string $interface
+     */
+    public function __construct(string $interface)
+    {
+        $this->interface = $interface;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function isNotificationRuleValid($subject, $params, array $configuration)
     {
-        if ($subject instanceof OrderInterface) {
-            return $subject->getShippingState() === $configuration['shipmentState'];
-        }
+        Assert::isInstanceOf($subject, $this->interface);
 
-        return false;
+        return $configuration['transition'] === $params['transition'];
     }
 }

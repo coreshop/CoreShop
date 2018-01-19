@@ -12,12 +12,10 @@
 
 namespace CoreShop\Component\Core\Notification\Rule\Action\Order;
 
-use CoreShop\Component\Core\Model\OrderShipmentInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use Pimcore\Model\Document;
 
 class OrderMailActionProcessor implements NotificationRuleProcessorInterface
@@ -42,12 +40,10 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
     {
         $order = null;
 
-        if ($subject instanceof OrderInvoiceInterface) {
-            $order = $subject->getOrder();
-        } elseif ($subject instanceof OrderShipmentInterface) {
-            $order = $subject->getOrder();
-        } elseif ($subject instanceof OrderInterface) {
+        if ($subject instanceof OrderInterface) {
             $order = $subject;
+        } elseif (array_key_exists('order', $params) && $params['order'] instanceof OrderInterface) {
+            $order = $params['order'];
         }
 
         if ($order instanceof OrderInterface) {

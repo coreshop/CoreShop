@@ -66,5 +66,7 @@ final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocum
 
         $workflow = $this->stateMachineManager->get($document, $this->workflowName);
         $workflow->apply($document, $this->transition);
+
+        return $document;
     }
 }

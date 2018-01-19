@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
@@ -23,12 +24,14 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
+use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Resource\Workflow\StateMachineApplier;
 use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends AbstractSaleDetailController
 {
@@ -39,32 +42,32 @@ class OrderController extends AbstractSaleDetailController
     {
         return [
             [
-                'text'      => 'coreshop_workflow_name_coreshop_order',
-                'type'      => null,
+                'text' => 'coreshop_workflow_name_coreshop_order',
+                'type' => null,
                 'dataIndex' => 'orderState',
-                'renderAs'  => 'orderState',
-                'flex'      => 1
+                'renderAs' => 'orderState',
+                'flex' => 1
             ],
             [
-                'text'      => 'coreshop_workflow_name_coreshop_order_payment',
-                'type'      => null,
+                'text' => 'coreshop_workflow_name_coreshop_order_payment',
+                'type' => null,
                 'dataIndex' => 'orderPaymentState',
-                'renderAs'  => 'orderPaymentState',
-                'flex'      => 1
+                'renderAs' => 'orderPaymentState',
+                'flex' => 1
             ],
             [
-                'text'      => 'coreshop_workflow_name_coreshop_order_shipment',
-                'type'      => null,
+                'text' => 'coreshop_workflow_name_coreshop_order_shipment',
+                'type' => null,
                 'dataIndex' => 'orderShippingState',
-                'renderAs'  => 'orderShippingState',
-                'flex'      => 1
+                'renderAs' => 'orderShippingState',
+                'flex' => 1
             ],
             [
-                'text'      => 'coreshop_workflow_name_coreshop_order_invoice',
-                'type'      => null,
+                'text' => 'coreshop_workflow_name_coreshop_order_invoice',
+                'type' => null,
                 'dataIndex' => 'orderInvoiceState',
-                'renderAs'  => 'orderInvoiceState',
-                'flex'      => 1
+                'renderAs' => 'orderInvoiceState',
+                'flex' => 1
             ]
         ];
     }
@@ -81,20 +84,56 @@ class OrderController extends AbstractSaleDetailController
             OrderShipmentTransitions::IDENTIFIER,
             OrderPaymentTransitions::IDENTIFIER,
             OrderInvoiceTransitions::IDENTIFIER,
-            PaymentTransitions::IDENTIFIER
+            PaymentTransitions::IDENTIFIER,
+            InvoiceTransitions::IDENTIFIER,
+            ShipmentTransitions::IDENTIFIER
         ];
         $states = [];
+        $transitions = [];
         $workflowStateManager = $this->getWorkflowStateManager();
 
         foreach ($identifiers as $identifier) {
-            $places = $this->get(sprintf('state_machine.%s', $identifier))->getDefinition()->getPlaces();
+            $transitions[$identifier] = [];
+            $states[$identifier] = [];
+
+            /**
+             * @var $stateMachine StateMachine
+             */
+            $stateMachine = $this->get(sprintf('state_machine.%s', $identifier));
+            $places = $stateMachine->getDefinition()->getPlaces();
+            $machineTransitions = $stateMachine->getDefinition()->getTransitions();
 
             foreach ($places as $place) {
                 $states[$identifier][] = $workflowStateManager->getStateInfo($identifier, $place, false);
             }
+
+            foreach ($machineTransitions as $transition) {
+                if (!array_key_exists($transition->getName(), $transitions[$identifier])) {
+                    $transitions[$identifier][$transition->getName()] = [
+                        'name' => $transition->getName(),
+                        'froms' => [],
+                        'tos' => []
+                    ];
+                }
+
+                $transitions[$identifier][$transition->getName()]['froms'] =
+                    array_merge(
+                        $transitions[$identifier][$transition->getName()]['froms'],
+                        $transition->getFroms()
+                    );
+
+                $transitions[$identifier][$transition->getName()]['tos'] =
+                    array_merge(
+                        $transitions[$identifier][$transition->getName()]['tos'],
+                        $transition->getFroms()
+                    );
+
+            }
+
+            $transitions[$identifier] = array_values($transitions[$identifier]);
         }
 
-        return $this->viewHandler->handle(['success' => true, 'states' => $states]);
+        return $this->viewHandler->handle(['success' => true, 'states' => $states, 'transitions' => $transitions]);
     }
 
     /**
@@ -137,14 +176,14 @@ class OrderController extends AbstractSaleDetailController
                 $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
 
                 $statesHistory[] = [
-                    'icon'        => 'coreshop_icon_orderstates',
-                    'type'        => $note->getType(),
-                    'date'        => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
-                    'avatar'      => $avatar,
-                    'user'        => $user ? $user->getName() : null,
+                    'icon' => 'coreshop_icon_orderstates',
+                    'type' => $note->getType(),
+                    'date' => $date->formatLocalized('%A %d %B %Y %H:%M:%S'),
+                    'avatar' => $avatar,
+                    'user' => $user ? $user->getName() : null,
                     'description' => $note->getDescription(),
-                    'title'       => $note->getTitle(),
-                    'data'        => $note->getData(),
+                    'title' => $note->getTitle(),
+                    'data' => $note->getData(),
                 ];
             }
         }
@@ -189,15 +228,15 @@ class OrderController extends AbstractSaleDetailController
             ], false);
 
             $return[] = [
-                'id'            => $payment->getId(),
-                'datePayment'   => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
-                'provider'      => $payment->getPaymentProvider()->getName(),
+                'id' => $payment->getId(),
+                'datePayment' => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
+                'provider' => $payment->getPaymentProvider()->getName(),
                 'paymentNumber' => $payment->getNumber(),
-                'details'       => $details,
+                'details' => $details,
                 //'transactionNotes' => $noteList->load(),
-                'amount'        => $payment->getTotalAmount(),
-                'stateInfo'     => $this->getWorkflowStateManager()->getStateInfo('coreshop_payment', $payment->getState(), false),
-                'transitions'   => $availableTransitions
+                'amount' => $payment->getTotalAmount(),
+                'stateInfo' => $this->getWorkflowStateManager()->getStateInfo('coreshop_payment', $payment->getState(), false),
+                'transitions' => $availableTransitions
             ];
         }
 

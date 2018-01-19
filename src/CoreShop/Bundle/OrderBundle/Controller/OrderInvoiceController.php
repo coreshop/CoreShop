@@ -97,7 +97,7 @@ class OrderInvoiceController extends PimcoreController
             $invoice->setState(InvoiceStates::STATE_NEW);
 
             $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
-            
+
             return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);
         } catch (\Exception $ex) {
             return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);

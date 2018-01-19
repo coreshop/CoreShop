@@ -1,0 +1,31 @@
+﻿<!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" style="enable-background:new 0 0 40 40;" xml:space="preserve" viewBox="0 0 40 40" >
+<g>
+	<rect x="5.5" y="1.5" style="fill:#FFFFFF;" width="29" height="37"/>
+	<g>
+		<path style="fill:#788B9C;" d="M34,2v36H6V2H34 M35,1H5v38h30V1L35,1z"/>
+	</g>
+</g>
+<g>
+	<g>
+		<path style="fill:#C5D4DE;" d="M28,15v11H12V15H28 M29,14H11v13h18V14L29,14z"/>
+	</g>
+</g>
+<line style="fill:none;stroke:#C5D4DE;stroke-miterlimit:10;" x1="16.5" y1="14" x2="16.5" y2="27"/>
+<line style="fill:none;stroke:#C5D4DE;stroke-miterlimit:10;" x1="23.5" y1="14" x2="23.5" y2="27"/>
+<line style="fill:#FFFFFF;stroke:#788B9C;stroke-miterlimit:10;" x1="11" y1="8.5" x2="29" y2="8.5"/>
+<line style="fill:#FFFFFF;stroke:#788B9C;stroke-miterlimit:10;" x1="20" y1="31.5" x2="29" y2="31.5"/>
+<line style="fill:none;stroke:#C5D4DE;stroke-miterlimit:10;" x1="11" y1="18.5" x2="29" y2="18.5"/>
+<line style="fill:none;stroke:#C5D4DE;stroke-miterlimit:10;" x1="11" y1="22.5" x2="29" y2="22.5"/>
+</svg>

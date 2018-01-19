@@ -12,24 +12,23 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Webmozart\Assert\Assert;
 
-final class PaymentWorkflowListener extends AbstractNotificationRuleListener
+final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListener
 {
     /**
-     * @var OrderRepositoryInterface
+     * @var string
      */
-    private $orderRepository;
+    private $type;
 
     /**
-     * @param OrderRepositoryInterface $orderRepository
+     * @param string $type
      */
-    public function setOrderRepository(OrderRepositoryInterface $orderRepository)
+    public function setType(string $type)
     {
-        $this->orderRepository = $orderRepository;
+        $this->type = $type;
     }
 
     /**
@@ -37,11 +36,18 @@ final class PaymentWorkflowListener extends AbstractNotificationRuleListener
      */
     public function applyPaymentWorkflowTransitionCompleted(Event $event)
     {
-        Assert::isInstanceOf($event->getSubject(), PaymentInterface::class);
+        $subject = $event->getSubject();
 
-        $this->rulesProcessor->applyRules('payment', $event->getSubject(), [
-            'order' => $this->orderRepository->find($event->getSubject()->getOrderId()),
-            'paymentState' => $event->getSubject()->getState()
+        /**
+         * @var $subject OrderDocumentInterface
+         */
+        Assert::implementsInterface($subject, OrderDocumentInterface::class);
+
+        $this->rulesProcessor->applyRules($this->type, $subject, [
+            'order' => $subject->getOrder(),
+            'fromState' => $event->getMarking()->getPlaces(),
+            'toState' => $event->getTransition()->getTos(),
+            'transition' => $event->getTransition()->getName()
         ]);
     }
 }
