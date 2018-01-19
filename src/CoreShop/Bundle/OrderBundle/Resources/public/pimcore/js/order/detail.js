@@ -40,7 +40,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
         return buttons;
     },
 
-    getLeftItems: function() {
+    getLeftItems: function () {
         return [
             this.getSaleInfo(),
             this.getPaymentDetails(),
@@ -74,7 +74,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 },
                 {
                     xtype: 'panel',
-                    html: t('coreshop_workflow_name_coreshop_order_invoice') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderInvoiceState.color + ';"></span>' +this.sale.orderInvoiceState.label + '</span>',
+                    html: t('coreshop_workflow_name_coreshop_order_invoice') + '<br/><span class="coreshop_order_medium"><span class="color-dot" style="background-color:' + this.sale.orderInvoiceState.color + ';"></span>' + this.sale.orderInvoiceState.label + '</span>',
                     bodyPadding: '10 20',
                     flex: 1
                 }
@@ -107,13 +107,13 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 }
             ];
 
-             var statusPanel1 = Ext.create('Ext.panel.Panel', {
+            var statusPanel1 = Ext.create('Ext.panel.Panel', {
                 layout: 'hbox',
                 margin: 0,
                 items: items1
             });
 
-             var statusPanel2 = Ext.create('Ext.panel.Panel', {
+            var statusPanel2 = Ext.create('Ext.panel.Panel', {
                 layout: 'hbox',
                 margin: 0,
                 items: items2
@@ -137,36 +137,56 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 data: this.sale.statesHistory
             });
 
-            if(this.sale.orderState.state === 'new') {
+            if (this.sale.availableOrderTransitions.length > 0) {
+                var buttons = [],
+                    changeStateRequest = function (context, btn, transitionInfo) {
+                        btn.disable();
+                        Ext.Ajax.request({
+                            url: '/admin/coreshop/order/update-order-state',
+                            params: {
+                                transition: transitionInfo.transition,
+                                o_id: context.sale.o_id
+                            },
+                            success: function (response) {
+                                var res = Ext.decode(response.responseText);
+                                if(res.success === true) {
+                                    context.reload();
+                                } else {
+                                    Ext.Msg.alert(t('error'), res.message);
+                                    btn.enable();
+                                }
+                            },
+                            failure: function () {
+                                btn.enable();
+                            }
+                        });
+                    };
+
+                Ext.Array.each(this.sale.availableOrderTransitions, function (transitionInfo) {
+                    buttons.push({
+                        xtype: 'button',
+                        style: transitionInfo.transition === 'cancel' ? '' : 'background-color:#524646;border-left:10px solid ' + transitionInfo.color + ' !important;',
+                        cls: transitionInfo.transition === 'cancel' ? 'coreshop_change_order_order_state_button coreshop_cancel_order_button' : 'coreshop_change_order_order_state_button',
+                        text: transitionInfo.label,
+                        handler: function (btn) {
+                            if (transitionInfo.transition === 'cancel') {
+                                Ext.MessageBox.confirm(t('info'), t('coreshop_cancel_order_confirm'), function (buttonValue) {
+                                    if (buttonValue === 'yes') {
+                                        changeStateRequest(this, btn, transitionInfo);
+                                    }
+                                }.bind(this));
+                            } else {
+                                changeStateRequest(this, btn, transitionInfo);
+                            }
+                        }.bind(this)
+                    })
+                }.bind(this));
+
                 orderInfo.add({
                     xtype: 'panel',
                     layout: 'hbox',
                     margin: 0,
-                    items: {
-                        xtype: 'button',
-                        iconCls: 'pimcore_icon_delete',
-                        cls: 'coreshop_cancel_order_button',
-                        text: t('coreshop_cancel_order'),
-                        handler: function (btn) {
-                            Ext.MessageBox.confirm(t('info'), t('coreshop_cancel_order_confirm'), function (buttonValue) {
-                                if (buttonValue === 'yes') {
-                                    btn.disable();
-                                    Ext.Ajax.request({
-                                        url: '/admin/coreshop/order/cancel-order',
-                                        params: {
-                                            o_id: this.sale.o_id
-                                        },
-                                        success: function () {
-                                            this.reload();
-                                        }.bind(this),
-                                        failure: function () {
-                                            btn.enable();
-                                        }.bind(this)
-                                    });
-                                }
-                            }.bind(this));
-                        }.bind(this)
-                    }
+                    items: buttons
                 });
             }
 
@@ -255,7 +275,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                         var url = '/admin/coreshop/order-shipment/update-shipment-state',
                                             transitions = record.get('transitions'),
                                             id = record.get('o_id');
-                                        if(transitions.length !== 0) {
+                                        if (transitions.length !== 0) {
                                             coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                                 if (result.success) {
                                                     this.reload();
@@ -369,7 +389,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                         var url = '/admin/coreshop/order-invoice/update-invoice-state',
                                             transitions = record.get('transitions'),
                                             id = record.get('o_id');
-                                        if(transitions.length !== 0) {
+                                        if (transitions.length !== 0) {
                                             coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                                 if (result.success) {
                                                     this.reload();
@@ -379,7 +399,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                     }.bind(this),
 
                                     listeners: {
-                                            beforerender: function (widgetColumn) {
+                                        beforerender: function (widgetColumn) {
                                             var record = widgetColumn.getWidgetRecord(),
                                                 cursor = record.data.transitions.length > 0 ? 'pointer' : 'default';
                                             widgetColumn.setText(record.data.stateInfo.label);
@@ -486,7 +506,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                         dataIndex: 'amount',
                         text: t('coreshop_quantity'),
                         flex: 1,
-                        renderer: function(value) {
+                        renderer: function (value) {
                             return coreshop.util.format.currency(this.sale.currency.symbol, value);
                         }.bind(this)
                     },
@@ -518,7 +538,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                                 var url = '/admin/coreshop/order-payment/update-payment-state',
                                     transitions = record.get('transitions'),
                                     id = record.get('id');
-                                if(transitions.length !== 0) {
+                                if (transitions.length !== 0) {
                                     coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                         if (result.success) {
                                             this.reload();

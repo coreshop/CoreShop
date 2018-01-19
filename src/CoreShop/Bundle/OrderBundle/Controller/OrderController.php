@@ -20,6 +20,7 @@ use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
@@ -141,17 +142,23 @@ class OrderController extends AbstractSaleDetailController
      * @return bool
      * @throws \Exception
      */
-    public function cancelOrderAction(Request $request)
+    public function updateOrderStateAction(Request $request)
     {
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
+        $transition = $request->get('transition');
 
         if (!$order instanceof OrderInterface) {
             throw new \Exception('invalid order');
         }
 
-        $this->getStateMachineApplier()->apply($order, 'coreshop_order', 'cancel');
+        //apply state machine
+        $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order');
+        if (!$workflow->can($order, $transition)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+        }
 
+        $workflow->apply($order, $transition);
         return $this->viewHandler->handle(['success' => true]);
 
     }
@@ -221,7 +228,7 @@ class OrderController extends AbstractSaleDetailController
                 }
             }
 
-            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($payment, 'coreshop_payment', [
+            $availableTransitions = $this->getWorkflowStateManager()->getAvailableTransitionsForWorkflow($payment, 'coreshop_payment', [
                 'cancel',
                 'complete',
                 'refund'
@@ -259,6 +266,11 @@ class OrderController extends AbstractSaleDetailController
             $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
 
+            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($sale, 'coreshop_order', [
+                'cancel'
+            ], false);
+
+            $order['availableOrderTransitions'] = $availableTransitions;
             $order['statesHistory'] = $this->getStatesHistory($sale);
 
             $order['payments'] = $this->getPayments($sale);
@@ -304,7 +316,7 @@ class OrderController extends AbstractSaleDetailController
 
         foreach ($invoices as $invoice) {
 
-            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($invoice, 'coreshop_invoice', [
+            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($invoice, 'coreshop_invoice', [
                 'complete',
                 'cancel'
             ], false);
@@ -339,7 +351,7 @@ class OrderController extends AbstractSaleDetailController
             $data = $this->getDataForObject($shipment);
             $data['carrierName'] = $shipment->getCarrier()->getName();
 
-            $availableTransitions = $this->getWorkflowStateManager()->fulfillTransitions($shipment, 'coreshop_shipment', [
+            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'hold',
                 'release',
                 'prepare',

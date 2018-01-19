@@ -92,6 +92,7 @@ services:
     coreshop.workflow.state_manager:
         class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
         arguments:
+          - '@event_dispatcher'
           - '@coreshop.state_machine_manager'
           - '@pimcore.translator'
           - '%coreshop.workflow.manager.order.state_identifier%'
