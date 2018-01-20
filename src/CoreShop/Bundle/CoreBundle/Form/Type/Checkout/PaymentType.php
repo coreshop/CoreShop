@@ -17,6 +17,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -53,8 +54,7 @@ final class PaymentType extends AbstractResourceType
         FormTypeRegistryInterface $formTypeRegistry,
         PaymentProviderRepositoryInterface $paymentProviderRepository,
         array $gatewayFactories
-    )
-    {
+    ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
@@ -70,8 +70,8 @@ final class PaymentType extends AbstractResourceType
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
-                'label' => 'coreshop.ui.payment_provider',
-                'store' => $options['store'],
+                'label'       => 'coreshop.ui.payment_provider',
+                'store'       => $options['store'],
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
@@ -147,7 +147,7 @@ final class PaymentType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -170,13 +170,15 @@ final class PaymentType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */
     protected function getRegistryIdentifier(FormInterface $form, $data = null)
     {
         if ($data instanceof CartInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
+            return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
+        } elseif ($data instanceof OrderInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
             return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
         }
 
