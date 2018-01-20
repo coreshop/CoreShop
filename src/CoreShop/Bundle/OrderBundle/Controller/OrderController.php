@@ -228,7 +228,7 @@ class OrderController extends AbstractSaleDetailController
                 }
             }
 
-            $availableTransitions = $this->getWorkflowStateManager()->getAvailableTransitionsForWorkflow($payment, 'coreshop_payment', [
+            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($payment, 'coreshop_payment', [
                 'cancel',
                 'complete',
                 'refund'
