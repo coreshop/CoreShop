@@ -12,28 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Order;
 
-use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Valid;
 
 final class PaymentType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('paymentProvider', PaymentProviderChoiceType::class, [
-                'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
-                'label' => 'coreshop.ui.payment_provider',
-                'store' => $options['store'],
-            ]);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -42,6 +25,14 @@ final class PaymentType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefault('store', null);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType';
     }
 
     /**

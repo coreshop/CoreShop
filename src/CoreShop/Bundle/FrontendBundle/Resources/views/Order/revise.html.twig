@@ -22,6 +22,20 @@
 
         {{ form_row(form.paymentProvider) }}
 
+        <div class="paymentSettings">
+            {% if form.paymentSettings is defined %}
+                {% for field in form.paymentSettings %}
+                    {{ form_row(field) }}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {% for name, paymentSettingConfigurationPrototype in form.vars.prototypes %}
+            <div id="{{ form.paymentProvider.vars.id }}_{{ name }}" data-container=".configuration"
+                 data-prototype="{{ form_widget(paymentSettingConfigurationPrototype)|e }}">
+            </div>
+        {% endfor %}
+
         <button type="submit" class="btn btn-main">{{ 'coreshop.ui.buy'|trans }}</button>
 
         {{ form_end(form) }}
