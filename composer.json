@@ -1,7 +1,7 @@
 {
   "name": "coreshop/core-shop",
   "type": "pimcore-bundle",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "description": "CoreShop - Pimcore eCommerce",
   "keywords": [
     "pimcore",
