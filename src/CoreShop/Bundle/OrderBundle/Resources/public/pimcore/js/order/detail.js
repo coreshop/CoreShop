@@ -56,7 +56,7 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
             var items1 = [
                 {
                     xtype: 'panel',
-                    html: t('coreshop_workflow_name_coreshop_order_payment') + '<br/><span class="coreshop_order_big order_state"><span class="color-dot" style="background-color:' + this.sale.orderState.color + ';"></span> ' + this.sale.orderState.label + '</span>',
+                    html: t('coreshop_workflow_name_coreshop_order') + '<br/><span class="coreshop_order_big order_state"><span class="color-dot" style="background-color:' + this.sale.orderState.color + ';"></span> ' + this.sale.orderState.label + '</span>',
                     bodyPadding: '10 20',
                     flex: 1
                 },
