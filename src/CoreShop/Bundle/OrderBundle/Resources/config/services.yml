@@ -10,6 +10,7 @@ imports:
   - { resource: "services/commands.yml" }
   - { resource: "services/profiler.yml" }
   - { resource: "services/cart.yml" }
+  - { resource: "services/grid_config.yml" }
 
 services:
   coreshop.order.configurator.session_cart:

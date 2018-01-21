@@ -36,9 +36,9 @@ coreshop_admin_cart_price_rule:
           - POST
 
 ##### ORDERS
-coreshop_order_get_grid_configuration:
-  path: /%coreshop.admin.route.base%/order/get-grid-configuration
-  defaults: { _controller: 'coreshop.pimcore_controller.order:getGridConfigurationAction'}
+coreshop_order_get_folder_configuration:
+  path: /%coreshop.admin.route.base%/order/get-folder-configuration
+  defaults: { _controller: 'coreshop.pimcore_controller.order:getFolderConfigurationAction'}
 
 coreshop_order_get_states:
   path: /%coreshop.admin.route.base%/order/get-states
@@ -133,9 +133,9 @@ coreshop_order_create:
   defaults: { _controller: 'coreshop.pimcore_controller.order_creation:createSaleAction'}
 
 ##### QUOTES
-coreshop_quote_get_grid_configuration:
-  path: /%coreshop.admin.route.base%/quote/get-grid-configuration
-  defaults: { _controller: 'coreshop.pimcore_controller.quote:getGridConfigurationAction'}
+coreshop_quote_get_folder_configuration:
+  path: /%coreshop.admin.route.base%/quote/get-folder-configuration
+  defaults: { _controller: 'coreshop.pimcore_controller.quote:getFolderConfigurationAction'}
 
 coreshop_quote_get_quotes:
   path: /%coreshop.admin.route.base%/quote/list

@@ -20,7 +20,7 @@ use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
-use CoreShop\Component\Order\OrderStates;
+use Pimcore\Model\DataObject;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
@@ -36,41 +36,33 @@ use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends AbstractSaleDetailController
 {
-    /**
-     * {@inheritdoc}
+     /**
+     * @return mixed
+     * @throws \Exception
      */
-    protected function getGridColumns()
+    public function getFolderConfigurationAction()
     {
-        return [
-            [
-                'text' => 'coreshop_workflow_name_coreshop_order',
-                'type' => null,
-                'dataIndex' => 'orderState',
-                'renderAs' => 'orderState',
-                'flex' => 1
-            ],
-            [
-                'text' => 'coreshop_workflow_name_coreshop_order_payment',
-                'type' => null,
-                'dataIndex' => 'orderPaymentState',
-                'renderAs' => 'orderPaymentState',
-                'flex' => 1
-            ],
-            [
-                'text' => 'coreshop_workflow_name_coreshop_order_shipment',
-                'type' => null,
-                'dataIndex' => 'orderShippingState',
-                'renderAs' => 'orderShippingState',
-                'flex' => 1
-            ],
-            [
-                'text' => 'coreshop_workflow_name_coreshop_order_invoice',
-                'type' => null,
-                'dataIndex' => 'orderInvoiceState',
-                'renderAs' => 'orderInvoiceState',
-                'flex' => 1
-            ]
-        ];
+        $this->isGrantedOr403();
+
+        $name = null;
+        $folderId = null;
+
+        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_id');
+        $folderPath = $this->getParameter('coreshop.folder.order');
+        $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
+
+        $folder = DataObject::getByPath('/' . $folderPath);
+
+        if($folder instanceof DataObject\Folder) {
+            $folderId = $folder->getId();
+        }
+
+        if ($orderClassDefinition instanceof DataObject\ClassDefinition) {
+            $name = $orderClassDefinition->getName();
+        }
+
+        return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
+
     }
 
     /**

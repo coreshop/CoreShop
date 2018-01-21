@@ -14,23 +14,55 @@ pimcore.registerNS('coreshop.order.sale.list');
 coreshop.order.sale.list = Class.create({
 
     type: '',
+    search: null,
     grid: null,
+    gridConfig: {},
     store: null,
+    contextMenuPlugin: null,
     columns: [],
     storeFields: [],
 
     initialize: function () {
-        this.panels = [];
-
         Ext.Ajax.request({
-            url: '/admin/coreshop/'+this.type+'/get-grid-configuration',
-            method: 'GET',
-            success: function (result) {
-                var columnConfig = Ext.decode(result.responseText);
+            url: '/admin/coreshop/' + this.type + '/get-folder-configuration',
+            ignoreErrors: true,
+            success: function (response) {
+                var data = Ext.decode(response.responseText);
+                this.gridConfig = data;
+                this.setClassFolder()
+            }.bind(this)
+        });
 
-                this.prepareConfig(columnConfig.columns);
+        this.setupContextMenuPlugin();
+    },
 
-                this.getLayout();
+    setupContextMenuPlugin: function () {
+        this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
+            function (id) {
+                this.open(id);
+            }.bind(this),
+            []
+        );
+    },
+
+    setClassFolder: function () {
+        Ext.Ajax.request({
+            url: '/admin/object/get-folder',
+            params: {id: this.gridConfig.folderId},
+            ignoreErrors: true,
+            success: function (response) {
+                var data = Ext.decode(response.responseText),
+                    folderClass = [];
+
+                Ext.Array.each(data.classes, function (objectClass) {
+                    if (objectClass.name === this.gridConfig.className) {
+                        folderClass.push(objectClass);
+                    }
+                }.bind(this));
+
+                data.classes = folderClass;
+                this.search = new pimcore.object.search({data: data, id: this.gridConfig.folderId}, 'folder');
+                this.getLayout()
             }.bind(this)
         });
     },
@@ -39,7 +71,6 @@ coreshop.order.sale.list = Class.create({
         var tabPanel = Ext.getCmp('pimcore_panel_tabs');
         tabPanel.setActiveItem('coreshop_' + this.type);
     },
-
 
     prepareConfig: function (columnConfig) {
         var me = this,
@@ -84,22 +115,6 @@ coreshop.order.sale.list = Class.create({
         this.storeFields = storeModelFields;
     },
 
-    currencyRenderer: function (value, metaData, record) {
-        var currency = record.get('currency').symbol;
-
-        return coreshop.util.format.currency(currency, value);
-    },
-
-    storeRenderer: function (val) {
-        var stores = pimcore.globalmanager.get('coreshop_stores');
-        var store = stores.getById(val);
-        if (store) {
-            return store.get('name');
-        }
-
-        return null;
-    },
-
     getLayout: function () {
         if (!this.layout) {
 
@@ -107,7 +122,7 @@ coreshop.order.sale.list = Class.create({
             this.layout = new Ext.Panel({
                 id: 'coreshop_' + this.type,
                 title: t('coreshop_' + this.type),
-                iconCls: 'coreshop_icon_'+this.type+'s',
+                iconCls: 'coreshop_icon_' + this.type + 's',
                 border: false,
                 layout: 'border',
                 closable: true,
@@ -117,8 +132,8 @@ coreshop.order.sale.list = Class.create({
                     dock: 'top',
                     items: [
                         {
-                            iconCls: 'coreshop_icon_'+this.type+'_create',
-                            text: t('coreshop_'+this.type+'_create'),
+                            iconCls: 'coreshop_icon_' + this.type + '_create',
+                            text: t('coreshop_' + this.type + '_create'),
                             handler: function () {
                                 new coreshop.order[this.type].create.panel();
                             }.bind(this)
@@ -150,51 +165,23 @@ coreshop.order.sale.list = Class.create({
 
     getGrid: function () {
 
-        this.store = new Ext.data.JsonStore({
-            remoteSort: true,
-            remoteFilter: true,
-            autoDestroy: true,
-            autoSync: true,
-            pageSize: pimcore.helpers.grid.getDefaultPageSize(),
-            proxy: {
-                type: 'ajax',
-                url: '/admin/coreshop/'+this.type+'/list',
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data',
-                    totalProperty: 'total'
-                }
-            },
-
-            //alternatively, a Ext.data.Model name can be given (see Ext.data.Store for an example)
-            fields: this.storeFields
-        });
-
-        this.grid = Ext.create('Ext.grid.Panel', {
-            title: t('coreshop_'+this.type+'s'),
-            store: this.store,
-            plugins: 'gridfilters',
-            columns: this.columns,
+        this.tabbar = new Ext.TabPanel({
+            tabPosition: "top",
             region: 'center',
-            stateful: true,
-            stateId: 'coreshop_'+this.type+'_grid',
-            // paging bar on the bottom
-            bbar: this.pagingtoolbar = pimcore.helpers.grid.buildDefaultPagingToolbar(this.store),
-            listeners: {
-                itemclick: function (grid, record) {
-                    grid.setLoading(t('loading'));
-
-                    this.open(record, function () {
-                        grid.setLoading(false);
-                    }.bind(this));
-                }.bind(this)
-            }
+            deferredRender: true,
+            enableTabScroll: true,
+            border: false,
+            activeTab: 0
         });
 
-        return this.grid;
+        var searchLayout = this.search.getLayout();
+        //searchLayout.checkboxOnlyDirectChildren.hide();
+
+        this.tabbar.add(searchLayout);
+        return this.tabbar;
     },
 
-    open: function (record, callback) {
-        coreshop.order.helper.openSale(record.get('o_id'), this.type, callback);
+    open: function (id, callback) {
+        coreshop.order.helper.openSale(id, this.type, callback);
     }
 });
