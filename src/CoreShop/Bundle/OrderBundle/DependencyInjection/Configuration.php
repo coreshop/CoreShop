@@ -417,6 +417,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_data_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/data/coreShopCartPriceRule.js')->end()
                             ->scalarNode('core_extension_tag_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/tags/coreShopCartPriceRule.js')->end()
                             ->scalarNode('object_grid_column_order_state')->defaultValue('/bundles/coreshoporder/pimcore/js/object/gridcolumn/operator/OrderState.js')->end()
+                            ->scalarNode('object_grid_column_price_formatter')->defaultValue('/bundles/coreshoporder/pimcore/js/object/gridcolumn/operator/PriceFormatter.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')

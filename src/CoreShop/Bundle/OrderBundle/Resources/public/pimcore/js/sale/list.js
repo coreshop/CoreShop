@@ -62,7 +62,7 @@ coreshop.order.sale.list = Class.create({
 
                 data.classes = folderClass;
                 this.search = new pimcore.object.search({data: data, id: this.gridConfig.folderId}, 'folder');
-                this.getLayout()
+                this.getLayout();
             }.bind(this)
         });
     },
