@@ -76,8 +76,11 @@ class OrderState extends AbstractOperator
 
         $state = $this->workflowManager->getStateInfo($workflow, $result->value, false);
 
+        $rgb = $this->hex2rgb($state['color']);
+        $opacity = $workflow === 'coreshop_order' ? 1 : 0.3;
+
         if ($this->highlightLabel === true) {
-            $result->value = '<span class="rounded-color" style="background-color:' . $state['color'] . '; color: black">' . $state['label'] . '</span>';
+            $result->value = '<span class="rounded-color" style="background-color: rgba(' . join(',',$rgb) . ', ' . $opacity . '); color: black">' . $state['label'] . '</span>';
         } else {
             $result->value = $state['label'];
         }
@@ -85,4 +88,24 @@ class OrderState extends AbstractOperator
         return $result;
     }
 
+    /**
+     * @param $hex
+     * @return array
+     */
+    private function hex2rgb($hex)
+    {
+        $hex = str_replace('#', '', $hex);
+
+        if (strlen($hex) == 3) {
+            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
+        } else {
+            $r = hexdec(substr($hex, 0, 2));
+            $g = hexdec(substr($hex, 2, 2));
+            $b = hexdec(substr($hex, 4, 2));
+        }
+        $rgb = [$r, $g, $b];
+        return $rgb;
+    }
 }
