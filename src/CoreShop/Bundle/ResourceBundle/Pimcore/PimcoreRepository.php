@@ -83,9 +83,17 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      */
     public function find($id)
     {
+        return $this->forceFind($id, false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function forceFind($id, $force = true)
+    {
         $className = $this->metadata->getClass('model');
 
-        return $className::getById($id);
+        return $className::getById($id, $force);
     }
 
     /**

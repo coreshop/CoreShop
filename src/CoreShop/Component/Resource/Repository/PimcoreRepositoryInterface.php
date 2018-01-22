@@ -20,4 +20,11 @@ interface PimcoreRepositoryInterface extends RepositoryInterface
      * @return Listing
      */
     public function getList();
+
+    /**
+     * @param $id
+     * @param bool $force
+     * @return mixed
+     */
+    public function forceFind($id, $force = true);
 }
