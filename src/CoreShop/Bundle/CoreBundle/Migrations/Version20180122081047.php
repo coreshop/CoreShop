@@ -58,6 +58,8 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
 
             $classId = $this->container->getParameter('coreshop.model.' . $className . '.pimcore_class_id');
 
+            $data['classId'] = $classId;
+
             $gridConfig = new GridConfig();
             $configDataEncoded = json_encode($data);
             $gridConfig->setName($name);
@@ -100,14 +102,38 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
             'order' => [
                 'de' => [
                     'language'           => 'de',
-                    'sortinfo'           => false,
-                    'classId'            => 3,
+                    'sortinfo'           =>
+                        [
+                            'field'     => 'id',
+                            'direction' => 'DESC',
+                        ],
+                    'classId'            => null,
                     'columns'            =>
                         [
+                            'id'             =>
+                                [
+                                    'name'        => 'id',
+                                    'position'    => 1,
+                                    'hidden'      => false,
+                                    'width'       => 80,
+                                    'fieldConfig' =>
+                                        [
+                                            'key'    => 'id',
+                                            'label'  => 'ID',
+                                            'type'   => 'system',
+                                            'layout' =>
+                                                [
+                                                    'title'     => 'id',
+                                                    'name'      => 'id',
+                                                    'datatype'  => 'data',
+                                                    'fieldtype' => 'system',
+                                                ],
+                                        ],
+                                ],
                             '#5a65a6bced7f5' =>
                                 [
                                     'name'        => '#5a65a6bced7f5',
-                                    'position'    => 1,
+                                    'position'    => 2,
                                     'hidden'      => false,
                                     'width'       => 109,
                                     'fieldConfig' =>
@@ -141,7 +167,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced85d' =>
                                 [
                                     'name'        => '#5a65a6bced85d',
-                                    'position'    => 2,
+                                    'position'    => 3,
                                     'hidden'      => false,
                                     'width'       => 200,
                                     'fieldConfig' =>
@@ -180,7 +206,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced8d0' =>
                                 [
                                     'name'        => '#5a65a6bced8d0',
-                                    'position'    => 3,
+                                    'position'    => 4,
                                     'hidden'      => false,
                                     'width'       => 180,
                                     'fieldConfig' =>
@@ -255,7 +281,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced959' =>
                                 [
                                     'name'        => '#5a65a6bced959',
-                                    'position'    => 4,
+                                    'position'    => 5,
                                     'hidden'      => false,
                                     'width'       => 190,
                                     'fieldConfig' =>
@@ -290,7 +316,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced9e2' =>
                                 [
                                     'name'        => '#5a65a6bced9e2',
-                                    'position'    => 5,
+                                    'position'    => 6,
                                     'hidden'      => false,
                                     'width'       => 231,
                                     'fieldConfig' =>
@@ -324,7 +350,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bceda82' =>
                                 [
                                     'name'        => '#5a65a6bceda82',
-                                    'position'    => 6,
+                                    'position'    => 7,
                                     'hidden'      => false,
                                     'width'       => 200,
                                     'fieldConfig' =>
@@ -358,7 +384,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bcedae7' =>
                                 [
                                     'name'        => '#5a65a6bcedae7',
-                                    'position'    => 7,
+                                    'position'    => 8,
                                     'hidden'      => false,
                                     'width'       => 145,
                                     'fieldConfig' =>
@@ -391,7 +417,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             'orderDate'      =>
                                 [
                                     'name'        => 'orderDate',
-                                    'position'    => 8,
+                                    'position'    => 9,
                                     'hidden'      => false,
                                     'width'       => 183,
                                     'fieldConfig' =>
@@ -433,14 +459,38 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                 ],
                 'en' => [
                     'language'           => 'en',
-                    'sortinfo'           => false,
-                    'classId'            => 3,
+                    'sortinfo'           =>
+                        [
+                            'field'     => 'id',
+                            'direction' => 'DESC',
+                        ],
+                    'classId'            => null,
                     'columns'            =>
                         [
+                            'id'             =>
+                                [
+                                    'name'        => 'id',
+                                    'position'    => 1,
+                                    'hidden'      => false,
+                                    'width'       => 80,
+                                    'fieldConfig' =>
+                                        [
+                                            'key'    => 'id',
+                                            'label'  => 'ID',
+                                            'type'   => 'system',
+                                            'layout' =>
+                                                [
+                                                    'title'     => 'id',
+                                                    'name'      => 'id',
+                                                    'datatype'  => 'data',
+                                                    'fieldtype' => 'system',
+                                                ],
+                                        ],
+                                ],
                             '#5a65a6bced7f5' =>
                                 [
                                     'name'        => '#5a65a6bced7f5',
-                                    'position'    => 1,
+                                    'position'    => 2,
                                     'hidden'      => false,
                                     'width'       => 109,
                                     'fieldConfig' =>
@@ -474,7 +524,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced85d' =>
                                 [
                                     'name'        => '#5a65a6bced85d',
-                                    'position'    => 2,
+                                    'position'    => 3,
                                     'hidden'      => false,
                                     'width'       => 200,
                                     'fieldConfig' =>
@@ -513,7 +563,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced8d0' =>
                                 [
                                     'name'        => '#5a65a6bced8d0',
-                                    'position'    => 3,
+                                    'position'    => 4,
                                     'hidden'      => false,
                                     'width'       => 180,
                                     'fieldConfig' =>
@@ -588,7 +638,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced959' =>
                                 [
                                     'name'        => '#5a65a6bced959',
-                                    'position'    => 4,
+                                    'position'    => 5,
                                     'hidden'      => false,
                                     'width'       => 190,
                                     'fieldConfig' =>
@@ -623,7 +673,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced9e2' =>
                                 [
                                     'name'        => '#5a65a6bced9e2',
-                                    'position'    => 5,
+                                    'position'    => 6,
                                     'hidden'      => false,
                                     'width'       => 231,
                                     'fieldConfig' =>
@@ -657,7 +707,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bceda82' =>
                                 [
                                     'name'        => '#5a65a6bceda82',
-                                    'position'    => 6,
+                                    'position'    => 7,
                                     'hidden'      => false,
                                     'width'       => 200,
                                     'fieldConfig' =>
@@ -691,7 +741,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bcedae7' =>
                                 [
                                     'name'        => '#5a65a6bcedae7',
-                                    'position'    => 7,
+                                    'position'    => 8,
                                     'hidden'      => false,
                                     'width'       => 145,
                                     'fieldConfig' =>
@@ -724,7 +774,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             'orderDate'      =>
                                 [
                                     'name'        => 'orderDate',
-                                    'position'    => 8,
+                                    'position'    => 9,
                                     'hidden'      => false,
                                     'width'       => 183,
                                     'fieldConfig' =>
@@ -768,14 +818,38 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
             'quote' => [
                 'de' => [
                     'language'           => 'de',
-                    'sortinfo'           => false,
-                    'classId'            => 3,
+                    'sortinfo'           =>
+                        [
+                            'field'     => 'id',
+                            'direction' => 'DESC',
+                        ],
+                    'classId'            => null,
                     'columns'            =>
                         [
+                            'id'             =>
+                                [
+                                    'name'        => 'id',
+                                    'position'    => 1,
+                                    'hidden'      => false,
+                                    'width'       => 80,
+                                    'fieldConfig' =>
+                                        [
+                                            'key'    => 'id',
+                                            'label'  => 'ID',
+                                            'type'   => 'system',
+                                            'layout' =>
+                                                [
+                                                    'title'     => 'id',
+                                                    'name'      => 'id',
+                                                    'datatype'  => 'data',
+                                                    'fieldtype' => 'system',
+                                                ],
+                                        ],
+                                ],
                             '#5a65a6bced7f5' =>
                                 [
                                     'name'        => '#5a65a6bced7f5',
-                                    'position'    => 1,
+                                    'position'    => 2,
                                     'hidden'      => false,
                                     'width'       => 109,
                                     'fieldConfig' =>
@@ -802,14 +876,12 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                                                                 ],
                                                         ],
                                                 ],
-                                            'key'        => '#5a65a6bced7f5',
                                         ],
-                                    'isOperator'  => true,
                                 ],
                             '#5a65a6bced85d' =>
                                 [
                                     'name'        => '#5a65a6bced85d',
-                                    'position'    => 2,
+                                    'position'    => 3,
                                     'hidden'      => false,
                                     'width'       => 200,
                                     'fieldConfig' =>
@@ -848,7 +920,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced8d0' =>
                                 [
                                     'name'        => '#5a65a6bced8d0',
-                                    'position'    => 3,
+                                    'position'    => 4,
                                     'hidden'      => false,
                                     'width'       => 180,
                                     'fieldConfig' =>
@@ -923,7 +995,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bcedae7' =>
                                 [
                                     'name'        => '#5a65a6bcedae7',
-                                    'position'    => 4,
+                                    'position'    => 5,
                                     'hidden'      => false,
                                     'width'       => 145,
                                     'fieldConfig' =>
@@ -956,7 +1028,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             'quoteDate'      =>
                                 [
                                     'name'        => 'quoteDate',
-                                    'position'    => 5,
+                                    'position'    => 6,
                                     'hidden'      => false,
                                     'width'       => 183,
                                     'fieldConfig' =>
@@ -998,14 +1070,38 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                 ],
                 'en' => [
                     'language'           => 'en',
-                    'sortinfo'           => false,
-                    'classId'            => 3,
+                    'sortinfo'           =>
+                        [
+                            'field'     => 'id',
+                            'direction' => 'DESC',
+                        ],
+                    'classId'            => null,
                     'columns'            =>
                         [
+                            'id'             =>
+                                [
+                                    'name'        => 'id',
+                                    'position'    => 1,
+                                    'hidden'      => false,
+                                    'width'       => 80,
+                                    'fieldConfig' =>
+                                        [
+                                            'key'    => 'id',
+                                            'label'  => 'ID',
+                                            'type'   => 'system',
+                                            'layout' =>
+                                                [
+                                                    'title'     => 'id',
+                                                    'name'      => 'id',
+                                                    'datatype'  => 'data',
+                                                    'fieldtype' => 'system',
+                                                ],
+                                        ],
+                                ],
                             '#5a65a6bced7f5' =>
                                 [
                                     'name'        => '#5a65a6bced7f5',
-                                    'position'    => 1,
+                                    'position'    => 2,
                                     'hidden'      => false,
                                     'width'       => 109,
                                     'fieldConfig' =>
@@ -1039,7 +1135,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced85d' =>
                                 [
                                     'name'        => '#5a65a6bced85d',
-                                    'position'    => 2,
+                                    'position'    => 3,
                                     'hidden'      => false,
                                     'width'       => 200,
                                     'fieldConfig' =>
@@ -1078,7 +1174,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bced8d0' =>
                                 [
                                     'name'        => '#5a65a6bced8d0',
-                                    'position'    => 3,
+                                    'position'    => 4,
                                     'hidden'      => false,
                                     'width'       => 180,
                                     'fieldConfig' =>
@@ -1153,7 +1249,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             '#5a65a6bcedae7' =>
                                 [
                                     'name'        => '#5a65a6bcedae7',
-                                    'position'    => 4,
+                                    'position'    => 5,
                                     'hidden'      => false,
                                     'width'       => 145,
                                     'fieldConfig' =>
@@ -1186,7 +1282,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
                             'quoteDate'      =>
                                 [
                                     'name'        => 'quoteDate',
-                                    'position'    => 5,
+                                    'position'    => 6,
                                     'hidden'      => false,
                                     'width'       => 183,
                                     'fieldConfig' =>
