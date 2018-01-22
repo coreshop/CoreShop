@@ -30,7 +30,9 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
                         gridView = grid.getView(),
                         rowIndex = gridView.indexOf($el.el.up('table')),
                         data = grid.getStore().getAt(rowIndex);
-                    this.openerCallback(data.data.id);
+                    if(data && data.data) {
+                        this.openerCallback(data.data.id);
+                    }
                 }.bind(this, grid, menu)
             }));
         } else {
@@ -39,7 +41,6 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
                 iconCls: 'pimcore_icon_open',
                 handler: function () {
                     for (var i = 0; i < selectedRows.length; i++) {
-                        //coreshop.order.helper.openOrder(selectedRows[i].data.id)#
                         this.openerCallback(selectedRows[i].data.id);
                     }
                 }.bind(this)

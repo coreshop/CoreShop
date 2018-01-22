@@ -166,21 +166,52 @@ coreshop.order.sale.list = Class.create({
     getGrid: function () {
 
         this.tabbar = new Ext.TabPanel({
-            tabPosition: "top",
+            tabPosition: 'top',
             region: 'center',
             deferredRender: true,
             enableTabScroll: true,
             border: false,
             activeTab: 0,
             listeners: {
-                afterrender: function () {
+                afterLayout: function () {
                     this.setActiveTab(0);
                 }
             }
         });
 
         var searchLayout = this.search.getLayout();
-        //searchLayout.checkboxOnlyDirectChildren.hide();
+        searchLayout.on('afterLayout', function (layout) {
+            var gridPanels = layout.query('gridpanel');
+            if (gridPanels.length > 0) {
+                var grid = gridPanels[0];
+                if (!grid._corehop_listener) {
+                    grid._corehop_listener = true;
+                    grid.on('beforeedit', function (grid, cell) {
+                        console.log('before edit');
+                        if (cell.column.hasEditor() === false) {
+                            return false;
+                        }
+                    });
+
+                    grid.on('celldblclick', function (view, td, cellIndex, record, tr, rowIndex, e, eOpts) {
+
+                        if (!view.panel) {
+                            return;
+                        }
+
+                        var column = view.panel.columns[cellIndex - 1];
+                        if (column && column.hasEditor() === false) {
+                            view.setLoading(t('loading'));
+                            data = grid.getStore().getAt(rowIndex);
+                            this.open(data.id, function () {
+                                view.setLoading(false);
+                            });
+                            return false;
+                        }
+                    }.bind(this));
+                }
+            }
+        }.bind(this));
 
         this.tabbar.add(searchLayout);
         return this.tabbar;
