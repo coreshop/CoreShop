@@ -187,7 +187,6 @@ coreshop.order.sale.list = Class.create({
                 if (!grid._corehop_listener) {
                     grid._corehop_listener = true;
                     grid.on('beforeedit', function (grid, cell) {
-                        console.log('before edit');
                         if (cell.column.hasEditor() === false) {
                             return false;
                         }
