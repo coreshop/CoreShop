@@ -47,7 +47,8 @@ class CartController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        $form = $this->createForm(CartType::class, $this->getCart());
+        $cart = $this->getCart();
+        $form = $this->createForm(CartType::class, $cart);
         $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
@@ -94,9 +95,12 @@ class CartController extends FrontendController
 
             $this->getCartManager()->persistCart($cart);
         }
+        else {
+            $cart = $this->get('coreshop.repository.cart')->forceFind($cart->getId());
+        }
 
         return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
-            'cart' => $this->getCart(),
+            'cart' => $cart,
             'form' => $form->createView()
         ]);
     }
