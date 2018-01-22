@@ -171,7 +171,12 @@ coreshop.order.sale.list = Class.create({
             deferredRender: true,
             enableTabScroll: true,
             border: false,
-            activeTab: 0
+            activeTab: 0,
+            listeners: {
+                afterrender: function () {
+                    this.setActiveTab(0);
+                }
+            }
         });
 
         var searchLayout = this.search.getLayout();
