@@ -1,4 +1,5 @@
 {% extends '@CoreShopFrontend/layout.html.twig' %}
+{% form_theme form '@CoreShopFrontend/Form/theme.html.twig' %}
 
 {% block content %}
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
@@ -11,7 +12,13 @@
         {% endfor %}
     {% endfor %}
 
-    {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}
+    {% if cart.hasItems() %}
+        <div class="cart-summary">
+            {% include '@CoreShopFrontend/Cart/Summary/_items.html.twig' %}
+        </div>
+    {% else %}
+        <p>{{ 'coreshop.ui.cart_empty'|trans }}</p>
+    {% endif %}
 
     <div class="row">
         <div class="col-xs-12 col-sm-2">
