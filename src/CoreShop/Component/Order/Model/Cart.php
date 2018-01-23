@@ -16,6 +16,8 @@ use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class Cart extends AbstractProposal implements CartInterface
@@ -45,9 +47,23 @@ class Cart extends AbstractProposal implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalTax($withTax = true)
+    public function getTotalTax()
     {
-        return $this->getTotal(true) - $this->getTotal(false);
+        if (!$this->getTaxes() instanceof Fieldcollection) {
+            return 0;
+        }
+
+        $totalTax = 0;
+
+        foreach ($this->getTaxes()->getItems() as $taxItem) {
+            if (!$taxItem instanceof TaxItemInterface) {
+                continue;
+            }
+
+            $totalTax += $taxItem->getAmount();
+        }
+
+        return $totalTax;
     }
 
     /**
@@ -62,13 +78,24 @@ class Cart extends AbstractProposal implements CartInterface
     }
 
     /**
-     * calculates the total without discount.
-     *
-     * @param bool $withTax
-     *
-     * @return float
+     * {@inheritdocs}
      */
-    protected function getTotalWithoutDiscount($withTax = true)
+    public function getDiscountPercentage()
+    {
+        $totalDiscount = $this->getDiscount();
+        $totalWithoutDiscount = $this->getTotalWithoutDiscount();
+
+        if ($totalWithoutDiscount > 0) {
+            return $totalDiscount / $totalWithoutDiscount;
+        }
+        
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalWithoutDiscount($withTax = true)
     {
         $subtotal = $this->getSubtotal($withTax);
         return $subtotal;
@@ -95,7 +122,15 @@ class Cart extends AbstractProposal implements CartInterface
      */
     public function getSubtotalTax()
     {
-        return $this->getSubtotal(true) - $this->getSubtotal(false);
+        $subtotalTax = 0;
+
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof CartItemInterface) {
+                $subtotalTax += $item->getTotalTax();
+            }
+        }
+
+        return $subtotalTax;
     }
 
     /**

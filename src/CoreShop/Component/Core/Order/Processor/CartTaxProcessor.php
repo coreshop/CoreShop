@@ -16,6 +16,7 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface
@@ -49,6 +50,16 @@ final class CartTaxProcessor implements CartProcessorInterface
 
         $fieldCollection = new Fieldcollection();
         $fieldCollection->setItems($usedTaxes);
+
+        if ($cart->getDiscountPercentage() > 0) {
+            foreach ($usedTaxes as $taxItem) {
+                if (!$taxItem instanceof TaxItemInterface) {
+                    continue;
+                }
+
+                $taxItem->setAmount($taxItem->getAmount() - ($taxItem->getAmount() * $cart->getDiscountPercentage()));
+            }
+        }
 
         $cart->setTaxes($fieldCollection);
     }

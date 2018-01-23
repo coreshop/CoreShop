@@ -85,10 +85,10 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
 
         foreach ($this->getTaxRates() as $tax) {
             if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
-                $taxesAmounts[$tax->getId()] = $price * (abs($tax->getRate()) / 100);
+                $taxesAmounts[$tax->getId()] = (int) round($price * (abs($tax->getRate()) / 100));
                 $price = $price + $taxesAmounts[$tax->getId()];
             } else {
-                $taxesAmounts[$tax->getId()] = ($price * (abs($tax->getRate()) / 100));
+                $taxesAmounts[$tax->getId()] = (int) round(($price * (abs($tax->getRate()) / 100)));
             }
         }
 

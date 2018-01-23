@@ -37,7 +37,15 @@ class Cart extends BaseCart implements CartInterface
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
+     */
+    public function getShippingTax()
+    {
+        return $this->getShippingGross() - $this->getShippingNet();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function hasShippableItems()
     {
@@ -60,7 +68,7 @@ class Cart extends BaseCart implements CartInterface
      *
      * @return float
      */
-    protected function getTotalWithoutDiscount($withTax = true)
+    public function getTotalWithoutDiscount($withTax = true)
     {
         return parent::getTotalWithoutDiscount($withTax) + $this->getShipping($withTax);
     }

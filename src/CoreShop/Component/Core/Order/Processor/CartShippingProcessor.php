@@ -81,8 +81,13 @@ final class CartShippingProcessor implements CartProcessorInterface
                 $cart->setShippingTaxRate($taxCalculator->getTotalRate());
 
                 $usedTaxes = $cart->getTaxes() instanceof Fieldcollection ? $cart->getTaxes()->getItems() : [];
-                $usedTaxes = $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $cart->getShipping(false)), $usedTaxes);
+                $shipping = $cart->getShipping(false);
 
+                if ($cart->getDiscountPercentage() > 0 && $shipping > 0) {
+                    $shipping = $shipping - ($shipping * $cart->getDiscountPercentage());
+                }
+
+                $usedTaxes = $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $shipping), $usedTaxes);
                 $fieldCollection = new Fieldcollection();
                 $fieldCollection->setItems($usedTaxes);
 

@@ -66,6 +66,20 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
     public function hasPriceRule($priceRule);
 
     /**
+     * calculates the total without discount.
+     *
+     * @param bool $withTax
+     *
+     * @return float
+     */
+    public function getTotalWithoutDiscount($withTax = true);
+
+    /**
+     * @return int
+     */
+    public function getDiscountPercentage();
+
+    /**
      * @return PaymentProviderInterface
      */
     public function getPaymentProvider();

@@ -31,11 +31,15 @@ final class CartItemTaxProcessor implements CartProcessorInterface
      */
     private $taxCollector;
 
+
     /**
      * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
      * @param TaxCollectorInterface $taxCollector
      */
-    public function __construct(ProductTaxCalculatorFactoryInterface $productTaxFactory, TaxCollectorInterface $taxCollector)
+    public function __construct(
+        ProductTaxCalculatorFactoryInterface $productTaxFactory,
+        TaxCollectorInterface $taxCollector
+    )
     {
         $this->productTaxFactory = $productTaxFactory;
         $this->taxCollector = $taxCollector;
@@ -46,26 +50,18 @@ final class CartItemTaxProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
-        $totalWithoutDiscount = $cart->getSubtotal(false);
-        $totalWithDiscount = $cart->getSubtotal(false) - $cart->getDiscount(false);
-
-        if ($totalWithDiscount > 0) {
-            $discountPercentage = ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
-        }
-        else {
-            $discountPercentage = 1;
-        }
-
         /**
          * @var $item CartItemInterface
          */
         foreach ($cart->getItems() as $item) {
             $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct());
+
             $total = $item->getTotal(false);
 
             $fieldCollection = new Fieldcollection();
-            $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $total * $discountPercentage));
+            $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $total));
 
+            $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
             $item->setTaxes($fieldCollection);
             $item->save();
         }

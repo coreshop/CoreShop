@@ -14,6 +14,8 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
@@ -39,15 +41,13 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     public function getTotal($withTax = true)
     {
-        return $this->getItemPrice($withTax) * $this->getQuantity();
-    }
+        $total = $this->getItemPrice(true) * $this->getQuantity();
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalTax()
-    {
-        return $this->getItemTax() * $this->getQuantity();
+        if (!$withTax) {
+            $total -= $this->getTotalTax();
+        }
+
+        return $total;
     }
 
     /**
@@ -80,6 +80,28 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     public function setItemRetailPrice($itemRetailPrice, $withTax = true)
     {
         $withTax ? $this->setItemRetailPriceGross($itemRetailPrice) : $this->setItemRetailPriceNet($itemRetailPrice);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalTax()
+    {
+        if (!$this->getTaxes() instanceof Fieldcollection) {
+            return 0;
+        }
+
+        $totalTax = 0;
+
+        foreach ($this->getTaxes()->getItems() as $taxItem) {
+            if (!$taxItem instanceof TaxItemInterface) {
+                continue;
+            }
+
+            $totalTax += $taxItem->getAmount();
+        }
+
+        return $totalTax;
     }
 
     /**
