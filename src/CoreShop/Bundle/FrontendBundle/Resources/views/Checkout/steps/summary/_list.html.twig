@@ -20,15 +20,13 @@
         </tr>
         </thead>
         <tbody>
-        {% for item in cart.getItems %}
-            {% include '@CoreShopFrontend/Common/Cart/_item.html.twig' with {'item': item} %}
-        {% endfor %}
-
-        {% include '@CoreShopFrontend/Common/Cart/_rules.html.twig' %}
-
+            {% for item in cart.getItems %}
+                {% include '@CoreShopFrontend/Checkout/steps/summary/_item.html.twig' with {'item': item} %}
+            {% endfor %}
+            {% include '@CoreShopFrontend/Checkout/steps/summary/_rules.html.twig' %}
         </tbody>
         <tfoot>
-        {% include '@CoreShopFrontend/Common/Cart/_summary.html.twig' %}
+            {% include '@CoreShopFrontend/Checkout/steps/summary/_.html.twig' %}
         </tfoot>
     </table>
 </div>

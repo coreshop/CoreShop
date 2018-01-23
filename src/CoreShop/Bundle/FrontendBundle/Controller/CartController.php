@@ -60,7 +60,7 @@ class CartController extends FrontendController
 
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                     $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
-                    return $this->renderTemplate('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
+                    return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
                         'cart' => $this->getCart(),
                         'form' => $form->createView()
                     ]);
@@ -74,7 +74,7 @@ class CartController extends FrontendController
 
                     if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
                         $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
-                        return $this->renderTemplate('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
+                        return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
                             'cart' => $this->getCart(),
                             'form' => $form->createView()
                         ]);

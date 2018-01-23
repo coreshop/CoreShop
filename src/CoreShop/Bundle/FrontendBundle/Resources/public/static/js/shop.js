@@ -17,70 +17,76 @@ $(document).ready(function () {
     };
 
     shop.initChangeAddress = function () {
-        if ($('select[name=shippingAddress]').find('option:selected').length) {
-            var address = $('select[name=shippingAddress]').find('option:selected').data('address');
+
+        var $addressStep = $('.checkout-step.step-address');
+
+        if ($addressStep.length === 0) {
+            return;
+        }
+
+        var $invoiceAddress = $addressStep.find('select[name="invoiceAddress"]'),
+            $invoicePanel = $addressStep.find('.panel-invoice-address'),
+            $invoiceField = $addressStep.find('.invoice-address-selector'),
+            $shippingAddress = $addressStep.find('select[name="shippingAddress"]'),
+            $shippingPanel = $addressStep.find('.panel-shipping-address'),
+            $shippingField = $addressStep.find('.shipping-address-selector'),
+            $useIasS = $addressStep.find('[name="useInvoiceAsShipping"]');
+
+        if ($invoiceAddress.find('option:selected').length) {
+            var address = $invoiceAddress.find('option:selected').data('address');
             if (address) {
-                $('.panel-shipping-address').html(address.html);
+                $invoicePanel.html(address.html);
             }
         }
 
-        if ($('select[name=invoiceAddress]').find('option:selected').length) {
-            var address = $('select[name=invoiceAddress]').find('option:selected').data('address');
+        if ($shippingAddress.find('option:selected').length) {
+            var address = $shippingAddress.find('option:selected').data('address');
             if (address) {
-                $('.panel-invoice-address').html(address.html);
+                $shippingPanel.html(address.html);
             }
         }
 
-        $('select[name=shippingAddress]').change(function () {
+        $invoiceAddress.on('change', function () {
             var address = $(this).find('option:selected').data('address');
 
             if (address) {
                 address = address.html;
-
-                $('.panel-shipping-address').html(address);
-
-                if ($('[name=useShippingAsInvoice]').is(":checked")) {
-                    $('.panel-invoice-address').html(address);
-
-                    $('select[name=invoiceAddress]').val($(this).val());
+                $invoicePanel.html(address);
+                if ($useIasS.is(':checked')) {
+                    $shippingAddress.val($(this).val()).trigger('change');
                 }
-            }
-            else {
-                $('.panel-shipping-address').html('');
-
-                if ($('[name=useShippingAsInvoice]').is(":checked")) {
-                    $('.panel-invoice-address').html('');
-                    $('select[name=invoiceAddress]').val(null);
+            } else {
+                $invoicePanel.html('');
+                if ($useIasS.is(':checked')) {
+                    $shippingPanel.html('');
+                    $shippingAddress.val(null).trigger('change');
                 }
             }
         });
 
-        $('select[name=invoiceAddress]').change(function () {
+        $shippingAddress.on('change', function () {
             var address = $(this).find('option:selected').data('address');
 
             if (address) {
                 address = address.html;
-
-                $('.panel-invoice-address').html(address);
-            }
-            else {
-                $('.panel-invoice-address').html('');
+                $shippingPanel.html(address);
+            } else {
+                $shippingPanel.html('');
             }
         });
 
-        $('[name=useShippingAsInvoice]').change(function () {
-            if ($(this).is(":checked")) {
-                $('.invoice-address-selector').slideUp();
-                var address = $('select[name=shippingAddress] option:selected').data('address');
-                var value = $('select[name=shippingAddress] :selected').val();
+        $useIasS.on('change', function () {
+            if ($(this).is(':checked')) {
+                $shippingField.slideUp();
+                var address = $('select[name=invoiceAddress] option:selected').data('address');
+                var value = $('select[name=invoiceAddress] :selected').val();
 
                 if (address) {
-                    $('.panel-invoice-address').html(address.html);
-                    $('select[name=invoiceAddress]').val(value);
+                    $shippingAddress.val(value).trigger('change');
                 }
             }
             else {
-                $('.invoice-address-selector').slideDown();
+                $shippingField.slideDown();
             }
         });
     };
