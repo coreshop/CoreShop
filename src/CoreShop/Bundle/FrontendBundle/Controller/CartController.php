@@ -96,7 +96,9 @@ class CartController extends FrontendController
             $this->getCartManager()->persistCart($cart);
         }
         else {
-            $cart = $this->get('coreshop.repository.cart')->forceFind($cart->getId());
+            if ($cart->getId()) {
+                $cart = $this->get('coreshop.repository.cart')->forceFind($cart->getId());
+            }
         }
 
         return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
