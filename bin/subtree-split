@@ -112,7 +112,6 @@ split 'src/CoreShop/Component/StorageList' storage-list
 split 'src/CoreShop/Component/Inventory' inventory
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
-split 'src/CoreShop/Bundle/AdminBundle' admin-bundle
 split 'src/CoreShop/Bundle/ConfigurationBundle' configuration-bundle
 split 'src/CoreShop/Bundle/CoreBundle' core-bundle
 split 'src/CoreShop/Bundle/CurrencyBundle' currency-bundle
