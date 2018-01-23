@@ -19,7 +19,7 @@ final class InStock extends Constraint
     /**
      * @var string
      */
-    public $message = '%stockable% does not have sufficient stock.';
+    public $message = 'coreshop.cart_item.not_sufficient_stock';
 
     /**
      * @var string
