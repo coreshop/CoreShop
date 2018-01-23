@@ -41,13 +41,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     public function getTotal($withTax = true)
     {
-        $total = $this->getItemPrice(true) * $this->getQuantity();
-
-        if (!$withTax) {
-            $total -= $this->getTotalTax();
-        }
-
-        return $total;
+        return $this->getItemPrice($withTax) * $this->getQuantity();
     }
 
     /**
