@@ -47,6 +47,14 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             $container->setParameter('coreshop.state_machine.colors', $config['state_machine']['colors']);
         }
 
+        if (!$container->hasParameter('coreshop.pimcore')) {
+            $container->setParameter('coreshop.pimcore', []);
+        }
+
+        if (!$container->hasParameter('coreshop.state_machine.callbacks')) {
+            $container->setParameter('coreshop.state_machine.callbacks', []);
+        }
+
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
     }
 
