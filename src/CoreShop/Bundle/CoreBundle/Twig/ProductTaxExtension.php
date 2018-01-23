@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
+use CoreShop\Component\Core\Taxation\TaxApplicatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -20,7 +22,7 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 final class ProductTaxExtension extends \Twig_Extension
 {
     /**
-     * @var PurchasablePriceCalculatorInterface
+     * @var TaxedProductPriceCalculatorInterface
      */
     private $priceCalculator;
 
@@ -30,11 +32,11 @@ final class ProductTaxExtension extends \Twig_Extension
     private $taxCalculatorFactory;
 
     /**
-     * @param PurchasablePriceCalculatorInterface  $priceCalculator
+     * @param TaxedProductPriceCalculatorInterface  $priceCalculator
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      */
     public function __construct(
-        PurchasablePriceCalculatorInterface $priceCalculator,
+        TaxedProductPriceCalculatorInterface $priceCalculator,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
     ) {
         $this->priceCalculator = $priceCalculator;
@@ -60,7 +62,7 @@ final class ProductTaxExtension extends \Twig_Extension
     {
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            return $taxCalculator->getTaxesAmount($this->priceCalculator->getPrice($product));
+            return $taxCalculator->getTaxesAmount($this->priceCalculator->getPrice($product, false));
         }
     }
 
