@@ -1,12 +1,9 @@
 {% extends '@CoreShopFrontend/layout.html.twig' %}
-{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
 {% block content %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message|trans }}
-        </div>
-    {% endfor %}
+
+    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
 
     {% if wishlist.hasItems() %}
     <div class="table-responsive shopping-wishlist-table">

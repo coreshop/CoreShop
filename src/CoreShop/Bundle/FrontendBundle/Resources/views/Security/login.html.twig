@@ -1,13 +1,9 @@
 {% extends '@CoreShopFrontend/layout-full.html.twig' %}
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
-{% import '@CoreShopFrontend/Common/Macro/messages.html.twig' as messages %}
 
 {% block center %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message|trans }}
-        </div>
-    {% endfor %}
 
+    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
     {% include 'CoreShopFrontendBundle:Security:_login-form.html.twig' %}
+
 {% endblock %}

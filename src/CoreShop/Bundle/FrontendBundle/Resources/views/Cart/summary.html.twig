@@ -2,15 +2,9 @@
 {% form_theme form '@CoreShopFrontend/Form/theme.html.twig' %}
 
 {% block content %}
-    {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
 
-    {% for label, messages in app.flashes(['success', 'error']) %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label == 'error' ? 'danger' : label }}">
-                {{ message|trans }}
-            </div>
-        {% endfor %}
-    {% endfor %}
+    {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
+    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
 
     {% if cart.hasItems() %}
         <div class="cart-summary">
