@@ -12,9 +12,13 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
+use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\TaxRuleGroup;
+use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -27,11 +31,21 @@ final class CartTaxProcessor implements CartProcessorInterface
     private $taxCollector;
 
     /**
-     * @param TaxCollectorInterface $taxCollector
+     * @var TaxCalculatorFactoryInterface
      */
-    public function __construct(TaxCollectorInterface $taxCollector)
+    private $taxCalculationFactory;
+
+    /**
+     * @param TaxCollectorInterface $taxCollector
+     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
+     */
+    public function __construct(
+        TaxCollectorInterface $taxCollector,
+        TaxCalculatorFactoryInterface $taxCalculatorFactory
+    )
     {
         $this->taxCollector = $taxCollector;
+        $this->taxCalculationFactory = $taxCalculatorFactory;
     }
 
     /**
@@ -39,6 +53,8 @@ final class CartTaxProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
+        $cart->setTaxes(null);
+
         $usedTaxes = [];
 
         /**
@@ -47,6 +63,8 @@ final class CartTaxProcessor implements CartProcessorInterface
         foreach ($cart->getItems() as $item) {
             $usedTaxes = $this->taxCollector->mergeTaxes($item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [], $usedTaxes);
         }
+
+        $usedTaxes = $this->collectionShippingTaxes($cart, $usedTaxes);
 
         $fieldCollection = new Fieldcollection();
         $fieldCollection->setItems($usedTaxes);
@@ -62,5 +80,36 @@ final class CartTaxProcessor implements CartProcessorInterface
         }
 
         $cart->setTaxes($fieldCollection);
+    }
+
+    /**
+     * @param CartInterface $cart
+     * @param array $usedTaxes
+     * @return array
+     */
+    protected function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
+    {
+        if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
+            return $usedTaxes;
+        }
+
+        if (null === $cart->getCarrier()) {
+            return $usedTaxes;
+        }
+
+        $carrier = $cart->getCarrier();
+
+        if ($carrier instanceof Carrier && $carrier->getTaxRule() instanceof TaxRuleGroup) {
+            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($cart->getCarrier()->getTaxRule(), $cart->getShippingAddress());
+
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                $cart->setShippingTaxRate($taxCalculator->getTotalRate());
+                $shipping = $cart->getShipping(false);
+
+                return $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $shipping), $usedTaxes);
+            }
+        }
+
+        return $usedTaxes;
     }
 }

@@ -30,29 +30,14 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $carrierPriceCalculator;
 
     /**
-     * @var TaxCalculatorFactoryInterface
-     */
-    private $taxCalculationFactory;
-
-    /**
-     * @var TaxCollectorInterface
-     */
-    private $taxCollector;
-
-    /**
      * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
-     * @param TaxCalculatorFactoryInterface $taxCalculationFactory
-     * @param TaxCollectorInterface $taxCollector
      */
     public function __construct(
-        TaxedShippingCalculatorInterface $carrierPriceCalculator,
-        TaxCalculatorFactoryInterface $taxCalculationFactory,
-        TaxCollectorInterface $taxCollector
+        TaxedShippingCalculatorInterface $carrierPriceCalculator
+
     )
     {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
-        $this->taxCalculationFactory = $taxCalculationFactory;
-        $this->taxCollector = $taxCollector;
     }
 
     /**
@@ -73,26 +58,5 @@ final class CartShippingProcessor implements CartProcessorInterface
 
         $cart->setShipping($priceWithTax, true);
         $cart->setShipping($priceWithoutTax, false);
-
-        if ($cart->getCarrier() instanceof Carrier && $cart->getCarrier()->getTaxRule() instanceof TaxRuleGroup) {
-            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($cart->getCarrier()->getTaxRule(), $cart->getShippingAddress());
-
-            if ($taxCalculator instanceof TaxCalculatorInterface) {
-                $cart->setShippingTaxRate($taxCalculator->getTotalRate());
-
-                $usedTaxes = $cart->getTaxes() instanceof Fieldcollection ? $cart->getTaxes()->getItems() : [];
-                $shipping = $cart->getShipping(false);
-
-                if ($cart->getDiscountPercentage() > 0 && $shipping > 0) {
-                    $shipping = $shipping - ($shipping * $cart->getDiscountPercentage());
-                }
-
-                $usedTaxes = $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $shipping), $usedTaxes);
-                $fieldCollection = new Fieldcollection();
-                $fieldCollection->setItems($usedTaxes);
-
-                $cart->setTaxes($fieldCollection);
-            }
-        }
     }
 }
