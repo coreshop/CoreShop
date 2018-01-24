@@ -695,12 +695,6 @@ translations:
           en: 'There was an Error'
           de: 'Es ist ein Fehler aufgetreten'
 
-  coreshop.ui.error:
-      languages:
-          de_CH: 'Es ist ein Fehler aufgetreten'
-          en: 'There was an Error'
-          de: 'Es ist ein Fehler aufgetreten'
-
   coreshop.ui.success:
       languages:
           de_CH: 'Der Vorgang war erfolgreich'
