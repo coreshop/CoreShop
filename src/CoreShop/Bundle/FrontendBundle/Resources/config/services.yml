@@ -1,93 +1,93 @@
 imports:
-  - { resource: "services/wishlist.yml" }
+    - { resource: "services/wishlist.yml" }
 
 parameters:
-  coreshop.frontend.base.url: /test/shop
+    coreshop.frontend.base.url: /test/shop
 
 services:
-  coreshop.frontend.controller.index:
-    class: '%coreshop.frontend.controller.index%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.register:
-    class: '%coreshop.frontend.controller.register%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.customer:
-    class: '%coreshop.frontend.controller.customer%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.currency:
-    class: '%coreshop.frontend.controller.currency%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.language:
-    class: '%coreshop.frontend.controller.language%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.search:
-    class: '%coreshop.frontend.controller.search%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.cart:
-    class: '%coreshop.frontend.controller.cart%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.checkout:
-    class: '%coreshop.frontend.controller.checkout%'
-    arguments:
-      - '@coreshop.checkout_manager.factory'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.order:
-    class: '%coreshop.frontend.controller.order%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.category:
-    class: '%coreshop.frontend.controller.category%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.product:
-    class: '%coreshop.frontend.controller.product%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.quote:
-    class: '%coreshop.frontend.controller.quote%'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.security:
-    class: '%coreshop.frontend.controller.security%'
-    arguments:
-      - '@security.authentication_utils'
-      - '@form.factory'
-      - '@templating'
-    calls:
-      - [setContainer, ['@service_container']]
-
-  coreshop.frontend.controller.payment:
-    class: '%coreshop.frontend.controller.payment%'
-    arguments:
-      - '@coreshop.factory.payment'
-      - '@coreshop.repository.order'
-      - '@coreshop.object_service'
-      - '@coreshop.context.currency'
-      - '@doctrine.orm.entity_manager'
-    calls:
+    coreshop.frontend.controller.index:
+        class: '%coreshop.frontend.controller.index%'
+        calls:
             - [setContainer, ['@service_container']]
 
-  coreshop.frontend.controller.wishlist:
-    class: '%coreshop.frontend.controller.wishlist%'
-    calls:
-      - [setContainer, ['@service_container']]
+    coreshop.frontend.controller.register:
+        class: '%coreshop.frontend.controller.register%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.customer:
+        class: '%coreshop.frontend.controller.customer%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.currency:
+        class: '%coreshop.frontend.controller.currency%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.language:
+        class: '%coreshop.frontend.controller.language%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.search:
+        class: '%coreshop.frontend.controller.search%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.cart:
+        class: '%coreshop.frontend.controller.cart%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.checkout:
+        class: '%coreshop.frontend.controller.checkout%'
+        arguments:
+            - '@coreshop.checkout_manager.factory'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.order:
+        class: '%coreshop.frontend.controller.order%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.category:
+        class: '%coreshop.frontend.controller.category%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.product:
+        class: '%coreshop.frontend.controller.product%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.quote:
+        class: '%coreshop.frontend.controller.quote%'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.security:
+        class: '%coreshop.frontend.controller.security%'
+        arguments:
+            - '@security.authentication_utils'
+            - '@form.factory'
+            - '@templating'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.payment:
+        class: '%coreshop.frontend.controller.payment%'
+        arguments:
+            - '@coreshop.factory.payment'
+            - '@coreshop.repository.order'
+            - '@coreshop.object_service'
+            - '@coreshop.context.currency'
+            - '@doctrine.orm.entity_manager'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    coreshop.frontend.controller.wishlist:
+        class: '%coreshop.frontend.controller.wishlist%'
+        calls:
+            - [setContainer, ['@service_container']]

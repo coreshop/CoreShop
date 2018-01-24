@@ -1,10 +1,10 @@
 CoreShop\Component\Core\Model\PaymentProvider:
-  exclusion_policy: ALL
-  xml_root_name: country
-  properties:
-    stores:
-      expose: true
-      type: relation
-      groups: [Detailed]
-    gatewayConfig:
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: country
+    properties:
+        stores:
+            expose: true
+            type: relation
+            groups: [Detailed]
+        gatewayConfig:
+            groups: [Detailed]

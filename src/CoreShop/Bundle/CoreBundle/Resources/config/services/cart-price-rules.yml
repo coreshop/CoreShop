@@ -1,11 +1,11 @@
 services:
-  coreshop.cart_price_rule.condition.products:
-    class: CoreShop\Component\Core\Cart\Rule\Condition\ProductsConditionChecker
-    tags:
-      - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+    coreshop.cart_price_rule.condition.products:
+        class: CoreShop\Component\Core\Cart\Rule\Condition\ProductsConditionChecker
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
 
-  coreshop.cart_price_rule.condition.categories:
-    class: CoreShop\Component\Core\Cart\Rule\Condition\CategoriesConditionChecker
-    tags:
-      - { name: coreshop.cart_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+    coreshop.cart_price_rule.condition.categories:
+        class: CoreShop\Component\Core\Cart\Rule\Condition\CategoriesConditionChecker
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
 

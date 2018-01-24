@@ -1,15 +1,15 @@
 coreshop_admin_notification_rule:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.notification_rule
-    additional_routes:
-      config:
-        path: get-config
-        action: getConfig
-        methods:
-          - GET
-      sort:
-        path: sort
-        action: sort
-        methods:
-          - POST
+    type: coreshop.resources
+    resource: |
+        alias: coreshop.notification_rule
+        additional_routes:
+            config:
+                path: get-config
+                action: getConfig
+                methods:
+                    - GET
+            sort:
+                path: sort
+                action: sort
+                methods:
+                    - POST

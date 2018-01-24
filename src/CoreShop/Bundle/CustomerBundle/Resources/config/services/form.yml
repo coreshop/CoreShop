@@ -1,21 +1,21 @@
 parameters:
-  coreshop.form.type.customer.validation_groups: [coreshop]
+    coreshop.form.type.customer.validation_groups: [coreshop]
 
 services:
-  coreshop.form.type.customer:
-    class: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType
-    arguments:
-      - '%coreshop.model.customer.class%'
-      - '%coreshop.form.type.customer.validation_groups%'
-    tags:
-        - { name: form.type }
+    coreshop.form.type.customer:
+        class: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType
+        arguments:
+            - '%coreshop.model.customer.class%'
+            - '%coreshop.form.type.customer.validation_groups%'
+        tags:
+            - { name: form.type }
 
-  coreshop.form.type.request_reset_password:
-    class: CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType
-    tags:
-      - { name: form.type }
+    coreshop.form.type.request_reset_password:
+        class: CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType
+        tags:
+            - { name: form.type }
 
-  coreshop.form.type.reset_password:
-    class: CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType
-    tags:
-      - { name: form.type }
+    coreshop.form.type.reset_password:
+        class: CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType
+        tags:
+            - { name: form.type }

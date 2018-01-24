@@ -1,42 +1,43 @@
 CoreShop\Component\Shipping\Model\ShippingRuleGroup:
-  type: mappedSuperclass
-  table: coreshop_shipping_rule_group
-  fields:
-    id:
-      type: integer
-      column: id
-      id: true
-      generator:
-        strategy: AUTO
-    priority:
-      type: integer
-      column: priority
-    creationDate:
-      type: datetime
-      gedmo:
-        timestampable:
-          on: create
-    modificationDate:
-      type: datetime
-      nullable: true
-      gedmo:
-        timestampable:
-          on: update
-  manyToOne:
-    carrier:
-      targetEntity: CoreShop\Component\Shipping\Model\CarrierInterface
-      inversedBy: shippingRules
-      joinColumn:
-        name: carrierId
-        referencedColumnName: id
-        nullable: false
-      cascade:
-        - persist
-    shippingRule:
-      targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleInterface
-      joinColumn:
-        name: shippingRuleId
-        referencedColumnName: id
-        onDelete: cascade
-      cascade:
-        - persist
+    type: mappedSuperclass
+    table: coreshop_shipping_rule_group
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        priority:
+            type: integer
+            column: priority
+        creationDate:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        modificationDate:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        carrier:
+            targetEntity: CoreShop\Component\Shipping\Model\CarrierInterface
+            inversedBy: shippingRules
+            joinColumn:
+                name: carrierId
+                referencedColumnName: id
+                nullable: false
+            cascade:
+                - persist
+
+        shippingRule:
+            targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleInterface
+            joinColumn:
+                name: shippingRuleId
+                referencedColumnName: id
+                onDelete: cascade
+            cascade:
+                - persist

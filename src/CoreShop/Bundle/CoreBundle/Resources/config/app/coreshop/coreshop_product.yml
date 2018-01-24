@@ -1,12 +1,12 @@
 core_shop_product:
-  pimcore:
-    category:
-      path: coreshop/categories
-      classes:
-        repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\CategoryRepository
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopCategory.json'
-    product:
-      path: coreshop/products
-      classes:
-        repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\ProductRepository
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopProduct.json'
+    pimcore:
+        category:
+            path: coreshop/categories
+            classes:
+                repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\CategoryRepository
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopCategory.json'
+        product:
+            path: coreshop/products
+            classes:
+                repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\ProductRepository
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopProduct.json'

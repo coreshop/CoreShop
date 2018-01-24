@@ -1,47 +1,47 @@
 CoreShop\Component\Shipping\Model\Carrier:
-  type: mappedSuperclass
-  table: coreshop_carrier
-  fields:
-    id:
-      type: integer
-      column: id
-      id: true
-      generator:
-        strategy: AUTO
-    name:
-      column: name
-      type: string
-    label:
-      column: label
-      type: string
-      nullable: true
-    trackingUrl:
-      column: trackingUrl
-      type: string
-      nullable: true
-    isFree:
-      column: isFree
-      type: boolean
-    rangeBehaviour:
-      column: rangeBehaviour
-      type: string
-    creationDate:
-      type: datetime
-      gedmo:
-        timestampable:
-          on: create
-    modificationDate:
-      type: datetime
-      nullable: true
-      gedmo:
-        timestampable:
-          on: update
-  oneToMany:
-    shippingRules:
-      targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleGroup
-      mappedBy: carrier
-      orphanRemoval: true
-      cascade:
-        - all
-      orderBy:
-        priority: ASC
+    type: mappedSuperclass
+    table: coreshop_carrier
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+        label:
+            column: label
+            type: string
+            nullable: true
+        trackingUrl:
+            column: trackingUrl
+            type: string
+            nullable: true
+        isFree:
+            column: isFree
+            type: boolean
+        rangeBehaviour:
+            column: rangeBehaviour
+            type: string
+        creationDate:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        modificationDate:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update
+    oneToMany:
+        shippingRules:
+            targetEntity: CoreShop\Component\Shipping\Model\ShippingRuleGroup
+            mappedBy: carrier
+            orphanRemoval: true
+            cascade:
+                - all
+            orderBy:
+                priority: ASC

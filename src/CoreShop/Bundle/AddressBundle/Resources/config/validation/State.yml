@@ -1,12 +1,10 @@
 CoreShop\Component\Address\Model\State:
-  properties:
-    country:
-      - NotBlank: { groups: [coreshop] }
-    isoCode:
-      - NotBlank: { groups: [coreshop] }
-    active:
-      - Type:
-          type: boolean
-          groups: [coreshop]
-    translations:
-      - Valid: ~
+    properties:
+        country:
+            - NotBlank: { groups: [coreshop] }
+        isoCode:
+            - NotBlank: { groups: [coreshop] }
+        active:
+            - Type: { type: boolean, groups: [coreshop] }
+        translations:
+            - Valid: ~

@@ -1,8 +1,7 @@
 CoreShop\Component\Shipping\Model\ShippingRuleGroup:
-  properties:
-    carrier:
-      - NotBlank: { groups: [coreshop] }
-    priority:
-      - NotBlank: { groups: [coreshop] }
-      - Type:
-          type: integer
+    properties:
+        carrier:
+            - NotBlank: { groups: [coreshop] }
+        priority:
+            - NotBlank: { groups: [coreshop] }
+            - Type: { type: integer }

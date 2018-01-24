@@ -1,20 +1,20 @@
 core_shop_core:
     checkout_manager_factory: default
     checkout:
-      default:
-        steps:
-          customer:
-            step: coreshop.checkout.step.customer
-            priority: 10
-          address:
-            step: coreshop.checkout.step.address
-            priority: 20
-          shipping:
-            step: coreshop.checkout.step.shipping
-            priority: 30
-          payment:
-            step: coreshop.checkout.step.payment
-            priority: 40
-          summary:
-            step: coreshop.checkout.step.summary
-            priority: 50
+        default:
+            steps:
+                customer:
+                  step: coreshop.checkout.step.customer
+                  priority: 10
+                address:
+                  step: coreshop.checkout.step.address
+                  priority: 20
+                shipping:
+                  step: coreshop.checkout.step.shipping
+                  priority: 30
+                payment:
+                  step: coreshop.checkout.step.payment
+                  priority: 40
+                summary:
+                  step: coreshop.checkout.step.summary
+                  priority: 50

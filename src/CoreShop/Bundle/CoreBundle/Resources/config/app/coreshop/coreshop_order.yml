@@ -1,31 +1,31 @@
 core_shop_order:
-  pimcore:
-    cart:
-      path: coreshop/carts
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json'
-    cart_item:
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCartItem.json'
-    order:
-      path: coreshop/orders
-      classes:
-        pimcore_controller:
-            default: CoreShop\Bundle\CoreBundle\Controller\OrderController
-            creation: CoreShop\Bundle\CoreBundle\Controller\OrderCreationController
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrder.json'
-    order_item:
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderItem.json'
-    order_shipment:
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipment.json'
-    quote:
-      path: coreshop/quotes
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuote.json'
-        pimcore_controller:
-            creation: CoreShop\Bundle\CoreBundle\Controller\QuoteCreationController
-    quote_item:
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuoteItem.json'
+    pimcore:
+        cart:
+            path: coreshop/carts
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json'
+        cart_item:
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCartItem.json'
+        order:
+            path: coreshop/orders
+            classes:
+                pimcore_controller:
+                    default: CoreShop\Bundle\CoreBundle\Controller\OrderController
+                    creation: CoreShop\Bundle\CoreBundle\Controller\OrderCreationController
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrder.json'
+        order_item:
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderItem.json'
+        order_shipment:
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipment.json'
+        quote:
+            path: coreshop/quotes
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuote.json'
+                pimcore_controller:
+                    creation: CoreShop\Bundle\CoreBundle\Controller\QuoteCreationController
+        quote_item:
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuoteItem.json'

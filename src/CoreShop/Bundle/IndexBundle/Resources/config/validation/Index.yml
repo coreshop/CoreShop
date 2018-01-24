@@ -1,8 +1,8 @@
 CoreShop\Component\Index\Model\Index:
-  properties:
-    name:
-      - NotBlank: { groups: [coreshop] }
-    class:
-      - NotBlank: { groups: [coreshop] }
-    worker:
-      - NotBlank: { groups: [coreshop] }
+    properties:
+      name:
+          - NotBlank: { groups: [coreshop] }
+      class:
+          - NotBlank: { groups: [coreshop] }
+      worker:
+          - NotBlank: { groups: [coreshop] }

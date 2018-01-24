@@ -1,5 +1,5 @@
 services:
-  coreshop.inventory.order_operator:
-    class: CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperator
-    arguments:
-      - '@coreshop.manager.product'
+    coreshop.inventory.order_operator:
+      class: CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperator
+      arguments:
+          - '@coreshop.manager.product'

@@ -1,8 +1,6 @@
 CoreShop\Component\Product\Model\ProductPriceRule:
-  properties:
-    name:
-      - NotBlank: { groups: [coreshop] }
-    active:
-      - Type:
-          type: boolean
-          groups: [coreshop]
+    properties:
+      name:
+          - NotBlank: { groups: [coreshop] }
+      active:
+          - Type: { type: boolean, groups: [coreshop] }

@@ -1,16 +1,16 @@
 CoreShop\Component\Index\Model\IndexColumn:
-  properties:
-    type:
-      - NotBlank: { groups: [coreshop] }
-    objectKey:
-      - NotBlank: { groups: [coreshop] }
-    name:
-      - NotBlank: { groups: [coreshop] }
-    objectType:
-      - NotBlank: { groups: [coreshop] }
-    dataType:
-      - NotBlank: { groups: [coreshop] }
-    columnType:
-      - NotBlank: { groups: [coreshop] }
-    index:
-      - NotBlank: { groups: [coreshop] }
+    properties:
+        type:
+            - NotBlank: { groups: [coreshop] }
+        objectKey:
+            - NotBlank: { groups: [coreshop] }
+        name:
+            - NotBlank: { groups: [coreshop] }
+        objectType:
+            - NotBlank: { groups: [coreshop] }
+        dataType:
+            - NotBlank: { groups: [coreshop] }
+        columnType:
+            - NotBlank: { groups: [coreshop] }
+        index:
+            - NotBlank: { groups: [coreshop] }

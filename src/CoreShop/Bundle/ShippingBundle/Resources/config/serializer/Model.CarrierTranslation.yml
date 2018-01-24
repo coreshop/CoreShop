@@ -1,8 +1,8 @@
 CoreShop\Component\Shipping\Model\CarrierTranslation:
-  exclusion_policy: ALL
-  xml_root_name: carrier_translation
-  properties:
-    description:
-      expose: true
-      type: string
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: carrier_translation
+    properties:
+        description:
+            expose: true
+            type: string
+            groups: [Detailed]

@@ -1,8 +1,8 @@
 CoreShop\Component\Index\Model\FilterCondition:
-  properties:
-    type:
-      - NotBlank: { groups: [coreshop] }
-    field:
-      - NotBlank: { groups: [coreshop] }
-    label:
-      - NotBlank: { groups: [coreshop] }
+    properties:
+        type:
+            - NotBlank: { groups: [coreshop] }
+        field:
+            - NotBlank: { groups: [coreshop] }
+        label:
+            - NotBlank: { groups: [coreshop] }

@@ -1,12 +1,12 @@
 CoreShop\Component\Core\Model\Carrier:
-  exclusion_policy: ALL
-  xml_root_name: carrier
-  properties:
-    taxRule:
-      expose: true
-      type: relation
-      groups: [Detailed]
-    stores:
-      expose: true
-      type: relation
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: carrier
+    properties:
+        taxRule:
+            expose: true
+            type: relation
+            groups: [Detailed]
+        stores:
+            expose: true
+            type: relation
+            groups: [Detailed]

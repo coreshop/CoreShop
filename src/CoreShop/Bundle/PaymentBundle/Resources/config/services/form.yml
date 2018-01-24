@@ -1,27 +1,28 @@
 parameters:
-  coreshop.form.type.payment_provider.validation_groups: [coreshop]
-  coreshop.form.type.payment_provider_translation.validation_groups: [coreshop]
+    coreshop.form.type.payment_provider.validation_groups: [coreshop]
+    coreshop.form.type.payment_provider_translation.validation_groups: [coreshop]
 
 services:
-  coreshop.form.type.payment_provider_choice:
-    class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType
-    tags:
-      - { name: form.type }
-    arguments: ['@coreshop.repository.payment_provider']
+    coreshop.form.type.payment_provider_choice:
+        class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType
+        arguments:
+            - '@coreshop.repository.payment_provider'
+        tags:
+            - { name: form.type }
 
-  coreshop.form.type.payment_provider:
-    class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType
-    arguments:
-      - '%coreshop.model.payment_provider.class%'
-      - '%coreshop.form.type.payment_provider.validation_groups%'
-    tags:
-      - { name: form.type }
+    coreshop.form.type.payment_provider:
+        class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType
+        arguments:
+            - '%coreshop.model.payment_provider.class%'
+            - '%coreshop.form.type.payment_provider.validation_groups%'
+        tags:
+            - { name: form.type }
 
-  coreshop.form.type.payment_provider_translation:
-    class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType
-    arguments:
-      - '%coreshop.model.payment_provider_translation.class%'
-      - '%coreshop.form.type.payment_provider_translation.validation_groups%'
-    tags:
-      - { name: form.type }
+    coreshop.form.type.payment_provider_translation:
+        class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderTranslationType
+        arguments:
+            - '%coreshop.model.payment_provider_translation.class%'
+            - '%coreshop.form.type.payment_provider_translation.validation_groups%'
+        tags:
+            - { name: form.type }
 

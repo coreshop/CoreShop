@@ -1,17 +1,17 @@
 CoreShop\Component\Configuration\Model\Configuration:
-  exclusion_policy: ALL
-  xml_root_name: configuraiton
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    key:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    data:
-      expose: true
-      type: object
-      groups: [List, Detailed]
+    exclusion_policy: ALL
+    xml_root_name: configuraiton
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        key:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        data:
+            expose: true
+            type: object
+            groups: [List, Detailed]

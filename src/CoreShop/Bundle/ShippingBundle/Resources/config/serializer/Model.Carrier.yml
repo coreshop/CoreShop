@@ -1,37 +1,37 @@
 CoreShop\Component\Shipping\Model\Carrier:
-  exclusion_policy: ALL
-  xml_root_name: carrier
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    name:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    label:
-      expose: true
-      type: string
-      groups: [Detailed]
-    trackingUrl:
-      expose: true
-      type: string
-      groups: [Detailed]
-    isFree:
-      expose: true
-      type: boolean
-      groups: [Detailed]
-    rangeBehaviour:
-      expose: true
-      type: string
-      groups: [Detailed]
-    shippingRules:
-      expose: true
-      type: array
-      groups: [Detailed]
-    translations:
-      expose: true
-      type: array
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: carrier
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        label:
+            expose: true
+            type: string
+            groups: [Detailed]
+        trackingUrl:
+            expose: true
+            type: string
+            groups: [Detailed]
+        isFree:
+            expose: true
+            type: boolean
+            groups: [Detailed]
+        rangeBehaviour:
+            expose: true
+            type: string
+            groups: [Detailed]
+        shippingRules:
+            expose: true
+            type: array
+            groups: [Detailed]
+        translations:
+            expose: true
+            type: array
+            groups: [Detailed]

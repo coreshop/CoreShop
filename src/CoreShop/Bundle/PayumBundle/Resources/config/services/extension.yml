@@ -1,8 +1,8 @@
 services:
-  coreshop.payum_extension.update_payment_state:
-    class: CoreShop\Bundle\PayumBundle\Extension\UpdatePaymentStateExtension
-    arguments:
-      - '@coreshop.state_machine_manager'
-      - '@doctrine.orm.entity_manager'
-    tags:
-        - { name: payum.extension, all: true, prepend: true }
+    coreshop.payum_extension.update_payment_state:
+        class: CoreShop\Bundle\PayumBundle\Extension\UpdatePaymentStateExtension
+        arguments:
+            - '@coreshop.state_machine_manager'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: payum.extension, all: true, prepend: true }

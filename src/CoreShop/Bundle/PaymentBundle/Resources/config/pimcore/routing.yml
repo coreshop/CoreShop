@@ -1,4 +1,4 @@
 coreshop_admin_payment_provider:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.payment_provider
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.payment_provider

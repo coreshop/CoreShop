@@ -1,20 +1,20 @@
 CoreShop\Component\Currency\Model\ExchangeRate:
-  exclusion_policy: ALL
-  xml_root_name: exchange_rate
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-    exchangeRate:
-      expose: true
-      type: float
-      groups: [List, Detailed]
-    fromCurrency:
-      expose: true
-      groups: [List, Detailed]
-      type: relation<CoreShop\Component\Currency\Model\Currency>
-    toCurrency:
-      expose: true
-      groups: [List, Detailed]
-      type: relation<CoreShop\Component\Currency\Model\Currency>
+    exclusion_policy: ALL
+    xml_root_name: exchange_rate
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+        exchangeRate:
+            expose: true
+            type: float
+            groups: [List, Detailed]
+        fromCurrency:
+            expose: true
+            groups: [List, Detailed]
+            type: relation<CoreShop\Component\Currency\Model\Currency>
+        toCurrency:
+            expose: true
+            groups: [List, Detailed]
+            type: relation<CoreShop\Component\Currency\Model\Currency>

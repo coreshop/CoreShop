@@ -10,7 +10,7 @@
  *
  */
 
-coreshop.carrier.item  = Class.create(coreshop.carrier.item , {
+coreshop.carrier.item  = Class.create(coreshop.carrier.item, {
     getSettings: function ($super) {
         var panel = $super(),
             data = this.data;

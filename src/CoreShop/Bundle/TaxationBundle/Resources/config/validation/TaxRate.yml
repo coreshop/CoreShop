@@ -1,9 +1,7 @@
 CoreShop\Component\Taxation\Model\TaxRate:
-  properties:
-    rate:
-      - NotBlank: { groups: [coreshop] }
-      - Type:
-          type: float
-          groups: [coreshop]
-    translations:
-      - Valid: ~
+    properties:
+        rate:
+            - NotBlank: { groups: [coreshop] }
+            - Type: { type: float, groups: [coreshop] }
+        translations:
+            - Valid: ~

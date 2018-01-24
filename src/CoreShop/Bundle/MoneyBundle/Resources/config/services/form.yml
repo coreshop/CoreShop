@@ -1,5 +1,5 @@
 services:
-  coreshop.form.type.money:
-    class: CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType
-    tags:
-      { name: form.type }
+    coreshop.form.type.money:
+        class: CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType
+        tags:
+            - { name: form.type }

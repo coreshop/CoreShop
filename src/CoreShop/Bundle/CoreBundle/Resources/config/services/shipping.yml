@@ -1,35 +1,35 @@
 services:
-  coreshop.carrier.price_calculator.free_shipping_rule:
-    class: CoreShop\Component\Core\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
-    tags:
-      - { name: coreshop.shipping.price_calculator, type: free-shipping-rule, priority: 255 }
+    coreshop.carrier.price_calculator.free_shipping_rule:
+        class: CoreShop\Component\Core\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
+        tags:
+            - { name: coreshop.shipping.price_calculator, type: free-shipping-rule, priority: 255 }
 
-  coreshop.shipping_rule.condition.categories:
-    class: CoreShop\Component\Core\Shipping\Rule\Condition\CategoriesConditionChecker
-    tags:
-      - { name: coreshop.shipping_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+    coreshop.shipping_rule.condition.categories:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CategoriesConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
 
-  coreshop.shipping_rule.condition.products:
-    class: CoreShop\Component\Core\Shipping\Rule\Condition\ProductsConditionChecker
-    tags:
-      - { name: coreshop.shipping_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+    coreshop.shipping_rule.condition.products:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\ProductsConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
 
-  coreshop.shipping_rule.condition.countries:
-    class: CoreShop\Component\Core\Shipping\Rule\Condition\CountriesConditionChecker
-    tags:
-      - { name: coreshop.shipping_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
+    coreshop.shipping_rule.condition.countries:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CountriesConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 
-  coreshop.carrier.price_calculator.taxed:
-    class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
-    arguments:
-      - '@coreshop.carrier.price_calculator.default'
-      - '@coreshop.taxation.factory.tax_calculator'
-      - '@coreshop.taxation.tax_applicator'
+    coreshop.carrier.price_calculator.taxed:
+        class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
+        arguments:
+            - '@coreshop.carrier.price_calculator.default'
+            - '@coreshop.taxation.factory.tax_calculator'
+            - '@coreshop.taxation.tax_applicator'
 
-  coreshop.carrier.cart.store_based_processor:
-    class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery
-    decorates: coreshop.carrier.discovery
-    arguments:
-      - '@coreshop.repository.carrier'
-      - '@coreshop.shipping.carrier.validator'
-      - '@coreshop.context.store'
+    coreshop.carrier.cart.store_based_processor:
+        class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery
+        decorates: coreshop.carrier.discovery
+        arguments:
+            - '@coreshop.repository.carrier'
+            - '@coreshop.shipping.carrier.validator'
+            - '@coreshop.context.store'

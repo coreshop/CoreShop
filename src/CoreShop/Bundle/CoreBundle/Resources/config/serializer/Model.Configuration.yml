@@ -1,8 +1,8 @@
 CoreShop\Component\Core\Model\Configuration:
-  exclusion_policy: ALL
-  xml_root_name: configuration
-  properties:
-    store:
-      expose: true
-      type: relation
-      groups: [List, Detailed]
+    exclusion_policy: ALL
+    xml_root_name: configuration
+    properties:
+        store:
+            expose: true
+            type: relation
+            groups: [List, Detailed]

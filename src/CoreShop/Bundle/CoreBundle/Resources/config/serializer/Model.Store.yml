@@ -1,12 +1,12 @@
 CoreShop\Component\Core\Model\Store:
-  exclusion_policy: ALL
-  xml_root_name: store
-  properties:
-    baseCountry:
-      expose: true
-      type: relation
-      groups: [List, Detailed]
-    useGrossPrice:
-      expose: true
-      type: boolean
-      groups: [List, Detailed]
+    exclusion_policy: ALL
+    xml_root_name: store
+    properties:
+        baseCountry:
+            expose: true
+            type: relation
+            groups: [List, Detailed]
+        useGrossPrice:
+            expose: true
+            type: boolean
+            groups: [List, Detailed]

@@ -1,10 +1,10 @@
 services:
     coreshop.context.locale.pimcore_admin:
-      class: CoreShop\Component\Core\Locale\Context\PimcoreAdminLocaleContext
-      arguments:
-        - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
-        - '@pimcore_admin.security.token_storage_user_resolver'
-        - '@coreshop.translation_locale_provider'
-        - '@request_stack'
-      tags:
-        - { name: coreshop.context.locale, priority: 300 }
+        class: CoreShop\Component\Core\Locale\Context\PimcoreAdminLocaleContext
+        arguments:
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
+            - '@pimcore_admin.security.token_storage_user_resolver'
+            - '@coreshop.translation_locale_provider'
+            - '@request_stack'
+        tags:
+            - { name: coreshop.context.locale, priority: 300 }

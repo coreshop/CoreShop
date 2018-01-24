@@ -6,59 +6,59 @@ imports:
     - { resource: "services/workflow.yml" }
 
 parameters:
-  coreshop.admin.route.base: /admin/coreshop
-  jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
+    coreshop.admin.route.base: /admin/coreshop
+    jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
 services:
-  coreshop.object_service:
-    class: CoreShop\Component\Resource\Pimcore\ObjectService
+    coreshop.object_service:
+        class: CoreShop\Component\Resource\Pimcore\ObjectService
 
-  coreshop.object_note_service:
-    class: CoreShop\Component\Resource\Pimcore\DataObjectNoteService
+    coreshop.object_note_service:
+        class: CoreShop\Component\Resource\Pimcore\DataObjectNoteService
 
-  coreshop.resource_registry:
-    class: CoreShop\Component\Resource\Metadata\Registry
+    coreshop.resource_registry:
+        class: CoreShop\Component\Resource\Metadata\Registry
 
-  coreshop.class_installer:
-    class: CoreShop\Component\Pimcore\ClassInstaller
+    coreshop.class_installer:
+        class: CoreShop\Component\Pimcore\ClassInstaller
 
-  coreshop.jms_serializer.handler.relation:
-      class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
-      arguments:
-      - "@doctrine.orm.entity_manager"
-      tags:
-      - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation}
-      - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation}
-      - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation}
-      - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation}
+    coreshop.jms_serializer.handler.relation:
+        class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation}
+            - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation}
+            - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation}
 
-  jms_serializer.object_constructor:
-    alias: jms_serializer.doctrine_object_constructor
-    public: false
+    jms_serializer.object_constructor:
+        alias: jms_serializer.doctrine_object_constructor
+        public: false
 
-  coreshop.form.type_extension.form.request_handler:
-    class: CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
-    decorates: form.type_extension.form.request_handler
-    decoration_priority: 256
-    public: false
+    coreshop.form.type_extension.form.request_handler:
+        class: CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
+        decorates: form.type_extension.form.request_handler
+        decoration_priority: 256
+        public: false
 
-  coreshop.admin_controller.resource_settings:
-    class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
-    arguments:
-      - '@coreshop.resource_controller.view_handler'
-    calls:
-      - [setContainer, ['@service_container']]
+    coreshop.admin_controller.resource_settings:
+        class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
+        arguments:
+          - '@coreshop.resource_controller.view_handler'
+        calls:
+          - [setContainer, ['@service_container']]
 
-  coreshop.resource_loader:
-    class: CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader
+    coreshop.resource_loader:
+        class: CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader
 
-  coreshop.resource.object_cloner:
-    class: CoreShop\Component\Resource\Pimcore\ObjectCloner
+    coreshop.resource.object_cloner:
+        class: CoreShop\Component\Resource\Pimcore\ObjectCloner
 
-  coreshop.resource.helper.form_error_serializer:
-    class: CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer
+    coreshop.resource.helper.form_error_serializer:
+        class: CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer
 
-  coreshop.doctrine.cache.pimcore:
-    class: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
-    arguments:
-      - '@Pimcore\Cache\Core\CoreHandlerInterface'
+    coreshop.doctrine.cache.pimcore:
+        class: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
+        arguments:
+            - '@Pimcore\Cache\Core\CoreHandlerInterface'

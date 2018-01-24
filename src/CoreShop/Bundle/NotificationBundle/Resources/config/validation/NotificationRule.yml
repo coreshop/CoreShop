@@ -1,12 +1,8 @@
 CoreShop\Component\Notification\Model\NotificationRule:
-  properties:
-    type:
-      - NotBlank: { groups: [coreshop] }
-    active:
-      - Type:
-          type: boolean
-          groups: [coreshop]
-    sort:
-      - Type:
-          type: integer
-          groups: [coreshop]
+    properties:
+        type:
+            - NotBlank: { groups: [coreshop] }
+        active:
+            - Type: { type: boolean, groups: [coreshop] }
+        sort:
+            - Type: { type: integer, groups: [coreshop] }

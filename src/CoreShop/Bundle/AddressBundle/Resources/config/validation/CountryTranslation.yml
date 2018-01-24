@@ -1,4 +1,4 @@
 CoreShop\Component\Address\Model\CountryTranslation:
-  properties:
-    name:
-      - NotBlank: { groups: [coreshop] }
+    properties:
+        name:
+            - NotBlank: { groups: [coreshop] }

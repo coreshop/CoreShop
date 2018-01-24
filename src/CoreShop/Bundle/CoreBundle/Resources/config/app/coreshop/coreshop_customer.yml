@@ -1,12 +1,12 @@
 core_shop_customer:
-  pimcore:
-    customer_group:
-      path: coreshop/customer_groups
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomerGroup.json'
-    customer:
-      path:
-        customer: coreshop/customers
-        guest: coreshop/guests
-      classes:
-        install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomer.json'
+    pimcore:
+        customer_group:
+            path: coreshop/customer_groups
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomerGroup.json'
+        customer:
+            path:
+                customer: coreshop/customers
+                guest: coreshop/guests
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomer.json'

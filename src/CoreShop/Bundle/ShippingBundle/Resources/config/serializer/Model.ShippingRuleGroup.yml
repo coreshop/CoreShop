@@ -1,21 +1,21 @@
 CoreShop\Component\Shipping\Model\ShippingRuleGroup:
-  exclusion_policy: ALL
-  xml_root_name: shipping_rule
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    carrier:
-      expose: true
-      type: relation
-      groups: [Detailed]
-    priority:
-      expose: true
-      type: integer
-      groups: [Detailed]
-    shippingRule:
-      expose: true
-      type: relation
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: shipping_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        carrier:
+            expose: true
+            type: relation
+            groups: [Detailed]
+        priority:
+            expose: true
+            type: integer
+            groups: [Detailed]
+        shippingRule:
+            expose: true
+            type: relation
+            groups: [Detailed]

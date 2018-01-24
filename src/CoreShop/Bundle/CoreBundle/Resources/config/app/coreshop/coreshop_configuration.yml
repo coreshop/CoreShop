@@ -1,7 +1,7 @@
 core_shop_configuration:
-  resources:
-    configuration:
-      classes:
-        model: CoreShop\Component\Core\Model\Configuration
-        repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\ConfigurationRepository
-        admin_controller: CoreShop\Bundle\CoreBundle\Controller\ConfigurationController
+    resources:
+        configuration:
+            classes:
+                model: CoreShop\Component\Core\Model\Configuration
+                repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\ConfigurationRepository
+                admin_controller: CoreShop\Bundle\CoreBundle\Controller\ConfigurationController

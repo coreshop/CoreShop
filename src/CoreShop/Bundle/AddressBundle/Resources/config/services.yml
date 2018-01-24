@@ -1,48 +1,53 @@
 imports:
-  - { resource: "services/form.yml" }
-  - { resource: "services/profiler.yml" }
+    - { resource: "services/form.yml" }
+    - { resource: "services/profiler.yml" }
 
 services:
-  coreshop.context.country.composite:
-    class: CoreShop\Component\Address\Context\CompositeCountryContext
-    public: false
+    coreshop.context.country.composite:
+        class: CoreShop\Component\Address\Context\CompositeCountryContext
+        public: false
 
-  coreshop.context.country.request_based:
-    class: CoreShop\Component\Address\Context\RequestBased\CountryContext
-    public: false
-    tags:
-        - { name: coreshop.context.country }
-    arguments: ['@coreshop.context.country.request_based.resolver', '@request_stack']
+    coreshop.context.country.request_based:
+        class: CoreShop\Component\Address\Context\RequestBased\CountryContext
+        public: false
+        arguments:
+            - '@coreshop.context.country.request_based.resolver'
+            - '@request_stack'
+        tags:
+            - { name: coreshop.context.country }
 
-  coreshop.context.country.fixed:
-    class: CoreShop\Component\Address\Context\FixedCountryContext
-    tags:
-        - { name: coreshop.context.country }
+    coreshop.context.country.fixed:
+        class: CoreShop\Component\Address\Context\FixedCountryContext
+        tags:
+            - { name: coreshop.context.country }
 
-  coreshop.context.country.request_based.resolver.composite:
-    class: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
-    public: false
+    coreshop.context.country.request_based.resolver.composite:
+        class: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
+        public: false
 
-  coreshop.context.country.request_based.resolver.geo_lite:
-    class: CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver
-    public: false
-    tags:
-        - { name: coreshop.context.country.request_based.resolver, priority: 10 } #Highest Priority, is more like the fallback
-    arguments: ['@coreshop.repository.country']
+    coreshop.context.country.request_based.resolver.geo_lite:
+        class: CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver
+        public: false
+        arguments:
+            - '@coreshop.repository.country'
+        tags:
+            - { name: coreshop.context.country.request_based.resolver, priority: 10 } #Highest Priority, is more like the fallback
 
-  coreshop.address.formatter:
-    class: CoreShop\Component\Address\Formatter\AddressFormatter
+    coreshop.address.formatter:
+        class: CoreShop\Component\Address\Formatter\AddressFormatter
 
-  coreshop.templating.helper.format_address:
-    class: CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper
-    tags:
-        - { name: templating.helper, alias: coreshop_format_address }
-    lazy: true
-    arguments: ['@coreshop.address.formatter']
+    coreshop.templating.helper.format_address:
+        class: CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper
+        arguments:
+            - '@coreshop.address.formatter'
+        lazy: true
+        tags:
+            - { name: templating.helper, alias: coreshop_format_address }
 
-  coreshop.twig.extension.address:
-    class: CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension
-    public: false
-    tags:
-        - { name: twig.extension }
-    arguments: ['@coreshop.templating.helper.format_address']
+    coreshop.twig.extension.address:
+        class: CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension
+        public: false
+        arguments:
+            - '@coreshop.templating.helper.format_address'
+        tags:
+            - { name: twig.extension }

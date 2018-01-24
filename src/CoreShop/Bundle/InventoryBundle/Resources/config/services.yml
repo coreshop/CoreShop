@@ -11,15 +11,15 @@ services:
 
     coreshop.templating.helper.inventory:
         class: CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper
-        tags:
-            - { name: templating.helper, alias: coreshop_inventory }
         arguments:
           - '@coreshop.inventory.availability_checker'
+        tags:
+            - { name: templating.helper, alias: coreshop_inventory }
 
     coreshop.twig.extension.inventory:
         class: CoreShop\Bundle\InventoryBundle\Twig\InventoryExtension
         public: false
-        tags:
-            - { name: twig.extension }
         arguments:
           - '@coreshop.templating.helper.inventory'
+        tags:
+            - { name: twig.extension }

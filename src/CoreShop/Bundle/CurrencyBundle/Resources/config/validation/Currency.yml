@@ -1,16 +1,12 @@
 CoreShop\Component\Currency\Model\Currency:
-  properties:
-    name:
-      - NotBlank: { groups: [coreshop] }
-    isoCode:
-      - NotBlank: { groups: [coreshop] }
-    numericIsoCode:
-      - NotBlank: { groups: [coreshop] }
-      - Type:
-          type: integer
-          groups: [coreshop]
-    symbol:
-      - NotBlank: { groups: [coreshop] }
-      - Type:
-          type: string
-          groups: [coreshop]
+    properties:
+        name:
+            - NotBlank: { groups: [coreshop] }
+        isoCode:
+            - NotBlank: { groups: [coreshop] }
+        numericIsoCode:
+            - NotBlank: { groups: [coreshop] }
+            - Type: { type: integer, groups: [coreshop] }
+        symbol:
+            - NotBlank: { groups: [coreshop] }
+            - Type: { type: string, groups: [coreshop] }
