@@ -15,6 +15,7 @@ namespace CoreShop\Component\Core\Taxation;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\TaxRuleRepositoryInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 
@@ -26,11 +27,21 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
     private $taxRuleRepository;
 
     /**
-     * @param TaxRuleRepositoryInterface $taxRuleRepository
+     * @var StoreContextInterface
      */
-    public function __construct(TaxRuleRepositoryInterface $taxRuleRepository)
+    private $storeContext;
+
+    /**
+     * @param TaxRuleRepositoryInterface $taxRuleRepository
+     * @param StoreContextInterface $storeContext
+     */
+    public function __construct(
+        TaxRuleRepositoryInterface $taxRuleRepository,
+        StoreContextInterface $storeContext
+    )
     {
         $this->taxRuleRepository = $taxRuleRepository;
+        $this->storeContext = $storeContext;
     }
 
     /**
@@ -38,6 +49,10 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
      */
     public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address)
     {
+        if (!$taxRuleGroup->hasStore($this->storeContext->getStore())) {
+            return null;
+        }
+
         $taxRules = $this->taxRuleRepository->findForCountryAndState($taxRuleGroup, $address->getCountry(), $address->getState());
         $taxRates = [];
         $firstRow = true;

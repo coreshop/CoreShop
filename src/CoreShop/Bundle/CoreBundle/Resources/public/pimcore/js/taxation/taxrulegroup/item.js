@@ -18,6 +18,7 @@ coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
         panel.down("fieldset").add([
             {
                 xtype: 'coreshop.store',
+                name: 'stores',
                 multiSelect: true,
                 typeAhead: false,
                 value: data.stores
