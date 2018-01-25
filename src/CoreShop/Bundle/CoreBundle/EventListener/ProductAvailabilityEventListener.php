@@ -63,13 +63,22 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        /** @var \Pimcore\Model\Version $currentVersion */
+        /**
+         * return if new state is published
+         *
+         * @var \Pimcore\Model\Version $currentVersion
+        +*/
         $currentVersion = $versions[0];
         if ($currentVersion->getData()->isPublished() === true) {
             return;
         }
 
-        /** @var \Pimcore\Model\Version $prevVersion */
+        /**
+         *
+         * return if last state was not published.
+         *
+         * @var \Pimcore\Model\Version $prevVersion
+         **/
         $prevVersion = $versions[1];
         if ($prevVersion->getData()->isPublished() === false) {
             return;

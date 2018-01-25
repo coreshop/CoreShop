@@ -40,8 +40,18 @@ services:
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: checkCartsAfterUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: checkCartsAfterDelete }
 
-    coreshop.listener.update_cart:
+    coreshop.listener.update_cart_price_rules:
         class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
+        arguments:
+           - '@coreshop.cart.manager'
+           - '@coreshop.context.cart'
+           - '@coreshop.configuration.service'
+           - '@pimcore.http.request_helper'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: checkPriceRuleState, priority: 0 }
+
+    coreshop.listener.update_cart_avilability:
+        class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartAvailability
         arguments:
            - '@coreshop.cart.manager'
            - '@coreshop.context.cart'
@@ -49,5 +59,4 @@ services:
            - '@pimcore.http.request_helper'
            - '@session'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: checkPriceRuleState }
-            - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability }
+            - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 10 }
