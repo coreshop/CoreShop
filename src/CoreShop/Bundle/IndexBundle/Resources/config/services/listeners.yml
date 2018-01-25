@@ -6,7 +6,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: coreshop.index.post_save, method: onIndexSavePost }
 
-    ‌coreshop.listeners.index.pre_delete:
+    coreshop.listeners.index.pre_delete:
         class: CoreShop\Bundle\IndexBundle\EventListener\DeleteIndexListener
         arguments:
             - '@coreshop.registry.index.worker'

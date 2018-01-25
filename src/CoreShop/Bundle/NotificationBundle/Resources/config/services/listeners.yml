@@ -1,5 +1,5 @@
 services:
-    ‌coreshop.listeners.notification_rule.pre_create:
+    coreshop.listeners.notification_rule.pre_create:
         class: CoreShop\Bundle\NotificationBundle\EventListener\NotificationRuleEventListener
         arguments:
             - '@coreshop.repository.notification_rule'
