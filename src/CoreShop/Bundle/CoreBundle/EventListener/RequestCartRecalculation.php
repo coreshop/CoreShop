@@ -16,7 +16,8 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
-use Pimcore\Model\Version;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartRecalculation
@@ -42,22 +43,29 @@ final class RequestCartRecalculation
     private $pimcoreRequestHelper;
 
     /**
-     * @param CartManagerInterface $cartManager
-     * @param CartContextInterface $cartContext
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * @param CartManagerInterface          $cartManager
+     * @param CartContextInterface          $cartContext
      * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper $pimcoreRequestHelper
+     * @param RequestHelper                 $pimcoreRequestHelper
+     * @param SessionInterface              $session
      */
     public function __construct(
         CartManagerInterface $cartManager,
         CartContextInterface $cartContext,
         ConfigurationServiceInterface $configurationService,
-        RequestHelper $pimcoreRequestHelper
-    )
-    {
+        RequestHelper $pimcoreRequestHelper,
+        SessionInterface $session
+    ) {
         $this->cartManager = $cartManager;
         $this->cartContext = $cartContext;
         $this->configurationService = $configurationService;
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
+        $this->session = $session;
     }
 
     /**
@@ -65,7 +73,7 @@ final class RequestCartRecalculation
      *
      * @param GetResponseEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function checkPriceRuleState(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -79,9 +87,35 @@ final class RequestCartRecalculation
 
         if ($cart->getId()) {
             if ($this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE') > $cart->getModificationDate()) {
-                Version::disable();
                 $this->cartManager->persistCart($cart);
-                Version::enable();
+            }
+        }
+    }
+
+    /**
+     * Check if Cart needs a recalculation because of changed items from system
+     *
+     * @param GetResponseEvent $event
+     */
+    public function checkCartAvailability(GetResponseEvent $event)
+    {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        if (!$this->pimcoreRequestHelper->isFrontendRequest($event->getRequest())) {
+            return;
+        }
+
+        $cart = $this->cartContext->getCart();
+
+        if ($cart->getId()) {
+            if ($cart->getNeedsRecalculation() === true) {
+                $this->session->getFlashBag()->add('coreshop_global_error', 'coreshop.global_error.cart_has_changed');
+                $cart->setNeedsRecalculation(false);
+                $this->cartManager->persistCart($cart);
+                // redirect to same page, otherwise flashbag will show up twice. better solution?
+                $event->setResponse(new RedirectResponse($event->getRequest()->getRequestUri()));
             }
         }
     }

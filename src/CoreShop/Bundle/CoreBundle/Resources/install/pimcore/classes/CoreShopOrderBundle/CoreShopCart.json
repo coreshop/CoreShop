@@ -394,6 +394,27 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "checkbox",
+                                "defaultValue": 0,
+                                "queryColumnType": "tinyint(1)",
+                                "columnType": "tinyint(1)",
+                                "phpdocType": "boolean",
+                                "name": "needsRecalculation",
+                                "title": "Needs Recalculation",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": true,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false
