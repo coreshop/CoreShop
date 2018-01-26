@@ -23,10 +23,9 @@ services:
         class: CoreShop\Component\Pimcore\ClassInstaller
 
 
-  coreshop.grid_config_installer:
-    class: CoreShop\Component\Pimcore\GridConfigInstaller
+    coreshop.grid_config_installer:
+        class: CoreShop\Component\Pimcore\GridConfigInstaller
 
-  
     coreshop.jms_serializer.handler.relation:
         class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
         arguments:
