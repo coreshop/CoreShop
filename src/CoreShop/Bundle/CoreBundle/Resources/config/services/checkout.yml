@@ -9,7 +9,7 @@ services:
         arguments:
             - '@request_stack'
             - '@router'
-            - '@coreshop.checkout_manager.factory.default'
+            - '@coreshop.checkout_manager.factory'
             - '@coreshop.context.cart'
         tags:
             - { name: templating.helper, alias: coreshop_checkout_identifier}
