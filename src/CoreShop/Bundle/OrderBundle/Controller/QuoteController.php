@@ -12,17 +12,37 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-
-
+use Pimcore\Model\DataObject;
 
 class QuoteController extends AbstractSaleDetailController
 {
-    /**
-     * {@inheritdoc}
+     /**
+     * @return mixed
+     * @throws \Exception
      */
-    protected function getGridColumns()
+    public function getFolderConfigurationAction()
     {
-        return [];
+        $this->isGrantedOr403();
+
+        $name = null;
+        $folderId = null;
+
+        $orderClassId = $this->getParameter('coreshop.model.quote.pimcore_class_id');
+        $folderPath = $this->getParameter('coreshop.folder.quote');
+        $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
+
+        $folder = DataObject::getByPath('/' . $folderPath);
+
+        if($folder instanceof DataObject\Folder) {
+            $folderId = $folder->getId();
+        }
+
+        if ($orderClassDefinition instanceof DataObject\ClassDefinition) {
+            $name = $orderClassDefinition->getName();
+        }
+
+        return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
+
     }
 
     /**

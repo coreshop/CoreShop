@@ -58,6 +58,14 @@
     background: url(../img/info.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_operator_orderstate {
+    background: url(../img/info.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_operator_priceformatter {
+    background: url(../img/currencies.svg) center center no-repeat !important;
+}
+
 .coreshop_price_rule_vouchers {
     background: url(../img/voucher.svg) center center no-repeat !important;
 }

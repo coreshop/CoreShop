@@ -14,8 +14,17 @@ pimcore.registerNS('coreshop.order.quote.list');
 coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
     type: 'quote',
 
-    open: function (record, callback) {
-        coreshop.order.helper.openQuote(record.get('o_id'), callback);
+    setupContextMenuPlugin: function () {
+        this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
+            function (id) {
+                this.open(id);
+            }.bind(this),
+            [coreshop.class_map['quote']]
+        );
+    },
+
+    open: function (id, callback) {
+        coreshop.order.helper.openQuote(id, callback);
     }
 });
 
