@@ -14,8 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\Application;
 
 final class Version
 {
-    const BUILD_VERSION = '1';
-
     const MAJOR_VERSION = '2';
     const MINOR_VERSION = '0';
     const RELEASE_VERSION = '0';
