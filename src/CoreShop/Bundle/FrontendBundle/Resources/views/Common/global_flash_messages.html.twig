@@ -1,0 +1,13 @@
+{% import '@CoreShopFrontend/Common/Macro/messages.html.twig' as messages %}
+
+{% for label, message_data in app.flashes(['coreshop_global_success', 'coreshop_global_info', 'coreshop_global_error']) %}
+    {% for message in message_data %}
+        {% if label == 'coreshop_global_success'  %}
+             {{ messages.success(message) }}
+        {% elseif label == 'coreshop_global_info'  %}
+             {{ messages.info(message) }}
+        {% elseif label == 'coreshop_global_error'  %}
+             {{ messages.error(message) }}
+        {% endif %}
+    {% endfor %}
+{% endfor %}

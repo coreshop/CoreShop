@@ -953,4 +953,10 @@ translations:
           en: 'Search'
           de: 'Suchen'
 
+  coreshop.global_error.cart_has_changed:
+      languages:
+          de_CH: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
+          en: 'Some Products are not available anymore. Please check your cart for completeness.'
+          de: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
+
 

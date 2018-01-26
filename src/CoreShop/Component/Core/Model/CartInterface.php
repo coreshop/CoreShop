@@ -51,4 +51,15 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
      * @param $shippingTaxRate
      */
     public function setShippingTaxRate($shippingTaxRate);
+
+    /**
+     * @param bool $needsRecalculation
+     * @return mixed
+     */
+    public function setNeedsRecalculation($needsRecalculation);
+
+    /**
+     * @return null|bool
+     */
+    public function getNeedsRecalculation();
 }
