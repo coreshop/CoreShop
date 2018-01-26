@@ -92,7 +92,7 @@ routes:
   coreshop_cart_create_qoute:
     pattern: "/(\\w+)\\/shop\\/cart\\/quote/"
     reverse: "/%_locale/shop/cart/quote"
-    module: FrontendBundke
+    module: FrontendBundle
     controller: "@coreshop.frontend.controller.cart"
     action: createQuote
     variables: _locale
