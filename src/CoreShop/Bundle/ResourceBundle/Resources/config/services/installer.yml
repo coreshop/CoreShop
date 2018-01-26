@@ -64,6 +64,15 @@ services:
         tags:
            - { name: 'coreshop.resource.installer', type: 'admin_translations', priority: 500}
 
+    coreshop.resource.installer.grid_config:
+        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller
+        arguments:
+            - '@kernel'
+            - '%coreshop.resource.pimcore_class_ids%'
+            - '@coreshop.grid_config_installer'
+        tags:
+            - { name: 'coreshop.resource.installer', type: 'routes', priority: 200}
+
     coreshop.resource.installer:
         class: CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller
         arguments:
