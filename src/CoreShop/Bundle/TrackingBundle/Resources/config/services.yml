@@ -1,33 +1,33 @@
 services:
-  coreshop.registry.tracking.tracker:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - CoreShop\Bundle\TrackingBundle\Tracker\TrackerInterface
-      - 'tracker'
+    coreshop.registry.tracking.tracker:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Bundle\TrackingBundle\Tracker\TrackerInterface
+            - 'tracker'
 
-  coreshop.tracking.item_builder:
-    class: CoreShop\Bundle\TrackingBundle\Builder\ItemBuilder
-    arguments:
-      - '@coreshop.order.purchasable.price_calculator'
+    coreshop.tracking.item_builder:
+        class: CoreShop\Bundle\TrackingBundle\Builder\ItemBuilder
+        arguments:
+            - '@coreshop.order.purchasable.price_calculator'
 
-  coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
-    class: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
-    arguments:
-      - '@templating.engine.delegating'
-      - '@coreshop.tracking.item_builder'
-    tags:
-      - { name: coreshop.tracking.tracker, type: google-analytics-enhanced-ecommerce }
+    coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
+        arguments:
+            - '@templating.engine.delegating'
+            - '@coreshop.tracking.item_builder'
+        tags:
+            - { name: coreshop.tracking.tracker, type: google-analytics-enhanced-ecommerce }
 
-  coreshop.tracking.tracker.piwik:
-    class: CoreShop\Bundle\TrackingBundle\Tracker\Piwik
-    arguments:
-      - '@templating.engine.delegating'
-      - '@Pimcore\Analytics\Piwik\Tracker'
-      - '@coreshop.tracking.item_builder'
-    tags:
-      - { name: coreshop.tracking.tracker, type: piwik }
+    coreshop.tracking.tracker.piwik:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Piwik
+        arguments:
+            - '@templating.engine.delegating'
+            - '@Pimcore\Analytics\Piwik\Tracker'
+            - '@coreshop.tracking.item_builder'
+        tags:
+            - { name: coreshop.tracking.tracker, type: piwik }
 
-  coreshop.tracking.manager:
-    class: CoreShop\Bundle\TrackingBundle\Manager\TrackingManager
-    arguments:
-      - '@coreshop.registry.tracking.tracker'
+    coreshop.tracking.manager:
+        class: CoreShop\Bundle\TrackingBundle\Manager\TrackingManager
+        arguments:
+            - '@coreshop.registry.tracking.tracker'

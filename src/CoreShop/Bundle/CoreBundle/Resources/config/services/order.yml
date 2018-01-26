@@ -1,125 +1,124 @@
 parameters:
-  coreshop.form.type.order.payment.validation_groups: [coreshop]
+    coreshop.form.type.order.payment.validation_groups: [coreshop]
 
 services:
-  coreshop.form.type.order_payment:
-    class: CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType
-    arguments:
-      - '%coreshop.model.order.class%'
-      - '%coreshop.form.type.order.payment.validation_groups%'
-    tags:
-      - {name: form.type}
+    coreshop.form.type.order_payment:
+        class: CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType
+        arguments:
+            - '%coreshop.model.order.class%'
+            - '%coreshop.form.type.order.payment.validation_groups%'
+        tags:
+            - {name: form.type}
 
-  coreshop.core.order.transformer.cart_to_order:
-    decorates: coreshop.order.transformer.cart_to_order
-    decoration_priority: 10
-    class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-    arguments:
-      - '@coreshop.core.order.transformer.cart_to_order.inner'
-      - '@coreshop.currency_converter'
+    coreshop.core.order.transformer.cart_to_order:
+        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
+        decorates: coreshop.order.transformer.cart_to_order
+        decoration_priority: 10
+        arguments:
+            - '@coreshop.core.order.transformer.cart_to_order.inner'
+            - '@coreshop.currency_converter'
 
-  coreshop.core.order.transformer.cart_to_quote:
-    decorates: coreshop.order.transformer.cart_to_quote
-    class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-    arguments:
-      - '@coreshop.core.order.transformer.cart_to_quote.inner'
-      - '@coreshop.currency_converter'
+    coreshop.core.order.transformer.cart_to_quote:
+        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
+        decorates: coreshop.order.transformer.cart_to_quote
+        arguments:
+            - '@coreshop.core.order.transformer.cart_to_quote.inner'
+            - '@coreshop.currency_converter'
 
-  coreshop.core.order.transformer.cart_item_to_order_item:
-    decorates: coreshop.order.transformer.cart_item_to_order_item
-    class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-    arguments:
-      - '@coreshop.core.order.transformer.cart_item_to_order_item.inner'
+    coreshop.core.order.transformer.cart_item_to_order_item:
+        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
+        decorates: coreshop.order.transformer.cart_item_to_order_item
+        arguments:
+            - '@coreshop.core.order.transformer.cart_item_to_order_item.inner'
 
-  coreshop.core.order.transformer.cart_item_to_quote_item:
-    decorates: coreshop.order.transformer.cart_item_to_quote_item
-    class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-    arguments:
-      - '@coreshop.core.order.transformer.cart_item_to_quote_item.inner'
+    coreshop.core.order.transformer.cart_item_to_quote_item:
+        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
+        decorates: coreshop.order.transformer.cart_item_to_quote_item
+        arguments:
+            - '@coreshop.core.order.transformer.cart_item_to_quote_item.inner'
 
-  coreshop.cart.cleanup.maintenance_listener:
-    class: CoreShop\Bundle\CoreBundle\EventListener\CartCleanerMaintenanceManagerListener
-    arguments:
-      - '@coreshop.configuration.service'
-      - '@coreshop.cart.cleanup'
-    tags:
-      - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerCartCleanup }
+    coreshop.cart.cleanup.maintenance_listener:
+        class: CoreShop\Bundle\CoreBundle\EventListener\CartCleanerMaintenanceManagerListener
+        arguments:
+            - '@coreshop.configuration.service'
+            - '@coreshop.cart.cleanup'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerCartCleanup }
 
-  coreshop.order.number_generator.prefix_suffix:
-    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
-    decorates: coreshop.order.number_generator.default
-    arguments:
-      - '@coreshop.order.number_generator.prefix_suffix.inner'
-      - '@coreshop.configuration.service'
-      - 'system.order.prefix'
-      - 'system.order.suffix'
+    coreshop.order.number_generator.prefix_suffix:
+        class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
+        decorates: coreshop.order.number_generator.default
+        arguments:
+            - '@coreshop.order.number_generator.prefix_suffix.inner'
+            - '@coreshop.configuration.service'
+            - 'system.order.prefix'
+            - 'system.order.suffix'
 
-  coreshop.quote.number_generator.prefix_suffix:
-    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
-    decorates: coreshop.quote.number_generator.default
-    arguments:
-      - '@coreshop.quote.number_generator.prefix_suffix.inner'
-      - '@coreshop.configuration.service'
-      - 'system.quote.prefix'
-      - 'system.quote.suffix'
+    coreshop.quote.number_generator.prefix_suffix:
+        class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
+        decorates: coreshop.quote.number_generator.default
+        arguments:
+            - '@coreshop.quote.number_generator.prefix_suffix.inner'
+            - '@coreshop.configuration.service'
+            - 'system.quote.prefix'
+            - 'system.quote.suffix'
 
-  coreshop.order_invoice.number_generator.prefix_suffix:
-    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
-    decorates: coreshop.order_invoice.number_generator.default
-    arguments:
-      - '@coreshop.order_invoice.number_generator.prefix_suffix.inner'
-      - '@coreshop.configuration.service'
-      - 'system.invoice.prefix'
-      - 'system.invoice.suffix'
+    coreshop.order_invoice.number_generator.prefix_suffix:
+        class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
+        decorates: coreshop.order_invoice.number_generator.default
+        arguments:
+            - '@coreshop.order_invoice.number_generator.prefix_suffix.inner'
+            - '@coreshop.configuration.service'
+            - 'system.invoice.prefix'
+            - 'system.invoice.suffix'
 
-  coreshop.order_shipment.number_generator.prefix_suffix:
-    class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
-    decorates: coreshop.order_shipment.number_generator.default
-    arguments:
-      - '@coreshop.order_shipment.number_generator.prefix_suffix.inner'
-      - '@coreshop.configuration.service'
-      - 'system.shipment.prefix'
-      - 'system.shipment.suffix'
+    coreshop.order_shipment.number_generator.prefix_suffix:
+        class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
+        decorates: coreshop.order_shipment.number_generator.default
+        arguments:
+            - '@coreshop.order_shipment.number_generator.prefix_suffix.inner'
+            - '@coreshop.configuration.service'
+            - 'system.shipment.prefix'
+            - 'system.shipment.suffix'
 
-  coreshop.mail.processor.order:
-    class: CoreShop\Component\Core\Order\OrderMailProcessor
-    arguments:
-     - '@coreshop.money_formatter'
-     - '@coreshop.repository.order_invoice'
-     - '@coreshop.repository.order_shipment'
-     - '@coreshop.renderer.order.pdf'
-     - '@coreshop.object_note_service'
+    coreshop.mail.processor.order:
+        class: CoreShop\Component\Core\Order\OrderMailProcessor
+        arguments:
+           - '@coreshop.money_formatter'
+           - '@coreshop.repository.order_invoice'
+           - '@coreshop.repository.order_shipment'
+           - '@coreshop.renderer.order.pdf'
+           - '@coreshop.object_note_service'
 
-  coreshop.event_listener.price_rule_update:
-    class: CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener
-    arguments: ['@coreshop.configuration.service']
-    tags:
-      - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
-      - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
-      - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
-      - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
+    coreshop.event_listener.price_rule_update:
+        class: CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener
+        arguments: ['@coreshop.configuration.service']
+        tags:
+            - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+            - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
+            - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
+            - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
 
-  coreshop.event_listener.product_update:
-    class: CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener
-    arguments: ['@coreshop.configuration.service']
-    tags:
-      - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: storeConfigurationThatProductChanged }
+    coreshop.event_listener.product_update:
+        class: CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener
+        arguments: ['@coreshop.configuration.service']
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: storeConfigurationThatProductChanged }
 
+    coreshop.event_listener.update_cart:
+        class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
+        arguments:
+           - '@coreshop.cart.manager'
+           - '@coreshop.context.cart'
+           - '@coreshop.configuration.service'
+           - '@pimcore.http.request_helper'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
-  coreshop.event_listener.update_cart:
-    class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
-    arguments:
-     - '@coreshop.cart.manager'
-     - '@coreshop.context.cart'
-     - '@coreshop.configuration.service'
-     - '@pimcore.http.request_helper'
-    tags:
-      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-  coreshop.order.listener.wkhtml_options:
-    class: CoreShop\Bundle\CoreBundle\EventListener\Order\OrderDocumentWkhtmlPrintOptionsListener
-    arguments:
-      - '@coreshop.configuration.service'
-    tags:
-      - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
-      - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }
+    coreshop.order.listener.wkhtml_options:
+        class: CoreShop\Bundle\CoreBundle\EventListener\Order\OrderDocumentWkhtmlPrintOptionsListener
+        arguments:
+            - '@coreshop.configuration.service'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
+            - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }

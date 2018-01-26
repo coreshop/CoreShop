@@ -1,17 +1,16 @@
 CoreShop\Component\Core\Model\TaxRuleGroup:
-  type: mappedSuperclass
-  table: coreshop_tax_rule_group
-  manyToMany:
-    stores:
-      targetEntity: CoreShop\Component\Store\Model\StoreInterface
-      inversedBy: taxRuleGroups
-      joinTable:
-        name: coreshop_tax_rule_group_stores
-        joinColumns:
-          store_id:
-            referencedColumnName: id
-            nullable: false
-        inverseJoinColumns:
-          tax_rule_group_id:
-            referencedColumnName: id
-            nullable: false
+    type: mappedSuperclass
+    table: coreshop_tax_rule_group
+    manyToMany:
+        stores:
+            targetEntity: CoreShop\Component\Store\Model\StoreInterface
+            joinTable:
+                name: coreshop_tax_rule_group_stores
+                joinColumns:
+                    store_id:
+                        referencedColumnName: id
+                        nullable: false
+                inverseJoinColumns:
+                    tax_rule_group_id:
+                        referencedColumnName: id
+                        nullable: false

@@ -1,167 +1,173 @@
 coreshop_admin_cart_price_rule:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.cart_price_rule
-    additional_routes:
-      config:
-        path: get-config
-        action: getConfig
-        methods:
-          - GET
-      getVoucherCodes:
-        path: get-voucher-codes
-        action: getVoucherCodes
-        methods:
-          - GET
-      createVoucherCodes:
-        path: create-voucher-code
-        action: createVoucherCode
-        methods:
-          - POST
-      generateVoucherCodes:
-        path: generate-voucher-codes
-        action: generateVoucherCodes
-        methods:
-          - POST
-      exportVoucherCodes:
-        path: export-voucher-codes
-        action: exportVoucherCodes
-        methods:
-          - GET
-          - POST
-      deleteVoucherCode:
-        path: delete-voucher-code
-        action: deleteVoucherCode
-        methods:
-          - POST
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.cart_price_rule
+      additional_routes:
+        config:
+          path: get-config
+          action: getConfig
+          methods:
+            - GET
+        getVoucherCodes:
+          path: get-voucher-codes
+          action: getVoucherCodes
+          methods:
+            - GET
+        createVoucherCodes:
+          path: create-voucher-code
+          action: createVoucherCode
+          methods:
+            - POST
+        generateVoucherCodes:
+          path: generate-voucher-codes
+          action: generateVoucherCodes
+          methods:
+            - POST
+        exportVoucherCodes:
+          path: export-voucher-codes
+          action: exportVoucherCodes
+          methods:
+            - GET
+            - POST
+        deleteVoucherCode:
+          path: delete-voucher-code
+          action: deleteVoucherCode
+          methods:
+            - POST
 
 ##### ORDERS
 coreshop_order_get_folder_configuration:
-  path: /%coreshop.admin.route.base%/order/get-folder-configuration
-  defaults: { _controller: 'coreshop.pimcore_controller.order:getFolderConfigurationAction'}
+    path: /%coreshop.admin.route.base%/order/get-folder-configuration
+    defaults: { _controller: 'coreshop.pimcore_controller.order:getFolderConfigurationAction'}
 
 coreshop_order_get_states:
-  path: /%coreshop.admin.route.base%/order/get-states
-  defaults: { _controller: 'coreshop.pimcore_controller.order:getStatesAction'}
+    path: /%coreshop.admin.route.base%/order/get-states
+    defaults: { _controller: 'coreshop.pimcore_controller.order:getStatesAction'}
 
 coreshop_order_cancel_order:
-  path: /%coreshop.admin.route.base%/order/update-order-state
-  defaults: { _controller: 'coreshop.pimcore_controller.order:updateOrderStateAction'}
+    path: /%coreshop.admin.route.base%/order/update-order-state
+    defaults: { _controller: 'coreshop.pimcore_controller.order:updateOrderStateAction'}
 
 coreshop_order_get_orders:
-  path: /%coreshop.admin.route.base%/order/list
-  defaults: { _controller: 'coreshop.pimcore_controller.order:listAction'}
+    path: /%coreshop.admin.route.base%/order/list
+    defaults: { _controller: 'coreshop.pimcore_controller.order:listAction'}
 
 coreshop_order_get_order:
-  path: /%coreshop.admin.route.base%/order/detail
-  defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}
+    path: /%coreshop.admin.route.base%/order/detail
+    defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}
 
 coreshop_order_find:
-  path: /%coreshop.admin.route.base%/order/find
-  defaults: { _controller: 'coreshop.pimcore_controller.order:findSaleAction'}
+    path: /%coreshop.admin.route.base%/order/find
+    defaults: { _controller: 'coreshop.pimcore_controller.order:findSaleAction'}
 
 ##### ORDER PAYMENT
 coreshop_order_payment_add:
-  path: /%coreshop.admin.route.base%/order-payment/add-payment
-  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:addPaymentAction'}
+    path: /%coreshop.admin.route.base%/order-payment/add-payment
+    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:addPaymentAction'}
 
 coreshop_order_payment_update:
-  path: /%coreshop.admin.route.base%/order-payment/update-payment
-  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updatePaymentAction'}
+    path: /%coreshop.admin.route.base%/order-payment/update-payment
+    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updatePaymentAction'}
 
 coreshop_order_payment_update_state:
-  path: /%coreshop.admin.route.base%/order-payment/update-payment-state
-  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updateStateAction'}
+    path: /%coreshop.admin.route.base%/order-payment/update-payment-state
+    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updateStateAction'}
 
 coreshop_order_get_payment_providers:
-  path: /%coreshop.admin.route.base%/order-payment/get-payment-providers
-  defaults: { _controller: 'coreshop.pimcore_controller.order_payment:getPaymentProvidersAction'}
+    path: /%coreshop.admin.route.base%/order-payment/get-payment-providers
+    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:getPaymentProvidersAction'}
 
 ##### ORDER INVOICE
 coreshop_order_invoice_get_processable_items:
-  path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
-  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:getInvoiceAbleItemsAction'}
+    path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
+    defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:getInvoiceAbleItemsAction'}
 
 coreshop_order_invoice_create:
-  path: /%coreshop.admin.route.base%/order-invoice/create-invoice
-  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:createInvoiceAction'}
+    path: /%coreshop.admin.route.base%/order-invoice/create-invoice
+    defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:createInvoiceAction'}
 
 coreshop_order_invoice_update_state:
-  path: /%coreshop.admin.route.base%/order-invoice/update-invoice-state
-  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:updateStateAction'}
+    path: /%coreshop.admin.route.base%/order-invoice/update-invoice-state
+    defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:updateStateAction'}
 
 coreshop_order_invoice_render:
-  path: /%coreshop.admin.route.base%/order-invoice/render
-  defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:renderAction'}
+    path: /%coreshop.admin.route.base%/order-invoice/render
+    defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:renderAction'}
 
 ##### ORDER SHIPMENT
 coreshop_order_shipment_get_processable_items:
-  path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
-  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:getShipAbleItemsAction'}
+    path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
+    defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:getShipAbleItemsAction'}
 
 coreshop_order_shipment_create:
-  path: /%coreshop.admin.route.base%/order-shipment/create-shipment
-  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:createShipmentAction'}
+    path: /%coreshop.admin.route.base%/order-shipment/create-shipment
+    defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:createShipmentAction'}
 
 coreshop_order_shipment_update:
-  path: /%coreshop.admin.route.base%/order-shipment/update-shipment
-  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateShipmentAction'}
+    path: /%coreshop.admin.route.base%/order-shipment/update-shipment
+    defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateShipmentAction'}
 
 coreshop_order_shipment_update_state:
-  path: /%coreshop.admin.route.base%/order-shipment/update-shipment-state
-  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateStateAction'}
+    path: /%coreshop.admin.route.base%/order-shipment/update-shipment-state
+    defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateStateAction'}
 
 coreshop_order_shipment_render:
-  path: /%coreshop.admin.route.base%/order-shipment/render
-  defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}
+    path: /%coreshop.admin.route.base%/order-shipment/render
+    defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}
 
 ##### ORDER CREATION
 coreshop_order_get_product_details:
-  path: /%coreshop.admin.route.base%/order-creation/get-product-details
-  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getProductDetailsAction'}
+    path: /%coreshop.admin.route.base%/order-creation/get-product-details
+    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getProductDetailsAction'}
 
 coreshop_order_get_customer_details:
-  path: /%coreshop.admin.route.base%/order-creation/get-customer-details
-  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getCustomerDetailsAction'}
+    path: /%coreshop.admin.route.base%/order-creation/get-customer-details
+    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getCustomerDetailsAction'}
 
 coreshop_order_get_totals:
-  path: /%coreshop.admin.route.base%/order-creation/get-totals
-  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getTotalsAction'}
+    path: /%coreshop.admin.route.base%/order-creation/get-totals
+    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getTotalsAction'}
 
 coreshop_order_create:
-  path: /%coreshop.admin.route.base%/order-creation/create-sale
-  defaults: { _controller: 'coreshop.pimcore_controller.order_creation:createSaleAction'}
+    path: /%coreshop.admin.route.base%/order-creation/create-sale
+    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:createSaleAction'}
 
 ##### QUOTES
+
 coreshop_quote_get_folder_configuration:
-  path: /%coreshop.admin.route.base%/quote/get-folder-configuration
-  defaults: { _controller: 'coreshop.pimcore_controller.quote:getFolderConfigurationAction'}
+    path: /%coreshop.admin.route.base%/quote/get-folder-configuration
+    defaults: { _controller: 'coreshop.pimcore_controller.quote:getFolderConfigurationAction'}
+
+coreshop_quote_get_grid_configuration:
+    path: /%coreshop.admin.route.base%/quote/get-grid-configuration
+    defaults: { _controller: 'coreshop.pimcore_controller.quote:getGridConfigurationAction'}
+
 
 coreshop_quote_get_quotes:
-  path: /%coreshop.admin.route.base%/quote/list
-  defaults: { _controller: 'coreshop.pimcore_controller.quote:listAction'}
+    path: /%coreshop.admin.route.base%/quote/list
+    defaults: { _controller: 'coreshop.pimcore_controller.quote:listAction'}
 
 coreshop_quote_get_quote:
-  path: /%coreshop.admin.route.base%/quote/detail
-  defaults: { _controller: 'coreshop.pimcore_controller.quote:detailAction'}
+    path: /%coreshop.admin.route.base%/quote/detail
+    defaults: { _controller: 'coreshop.pimcore_controller.quote:detailAction'}
 
 coreshop_quote_find:
-  path: /%coreshop.admin.route.base%/quote/find
-  defaults: { _controller: 'coreshop.pimcore_controller.quote:findSaleAction'}
+    path: /%coreshop.admin.route.base%/quote/find
+    defaults: { _controller: 'coreshop.pimcore_controller.quote:findSaleAction'}
 
 ##### QUOTE CREATION
 coreshop_quote_get_product_details:
-  path: /%coreshop.admin.route.base%/quote-creation/get-product-details
-  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getProductDetailsAction'}
+    path: /%coreshop.admin.route.base%/quote-creation/get-product-details
+    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getProductDetailsAction'}
 
 coreshop_quote_get_customer_details:
-  path: /%coreshop.admin.route.base%/quote-creation/get-customer-details
-  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getCustomerDetailsAction'}
+    path: /%coreshop.admin.route.base%/quote-creation/get-customer-details
+    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getCustomerDetailsAction'}
 
 coreshop_quote_get_totals:
-  path: /%coreshop.admin.route.base%/quote-creation/get-totals
-  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getTotalsAction'}
+    path: /%coreshop.admin.route.base%/quote-creation/get-totals
+    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getTotalsAction'}
 
 coreshop_quote_create:
-  path: /%coreshop.admin.route.base%/quote-creation/create-sale
-  defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:createSaleAction'}
+    path: /%coreshop.admin.route.base%/quote-creation/create-sale
+    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:createSaleAction'}

@@ -1,25 +1,28 @@
 services:
-  coreshop.translation_locale_provider.pimcore:
-    class: CoreShop\Component\Resource\Translation\Provider\PimcoreTranslationLocaleProvider
+    coreshop.translation_locale_provider.pimcore:
+        class: CoreShop\Component\Resource\Translation\Provider\PimcoreTranslationLocaleProvider
 
-  coreshop.translation.translatable_listener.doctrine.orm:
-    class: CoreShop\Bundle\ResourceBundle\EventListener\ORMTranslatableListener
-    tags:
-        - { name: doctrine.event_subscriber, connection: default, priority: 99 }
-    arguments: ['@coreshop.resource_registry', '@service_container']
+    coreshop.translation.translatable_listener.doctrine.orm:
+        class: CoreShop\Bundle\ResourceBundle\EventListener\ORMTranslatableListener
+        arguments:
+            - '@coreshop.resource_registry'
+            - '@service_container'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default, priority: 99 }
 
-  coreshop.translatable_entity_locale_assigner:
-    class: CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner
-    arguments: ['@coreshop.translation_locale_provider']
+    coreshop.translatable_entity_locale_assigner:
+        class: CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner
+        arguments:
+            - '@coreshop.translation_locale_provider'
 
-  coreshop.form.type.resource_translations:
-    class: CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType
-    arguments:
-      - '@coreshop.translation_locale_provider.pimcore'
-    tags:
-      - { name: 'form.type' }
+    coreshop.form.type.resource_translations:
+        class: CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType
+        arguments:
+            - '@coreshop.translation_locale_provider.pimcore'
+        tags:
+            - { name: form.type }
 
-  coreshop.form.type.pimcore_class_choice:
-    class: CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreClassChoiceType
-    tags:
-      - { name: 'form.type' }
+    coreshop.form.type.pimcore_class_choice:
+        class: CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreClassChoiceType
+        tags:
+            - { name: form.type }

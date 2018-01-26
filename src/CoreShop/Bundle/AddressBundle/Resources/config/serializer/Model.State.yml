@@ -1,32 +1,32 @@
 CoreShop\Component\Address\Model\State:
-  exclusion_policy: ALL
-  xml_root_name: state
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    isoCode:
-      expose: true
-      type: string
-      groups: [Detailed]
-    active:
-      expose: true
-      type: boolean
-      groups: [List, Detailed]
-    country:
-      expose: true
-      type: relation<CoreShop\Component\Address\Model\Country>
-      groups: [Detailed]
-    translations:
-      expose: true
-      type: array
-      groups: [Detailed]
-  virtual_properties:
-    getCountryName:
-      serialized_name: countryName
-      groups: [List, Detailed]
-    getName:
-      serialized_name: name
-      groups: [List, Detailed]
+    exclusion_policy: ALL
+    xml_root_name: state
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        isoCode:
+            expose: true
+            type: string
+            groups: [Detailed]
+        active:
+            expose: true
+            type: boolean
+            groups: [List, Detailed]
+        country:
+            expose: true
+            type: relation<CoreShop\Component\Address\Model\Country>
+            groups: [Detailed]
+        translations:
+            expose: true
+            type: array
+            groups: [Detailed]
+    virtual_properties:
+        getCountryName:
+            serialized_name: countryName
+            groups: [List, Detailed]
+        getName:
+            serialized_name: name
+            groups: [List, Detailed]

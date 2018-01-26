@@ -1,12 +1,12 @@
 CoreShop\Component\Core\Model\Country:
-  exclusion_policy: ALL
-  xml_root_name: country
-  properties:
-    currency:
-      expose: true
-      type: relation
-      groups: [Detailed]
-    stores:
-      expose: true
-      type: relation
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: country
+    properties:
+        currency:
+            expose: true
+            type: relation
+            groups: [Detailed]
+        stores:
+            expose: true
+            type: relation
+            groups: [Detailed]

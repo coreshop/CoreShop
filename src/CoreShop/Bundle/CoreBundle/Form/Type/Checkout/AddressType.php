@@ -90,17 +90,17 @@ final class AddressType extends AbstractResourceType
                         $checkboxData = null;
                     }
                 }
-                $event->getForm()->add('useShippingAsInvoice', CheckboxType::class, [
+                $event->getForm()->add('useInvoiceAsShipping', CheckboxType::class, [
                     'required' => false,
                     'mapped'   => false,
-                    'label'    => 'coreshop.form.address.use_shipping_as_invoice',
+                    'label'    => 'coreshop.form.address.use_invoice_as_shipping',
                     'data'     => $checkboxData
                 ]);
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $formData = $event->getData();
-                if (isset($formData['shippingAddress']) && (isset($formData['useShippingAsInvoice']) && '1' === $formData['useShippingAsInvoice'])) {
-                    $formData['invoiceAddress'] = $formData['shippingAddress'];
+                if (isset($formData['invoiceAddress']) && (isset($formData['useInvoiceAsShipping']) && '1' === $formData['useInvoiceAsShipping'])) {
+                    $formData['shippingAddress'] = $formData['invoiceAddress'];
                     $event->setData($formData);
                 }
             });

@@ -1,7 +1,0 @@
-{% if cart.hasItems() %}
-    <div class="cart-summary">
-        {% include '@CoreShopFrontend/Cart/Summary/_items.html.twig' %}
-    </div>
-{% else %}
-    <p>{{ 'coreshop.ui.cart_empty'|trans }}</p>
-{% endif %}

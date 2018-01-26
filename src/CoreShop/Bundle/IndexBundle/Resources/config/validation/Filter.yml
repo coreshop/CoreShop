@@ -1,18 +1,12 @@
 CoreShop\Component\Index\Model\Filter:
-  properties:
-    name:
-      - NotBlank: { groups: [coreshop] }
-    resultsPerPage:
-      - Type:
-          type: integer
-          groups: [coreshop]
-    orderDirection:
-      - Type:
-          type: string
-          groups: [coreshop]
-    orderKey:
-      - Type:
-          type: string
-          groups: [coreshop]
-    index:
-      - NotBlank: { groups: [coreshop] }
+    properties:
+        name:
+            - NotBlank: { groups: [coreshop] }
+        resultsPerPage:
+            - Type: { type: integer, groups: [coreshop] }
+        orderDirection:
+            - Type: { type: string, groups: [coreshop] }
+        orderKey:
+            - Type: { type: string, groups: [coreshop] }
+        index:
+            - NotBlank: { groups: [coreshop] }

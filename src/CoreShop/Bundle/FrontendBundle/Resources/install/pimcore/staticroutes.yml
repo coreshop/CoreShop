@@ -53,15 +53,6 @@ routes:
     variables: _locale,cartItem
     priority: 3
 
-  coreshop_cart_update:
-    pattern: "/(\\w+)\\/shop\\/cart\\/update/"
-    reverse: "/%_locale/shop/cart/update"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: updateCart
-    variables: _locale
-    priority: 3
-
   coreshop_cart_remove_price_rule:
     pattern: "/(\\w+)\\/shop\\/cart\\/remove-price-rule/"
     reverse: "/%_locale/shop/cart/remove-price-rule"

@@ -1,6 +1,6 @@
 core_shop_currency:
-  resources:
-    currency:
-      classes:
-        model: CoreShop\Component\Core\Model\Currency
-        repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CurrencyRepository
+    resources:
+        currency:
+            classes:
+                model: CoreShop\Component\Core\Model\Currency
+                repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CurrencyRepository

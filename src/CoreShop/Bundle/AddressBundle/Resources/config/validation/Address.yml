@@ -1,16 +1,16 @@
 CoreShop\Component\Address\Model\Address:
-  properties:
-    firstname:
-      - NotBlank: { groups: [coreshop] }
-    lastname:
-      - NotBlank: { groups: [coreshop] }
-    street:
-      - NotBlank: { groups: [coreshop] }
-    number:
-      - NotBlank: { groups: [coreshop] }
-    postcode:
-      - NotBlank: { groups: [coreshop] }
-    city:
-      - NotBlank: { groups: [coreshop] }
-    country:
-      - NotBlank: { groups: [coreshop] }
+    properties:
+        firstname:
+            - NotBlank: { groups: [coreshop] }
+        lastname:
+            - NotBlank: { groups: [coreshop] }
+        street:
+            - NotBlank: { groups: [coreshop] }
+        number:
+            - NotBlank: { groups: [coreshop] }
+        postcode:
+            - NotBlank: { groups: [coreshop] }
+        city:
+            - NotBlank: { groups: [coreshop] }
+        country:
+            - NotBlank: { groups: [coreshop] }

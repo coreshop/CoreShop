@@ -1,11 +1,11 @@
 imports:
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_address.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_taxation.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_currency.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_store.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_shipping.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_payment.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_order.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_configuration.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_product.yml" }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_customer.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_address.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_taxation.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_currency.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_store.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_shipping.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_payment.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_order.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_configuration.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_product.yml" }
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/coreshop/coreshop_customer.yml" }

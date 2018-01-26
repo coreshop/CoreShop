@@ -1,15 +1,15 @@
 coreshop_admin_carrier:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.carrier
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.carrier
 
 coreshop_admin_shipping_rule:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.shipping_rule
-    additional_routes:
-      config:
-        path: get-config
-        action: getConfig
-        methods:
-          - GET
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.shipping_rule
+      additional_routes:
+        config:
+          path: get-config
+          action: getConfig
+          methods:
+            - GET

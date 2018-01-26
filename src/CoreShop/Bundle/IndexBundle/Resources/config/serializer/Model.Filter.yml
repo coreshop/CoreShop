@@ -1,37 +1,37 @@
 CoreShop\Component\Index\Model\Filter:
-  exclusion_policy: ALL
-  xml_root_name: filter
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    name:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    resultsPerPage:
-      expose: true
-      type: string
-      groups: [Detailed]
-    order:
-      expose: true
-      type: string
-      groups: [Detailed]
-    orderKey:
-      expose: true
-      type: string
-      groups: [Detailed]
-    index:
-      expose: true
-      type: relation
-      groups: [Detailed]
-    preConditions:
-      expose: true
-      type: array
-      groups: [Detailed]
-    conditions:
-      expose: true
-      type: array
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: filter
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        resultsPerPage:
+            expose: true
+            type: string
+            groups: [Detailed]
+        order:
+            expose: true
+            type: string
+            groups: [Detailed]
+        orderKey:
+            expose: true
+            type: string
+            groups: [Detailed]
+        index:
+            expose: true
+            type: relation
+            groups: [Detailed]
+        preConditions:
+            expose: true
+            type: array
+            groups: [Detailed]
+        conditions:
+            expose: true
+            type: array
+            groups: [Detailed]

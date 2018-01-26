@@ -1,5 +1,7 @@
 <div class="table-responsive shopping-cart-table">
-    {{ form_start(form, {'action': path('coreshop_cart_update')}) }}
+    {{ form_start(form, {}) }}
+        {{ form_errors(form) }}
+
         <table class="table table-bordered">
             <thead>
             <tr>

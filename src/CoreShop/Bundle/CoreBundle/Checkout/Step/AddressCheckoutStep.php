@@ -150,7 +150,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
 
         if($cart->hasShippableItems() === false) {
             $form->remove('shippingAddress');
-            $form->remove('useShippingAsInvoice');
+            $form->remove('useInvoiceAsShipping');
         }
 
         if ($request->isMethod('post')) {

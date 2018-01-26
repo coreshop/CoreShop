@@ -11,3 +11,8 @@ pimcore:
             data:
                 map:
                     coreShopSerializedData: CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData
+
+
+framework:
+    workflows:
+        enabled: true

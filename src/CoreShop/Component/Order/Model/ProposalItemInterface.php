@@ -83,15 +83,15 @@ interface ProposalItemInterface extends ResourceInterface
     public function setItemTax($itemTax);
 
     /**
+     * @return int
+     */
+    public function getTotalTax();
+
+    /**
      * @param bool $withTax
      * @return int
      */
     public function getTotal($withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getTotalTax();
 
     /**
      * @return bool

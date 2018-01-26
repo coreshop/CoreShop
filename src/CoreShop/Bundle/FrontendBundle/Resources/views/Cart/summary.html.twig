@@ -1,17 +1,18 @@
 {% extends '@CoreShopFrontend/layout.html.twig' %}
+{% form_theme form '@CoreShopFrontend/Form/theme.html.twig' %}
 
 {% block content %}
+
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
+    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
 
-    {% for label, messages in app.flashes(['success', 'error']) %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label == 'error' ? 'danger' : label }}">
-                {{ message|trans }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-
-    {{ render(controller('coreshop.frontend.controller.cart:widgetSummaryAction')) }}
+    {% if cart.hasItems() %}
+        <div class="cart-summary">
+            {% include '@CoreShopFrontend/Cart/Summary/_items.html.twig' %}
+        </div>
+    {% else %}
+        <p>{{ 'coreshop.ui.cart_empty'|trans }}</p>
+    {% endif %}
 
     <div class="row">
         <div class="col-xs-12 col-sm-2">

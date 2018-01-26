@@ -281,6 +281,12 @@ translations:
           en: 'Order Number'
           de: 'Bestellnummer'
 
+  coreshop.ui.shipment_number:
+      languages:
+          de_CH: 'Versandnummer'
+          en: 'Shipment Number'
+          de: 'Versandnummer'
+
   coreshop.ui.orders:
       languages:
           de_CH: 'Bestellungen'
@@ -300,6 +306,12 @@ translations:
           de: 'Zahlungsanbieter'
 
   coreshop.ui.accept_terms:
+      languages:
+          de_CH: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
+          en: 'I have read and agree to the terms and conditions'
+          de: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
+
+  coreshop.form.customer.terms:
       languages:
           de_CH: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
           en: 'I have read and agree to the terms and conditions'
@@ -683,12 +695,6 @@ translations:
           en: 'There was an Error'
           de: 'Es ist ein Fehler aufgetreten'
 
-  coreshop.ui.error:
-      languages:
-          de_CH: 'Es ist ein Fehler aufgetreten'
-          en: 'There was an Error'
-          de: 'Es ist ein Fehler aufgetreten'
-
   coreshop.ui.success:
       languages:
           de_CH: 'Der Vorgang war erfolgreich'
@@ -766,3 +772,185 @@ translations:
           de_CH: 'Die Menge eines Produktes im Warenkorb kann nicht kleiner als 1 sein.'
           de: 'Die Menge eines Produktes im Warenkorb kann nicht kleiner als 1 sein.'
           en: 'Quantity of an order item cannot be lower than 1.'
+
+  coreshop.form.address.choose_address:
+      languages:
+          de_CH: 'Adresse wählen'
+          en: 'Choose Address'
+          de: 'Adresse wählen'
+
+  coreshop.form.address.shipping:
+      languages:
+          de_CH: 'Versandadresse'
+          en: 'Shipping Address'
+          de: 'Versandadresse'
+
+  coreshop.form.address.invoice:
+      languages:
+          de_CH: 'Rechnungsadresse'
+          en: 'Invoice Address'
+          de: 'Rechnungsadresse'
+
+  coreshop.form.address.use_invoice_as_shipping:
+      languages:
+          de_CH: 'Rechnungsadresse ist Lieferadresse'
+          en: 'Invoice Address is Shipping Address'
+          de: 'Rechnungsadresse ist Lieferadresse'
+
+  coreshop.form.customer_registration.customer:
+      languages:
+          de_CH: 'Benutzerdaten'
+          en: 'Customer Data'
+          de: 'Benutzerdaten'
+
+  coreshop.form.customer_registration.address:
+      languages:
+          de_CH: 'Adressinformationen'
+          en: 'Addres Information'
+          de: 'Adressinformationen'
+
+  coreshop.form.address.company:
+      languages:
+          de_CH: 'Firmenname'
+          en: 'Company'
+          de: 'Firmenname'
+
+  coreshop.form.address.firstname:
+      languages:
+          de_CH: 'Vorname'
+          en: 'First Name'
+          de: 'Vorname'
+
+  coreshop.form.address.lastname:
+      languages:
+          de_CH: 'Nachname'
+          en: 'Last Name'
+          de: 'Nachname'
+
+  coreshop.form.address.street:
+      languages:
+          de_CH: 'Strasse'
+          en: 'Street'
+          de: 'Straße'
+
+  coreshop.form.address.number:
+      languages:
+          de_CH: 'Nummer'
+          en: 'Number'
+          de: 'Nummer'
+
+  coreshop.form.address.postcode:
+      languages:
+          de_CH: 'PLZ'
+          en: 'ZIP'
+          de: 'PLZ'
+
+  coreshop.form.address.city:
+      languages:
+          de_CH: 'Stadt'
+          en: 'City'
+          de: 'Stadt'
+
+  coreshop.form.address.country:
+      languages:
+          de_CH: 'Land'
+          en: 'Country'
+          de: 'Land'
+
+  coreshop.form.address.phone_number:
+      languages:
+          de_CH: 'Telefonnummer'
+          en: 'Phone Number'
+          de: 'Telefonnummer'
+
+  coreshop.form.customer.firstname:
+      languages:
+          de_CH: 'Vorname'
+          en: 'First Name'
+          de: 'Vorname'
+
+  coreshop.form.customer.lastname:
+      languages:
+          de_CH: 'Nachname'
+          en: 'Last Name'
+          de: 'Nachname'
+
+  coreshop.form.customer.email:
+      languages:
+          de_CH: 'E-Mail-Adresse'
+          en: 'Email Address'
+          de: 'E-Mail-Adresse'
+
+  coreshop.form.customer.email_repeat:
+      languages:
+          de_CH: 'E-Mail-Adresse wiederholen'
+          en: 'Repeat Email Addres'
+          de: 'E-Mail-Adresse wiederholen'
+
+  coreshop.form.customer.password:
+      languages:
+          de_CH: 'Passwort'
+          en: 'Password'
+          de: 'Passwort'
+
+  coreshop.form.customer.password_repeat:
+      languages:
+          de_CH: 'Passwort wiederholen'
+          en: 'Repeat Password'
+          de: 'Passwort wiederholen'
+
+  coreshop.form.customer.default_address:
+      languages:
+          de_CH: 'Standardadresse'
+          en: 'Default Address'
+          de: 'Standardadresse'
+
+  coreshop.form.customer.gender:
+      languages:
+          de_CH: 'Geschlecht'
+          en: 'Gender'
+          de: 'Geschlecht'
+
+  coreshop.form.customer.gender.male:
+      languages:
+          de_CH: 'Männlich'
+          en: 'Male'
+          de: 'Männlich'
+
+  coreshop.form.customer.gender.female:
+      languages:
+          de_CH: 'Weiblich'
+          en: 'Female'
+          de: 'Weiblich'
+
+  coreshop.form.login.username:
+      languages:
+          de_CH: 'Benutzername'
+          en: 'Username'
+          de: 'Benutzername'
+
+  coreshop.form.login.password:
+      languages:
+          de_CH: 'Passwort'
+          en: 'Password'
+          de: 'Passwort'
+
+  coreshop.form.login.remember_me:
+      languages:
+          de_CH: 'Zugangsdaten merken'
+          en: 'Remember me'
+          de: 'Zugangsdaten merken'
+
+  coreshop.form.cart_rule.coupon:
+      languages:
+          de_CH: 'Gutscheincode'
+          en: 'Voucher Code'
+          de: 'Gutscheincode'
+
+  coreshop.form.search.text:
+      languages:
+          de_CH: 'Suchen'
+          en: 'Search'
+          de: 'Suchen'
+
+

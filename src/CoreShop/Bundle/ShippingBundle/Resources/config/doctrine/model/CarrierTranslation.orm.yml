@@ -1,25 +1,25 @@
 CoreShop\Component\Shipping\Model\CarrierTranslation:
-  type: mappedSuperclass
-  table: coreshop_carrier_translation
-  fields:
-    id:
-      type: integer
-      column: id
-      id: true
-      generator:
-        strategy: AUTO
-    description:
-      type: text
-      column: description
-      nullable: true
-    creationDate:
-      type: datetime
-      gedmo:
-        timestampable:
-          on: create
-    modificationDate:
-      type: datetime
-      nullable: true
-      gedmo:
-        timestampable:
-          on: update
+    type: mappedSuperclass
+    table: coreshop_carrier_translation
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        description:
+            type: text
+            column: description
+            nullable: true
+        creationDate:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        modificationDate:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update

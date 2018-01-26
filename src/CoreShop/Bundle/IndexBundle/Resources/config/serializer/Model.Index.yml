@@ -1,29 +1,29 @@
 CoreShop\Component\Index\Model\Index:
-  exclusion_policy: ALL
-  xml_root_name: index
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    name:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    class:
-      expose: true
-      type: string
-      groups: [Detailed]
-    worker:
-      expose: true
-      type: string
-      groups: [Detailed]
-    configuration:
-      expose: true
-      type: array
-      groups: [List, Detailed]
-    columns:
-      expose: true
-      type: array
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: index
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        class:
+            expose: true
+            type: string
+            groups: [Detailed]
+        worker:
+            expose: true
+            type: string
+            groups: [Detailed]
+        configuration:
+            expose: true
+            type: array
+            groups: [List, Detailed]
+        columns:
+            expose: true
+            type: array
+            groups: [Detailed]

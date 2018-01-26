@@ -1,30 +1,30 @@
 CoreShop\Component\Payment\Model\PaymentProvider:
-  exclusion_policy: ALL
-  xml_root_name: payment_provider
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    active:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    identifier:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    position:
-      expose: true
-      type: integer
-      groups: [Detailed]
-    translations:
-      expose: true
-      type: array
-      groups: [Detailed]
-  virtual_properties:
-      getName:
-        serialized_name: name
-        type: string
-        groups: [List, Detailed]
+    exclusion_policy: ALL
+    xml_root_name: payment_provider
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        active:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        identifier:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        position:
+            expose: true
+            type: integer
+            groups: [Detailed]
+        translations:
+            expose: true
+            type: array
+            groups: [Detailed]
+    virtual_properties:
+          getName:
+              serialized_name: name
+              type: string
+              groups: [List, Detailed]

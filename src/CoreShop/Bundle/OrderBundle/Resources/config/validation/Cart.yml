@@ -1,7 +1,7 @@
 CoreShop\Component\Order\Model\Cart:
-  constraints:
-    - \CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRule: { groups: ['coreshop'] }
+    constraints:
+        - \CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRule: { groups: ['coreshop'] }
 
-  getters:
-    items:
-      - Valid: ~
+    getters:
+        items:
+            - Valid: ~

@@ -1,33 +1,33 @@
 CoreShop\Component\Notification\Model\NotificationRUle:
-  exclusion_policy: ALL
-  xml_root_name: product_price_rule
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    name:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    type:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    sort:
-      expose: true
-      type: integer
-      groups: [List, Detailed]
-    active:
-      expose: true
-      type: boolean
-      groups: [Detailed]
-    conditions:
-      expose: true
-      type: array
-      groups: [Detailed]
-    actions:
-      expose: true
-      type: array
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: product_price_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        type:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        sort:
+            expose: true
+            type: integer
+            groups: [List, Detailed]
+        active:
+            expose: true
+            type: boolean
+            groups: [Detailed]
+        conditions:
+            expose: true
+            type: array
+            groups: [Detailed]
+        actions:
+            expose: true
+            type: array
+            groups: [Detailed]

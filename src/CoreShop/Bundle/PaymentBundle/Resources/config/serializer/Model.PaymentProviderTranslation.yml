@@ -1,16 +1,16 @@
 CoreShop\Component\Payment\Model\PaymentProviderTranslation:
-  exclusion_policy: ALL
-  xml_root_name: payment_provider_translation
-  properties:
-    name:
-      expose: true
-      type: string
-      groups: [Detailed]
-    description:
-      expose: true
-      type: string
-      groups: [Detailed]
-    instructions:
-      expose: true
-      type: string
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: payment_provider_translation
+    properties:
+        name:
+            expose: true
+            type: string
+            groups: [Detailed]
+        description:
+            expose: true
+            type: string
+            groups: [Detailed]
+        instructions:
+            expose: true
+            type: string
+            groups: [Detailed]

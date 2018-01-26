@@ -1,6 +1,6 @@
 core_shop_shipping:
-  resources:
-    carrier:
-      classes:
-        model: CoreShop\Component\Core\Model\Carrier
-        repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CarrierRepository
+    resources:
+        carrier:
+            classes:
+                model: CoreShop\Component\Core\Model\Carrier
+                repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\CarrierRepository

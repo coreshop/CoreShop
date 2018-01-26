@@ -1,54 +1,58 @@
 services:
-  coreshop.context.shopper:
-    class: CoreShop\Component\Core\Context\ShopperContext
-    lazy: true
-    arguments:
-      - '@coreshop.context.store'
-      - '@coreshop.context.currency'
-      - '@coreshop.context.locale'
-      - '@coreshop.context.country'
-      - '@coreshop.context.customer'
-      - '@coreshop.context.cart'
+    coreshop.context.shopper:
+        class: CoreShop\Component\Core\Context\ShopperContext
+        lazy: true
+        arguments:
+            - '@coreshop.context.store'
+            - '@coreshop.context.currency'
+            - '@coreshop.context.locale'
+            - '@coreshop.context.country'
+            - '@coreshop.context.customer'
+            - '@coreshop.context.cart'
 
-  coreshop.storage.currency:
-    class: CoreShop\Component\Core\Currency\CurrencyStorage
-    arguments:
-      - '@coreshop.storage.cookie'
-      - '@coreshop.repository.currency'
+    coreshop.storage.currency:
+        class: CoreShop\Component\Core\Currency\CurrencyStorage
+        arguments:
+            - '@coreshop.storage.cookie'
+            - '@coreshop.repository.currency'
 
-  coreshop.context.currency.storage_based:
-    class: CoreShop\Component\Core\Currency\Context\StorageBasedCurrencyContext
-    arguments:
-      - '@coreshop.context.store'
-      - '@coreshop.storage.currency'
-    tags:
-      - { name: 'coreshop.context.currency' }
+    coreshop.context.currency.storage_based:
+        class: CoreShop\Component\Core\Currency\Context\StorageBasedCurrencyContext
+        arguments:
+            - '@coreshop.context.store'
+            - '@coreshop.storage.currency'
+        tags:
+            - { name: 'coreshop.context.currency' }
 
-  coreshop.context.currency.store_aware:
-    class: CoreShop\Component\Core\Currency\Context\StoreAwareCurrencyContext
-    decorates: coreshop.context.currency
-    decoration_priority: 256
-    arguments: ['@coreshop.context.currency.store_aware.inner', '@coreshop.context.store', '@coreshop.repository.currency']
+    coreshop.context.currency.store_aware:
+        class: CoreShop\Component\Core\Currency\Context\StoreAwareCurrencyContext
+        decorates: coreshop.context.currency
+        decoration_priority: 256
+        arguments:
+            - '@coreshop.context.currency.store_aware.inner'
+            - '@coreshop.context.store'
+            - '@coreshop.repository.currency'
 
-  # country store resolver
-  coreshop.context.country.request_based.resolver.store_based:
-    class: CoreShop\Component\Core\Context\StoreBasedCountryResolver
-    public: false
-    tags:
-        - { name: coreshop.context.country.request_based.resolver, priority: 100 } #Highest Priority, is more like the fallback
-    arguments: ['@coreshop.context.store']
+    # country store resolver
+    coreshop.context.country.request_based.resolver.store_based:
+        class: CoreShop\Component\Core\Context\StoreBasedCountryResolver
+        public: false
+        arguments:
+            - '@coreshop.context.store'
+        tags:
+            - { name: coreshop.context.country.request_based.resolver, priority: 100 } #Highest Priority, is more like the fallback
 
-  coreshop.context.country.request_based.resolver.cart_based:
-    class: CoreShop\Component\Core\Context\CartBasedCountryResolver
-    public: false
-    tags:
-        - { name: coreshop.context.country.request_based.resolver, priority: 1 } #Highest Priority, is more like the fallback
-    arguments:
-      - '@coreshop.context.cart'
+    coreshop.context.country.request_based.resolver.cart_based:
+        class: CoreShop\Component\Core\Context\CartBasedCountryResolver
+        public: false
+        arguments:
+            - '@coreshop.context.cart'
+        tags:
+            - { name: coreshop.context.country.request_based.resolver, priority: 1 } #Highest Priority, is more like the fallback
 
-  coreshop.context.cart.new.store_based:
-    decorates: coreshop.context.cart.new
-    class: CoreShop\Component\Core\Context\StoreBasedCartContext
-    arguments:
-      - '@coreshop.context.cart.new.store_based.inner'
-      - '@coreshop.context.shopper'
+    coreshop.context.cart.new.store_based:
+        decorates: coreshop.context.cart.new
+        class: CoreShop\Component\Core\Context\StoreBasedCartContext
+        arguments:
+            - '@coreshop.context.cart.new.store_based.inner'
+            - '@coreshop.context.shopper'

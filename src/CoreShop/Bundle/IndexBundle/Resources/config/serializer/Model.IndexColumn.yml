@@ -1,49 +1,49 @@
 CoreShop\Component\Index\Model\IndexColumn:
-  exclusion_policy: ALL
-  xml_root_name: index_column
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    name:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    objectKey:
-      expose: true
-      type: string
-      groups: [Detailed]
-    objectType:
-      expose: true
-      type: string
-      groups: [Detailed]
-    dataType:
-      expose: true
-      type: string
-      groups: [Detailed]
-    getter:
-      expose: true
-      type: string
-      groups: [Detailed]
-    getterConfig:
-      expose: true
-      type: array
-      groups: [Detailed]
-    interpreter:
-      expose: true
-      type: string
-      groups: [Detailed]
-    interpreterConfig:
-      expose: true
-      type: array
-      groups: [Detailed]
-    columnType:
-      expose: true
-      type: string
-      groups: [Detailed]
-    configuration:
-      expose: true
-      type: array
-      groups: [Detailed]
+    exclusion_policy: ALL
+    xml_root_name: index_column
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        objectKey:
+            expose: true
+            type: string
+            groups: [Detailed]
+        objectType:
+            expose: true
+            type: string
+            groups: [Detailed]
+        dataType:
+            expose: true
+            type: string
+            groups: [Detailed]
+        getter:
+            expose: true
+            type: string
+            groups: [Detailed]
+        getterConfig:
+            expose: true
+            type: array
+            groups: [Detailed]
+        interpreter:
+            expose: true
+            type: string
+            groups: [Detailed]
+        interpreterConfig:
+            expose: true
+            type: array
+            groups: [Detailed]
+        columnType:
+            expose: true
+            type: string
+            groups: [Detailed]
+        configuration:
+            expose: true
+            type: array
+            groups: [Detailed]

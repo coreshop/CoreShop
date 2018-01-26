@@ -1,21 +1,21 @@
 CoreShop\Component\Taxation\Model\TaxRule:
-  exclusion_policy: ALL
-  xml_root_name: tax_rule
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    behavior:
-      expose: true
-      type: integer
-      groups: [List, Detailed]
-    taxRuleGroup:
-      expose: true
-      type: relation<CoreShop\Component\Taxation\Model\TaxRuleGroupInterface>
-      groups: [List, Detailed]
-    taxRate:
-      expose: true
-      type: relation<CoreShop\Component\Taxation\Model\TaxRateInterface>
-      groups: [List, Detailed]
+    exclusion_policy: ALL
+    xml_root_name: tax_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        behavior:
+            expose: true
+            type: integer
+            groups: [List, Detailed]
+        taxRuleGroup:
+            expose: true
+            type: relation<CoreShop\Component\Taxation\Model\TaxRuleGroupInterface>
+            groups: [List, Detailed]
+        taxRate:
+            expose: true
+            type: relation<CoreShop\Component\Taxation\Model\TaxRateInterface>
+            groups: [List, Detailed]

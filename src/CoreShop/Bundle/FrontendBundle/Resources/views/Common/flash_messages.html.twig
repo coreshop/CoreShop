@@ -1,0 +1,11 @@
+{% import '@CoreShopFrontend/Common/Macro/messages.html.twig' as messages %}
+
+{% for label, message_data in app.flashes(['success', 'error']) %}
+    {% for message in message_data %}
+        {% if label == 'error'  %}
+             {{ messages.error(message) }}
+        {% else %}
+             {{ messages.dynamic(message, label)}}
+        {% endif %}
+    {% endfor %}
+{% endfor %}

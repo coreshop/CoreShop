@@ -8,7 +8,7 @@
     "ecommerce"
   ],
   "homepage": "http://www.coreshop.org",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "Dominik Pfaffenbauer",

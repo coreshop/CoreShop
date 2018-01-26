@@ -1,64 +1,69 @@
 imports:
-  - { resource: "services/context.yml" }
-  - { resource: "services/storage.yml" }
-  - { resource: "services/form.yml" }
-  - { resource: "services/checkout.yml" }
-  - { resource: "services/listeners.yml" }
-  - { resource: "services/product.yml" }
-  - { resource: "services/shipping.yml" }
-  - { resource: "services/rules.yml" }
-  - { resource: "services/installer.yml" }
-  - { resource: "services/notification.yml" }
-  - { resource: "services/cart-price-rules.yml" }
-  - { resource: "services/profiler.yml" }
-  - { resource: "services/order.yml" }
-  - { resource: "services/tracking.yml" }
-  - { resource: "services/customer.yml" }
-  - { resource: "services/settings.yml" }
-  - { resource: "services/cart-processor.yml" }
-  - { resource: "services/reports.yml" }
-  - { resource: "services/pimcore_installer.yml" }
-  - { resource: "services/inventory.yml" }
-  - { resource: "services/handler.yml" }
-  - { resource: "services/commands.yml" }
-  - { resource: "services/locale.yml" }
-  - { resource: "services/payment.yml" }
+    - { resource: "services/context.yml" }
+    - { resource: "services/storage.yml" }
+    - { resource: "services/form.yml" }
+    - { resource: "services/checkout.yml" }
+    - { resource: "services/listeners.yml" }
+    - { resource: "services/product.yml" }
+    - { resource: "services/shipping.yml" }
+    - { resource: "services/rules.yml" }
+    - { resource: "services/installer.yml" }
+    - { resource: "services/notification.yml" }
+    - { resource: "services/cart-price-rules.yml" }
+    - { resource: "services/profiler.yml" }
+    - { resource: "services/order.yml" }
+    - { resource: "services/tracking.yml" }
+    - { resource: "services/customer.yml" }
+    - { resource: "services/settings.yml" }
+    - { resource: "services/cart-processor.yml" }
+    - { resource: "services/reports.yml" }
+    - { resource: "services/pimcore_installer.yml" }
+    - { resource: "services/inventory.yml" }
+    - { resource: "services/handler.yml" }
+    - { resource: "services/commands.yml" }
+    - { resource: "services/locale.yml" }
+    - { resource: "services/payment.yml" }
 
 services:
-  coreshop.core.key_transformer:
-    class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
+    coreshop.core.key_transformer:
+        class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
 
-  coreshop.taxation.factory.tax_calculator:
-    class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
-    arguments: ['@coreshop.repository.tax_rule']
+    coreshop.taxation.factory.tax_calculator:
+        class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
+        arguments:
+            - '@coreshop.repository.tax_rule'
+            - '@coreshop.context.store'
 
-  coreshop.taxation.tax_applicator:
-    class: CoreShop\Component\Core\Taxation\TaxApplicator
-    arguments:
-      - '@coreshop.context.store'
+    coreshop.taxation.tax_applicator:
+        class: CoreShop\Component\Core\Taxation\TaxApplicator
+        arguments:
+            - '@coreshop.context.store'
 
-  coreshop.taxation.factory.cached_tax_calculator:
-    class: CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory
-    decorates: coreshop.taxation.factory.tax_calculator
-    arguments: ['@coreshop.taxation.factory.cached_tax_calculator.inner']
+    coreshop.taxation.factory.cached_tax_calculator:
+        class: CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory
+        decorates: coreshop.taxation.factory.tax_calculator
+        arguments:
+            - '@coreshop.taxation.factory.cached_tax_calculator.inner'
 
-  coreshop.security.customer.user_provider:
-    class: CoreShop\Bundle\CoreBundle\ObjectUserProvider
-    arguments: ['%coreshop.model.customer.class%', 'email']
+    coreshop.security.customer.user_provider:
+        class: CoreShop\Bundle\CoreBundle\ObjectUserProvider
+        arguments:
+            - '%coreshop.model.customer.class%'
+            - 'email'
 
-  coreshop.security.customer.password_encoder_factory:
-    class: Pimcore\Security\Encoder\Factory\UserAwareEncoderFactory
-    arguments:
-      - Pimcore\Security\Encoder\PasswordFieldEncoder
-      - ['password']
+    coreshop.security.customer.password_encoder_factory:
+        class: Pimcore\Security\Encoder\Factory\UserAwareEncoderFactory
+        arguments:
+            - Pimcore\Security\Encoder\PasswordFieldEncoder
+            - ['password']
 
-  coreshop.configuration.service:
-    class: CoreShop\Component\Core\Configuration\ConfigurationService
-    arguments:
-      - '@doctrine.orm.default_entity_manager'
-      - '@coreshop.repository.configuration'
-      - '@coreshop.factory.configuration'
-      - '@coreshop.context.store'
+    coreshop.configuration.service:
+        class: CoreShop\Component\Core\Configuration\ConfigurationService
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@coreshop.repository.configuration'
+            - '@coreshop.factory.configuration'
+            - '@coreshop.context.store'
 
 
 

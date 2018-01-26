@@ -1,10 +1,10 @@
 coreshop_admin_store:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.store
-    additional_routes:
-      listSites:
-        path: list-sites
-        action: listSites
-        methods:
-          - GET
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.store
+      additional_routes:
+        listSites:
+          path: list-sites
+          action: listSites
+          methods:
+            - GET

@@ -5,7 +5,13 @@
 {% endblock %}
 
 {% block checkout %}
-    {% include '@CoreShopFrontend/Common/Cart/_table.html.twig' with {cart: coreshop.cart} %}
+
+    {% if cart.hasItems() %}
+        <div class="cart-summary">
+            {% include '@CoreShopFrontend/Checkout/steps/summary/_list.html.twig' %}
+        </div>
+    {% endif %}
+
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
         {{ form_row(form.acceptTerms) }}

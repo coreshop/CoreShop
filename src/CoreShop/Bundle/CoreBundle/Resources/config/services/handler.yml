@@ -1,8 +1,8 @@
 services:
-  coreshop.handler.shop_logout:
-    class: CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler
-    arguments:
-      - '@security.http_utils'
-      - '/'
-      - '@session'
-      - '@coreshop.context.store'
+    coreshop.handler.shop_logout:
+        class: CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler
+        arguments:
+            - '@security.http_utils'
+            - '/'
+            - '@session'
+            - '@coreshop.context.store'

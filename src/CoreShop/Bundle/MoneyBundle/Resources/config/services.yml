@@ -1,20 +1,22 @@
 imports:
-  - { resource: "services/form.yml" }
+    - { resource: "services/form.yml" }
 
 services:
-  coreshop.money_formatter:
-    class: CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter
+    coreshop.money_formatter:
+        class: CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter
 
-  coreshop.twig.extension.money:
-    class: CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension
-    public: false
-    tags:
-        - { name: twig.extension }
-    arguments: ['@coreshop.templating.helper.format_money']
+    coreshop.twig.extension.money:
+        class: CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension
+        public: false
+        arguments:
+            - '@coreshop.templating.helper.format_money'
+        tags:
+            - { name: twig.extension }
 
-  coreshop.templating.helper.format_money:
-    class: CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper
-    tags:
-        - { name: templating.helper, alias: coreshop_format_money }
-    lazy: true
-    arguments: ['@coreshop.money_formatter']
+    coreshop.templating.helper.format_money:
+        class: CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper
+        lazy: true
+        arguments:
+            - '@coreshop.money_formatter'
+        tags:
+            - { name: templating.helper, alias: coreshop_format_money }

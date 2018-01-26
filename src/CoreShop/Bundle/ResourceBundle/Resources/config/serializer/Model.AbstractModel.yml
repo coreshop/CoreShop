@@ -1,2 +1,2 @@
 Pimcore\Model\AbstractModel:
-  exclude: true
+    exclude: true

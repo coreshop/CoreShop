@@ -1,10 +1,10 @@
 services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: false
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-  CoreShop\Bundle\CoreBundle\Installer:
-    public: true
-    arguments:
-      $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
+    CoreShop\Bundle\CoreBundle\Installer:
+        public: true
+        arguments:
+            $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"

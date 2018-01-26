@@ -42,19 +42,19 @@ final class CartItemProcessor implements CartProcessorInterface
          * @var $item CartItemInterface
          */
         foreach ($cart->getItems() as $item) {
-            $itemNetPrice = $this->productPriceCalculator->getPrice($item->getProduct(), false);
-            $itemGrossPrice = $this->productPriceCalculator->getPrice($item->getProduct(), true);
-            $itemTax = $itemGrossPrice - $itemNetPrice;
+            $product = $item->getProduct();
+
+            $itemNetPrice = $this->productPriceCalculator->getPrice($product, false);
+            $itemGrossPrice = $this->productPriceCalculator->getPrice($product, true);
 
             $item->setItemPrice($itemNetPrice, false);
             $item->setItemPrice($itemGrossPrice, true);
-            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($item->getProduct(), false), false);
-            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($item->getProduct(), true), true);
-            $item->setItemWholesalePrice($item->getProduct()->getWholesalePrice());
-            $item->setItemTax($itemTax);
+            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, false), false);
+            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, true), true);
+            $item->setItemWholesalePrice($product->getWholesalePrice());
 
-            if($item->getProduct() instanceof ProductInterface) {
-                $item->setDigitalProduct($item->getProduct()->getDigitalProduct());
+            if($product instanceof ProductInterface) {
+                $item->setDigitalProduct($product->getDigitalProduct());
             }
 
             $item->save();

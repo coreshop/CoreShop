@@ -1,16 +1,16 @@
 parameters:
-  coreshop.customer_address.folder_path: addresses
+    coreshop.customer_address.folder_path: addresses
 
 services:
-  coreshop.customer.registration_service:
-    class: CoreShop\Bundle\CoreBundle\Customer\RegistrationService
-    arguments:
-      - '@coreshop.repository.customer'
-      - '@coreshop.object_service'
-      - '@event_dispatcher'
-      - '@security.token_storage'
-      - '@coreshop.context.locale'
-      - '%coreshop.folder.customer%'
-      - '%coreshop.folder.guest%'
-      - '%coreshop.folder.address%'
+    coreshop.customer.registration_service:
+        class: CoreShop\Bundle\CoreBundle\Customer\RegistrationService
+        arguments:
+            - '@coreshop.repository.customer'
+            - '@coreshop.object_service'
+            - '@event_dispatcher'
+            - '@security.token_storage'
+            - '@coreshop.context.locale'
+            - '%coreshop.folder.customer%'
+            - '%coreshop.folder.guest%'
+            - '%coreshop.folder.address%'
 

@@ -1,29 +1,29 @@
 CoreShop\Component\Store\Model\Store:
-  exclusion_policy: ALL
-  xml_root_name: store
-  properties:
-    id:
-      expose: true
-      type: integer
-      xml_attribute: true
-      groups: [List, Detailed]
-    name:
-      expose: true
-      type: string
-      groups: [List, Detailed]
-    template:
-      expose: true
-      type: string
-      groups: [Detailed]
-    isDefault:
-      expose: true
-      type: boolean
-      groups: [List, Detailed]
-    siteId:
-      expose: true
-      type: integer
-      groups: [List, Detailed]
-    currency:
-      expose: true
-      type: relation
-      groups: [List, Detailed]
+    exclusion_policy: ALL
+    xml_root_name: store
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        template:
+            expose: true
+            type: string
+            groups: [Detailed]
+        isDefault:
+            expose: true
+            type: boolean
+            groups: [List, Detailed]
+        siteId:
+            expose: true
+            type: integer
+            groups: [List, Detailed]
+        currency:
+            expose: true
+            type: relation
+            groups: [List, Detailed]

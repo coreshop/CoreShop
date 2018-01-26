@@ -1,10 +1,10 @@
 coreshop_admin_product_price_rule:
-  type: coreshop.resources
-  resource: |
-    alias: coreshop.product_price_rule
-    additional_routes:
-      config:
-        path: get-config
-        action: getConfig
-        methods:
-          - GET
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.product_price_rule
+      additional_routes:
+        config:
+          path: get-config
+          action: getConfig
+          methods:
+            - GET

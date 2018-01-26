@@ -45,24 +45,10 @@ class CartController extends FrontendController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function widgetSummaryAction(Request $request)
+    public function summaryAction(Request $request)
     {
-        $form = $this->createForm(CartType::class, $this->getCart());
-
-        return $this->renderTemplate('CoreShopFrontendBundle:Cart:_widgetSummary.html.twig', [
-            'cart' => $this->getCart(),
-            'form' => $form->createView(),
-            'editAllowed' => true
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function updateCartAction(Request $request)
-    {
-        $form = $this->createForm(CartType::class, $this->getCart());
+        $cart = $this->getCart();
+        $form = $this->createForm(CartType::class, $cart);
         $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
@@ -74,7 +60,10 @@ class CartController extends FrontendController
 
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                     $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
-                    return $this->redirectToRoute('coreshop_cart_summary');
+                    return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
+                        'cart' => $this->getCart(),
+                        'form' => $form->createView()
+                    ]);
                 }
 
                 // TODO: would be better to do that inside the form
@@ -85,7 +74,10 @@ class CartController extends FrontendController
 
                     if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
                         $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
-                        return $this->redirectToRoute('coreshop_cart_summary');
+                        return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
+                            'cart' => $this->getCart(),
+                            'form' => $form->createView()
+                        ]);
                     }
                 }
 
@@ -102,13 +94,17 @@ class CartController extends FrontendController
             }
 
             $this->getCartManager()->persistCart($cart);
-
-            return $this->redirectToRoute('coreshop_cart_summary');
+        }
+        else {
+            if ($cart->getId()) {
+                $cart = $this->get('coreshop.repository.cart')->forceFind($cart->getId());
+            }
         }
 
-        $this->addFlash('error', 'coreshop.ui.cart_update_error');
-
-        return $this->redirectToRoute('coreshop_cart_summary');
+        return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
+            'cart' => $cart,
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -170,19 +166,6 @@ class CartController extends FrontendController
         $this->getCartManager()->persistCart($this->getCart());
 
         return $this->redirectToRoute('coreshop_cart_summary');
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function summaryAction(Request $request)
-    {
-        return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
-            'cart' => $this->getCart(),
-            'currentCheckoutStep' => 0
-        ]);
     }
 
     /**

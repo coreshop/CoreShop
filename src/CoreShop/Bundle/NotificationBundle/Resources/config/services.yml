@@ -1,47 +1,47 @@
 imports:
-  - { resource: "services/form.yml" }
-  - { resource: "services/listeners.yml" }
+    - { resource: "services/form.yml" }
+    - { resource: "services/listeners.yml" }
 
 services:
-  coreshop.notification_rule.applier:
-    class: CoreShop\Component\Notification\Processor\RuleApplier
-    arguments: ['@coreshop.registry.notification_rule.actions']
+    coreshop.notification_rule.applier:
+        class: CoreShop\Component\Notification\Processor\RuleApplier
+        arguments:
+            - '@coreshop.registry.notification_rule.actions'
 
-  coreshop.notification_rule.conditions.processor:
-    class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
-    shared: false
-    arguments:
-      - '@coreshop.registry.notification_rule.conditions'
+    coreshop.notification_rule.conditions.processor:
+        class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
+        shared: false
+        arguments:
+            - '@coreshop.registry.notification_rule.conditions'
 
-  coreshop.notification_rule.validation.processor:
-    class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
-    shared: false
-    arguments:
-      - '@coreshop.notification_rule.conditions.processor'
+    coreshop.notification_rule.validation.processor:
+        class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+        shared: false
+        arguments:
+            - '@coreshop.notification_rule.conditions.processor'
 
-  coreshop.notification_rule.processor:
-    class: CoreShop\Component\Notification\Processor\RulesProcessor
-    shared: false
-    arguments:
-      - '@coreshop.repository.notification_rule'
-      - '@coreshop.notification_rule.validation.processor'
-      - '@coreshop.notification_rule.applier'
+    coreshop.notification_rule.processor:
+        class: CoreShop\Component\Notification\Processor\RulesProcessor
+        shared: false
+        arguments:
+            - '@coreshop.repository.notification_rule'
+            - '@coreshop.notification_rule.validation.processor'
+            - '@coreshop.notification_rule.applier'
 
+    coreshop.registry.notification_rule.conditions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
+            - notification-rule-conditions
 
-  coreshop.registry.notification_rule.conditions:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
-      - notification-rule-conditions
+    coreshop.form_registry.notification_rule.conditions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-  coreshop.form_registry.notification_rule.conditions:
-    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+    coreshop.registry.notification_rule.actions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface
+            - notification-rule-actions
 
-  coreshop.registry.notification_rule.actions:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface
-      - notification-rule-actions
-
-  coreshop.form_registry.notification_rule.actions:
-    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+    coreshop.form_registry.notification_rule.actions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

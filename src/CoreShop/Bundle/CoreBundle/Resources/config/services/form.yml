@@ -1,63 +1,64 @@
 services:
-  coreshop.form.extension.type.store:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }
+    coreshop.form.extension.type.store:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }
 
-  coreshop.form.extension.type.tax_rule:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType }
+    coreshop.form.extension.type.tax_rule:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType }
 
-  coreshop.form.extension.type.tax_rule_group:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleGroupTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType }
+    coreshop.form.extension.type.tax_rule_group:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleGroupTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType }
 
-  coreshop.form.extension.type.carrier:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType }
+    coreshop.form.extension.type.carrier:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType }
 
-  coreshop.form.extension.type.country:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\CountryTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\CountryType }
+    coreshop.form.extension.type.country:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\CountryTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\CountryType }
 
-  coreshop.form.extension.type.payment_provider:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
+    coreshop.form.extension.type.payment_provider:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
 
-  coreshop.form.extension.type.payment_provider_choice:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderChoiceTypeExtension
-    arguments:
-      - '@coreshop.repository.payment_provider'
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType }
+    coreshop.form.extension.type.payment_provider_choice:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderChoiceTypeExtension
+        arguments:
+            - '@coreshop.repository.payment_provider'
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType }
 
-  coreshop.form.extension.type.order_shipment_creation:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }
+    coreshop.form.extension.type.order_shipment_creation:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }
 
-  coreshop.form.type.address_choice:
-    class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
-    arguments: ['@coreshop.repository.customer']
-    tags:
-      - { name: form.type }
+    coreshop.form.type.address_choice:
+        class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
+        arguments:
+            - '@coreshop.repository.customer'
+        tags:
+            - { name: form.type }
 
-  coreshop.form.type.customer_registration:
-    class: CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType
-    tags:
-      - { name: form.type }
+    coreshop.form.type.customer_registration:
+        class: CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType
+        tags:
+            - { name: form.type }
 
-  coreshop.form.type.guest_registration:
-    class: CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType
-    tags:
-      - { name: form.type }
+    coreshop.form.type.guest_registration:
+        class: CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType
+        tags:
+            - { name: form.type }
 
-  coreshop.form.extension.type.cart:
-    class: CoreShop\Bundle\CoreBundle\Form\Extension\CartTypeExtension
-    tags:
-      - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartType }
+    coreshop.form.extension.type.cart:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartType }
