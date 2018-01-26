@@ -71,7 +71,7 @@ services:
             - '%coreshop.resource.pimcore_class_ids%'
             - '@coreshop.grid_config_installer'
         tags:
-            - { name: 'coreshop.resource.installer', type: 'routes', priority: 200}
+            - { name: 'coreshop.resource.installer', type: 'grid_config', priority: 200}
 
     coreshop.resource.installer:
         class: CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller
