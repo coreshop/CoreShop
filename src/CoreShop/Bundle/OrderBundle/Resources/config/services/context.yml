@@ -11,7 +11,7 @@ services:
             - '@coreshop.context.store'
             - '@coreshop.repository.cart'
         tags:
-            - { name: coreshop.context.cart, priority: -555 }
+            - { name: coreshop.context.cart, priority: -777 }
 
     coreshop.context.cart.session_based:
         class: CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext
@@ -21,7 +21,7 @@ services:
             - '@coreshop.repository.cart'
             - '@coreshop.context.store'
         tags:
-            - { name: coreshop.context.cart, priority: -777 }
+            - { name: coreshop.context.cart, priority: -555 }
 
     coreshop.context.cart.new:
         class: CoreShop\Component\Order\Context\CartContext
