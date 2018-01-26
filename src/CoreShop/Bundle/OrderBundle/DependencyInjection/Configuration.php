@@ -435,6 +435,7 @@ final class Configuration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('admin_translations')->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/admin-translations.yml'])->end()
+                            ->scalarNode('grid_config')->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/grid-config.yml'])->end()
                         ->end()
                     ->end()
                 ->end()
