@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\TranslationConfiguration;
+use Pimcore\Model\Translation\AbstractTranslation;
 use Pimcore\Model\Translation\TranslationInterface;
 use Pimcore\Model\Translation\Website;
 use Symfony\Component\Config\Definition\Processor;
@@ -94,19 +95,33 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
         }
     }
 
+    /**
+     * @param null $applicationName
+     * @return mixed
+     */
     protected abstract function getIdentifier($applicationName = null);
 
     /**
-     * Check if route is already installed
-     *
      * @param $name
      * @param $properties
-     * @return Website
+     * @return AbstractTranslation
      */
     private function installTranslation($name, $properties)
     {
+        /** @var AbstractTranslation $translation */
         $translation = $this->translationClass::getByKey($name, true);
-        $translation->setTranslations($properties['languages']);
+        $translationData = $translation->getTranslations();
+        $coreShopTranslationData = $properties['languages'];
+
+        //no data found. set translation.
+        if(empty($translationData)) {
+            $translation->setTranslations($coreShopTranslationData);
+        //there are already some translations. only update empty ones!
+        } else {
+            $mergedData = array_merge($coreShopTranslationData, array_filter($translationData));
+            $translation->setTranslations($mergedData);
+        }
+
         $translation->save();
 
         return $translation;
