@@ -12,8 +12,38 @@
 
 namespace CoreShop\Bundle\FrontendBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
+use EmailizrBundle\EmailizrBundle;
+use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
-final class CoreShopFrontendBundle extends Bundle
+final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        $collection->addBundles([
+            new CoreShopCoreBundle(),
+            new EmailizrBundle()
+        ], 200);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNiceName()
+    {
+        return 'CoreShop - Frontend';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'CoreShop - Frontend Bundle';
+    }
 }

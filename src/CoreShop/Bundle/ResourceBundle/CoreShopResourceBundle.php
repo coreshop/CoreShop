@@ -17,12 +17,15 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ImplementationCl
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterResourcesPass;
+use JMS\SerializerBundle\JMSSerializerBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopResourceBundle extends AbstractPimcoreBundle
+final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
     use PackageVersionTrait;
 
@@ -48,11 +51,25 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        $collection->addBundle(new JMSSerializerBundle(), 200);
+
+        $collection->addBundles([
+            new \FOS\RestBundle\FOSRestBundle(),
+            new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+        ], 2000);
+    }
+
+    /**
      * @return string
      */
     public function getNiceName()
     {
-        return 'CoreShop Resource Bundle';
+        return 'CoreShop - Resource';
     }
 
     /**
@@ -60,7 +77,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle
      */
     public function getDescription()
     {
-        return 'CoreShop ResourceBundle is a base Bundle';
+        return 'CoreShop - Resource Bundle';
     }
 
     /**

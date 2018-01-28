@@ -12,10 +12,14 @@
 
 namespace CoreShop\Bundle\PayumBundle;
 
+use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
+use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
 use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\PayumReplyToSymfonyPass;
 use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\RegisterGatewayConfigTypePass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Payum\Bundle\PayumBundle\PayumBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPayumBundle extends AbstractResourceBundle
@@ -39,6 +43,23 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
 
         $container->addCompilerPass(new RegisterGatewayConfigTypePass());
         $container->addCompilerPass(new PayumReplyToSymfonyPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundles([
+            new CoreShopOrderBundle(),
+            new CoreShopPaymentBundle(),
+        ], 1500);
+
+        $collection->addBundles([
+            new PayumBundle()
+        ], 200);
     }
 
     /**

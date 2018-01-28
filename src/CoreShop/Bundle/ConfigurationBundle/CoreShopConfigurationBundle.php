@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\ConfigurationBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopConfigurationBundle extends AbstractResourceBundle
 {
@@ -26,11 +25,6 @@ final class CoreShopConfigurationBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
-    }
-
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
     }
 
     /**

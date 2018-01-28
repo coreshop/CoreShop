@@ -12,16 +12,35 @@
 
 namespace CoreShop\Bundle\CoreBundle;
 
+use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
+use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPaymentSettingsFormsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
+use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
+use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
+use CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle;
+use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
+use CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle;
+use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
+use CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle;
+use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
+use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
+use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
+use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
+use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
+use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
+use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
+use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
@@ -48,6 +67,35 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $container->addCompilerPass(new RegisterReportsPass());
         $container->addCompilerPass(new RegisterPortletsPass());
         $container->addCompilerPass(new RegisterPaymentSettingsFormsPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundles([
+            new CoreShopOrderBundle(),
+            new CoreShopCustomerBundle(),
+            new CoreShopInventoryBundle(),
+            new CoreShopProductBundle(),
+            new CoreShopAddressBundle(),
+            new CoreShopCurrencyBundle(),
+            new CoreShopMoneyBundle(),
+            new CoreShopTaxationBundle(),
+            new CoreShopStoreBundle(),
+            new CoreShopIndexBundle(),
+            new CoreShopSequenceBundle(),
+            new CoreShopPaymentBundle(),
+            new CoreShopPayumBundle(),
+            new CoreShopNotificationBundle(),
+            new CoreShopFixtureBundle(),
+            new CoreShopShippingBundle(),
+            new CoreShopConfigurationBundle(),
+            new CoreShopTrackingBundle()
+        ], 1500);
     }
 
     /**
