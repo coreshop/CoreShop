@@ -36,7 +36,7 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
 You can see a running demo here [CoreShop Demo](https://demo2.coreshop.org)
 
 # Migration from CoreShop 1
-If you want to migrate some of your from CoreShop 1, you can use the Import/Export Bundle:
+If you want to migrate some of your data from CoreShop 1, you can use the Import/Export Bundle:
  - [Export from CoreShop1](https://github.com/coreshop/CoreShopExport)
  - [Import into CoreShop2](https://github.com/coreshop/ImportBundle)
 
