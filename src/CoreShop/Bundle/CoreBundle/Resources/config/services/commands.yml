@@ -51,6 +51,9 @@ services:
     coreshop.command.install:
         class: CoreShop\Bundle\CoreBundle\Command\InstallCommand
         parent: coreshop.command.install.abstract
+        arguments:
+            $migrationManager: '@Pimcore\Migrations\MigrationManager'
+            $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
         tags:
           - { name: console.command, command: 'coreshop:install' }
 
