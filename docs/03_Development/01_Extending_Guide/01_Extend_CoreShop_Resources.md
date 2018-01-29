@@ -58,7 +58,7 @@ The file should be placed in ```AppBundle/Resources/config/doctrine/Currency.orm
 
 ```yaml
 AppBundle\Entity\Currency:
-    type: entity
+    type: mappedSuperclass
     table: coreshop_currency
     fields:
         flag:
