@@ -39,7 +39,6 @@ class RegisterController extends FrontendController
         $form = $this->get('form.factory')->createNamed('', CustomerRegistrationType::class);
 
         $redirect = $request->get('_redirect', $this->generateUrl('coreshop_customer_profile'));
-        $form->get('_redirect')->setData($redirect);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
@@ -68,7 +67,7 @@ class RegisterController extends FrontendController
                     ]);
                 }
 
-                return $this->redirect($handledForm->get('_redirect')->getData());
+                return $this->redirect($redirect);
             }
         }
 
