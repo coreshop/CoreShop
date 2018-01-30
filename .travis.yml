@@ -67,6 +67,7 @@ install:
     - cp .travis/system.template.php var/config/system.php
     - cp app/config/parameters.example.yml app/config/parameters.yml
     - composer install
+    - if [ PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3
 
     # Add path to CoreShop
     - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
