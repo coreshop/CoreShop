@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Model\Product;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
-use CoreShop\Component\Core\Model\CustomerGroupInterface;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
@@ -410,8 +410,6 @@ class Data
              */
             $customerGroup1 = $customerGroupFactory->createNew();
             $customerGroup1->setName('Group1');
-            $customerGroup1->addStore(self::$store);
-            $customerGroup1->addStore(self::$storeGrossPrices);
             $customerGroup1->setKey('group1');
             $customerGroup1->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup1->save();
@@ -425,8 +423,6 @@ class Data
              */
             $customerGroup2 = $customerGroupFactory->createNew();
             $customerGroup2->setName('Group2');
-            $customerGroup2->addStore(self::$store);
-            $customerGroup2->addStore(self::$storeGrossPrices);
             $customerGroup2->setKey('group2');
             $customerGroup2->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup2->save();
