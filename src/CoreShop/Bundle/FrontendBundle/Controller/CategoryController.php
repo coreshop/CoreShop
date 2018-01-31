@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -86,6 +87,7 @@ class CategoryController extends FrontendController
         $gridPerPageDefault = $this->getConfigurationService()->getForStore('system.category.grid.per_page.default');
         $listPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.list.per_page');
         $listPerPageDefault = $this->getConfigurationService()->getForStore('system.category.list.per_page.default');
+        $displaySubCategories = $this->getConfigurationService()->getForStore('system.category.list.include_subcategories');
         $variantMode = $this->getConfigurationService()->getForStore('system.category.variant_mode');
 
         $page = $request->get('page', 0);
@@ -143,24 +145,32 @@ class CategoryController extends FrontendController
             $viewParameters['currentFilter'] = $currentFilter;
             $viewParameters['paginator'] = $paginator;
             $viewParameters['conditions'] = $preparedConditions;
+
         } else {
             //Classic Listing Mode
             $sort = $request->get('sort', 'name_asc');
             $sortParsed = $this->parseSorting($sort);
 
-            $list = $this->get('coreshop.repository.product')->getList();
+            $categories = [$category];
+            if ($displaySubCategories === true) {
+                foreach ($this->getRepository()->findRecuriveChildCategoriesForStore($category, $this->getContext()->getStore()) as $subCategory) {
+                    $categories[] = $subCategory;
+                }
+            }
 
-            $condition = 'active = 1';
-            $condition .= " AND categories LIKE '%,object|" . $category->getId() . ",%'";
-            $condition .= " AND stores LIKE '%," . $this->getContext()->getStore()->getId() . ",%'";
-
-            $list->setCondition($condition);
-            $list->setOrderKey($sortParsed['name']);
-            $list->setOrder($sortParsed['direction']);
+            $options = [
+                'order_key'   => $sortParsed['name'],
+                'order'       => $sortParsed['direction'],
+                'categories'  => $categories,
+                'store'       => $this->getContext()->getStore(),
+                'return_type' => 'list'
+            ];
 
             if ($variantMode !== ListingInterface::VARIANT_MODE_HIDE) {
-                $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
+                $options['object_types'] = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
             }
+
+            $list = $this->getProductRepository()->getProducts($options);
 
             $paginator = new Paginator($list);
             $paginator->setItemCountPerPage($perPage);
@@ -221,6 +231,14 @@ class CategoryController extends FrontendController
     protected function getRepository()
     {
         return $this->get('coreshop.repository.category');
+    }
+
+    /**
+     * @return ProductRepositoryInterface
+     */
+    protected function getProductRepository()
+    {
+        return $this->get('coreshop.repository.product');
     }
 
     /**
