@@ -26,7 +26,12 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
      */
     public function findLatestByStore(StoreInterface $store, $count = 8)
     {
-        return $this->findBy(['enabled=1', 'stores LIKE \'%,?'.$store->getId().'?,%\''], ['o_creationDate DESC'], $count);
+        $conditions = [
+            ['condition' => 'active = ?', 'variable' => 1],
+            ['condition' => 'stores LIKE ?', 'variable' => '%,' . $store->getId() . ',%']
+        ];
+
+        return $this->findBy($conditions, ['o_creationDate DESC'], $count);
     }
 
     /**
