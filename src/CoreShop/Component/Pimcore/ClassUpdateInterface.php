@@ -27,6 +27,23 @@ interface ClassUpdateInterface
     public function save();
 
     /**
+     * get a property from the class
+     *
+     * @param $property
+     * @return mixed
+     */
+    public function getProperty($property);
+
+    /**
+     * set a property for the class
+     *
+     * @param $property
+     * @param $value
+     * @return mixed
+     */
+    public function setProperty($property, $value);
+
+    /**
      * Check if Class has field
      *
      * @param $fieldName
