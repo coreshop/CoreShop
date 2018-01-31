@@ -15,7 +15,7 @@ class Version20180131130000 extends AbstractPimcoreMigration implements Containe
 
     public function up(Schema $schema)
     {
-        $customerGroup = $this->container->getParameter('coreshop.model.customer_group.class');
+        $customerGroup = $this->container->getParameter('coreshop.model.customer_group.pimcore_class_name');
         $classUpdater = new ClassUpdate($customerGroup);
 
         if ($classUpdater->getProperty('parentClass') === 'CoreShop\\Component\\Core\\Model\\CustomerGroup') {
