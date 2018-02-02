@@ -116,7 +116,7 @@ services:
     coreshop.index.getter.localized_field:
         class: CoreShop\Component\Index\Getter\LocalizedFieldGetter
         arguments:
-            - '@pimcore.locale'
+            - '@coreshop.translation_locale_provider'
         tags:
             - { name: coreshop.index.getter, type: localizedfield, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
@@ -150,6 +150,11 @@ services:
         class: CoreShop\Component\Index\Interpreter\QuantityValueInterpreter
         tags:
           - { name: coreshop.index.interpreter, type: quantityValue, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
+
+    coreshop.index.interpreter.locale_mapping:
+        class: CoreShop\Component\Index\Interpreter\LocaleMappingInterpreter
+        tags:
+          - { name: coreshop.index.interpreter, type: localeMapping, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
     # Index Column Types
     coreshop.index.column_type.classification_store:
