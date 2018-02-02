@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\IndexBundle\Worker;
 use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
 use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -79,9 +80,9 @@ class MysqlWorker extends AbstractWorker
         foreach ($columnConfig as $column) {
             if ($column instanceof IndexColumnInterface) {
                 $type = $column->getObjectType();
-                $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
-
-                if ($type !== 'localizedfields') {
+                $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
+                if ($type !== 'localizedfields' && !$interpreterClass instanceof LocalizedInterpreterInterface) {
+                    $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
                     if (!array_key_exists($column->getName(), $columns)) {
                         $columnsToAdd[$column->getName()] = $columnTypeForIndex;
                     }
@@ -122,11 +123,10 @@ class MysqlWorker extends AbstractWorker
         $columnConfig = $index->getColumns();
 
         foreach ($columnConfig as $column) {
-            $type = $column->getType();
-
-            if ($type === 'localizedfield') {
+            $type = $column->getObjectType();
+            $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
+            if ($type === 'localizedfields' || $interpreterClass instanceof LocalizedInterpreterInterface) {
                 $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
-
                 if (!array_key_exists($column->getName(), $localizedColumns)) {
                     $localizedColumnsToAdd[$column->getName()] = $columnTypeForIndex;
                 }
@@ -402,8 +402,8 @@ QUERY;
                 $language,
             ];
             $insertStatement = [
-                'oo_id=?',
-                'language=?',
+                'oo_id = ?',
+                'language = ?',
             ];
             $insertData = [
                 $data['oo_id'],

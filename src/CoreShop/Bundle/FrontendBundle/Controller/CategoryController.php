@@ -118,6 +118,7 @@ class CategoryController extends FrontendController
         if ($category->getFilter() instanceof FilterInterface) {
 
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
+            $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
             $filteredList->addCondition(Condition::like('stores', $this->getContext()->getStore()->getId(), 'both'), 'stores');
             $filteredList->setCategory($category);

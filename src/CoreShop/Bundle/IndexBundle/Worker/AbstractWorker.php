@@ -140,15 +140,13 @@ abstract class AbstractWorker implements WorkerInterface
 
                 try {
                     $value = null;
-                    $getter = $column->getGetter();
-
                     if ($column->getObjectType() === 'localizedfields') {
                         list ($columnLocalizedData, $columnRelationData) = $this->prepareLocalizedFields($column, $object, $virtualObjectId);
 
                         $relationData = array_merge_recursive($relationData, $columnRelationData);
                         $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
                     } else {
-                        if (!empty($getter)) {
+                        if ($column->hasGetter()) {
                             $value = $this->processGetter($column, $object);
                         } else {
                             $getter = 'get' . ucfirst($column->getObjectKey());
@@ -288,20 +286,20 @@ abstract class AbstractWorker implements WorkerInterface
 
         $interpreterClass = $this->getInterpreterObject($column);
 
-        if ($interpreterClass instanceof InterpreterInterface) {
+        if ($interpreterClass instanceof LocalizedInterpreterInterface) {
+            $validLanguages = Tool::getValidLanguages();
+            foreach ($validLanguages as $language) {
+                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
+            }
+            //reset value here, we only populate localized values here
+            $value = null;
+        } elseif ($interpreterClass instanceof InterpreterInterface) {
             $value = $interpreterClass->interpret($originalValue, $column);
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
                 $relationalValue = $interpreterClass->interpretRelational($originalValue, $column);
 
                 $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
-            }
-        } elseif ($interpreterClass instanceof LocalizedInterpreterInterface) {
-            $validLanguages = Tool::getValidLanguages();
-            $value = null;
-
-            foreach ($validLanguages as $language) {
-                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
             }
         }
 
