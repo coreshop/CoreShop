@@ -114,7 +114,7 @@ coreshop.resource.item = Class.create({
                         this.postSave(res);
 
                         if (Ext.isFunction(callback)) {
-                            callback();
+                            callback(res);
                         }
 
                         if (res.success) {
