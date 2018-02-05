@@ -20,41 +20,35 @@ class RegisterBundleHelper
      * @param BundleCollection $collection
      */
     public static function registerBundles(BundleCollection $collection) {
-        $collection->addBundles([
-            new \JMS\SerializerBundle\JMSSerializerBundle(),
-
-            new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-
-            new \CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle(),
-            new \CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle(),
-            new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(),
-            new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(),
-            new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(),
-            new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(),
-            new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(),
-            new \CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle(),
-            new \CoreShop\Bundle\ProductBundle\CoreShopProductBundle(),
-            new \CoreShop\Bundle\AddressBundle\CoreShopAddressBundle(),
-            new \CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle(),
-            new \CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle(),
-            new \CoreShop\Bundle\StoreBundle\CoreShopStoreBundle(),
-            new \CoreShop\Bundle\IndexBundle\CoreShopIndexBundle(),
-            new \CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle(),
-            new \CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle(),
-            new \CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle(),
-            new \CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle(),
-            new \CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle(),
-
-            new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(),
-            new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(),
-            new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(),
-
-            new \FOS\RestBundle\FOSRestBundle(),
-            new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new \Payum\Bundle\PayumBundle\PayumBundle(),
-            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new \Liip\ThemeBundle\LiipThemeBundle(),
-            new \EmailizrBundle\EmailizrBundle()
-        ], 120);
+        $collection->addBundle(new \JMS\SerializerBundle\JMSSerializerBundle(), 3900);
+        $collection->addBundle(new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(), 3800);
+        $collection->addBundle(new \CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle(), 3700);
+        $collection->addBundle(new \CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle(), 3600);
+        $collection->addBundle(new \CoreShop\Bundle\RuleBundle\CoreShopRuleBundle(), 3500);
+        $collection->addBundle(new \CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle(), 3400);
+        $collection->addBundle(new \CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle(), 3300);
+        $collection->addBundle(new \CoreShop\Bundle\OrderBundle\CoreShopOrderBundle(), 3200);
+        $collection->addBundle(new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(), 3100);
+        $collection->addBundle(new \CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle(), 3000);
+        $collection->addBundle(new \CoreShop\Bundle\ProductBundle\CoreShopProductBundle(), 2900);
+        $collection->addBundle(new \CoreShop\Bundle\AddressBundle\CoreShopAddressBundle(), 2800);
+        $collection->addBundle(new \CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle(), 2700);
+        $collection->addBundle(new \CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle(), 2600);
+        $collection->addBundle(new \CoreShop\Bundle\StoreBundle\CoreShopStoreBundle(), 2500);
+        $collection->addBundle(new \CoreShop\Bundle\IndexBundle\CoreShopIndexBundle(), 2400);
+        $collection->addBundle(new \CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle(),2300);
+        $collection->addBundle(new \CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle(), 2200);
+        $collection->addBundle(new \CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle(), 2100);
+        $collection->addBundle(new \CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle(), 2000);
+        $collection->addBundle(new \CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle(), 1900);
+        $collection->addBundle(new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(), 1800);
+        $collection->addBundle(new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(), 1700);
+        $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(), 1600);
+        $collection->addBundle(new \FOS\RestBundle\FOSRestBundle(), 1500);
+        $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
+        $collection->addBundle(new \Payum\Bundle\PayumBundle\PayumBundle(), 1300);
+        $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
+        $collection->addBundle(new \Liip\ThemeBundle\LiipThemeBundle(), 1100);
+        $collection->addBundle(new \EmailizrBundle\EmailizrBundle(), 1000);
     }
 }
