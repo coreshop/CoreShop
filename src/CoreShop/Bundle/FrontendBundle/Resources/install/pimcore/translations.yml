@@ -209,6 +209,12 @@ translations:
           en: 'Item added'
           de: 'Produkt hinzugefügt'
 
+  coreshop.ui.item_removed:
+      languages:
+          de_CH: 'Produkt entfernt'
+          en: 'Item removed'
+          de: 'Produkt entfernt'
+
   coreshop.ui.cart_updated:
       languages:
           de_CH: 'Warenkorb wurde aktualisiert'
