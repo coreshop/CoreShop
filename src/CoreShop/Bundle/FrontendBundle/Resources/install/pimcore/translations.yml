@@ -671,6 +671,12 @@ translations:
           en: 'Total Tax'
           de: 'Gesamt Steuer'
 
+  coreshop.ui.tax_name %s:
+      languages:
+          de_CH: 'Steuer %s'
+          en: 'Tax %s'
+          de: 'Steuer %s'
+
   coreshop.ui.comment:
       languages:
           de_CH: 'Kommentar'

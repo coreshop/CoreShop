@@ -116,7 +116,7 @@
                 {% for taxItem in taxes %}
                      <tr>
                         <td class="col-xs-8 text-right" >
-                            <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
+                            <strong>{{ 'coreshop.ui.tax_name %s'|trans|format(taxItem.getName) }}:</strong>
                         </td>
                         <td class="text-right cart-tax-detail">
                             {{ taxItem.amount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
