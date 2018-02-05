@@ -213,7 +213,7 @@ translations:
       languages:
           de_CH: 'Warenkorb wurde aktualisiert'
           en: 'Cart has been updated'
-          de: 'Warenkorb wurde aktiviert'
+          de: 'Warenkorb wurde aktualisiert'
 
   coreshop.ui.cart_update_error:
       languages:
