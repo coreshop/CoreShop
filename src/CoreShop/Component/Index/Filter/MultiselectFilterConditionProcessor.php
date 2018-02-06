@@ -26,14 +26,15 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        $rawValues = $list->getGroupByValues($condition->getField(), true);
+        $field = $condition->getConfiguration()['field'];
+        $rawValues = $list->getGroupByValues($field, true);
 
         return [
             'type' => 'multiselect',
             'label' => $condition->getLabel(),
-            'currentValues' => $currentFilter[$condition->getField()],
+            'currentValues' => $currentFilter[$field],
             'values' => array_values($rawValues),
-            'fieldName' => $condition->getField(),
+            'fieldName' => $field,
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
@@ -43,20 +44,21 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
-        $values = $parameterBag->get($condition->getField());
+        $field = $condition->getConfiguration()['field'];
+        $values = $parameterBag->get($field);
 
         if (empty($values)) {
             $values = $condition->getConfiguration()['preSelects'];
         }
 
-        $currentFilter[$condition->getField()] = $values;
+        $currentFilter[$field] = $values;
 
         if ($values === static::EMPTY_STRING) {
             $values = null;
         }
 
         if (!empty($values)) {
-            $fieldName = $isPrecondition ? 'PRECONDITION_'.$condition->getField() : $condition->getField();
+            $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
 
             if (!empty($values)) {
                 $list->addCondition(Condition::in($fieldName, $values), $fieldName);

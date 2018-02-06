@@ -18,6 +18,7 @@ coreshop.filter.conditions.multiselect = Class.create(coreshop.filter.conditions
 
     getItems: function () {
         return [
+            this.getFieldsComboBox(),
             {
                 xtype: 'combo',
                 fieldLabel: t('coreshop_filters_values'),

@@ -30,11 +30,15 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
     public function setType($type);
 
     /**
+     * @deprecated don't use anymore, it is inside configuration now
+     *
      * @return string
      */
     public function getField();
 
     /**
+     * @deprecated don't use anymore, it is inside configuration now
+     *
      * @param string $field
      *
      * @return static

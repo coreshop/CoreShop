@@ -18,6 +18,7 @@ coreshop.filter.conditions.select = Class.create(coreshop.filter.conditions.abst
 
     getItems: function () {
         return [
+            this.getFieldsComboBox(),
             {
                 xtype: 'combo',
                 fieldLabel: t('coreshop_filters_value'),

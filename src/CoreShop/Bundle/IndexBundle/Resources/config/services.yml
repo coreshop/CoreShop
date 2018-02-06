@@ -198,6 +198,13 @@ services:
         tags:
             - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
 
+    coreshop.filter.condition_type.nested:
+        class: CoreShop\Component\Index\Filter\NestedFilterConditionProcessor
+        arguments:
+            - '@coreshop.registry.filter.condition_types'
+        tags:
+            - { name: coreshop.filter.condition_type, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionNestedType}
+
     # Will be deactivated for now, this is not functional as it is right now
     #coreshop.filter.condition_type.boolean:
     #  class: CoreShop\Component\Index\Filter\BooleanFilterConditionProcessor

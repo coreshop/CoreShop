@@ -8,30 +8,41 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
-use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionCollectionType;
-use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurationType;
+use CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionCollectionType;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-final class ProductPriceNestedConfigurationType extends AbstractNestedConfigurationType
+final class FilterConditionNestedType extends AbstractType
 {
+    /**
+     * @var RepositoryInterface
+     */
+    private $repository;
+
+    /**
+     * @param RepositoryInterface $repository
+     */
+    public function __construct(RepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
         $builder
-            ->add('conditions', ProductPriceRuleConditionCollectionType::class)
-        ;
+            ->add('conditions', FilterConditionCollectionType::class);
 
-         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
 
             if (is_array($data)) {
@@ -47,6 +58,6 @@ final class ProductPriceNestedConfigurationType extends AbstractNestedConfigurat
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_rule_condition_nested';
+        return 'coreshop_filter_condition_type_nested';
     }
 }

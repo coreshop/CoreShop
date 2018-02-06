@@ -48,7 +48,6 @@ final class FilterConditionType extends AbstractResourceType
 
         $builder
             ->add('type', FilterConditionChoiceType::class)
-            ->add('field', TextType::class)
             ->add('label', TextType::class)
             ->add('quantityUnit', NumberType::class)
         ;
@@ -114,10 +113,6 @@ final class FilterConditionType extends AbstractResourceType
     {
         if (null !== $data && null !== $data->getType()) {
             return $data->getType();
-        }
-
-        if (null !== $form->getConfig()->hasOption('configuration_type')) {
-            return $form->getConfig()->getOption('configuration_type');
         }
 
         return null;
