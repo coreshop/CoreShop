@@ -142,6 +142,8 @@ final class PaymentType extends AbstractResourceType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefault('store', null);
     }
 
