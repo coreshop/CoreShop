@@ -4,7 +4,34 @@ All models in Coreshop are placed in the ```Coreshop\Component\*ComponentName*\M
 
 > Many models in CoreShop are extended in the Core component. If the model you are willing to override exists in the Core you should be extending the Core one, not the base model from the component.
 
-## Howto Customize a Model
+## How to Customize a Model
+
+First things first: If you want to extend coreshop models your Bundle must extend the `AbstractResourceBundle`. Next you have set your supported drivers. Just add the following lines of code to your bundle class:
+
+```php
+public function getSupportedDrivers()
+{
+    return [
+        CoreShopResourceBundle::DRIVER_DOCTRINE_ORM
+    ];
+}
+ ```
+ After that have to tell the bundle where your models are. For that, add the override the following method in your bundle class and return the model namespace. Here is an example for the `AppBundle`
+ 
+```php 
+ protected function getModelNamespace()
+{
+    return "AppBundle\Model";
+} 
+```
+Here a quick overview for you which dictories are important for you, when customizing CoreShop models.
+
+| Folder | Description |
+|--------|-------------|
+| `AcmeBundle/Model` or `AcmeBundle/Entity` | Where your models are living |
+| `AcmeBundle/config/doctrine/model` | Put your doctrine `.yml` config files in here |
+| `AcmeBundle/config/serializer` | The serializer configs for the models|
+
 
 Let’s take the [```CoreShop\Component\Currency\Model\Currency```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Currency/Model/Currency.php) as an example. This one is extended in Core. How can you check that?
 
@@ -58,7 +85,7 @@ The file should be placed in ```AppBundle/Resources/config/doctrine/Currency.orm
 
 ```yaml
 AppBundle\Entity\Currency:
-    type: entity
+    type: mappedSuperclass
     table: coreshop_currency
     fields:
         flag:

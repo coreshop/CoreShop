@@ -209,11 +209,17 @@ translations:
           en: 'Item added'
           de: 'Produkt hinzugefügt'
 
+  coreshop.ui.item_removed:
+      languages:
+          de_CH: 'Produkt entfernt'
+          en: 'Item removed'
+          de: 'Produkt entfernt'
+
   coreshop.ui.cart_updated:
       languages:
           de_CH: 'Warenkorb wurde aktualisiert'
           en: 'Cart has been updated'
-          de: 'Warenkorb wurde aktiviert'
+          de: 'Warenkorb wurde aktualisiert'
 
   coreshop.ui.cart_update_error:
       languages:
@@ -670,6 +676,12 @@ translations:
           de_CH: 'Gesamt Steuer'
           en: 'Total Tax'
           de: 'Gesamt Steuer'
+
+  coreshop.ui.tax_name:
+      languages:
+          de_CH: 'Steuer %s'
+          en: 'Tax %s'
+          de: 'Steuer %s'
 
   coreshop.ui.comment:
       languages:

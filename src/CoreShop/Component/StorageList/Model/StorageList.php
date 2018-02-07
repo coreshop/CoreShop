@@ -90,7 +90,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
             }
         }
 
-        $this->setItems($items);
+        $this->setItems(array_values($items));
     }
 
     /**

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
+use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
@@ -56,11 +57,11 @@ final class CartBlamerListener
     }
 
     /**
-     * @param GenericEvent $event
+     * @param CustomerRegistrationEvent $event
      */
-    public function onRegisterEvent(GenericEvent $event)
+    public function onRegisterEvent(CustomerRegistrationEvent $event)
     {
-        $user = $event->getSubject();
+        $user = $event->getCustomer();
 
         if (!$user instanceof CustomerInterface) {
             return;

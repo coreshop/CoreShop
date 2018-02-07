@@ -173,6 +173,14 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * {@inheritdoc}
      */
+    public function hasGetter()
+    {
+        return !empty($this->getter);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGetter()
     {
         return $this->getter;
@@ -222,6 +230,14 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
         $this->dataType = $dataType;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasInterpreter()
+    {
+        return !empty($this->interpreter);
     }
 
     /**

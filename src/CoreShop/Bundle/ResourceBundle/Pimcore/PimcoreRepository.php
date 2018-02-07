@@ -107,7 +107,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
 
         if (is_array($criteria) && count($criteria) > 0) {
             foreach ($criteria as $criterion) {
-                $list->setCondition($criterion['condition'], array_key_exists('variable', $criterion) ? $criterion['variable'] : null);
+                $list->addConditionParam($criterion['condition'], array_key_exists('variable', $criterion) ? $criterion['variable'] : null);
             }
         }
 

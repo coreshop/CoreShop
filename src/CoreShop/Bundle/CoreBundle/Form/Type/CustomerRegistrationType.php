@@ -46,9 +46,6 @@ class CustomerRegistrationType extends AbstractType
                 'mapped' => false,
                 'constraints' => new IsTrue(),
             ))
-            ->add('_redirect', HiddenType::class, array(
-                'mapped' => false,
-            ))
             ->add('submit', SubmitType::class);
     }
 

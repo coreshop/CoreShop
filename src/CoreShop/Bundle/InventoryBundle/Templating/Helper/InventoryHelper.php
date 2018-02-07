@@ -42,7 +42,7 @@ class InventoryHelper extends Helper implements InventoryHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function isStockSufficient(StockableInterface $stockable, $quantity)
+    public function isStockSufficient(StockableInterface $stockable, $quantity = 1)
     {
         return $this->checker->isStockSufficient($stockable, $quantity);
     }

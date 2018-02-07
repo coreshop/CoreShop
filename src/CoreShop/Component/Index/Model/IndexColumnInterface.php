@@ -100,6 +100,11 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
     public function setObjectType($objectType);
 
     /**
+     * @return bool
+     */
+    public function hasGetter();
+
+    /**
      * @return string
      */
     public function getGetter();
@@ -128,6 +133,11 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
      * @param string $dataType
      */
     public function setDataType($dataType);
+
+    /**
+     * @return bool
+     */
+    public function hasInterpreter();
 
     /**
      * @return string

@@ -13,9 +13,11 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Customer\Model\CustomerGroup as BaseCustomerGroup;
-use CoreShop\Component\Store\Model\StoresAwareTrait;
 
+/**
+ * @deprecated don't use anymore
+ */
 class CustomerGroup extends BaseCustomerGroup implements CustomerGroupInterface
 {
-    use StoresAwareTrait;
+
 }

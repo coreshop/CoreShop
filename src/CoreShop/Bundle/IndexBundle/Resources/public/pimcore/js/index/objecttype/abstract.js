@@ -64,10 +64,16 @@ coreshop.index.objecttype.abstract = Class.create({
             displayField: 'name',
             queryMode: 'local',
             listeners: {
+                afterrender: function(combo) {
+                    if(!record.data.interpreter && record.data.objectType === 'localizedfields') {
+                        this.setValue('localizedfield');
+                    } else if(!record.data.interpreter && record.data.objectType === 'classificationstore') {
+                        this.setValue('classificationstore');
+                    }
+                },
                 change: function (combo, newValue) {
                     this.getGetterPanel().removeAll();
-                    this.record.set("getterConfig", null)
-
+                    this.record.set('getterConfig', null)
                     this.getGetterPanelLayout(newValue);
                 }.bind(this)
             }
@@ -83,10 +89,14 @@ coreshop.index.objecttype.abstract = Class.create({
             displayField: 'name',
             queryMode: 'local',
             listeners: {
+                afterrender: function(combo) {
+                    if(!record.data.interpreter && record.data.objectType === 'localizedfields') {
+                        this.setValue('localeMapping');
+                    }
+                },
                 change: function (combo, newValue) {
                     this.getInterpreterPanel().removeAll();
-                    this.record.set("interpreterConfig", null)
-
+                    this.record.set('interpreterConfig', null)
                     this.getInterpreterPanelLayout(newValue);
                 }.bind(this)
             }

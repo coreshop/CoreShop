@@ -57,8 +57,9 @@ services:
             - Pimcore\Security\Encoder\PasswordFieldEncoder
             - ['password']
 
-    coreshop.configuration.service:
+    coreshop.core.configuration.service:
         class: CoreShop\Component\Core\Configuration\ConfigurationService
+        decorates: coreshop.configuration.service
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.configuration'

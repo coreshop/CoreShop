@@ -32,6 +32,36 @@ matrix:
         - os: linux
           sudo: required
           php: 7
+          env: PIMCORE_BRANCH="tags/v5.1.1"
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env: PIMCORE_BRANCH="tags/v5.1.1"
+
+        - os: linux
+          sudo: required
+          php: 7
+          env: PIMCORE_BRANCH="tags/v5.1.2"
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env: PIMCORE_BRANCH="tags/v5.1.2"
+
+        - os: linux
+          sudo: required
+          php: 7
+          env: PIMCORE_BRANCH="tags/v5.1.3"
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env: PIMCORE_BRANCH="tags/v5.1.3"
+
+        - os: linux
+          sudo: required
+          php: 7
           env: PIMCORE_BRANCH="master"
 
         - os: linux
@@ -53,6 +83,10 @@ cache:
         - vendor
 
 before_install:
+    - mysql --version
+    - mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
+    - mysql -e "SET GLOBAL innodb_large_prefix=1;"
+    - mysql -e "CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
     - mkdir $TRAVIS_BUILD_DIR/../lib
     - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
     - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
@@ -66,6 +100,8 @@ install:
     - mkdir -p var/config
     - cp .travis/system.template.php var/config/system.php
     - cp app/config/parameters.example.yml app/config/parameters.yml
+    - if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3; fi
+    - if [ $PIMCORE_BRANCH == "tags/v5.1.1" ]; then composer require symfony/symfony:3.4.3; fi
     - composer install
 
     # Add path to CoreShop

@@ -51,16 +51,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setWholesalePrice($wholesalePrice);
 
     /**
-     * @return mixed
-     */
-    public function getAvailableForOrder();
-
-    /**
-     * @param $availableForOrder
-     */
-    public function setAvailableForOrder($availableForOrder);
-
-    /**
      * @return CategoryInterface[]
      */
     public function getCategories();

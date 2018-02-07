@@ -339,6 +339,12 @@ coreshop.core.settings = Class.create({
                             value: this.getValue(shopId, 'system.category.list.per_page.default')
                         },
                         {
+                            fieldLabel: t('coreshop_category_list_include_subcategories'),
+                            name: 'system.category.list.include_subcategories',
+                            xtype: 'checkbox',
+                            checked: this.getValue(shopId, 'system.category.list.include_subcategories')
+                        },
+                        {
                             xtype: 'tagfield',
                             fieldLabel: t('coreshop_category_grid_per_page'),
                             store: new Ext.data.ArrayStore({

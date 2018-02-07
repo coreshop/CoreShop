@@ -64,6 +64,22 @@ class ClassUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
+    public function getProperty($property)
+    {
+        return $this->jsonDefinition[$property];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProperty($property, $value)
+    {
+        $this->jsonDefinition[$property] = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function hasField($fieldName)
     {
         return array_key_exists($fieldName, $this->classFieldDefinitions);

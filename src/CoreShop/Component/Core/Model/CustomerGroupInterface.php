@@ -13,9 +13,11 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Customer\Model\CustomerGroupInterface as BaseCustomerGroupInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
 
-interface CustomerGroupInterface extends BaseCustomerGroupInterface, StoresAwareInterface
+/**
+ * @deprecated don't use anymore
+ */
+interface CustomerGroupInterface extends BaseCustomerGroupInterface
 {
 
 }
