@@ -54,26 +54,30 @@ coreshop.index.objecttype.abstract = Class.create({
             allowBlank: false
         }));
 
+        var getterDisabled = false;
+
+        if(!record.data.getter && record.data.objectType === 'localizedfields') {
+            record.set('getter', 'localizedfield');
+            getterDisabled = true;
+        } else if(!record.data.getter && record.data.objectType === 'classificationstore') {
+            record.set('getter', 'classificationstore');
+            getterDisabled = true;
+        }
+
         fieldSetItems.push(new Ext.form.ComboBox({
             fieldLabel: t('coreshop_index_field_getter'),
             name: 'getter',
             length: 255,
             value: record.data.getter,
+            disabled: getterDisabled,
             store: pimcore.globalmanager.get('coreshop_index_getters'),
             valueField: 'type',
             displayField: 'name',
             queryMode: 'local',
             listeners: {
-                afterrender: function(combo) {
-                    if(!record.data.interpreter && record.data.objectType === 'localizedfields') {
-                        this.setValue('localizedfield');
-                    } else if(!record.data.interpreter && record.data.objectType === 'classificationstore') {
-                        this.setValue('classificationstore');
-                    }
-                },
                 change: function (combo, newValue) {
                     this.getGetterPanel().removeAll();
-                    this.record.set('getterConfig', null)
+                    this.record.set('getterConfig', null);
                     this.getGetterPanelLayout(newValue);
                 }.bind(this)
             }

@@ -158,7 +158,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('index_getter_brick')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/brick.js')->end()
                             ->scalarNode('index_getter_classificationstore')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/classificationstore.js')->end()
                             ->scalarNode('index_getter_fieldcollection')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/fieldcollection.js')->end()
-                            ->scalarNode('index_getter_localizedfield')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/localizedfield.js')->end()
                             ->scalarNode('index_interpreter_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/abstract.js')->end()
                             ->scalarNode('index_interpreter_objectproperty')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/objectproperty.js')->end()
                             ->scalarNode('index_interpreter_objecttype')->defaultValue('/bundles/coreshopindex/pimcore/js/index/objecttype/abstract.js')->end()
