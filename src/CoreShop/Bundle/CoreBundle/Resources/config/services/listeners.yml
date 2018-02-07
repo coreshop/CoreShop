@@ -59,4 +59,4 @@ services:
            - '@pimcore.http.request_helper'
            - '@session'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 10 }
+            - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }
