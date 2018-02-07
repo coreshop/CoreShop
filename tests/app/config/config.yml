@@ -1,6 +1,5 @@
 imports:
   - { resource: parameters.yml }
-  - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
 
 framework:
     test: ~
