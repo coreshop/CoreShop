@@ -36,6 +36,11 @@ coreshop.order.sale.list = Class.create({
         this.setupContextMenuPlugin();
     },
 
+    activate: function () {
+        var tabPanel = Ext.getCmp('pimcore_panel_tabs');
+        tabPanel.setActiveItem('coreshop_' + this.type);
+    },
+
     setupContextMenuPlugin: function () {
         this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
             function (id) {
@@ -51,25 +56,41 @@ coreshop.order.sale.list = Class.create({
             params: {id: this.gridConfig.folderId},
             ignoreErrors: true,
             success: function (response) {
-                var data = Ext.decode(response.responseText),
-                    folderClass = [];
+                var data = Ext.decode(response.responseText);
 
-                Ext.Array.each(data.classes, function (objectClass) {
-                    if (objectClass.name === this.gridConfig.className) {
-                        folderClass.push(objectClass);
-                    }
-                }.bind(this));
-
-                data.classes = folderClass;
-                this.search = new pimcore.object.search({data: data, id: this.gridConfig.folderId}, 'folder');
-                this.getLayout();
+                // unlock order overview silently
+                // since multiple user may want to have access to it at the same time
+                if (typeof data.editlock === 'object') {
+                    Ext.Ajax.request({
+                        url: '/admin/element/unlock-element',
+                        params: {
+                            id: data.editlock.cid,
+                            type: 'object'
+                        },
+                        success: function () {
+                            this.setClassFolder();
+                        }.bind(this)
+                    });
+                } else {
+                    this.prepareLayout(data);
+                }
             }.bind(this)
         });
     },
 
-    activate: function () {
-        var tabPanel = Ext.getCmp('pimcore_panel_tabs');
-        tabPanel.setActiveItem('coreshop_' + this.type);
+    prepareLayout: function(data) {
+
+        var folderClass = [];
+
+        Ext.Array.each(data.classes, function (objectClass) {
+            if (objectClass.name === this.gridConfig.className) {
+                folderClass.push(objectClass);
+            }
+        }.bind(this));
+
+        data.classes = folderClass;
+        this.search = new pimcore.object.search({data: data, id: this.gridConfig.folderId}, 'folder');
+        this.getLayout();
     },
 
     prepareConfig: function (columnConfig) {
