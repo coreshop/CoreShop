@@ -24,6 +24,7 @@ final class FilterConditionSelectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('field', TextType::class)
             ->add('preSelect', TextType::class)
         ;
     }

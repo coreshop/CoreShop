@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 final class NestedConfigurationType extends AbstractNestedConfigurationType
 {
@@ -28,5 +30,15 @@ final class NestedConfigurationType extends AbstractNestedConfigurationType
         $builder
            ->add('conditions', ShippingRuleConditionCollectionType::class)
         ;
+
+         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (is_array($data)) {
+                $data['conditions'] = [];
+
+                $event->setData($data);
+            }
+        });
     }
 }

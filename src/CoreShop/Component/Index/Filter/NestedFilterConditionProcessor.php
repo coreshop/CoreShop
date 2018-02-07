@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -16,27 +16,43 @@ use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SelectFilterConditionProcessor implements FilterConditionProcessorInterface
+final class NestedFilterConditionProcessor implements FilterConditionProcessorInterface
 {
+    /**
+     * @var ServiceRegistryInterface
+     */
+    private $conditionProcessors;
+
+    /**
+     * @param ServiceRegistryInterface $conditionProcessors
+     */
+    public function __construct(ServiceRegistryInterface $conditionProcessors)
+    {
+        $this->conditionProcessors = $conditionProcessors;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        $field = $condition->getConfiguration()['field'];
-        
-        $rawValues = $list->getGroupByValues($field, true);
+        $conditions = $condition->getConfiguration()['conditions'];
+        $conditionParams = [];
+
+        if (is_array($conditions)) {
+            foreach ($conditions as $cond) {
+                $conditionParams[] = $this->conditionProcessors->get($cond->getType())->prepareValuesForRendering($cond, $filter, $list, $currentFilter);
+            }
+        }
 
         return [
-            'type' => 'select',
+            'type' => 'nested',
             'label' => $condition->getLabel(),
-            'currentValue' => $currentFilter[$field],
-            'values' => array_values($rawValues),
-            'fieldName' => $field,
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'conditions' => $conditionParams
         ];
     }
 
@@ -45,25 +61,10 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
-        $field = $condition->getConfiguration()['field'];
-        $value = $parameterBag->get($field);
+        $conditions = $condition->getConfiguration()['conditions'];
 
-        if (empty($value)) {
-            $value = $condition->getConfiguration()['preSelect'];
-        }
-
-        $value = trim($value);
-
-        if (!empty($value)) {
-            $currentFilter[$field] = $value;
-
-            $fieldName = $field;
-
-            if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_'.$fieldName;
-            }
-
-            $list->addCondition(Condition::match($field, $value), $fieldName);
+        foreach ($conditions as $condition) {
+            $currentFilter = $this->conditionProcessors->get($condition->getType())->addCondition($condition, $filter, $list, $currentFilter, $parameterBag, $isPrecondition);
         }
 
         return $currentFilter;

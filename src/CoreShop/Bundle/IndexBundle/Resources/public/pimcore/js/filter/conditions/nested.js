@@ -10,14 +10,16 @@
  *
  */
 
-pimcore.registerNS('coreshop.filter.conditions.combined');
+pimcore.registerNS('coreshop.filter.conditions.nested');
+coreshop.filter.conditions.nested = Class.create(coreshop.filter.conditions.abstract, {
 
-coreshop.filter.conditions.combined = Class.create(coreshop.filter.conditions.abstract, {
+    type: 'nested',
 
-    type: 'combined',
+    operatorCombo: null,
+    conditions: null,
 
     getDefaultItems: function () {
-        this.label = Ext.create({
+        this.labelField = Ext.create({
             xtype: 'textfield',
             name: 'label',
             width: 400,
@@ -26,37 +28,45 @@ coreshop.filter.conditions.combined = Class.create(coreshop.filter.conditions.ab
         });
 
         return [
-            this.label
+            this.labelField
         ];
     },
 
     getItems: function () {
-        this.conditions = new this.parent.__proto__.constructor(this.parent.parent, this.parent.conditions, 'combined');
+        this.conditions = new this.parent.__proto__.constructor(this.parent.parent, this.parent.conditions, 'nested');
 
         var layout = this.conditions.getLayout();
         layout.setTitle(null);
         layout.setIconCls(null);
 
         // add saved conditions
-        if (this.data && this.data.conditions) {
-            Ext.each(this.data.conditions, function (condition) {
+        if (this.data && this.data.configuration.conditions) {
+            Ext.each(this.data.configuration.conditions, function (condition) {
                 this.conditions.addCondition(condition.type, condition);
             }.bind(this));
         }
 
-        this.form = new Ext.panel.Panel({
+        return [new Ext.panel.Panel({
             items: [
                 layout
             ]
-        });
-
-        return [this.form];
+        })];
     },
 
     getData: function () {
+        var conditions = this.conditions.getData();
+
+        Ext.Object.each(conditions, function(key, cond) {
+            if (!cond.id) {
+                cond.id = Ext.id(null, 'cs-');
+            }
+        });
+
         return {
-            conditions: this.conditions.getData(),
-            label: this.label.getValue()
+            configuration: {
+                conditions: conditions,
+            },
+            label: this.labelField.getValue()
         };
     }
 });

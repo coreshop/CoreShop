@@ -11,7 +11,7 @@ CoreShop\Component\Index\Model\FilterCondition:
         field:
             column: field
             type: string
-            nullable: false
+            nullable: true
         type:
             column: type
             type: string

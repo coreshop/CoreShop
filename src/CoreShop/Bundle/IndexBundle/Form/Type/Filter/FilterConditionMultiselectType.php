@@ -25,6 +25,7 @@ final class FilterConditionMultiselectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('field', TextType::class)
             ->add('preSelects', CollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
