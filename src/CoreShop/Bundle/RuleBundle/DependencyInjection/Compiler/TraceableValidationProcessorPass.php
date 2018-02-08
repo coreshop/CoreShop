@@ -41,8 +41,8 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
             $definition = $container->getDefinition($serviceId);
 
             if (!@class_exists($definition->getClass())) {
-                    continue;
-                }
+                continue;
+            }
 
             if (in_array(RuleConditionsValidationProcessorInterface::class, class_implements($definition->getClass()))) {
                 //Add Decorator
