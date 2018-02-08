@@ -110,6 +110,7 @@ services:
       shared: false
       arguments:
           - '@coreshop.registry.cart_price_rule.conditions'
+          - 'Cart Price Rules'
 
   coreshop.cart_price_rule.rule_validation.processor:
       class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor

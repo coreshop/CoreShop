@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\RuleBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\TraceableValidationProcessorPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopRuleBundle extends AbstractResourceBundle
 {
@@ -25,6 +27,16 @@ final class CoreShopRuleBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new TraceableValidationProcessorPass());
     }
 
     /**

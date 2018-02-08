@@ -14,7 +14,9 @@ namespace CoreShop\Component\Core\Product\Rule\Condition;
 
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 
 class CurrenciesConditionChecker implements ConditionCheckerInterface
 {
@@ -34,7 +36,7 @@ class CurrenciesConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
         $currency = $this->currencyContext->getCurrency();
 

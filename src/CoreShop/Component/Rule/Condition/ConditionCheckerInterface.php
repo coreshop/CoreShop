@@ -12,13 +12,18 @@
 
 namespace CoreShop\Component\Rule\Condition;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
+
 interface ConditionCheckerInterface
 {
     /**
-     * @param $subject
+     * @param ResourceInterface $subject
+     * @param RuleInterface $rule
      * @param array $configuration
+     * @param array $params
      *
      * @return bool
      */
-    public function isValid($subject, array $configuration);
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = []);
 }

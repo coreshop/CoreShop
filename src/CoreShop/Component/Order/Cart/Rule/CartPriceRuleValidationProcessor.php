@@ -15,6 +15,7 @@ namespace CoreShop\Component\Order\Cart\Rule;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Webmozart\Assert\Assert;
@@ -43,17 +44,16 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
             return false;
         }
 
-        return $this->isValid([
-            'cart' => $cart,
+        return $this->isValid($cart, $cartPriceRule, [
             'cartPriceRule' => $cartPriceRule,
             'voucher' => $voucherCode
-        ], $cartPriceRule);
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, RuleInterface $rule)
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
     {
         /**
          * @var $rule CartPriceRuleInterface
@@ -66,7 +66,9 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
 
         return $this->ruleConditionsValidationProcessor->isValid(
             $subject,
-            $rule->getConditions()
+            $rule,
+            $rule->getConditions(),
+            $params
         );
     }
 }

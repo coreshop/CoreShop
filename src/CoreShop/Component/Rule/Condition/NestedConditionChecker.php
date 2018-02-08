@@ -12,6 +12,9 @@
 
 namespace CoreShop\Component\Rule\Condition;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
+
 class NestedConditionChecker implements ConditionCheckerInterface
 {
     /**
@@ -30,12 +33,12 @@ class NestedConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
         $operator = $configuration['operator'];
 
         foreach ($configuration['conditions'] as $condition) {
-            $valid = $this->ruleConditionsValidationProcessor->isValid($subject, [$condition]);
+            $valid = $this->ruleConditionsValidationProcessor->isValid($subject, $rule, [$condition], $params);
 
             if ('and' === $operator) {
                 if (!$valid) {

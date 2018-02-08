@@ -178,7 +178,7 @@ class SpecificPrice extends RuleTest
             'dateTo' => $yesterday->getTimestamp() * 1000,
         ]);
 
-        $this->assertRuleCondition($this->product, $condition, false);
+        $this->assertRuleCondition($this->product, $condition, [], false);
     }
 
     /**

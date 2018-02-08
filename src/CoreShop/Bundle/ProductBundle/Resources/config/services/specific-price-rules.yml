@@ -86,6 +86,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.product_specific_price_rule.conditions'
+            - 'Product Specific Price Rules'
 
     coreshop.product_specific_price_rule.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor

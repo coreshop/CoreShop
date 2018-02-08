@@ -180,7 +180,7 @@ class PriceRule extends RuleTest
             'dateTo' => $yesterday->getTimestamp() * 1000,
         ]);
 
-        $this->assertRuleCondition($this->product, $condition, false);
+        $this->assertRuleCondition($this->product, $condition, [], false);
     }
 
     /**
@@ -246,7 +246,7 @@ class PriceRule extends RuleTest
             'products' => [Data::$product2->getId()],
         ]);
 
-        $this->assertRuleCondition($this->product, $condition, false);
+        $this->assertRuleCondition($this->product, $condition, [],false);
     }
 
     /**
@@ -267,7 +267,7 @@ class PriceRule extends RuleTest
             'categories' => [Data::$category2->getId()],
         ]);
 
-        $this->assertRuleCondition($this->product, $condition, false);
+        $this->assertRuleCondition($this->product, $condition, [],false);
     }
 
     /**

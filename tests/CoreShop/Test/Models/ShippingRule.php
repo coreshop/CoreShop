@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Test\Models;
 
@@ -192,9 +192,10 @@ class ShippingRule extends RuleTest
     /**
      * @param $subject
      * @param ConditionInterface $condition
-     * @param bool               $trueOrFalse
+     * @param array $params
+     * @param bool $trueOrFalse
      */
-    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true)
+    protected function assertRuleCondition($subject, ConditionInterface $condition, $params = [], $trueOrFalse = true)
     {
         $rule = $this->createRule();
         $rule->addCondition($condition);
@@ -206,7 +207,7 @@ class ShippingRule extends RuleTest
         $this->getEntityManager()->persist($group);
         $this->getEntityManager()->flush();
 
-        $this->assertPriceRuleCondition(['shippable' => $this->cart, 'carrier' => $carrier, 'address' => $this->address], $rule, $trueOrFalse);
+        $this->assertPriceRuleCondition($carrier, $rule, ['shippable' => $this->cart, 'address' => $this->address], $trueOrFalse);
     }
 
     /**
