@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\DocumentConfiguration;
 use Pimcore\Model\Document;
+use Pimcore\Model\Element\Service;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -83,7 +84,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                         $languageDocument = new Document\Page();
                         $languageDocument->setParent(Document::getById(1));
                         $languageDocument->setProperty('language', 'text', $language);
-                        $languageDocument->setKey($language);
+                        $languageDocument->setKey(Service::getValidKey($language, 'document'));
                         $languageDocument->save();
                     }
 
@@ -125,8 +126,8 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 /** @var Document $document */
                 $document = new $class();
                 $document->setParent(Document::getByPath("/" . $language . "/" . $properties['path']));
-
-                $document->setKey($properties['key']);
+ 
+                $document->setKey(Service::getValidKey($properties['key'], 'document'));
                 $document->setProperty("language", $language, 'text', true);
 
                 if (isset($properties['name'])) {
