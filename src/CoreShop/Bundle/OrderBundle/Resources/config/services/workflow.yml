@@ -112,8 +112,3 @@ services:
         tags:
           - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 
-    coreshop.workflow.order_id_wrapper_resolver:
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderIdPaymentStateResolver
-        arguments:
-            - '@coreshop.repository.order'
-            - '@coreshop.state_machine_resolver.order_payment'

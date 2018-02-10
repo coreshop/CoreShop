@@ -5,8 +5,8 @@ core_shop_resource:
                 after:
                   resolve_state:
                       on: ['complete', 'refund']
-                      do: ['@coreshop.workflow.order_id_wrapper_resolver', 'resolveOrder']
-                      args: ['object.getOrderId()']
+                      do: ['@coreshop.state_machine_resolver.order_payment', 'resolve']
+                      args: ["service('coreshop.repository.order').find(object.getOrderId())"]
                   add_to_history:
                       on: ['process', 'complete', 'fail', 'cancel', 'refund']
                       do: ['@coreshop.workflow.state_history_logger', 'log']
