@@ -76,7 +76,7 @@ trait CoreSaleCreationTrait
         $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
         $this->get('coreshop.cart_processor')->process($cart);
 
-        $carriers = $this->get('coreshop.carrier.discovery')->discoverCarriers($cart, $cart->getShippingAddress());
+        $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());
 
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
 

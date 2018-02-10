@@ -10,13 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Shipping\Discover;
+namespace CoreShop\Component\Shipping\Resolver;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-interface ShippableCarriersDiscoveryInterface
+interface CarriersResolverInterface
 {
     /**
      * @param ShippableInterface $shippable
@@ -24,5 +24,5 @@ interface ShippableCarriersDiscoveryInterface
      *
      * @return CarrierInterface[]
      */
-    public function discoverCarriers(ShippableInterface $shippable, AddressInterface $address);
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address);
 }

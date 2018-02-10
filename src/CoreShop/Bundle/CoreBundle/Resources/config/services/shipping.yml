@@ -26,9 +26,9 @@ services:
             - '@coreshop.taxation.factory.tax_calculator'
             - '@coreshop.taxation.tax_applicator'
 
-    coreshop.carrier.cart.store_based_processor:
+    coreshop.carrier.cart.store_based_resolver:
         class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery
-        decorates: coreshop.carrier.discovery
+        decorates: coreshop.carrier.resolver
         arguments:
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'

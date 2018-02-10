@@ -10,14 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Shipping\Discover;
+namespace CoreShop\Component\Shipping\Resolver;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
-final class ShippableCarriersDiscovery implements ShippableCarriersDiscoveryInterface
+final class CarriersResolver implements CarriersResolverInterface
 {
     /**
      * @var RepositoryInterface
@@ -45,7 +45,7 @@ final class ShippableCarriersDiscovery implements ShippableCarriersDiscoveryInte
     /**
      * {@inheritdoc}
      */
-    public function discoverCarriers(ShippableInterface $shippable, AddressInterface $address)
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
     {
         $carriers = $this->carrierRepository->findAll();
         $availableCarriers = [];
