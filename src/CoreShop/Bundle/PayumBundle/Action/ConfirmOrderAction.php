@@ -54,10 +54,6 @@ final class ConfirmOrderAction implements ActionInterface
         $order = $this->orderRepository->find($payment->getOrderId());
 
         if ($order instanceof OrderInterface) {
-            $request->setRouteParameters([
-                '_locale' => $order->getOrderLanguage()
-            ]);
-
             if (
                 $payment->getState() === PaymentInterface::STATE_COMPLETED ||
                 $payment->getState() === PaymentInterface::STATE_PROCESSING
