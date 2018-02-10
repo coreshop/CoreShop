@@ -69,7 +69,6 @@ services:
         arguments:
             - '@security.authentication_utils'
             - '@form.factory'
-            - '@templating'
         calls:
             - [setContainer, ['@service_container']]
 

@@ -32,23 +32,15 @@ class SecurityController extends FrontendController
     protected $formFactory;
 
     /**
-     * @var EngineInterface
-     */
-    protected $templatingEngine;
-
-    /**
      * @param AuthenticationUtils  $authenticationUtils
      * @param FormFactoryInterface $formFactory
-     * @param EngineInterface      $templatingEngine
      */
     public function __construct(
         AuthenticationUtils $authenticationUtils,
-        FormFactoryInterface $formFactory,
-        EngineInterface $templatingEngine
+        FormFactoryInterface $formFactory
     ) {
         $this->authenticationUtils = $authenticationUtils;
         $this->formFactory = $formFactory;
-        $this->templatingEngine = $templatingEngine;
     }
 
     /**
