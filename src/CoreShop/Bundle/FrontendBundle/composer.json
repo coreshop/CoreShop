@@ -1,6 +1,6 @@
 {
   "name": "coreshop/frontend-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Frontend Bundle",
   "keywords": [
     "coreshop",

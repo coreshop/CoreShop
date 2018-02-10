@@ -1,6 +1,6 @@
 {
   "name": "coreshop/money-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Money Bundle",
   "keywords": [
     "coreshop",

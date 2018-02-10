@@ -1,6 +1,6 @@
 {
   "name": "coreshop/payum-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Payment Bundle",
   "keywords": [
     "coreshop",
