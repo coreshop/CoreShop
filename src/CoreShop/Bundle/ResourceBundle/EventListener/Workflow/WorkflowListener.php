@@ -14,8 +14,8 @@ namespace CoreShop\Bundle\ResourceBundle\EventListener\Workflow;
 
 use CoreShop\Component\Pimcore\InheritanceHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowListener implements EventSubscriberInterface
@@ -31,7 +31,7 @@ class WorkflowListener implements EventSubscriberInterface
     protected $container;
 
     /**
-     * @param array              $callbackConfig
+     * @param array $callbackConfig
      * @param ContainerInterface $container
      */
     public function __construct($callbackConfig = [], ContainerInterface $container)
@@ -110,7 +110,8 @@ class WorkflowListener implements EventSubscriberInterface
                     }
                     return $expr->evaluate($arg, [
                         'object' => $event->getSubject(),
-                        'event'  => $event
+                        'event' => $event,
+                        'container' => $this->container
                     ]);
                 }, $callableArgs
             );

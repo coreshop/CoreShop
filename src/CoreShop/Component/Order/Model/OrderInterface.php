@@ -99,21 +99,6 @@ interface OrderInterface extends SaleInterface
     public function setToken($token);
 
     /**
-     * @return PaymentInterface[]
-     */
-    public function getPayments();
-
-    /**
-     * @return OrderShipmentInterface[]
-     */
-    public function getShipments();
-
-    /**
-     * @return OrderInvoiceInterface[]
-     */
-    public function getInvoices();
-
-    /**
      * @return int
      */
     public function getTotalPayed();

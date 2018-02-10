@@ -13,6 +13,7 @@ services:
         class: CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver
         arguments:
             - '@coreshop.state_machine_manager'
+            - '@coreshop.repository.payment'
 
     coreshop.state_machine_resolver.order_shipment:
         public: true

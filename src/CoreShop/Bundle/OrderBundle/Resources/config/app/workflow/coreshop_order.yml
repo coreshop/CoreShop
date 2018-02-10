@@ -44,15 +44,15 @@ core_shop_resource:
                     cancel_payment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                        args: ['object.getPayments()', 'event', '"cancel"', '"coreshop_payment"']
+                        args: ["service('coreshop.repository.payment').findForOrder(object)", 'event', '"cancel"', '"coreshop_payment"']
                     cancel_shipment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                        args: ['object.getShipments()', 'event', '"cancel"', '"coreshop_shipment"']
+                        args: ["service('coreshop.repository.order_shipment').getDocuments(object)", 'event', '"cancel"', '"coreshop_shipment"']
                     cancel_invoice:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                        args: ['object.getInvoices()', 'event', '"cancel"', '"coreshop_invoice"']
+                        args: ["service('coreshop.repository.order_invoice').getDocuments(object)", 'event', '"cancel"', '"coreshop_invoice"']
                     cancel_order_payment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']

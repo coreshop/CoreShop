@@ -221,54 +221,6 @@ class Order extends Sale implements OrderInterface
     }
 
     /**
-     * @return PaymentRepositoryInterface
-     */
-    private function getPaymentRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.payment');
-    }
-
-    /**
-     * @return OrderInvoiceRepositoryInterface
-     */
-    private function getOrderInvoiceRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.order_invoice');
-    }
-
-    /**
-     * @return OrderShipmentRepositoryInterface
-     */
-    private function getOrderShipmentRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.order_shipment');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPayments()
-    {
-        return $this->getPaymentRepository()->findForOrderId($this->getId());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShipments()
-    {
-        return $this->getOrderShipmentRepository()->getDocuments($this);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInvoices()
-    {
-        return $this->getOrderInvoiceRepository()->getDocuments($this);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getPaymentProvider()
