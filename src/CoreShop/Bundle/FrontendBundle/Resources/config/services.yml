@@ -69,6 +69,7 @@ services:
         arguments:
             - '@security.authentication_utils'
             - '@form.factory'
+            - '@coreshop.context.shopper'
         calls:
             - [setContainer, ['@service_container']]
 
