@@ -30,12 +30,15 @@ class OrderCreationController extends BaseOrderCreationController
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
         $carrierId = $request->get('carrier');
-        $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
 
-        if (!$carrier instanceof CarrierInterface) {
-            throw new \InvalidArgumentException("Carrier with ID '$carrierId' not found");
+        if ($carrierId) {
+            $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
+
+            if (!$carrier instanceof CarrierInterface) {
+                throw new \InvalidArgumentException("Carrier with ID '$carrierId' not found");
+            }
+
+            $cart->setCarrier($carrier);
         }
-
-        $cart->setCarrier($carrier);
     }
 }
