@@ -244,6 +244,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         }
 
         $cart->setStore($store);
+        $cart->setPaymentProvider($paymentModule);
         $this->get('coreshop.cart_processor')->process($cart);
 
         $sale = $this->factory->createNew();
