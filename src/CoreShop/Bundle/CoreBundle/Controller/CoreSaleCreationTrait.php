@@ -74,7 +74,7 @@ trait CoreSaleCreationTrait
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
         $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
-        $this->get('coreshop.cart.manager')->persistCart($cart);
+        $this->get('coreshop.cart_processor')->process($cart);
 
         $carriers = $this->get('coreshop.carrier.discovery')->discoverCarriers($cart, $cart->getShippingAddress());
 
@@ -95,8 +95,6 @@ trait CoreSaleCreationTrait
                 'priceFormatted' => $priceFormatted
             ];
         }
-
-        $cart->delete();
 
         return $this->viewHandler->handle(['success' => true, 'carriers' => $result]);
     }

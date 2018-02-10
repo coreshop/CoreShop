@@ -29,6 +29,7 @@ class OrderCreationController extends AbstractSaleCreationController
      */
     protected function afterSaleCreation(ProposalInterface $sale)
     {
+        
     }
 
     /**

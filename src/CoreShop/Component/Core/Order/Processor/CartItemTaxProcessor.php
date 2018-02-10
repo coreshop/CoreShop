@@ -63,7 +63,6 @@ final class CartItemTaxProcessor implements CartProcessorInterface
 
             $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
             $item->setTaxes($fieldCollection);
-            $item->save();
         }
     }
 }
