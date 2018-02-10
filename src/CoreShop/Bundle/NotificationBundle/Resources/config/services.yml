@@ -13,6 +13,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.notification_rule.conditions'
+            - 'Notification Rules'
 
     coreshop.notification_rule.validation.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor

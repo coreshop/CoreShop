@@ -37,7 +37,8 @@ class ShippingRuleCarrierValidator implements ShippableCarrierValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address) {
+    public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
+    {
         return null != $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $shippable, $address);
     }
 }

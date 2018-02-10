@@ -127,9 +127,10 @@ class CartPriceRule extends RuleTest
     /**
      * @param $subject
      * @param ConditionInterface $condition
+     * @param array $params
      * @param bool $trueOrFalse
      */
-    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true)
+    protected function assertRuleCondition($subject, ConditionInterface $condition, $params = [], $trueOrFalse = true)
     {
         $rule = $this->createRule();
         $rule->addCondition($condition);
@@ -142,7 +143,7 @@ class CartPriceRule extends RuleTest
         $voucher->setUsed(false);
         $voucher->setUses(0);
 
-        $this->assertPriceRuleCondition(['cart' => $subject, 'cartPriceRule' => $rule, 'voucher' => $voucher], $rule, $trueOrFalse);
+        $this->assertPriceRuleCondition($subject, $rule, ['cartPriceRule' => $rule, 'voucher' => $voucher], $trueOrFalse);
     }
 
     /**
@@ -188,7 +189,7 @@ class CartPriceRule extends RuleTest
             'dateTo' => $yesterday->getTimestamp() * 1000,
         ]);
 
-        $this->assertRuleCondition($this->cart, $condition, false);
+        $this->assertRuleCondition($this->cart, $condition, [],false);
     }
 
     /**

@@ -239,7 +239,7 @@ class NotificationRule extends RuleTest
         $order = $this->createOrder();
         $order->setCarrier(Data::$carrier1);
 
-        $this->assertRuleCondition(['subject' => $order, 'params' => []], $condition);
+        $this->assertRuleCondition($order, $condition, ['params' => []]);
     }
 
     /**

@@ -23,6 +23,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.shipping_rule.conditions'
+            - 'Shipping Rules'
 
     coreshop.shipping_rule.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor

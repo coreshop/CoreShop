@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Rule\Condition;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleValidationProcessor implements RuleValidationProcessorInterface
@@ -30,13 +31,10 @@ class RuleValidationProcessor implements RuleValidationProcessorInterface
     }
 
     /**
-     * @param $subject
-     * @param RuleInterface $rule
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isValid($subject, RuleInterface $rule)
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
     {
-        return $this->ruleConditionsValidationProcessor->isValid($subject, $rule->getConditions());
+        return $this->ruleConditionsValidationProcessor->isValid($subject, $rule, $rule->getConditions(), $params);
     }
 }

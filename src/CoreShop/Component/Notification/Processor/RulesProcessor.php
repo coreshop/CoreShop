@@ -59,7 +59,7 @@ class RulesProcessor implements RulesProcessorInterface
          * @var $rule NotificationRuleInterface
          */
         foreach ($rules as $rule) {
-            if ($rule->getActive() && $this->ruleValidationProcessor->isValid(['subject' => $subject, 'params' => $params], $rule)) {
+            if ($rule->getActive() && $this->ruleValidationProcessor->isValid($subject, $rule, ['params' => $params])) {
                 $this->ruleApplier->applyRule($rule, $subject, $params);
             }
         }

@@ -12,17 +12,10 @@
 
 namespace CoreShop\Component\Rule\Condition;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
-
-interface RuleValidationProcessorInterface
+interface TraceableRuleConditionsValidationProcessorInterface extends RuleConditionsValidationProcessorInterface
 {
     /**
-     * @param $subject
-     * @param RuleInterface $rule
-     * @param array $params
-     *
-     * @return bool
+     * @return mixed
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = []);
+    public function getValidatedConditions();
 }

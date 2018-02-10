@@ -8,22 +8,23 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface ShippingConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
-     * @param CarrierInterface   $carrier
+     * @param CarrierInterface $carrier
      * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     * @param array              $configuration
+     * @param AddressInterface $address
+     * @param array $configuration
      *
      * @return mixed
      */

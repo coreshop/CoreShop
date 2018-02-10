@@ -91,6 +91,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.product_price_rule.conditions'
+            - 'Product Price Rules'
 
     # Price Calculators
     coreshop.product.price_calculator.product_price_valid_rules_fetcher:
