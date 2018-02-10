@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
@@ -167,6 +168,10 @@ class PaymentController extends Controller
 
         $status = new GetStatus($token);
         $this->getPayum()->getGateway($token->getGatewayName())->execute($status);
+
+        $confirmOrderRequest = new ConfirmOrder($status->getFirstModel());
+        $this->getPayum()->getGateway($token->getGatewayName())->execute($confirmOrderRequest);
+
         $resolveNextRoute = new ResolveNextRoute($status->getFirstModel());
         $this->getPayum()->getGateway($token->getGatewayName())->execute($resolveNextRoute);
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
