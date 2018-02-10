@@ -1,3 +1,17 @@
 services:
     coreshop.form_registry.payment.settings:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    coreshop.payment.store_based_payment_provider_resolver:
+        class: CoreShop\Component\Core\Payment\Resolver\StoreBasedPaymentProviderResolver
+        decorates: 'coreshop.payment.payment_provider_resolver'
+        arguments:
+            - '@coreshop.repository.payment_provider'
+            - '@coreshop.context.store'
+
+    coreshop.payment.event_based_payment_provider_resolver:
+        class: CoreShop\Component\Core\Payment\Resolver\EventBasedPaymentProviderResolver
+        decorates: 'coreshop.payment.payment_provider_resolver'
+        arguments:
+            - '@coreshop.payment.store_based_payment_provider_resolver.inner'
+            - '@event_dispatcher'

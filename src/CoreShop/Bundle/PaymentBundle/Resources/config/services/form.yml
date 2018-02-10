@@ -6,7 +6,7 @@ services:
     coreshop.form.type.payment_provider_choice:
         class: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType
         arguments:
-            - '@coreshop.repository.payment_provider'
+            - '@coreshop.payment.payment_provider_resolver'
         tags:
             - { name: form.type }
 

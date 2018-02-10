@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
+use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
@@ -23,16 +24,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class PaymentProviderChoiceType extends AbstractType
 {
     /**
-     * @var PaymentProviderRepositoryInterface
+     * @var PaymentProviderResolverInterface
      */
-    private $paymentProviderRepository;
+    private $paymentProviderResolver;
 
     /**
-     * @param PaymentProviderRepositoryInterface $paymentProviderRepository
+     * @param PaymentProviderResolverInterface $paymentProviderResolver
      */
-    public function __construct(PaymentProviderRepositoryInterface $paymentProviderRepository)
+    public function __construct(PaymentProviderResolverInterface $paymentProviderResolver)
     {
-        $this->paymentProviderRepository = $paymentProviderRepository;
+        $this->paymentProviderResolver = $paymentProviderResolver;
     }
 
     /**
@@ -43,7 +44,7 @@ final class PaymentProviderChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
-                    $paymentProvider = $this->paymentProviderRepository->findActive();
+                    $paymentProvider = $this->paymentProviderResolver->resolvePaymentProviders($options['subject']);
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
@@ -65,6 +66,7 @@ final class PaymentProviderChoiceType extends AbstractType
                 },
                 'choice_translation_domain' => false,
                 'active' => true,
+                'subject' => null
             ])
         ;
     }

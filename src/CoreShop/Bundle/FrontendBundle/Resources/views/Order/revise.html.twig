@@ -11,7 +11,9 @@
     {% if order.paymentState in ['awaiting_payment'] %}
 
         {% if payment is not null %}
-            {% if payment.state == 'cancelled' %}
+            {% if payment.details.coreshop_payment_note is defined %}
+                {{ messages.info(payment.details.coreshop_payment_note) }}
+            {% elseif payment.state == 'cancelled' %}
                 {{ messages.info('coreshop.ui.order.revise.transaction_cancelled') }}
             {% elseif payment.state == 'failed' %}
                 {{ messages.info('coreshop.ui.order.revise.transaction_failed') }}
@@ -36,7 +38,16 @@
             </div>
         {% endfor %}
 
-        <button type="submit" class="btn btn-main">{{ 'coreshop.ui.buy'|trans }}</button>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-danger'}}) }}
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+                {{ form_widget(form.submitPayment, {attr: {class: 'btn btn-success pull-right'}}) }}
+            </div>
+        </div>
+
 
         {{ form_end(form) }}
 

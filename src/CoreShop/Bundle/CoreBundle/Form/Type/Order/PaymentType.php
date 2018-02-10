@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Order;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class PaymentType extends AbstractResourceType
@@ -30,9 +32,26 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        $builder->add('cancel', SubmitType::class, [
+            'label' => 'coreshop.form.order.revise.cancel',
+        ]);
+
+        $builder->add('submitPayment', SubmitType::class, [
+            'label' => 'coreshop.form.order.revise.submit_payment',
+        ]);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return 'CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType';
+        return \CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType::class;
     }
 
     /**

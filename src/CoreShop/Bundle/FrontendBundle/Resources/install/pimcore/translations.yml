@@ -965,6 +965,18 @@ translations:
           en: 'Search'
           de: 'Suchen'
 
+  coreshop.form.order.revise.cancel:
+      languages:
+          de_CH: 'Bestellung stornieren und Warenkorb wiederherstellen'
+          en: 'Cancel order and restore cart'
+          de: 'Bestellung stornieren und Warenkorb wiederherstellen'
+
+  coreshop.form.order.revise.submit_payment:
+      languages:
+          de_CH: 'Bezahlung erneut durchführen'
+          en: 'Process payment'
+          de: 'Bezahlung erneut durchführen'
+
   coreshop.global_error.cart_has_changed:
       languages:
           de_CH: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'

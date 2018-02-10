@@ -71,7 +71,7 @@ final class PaymentType extends AbstractResourceType
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
                 'label'       => 'coreshop.ui.payment_provider',
-                'store'       => $options['store'],
+                'subject'     => $options['payment_subject']
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
@@ -144,7 +144,7 @@ final class PaymentType extends AbstractResourceType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefault('store', null);
+        $resolver->setDefault('payment_subject', null);
     }
 
     /**
