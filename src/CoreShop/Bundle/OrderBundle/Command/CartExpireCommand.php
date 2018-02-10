@@ -12,25 +12,39 @@
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
-use CoreShop\Bundle\OrderBundle\Cart\Maintenance\CleanupInterface;
+use CoreShop\Bundle\OrderBundle\Expiration\ProposalExpirationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class CartCleanupCommand extends Command
+final class CartExpireCommand extends Command
 {
     /**
-     * @var CleanupInterface
+     * @var ProposalExpirationInterface
      */
-    protected $cartCleanup;
+    protected $cartExpiration;
 
     /**
-     * @param CleanupInterface $cartCleanup
+     * @var int
      */
-    public function __construct(CleanupInterface $cartCleanup)
+    protected $days;
+
+    /**
+     * @var array
+     */
+    protected $params;
+
+    /**
+     * @param ProposalExpirationInterface $cartExpiration
+     * @param int $days
+     * @param array $params
+     */
+    public function __construct(ProposalExpirationInterface $cartExpiration, $days = 0, $params = [])
     {
-        $this->cartCleanup = $cartCleanup;
+        $this->cartExpiration = $cartExpiration;
+        $this->days = $days;
+        $this->params = $params;
 
         parent::__construct();
     }
@@ -41,8 +55,8 @@ final class CartCleanupCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('coreshop:cart:cleanup')
-            ->setDescription('Cleanup abandoned Carts')
+            ->setName('coreshop:cart:expire')
+            ->setDescription('Expire abandoned Carts')
             ->addOption(
                 'days', 'days',
                 InputOption::VALUE_OPTIONAL,
@@ -70,22 +84,23 @@ final class CartCleanupCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cleanupTask = $this->getContainer()->get('coreshop.cart.cleanup');
+        $days = $this->days;
+        $params =  $this->params;
 
         if ($input->getOption('days')) {
-            $cleanupTask->setExpirationDays((int)$input->getOption('days'));
+            $days = (int)$input->getOption('days');
         }
 
         if ($input->getOption('anonymous')) {
-            $cleanupTask->setCleanupAnonymous(true);
+            $params['anonymous'] = true;
         }
         if ($input->getOption('user')) {
-            $cleanupTask->setCleanupUser(true);
+            $params['user'] = true;
         }
 
-        $output->writeln('Running cleanup job, this could take some time.');
+        $output->writeln('Running cart expire job, this could take some time.');
 
-        $cleanupTask->cleanup();
+        $this->cartExpiration->expire($days, $params);
 
         return 0;
     }

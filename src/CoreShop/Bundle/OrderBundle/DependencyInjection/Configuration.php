@@ -79,16 +79,25 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('cleanup')
+                ->arrayNode('expiration')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('expiration_days')->defaultValue(30)->end()
-                        ->booleanNode('anonymous')->defaultValue(true)->end()
-                        ->booleanNode('user')->defaultValue(true)->end()
+                        ->arrayNode('cart')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->integerNode('days')->defaultValue(0)->end()
+                                ->booleanNode('anonymous')->defaultValue(true)->end()
+                                ->booleanNode('customer')->defaultValue(true)->end()
+                            ->end()
+                        ->end()
+                         ->arrayNode('order')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->integerNode('days')->defaultValue(5)->end()
+                            ->end()
+                        ->end()
                     ->end()
-                ->end()
-            ->end()
-        ;
+                ->end();
     }
 
     /**

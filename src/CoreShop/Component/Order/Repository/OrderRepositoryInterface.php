@@ -23,4 +23,10 @@ interface OrderRepositoryInterface extends PimcoreRepositoryInterface
      * @return OrderInterface[]
      */
     public function findByCustomer(CustomerInterface $customer);
+
+    /**
+     * @param $days
+     * @return OrderInterface[]
+     */
+    public function findExpiredOrders($days);
 }

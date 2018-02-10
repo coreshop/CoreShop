@@ -11,7 +11,6 @@ services:
         tags:
             - { name: form.type }
 
-
     coreshop.form.type.cart_item:
         class: CoreShop\Bundle\OrderBundle\Form\Type\CartItemType
         arguments:

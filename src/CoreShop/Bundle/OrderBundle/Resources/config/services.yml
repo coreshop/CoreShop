@@ -49,11 +49,15 @@ services:
     coreshop.cart_processor.composite:
         class: CoreShop\Component\Order\Processor\CompositeCartProcessor
 
-    coreshop.cart.cleanup:
-        class: CoreShop\Bundle\OrderBundle\Cart\Maintenance\Cleanup
+    coreshop.cart.expire:
+        class: CoreShop\Bundle\OrderBundle\Expiration\CartExpiration
         shared: false
         arguments:
              - '@coreshop.repository.cart'
-             - '%coreshop.cart.cleanup.expiration_days%'
-             - '%coreshop.cart.cleanup.anonymous%'
-             - '%coreshop.cart.cleanup.user%'
+
+    coreshop.order.expire:
+        class: CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration
+        shared: false
+        arguments:
+             - '@coreshop.repository.order'
+             - '@coreshop.state_machine_applier'
