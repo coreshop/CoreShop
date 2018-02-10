@@ -13,8 +13,29 @@
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController as BaseOrderCreationController;
+use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 class OrderCreationController extends BaseOrderCreationController
 {
     use CoreSaleCreationTrait;
+
+    protected function prepareCart(Request $request, CartInterface $cart)
+    {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
+        /**
+         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         */
+        $carrierId = $request->get('carrier');
+        $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
+
+        if (!$carrier instanceof CarrierInterface) {
+            throw new \InvalidArgumentException("Carrier with ID '$carrierId' not found");
+        }
+
+        $cart->setCarrier($carrier);
+    }
 }

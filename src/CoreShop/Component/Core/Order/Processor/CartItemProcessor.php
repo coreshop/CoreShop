@@ -56,8 +56,6 @@ final class CartItemProcessor implements CartProcessorInterface
             if($product instanceof ProductInterface) {
                 $item->setDigitalProduct($product->getDigitalProduct());
             }
-
-            $item->save();
         }
     }
 }
