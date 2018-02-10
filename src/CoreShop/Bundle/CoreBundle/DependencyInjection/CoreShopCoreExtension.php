@@ -59,6 +59,8 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        $container->setParameter('coreshop.after_logout_redirect_route', $config['after_logout_redirect_route']);
+
         $loader->load('services.yml');
 
         if (array_key_exists('checkout', $config)) {

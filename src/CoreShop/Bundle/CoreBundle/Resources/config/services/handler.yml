@@ -2,7 +2,7 @@ services:
     coreshop.handler.shop_logout:
         class: CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler
         arguments:
-            - '@security.http_utils'
-            - '/'
+            - '@router'
+            - '%coreshop.after_logout_redirect_route%'
             - '@session'
             - '@coreshop.context.store'
