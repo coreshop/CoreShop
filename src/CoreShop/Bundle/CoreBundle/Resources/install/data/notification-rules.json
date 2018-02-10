@@ -79,7 +79,7 @@
       {
         "type": "order.orderTransition",
         "configuration": {
-          "orderState": "create"
+          "orderState": "confirm"
         }
       }
     ],
