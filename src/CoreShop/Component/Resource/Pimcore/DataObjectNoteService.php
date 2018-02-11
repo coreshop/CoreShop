@@ -20,6 +20,15 @@ use Pimcore\Model\Tool\Email\Log;
 class DataObjectNoteService
 {
     /**
+     * @param $id
+     * @return Note
+     */
+    public function getNoteById($id)
+    {
+        return Note::getById($id);
+    }
+
+    /**
      * @param PimcoreModelInterface $object
      * @param string                $noteType
      * @return Note

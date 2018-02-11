@@ -34,4 +34,9 @@ final class Notes
      */
     const NOTE_EMAIL = 'Email';
 
+    /**
+     * Note Identifier for order comments
+     */
+    const NOTE_ORDER_COMMENT = 'OrderComment';
+
 }
