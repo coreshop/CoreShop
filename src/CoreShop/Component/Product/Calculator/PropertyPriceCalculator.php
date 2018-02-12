@@ -27,7 +27,7 @@ class PropertyPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(ProductInterface $subject, $retailPrice)
+    public function getDiscountPrice(ProductInterface $subject)
     {
         return null;
     }

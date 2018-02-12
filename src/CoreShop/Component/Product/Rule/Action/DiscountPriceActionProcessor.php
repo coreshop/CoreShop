@@ -48,7 +48,7 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice($subject, $retailPrice, array $configuration)
+    public function getDiscountPrice($subject, array $configuration)
     {
         $price = $configuration['price'];
         $currency = $this->currencyRepository->find($configuration['currency']);

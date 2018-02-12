@@ -25,11 +25,10 @@ interface ProductPriceCalculatorInterface
 
     /**
      * @param $subject
-     * @param int $retailPrice
      *
      * @return mixed
      */
-    public function getDiscountPrice(ProductInterface $subject, $retailPrice);
+    public function getDiscountPrice(ProductInterface $subject);
 
     /**
      * @param $subject

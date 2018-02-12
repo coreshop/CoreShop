@@ -74,12 +74,20 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     public function getPrice(PurchasableInterface $product, $withTax = true)
     {
         $retailPrice = $this->priceCalculator->getPrice($product);
-        $price = $this->discountPriceCalculator->getDiscountPrice($product, $retailPrice);
-        $discount = $this->discountCalculator->getDiscount($product, $price);
+        $discountPrice = $this->discountPriceCalculator->getDiscountPrice($product);
 
-        if (is_null($price)) {
+        if (is_null($retailPrice)) {
             throw new \InvalidArgumentException(sprintf("Could not determine a price for Product (%s)", $product->getId()));
         }
+
+        if ($discountPrice > 0 && $discountPrice < $retailPrice) {
+            $price = $discountPrice;
+        }
+        else {
+            $price = $retailPrice;
+        }
+
+        $discount = $this->discountCalculator->getDiscount($product, $price);
 
         $price = $price - $discount;
 
@@ -97,8 +105,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
      */
     public function getDiscountPrice(PurchasableInterface $product, $withTax = true)
     {
-        $retailPrice = $this->getRetailPrice($product, false);
-        $price = $this->discountPriceCalculator->getDiscountPrice($product, $retailPrice);
+        $price = $this->discountPriceCalculator->getDiscountPrice($product);
 
         if (is_null($price)) {
             throw new \InvalidArgumentException(sprintf("Could not determine a discount price for Product (%s)", $product->getId()));
@@ -118,8 +125,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
      */
     public function getDiscount(PurchasableInterface $product, $withTax = true)
     {
-        $retailPrice = $this->priceCalculator->getPrice($product);
-        $price = $this->discountPriceCalculator->getDiscountPrice($product, $retailPrice);
+        $price = $this->discountPriceCalculator->getDiscountPrice($product);
 
         if (is_null($price)) {
             throw new \InvalidArgumentException(sprintf("Could not determine a price for Product (%s)", $product->getId()));

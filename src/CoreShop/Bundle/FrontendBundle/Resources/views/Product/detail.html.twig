@@ -89,27 +89,16 @@
 
 
             <div class="price">
-                <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
-                <span class="price-new">{{ currency.getPrice(product) }}</span>
+                {% set price = currency.getPrice(product) %}
+                {% set discount = currency.getDiscount(product) %}
+                {% set discountPrice = currency.getDiscountPrice(product) %}
+                {% set retailPrice = currency.getRetailPrice(product) %}
 
-                <table>
-                    <tr>
-                        <td>retail-price</td>
-                        <td>{{ currency.getRetailPrice(product) }}</td>
-                    </tr>
-                    <tr>
-                        <td>discount-price</td>
-                        <td>{{ currency.getDiscountPrice(product) }}</td>
-                    </tr>
-                    <tr>
-                        <td>discount</td>
-                        <td>{{ currency.getDiscount(product) }}</td>
-                    </tr>
-                    <tr>
-                        <td>price</td>
-                        <td>{{ currency.getPrice(product) }}</td>
-                    </tr>
-                </table>
+                <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
+                <span class="price-new">{{ price }}</span>
+                {% if price < discountPrice %}
+                    <span class="price-old">{{ discountPrice }} {% if discount > 0 %}(-{{ discount }}{% endif %})</span>
+                {% endif %}
             </div>
             <div class="tax">
                 {{ 'incl. %s%% Tax'|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})

@@ -54,7 +54,7 @@ final class StoreProductPriceCalculator implements ProductPriceCalculatorInterfa
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(ProductInterface $subject, $retailPrice)
+    public function getDiscountPrice(ProductInterface $subject)
     {
         return null;
     }

@@ -18,8 +18,7 @@ interface PurchasableDiscountPriceCalculatorInterface
 {
     /**
      * @param PurchasableInterface $purchasable
-     * @param int $retailPrice
      * @return int
      */
-    public function getDiscountPrice(PurchasableInterface $purchasable, $retailPrice);
+    public function getDiscountPrice(PurchasableInterface $purchasable);
 }

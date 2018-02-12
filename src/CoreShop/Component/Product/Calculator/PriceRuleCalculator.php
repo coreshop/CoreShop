@@ -84,10 +84,9 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
 
     /**
      * @param ProductInterface $subject
-     * @param $retailPrice
      * @return bool|int|mixed
      */
-    public function getDiscountPrice(ProductInterface $subject, $retailPrice) {
+    public function getDiscountPrice(ProductInterface $subject) {
         $price = 0;
 
         /**
@@ -107,7 +106,7 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
                         continue;
                     }
 
-                    $actionPrice = $processor->getDiscountPrice($subject, $retailPrice, $action->getConfiguration());
+                    $actionPrice = $processor->getDiscountPrice($subject, $action->getConfiguration());
 
                     if (false !== $actionPrice && null !== $actionPrice) {
                         $price = $actionPrice;

@@ -33,15 +33,15 @@ class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscount
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(PurchasableInterface $purchasable, $retailPrice)
+    public function getDiscountPrice(PurchasableInterface $purchasable)
     {
-        $price = $retailPrice;
+        $price = 0;
 
         /**
          * @var $calculator PurchasableDiscountPriceCalculatorInterface
          */
         foreach ($this->discountPriceCalculators->all() as $calculator) {
-            $actionPrice = $calculator->getDiscountPrice($purchasable, $retailPrice);
+            $actionPrice = $calculator->getDiscountPrice($purchasable);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;
