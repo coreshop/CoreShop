@@ -99,7 +99,7 @@ coreshop.order.order.module.orderComments = Class.create({
                 {
                     xtype: 'label',
                     style: 'display:block',
-                    text: comment.text
+                    html: comment.text
                 },
                 {
                     xtype: 'label',

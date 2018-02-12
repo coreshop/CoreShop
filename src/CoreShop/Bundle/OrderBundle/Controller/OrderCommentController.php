@@ -86,7 +86,7 @@ class OrderCommentController extends PimcoreController
             $objectNoteService = $this->get('coreshop.object_note_service');
             $commentEntity = $objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_COMMENT);
             $commentEntity->setTitle('Order Comment');
-            $commentEntity->setDescription($comment);
+            $commentEntity->setDescription(nl2br($comment));
             $commentEntity->addData('submitAsEmail', 'bool', $submitAsEmail);
             $comment = $objectNoteService->storeNote($commentEntity, $emailDocument);
 
