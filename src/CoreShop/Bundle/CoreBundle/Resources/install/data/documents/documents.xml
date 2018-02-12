@@ -371,5 +371,50 @@
             </content>
         </document>
 
+        <document>
+            <type>email</type>
+            <action>email</action>
+            <controller>email</controller>
+            <module>CoreShop</module>
+            <path>shop/email</path>
+            <key>user-order-comment</key>
+            <content>
+                <de>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>de/user-order-comment.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Hinweise zu Ihrer Bestellung %Text(orderNumber);</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Hinweise zu Ihrer Bestellung %Text(orderNumber);</value>
+                    </field>
+                </de>
+                <en>
+                    <field>
+                        <key>text</key>
+                        <type>wysiwyg</type>
+                        <file>en/user-order-comment.html</file>
+                    </field>
+                    <field>
+                        <key>head</key>
+                        <type>input</type>
+                        <value>Notes on your order %Text(orderNumber);</value>
+                    </field>
+                    <field>
+                        <key>subject</key>
+                        <type>objectProperty</type>
+                        <value>Notes on your order %Text(orderNumber);</value>
+                    </field>
+                </en>
+            </content>
+        </document>
+
     </documents>
 </zend-config>
