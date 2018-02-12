@@ -31,7 +31,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
         }
 
         if (is_null($language)) {
-            throw new \InvalidArgumentException('Locale is not set');
+            throw new \Exception('MailActionProcessor: Language is not set.');
         }
 
         if (array_key_exists($language, $mails)) {

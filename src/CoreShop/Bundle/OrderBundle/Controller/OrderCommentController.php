@@ -27,6 +27,7 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\User;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -88,6 +89,11 @@ class OrderCommentController extends PimcoreController
             $commentEntity->setDescription($comment);
             $commentEntity->addData('submitAsEmail', 'bool', $submitAsEmail);
             $comment = $objectNoteService->storeNote($commentEntity, $emailDocument);
+
+            $this->get('event_dispatcher')->dispatch(
+                'coreshop.comment.order_comment_added',
+                new GenericEvent($comment, ['order' => $order, 'submitAsEmail' => $submitAsEmail])
+            );
 
             return $this->viewHandler->handle(['success' => true, 'commentId' => $comment->getId()]);
         } catch (\Exception $ex) {

@@ -112,6 +112,10 @@
     background: url(../img/orders.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_condition_comment {
+    background: url(../img/icons/comment.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_condition_orderInvoiceState,
 .coreshop_rule_icon_condition_invoiceState,
 .coreshop_rule_icon_condition_orderInvoiceTransition,

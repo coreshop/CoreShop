@@ -46,7 +46,6 @@ services:
         tags:
            - { name: coreshop.notification_rule.condition, type: orderShippingState, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\OrderShippingStateConfigurationType }
 
-
     coreshop.notification_rule.condition.order.order_shipment_transition:
         class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
         arguments:
@@ -71,13 +70,17 @@ services:
         tags:
             - { name: coreshop.notification_rule.condition, type: orderTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
-    ##### Misc
+    ##### MISC
     coreshop.notification_rule.condition.order.carriers:
         class: CoreShop\Component\Core\Notification\Rule\Condition\Order\CarriersChecker
         tags:
             - { name: coreshop.notification_rule.condition, type: carriers, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
             - { name: coreshop.notification_rule.condition, type: carriers, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CarriersConfigurationType }
 
+    coreshop.notification_rule.condition.order.comment:
+        class: CoreShop\Component\Core\Notification\Rule\Condition\Order\CommentChecker
+        tags:
+            - { name: coreshop.notification_rule.condition, type: comment, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CommentConfigurationType }
 
     #### PAYMENT
     coreshop.notification_rule.condition.payment.payment_state:
@@ -130,7 +133,6 @@ services:
           tags:
             - { name: coreshop.notification_rule.condition, type: shipmentTransition, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
-
     #### USER
     coreshop.notification_rule.condition.user.user_type:
         class: CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker
@@ -180,6 +182,14 @@ services:
             - { name: kernel.event_listener, event: workflow.coreshop_order_invoice.completed, method: applyOrderWorkflowRule }
             - { name: kernel.event_listener, event: workflow.coreshop_order_shipment.completed, method: applyOrderWorkflowRule }
             - { name: kernel.event_listener, event: workflow.coreshop_order_payment.completed, method: applyOrderWorkflowRule }
+
+    coreshop.notification.listener.order.comments:
+        class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderCommentsListener
+        parent: coreshop.notification.listener.rule.abstract
+        calls:
+            - [setOrderRepository, ['@coreshop.repository.order']]
+        tags:
+            - { name: kernel.event_listener, event: coreshop.comment.order_comment_added, method: applyOrderCommentAddedNotifications }
 
     coreshop.notification.listener.payment:
         class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\PaymentWorkflowListener
