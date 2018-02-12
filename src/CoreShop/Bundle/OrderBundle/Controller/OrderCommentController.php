@@ -91,7 +91,7 @@ class OrderCommentController extends PimcoreController
             $comment = $objectNoteService->storeNote($commentEntity, $emailDocument);
 
             $this->get('event_dispatcher')->dispatch(
-                'coreshop.comment.order_comment_post_added',
+                'coreshop.comment.order_comment_post_add',
                 new GenericEvent($comment, ['order' => $order, 'submitAsEmail' => $submitAsEmail])
             );
 
