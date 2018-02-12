@@ -92,6 +92,11 @@
     background: url(../img/product-add.svg) center center no-repeat !important;
 }
 
+.x-panel.coreshop-panel .coreshop-order-comment-block .published-by {
+    font-weight: 300;
+    font-style: italic;
+}
+
 .x-panel.coreshop-panel .coreshop-order-comment-block .x-panel-header-default {
     border-bottom: none !important;
     padding: 5px 0 0 10px;
@@ -101,11 +106,15 @@
     font-size:11px;
     margin:7px 0;
     display: block;
+    padding: 0 0 0 20px;
 }
 
-.x-panel.coreshop-panel .coreshop-order-comment-block .customer {
-    padding: 0 0 0 20px;
-    background: url(../img/customer_notified.svg) 0 0 no-repeat !important;
+.x-panel.coreshop-panel .coreshop-order-comment-block .internal {
+    background: url(../img/comment_internal.svg) 0 0 no-repeat !important;
+}
+
+.x-panel.coreshop-panel .coreshop-order-comment-block .external {
+    background: url(../img/comment_external.svg) 0 0 no-repeat !important;
 }
 
 .coreshop-order-comments-nothing-found {

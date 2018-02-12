@@ -86,7 +86,7 @@ coreshop.order.order.module.orderComments = Class.create({
             bodyPadding: 10,
             margin: '0 0 10px 0',
             style: 'border-bottom: 1px dashed #b7b7b7;',
-            title: commentDate + ' - ' + t('coreshop_order_comments_published_by') + ' ' + comment.userName,
+            title: commentDate + ' - <span class="published-by">' + t('coreshop_order_comments_published_by') + ' ' + comment.userName + '</span>',
             cls: 'coreshop-order-comment-block',
             tools: [
                 {
@@ -103,9 +103,8 @@ coreshop.order.order.module.orderComments = Class.create({
                 },
                 {
                     xtype: 'label',
-                    cls: notificationApplied ? 'comment_meta customer' : 'comment_meta admin',
+                    cls: notificationApplied ? 'comment_meta external' : 'comment_meta internal',
                     text: notificationApplied ? t('coreshop_order_comments_notification_applied') : t('coreshop_order_comments_is_internal'),
-
                 }
             ]
         };
@@ -114,6 +113,13 @@ coreshop.order.order.module.orderComments = Class.create({
     },
 
     createComment: function (tab) {
+
+        var noteLabel = new Ext.form.Label({
+            flex: 1,
+            text: t('coreshop_order_comment_customer_locale_note') + ' ' + this.sale.orderLanguage,
+            style: 'color: gray; font-style: italic; text-align: right; padding: 0px 2px 0px 0px;',
+            hidden: true
+        });
 
         var _ = this,
             window = new Ext.window.Window({
@@ -142,15 +148,32 @@ coreshop.order.order.module.orderComments = Class.create({
                         {
                             xtype: 'textarea',
                             name: 'comment',
-                            style: "font-family: 'Courier New', Courier, monospace;",
+                            fieldLabel: t('coreshop_order_comment'),
+                            labelAlign: 'top',
                             width: '100%',
                             height: '70%',
                         },
                         {
-                            xtype: 'checkbox',
-                            name: 'submitAsEmail',
-                            fieldLabel: t('coreshop_order_comment_trigger_notifications')
-
+                            xtype: 'fieldcontainer',
+                            layout: 'hbox',
+                            border: 0,
+                            style: {
+                                border: 0
+                            },
+                            items: [
+                                {
+                                    xtype: 'checkbox',
+                                    flex: 2,
+                                    name: 'submitAsEmail',
+                                    fieldLabel: t('coreshop_order_comment_trigger_notifications'),
+                                    listeners: {
+                                        'change': function (b) {
+                                            noteLabel.setHidden(!b.checked)
+                                        }.bind(this)
+                                    }
+                                },
+                                noteLabel
+                            ]
                         }
                     ]
                 }]
