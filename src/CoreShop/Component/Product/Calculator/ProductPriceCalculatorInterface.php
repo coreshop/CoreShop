@@ -25,6 +25,14 @@ interface ProductPriceCalculatorInterface
 
     /**
      * @param $subject
+     * @param int $retailPrice
+     *
+     * @return mixed
+     */
+    public function getDiscountPrice(ProductInterface $subject, $retailPrice);
+
+    /**
+     * @param $subject
      * @param $price
      *
      * @return mixed

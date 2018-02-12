@@ -12,18 +12,14 @@
 
 namespace CoreShop\Component\Product\Rule\Action;
 
-use CoreShop\Component\Product\Model\ProductInterface;
-use Webmozart\Assert\Assert;
-
-class DiscountPercentActionProcessor implements ProductDiscountActionProcessorInterface
+interface ProductDiscountActionProcessorInterface extends ActionProcessorInterface
 {
     /**
-     * {@inheritdoc}
+     * @param $subject
+     * @param $price
+     * @param array $configuration
+     *
+     * @return mixed
      */
-    public function getDiscount($subject, $price, array $configuration)
-    {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-
-        return (int) round(($configuration['percent'] / 100) * $price);
-    }
+    public function getDiscount($subject, $price, array $configuration);
 }

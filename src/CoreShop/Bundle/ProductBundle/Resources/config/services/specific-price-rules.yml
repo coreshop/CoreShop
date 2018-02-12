@@ -74,7 +74,7 @@ services:
     coreshop.registry.product_specific_price_rule.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
+            - CoreShop\Component\Product\Rule\Action\ActionProcessorInterface
             - product-price-rule-actions
 
     coreshop.form_registry.product_specific_price_rule.actions:
@@ -100,6 +100,13 @@ services:
             - '@coreshop.product_specific_price_rule.processor'
         tags:
             - { name: coreshop.product.rules.fetcher, type: product-specific-rules }
+
+    coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher.memory_cached:
+        class: CoreShop\Component\Product\Rule\Fetcher\MemoryCachedValidRuleFetcher
+        decorates: 'coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher'
+        arguments:
+            - '@coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher.memory_cached.inner'
+            - '@request_stack'
 
     coreshop.product.price_calculator.product_specific_price_rules:
       class: CoreShop\Component\Product\Calculator\PriceRuleCalculator

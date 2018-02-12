@@ -50,6 +50,22 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         return $price;
     }
 
+    public function getDiscountPrice(ProductInterface $subject, $retailPrice)
+    {
+         $price = false;
+
+        foreach ($this->priceCalculatorRegistry->all() as $calculator) {
+            $calcPrice = $calculator->getDiscountPrice($subject, $retailPrice);
+
+            if (false !== $calcPrice && null !== $calcPrice) {
+                $price = $calcPrice;
+            }
+        }
+
+        return $price;
+    }
+
+
     /**
      * {@inheritdoc}
      */

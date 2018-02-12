@@ -23,4 +23,25 @@ interface ProductPriceHelperInterface extends HelperInterface
      * @return mixed
      */
     public function getPrice(PurchasableInterface $product, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     * @param bool $withTax
+     * @return mixed
+     */
+    public function getRetailPrice(PurchasableInterface $product, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     * @param bool $withTax
+     * @return mixed
+     */
+    public function getDiscountPrice(PurchasableInterface $product, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     * @param bool $withTax
+     * @return mixed
+     */
+    public function getDiscount(PurchasableInterface $product, $withTax = true);
 }

@@ -8,22 +8,18 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
-namespace CoreShop\Component\Product\Rule\Action;
+namespace CoreShop\Component\Order\Calculator;
 
-use CoreShop\Component\Product\Model\ProductInterface;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 
-class DiscountPercentActionProcessor implements ProductDiscountActionProcessorInterface
+interface PurchasableDiscountPriceCalculatorInterface
 {
     /**
-     * {@inheritdoc}
+     * @param PurchasableInterface $purchasable
+     * @param int $retailPrice
+     * @return int
      */
-    public function getDiscount($subject, $price, array $configuration)
-    {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-
-        return (int) round(($configuration['percent'] / 100) * $price);
-    }
+    public function getDiscountPrice(PurchasableInterface $purchasable, $retailPrice);
 }

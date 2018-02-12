@@ -15,12 +15,10 @@ namespace CoreShop\Component\Product\Rule\Action;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
-use Webmozart\Assert\Assert;
 
-class DiscountAmountActionProcessor implements ProductDiscountActionProcessorInterface
+class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcessorInterface
 {
-     /**
+    /**
      * @var CurrencyConverterInterface
      */
     protected $moneyConverter;
@@ -50,13 +48,11 @@ class DiscountAmountActionProcessor implements ProductDiscountActionProcessorInt
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, $price, array $configuration)
+    public function getDiscountPrice($subject, $retailPrice, array $configuration)
     {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-
-        $amount = $configuration['amount'];
+        $price = $configuration['price'];
         $currency = $this->currencyRepository->find($configuration['currency']);
 
-        return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
     }
 }

@@ -13,6 +13,8 @@
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface;
+use CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -81,6 +83,43 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
     }
 
     /**
+     * @param ProductInterface $subject
+     * @param $retailPrice
+     * @return bool|int|mixed
+     */
+    public function getDiscountPrice(ProductInterface $subject, $retailPrice) {
+        $price = 0;
+
+        /**
+         * @var RuleInterface[]
+         */
+        $rules = $this->validRulesFetcher->getValidRules($subject);
+
+        if (is_array($rules)) {
+            foreach ($rules as $rule) {
+                /**
+                 * @var ActionInterface
+                 */
+                foreach ($rule->getActions() as $action) {
+                    $processor = $this->actionServiceRegistry->get($action->getType());
+
+                    if (!$processor instanceof ProductDiscountPriceActionProcessorInterface) {
+                        continue;
+                    }
+
+                    $actionPrice = $processor->getDiscountPrice($subject, $retailPrice, $action->getConfiguration());
+
+                    if (false !== $actionPrice && null !== $actionPrice) {
+                        $price = $actionPrice;
+                    }
+                }
+            }
+        }
+
+        return $price === 0 ? false : $price;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDiscount(ProductInterface $subject, $price)
@@ -101,9 +140,11 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
             foreach ($rule->getActions() as $action) {
                 $processor = $this->actionServiceRegistry->get($action->getType());
 
-                if ($processor instanceof ProductPriceActionProcessorInterface) {
-                    $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
+                if (!$processor instanceof ProductDiscountActionProcessorInterface) {
+                    continue;
                 }
+
+                $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
             }
         }
 
