@@ -122,6 +122,10 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(true), $fromCurrency, $toCurrency), true);
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(false), $fromCurrency, $toCurrency), false);
+        $saleItem->setItemDiscountPrice($this->currencyConverter->convert($cartItem->getItemDiscountPrice(true), $fromCurrency, $toCurrency), true);
+        $saleItem->setItemDiscountPrice($this->currencyConverter->convert($cartItem->getItemDiscountPrice(false), $fromCurrency, $toCurrency), false);
+        $saleItem->setItemDiscount($this->currencyConverter->convert($cartItem->getItemDiscount(true), $fromCurrency, $toCurrency), true);
+        $saleItem->setItemDiscount($this->currencyConverter->convert($cartItem->getItemDiscount(false), $fromCurrency, $toCurrency), false);
         $saleItem->setTotal($this->currencyConverter->convert($cartItem->getTotal(true), $fromCurrency, $toCurrency), true);
         $saleItem->setTotal($this->currencyConverter->convert($cartItem->getTotal(false), $fromCurrency, $toCurrency), false);
         $saleItem->setItemPrice($this->currencyConverter->convert($cartItem->getItemPrice(true), $fromCurrency, $toCurrency), true);
