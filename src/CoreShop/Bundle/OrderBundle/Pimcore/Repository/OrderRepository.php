@@ -18,6 +18,8 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ?', [$customer->getId()]);
+        $list->setOrderKey('o_id');
+        $list->setOrder('DESC');
         $list->load();
 
         return $list->getObjects();
