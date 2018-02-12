@@ -91,7 +91,7 @@ class OrderCommentController extends PimcoreController
             $comment = $objectNoteService->storeNote($commentEntity, $emailDocument);
 
             $this->get('event_dispatcher')->dispatch(
-                'coreshop.comment.order_comment_added',
+                'coreshop.comment.order_comment_post_added',
                 new GenericEvent($comment, ['order' => $order, 'submitAsEmail' => $submitAsEmail])
             );
 
@@ -108,10 +108,14 @@ class OrderCommentController extends PimcoreController
     public function deleteAction(Request $request)
     {
         $commentId = $request->get('id');
-
         $objectNoteService = $this->get('coreshop.object_note_service');
         $commentEntity = $objectNoteService->getNoteById($commentId);
         $commentEntity->delete();
+
+        $this->get('event_dispatcher')->dispatch(
+            'coreshop.comment.order_comment_post_delete',
+            new GenericEvent($commentEntity)
+        );
 
         return $this->viewHandler->handle(['success' => true]);
     }
