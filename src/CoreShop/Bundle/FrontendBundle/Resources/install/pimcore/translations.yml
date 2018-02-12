@@ -533,6 +533,12 @@ translations:
           en: 'Initialized'
           de: 'Initialisiert'
 
+  coreshop.ui.workflow.state.coreshop_order.confirmed:
+      languages:
+          de_CH: 'Bestätigt'
+          en: 'Confirmed'
+          de: 'Bestätigt'
+          
   coreshop.ui.workflow.state.coreshop_order.cancelled:
       languages:
           de_CH: 'Storniert'
