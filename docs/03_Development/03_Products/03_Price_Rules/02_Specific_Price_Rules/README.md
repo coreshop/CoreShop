@@ -20,6 +20,7 @@ CoreShop comes with a set of default action and condition implementations:
  - Discount Amount
  - Discount Percent
  - Price
+ - Discount Price
 
 ## Extending Conditions and Actions
 
