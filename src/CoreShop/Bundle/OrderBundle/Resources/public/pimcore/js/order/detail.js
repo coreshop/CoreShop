@@ -215,6 +215,12 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
         return this.saleInfo;
     },
 
+    getRightItems: function ($super) {
+        var rightItems = $super();
+        rightItems.push(this.getCommentDetails());
+        return rightItems;
+    },
+
     getShipmentDetails: function () {
         if (!this.shippingInfo) {
 
@@ -689,5 +695,16 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
 
         window.show();
         return window;
+    },
+
+    getCommentDetails: function () {
+
+        if (this.commentInfo) {
+            return this.commentInfo;
+        }
+
+        var orderCommentsModule = new coreshop.order.order.module.orderComments(this.sale)
+        this.commentInfo = orderCommentsModule.getLayout();
+        return this.commentInfo;
     }
 });

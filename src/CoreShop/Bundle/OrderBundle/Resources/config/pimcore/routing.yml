@@ -94,6 +94,19 @@ coreshop_order_invoice_render:
     path: /%coreshop.admin.route.base%/order-invoice/render
     defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:renderAction'}
 
+##### ORDER Comments
+coreshop_order_comments_list:
+    path: /%coreshop.admin.route.base%/order-comment/list
+    defaults: { _controller: 'coreshop.pimcore_controller.order_comment:listAction'}
+
+coreshop_order_comments_add:
+    path: /%coreshop.admin.route.base%/order-comment/add
+    defaults: { _controller: 'coreshop.pimcore_controller.order_comment:addAction'}
+
+coreshop_order_comments_delete:
+    path: /%coreshop.admin.route.base%/order-comment/delete
+    defaults: { _controller: 'coreshop.pimcore_controller.order_comment:deleteAction'}
+
 ##### ORDER SHIPMENT
 coreshop_order_shipment_get_processable_items:
     path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items

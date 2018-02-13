@@ -94,5 +94,29 @@
         }
       }
     ]
+  },
+  {
+    "name": "Order Comment",
+    "type": "order",
+    "active": true,
+    "conditions": [
+      {
+        "type": "order.comment",
+        "configuration": {
+          "commentAction": "create"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "order.orderMail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/user-order-comment",
+            "en": "/en/shop/email/user-order-comment"
+          }
+        }
+      }
+    ]
   }
 ]

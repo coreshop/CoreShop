@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
@@ -207,6 +208,7 @@ final class Configuration implements ConfigurationInterface
                                                 ->scalarNode('default')->defaultValue(OrderController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
                                                 ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
+                                                ->scalarNode('comment')->defaultValue(OrderCommentController::class)->end()
                                             ->end()
                                         ->end()
                                     ->end()
@@ -418,6 +420,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order_edit_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editPayment.js')->end()
                             ->scalarNode('order_edit_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editShipment.js')->end()
                             ->scalarNode('order_edit_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editInvoice.js')->end()
+                            ->scalarNode('order_comments')->defaultValue('/bundles/coreshoporder/pimcore/js/order/module/orderComments.js')->end()
                             ->scalarNode('order_invoice_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice/render.js')->end()
                             ->scalarNode('order_shipment_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment/render.js')->end()
                             ->scalarNode('order_change_state')->defaultValue('/bundles/coreshoporder/pimcore/js/order/state/changeState.js')->end()
