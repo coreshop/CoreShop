@@ -108,7 +108,7 @@
 }
 
 .coreshop_rule_icon_condition_orderState,
-.coreshop_rule_icon_condition_orderStateTransition {
+.coreshop_rule_icon_condition_orderTransition {
     background: url(../img/orders.svg) center center no-repeat !important;
 }
 
