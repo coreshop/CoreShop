@@ -73,7 +73,7 @@ class CustomerType extends AbstractResourceType
                     'label' => 'coreshop.form.customer.newsletter',
                     'choices' => array(
                         'coreshop.form.customer.newsletter.subscribe' => true,
-                        'coreshop.form.customer.gender.un_subscribe' => false
+                        'coreshop.form.customer.newsletter.unsubscribe' => false
                     ),
                     'expanded' => true
                 ]);
