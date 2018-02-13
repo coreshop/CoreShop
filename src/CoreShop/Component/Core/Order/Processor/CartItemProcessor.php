@@ -51,6 +51,10 @@ final class CartItemProcessor implements CartProcessorInterface
             $item->setItemPrice($itemGrossPrice, true);
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, false), false);
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, true), true);
+            $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, false), false);
+            $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, true), true);
+            $item->setItemDiscount($this->productPriceCalculator->getDiscount($product, false), false);
+            $item->setItemDiscount($this->productPriceCalculator->getDiscount($product, true), true);
             $item->setItemWholesalePrice($product->getWholesalePrice());
 
             if($product instanceof ProductInterface) {

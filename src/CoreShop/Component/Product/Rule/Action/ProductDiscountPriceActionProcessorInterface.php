@@ -10,31 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Component\Product\Calculator;
+namespace CoreShop\Component\Product\Rule\Action;
 
-use CoreShop\Component\Product\Model\ProductInterface;
-
-interface ProductPriceCalculatorInterface
+interface ProductDiscountPriceActionProcessorInterface extends ActionProcessorInterface
 {
     /**
      * @param $subject
+     * @param array $configuration
      *
      * @return mixed
      */
-    public function getPrice(ProductInterface $subject);
-
-    /**
-     * @param $subject
-     *
-     * @return mixed
-     */
-    public function getDiscountPrice(ProductInterface $subject);
-
-    /**
-     * @param $subject
-     * @param $price
-     *
-     * @return mixed
-     */
-    public function getDiscount(ProductInterface $subject, $price);
+    public function getDiscountPrice($subject, array $configuration);
 }

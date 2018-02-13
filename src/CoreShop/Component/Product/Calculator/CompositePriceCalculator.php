@@ -47,6 +47,24 @@ class CompositePriceCalculator implements ProductPriceCalculatorInterface
         return $price;
     }
 
+        /**
+     * {@inheritdoc}
+     */
+    public function getDiscountPrice(ProductInterface $subject)
+    {
+        $price = false;
+
+        foreach ($this->priceRuleCalculators as $calculator) {
+            $actionPrice = $calculator->getDiscountPrice($subject);
+
+            if (false !== $actionPrice && null !== $actionPrice) {
+                $price = $actionPrice;
+            }
+        }
+
+        return $price;
+    }
+
     /**
      * {@inheritdoc}
      */

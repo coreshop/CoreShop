@@ -52,6 +52,38 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
     /**
      * {@inheritdoc}
      */
+    public function getItemDiscountPrice($withTax = true)
+    {
+        return $withTax ? $this->getItemDiscountPriceGross() : $this->getItemDiscountPriceNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountPrice($itemDiscountPrice, $withTax = true)
+    {
+        return $withTax ? $this->setItemDiscountPriceGross($itemDiscountPrice) : $this->setItemDiscountPriceNet($itemDiscountPrice);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscount($withTax = true)
+    {
+        return $withTax ? $this->getItemDiscountGross() : $this->getItemDiscountNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscount($itemDiscount, $withTax = true)
+    {
+        return $withTax ? $this->setItemDiscountGross($itemDiscount) : $this->setItemDiscountNet($itemDiscount);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTotal($withTax = true)
     {
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();
@@ -65,7 +97,7 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
         return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function getBaseItemPrice($withTax = true)
@@ -213,6 +245,71 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
      * {@inheritdoc}
      */
     public function setItemRetailPriceGross($itemPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountPriceNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountPriceNet($itemDiscountPriceNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountPriceGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountPriceGross($itemDiscountPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountNet($itemDiscountNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountGross($itemDiscountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

@@ -10879,6 +10879,17 @@ hr {
     color: #252a2f;
 }
 
+.cart-item-price span.price-new {
+    color: #2f353b;
+    padding-right: 5px;
+}
+
+.cart-item-price span.price-old {
+    color: #808080;
+    text-decoration: line-through;
+}
+
+
 /* Compare Page Styles Starts */
 .compare-table {
     margin-top: 30px;

@@ -1,5 +1,4 @@
-<?php
-/**
+/*
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -8,17 +7,10 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ *
+ */
 
-namespace CoreShop\Component\Product\Rule\Action;
-
-interface ProductPriceActionProcessorInterface extends ActionProcessorInterface
-{
-    /**
-     * @param $subject
-     * @param array $configuration
-     *
-     * @return mixed
-     */
-    public function getPrice($subject, array $configuration);
-}
+pimcore.registerNS('coreshop.product.pricerule.actions.discountPrice');
+coreshop.product.pricerule.actions.discountPrice = Class.create(coreshop.product.pricerule.actions.price, {
+    type: 'discountPrice'
+});

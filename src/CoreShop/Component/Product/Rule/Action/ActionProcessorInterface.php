@@ -10,17 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
-namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
+namespace CoreShop\Component\Product\Rule\Action;
 
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use Symfony\Component\Templating\Helper\HelperInterface;
-
-interface ProductDiscountHelperInterface extends HelperInterface
+interface ActionProcessorInterface
 {
-    /**
-     * @param PurchasableInterface $product
-     * @param bool $withTax
-     * @return int
-     */
-    public function getDiscount(PurchasableInterface $product, $withTax = true);
+
 }

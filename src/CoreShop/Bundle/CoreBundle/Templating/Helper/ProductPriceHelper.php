@@ -42,9 +42,25 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
     /**
      * {@inheritdoc}
      */
+    public function getDiscountPrice(PurchasableInterface $product, $withTax = true)
+    {
+        return $this->productPriceCalculator->getDiscountPrice($product, $withTax);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRetailPrice(PurchasableInterface $product, $withTax = true)
     {
         return $this->productPriceCalculator->getRetailPrice($product, $withTax);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscount(PurchasableInterface $product, $withTax = true)
+    {
+        return $this->productPriceCalculator->getDiscount($product, $withTax);
     }
 
     /**

@@ -30,3 +30,14 @@ services:
         class: CoreShop\Component\Order\Calculator\CompositePurchasableDiscountCalculator
         arguments:
             - '@coreshop.registry.order.purchasable.discount_calculators'
+
+    coreshop.registry.order.purchasable.discount_price_calculators:
+        class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+        arguments:
+            - CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface
+            - purchasable-discount-price-calculators
+
+    coreshop.order.purchasable.price_discount_calculator:
+        class: CoreShop\Component\Order\Calculator\CompositePurchasableDiscountPriceCalculator
+        arguments:
+            - '@coreshop.registry.order.purchasable.discount_price_calculators'
