@@ -375,7 +375,7 @@ class SpecificPrice extends RuleTest
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
         $action = $this->createActionWithForm('discountPrice', [
-            'price' => 100,
+            'price' => 1,
             'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
@@ -388,10 +388,10 @@ class SpecificPrice extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getStorePrice(Data::$store));
 
         $this->assertEquals(0, $discount);
-        $this->assertEquals(10000, $this->getTaxedPriceCalculator()->getDiscountPrice($this->product,false));
-        $this->assertEquals(12000, $this->getTaxedPriceCalculator()->getDiscountPrice($this->product));
-        $this->assertEquals(10000, $this->getTaxedPriceCalculator()->getPrice($this->product,false));
-        $this->assertEquals(12000, $this->getTaxedPriceCalculator()->getPrice($this->product));
+        $this->assertEquals(100, $this->getTaxedPriceCalculator()->getDiscountPrice($this->product,false));
+        $this->assertEquals(120, $this->getTaxedPriceCalculator()->getDiscountPrice($this->product));
+        $this->assertEquals(100, $this->getTaxedPriceCalculator()->getPrice($this->product,false));
+        $this->assertEquals(120, $this->getTaxedPriceCalculator()->getPrice($this->product));
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
