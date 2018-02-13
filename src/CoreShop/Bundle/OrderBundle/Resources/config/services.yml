@@ -29,6 +29,7 @@ services:
         class: CoreShop\Component\Order\Cart\CartModifier
         arguments:
             - '@coreshop.factory.cart_item'
+            - '@event_dispatcher'
 
     coreshop.order.invoice.processable:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems

@@ -140,8 +140,6 @@ class CartController extends FrontendController
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('event_dispatcher')->dispatch('coreshop.cart.item_added', new GenericEvent($cart));
-
         $this->addFlash('success', 'coreshop.ui.item_added');
 
         return $this->redirectToRoute('coreshop_cart_summary');
@@ -168,8 +166,6 @@ class CartController extends FrontendController
 
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
-
-        $this->get('event_dispatcher')->dispatch('coreshop.cart.item_removed', new GenericEvent($this->getCart()));
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
