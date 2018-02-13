@@ -90,13 +90,6 @@
 
 
             <div class="price">
-                {% set price = currency.getPrice(product) %}
-                {% set discountUnformatted = product|coreshop_product_discount %}
-                {% set discount = currency.convertAndFormat(discountUnformatted) %}
-                {% set discountPriceUnformatted = product|coreshop_product_discount_price %}
-                {% set discountPrice = currency.convertAndFormat(discountPriceUnformatted) %}
-                {% set retailPrice = currency.getRetailPrice(product) %}
-
                 <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
                 {{ product_price.display_product_price(product) }}
             </div>
