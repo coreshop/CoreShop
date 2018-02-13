@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use Pimcore\Model\Element\Note;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
@@ -36,7 +35,7 @@ final class OrderCommentsListener extends AbstractNotificationRuleListener
     }
 
     /**
-     * @param Event $event
+     * @param GenericEvent $event
      */
     public function applyOrderCommentAddedNotifications(GenericEvent $event)
     {

@@ -205,7 +205,7 @@ services:
         calls:
             - [setType, ['invoice']]
         tags:
-            - { name: kernel.event_listener, event: workflow.coreshop_invoice.completed, method: applyPaymentWorkflowTransitionCompleted }
+            - { name: kernel.event_listener, event: workflow.coreshop_invoice.completed, method: applyDocumentWorkflowTransitionCompleted }
 
     coreshop.notification.listener.shipment:
         class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\OrderDocumentWorkflowListener
@@ -213,7 +213,7 @@ services:
         calls:
             - [setType, ['shipment']]
         tags:
-            - { name: kernel.event_listener, event: workflow.coreshop_shipment.completed, method: applyPaymentWorkflowTransitionCompleted }
+            - { name: kernel.event_listener, event: workflow.coreshop_shipment.completed, method: applyDocumentWorkflowTransitionCompleted }
 
     coreshop.notification.listener.customer:
         class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\CustomerListener
