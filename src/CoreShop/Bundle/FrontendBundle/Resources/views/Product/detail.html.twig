@@ -1,4 +1,5 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
 
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
@@ -90,15 +91,14 @@
 
             <div class="price">
                 {% set price = currency.getPrice(product) %}
-                {% set discount = currency.getDiscount(product) %}
-                {% set discountPrice = currency.getDiscountPrice(product) %}
+                {% set discountUnformatted = product|coreshop_product_discount %}
+                {% set discount = currency.convertAndFormat(discountUnformatted) %}
+                {% set discountPriceUnformatted = product|coreshop_product_discount_price %}
+                {% set discountPrice = currency.convertAndFormat(discountPriceUnformatted) %}
                 {% set retailPrice = currency.getRetailPrice(product) %}
 
                 <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
-                <span class="price-new">{{ price }}</span>
-                {% if price < discountPrice %}
-                    <span class="price-old">{{ discountPrice }} {% if discount > 0 %}(-{{ discount }}{% endif %})</span>
-                {% endif %}
+                {{ product_price.display_product_price(product) }}
             </div>
             <div class="tax">
                 {{ 'incl. %s%% Tax'|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})

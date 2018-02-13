@@ -1,0 +1,26 @@
+{% macro display_product_price(product) %}
+    {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
+    {% set priceUnformatted = product|coreshop_product_price %}
+    {% set price = currency.convertAndFormat(priceUnformatted) %}
+    {% set discountUnformatted = product|coreshop_product_discount %}
+    {% set discount = currency.convertAndFormat(discountUnformatted) %}
+    {% set discountPriceUnformatted = product|coreshop_product_discount_price %}
+    {% set discountPrice = currency.convertAndFormat(discountPriceUnformatted) %}
+    {% set retailPriceUnformatted = product|coreshop_product_retail_price %}
+    {% set retailPrice = currency.convertAndFormat(retailPriceUnformatted) %}
+
+    <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
+    <span class="price-new">{{ price }}</span>
+    {% if priceUnformatted < discountPriceUnformatted %}
+        <span class="price-old">{{ discountPrice }}</span>
+        {% if discountUnformatted > 0 %}
+            <span class="price-discount">(-{{ discount }})</span>
+        {% endif %}
+    {% elseif priceUnformatted < retailPriceUnformatted %}
+        <span class="price-old">{{ retailPrice }}</span>
+        {% if discountUnformatted > 0 %}
+            <span class="price-discount">(-{{ discount }})</span>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
