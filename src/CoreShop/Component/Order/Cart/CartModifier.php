@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
-class CartModifier implements CartModifierInterface, StorageListModifierInterface
+class CartModifier implements StorageListModifierInterface
 {
     /**
      * @var FactoryInterface
@@ -134,35 +134,5 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
         }
 
         return $item;
-    }
-
-    /**
-     * @deprecated Use addItem instead, will be removed in 2.0.0-Alpha-3
-     *
-     * {@inheritdoc}
-     */
-    public function addCartItem(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
-    {
-        return $this->addItem($cart, $product, $quantity);
-    }
-
-    /**
-     * @deprecated Use removeItem instead, will be removed in 2.0.0-Alpha-3
-     *
-     * {@inheritdoc}
-     */
-    public function removeCartItem(CartInterface $cart, CartItemInterface $cartItem)
-    {
-        return $this->removeItem($cart, $cartItem);
-    }
-
-    /**
-     * @deprecated Use updateItemQuantity instead, will be removed in 2.0.0-Alpha-3
-     *
-     * {@inheritdoc}
-     */
-    public function updateCartItemQuantity(CartInterface $cart, PurchasableInterface $product, $quantity = 0, $increaseAmount = false)
-    {
-        return $this->updateItemQuantity($cart, $product, $quantity, $increaseAmount);
     }
 }
