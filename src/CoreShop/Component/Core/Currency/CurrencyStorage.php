@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Currency;
 
@@ -30,7 +30,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
     private $currencyRepository;
 
     /**
-     * @param StorageInterface            $storage
+     * @param StorageInterface $storage
      * @param CurrencyRepositoryInterface $currencyRepository
      */
     public function __construct(StorageInterface $storage, CurrencyRepositoryInterface $currencyRepository)
@@ -70,12 +70,12 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     private function provideKey(StoreInterface $store)
     {
-        return '_currency_'.$store->getId();
+        return '_currency_' . $store->getId();
     }
 
     /**
      * @param CurrencyInterface $currency
-     * @param StoreInterface    $store
+     * @param StoreInterface $store
      *
      * @return bool
      */
@@ -90,7 +90,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
 
     /**
      * @param CurrencyInterface $currency
-     * @param StoreInterface    $store
+     * @param StoreInterface $store
      *
      * @return bool
      */

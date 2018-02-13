@@ -34,7 +34,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      */
     abstract protected function getModel();
 
-     /**
+    /**
      * @return string | array
      */
     public function getQueryColumnType()

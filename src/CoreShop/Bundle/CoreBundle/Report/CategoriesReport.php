@@ -60,11 +60,11 @@ class CategoriesReport implements ReportInterface
     /**
      * CategoriesReport constructor.
      *
-     * @param RepositoryInterface     $storeRepository
-     * @param Connection              $db
+     * @param RepositoryInterface $storeRepository
+     * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface  $localeService
-     * @param array                   $pimcoreClasses
+     * @param LocaleContextInterface $localeService
+     * @param array $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -72,7 +72,8 @@ class CategoriesReport implements ReportInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         array $pimcoreClasses
-    ) {
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;

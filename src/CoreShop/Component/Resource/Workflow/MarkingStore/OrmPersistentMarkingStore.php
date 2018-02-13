@@ -36,7 +36,7 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
      * OrmPersistentMarkingStore constructor.
      *
      * @param MarkingStoreInterface $originMarkingStore origin marking store
-     * @param Registry              $doctrineRegistry doctrine registry
+     * @param Registry $doctrineRegistry doctrine registry
      */
     public function __construct(MarkingStoreInterface $originMarkingStore, Registry $doctrineRegistry)
     {

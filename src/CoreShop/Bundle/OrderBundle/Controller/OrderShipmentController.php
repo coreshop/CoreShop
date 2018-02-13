@@ -68,15 +68,15 @@ class OrderShipmentController extends PimcoreController
             $orderItem = $item['item'];
             if ($orderItem instanceof OrderItemInterface) {
                 $itemsToReturn[] = [
-                    'orderItemId'     => $orderItem->getId(),
-                    'price'           => $orderItem->getItemPrice(),
-                    'maxToShip'       => $item['quantity'],
-                    'quantity'        => $orderItem->getQuantity(),
+                    'orderItemId' => $orderItem->getId(),
+                    'price' => $orderItem->getItemPrice(),
+                    'maxToShip' => $item['quantity'],
+                    'quantity' => $orderItem->getQuantity(),
                     'quantityShipped' => $orderItem->getQuantity() - $item['quantity'],
-                    'toShip'          => $item['quantity'],
-                    'tax'             => $orderItem->getTotalTax(),
-                    'total'           => $orderItem->getTotal(),
-                    'name'            => $orderItem->getName(),
+                    'toShip' => $item['quantity'],
+                    'tax' => $orderItem->getTotalTax(),
+                    'total' => $orderItem->getTotal(),
+                    'name' => $orderItem->getName(),
                 ];
             }
         }
@@ -214,7 +214,7 @@ class OrderShipmentController extends PimcoreController
                 $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
                 200,
                 [
-                    'Content-Type'        => 'application/pdf',
+                    'Content-Type' => 'application/pdf',
                     'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
                 ]
             );

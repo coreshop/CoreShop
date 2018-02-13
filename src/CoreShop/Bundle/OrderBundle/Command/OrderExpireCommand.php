@@ -55,8 +55,7 @@ final class OrderExpireCommand extends Command
                 'days', 'days',
                 InputOption::VALUE_OPTIONAL,
                 'Older than'
-            )
-            ;
+            );
     }
 
     /**

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Resource\Model;
 
@@ -33,10 +33,10 @@ trait SetValuesTrait
      */
     public function setValue($key, $value)
     {
-        $method = 'set'.$key;
+        $method = 'set' . $key;
         if (method_exists($this, $method)) {
             $this->$method($value);
-        } elseif (method_exists($this, 'set'.preg_replace('/^o_/', '', $key))) {
+        } elseif (method_exists($this, 'set' . preg_replace('/^o_/', '', $key))) {
             // compatibility mode for objects (they do not have any set_oXyz() methods anymore)
             $this->$method($value);
         }

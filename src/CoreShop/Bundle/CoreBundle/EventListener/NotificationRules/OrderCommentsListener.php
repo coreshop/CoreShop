@@ -52,14 +52,14 @@ final class OrderCommentsListener extends AbstractNotificationRuleListener
         }
 
         $this->rulesProcessor->applyRules('order', $order, [
-            'type'          => 'create',
+            'type' => 'create',
             'submitAsEmail' => $event->getArgument('submitAsEmail'),
-            'comment'       => $event->getSubject(),
-            '_locale'       => $order->getOrderLanguage(),
-            'recipient'     => $customer->getEmail(),
-            'firstname'     => $customer->getFirstname(),
-            'lastname'      => $customer->getLastname(),
-            'orderNumber'   => $order->getOrderNumber(),
+            'comment' => $event->getSubject(),
+            '_locale' => $order->getOrderLanguage(),
+            'recipient' => $customer->getEmail(),
+            'firstname' => $customer->getFirstname(),
+            'lastname' => $customer->getLastname(),
+            'orderNumber' => $order->getOrderNumber(),
         ]);
     }
 }

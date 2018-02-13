@@ -23,7 +23,7 @@ final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
      */
     protected $productPriceRuleRepository;
 
-     /**
+    /**
      * @var RuleValidationProcessorInterface
      */
     protected $ruleValidationProcessor;

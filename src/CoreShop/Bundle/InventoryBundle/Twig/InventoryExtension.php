@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\InventoryBundle\Twig;
 
@@ -35,8 +35,8 @@ final class InventoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-             new \Twig_SimpleFunction('coreshop_inventory_is_available', [$this->helper, 'isStockAvailable']),
-             new \Twig_SimpleFunction('coreshop_inventory_is_sufficient', [$this->helper, 'isStockSufficient']),
+            new \Twig_SimpleFunction('coreshop_inventory_is_available', [$this->helper, 'isStockAvailable']),
+            new \Twig_SimpleFunction('coreshop_inventory_is_sufficient', [$this->helper, 'isStockSufficient']),
         ];
     }
 }

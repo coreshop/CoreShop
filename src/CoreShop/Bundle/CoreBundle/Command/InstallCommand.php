@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
@@ -85,8 +85,7 @@ final class InstallCommand extends AbstractInstallCommand
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command installs CoreShop.
 EOT
-            )
-        ;
+            );
     }
 
     /**
@@ -110,7 +109,7 @@ EOT
                     count($this->commands),
                     $command['message']
                 ));
-                $this->commandExecutor->runCommand('coreshop:install:'.$command['command'], [], $output);
+                $this->commandExecutor->runCommand('coreshop:install:' . $command['command'], [], $output);
             } catch (RuntimeException $exception) {
                 $errored = true;
             }
@@ -191,7 +190,6 @@ EOT
                           <info>`::::::::`</info>
                              <info>::::::</info>
                                <info>:::</info>
-'
-        ;
+';
     }
 }

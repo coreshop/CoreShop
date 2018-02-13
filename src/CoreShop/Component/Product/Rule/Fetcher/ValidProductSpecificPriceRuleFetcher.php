@@ -17,7 +17,7 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-     /**
+    /**
      * @var RuleValidationProcessorInterface
      */
     protected $ruleValidationProcessor;

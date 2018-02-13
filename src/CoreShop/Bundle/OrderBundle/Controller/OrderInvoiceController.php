@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -40,7 +40,7 @@ class OrderInvoiceController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $itemsToReturn = [];
@@ -146,7 +146,7 @@ class OrderInvoiceController extends PimcoreController
                 200,
                 [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
+                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
                 ]
             );
         }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
@@ -93,8 +93,8 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
 
     /**
      * @param Definition $channelContextDefinition
-     * @param string     $id
-     * @param array      $tags
+     * @param string $id
+     * @param array $tags
      */
     private function addMethodCalls(Definition $channelContextDefinition, $id, $tags)
     {
@@ -105,8 +105,8 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
 
     /**
      * @param Definition $channelContextDefinition
-     * @param string     $id
-     * @param array      $attributes
+     * @param string $id
+     * @param array $attributes
      */
     private function addMethodCall(Definition $channelContextDefinition, $id, $attributes)
     {

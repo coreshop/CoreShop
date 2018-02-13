@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
@@ -31,13 +31,14 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
     private $taxCalculatorFactory;
 
     /**
-     * @param TaxedProductPriceCalculatorInterface  $priceCalculator
+     * @param TaxedProductPriceCalculatorInterface $priceCalculator
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      */
     public function __construct(
         TaxedProductPriceCalculatorInterface $priceCalculator,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-    ) {
+    )
+    {
         $this->priceCalculator = $priceCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }

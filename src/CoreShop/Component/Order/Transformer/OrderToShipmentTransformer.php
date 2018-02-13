@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -70,13 +70,13 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer
-     * @param ItemKeyTransformerInterface           $keyTransformer
-     * @param NumberGeneratorInterface              $numberGenerator
-     * @param string                                $shipmentFolderPath
-     * @param ObjectServiceInterface                $objectService
-     * @param PimcoreRepositoryInterface            $orderItemRepository
-     * @param PimcoreFactoryInterface               $shipmentItemFactory
-     * @param TransformerEventDispatcherInterface   $eventDispatcher
+     * @param ItemKeyTransformerInterface $keyTransformer
+     * @param NumberGeneratorInterface $numberGenerator
+     * @param string $shipmentFolderPath
+     * @param ObjectServiceInterface $objectService
+     * @param PimcoreRepositoryInterface $orderItemRepository
+     * @param PimcoreFactoryInterface $shipmentItemFactory
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
@@ -87,7 +87,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $shipmentItemFactory,
         TransformerEventDispatcherInterface $eventDispatcher
-    ) {
+    )
+    {
         $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;

@@ -93,7 +93,7 @@ class OrderPaymentController extends PimcoreController
             if ($provider instanceof PaymentProviderInterface) {
                 $result[] = [
                     'name' => $provider->getName(),
-                    'id'   => $provider->getId(),
+                    'id' => $provider->getId(),
                 ];
             }
         }
@@ -150,7 +150,7 @@ class OrderPaymentController extends PimcoreController
                 $workflow->apply($payment, PaymentTransitions::TRANSITION_CREATE);
 
                 return $this->viewHandler->handle([
-                    'success'    => true,
+                    'success' => true,
                     'totalPayed' => $order->getTotalPayed()
                 ]);
             }

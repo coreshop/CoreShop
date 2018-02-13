@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Column;
 
@@ -25,7 +25,7 @@ final class IndexColumnTypeObjectBrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-             ->add('key', TextType::class, [
+            ->add('key', TextType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
@@ -34,8 +34,7 @@ final class IndexColumnTypeObjectBrickType extends AbstractType
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     /**

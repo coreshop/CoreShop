@@ -160,10 +160,10 @@ class CategoryController extends FrontendController
             }
 
             $options = [
-                'order_key'   => $sortParsed['name'],
-                'order'       => $sortParsed['direction'],
-                'categories'  => $categories,
-                'store'       => $this->getContext()->getStore(),
+                'order_key' => $sortParsed['name'],
+                'order' => $sortParsed['direction'],
+                'categories' => $categories,
+                'store' => $this->getContext()->getStore(),
                 'return_type' => 'list'
             ];
 

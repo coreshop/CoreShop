@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Calculator;
 
@@ -32,13 +32,14 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     protected $shippingRuleProcessor;
 
     /**
-     * @param CarrierShippingRuleCheckerInterface  $carrierShippingRuleChecker
+     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
      * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
      */
     public function __construct(
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
         ShippingRuleActionProcessorInterface $shippingRuleProcessor
-    ) {
+    )
+    {
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
         $this->shippingRuleProcessor = $shippingRuleProcessor;
     }

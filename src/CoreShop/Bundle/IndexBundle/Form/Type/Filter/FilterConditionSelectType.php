@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
@@ -25,8 +25,7 @@ final class FilterConditionSelectType extends AbstractType
     {
         $builder
             ->add('field', TextType::class)
-            ->add('preSelect', TextType::class)
-        ;
+            ->add('preSelect', TextType::class);
     }
 
     /**

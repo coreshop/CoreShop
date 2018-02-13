@@ -33,7 +33,7 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
      * @var string
      */
     private $routeName;
-    
+
     /**
      * @var SessionInterface
      */

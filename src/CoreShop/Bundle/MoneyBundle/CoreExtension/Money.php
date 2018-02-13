@@ -93,7 +93,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
         if ($this->defaultValue !== null) {
             return $this->toNumeric($this->defaultValue);
         }
-        
+
         return 0;
     }
 
@@ -240,7 +240,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('Empty mandatory field [ '.$this->getName().' ]');
+            throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
         }
 
         if (!$this->isEmpty($data) && !is_numeric($data)) {
@@ -255,11 +255,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
             }
 
             if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
-                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is not at least ' . $this->getMinValue());
+                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
             }
 
             if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
-                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is bigger than ' . $this->getMaxValue());
+                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
             }
         }
     }
@@ -325,10 +325,10 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     protected function toNumeric($value)
     {
-        if (strpos((string) $value, '.') === false) {
-            return (int) $value;
+        if (strpos((string)$value, '.') === false) {
+            return (int)$value;
         }
 
-        return (float) $value;
+        return (float)$value;
     }
 }

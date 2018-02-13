@@ -49,7 +49,7 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     public function setMarking($subject, Marking $marking)
     {
         $this->originMarkingStore->setMarking($subject, $marking);
-        if($subject instanceof Concrete) {
+        if ($subject instanceof Concrete) {
             $subject->save();
         }
     }

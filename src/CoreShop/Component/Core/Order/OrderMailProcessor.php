@@ -52,11 +52,11 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $noteService;
 
     /**
-     * @param MoneyFormatterInterface          $priceFormatter
-     * @param OrderInvoiceRepositoryInterface  $invoiceRepository
+     * @param MoneyFormatterInterface $priceFormatter
+     * @param OrderInvoiceRepositoryInterface $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
-     * @param OrderDocumentRendererInterface   $orderDocumentRenderer
-     * @param DataObjectNoteService              $noteService
+     * @param OrderDocumentRendererInterface $orderDocumentRenderer
+     * @param DataObjectNoteService $noteService
      */
     public function __construct(
         MoneyFormatterInterface $priceFormatter,
@@ -64,7 +64,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderShipmentRepositoryInterface $shipmentRepository,
         OrderDocumentRendererInterface $orderDocumentRenderer,
         DataObjectNoteService $noteService
-    ) {
+    )
+    {
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
         $this->shipmentRepository = $shipmentRepository;
@@ -136,9 +137,9 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     }
 
     /**
-     * @param Mail           $mail
+     * @param Mail $mail
      * @param Document\Email $emailDocument
-     * @param string|array   $recipients
+     * @param string|array $recipients
      */
     private function addRecipients($mail, $emailDocument, $recipients = '')
     {
@@ -175,8 +176,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     /**
      * @param OrderInterface $order
      * @param Document\Email $emailDocument
-     * @param Mail           $mail
-     * @param array          $params
+     * @param Mail $mail
+     * @param array $params
      * @return bool
      */
     private function addOrderNote(OrderInterface $order, Document\Email $emailDocument, Mail $mail, $params = [])

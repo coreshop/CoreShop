@@ -220,7 +220,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     private function normalizeOrderBy($orderBy)
     {
         $normalized = [
-            'key'       => '',
+            'key' => '',
             'direction' => 'ASC'
         ];
 

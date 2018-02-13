@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Notification\Model;
 
@@ -32,8 +32,8 @@ interface NotificationRuleInterface extends RuleInterface, ToggleableInterface
      */
     public function getSort();
 
-     /**
-      * @param int $sort
-      */
-     public function setSort($sort);
+    /**
+     * @param int $sort
+     */
+    public function setSort($sort);
 }

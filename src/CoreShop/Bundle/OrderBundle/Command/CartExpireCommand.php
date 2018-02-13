@@ -85,7 +85,7 @@ final class CartExpireCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $days = $this->days;
-        $params =  $this->params;
+        $params = $this->params;
 
         if ($input->getOption('days')) {
             $days = (int)$input->getOption('days');

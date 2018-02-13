@@ -19,27 +19,27 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
-         $commentField = [
-            'fieldtype'       => 'textarea',
-            'width'           => 350,
-            'height'          => '',
+        $commentField = [
+            'fieldtype' => 'textarea',
+            'width' => 350,
+            'height' => '',
             'queryColumnType' => 'longtext',
-            'columnType'      => 'longtext',
-            'phpdocType'      => 'string',
-            'name'            => 'comment',
-            'title'           => 'Comment',
-            'tooltip'         => '',
-            'mandatory'       => false,
-            'noteditable'     => true,
-            'index'           => false,
-            'locked'          => null,
-            'style'           => '',
-            'permissions'     => null,
-            'datatype'        => 'data',
-            'relationType'    => false,
-            'invisible'       => false,
+            'columnType' => 'longtext',
+            'phpdocType' => 'string',
+            'name' => 'comment',
+            'title' => 'Comment',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch'   => false
+            'visibleSearch' => false
         ];
 
         $cartClass = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');

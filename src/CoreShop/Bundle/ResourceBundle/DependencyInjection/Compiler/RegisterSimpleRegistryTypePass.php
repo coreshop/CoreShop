@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
@@ -59,7 +59,7 @@ abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `type` attribute.');
+                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` attribute.');
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];

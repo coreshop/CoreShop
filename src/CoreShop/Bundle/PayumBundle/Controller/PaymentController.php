@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
@@ -60,11 +60,11 @@ class PaymentController extends Controller
     /**
      * PaymentController constructor.
      *
-     * @param FactoryInterface           $paymentFactory
+     * @param FactoryInterface $paymentFactory
      * @param PimcoreRepositoryInterface $orderRepository
-     * @param ObjectServiceInterface     $pimcoreObjectService
-     * @param CurrencyContextInterface   $currencyContext
-     * @param EntityManagerInterface     $entityManager
+     * @param ObjectServiceInterface $pimcoreObjectService
+     * @param CurrencyContextInterface $currencyContext
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         FactoryInterface $paymentFactory,
@@ -72,7 +72,8 @@ class PaymentController extends Controller
         ObjectServiceInterface $pimcoreObjectService,
         CurrencyContextInterface $currencyContext,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $this->paymentFactory = $paymentFactory;
         $this->orderRepository = $orderRepository;
         $this->pimcoreObjectService = $pimcoreObjectService;
@@ -89,7 +90,7 @@ class PaymentController extends Controller
         /**
          * @var $order OrderInterface
          */
-        if($request->attributes->has('token')) {
+        if ($request->attributes->has('token')) {
             $property = 'token';
             $identifier = $request->attributes->get('token');
         } else {
@@ -184,7 +185,7 @@ class PaymentController extends Controller
 
         /**
          * Further process the status here, kick-off the pimcore workflow for orders?
-        */
+         */
         return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 

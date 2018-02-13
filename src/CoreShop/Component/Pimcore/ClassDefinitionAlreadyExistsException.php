@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Pimcore;
 
-final class ClassDefinitionAlreadyExistsException extends \Exception {
+final class ClassDefinitionAlreadyExistsException extends \Exception
+{
 
 }

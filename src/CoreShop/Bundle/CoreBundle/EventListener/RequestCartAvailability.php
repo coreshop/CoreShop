@@ -49,11 +49,11 @@ final class RequestCartAvailability
     private $session;
 
     /**
-     * @param CartManagerInterface          $cartManager
-     * @param CartContextInterface          $cartContext
+     * @param CartManagerInterface $cartManager
+     * @param CartContextInterface $cartContext
      * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper                 $pimcoreRequestHelper
-     * @param SessionInterface              $session
+     * @param RequestHelper $pimcoreRequestHelper
+     * @param SessionInterface $session
      */
     public function __construct(
         CartManagerInterface $cartManager,
@@ -61,7 +61,8 @@ final class RequestCartAvailability
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper,
         SessionInterface $session
-    ) {
+    )
+    {
         $this->cartManager = $cartManager;
         $this->cartContext = $cartContext;
         $this->configurationService = $configurationService;

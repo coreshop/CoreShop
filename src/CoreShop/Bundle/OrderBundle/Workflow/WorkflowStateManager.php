@@ -49,10 +49,10 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param StateMachineManager      $stateMachineManager
-     * @param TranslatorInterface      $translator
-     * @param string                   $noteIdentifier
-     * @param array                    $stateColors
+     * @param StateMachineManager $stateMachineManager
+     * @param TranslatorInterface $translator
+     * @param string $noteIdentifier
+     * @param array $stateColors
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -60,7 +60,8 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
         TranslatorInterface $translator,
         $noteIdentifier,
         $stateColors
-    ) {
+    )
+    {
         $this->eventDispatcher = $eventDispatcher;
         $this->stateMachineManager = $stateMachineManager;
         $this->noteIdentifier = $noteIdentifier;
@@ -102,9 +103,9 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
         $color = isset($this->stateColors[$workflowName . '_transition'][$transition]) ? $this->stateColors[$workflowName . '_transition'][$transition] : '#999999';
 
         $data = [
-            'label'      => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
+            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
             'transition' => $transition,
-            'color'      => $color
+            'color' => $color
         ];
 
         return $data;
@@ -114,7 +115,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      * @param       $subject
      * @param       $workflowName
      * @param array $transitions
-     * @param bool  $forFrontend
+     * @param bool $forFrontend
      * @return array
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)

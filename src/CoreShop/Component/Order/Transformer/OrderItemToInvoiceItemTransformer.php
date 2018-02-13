@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -54,11 +54,11 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $taxItemFactory;
 
     /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
+     * @param ObjectServiceInterface $objectService
+     * @param string $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param FactoryInterface                    $taxRateFactory
-     * @param FactoryInterface                    $taxItemFactory
+     * @param FactoryInterface $taxRateFactory
+     * @param FactoryInterface $taxItemFactory
      */
     public function __construct(
         ObjectServiceInterface $objectService,
@@ -66,7 +66,8 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         TransformerEventDispatcherInterface $eventDispatcher,
         FactoryInterface $taxRateFactory,
         FactoryInterface $taxItemFactory
-    ) {
+    )
+    {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -90,7 +91,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
 
         $this->eventDispatcher->dispatchPreEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath().'/'.$this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath() . '/' . $this->pathForItems);
 
         $invoiceItem->setKey($orderItem->getKey());
         $invoiceItem->setParent($itemFolder);
@@ -132,8 +133,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
 
         if ($base) {
             $orderTaxes = $orderItem->getBaseTaxes();
-        }
-        else {
+        } else {
             $orderTaxes = $orderItem->getTaxes();
         }
 
@@ -166,8 +166,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         if ($base) {
             $docItem->setBaseTotalTax($totalTax);
             $docItem->setBaseTaxes($itemTaxes);
-        }
-        else {
+        } else {
             $docItem->setTotalTax($totalTax);
             $docItem->setTaxes($itemTaxes);
         }

@@ -148,7 +148,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
 
         $form = $this->formFactory->createNamed('', AddressType::class, $cart, $options);
 
-        if($cart->hasShippableItems() === false) {
+        if ($cart->hasShippableItems() === false) {
             $form->remove('shippingAddress');
             $form->remove('useInvoiceAsShipping');
         }

@@ -73,8 +73,7 @@ final class ThemeResolver implements ThemeResolverInterface
             if ($theme = $store->getTemplate()) {
                 $this->activeTheme->setName($theme);
             }
-        }
-        catch (StoreNotFoundException $exception) {
+        } catch (StoreNotFoundException $exception) {
 
         }
     }

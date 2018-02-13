@@ -88,7 +88,7 @@ class Cart extends AbstractProposal implements CartInterface
         if ($totalWithoutDiscount > 0) {
             return $totalDiscount / $totalWithoutDiscount;
         }
-        
+
         return 0;
     }
 

@@ -31,8 +31,8 @@ class OrderState extends AbstractOperator
      * OrderState constructor.
      *
      * @param WorkflowStateManagerInterface $workflowManager
-     * @param \stdClass                     $config
-     * @param null                          $context
+     * @param \stdClass $config
+     * @param null $context
      */
     public function __construct(WorkflowStateManagerInterface $workflowManager, \stdClass $config, $context = null)
     {
@@ -80,7 +80,7 @@ class OrderState extends AbstractOperator
         $opacity = $workflow === 'coreshop_order' ? 1 : 0.3;
 
         if ($this->highlightLabel === true) {
-            $result->value = '<span class="rounded-color" style="background-color: rgba(' . join(',',$rgb) . ', ' . $opacity . '); color: black">' . $state['label'] . '</span>';
+            $result->value = '<span class="rounded-color" style="background-color: rgba(' . join(',', $rgb) . ', ' . $opacity . '); color: black">' . $state['label'] . '</span>';
         } else {
             $result->value = $state['label'];
         }

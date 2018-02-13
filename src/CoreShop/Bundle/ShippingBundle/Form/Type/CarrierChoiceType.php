@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
@@ -59,14 +59,13 @@ final class CarrierChoiceType extends AbstractType
                 'choice_label' => 'name',
                 'choice_translation_domain' => false,
                 'active' => true,
-            ])
-        ;
+            ]);
     }
 
     /**
-     * @param FormView      $view
+     * @param FormView $view
      * @param FormInterface $form
-     * @param array         $options
+     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -74,8 +73,8 @@ final class CarrierChoiceType extends AbstractType
 
         $description = [];
         $carriers = $form->getConfig()->getOption('choices');
-        foreach($carriers as $carrier) {
-            if(!empty($carrier->getDescription())) {
+        foreach ($carriers as $carrier) {
+            if (!empty($carrier->getDescription())) {
                 $description[$carrier->getId()] = $carrier->getDescription();
             }
         }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
@@ -19,34 +19,34 @@ use Symfony\Component\HttpFoundation\Request;
 interface EventDispatcherInterface
 {
     /**
-     * @param string            $eventName
+     * @param string $eventName
      * @param MetadataInterface $metadata
      * @param ResourceInterface $resource
-     * @param Request           $request
+     * @param Request $request
      */
     public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
 
     /**
-     * @param string            $eventName
+     * @param string $eventName
      * @param MetadataInterface $metadata
      * @param ResourceInterface $resource
-     * @param Request           $request
+     * @param Request $request
      */
     public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
 
     /**
-     * @param string            $eventName
+     * @param string $eventName
      * @param MetadataInterface $metadata
      * @param ResourceInterface $resource
-     * @param Request           $request
+     * @param Request $request
      */
     public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
 
     /**
-     * @param string            $eventName
+     * @param string $eventName
      * @param MetadataInterface $metadata
      * @param ResourceInterface $resource
-     * @param Request           $request
+     * @param Request $request
      */
     public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
@@ -46,45 +46,44 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('resources')
-                    ->useAttributeAsKey('name')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-                            ->variableNode('options')->end()
-                            ->scalarNode('templates')->cannotBeEmpty()->end()
-                            ->arrayNode('classes')
-                                ->isRequired()
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
-                                    ->scalarNode('interface')->cannotBeEmpty()->end()
-                                    ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                    ->scalarNode('repository')->cannotBeEmpty()->end()
-                                    ->scalarNode('factory')->defaultValue(Factory::class)->end()
-                                ->end()
-                            ->end()
-                            ->arrayNode('translation')
-                                ->children()
-                                    ->variableNode('options')->end()
-                                    ->arrayNode('classes')
-                                        ->isRequired()
-                                        ->addDefaultsIfNotSet()
-                                        ->children()
-                                            ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
-                                            ->scalarNode('interface')->cannotBeEmpty()->end()
-                                            ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                            ->scalarNode('repository')->cannotBeEmpty()->end()
-                                            ->scalarNode('factory')->defaultValue(Factory::class)->end()
-                                        ->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('resources')
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->children()
+            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->variableNode('options')->end()
+            ->scalarNode('templates')->cannotBeEmpty()->end()
+            ->arrayNode('classes')
+            ->isRequired()
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('interface')->cannotBeEmpty()->end()
+            ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+            ->scalarNode('repository')->cannotBeEmpty()->end()
+            ->scalarNode('factory')->defaultValue(Factory::class)->end()
             ->end()
-        ;
+            ->end()
+            ->arrayNode('translation')
+            ->children()
+            ->variableNode('options')->end()
+            ->arrayNode('classes')
+            ->isRequired()
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('interface')->cannotBeEmpty()->end()
+            ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+            ->scalarNode('repository')->cannotBeEmpty()->end()
+            ->scalarNode('factory')->defaultValue(Factory::class)->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
     }
 
     /**
@@ -94,13 +93,12 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('translation')
-                    ->canBeDisabled()
-                    ->children()
-                        ->scalarNode('locale_provider')->defaultValue('coreshop.translation_locale_provider.pimcore')->cannotBeEmpty()->end()
-                ->end()
+            ->arrayNode('translation')
+            ->canBeDisabled()
+            ->children()
+            ->scalarNode('locale_provider')->defaultValue('coreshop.translation_locale_provider.pimcore')->cannotBeEmpty()->end()
             ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -110,12 +108,11 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('drivers')
-                    ->defaultValue([CoreShopResourceBundle::DRIVER_DOCTRINE_ORM])
-                    ->prototype('enum')->values(CoreShopResourceBundle::getAvailableDrivers())->end()
-                ->end()
+            ->arrayNode('drivers')
+            ->defaultValue([CoreShopResourceBundle::DRIVER_DOCTRINE_ORM])
+            ->prototype('enum')->values(CoreShopResourceBundle::getAvailableDrivers())->end()
             ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -125,39 +122,39 @@ final class Configuration implements ConfigurationInterface
     {
         $node->children()
             ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->addDefaultsIfNotSet()
-                        ->ignoreExtraKeys(false)
-                        ->children()
-                            ->scalarNode('broker')->defaultValue('/bundles/coreshopresource/pimcore/js/broker.js')->end()
-                            ->scalarNode('global')->defaultValue('/bundles/coreshopresource/pimcore/js/global.js')->end()
-                            ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/js/resource.js')->end()
-                            ->scalarNode('resource_panel')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/panel.js')->end()
-                            ->scalarNode('resource_item')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/item.js')->end()
-                            ->scalarNode('resource_combo')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/comboBox.js')->end()
-                            ->scalarNode('object_element_href')->defaultValue('/bundles/coreshopresource/pimcore/js/object/elementHref.js')->end()
-                            ->scalarNode('object_object_multihref')->defaultValue('/bundles/coreshopresource/pimcore/js/object/objectMultihref.js')->end()
-                            ->scalarNode('core_extension_data_data')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/data.js')->end()
-                            ->scalarNode('core_extension_data_data_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/dataMultiselect.js')->end()
-                            ->scalarNode('core_extension_data_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/select.js')->end()
-                            ->scalarNode('core_extension_tag_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/select.js')->end()
-                            ->scalarNode('core_extension_tag_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js')->end()
-                            ->scalarNode('core_extension_tag_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/coreShopSerializedData.js')->end()
-                            ->scalarNode('core_extension_data_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/coreShopSerializedData.js')->end()
-                        ->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->addDefaultsIfNotSet()
-                        ->ignoreExtraKeys(false)
-                        ->children()
-                            ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/css/resource.css')->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->arrayNode('js')
+            ->addDefaultsIfNotSet()
+            ->ignoreExtraKeys(false)
+            ->children()
+            ->scalarNode('broker')->defaultValue('/bundles/coreshopresource/pimcore/js/broker.js')->end()
+            ->scalarNode('global')->defaultValue('/bundles/coreshopresource/pimcore/js/global.js')->end()
+            ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/js/resource.js')->end()
+            ->scalarNode('resource_panel')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/panel.js')->end()
+            ->scalarNode('resource_item')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/item.js')->end()
+            ->scalarNode('resource_combo')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/comboBox.js')->end()
+            ->scalarNode('object_element_href')->defaultValue('/bundles/coreshopresource/pimcore/js/object/elementHref.js')->end()
+            ->scalarNode('object_object_multihref')->defaultValue('/bundles/coreshopresource/pimcore/js/object/objectMultihref.js')->end()
+            ->scalarNode('core_extension_data_data')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/data.js')->end()
+            ->scalarNode('core_extension_data_data_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/dataMultiselect.js')->end()
+            ->scalarNode('core_extension_data_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/select.js')->end()
+            ->scalarNode('core_extension_tag_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/select.js')->end()
+            ->scalarNode('core_extension_tag_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js')->end()
+            ->scalarNode('core_extension_tag_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/coreShopSerializedData.js')->end()
+            ->scalarNode('core_extension_data_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/coreShopSerializedData.js')->end()
             ->end()
-        ->end();
+            ->end()
+            ->arrayNode('css')
+            ->addDefaultsIfNotSet()
+            ->ignoreExtraKeys(false)
+            ->children()
+            ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/css/resource.css')->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
     }
 
     /**
@@ -167,8 +164,8 @@ final class Configuration implements ConfigurationInterface
     {
         $stateMachineNode = $node
             ->children()
-                ->arrayNode('state_machine')
-                    ->children();
+            ->arrayNode('state_machine')
+            ->children();
 
         $this->addColorSection($stateMachineNode);
         $this->addCallBackSection($stateMachineNode);
@@ -184,10 +181,10 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->arrayNode('colors')
-                ->useAttributeAsKey('name')
-                ->arrayPrototype('array')
-                ->prototype('scalar')->end()
-                ->end()
+            ->useAttributeAsKey('name')
+            ->arrayPrototype('array')
+            ->prototype('scalar')->end()
+            ->end()
             ->end();
     }
 
@@ -198,9 +195,9 @@ final class Configuration implements ConfigurationInterface
     {
         $callbacks = $node
             ->arrayNode('callbacks')
-                ->useAttributeAsKey('name')
-                ->prototype('array')
-                ->children();
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->children();
 
         $this->addSubCallbackSection($callbacks, 'guard');
         $this->addSubCallbackSection($callbacks, 'before');
@@ -211,22 +208,21 @@ final class Configuration implements ConfigurationInterface
 
     /**
      * @param NodeBuilder $callbacks
-     * @param string      $type
+     * @param string $type
      */
     protected function addSubCallbackSection(NodeBuilder $callbacks, $type)
     {
         $callbacks
             ->arrayNode($type)
-                ->useAttributeAsKey('name')
-                ->prototype('array')
-                    ->children()
-                        ->variableNode('on')->end()
-                        ->variableNode('do')->end()
-                        ->scalarNode('priority')->defaultValue(0)->end()
-                        ->arrayNode('args')->performNoDeepMerging()->prototype('scalar')->end()
-                    ->end()
-                ->end()
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->children()
+            ->variableNode('on')->end()
+            ->variableNode('do')->end()
+            ->scalarNode('priority')->defaultValue(0)->end()
+            ->arrayNode('args')->performNoDeepMerging()->prototype('scalar')->end()
             ->end()
-        ;
+            ->end()
+            ->end();
     }
 }

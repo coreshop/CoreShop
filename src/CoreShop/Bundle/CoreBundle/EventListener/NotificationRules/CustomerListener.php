@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
@@ -35,7 +35,8 @@ final class CustomerListener extends AbstractNotificationRuleListener
     /**
      * @param GenericEvent $event
      */
-    public function applyRegisterCustomerRule(GenericEvent $event) {
+    public function applyRegisterCustomerRule(GenericEvent $event)
+    {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         $this->rulesProcessor->applyRules('user', $event->getSubject(), [

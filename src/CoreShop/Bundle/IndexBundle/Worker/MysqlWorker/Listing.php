@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
@@ -394,14 +394,14 @@ class Listing extends AbstractListing
         $preConditions = [];
 
         if ($this->getCategory()) {
-            $preConditions[] = "parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";
+            $preConditions[] = "parentCategoryIds LIKE '%," . $this->getCategory()->getId() . ",%'";
         }
 
         if (!is_null($this->getEnabled())) {
             $preConditions[] = 'active = ' . ($this->getEnabled() ? 1 : 0);
         }
 
-        $condition = implode(' AND ' , $preConditions);
+        $condition = implode(' AND ', $preConditions);
 
         //variant handling and userspecific conditions
 
@@ -409,7 +409,7 @@ class Listing extends AbstractListing
             if (!$excludeConditions) {
                 $userSpecific = $this->buildUserSpecificConditions($excludedFieldName);
                 if ($userSpecific) {
-                    $condition .= ' AND '.$userSpecific;
+                    $condition .= ' AND ' . $userSpecific;
                 }
             }
         } else {
@@ -420,7 +420,7 @@ class Listing extends AbstractListing
             if (!$excludeConditions) {
                 $userSpecific = $this->buildUserSpecificConditions($excludedFieldName);
                 if ($userSpecific) {
-                    $condition .= ' AND '.$userSpecific;
+                    $condition .= ' AND ' . $userSpecific;
                 }
             }
         }
@@ -430,7 +430,7 @@ class Listing extends AbstractListing
 
             foreach ($this->queryConditions as $condition) {
                 if ($condition instanceof ConditionInterface) {
-                    $searchString .= '+'.$condition->getValues().'+ ';
+                    $searchString .= '+' . $condition->getValues() . '+ ';
                 }
             }
 
@@ -453,7 +453,7 @@ class Listing extends AbstractListing
                 foreach ($condArray as $cond) {
                     $cond = $this->worker->renderCondition($cond);
 
-                    $renderedConditions[] = 'a.o_id IN (SELECT DISTINCT src FROM '.$relationalTableName.' WHERE '.$cond.')';
+                    $renderedConditions[] = 'a.o_id IN (SELECT DISTINCT src FROM ' . $relationalTableName . ' WHERE ' . $cond . ')';
                 }
             }
         }
@@ -496,12 +496,12 @@ class Listing extends AbstractListing
 
                 if ($this->getVariantMode() == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                     if (strtoupper($this->order) == 'DESC') {
-                        $orderByStringArray[] = 'max('.$key.') '.$direction;
+                        $orderByStringArray[] = 'max(' . $key . ') ' . $direction;
                     } else {
-                        $orderByStringArray[] = 'min('.$key.') '.$direction;
+                        $orderByStringArray[] = 'min(' . $key . ') ' . $direction;
                     }
                 } else {
-                    $orderByStringArray[] = $key.' '.$direction;
+                    $orderByStringArray[] = $key . ' ' . $direction;
                 }
             }
 
@@ -563,7 +563,7 @@ class Listing extends AbstractListing
         $query = '';
 
         foreach ($this->queryJoins as $table => $tableJoins) {
-            $joinType = isset($tableJoins['type']) ? ' '.$tableJoins['type'] : ' LEFT';
+            $joinType = isset($tableJoins['type']) ? ' ' . $tableJoins['type'] : ' LEFT';
 
             if (empty($tableJoins['joinTableAlias'])) {
                 continue;
@@ -572,7 +572,7 @@ class Listing extends AbstractListing
             $joinName = $tableJoins['joinTableAlias'];
             $objectKeyField = isset($tableJoins['objectKeyField']) ? $tableJoins['objectKeyField'] : 'o_id';
 
-            $query .= $joinType.' JOIN '.$table.' as '.$joinName.' on `'.$joinName.'`.'.$objectKeyField.' = a.o_id ';
+            $query .= $joinType . ' JOIN ' . $table . ' as ' . $joinName . ' on `' . $joinName . '`.' . $objectKeyField . ' = a.o_id ';
         }
 
         return $query;

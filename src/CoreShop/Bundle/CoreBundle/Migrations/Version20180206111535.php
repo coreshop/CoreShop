@@ -36,7 +36,7 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
 
         $em->flush();
 
-        $db  = $this->container->get('doctrine.dbal.default_connection')->executeQuery('ALTER TABLE coreshop_filter_condition CHANGE field field VARCHAR(255) DEFAULT NULL;');
+        $db = $this->container->get('doctrine.dbal.default_connection')->executeQuery('ALTER TABLE coreshop_filter_condition CHANGE field field VARCHAR(255) DEFAULT NULL;');
     }
 
     /**

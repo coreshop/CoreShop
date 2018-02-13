@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Condition;
 
@@ -34,7 +34,7 @@ class Condition implements ConditionInterface
      *
      * @param string $fieldName
      * @param string $type
-     * @param mixed  $values
+     * @param mixed $values
      */
     public function __construct($fieldName, $type, $values)
     {
@@ -75,7 +75,7 @@ class Condition implements ConditionInterface
      *
      * @param $fieldName
      * @param Condition[] $conditions
-     * @param string      $operator   ("AND", "OR")
+     * @param string $operator ("AND", "OR")
      *
      * @return Condition
      */

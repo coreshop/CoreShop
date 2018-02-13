@@ -90,8 +90,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
                 if (!$withTax) {
                     $amount /= 1 + $cartAverageTax;
                 }
-            }
-            else {
+            } else {
                 if ($withTax) {
                     $amount *= 1 + $cartAverageTax;
                 }

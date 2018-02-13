@@ -36,7 +36,7 @@ final class StateMachineApplier
     public function apply($subject, $workflowName = null, $transition = null, $soft = true)
     {
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
-        if($soft === true) {
+        if ($soft === true) {
             if (!$workflow->can($subject, $transition)) {
                 return;
             }

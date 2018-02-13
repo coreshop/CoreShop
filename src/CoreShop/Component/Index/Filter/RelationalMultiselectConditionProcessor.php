@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -41,20 +41,21 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         }
 
         return [
-            'type'          => 'relational_multiselect',
-            'label'         => $condition->getLabel(),
+            'type' => 'relational_multiselect',
+            'label' => $condition->getLabel(),
             'currentValues' => $currentFilter[$field],
-            'values'        => array_values($rawValues),
-            'objects'       => $objects,
-            'fieldName'     => $field,
-            'quantityUnit'  => Unit::getById($condition->getQuantityUnit()),
+            'values' => array_values($rawValues),
+            'objects' => $objects,
+            'fieldName' => $field,
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false) {
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    {
         $field = $condition->getConfiguration()['field'];
 
         $values = $parameterBag->get($field);

@@ -163,8 +163,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         try {
             $this->prepareCart($request, $cart);
-        }
-        catch (\InvalidArgumentException $ex) {
+        } catch (\InvalidArgumentException $ex) {
             return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
 
@@ -238,8 +237,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         try {
             $this->prepareCart($request, $cart);
-        }
-        catch (\InvalidArgumentException $ex) {
+        } catch (\InvalidArgumentException $ex) {
             return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
 

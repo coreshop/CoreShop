@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Repository;
 
@@ -19,7 +19,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface ConfigurationRepositoryInterface extends BaseConfigurationRepositoryInterface
 {
     /**
-     * @param string         $key
+     * @param string $key
      * @param StoreInterface $store
      *
      * @return ConfigurationInterface[]

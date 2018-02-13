@@ -79,7 +79,7 @@ final class ProposalExpireMaintenanceManagerListener
 
             $manager->registerJob(new Job(sprintf('coreshop.%s.expire', $this->type), [$this->proposalExpiration, 'expire'], [$this->days, $this->params]));
 
-             $this->configurationService->set(sprintf('system.%s.expire.last_run', $this->type), time());
+            $this->configurationService->set(sprintf('system.%s.expire.last_run', $this->type), time());
         }
     }
 }

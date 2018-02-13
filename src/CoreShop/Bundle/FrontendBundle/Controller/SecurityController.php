@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -38,7 +38,7 @@ class SecurityController extends FrontendController
     protected $shopperContext;
 
     /**
-     * @param AuthenticationUtils  $authenticationUtils
+     * @param AuthenticationUtils $authenticationUtils
      * @param FormFactoryInterface $formFactory
      * @param ShopperContextInterface $shopperContext
      */
@@ -46,7 +46,8 @@ class SecurityController extends FrontendController
         AuthenticationUtils $authenticationUtils,
         FormFactoryInterface $formFactory,
         ShopperContextInterface $shopperContext
-    ) {
+    )
+    {
         $this->authenticationUtils = $authenticationUtils;
         $this->formFactory = $formFactory;
         $this->shopperContext = $shopperContext;
@@ -59,7 +60,7 @@ class SecurityController extends FrontendController
      */
     public function loginAction(Request $request)
     {
-        if($this->shopperContext->hasCustomer()) {
+        if ($this->shopperContext->hasCustomer()) {
             return $this->redirectToRoute('coreshop_index');
         }
 

@@ -85,8 +85,7 @@ class CheckoutController extends FrontendController
 
                     if ($step instanceof RedirectCheckoutStepInterface) {
                         $response = $step->getResponse($cart, $request);
-                    }
-                    else {
+                    } else {
                         $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
                         if ($nextStep) {

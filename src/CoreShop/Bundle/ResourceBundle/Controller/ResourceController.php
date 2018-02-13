@@ -107,7 +107,7 @@ class ResourceController extends AdminController
     protected function isGrantedOr403()
     {
         if ($this->metadata->hasParameter('permission')) {
-            $permission =  sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
+            $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
 
             if ($user->getPermission($permission)) {

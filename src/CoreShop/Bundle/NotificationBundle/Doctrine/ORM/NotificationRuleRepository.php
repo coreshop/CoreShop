@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\NotificationBundle\Doctrine\ORM;
 
@@ -28,7 +28,6 @@ class NotificationRuleRepository extends EntityRepository implements Notificatio
             ->setParameter('type', $type)
             ->setParameter('active', true)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

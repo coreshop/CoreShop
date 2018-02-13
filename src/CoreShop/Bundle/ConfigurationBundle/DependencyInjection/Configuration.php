@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ConfigurationBundle\DependencyInjection;
 
@@ -33,9 +33,8 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end()
-        ;
+            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->end();
         $this->addModelsSection($rootNode);
 
         return $treeBuilder;
@@ -48,29 +47,28 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('resources')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('configuration')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue(\CoreShop\Component\Configuration\Model\Configuration::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(\CoreShop\Component\Configuration\Model\ConfigurationInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ConfigurationController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(ConfigurationRepository::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('form')->defaultValue(ConfigurationType::class)->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('resources')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->arrayNode('configuration')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->variableNode('options')->end()
+            ->arrayNode('classes')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('model')->defaultValue(\CoreShop\Component\Configuration\Model\Configuration::class)->cannotBeEmpty()->end()
+            ->scalarNode('interface')->defaultValue(\CoreShop\Component\Configuration\Model\ConfigurationInterface::class)->cannotBeEmpty()->end()
+            ->scalarNode('admin_controller')->defaultValue(ConfigurationController::class)->cannotBeEmpty()->end()
+            ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+            ->scalarNode('repository')->defaultValue(ConfigurationRepository::class)->cannotBeEmpty()->end()
+            ->scalarNode('form')->defaultValue(ConfigurationType::class)->end()
             ->end()
-        ;
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
     }
 }

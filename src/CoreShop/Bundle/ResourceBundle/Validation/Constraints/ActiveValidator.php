@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Validation\Constraints;
 
@@ -25,18 +25,17 @@ class ActiveValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof Active) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Active');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Active');
         }
 
         if ($value instanceof ToggleableInterface) {
             if (!$value->getActive()) {
                 $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setCode(Active::IS_NOT_ENABLED_ERROR)
-                ->addViolation();
+                    ->setParameter('{{ value }}', $this->formatValue($value))
+                    ->setCode(Active::IS_NOT_ENABLED_ERROR)
+                    ->addViolation();
             }
-        }
-        else {
+        } else {
             throw new UnexpectedTypeException($value, ToggleableInterface::class);
         }
     }

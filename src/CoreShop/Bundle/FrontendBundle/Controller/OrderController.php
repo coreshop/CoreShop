@@ -70,8 +70,7 @@ class OrderController extends FrontendController
                 }
 
                 return $this->redirectToRoute('coreshop_index');
-            }
-            else if ($form->isValid()) {
+            } else if ($form->isValid()) {
                 $order = $form->getData();
                 $order->save();
 
@@ -80,9 +79,9 @@ class OrderController extends FrontendController
         }
 
         $args = [
-            'order'   => $order,
+            'order' => $order,
             'payment' => $payment,
-            'form'    => $form->createView()
+            'form' => $form->createView()
         ];
 
         return $this->renderTemplate('CoreShopFrontendBundle:Order:revise.html.twig', $args);

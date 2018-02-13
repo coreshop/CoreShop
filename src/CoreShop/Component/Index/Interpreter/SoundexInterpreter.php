@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
 
@@ -29,11 +29,11 @@ class SoundexInterpreter implements InterpreterInterface
             sort($value);
             $string = implode(' ', $value);
         } else {
-            $string = (string) $value;
+            $string = (string)$value;
         }
 
         $soundEx = soundex($string);
 
-        return intval(ord(substr($soundEx, 0, 1)).substr($soundEx, 1));
+        return intval(ord(substr($soundEx, 0, 1)) . substr($soundEx, 1));
     }
 }

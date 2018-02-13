@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Configuration\Service;
 
@@ -35,9 +35,9 @@ class ConfigurationService implements ConfigurationServiceInterface
     protected $configurationFactory;
 
     /**
-     * @param EntityManagerInterface           $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface                 $configurationFactory
+     * @param FactoryInterface $configurationFactory
      */
     public function __construct(EntityManagerInterface $entityManager, ConfigurationRepositoryInterface $configurationRepository, FactoryInterface $configurationFactory)
     {

@@ -35,13 +35,14 @@ final class ProductAvailabilityEventListener
     private $cartItemRepository;
 
     /**
-     * @param CartRepositoryInterface     $cartRepository
+     * @param CartRepositoryInterface $cartRepository
      * @param CartItemRepositoryInterface $cartItemRepository
      */
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartItemRepositoryInterface $cartItemRepository
-    ) {
+    )
+    {
         $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
     }

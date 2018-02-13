@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Resource\Storage;
 
@@ -23,7 +23,7 @@ interface StorageInterface
 
     /**
      * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -31,7 +31,7 @@ interface StorageInterface
 
     /**
      * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function set($name, $value);
 

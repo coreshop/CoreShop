@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -58,7 +58,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
         }
 
         if (!empty($values)) {
-            $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
+            $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
 
             if (!empty($values)) {
                 $list->addCondition(Condition::in($fieldName, $values), $fieldName);

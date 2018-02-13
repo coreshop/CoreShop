@@ -52,10 +52,10 @@ class OrderCommentController extends PimcoreController
             $user = User::getById($note->getUser());
             $noteData = $note->getData();
             $parsedData[] = [
-                'id'            => $note->getId(),
-                'text'          => $note->getDescription(),
-                'date'          => $note->getDate(),
-                'userName'      => $user ? $user->getName() : 'anonymous',
+                'id' => $note->getId(),
+                'text' => $note->getDescription(),
+                'date' => $note->getDate(),
+                'userName' => $user ? $user->getName() : 'anonymous',
                 'submitAsEmail' => isset($noteData['submitAsEmail']) && $noteData['submitAsEmail']['data'] === true
             ];
         }

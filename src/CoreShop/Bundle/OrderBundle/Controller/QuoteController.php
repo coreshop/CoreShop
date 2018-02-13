@@ -16,7 +16,7 @@ use Pimcore\Model\DataObject;
 
 class QuoteController extends AbstractSaleDetailController
 {
-     /**
+    /**
      * @return mixed
      * @throws \Exception
      */
@@ -33,7 +33,7 @@ class QuoteController extends AbstractSaleDetailController
 
         $folder = DataObject::getByPath('/' . $folderPath);
 
-        if($folder instanceof DataObject\Folder) {
+        if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
         }
 

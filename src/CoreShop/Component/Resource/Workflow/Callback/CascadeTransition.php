@@ -35,10 +35,10 @@ class CascadeTransition
      */
     /**
      * @param \Traversable|array $objects
-     * @param Event              $event Event
-     * @param string|null        $transition
-     * @param string|null        $workflowName
-     * @param bool               $soft
+     * @param Event $event Event
+     * @param string|null $transition
+     * @param string|null $workflowName
+     * @param bool $soft
      */
     public function apply($objects, Event $event, $transition = null, $workflowName = null, $soft = true)
     {

@@ -49,7 +49,7 @@ class NestedConditionChecker implements ConditionCheckerInterface
                     return true;
                 }
             } else if ('not' === $operator) {
-                 if (!$valid) {
+                if (!$valid) {
                     return true;
                 }
             }

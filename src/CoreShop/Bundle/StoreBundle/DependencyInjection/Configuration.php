@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 
@@ -34,9 +34,8 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end()
-        ;
+            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -50,31 +49,30 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('resources')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('store')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->scalarNode('permission')->defaultValue('store')->cannotBeOverwritten()->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue(Store::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(StoreInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(StoreController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
-                                        ->scalarNode('form')->defaultValue(StoreType::class)->cannotBeEmpty()->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('resources')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->arrayNode('store')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->variableNode('options')->end()
+            ->scalarNode('permission')->defaultValue('store')->cannotBeOverwritten()->end()
+            ->arrayNode('classes')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('model')->defaultValue(Store::class)->cannotBeEmpty()->end()
+            ->scalarNode('interface')->defaultValue(StoreInterface::class)->cannotBeEmpty()->end()
+            ->scalarNode('admin_controller')->defaultValue(StoreController::class)->cannotBeEmpty()->end()
+            ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+            ->scalarNode('repository')->cannotBeEmpty()->end()
+            ->scalarNode('form')->defaultValue(StoreType::class)->cannotBeEmpty()->end()
             ->end()
-        ;
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
     }
 
     /**
@@ -84,35 +82,35 @@ final class Configuration implements ConfigurationInterface
     {
         $node->children()
             ->arrayNode('pimcore_admin')
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->arrayNode('js')
-                        ->addDefaultsIfNotSet()
-                        ->ignoreExtraKeys(false)
-                        ->children()
-                            ->scalarNode('resource')->defaultValue('/bundles/coreshopstore/pimcore/js/resource.js')->end()
-                            ->scalarNode('resource_store')->defaultValue('/bundles/coreshopstore/pimcore/js/resource/store.js')->end()
-                            ->scalarNode('store_item')->defaultValue('/bundles/coreshopstore/pimcore/js/item.js')->end()
-                            ->scalarNode('store_panel')->defaultValue('/bundles/coreshopstore/pimcore/js/panel.js')->end()
-                            ->scalarNode('core_extension_data_store')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/data/coreShopStore.js')->end()
-                            ->scalarNode('core_extension_tag_store')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/tags/coreShopStore.js')->end()
-                            ->scalarNode('core_extension_data_store_multiselect')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/data/coreShopStoreMultiselect.js')->end()
-                            ->scalarNode('core_extension_tag_store_multiselect')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/tags/coreShopStoreMultiselect.js')->end()
-                        ->end()
-                    ->end()
-                    ->arrayNode('css')
-                        ->addDefaultsIfNotSet()
-                        ->ignoreExtraKeys(false)
-                        ->children()
-                            ->scalarNode('store_item')->defaultValue('/bundles/coreshopstore/pimcore/css/store.css')->end()
-                        ->end()
-                    ->end()
-                    ->scalarNode('permissions')
-                        ->cannotBeOverwritten()
-                        ->defaultValue(['store'])
-                    ->end()
-                ->end()
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->arrayNode('js')
+            ->addDefaultsIfNotSet()
+            ->ignoreExtraKeys(false)
+            ->children()
+            ->scalarNode('resource')->defaultValue('/bundles/coreshopstore/pimcore/js/resource.js')->end()
+            ->scalarNode('resource_store')->defaultValue('/bundles/coreshopstore/pimcore/js/resource/store.js')->end()
+            ->scalarNode('store_item')->defaultValue('/bundles/coreshopstore/pimcore/js/item.js')->end()
+            ->scalarNode('store_panel')->defaultValue('/bundles/coreshopstore/pimcore/js/panel.js')->end()
+            ->scalarNode('core_extension_data_store')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/data/coreShopStore.js')->end()
+            ->scalarNode('core_extension_tag_store')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/tags/coreShopStore.js')->end()
+            ->scalarNode('core_extension_data_store_multiselect')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/data/coreShopStoreMultiselect.js')->end()
+            ->scalarNode('core_extension_tag_store_multiselect')->defaultValue('/bundles/coreshopstore/pimcore/js/coreExtension/tags/coreShopStoreMultiselect.js')->end()
             ->end()
-        ->end();
+            ->end()
+            ->arrayNode('css')
+            ->addDefaultsIfNotSet()
+            ->ignoreExtraKeys(false)
+            ->children()
+            ->scalarNode('store_item')->defaultValue('/bundles/coreshopstore/pimcore/css/store.css')->end()
+            ->end()
+            ->end()
+            ->scalarNode('permissions')
+            ->cannotBeOverwritten()
+            ->defaultValue(['store'])
+            ->end()
+            ->end()
+            ->end()
+            ->end();
     }
 }

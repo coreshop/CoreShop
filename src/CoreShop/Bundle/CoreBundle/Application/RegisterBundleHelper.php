@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Application;
 
@@ -19,7 +19,8 @@ class RegisterBundleHelper
     /**
      * @param BundleCollection $collection
      */
-    public static function registerBundles(BundleCollection $collection) {
+    public static function registerBundles(BundleCollection $collection)
+    {
         $collection->addBundle(new \JMS\SerializerBundle\JMSSerializerBundle(), 3900);
         $collection->addBundle(new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(), 3800);
         $collection->addBundle(new \CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle(), 3700);
@@ -36,7 +37,7 @@ class RegisterBundleHelper
         $collection->addBundle(new \CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle(), 2600);
         $collection->addBundle(new \CoreShop\Bundle\StoreBundle\CoreShopStoreBundle(), 2500);
         $collection->addBundle(new \CoreShop\Bundle\IndexBundle\CoreShopIndexBundle(), 2400);
-        $collection->addBundle(new \CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle(),2300);
+        $collection->addBundle(new \CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle(), 2300);
         $collection->addBundle(new \CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle(), 2200);
         $collection->addBundle(new \CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle(), 2100);
         $collection->addBundle(new \CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle(), 2000);

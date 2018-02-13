@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\NotificationBundle\Controller;
 
@@ -41,8 +41,8 @@ class NotificationRuleController extends ResourceController
         }
 
         foreach ($types as $type) {
-            $actionParameter = 'coreshop.notification_rule.actions.'.$type;
-            $conditionParameter = 'coreshop.notification_rule.conditions.'.$type;
+            $actionParameter = 'coreshop.notification_rule.actions.' . $type;
+            $conditionParameter = 'coreshop.notification_rule.conditions.' . $type;
 
             if ($this->container->hasParameter($actionParameter)) {
                 if (!array_key_exists($type, $actions)) {

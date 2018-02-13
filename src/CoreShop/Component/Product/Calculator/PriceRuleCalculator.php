@@ -86,7 +86,8 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
      * @param ProductInterface $subject
      * @return bool|int|mixed
      */
-    public function getDiscountPrice(ProductInterface $subject) {
+    public function getDiscountPrice(ProductInterface $subject)
+    {
         $price = 0;
 
         /**

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Calculator;
 
@@ -52,7 +52,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
 
     public function getDiscountPrice(ProductInterface $subject)
     {
-         $price = false;
+        $price = false;
 
         foreach ($this->priceCalculatorRegistry->all() as $calculator) {
             $calcPrice = $calculator->getDiscountPrice($subject);

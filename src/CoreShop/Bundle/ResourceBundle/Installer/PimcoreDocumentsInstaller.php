@@ -126,7 +126,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 /** @var Document $document */
                 $document = new $class();
                 $document->setParent(Document::getByPath("/" . $language . "/" . $properties['path']));
- 
+
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
                 $document->setProperty("language", $language, 'text', true);
 

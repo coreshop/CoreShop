@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Rule\Action;
 
@@ -24,6 +24,6 @@ class DiscountPercentActionProcessor implements ProductDiscountActionProcessorIn
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        return (int) round(($configuration['percent'] / 100) * $price);
+        return (int)round(($configuration['percent'] / 100) * $price);
     }
 }

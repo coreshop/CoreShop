@@ -82,8 +82,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
         if ($discountPrice > 0 && $discountPrice < $retailPrice) {
             $price = $discountPrice;
-        }
-        else {
+        } else {
             $price = $retailPrice;
         }
 

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
 
@@ -70,7 +70,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         foreach ($rule['actions'] as &$action) {
                             foreach ($action['configuration']['mails'] as &$mail) {
-                                $document = Document::getByPath('/'.$mail);
+                                $document = Document::getByPath('/' . $mail);
 
                                 if ($document instanceof Document\Email) {
                                     $mail = $document->getId();
@@ -94,7 +94,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
                     }
                 }
             } catch (\Exception $ex) {
-                 //If some goes wrong, we just ignore it
+                //If some goes wrong, we just ignore it
                 return;
             }
         }

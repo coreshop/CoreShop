@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
@@ -35,8 +35,7 @@ final class CountryType extends AbstractResourceType
             ->add('zone', ZoneChoiceType::class, [
                 'active' => null,
             ])
-            ->add('addressFormat', TextareaType::class)
-        ;
+            ->add('addressFormat', TextareaType::class);
     }
 
     /**

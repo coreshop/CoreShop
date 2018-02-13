@@ -45,7 +45,7 @@ class DataObjectNoteService
 
     /**
      * @param PimcoreModelInterface $object
-     * @param string                $noteType
+     * @param string $noteType
      * @return Note
      */
     public function createPimcoreNoteInstance(PimcoreModelInterface $object, $noteType)
@@ -73,7 +73,7 @@ class DataObjectNoteService
 
     /**
      * @param PimcoreModelInterface $object
-     * @param string                $noteType
+     * @param string $noteType
      * @return mixed
      */
     public function getObjectNotes(PimcoreModelInterface $object, $noteType)
@@ -88,7 +88,7 @@ class DataObjectNoteService
     }
 
     /**
-     * @param  Note           $note
+     * @param  Note $note
      * @param  Document\Email $emailDocument
      * @return Note
      */

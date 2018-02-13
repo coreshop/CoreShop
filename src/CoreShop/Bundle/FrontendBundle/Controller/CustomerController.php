@@ -175,7 +175,8 @@ class CustomerController extends FrontendController
         return $this->redirectToRoute('coreshop_customer_addresses');
     }
 
-    public function settingsAction(Request $request) {
+    public function settingsAction(Request $request)
+    {
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {

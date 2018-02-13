@@ -45,14 +45,15 @@ class AbandonedCartsReport implements ReportInterface
      * AbandonedCartsReport constructor.
      *
      * @param RepositoryInterface $storeRepository
-     * @param Connection          $db
-     * @param array               $pimcoreClasses
+     * @param Connection $db
+     * @param array $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         array $pimcoreClasses
-    ) {
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->pimcoreClasses = $pimcoreClasses;
@@ -96,12 +97,12 @@ class AbandonedCartsReport implements ReportInterface
             $toTimestamp = $to->getTimestamp();
         }
 
-        if(is_null($storeId)) {
+        if (is_null($storeId)) {
             return [];
         }
 
         $store = $this->storeRepository->find($storeId);
-        if(!$store instanceof StoreInterface) {
+        if (!$store instanceof StoreInterface) {
             return [];
         }
 

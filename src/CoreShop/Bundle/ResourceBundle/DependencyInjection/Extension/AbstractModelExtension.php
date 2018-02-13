@@ -165,7 +165,8 @@ abstract class AbstractModelExtension extends Extension
      * @param $implementations
      * @param ContainerBuilder $container
      */
-    public function registerImplementations($applicationName, $implementations, ContainerBuilder $container) {
+    public function registerImplementations($applicationName, $implementations, ContainerBuilder $container)
+    {
         $appParameterName = sprintf('%s.coreshop.application.implementations', $applicationName);
         $globalParameterName = 'coreshop.implementations';
 

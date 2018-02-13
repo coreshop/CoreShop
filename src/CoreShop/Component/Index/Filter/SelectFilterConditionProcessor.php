@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -27,7 +27,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
         $field = $condition->getConfiguration()['field'];
-        
+
         $rawValues = $list->getGroupByValues($field, true);
 
         return [
@@ -60,7 +60,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
             $fieldName = $field;
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_'.$fieldName;
+                $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
             $list->addCondition(Condition::match($field, $value), $fieldName);

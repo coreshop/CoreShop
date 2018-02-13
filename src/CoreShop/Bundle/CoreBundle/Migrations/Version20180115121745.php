@@ -19,28 +19,28 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $payment = [
-            'fieldtype'       => 'coreShopSerializedData',
-            'phpdocType'      => 'array',
-            'allowedTypes'    =>
+            'fieldtype' => 'coreShopSerializedData',
+            'phpdocType' => 'array',
+            'allowedTypes' =>
                 [
                 ],
-            'maxItems'        => 1,
-            'name'            => 'paymentSettings',
-            'title'           => 'Payment Settings',
-            'tooltip'         => '',
-            'mandatory'       => false,
-            'noteditable'     => true,
-            'index'           => false,
-            'locked'          => null,
-            'style'           => '',
-            'permissions'     => null,
-            'datatype'        => 'data',
-            'columnType'      => null,
+            'maxItems' => 1,
+            'name' => 'paymentSettings',
+            'title' => 'Payment Settings',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'columnType' => null,
             'queryColumnType' => null,
-            'relationType'    => false,
-            'invisible'       => false,
+            'relationType' => false,
+            'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch'   => false,
+            'visibleSearch' => false,
         ];
 
         $cart = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');
@@ -71,7 +71,8 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
      * @return mixed|DataObject\Objectbrick\Definition
      * @throws \Exception
      */
-    private function createBrick($jsonFile, $brickName) {
+    private function createBrick($jsonFile, $brickName)
+    {
         try {
             $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
         } catch (\Exception $e) {
@@ -84,7 +85,7 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
         try {
             DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, false);
             $objectBrick->save();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             //keep quite.
         }
 

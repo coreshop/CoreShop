@@ -49,16 +49,17 @@ class CarriersReport implements ReportInterface
 
     /**
      * @param RepositoryInterface $storeRepository
-     * @param Connection          $db
+     * @param Connection $db
      * @param RepositoryInterface $carrierRepository
-     * @param array               $pimcoreClasses
+     * @param array $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         RepositoryInterface $carrierRepository,
         array $pimcoreClasses
-    ) {
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->carrierRepository = $carrierRepository;
@@ -79,12 +80,12 @@ class CarriersReport implements ReportInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        if(is_null($storeId)) {
+        if (is_null($storeId)) {
             return [];
         }
 
         $store = $this->storeRepository->find($storeId);
-        if(!$store instanceof StoreInterface) {
+        if (!$store instanceof StoreInterface) {
             return [];
         }
 
@@ -118,7 +119,7 @@ class CarriersReport implements ReportInterface
 
             $data[] = [
                 'carrier' => $carrier instanceof CarrierInterface ? $carrier->getName() : $result['carrier'],
-                'data'    => floatval($result['percentage']),
+                'data' => floatval($result['percentage']),
             ];
         }
 

@@ -48,10 +48,10 @@ final class OrderStateHistoryLogger
 
     /**
      * @param OrderRepositoryInterface $orderRepository
-     * @param StateMachineManager      $stateMachineManager
-     * @param DataObjectNoteService    $noteService
-     * @param TranslatorInterface      $translator
-     * @param string                   $noteIdentifier
+     * @param StateMachineManager $stateMachineManager
+     * @param DataObjectNoteService $noteService
+     * @param TranslatorInterface $translator
+     * @param string $noteIdentifier
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
@@ -59,7 +59,8 @@ final class OrderStateHistoryLogger
         DataObjectNoteService $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
-    ) {
+    )
+    {
         $this->orderRepository = $orderRepository;
         $this->stateMachineManager = $stateMachineManager;
         $this->noteService = $noteService;
@@ -74,7 +75,7 @@ final class OrderStateHistoryLogger
     public function log($orderId = null, Event $event)
     {
         $order = $this->orderRepository->find($orderId);
-        if(!$order instanceof OrderInterface) {
+        if (!$order instanceof OrderInterface) {
             return;
         }
 
@@ -89,7 +90,7 @@ final class OrderStateHistoryLogger
 
         $objectIdInfo = '';
         // add id if it's not an order (since payment/shipping/invoice could be more than one)
-        if(!$subject instanceof OrderInterface) {
+        if (!$subject instanceof OrderInterface) {
             $objectIdInfo = ' (Id ' . $subject->getId() . ')';
         }
 

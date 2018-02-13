@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Routing;
 
@@ -27,26 +27,25 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('alias')->cannotBeEmpty()->end()
-                ->scalarNode('path')->cannotBeEmpty()->end()
-                ->scalarNode('identifier')->defaultValue('id')->end()
-                ->arrayNode('only')
-                    ->prototype('scalar')->end()
-                ->end()
-                ->scalarNode('no_default_routes')->defaultFalse()->end()
-                ->arrayNode('additional_routes')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('path')->end()
-                            ->scalarNode('action')->end()
-                            ->arrayNode('methods')
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->scalarNode('alias')->cannotBeEmpty()->end()
+            ->scalarNode('path')->cannotBeEmpty()->end()
+            ->scalarNode('identifier')->defaultValue('id')->end()
+            ->arrayNode('only')
+            ->prototype('scalar')->end()
             ->end()
-        ;
+            ->scalarNode('no_default_routes')->defaultFalse()->end()
+            ->arrayNode('additional_routes')
+            ->prototype('array')
+            ->children()
+            ->scalarNode('path')->end()
+            ->scalarNode('action')->end()
+            ->arrayNode('methods')
+            ->prototype('scalar')->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
 
         return $treeBuilder;
     }

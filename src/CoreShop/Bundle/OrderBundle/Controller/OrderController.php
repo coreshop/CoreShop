@@ -36,7 +36,7 @@ use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends AbstractSaleDetailController
 {
-     /**
+    /**
      * @return mixed
      * @throws \Exception
      */
@@ -53,7 +53,7 @@ class OrderController extends AbstractSaleDetailController
 
         $folder = DataObject::getByPath('/' . $folderPath);
 
-        if($folder instanceof DataObject\Folder) {
+        if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
         }
 

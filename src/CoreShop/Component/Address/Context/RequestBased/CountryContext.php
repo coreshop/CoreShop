@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Address\Context\RequestBased;
 
@@ -32,7 +32,7 @@ final class CountryContext implements CountryContextInterface
 
     /**
      * @param RequestResolverInterface $requestResolver
-     * @param RequestStack             $requestStack
+     * @param RequestStack $requestStack
      */
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {

@@ -34,19 +34,20 @@ class PriceFormatterFactory implements OperatorFactoryInterface
      * OrderState constructor.
      *
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface  $localeService
+     * @param LocaleContextInterface $localeService
      */
     public function __construct(
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService
-    ) {
+    )
+    {
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
     }
 
     /**
      * @param \stdClass $configElement
-     * @param null      $context
+     * @param null $context
      * @return OperatorInterface
      */
     public function build(\stdClass $configElement, $context = null): OperatorInterface
