@@ -43,7 +43,6 @@ class OrderCommentController extends PimcoreController
         $orderId = $request->get('id');
         $order = $this->getOrderRepository()->find($orderId);
 
-        $list = [];
         $objectNoteService = $this->get('coreshop.object_note_service');
         $notes = $objectNoteService->getObjectNotes($order, Notes::NOTE_ORDER_COMMENT);
 
@@ -66,7 +65,6 @@ class OrderCommentController extends PimcoreController
 
     /**
      * @param Request $request
-     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function addAction(Request $request)
@@ -88,12 +86,7 @@ class OrderCommentController extends PimcoreController
             $commentEntity->setTitle('Order Comment');
             $commentEntity->setDescription(nl2br($comment));
             $commentEntity->addData('submitAsEmail', 'bool', $submitAsEmail);
-            $comment = $objectNoteService->storeNote($commentEntity, $emailDocument);
-
-            $this->get('event_dispatcher')->dispatch(
-                'coreshop.comment.order_comment_post_add',
-                new GenericEvent($comment, ['order' => $order, 'submitAsEmail' => $submitAsEmail])
-            );
+            $comment = $objectNoteService->storeNote($commentEntity, ['order' => $order, 'submitAsEmail' => $submitAsEmail]);
 
             return $this->viewHandler->handle(['success' => true, 'commentId' => $comment->getId()]);
         } catch (\Exception $ex) {
@@ -111,11 +104,6 @@ class OrderCommentController extends PimcoreController
         $objectNoteService = $this->get('coreshop.object_note_service');
         $commentEntity = $objectNoteService->getNoteById($commentId);
         $commentEntity->delete();
-
-        $this->get('event_dispatcher')->dispatch(
-            'coreshop.comment.order_comment_post_delete',
-            new GenericEvent($commentEntity)
-        );
 
         return $this->viewHandler->handle(['success' => true]);
     }

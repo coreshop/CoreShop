@@ -1,5 +1,5 @@
 parameters:
-    coreshop.workflow.manager.order.state_identifier: 'Order State Change'
+    coreshop.workflow.manager.order.state_identifier: 'order_state_change'
 
 services:
     coreshop.state_machine_resolver.order:

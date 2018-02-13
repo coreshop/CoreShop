@@ -17,26 +17,26 @@ final class Notes
     /**
      * Note Identifier for Payment
      */
-    const NOTE_PAYMENT = 'Payment';
+    const NOTE_PAYMENT = 'payment';
 
     /**
      * Note Identifier for Update Order
      */
-    const NOTE_UPDATE_ORDER = 'Update Order';
+    const NOTE_UPDATE_ORDER = 'update_order';
 
     /**
      * Note Identifier for Update Order Item
      */
-    const NOTE_UPDATE_ORDER_ITEM = 'Update Order Item';
+    const NOTE_UPDATE_ORDER_ITEM = 'update_order_item';
 
     /**
      * Note Identifier for emails
      */
-    const NOTE_EMAIL = 'Email';
+    const NOTE_EMAIL = 'email';
 
     /**
      * Note Identifier for order comments
      */
-    const NOTE_ORDER_COMMENT = 'OrderComment';
+    const NOTE_ORDER_COMMENT = 'order_comment';
 
 }

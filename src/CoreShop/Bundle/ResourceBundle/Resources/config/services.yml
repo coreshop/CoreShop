@@ -15,6 +15,8 @@ services:
 
     coreshop.object_note_service:
         class: CoreShop\Component\Resource\Pimcore\DataObjectNoteService
+        arguments:
+            - '@event_dispatcher'
 
     coreshop.resource_registry:
         class: CoreShop\Component\Resource\Metadata\Registry
@@ -29,7 +31,7 @@ services:
     coreshop.jms_serializer.handler.relation:
         class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
         arguments:
-            - "@doctrine.orm.entity_manager"
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation}
             - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation}

@@ -189,7 +189,7 @@ services:
         calls:
             - [setOrderRepository, ['@coreshop.repository.order']]
         tags:
-            - { name: kernel.event_listener, event: coreshop.comment.order_comment_post_add, method: applyOrderCommentAddedNotifications }
+            - { name: kernel.event_listener, event: coreshop.note.order_comment.post_add, method: applyOrderCommentAddedNotifications }
 
     coreshop.notification.listener.payment:
         class: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\PaymentWorkflowListener
