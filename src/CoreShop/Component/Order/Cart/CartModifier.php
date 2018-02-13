@@ -20,6 +20,8 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
 class CartModifier implements CartModifierInterface, StorageListModifierInterface
@@ -30,11 +32,18 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
     protected $cartItemFactory;
 
     /**
-     * @param FactoryInterface $cartItemFactory
+     * @var EventDispatcherInterface
      */
-    public function __construct(FactoryInterface $cartItemFactory)
+    protected $eventDispatcher;
+
+    /**
+     * @param FactoryInterface $cartItemFactory
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(FactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
     {
         $this->cartItemFactory = $cartItemFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -49,7 +58,13 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($product, PurchasableInterface::class);
 
-        return $this->updateItemQuantity($storageList, $product, $quantity, true);
+        $this->eventDispatcher->dispatch('coreshop.cart.item_add_pre', new GenericEvent($storageList, ['product' => $product]));
+
+        $result = $this->updateItemQuantity($storageList, $product, $quantity, true);
+
+        $this->eventDispatcher->dispatch('coreshop.cart.item_add_post', new GenericEvent($storageList, ['product' => $product]));
+
+        return $result;
     }
 
     /**
@@ -64,8 +79,12 @@ class CartModifier implements CartModifierInterface, StorageListModifierInterfac
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($item, CartItemInterface::class);
 
+        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_pre', new GenericEvent($storageList, ['item' => $item]));
+
         $storageList->removeItem($item);
         $item->delete();
+
+        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_post', new GenericEvent($storageList, ['item' => $item]));
     }
 
     /**
