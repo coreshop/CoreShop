@@ -19,11 +19,6 @@ use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-/**
- * Class WorkflowManager
- *
- * @package CoreShop\Bundle\OrderBundle\Workflow
- */
 final class OrderStateHistoryLogger
 {
     /**

@@ -43,7 +43,6 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
 
         $container->addCompilerPass(new CartPriceRuleActionPass());
         $container->addCompilerPass(new CartPriceRuleConditionPass());
-        $container->addCompilerPass(new RegisterWorkflowManagerPass());
         $container->addCompilerPass(new RegisterWorkflowValidatorPass());
         $container->addCompilerPass(new RegisterCartProcessorPass());
         $container->addCompilerPass(new PurchasablePriceCalculatorsPass());

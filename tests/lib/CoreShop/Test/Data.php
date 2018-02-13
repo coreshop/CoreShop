@@ -385,9 +385,9 @@ class Data
     {
         $cart = self::createCart();
 
-        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product1);
-        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product2);
-        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product3);
+        self::get('coreshop.cart.modifier')->addItem($cart, self::$product1);
+        self::get('coreshop.cart.modifier')->addItem($cart, self::$product2);
+        self::get('coreshop.cart.modifier')->addItem($cart, self::$product3);
 
         $cart->setShippingAddress(self::$address);
         $cart->setInvoiceAddress(self::$address);
