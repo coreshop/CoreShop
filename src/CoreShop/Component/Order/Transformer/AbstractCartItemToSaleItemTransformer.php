@@ -19,7 +19,6 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
-use CoreShop\Component\Pimcore\InheritanceHelper;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
