@@ -70,7 +70,7 @@ final class ProductAvailabilityEventListener
          * @var \Pimcore\Model\Version $currentVersion
         +*/
         $currentVersion = $versions[0];
-        if ($currentVersion->getData()->isPublished() === true) {
+        if (!$currentVersion->getData() instanceof PurchasableInterface || $currentVersion->getData()->isPublished() === true) {
             return;
         }
 
@@ -81,7 +81,7 @@ final class ProductAvailabilityEventListener
          * @var \Pimcore\Model\Version $prevVersion
          **/
         $prevVersion = $versions[1];
-        if ($prevVersion->getData()->isPublished() === false) {
+        if (!$currentVersion->getData() instanceof PurchasableInterface || $prevVersion->getData()->isPublished() === false) {
             return;
         }
 
