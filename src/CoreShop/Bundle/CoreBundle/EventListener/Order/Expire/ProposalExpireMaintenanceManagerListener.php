@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\Order\Expire;
 
-use CoreShop\Bundle\OrderBundle\Cart\Maintenance\CleanupInterface;
 use CoreShop\Bundle\OrderBundle\Expiration\ProposalExpirationInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Pimcore\Event\System\MaintenanceEvent;
