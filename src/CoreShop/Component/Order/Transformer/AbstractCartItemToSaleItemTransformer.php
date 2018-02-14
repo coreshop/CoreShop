@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
+use CoreShop\Component\Pimcore\InheritanceHelper;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
@@ -146,7 +147,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setTotalWeight($cartItem->getTotalWeight());
 
         foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
-            $saleItem->setName($cartItem->getProduct()->getName($locale));
+            $saleItem->setName($cartItem->getProduct()->getName($locale), $locale);
         }
 
         VersionHelper::useVersioning(function () use ($saleItem) {
