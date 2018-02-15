@@ -1,0 +1,15 @@
+CoreShop\Component\Customer\Model\Customer:
+    constraints:
+        - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
+              groups: ['coreshop']
+              fields: ['email']
+              values: {isGuest: [false, null]}
+              message: 'coreshop.form.customer.email.unique'
+
+        - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
+              groups: ['coreshop_customer_guest']
+              fields: ['email']
+              values: {isGuest: true}
+              message: 'coreshop.form.guest.email_is_customer'
+
+

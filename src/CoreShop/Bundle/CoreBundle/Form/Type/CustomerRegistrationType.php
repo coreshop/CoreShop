@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class CustomerRegistrationType extends AbstractType
 {
@@ -33,6 +34,9 @@ class CustomerRegistrationType extends AbstractType
                 'label' => 'coreshop.form.customer_registration.customer',
                 'label_attr' => [
                     'class' => 'cs-customer'
+                ],
+                'constraints' => [
+                    new Valid(['groups' => ['coreshop']])
                 ]
             ])
             ->add('address', AddressType::class, [

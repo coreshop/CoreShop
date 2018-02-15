@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class GuestRegistrationType extends AbstractType
 {
@@ -33,7 +34,10 @@ class GuestRegistrationType extends AbstractType
                 'label_attr' => [
                     'class' => 'cs-customer'
                 ],
-                'guest' => true
+                'guest' => true,
+                'constraints' => [
+                    new Valid(['groups' => ['coreshop_customer_guest']])
+                ]
             ])
             ->add('address', AddressType::class, [
                 'label' => 'coreshop.form.customer_registration.address',

@@ -1,5 +1,6 @@
 parameters:
     coreshop.form.type.customer.validation_groups: [coreshop]
+    coreshop.form.type.customer_guest.validation_groups: [coreshop_customer_guest]
 
 services:
     coreshop.form.type.customer:
@@ -7,6 +8,7 @@ services:
         arguments:
             - '%coreshop.model.customer.class%'
             - '%coreshop.form.type.customer.validation_groups%'
+            - '%coreshop.form.type.customer_guest.validation_groups%'
         tags:
             - { name: form.type }
 

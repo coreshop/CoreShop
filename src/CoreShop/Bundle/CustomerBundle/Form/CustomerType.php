@@ -20,10 +20,28 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerType extends AbstractResourceType
 {
+    /**
+     * @var string[]
+     */
+    protected $guestValidationGroups = [];
+
+    /**
+     * @param string $dataClass FQCN
+     * @param string[] $validationGroups
+     * @param string[] $guestValidationGroups
+     */
+    public function __construct($dataClass, array $validationGroups = [], array $guestValidationGroups = [])
+    {
+        parent::__construct($dataClass, $validationGroups);
+
+        $this->guestValidationGroups = $guestValidationGroups;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -90,6 +108,19 @@ class CustomerType extends AbstractResourceType
         $resolver->setDefault('guest', false);
         $resolver->setDefault('allow_default_address', false);
         $resolver->setDefault('customer', false);
+        $resolver->setDefaults(array(
+            'validation_groups' => function (FormInterface $form) {
+                $isGuest = $form->getConfig()->getOption('guest');
+                $validationGroups = $this->validationGroups;
+
+                if ($isGuest) {
+                    return $this->guestValidationGroups;
+                }
+
+                return $validationGroups;
+            },
+        ));
+
     }
 
     /**
