@@ -159,7 +159,7 @@ class CheckoutController extends FrontendController
         /**
          * @var $step CheckoutStepInterface
          */
-        foreach ($checkoutManager->getSteps($this->getCart()) as $stepIdentifier) {
+        foreach ($checkoutManager->getSteps() as $stepIdentifier) {
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
@@ -167,7 +167,7 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps($this->getCart())));
+        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps()));
 
         /**
          * If everything is valid, we continue with Order-Creation.
