@@ -96,7 +96,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
     }
 
     /**
-     * @param null $applicationName
+     * @param $applicationName
      * @return mixed
      */
     protected abstract function getIdentifier($applicationName = null);

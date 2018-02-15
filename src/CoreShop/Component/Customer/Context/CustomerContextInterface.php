@@ -17,7 +17,7 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 interface CustomerContextInterface
 {
     /**
-     * @return CustomerInterface|bool
+     * @return CustomerInterface
      */
     public function getCustomer();
 }

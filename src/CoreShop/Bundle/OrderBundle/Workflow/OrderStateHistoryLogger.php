@@ -32,7 +32,7 @@ final class OrderStateHistoryLogger
     private $stateMachineManager;
 
     /**
-     * @var StateMachineManager
+     * @var DataObjectNoteService
      */
     private $noteService;
 
