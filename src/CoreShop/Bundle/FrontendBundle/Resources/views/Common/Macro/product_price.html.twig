@@ -14,7 +14,6 @@
     {% set retailPriceUnformatted = product|coreshop_product_retail_price(with_tax) %}
     {% set retailPrice = currency.convertAndFormat(retailPriceUnformatted) %}
 
-    <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
     <span class="price-new">{{ price }}</span>
     {% if priceUnformatted < discountPriceUnformatted %}
         <span class="price-old">{{ discountPrice }}</span>
@@ -23,8 +22,8 @@
         {% endif %}
     {% elseif priceUnformatted < retailPriceUnformatted %}
         <span class="price-old">{{ retailPrice }}</span>
-        {% if discountUnformatted > 0 %}
-            <span class="price-discount">(-{{ discount }})</span>
-        {% endif %}
+    {% endif %}
+    {% if discountUnformatted > 0 %}
+        <span class="price-discount">(-{{ discount }})</span>
     {% endif %}
 {% endmacro %}

@@ -21,7 +21,7 @@ interface ProductPriceCalculatorInterface
      *
      * @return mixed
      */
-    public function getPrice(ProductInterface $subject);
+    public function getRetailPrice(ProductInterface $subject);
 
     /**
      * @param $subject

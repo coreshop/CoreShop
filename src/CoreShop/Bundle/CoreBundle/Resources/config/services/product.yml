@@ -17,6 +17,7 @@ services:
         class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
         arguments:
             - '@coreshop.order.purchasable.price_calculator'
+            - '@coreshop.order.purchasable.retail_price_calculator'
             - '@coreshop.order.purchasable.price_discount_calculator'
             - '@coreshop.order.purchasable.discount_calculator'
             - '@coreshop.product.tax_factory'
@@ -71,12 +72,12 @@ services:
         arguments:
             - '@coreshop.context.store'
 
-    coreshop.order.purchasable.price_calculator.product:
-        class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator
+    coreshop.order.purchasable.retail_price_calculator.product:
+        class: CoreShop\Component\Core\Order\Calculator\PurchasableProductRetailPriceCalculator
         arguments:
             - '@coreshop.product.price_calculator'
         tags:
-            - { name: coreshop.order.purchasable.price_calculator, type: product, priority: 20 }
+            - { name: coreshop.order.purchasable.retail_price_calculator, type: product, priority: 20 }
 
     coreshop.order.purchasable.discount_calculator.product:
       class: CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountCalculator

@@ -14,12 +14,11 @@ namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-interface PurchasablePriceCalculatorInterface
+interface PurchasableRetailPriceCalculatorInterface
 {
     /**
      * @param PurchasableInterface $purchasable
-     * @param bool $includingDiscounts
      * @return int
      */
-    public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false);
+    public function getRetailPrice(PurchasableInterface $purchasable);
 }

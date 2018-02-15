@@ -49,7 +49,7 @@ final class PriceRuleCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(ProductInterface $subject)
+    public function getRetailPrice(ProductInterface $subject)
     {
         $price = 0;
 

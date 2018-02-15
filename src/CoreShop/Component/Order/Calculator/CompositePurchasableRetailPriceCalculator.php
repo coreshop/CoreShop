@@ -15,7 +15,7 @@ namespace CoreShop\Component\Order\Calculator;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
-class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
+class CompositePurchasableRetailPriceCalculator implements PurchasableRetailPriceCalculatorInterface
 {
     /**
      * @var PrioritizedServiceRegistryInterface
@@ -33,15 +33,15 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false)
+    public function getRetailPrice(PurchasableInterface $purchasable)
     {
         $price = false;
 
         /**
-         * @var $calculator PurchasablePriceCalculatorInterface
+         * @var $calculator PurchasableRetailPriceCalculatorInterface
          */
         foreach ($this->calculators->all() as $calculator) {
-            $actionPrice = $calculator->getPrice($purchasable, $includingDiscounts);
+            $actionPrice = $calculator->getRetailPrice($purchasable);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

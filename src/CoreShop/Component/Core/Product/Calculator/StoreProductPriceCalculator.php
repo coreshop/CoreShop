@@ -35,7 +35,7 @@ final class StoreProductPriceCalculator implements ProductPriceCalculatorInterfa
     /**
      * {@inheritdoc}
      */
-    public function getPrice(ProductInterface $subject)
+    public function getRetailPrice(ProductInterface $subject)
     {
         /**
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface
