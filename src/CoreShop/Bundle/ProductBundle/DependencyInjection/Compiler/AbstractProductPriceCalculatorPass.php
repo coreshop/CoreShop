@@ -54,6 +54,6 @@ abstract class AbstractProductPriceCalculatorPass implements CompilerPassInterfa
             $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
         }
 
-        $container->setParameter($this->getPa, $map);
+        $container->setParameter($this->getParameter(), $map);
     }
 }
