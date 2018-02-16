@@ -103,12 +103,14 @@ services:
             - { name: coreshop.product.rules.fetcher, type: product-rules }
 
     coreshop.product.price_calculator.product_price_rules:
-        class: CoreShop\Component\Product\Calculator\PriceRuleCalculator
+        class: CoreShop\Component\Product\Rule\Calculator\ProductPriceRuleCalculator
         arguments:
             - '@coreshop.product.price_calculator.product_price_valid_rules_fetcher'
             - '@coreshop.registry.product_price_rule.actions'
         tags:
-            - { name: coreshop.product.price_calculator, type: product_price_rules, priority: 20 }
+            - { name: coreshop.product.retail_price_calculator, type: product_price_rules, priority: 20 }
+            - { name: coreshop.product.discount_price_calculator, type: product_price_rules, priority: 20 }
+            - { name: coreshop.product.discount_calculator, type: product_price_rules, priority: 20 }
 
     coreshop.product.price_calculator.product_price_valid_rules_fetcher.memory_cache:
         class: CoreShop\Component\Product\Rule\Fetcher\MemoryCachedValidRuleFetcher

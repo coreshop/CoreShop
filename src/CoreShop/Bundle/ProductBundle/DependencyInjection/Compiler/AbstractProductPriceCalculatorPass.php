@@ -16,21 +16,36 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class ProductPriceCalculatorsPass implements CompilerPassInterface
+abstract class AbstractProductPriceCalculatorPass implements CompilerPassInterface
 {
+    /**
+     * @return string
+     */
+    protected abstract function getRegistry();
+
+    /**
+     * @return string
+     */
+    protected abstract function getTag();
+
+    /**
+     * @return string
+     */
+    protected abstract function getParameter();
+
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('coreshop.registry.product.price_calculators')) {
+        if (!$container->has($this->getRegistry())) {
             return;
         }
 
-        $registry = $container->getDefinition('coreshop.registry.product.price_calculators');
+        $registry = $container->getDefinition($this->getRegistry());
 
         $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.product.price_calculator') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds($this->getTag()) as $id => $attributes) {
             if (!isset($attributes[0]['priority']) || !isset($attributes[0]['type'])) {
                 throw new \InvalidArgumentException('Tagged PriceCalculator `' . $id . '` needs to have `priority`, `type` attributes.');
             }
@@ -39,6 +54,6 @@ final class ProductPriceCalculatorsPass implements CompilerPassInterface
             $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
         }
 
-        $container->setParameter('coreshop.product.price_calculators', $map);
+        $container->setParameter($this->getPa, $map);
     }
 }

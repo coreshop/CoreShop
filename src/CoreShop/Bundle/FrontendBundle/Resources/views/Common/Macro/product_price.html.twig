@@ -17,9 +17,6 @@
     <span class="price-new">{{ price }}</span>
     {% if priceUnformatted < discountPriceUnformatted %}
         <span class="price-old">{{ discountPrice }}</span>
-        {% if discountUnformatted > 0 %}
-            <span class="price-discount">(-{{ discount }})</span>
-        {% endif %}
     {% elseif priceUnformatted < retailPriceUnformatted %}
         <span class="price-old">{{ retailPrice }}</span>
     {% endif %}

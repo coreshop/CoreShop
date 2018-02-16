@@ -109,9 +109,11 @@ services:
             - '@request_stack'
 
     coreshop.product.price_calculator.product_specific_price_rules:
-      class: CoreShop\Component\Product\Calculator\PriceRuleCalculator
+      class: CoreShop\Component\Product\Rule\Calculator\ProductPriceRuleCalculator
       arguments:
-        - '@coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher'
-        - '@coreshop.registry.product_specific_price_rule.actions'
+          - '@coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher'
+          - '@coreshop.registry.product_specific_price_rule.actions'
       tags:
-        - { name: coreshop.product.price_calculator, type: product_specific_price_rules, priority: 30 }
+          - { name: coreshop.product.retail_price_calculator, type: product_specific_price_rules, priority: 30 }
+          - { name: coreshop.product.discount_price_calculator, type: product_specific_price_rules, priority: 30 }
+          - { name: coreshop.product.discount_calculator, type: product_specific_price_rules, priority: 30 }

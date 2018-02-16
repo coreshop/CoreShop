@@ -13,11 +13,12 @@
 namespace CoreShop\Component\Core\Product\Calculator;
 
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
+use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Webmozart\Assert\Assert;
 
-final class StoreProductPriceCalculator implements ProductPriceCalculatorInterface
+final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
     /**
      * @var StoreContextInterface
@@ -49,21 +50,5 @@ final class StoreProductPriceCalculator implements ProductPriceCalculatorInterfa
         }
 
         return $price;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountPrice(ProductInterface $subject)
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(ProductInterface $subject, $price)
-    {
-        return 0;
     }
 }

@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Product\Calculator;
+namespace CoreShop\Component\Product\Rule\Calculator;
 
+use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
+use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface;
+use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface;
@@ -21,7 +24,7 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-final class PriceRuleCalculator implements ProductPriceCalculatorInterface
+final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInterface, ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface
 {
     /**
      * @var ValidRulesFetcherInterface

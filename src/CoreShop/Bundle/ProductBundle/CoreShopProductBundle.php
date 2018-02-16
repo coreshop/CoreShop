@@ -12,9 +12,11 @@
 
 namespace CoreShop\Bundle\ProductBundle;
 
-use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceCalculatorsPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountCalculatorsPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleActionPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleConditionPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductRetailPriceCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleActionPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleConditionPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductValidPriceRuleFetcherPass;
@@ -42,8 +44,11 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductPriceRuleActionPass());
         $container->addCompilerPass(new ProductSpecificPriceRuleConditionPass());
         $container->addCompilerPass(new ProductSpecificPriceRuleActionPass());
-        $container->addCompilerPass(new ProductPriceCalculatorsPass());
         $container->addCompilerPass(new ProductValidPriceRuleFetcherPass());
+        
+        $container->addCompilerPass(new ProductRetailPriceCalculatorsPass());
+        $container->addCompilerPass(new ProductDiscountPriceCalculatorsPass());
+        $container->addCompilerPass(new ProductDiscountCalculatorsPass());
     }
 
     /**

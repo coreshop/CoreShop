@@ -14,7 +14,7 @@ namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 
-class PropertyPriceCalculator implements ProductPriceCalculatorInterface
+class PropertyPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
     /**
      * {@inheritdoc}
@@ -22,21 +22,5 @@ class PropertyPriceCalculator implements ProductPriceCalculatorInterface
     public function getRetailPrice(ProductInterface $subject)
     {
         return $subject->getPrice();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountPrice(ProductInterface $subject)
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(ProductInterface $subject, $price)
-    {
-        return 0;
     }
 }

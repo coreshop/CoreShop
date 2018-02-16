@@ -14,7 +14,7 @@ namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-final class DefaultProductPriceCalculator implements PurchasablePriceCalculatorInterface
+final class DefaultPurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
 {
     /**
      * @var PurchasableRetailPriceCalculatorInterface

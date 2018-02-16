@@ -14,13 +14,13 @@ namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 
-interface ProductPriceCalculatorInterface extends ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface, ProductDiscountCalculatorInterface
+interface ProductDiscountCalculatorInterface
 {
     /**
-     * @param ProductInterface $subject
-     * @param bool $withDiscount
+     * @param $subject
+     * @param $price
      *
-     * @return int
+     * @return mixed
      */
-    public function getPrice(ProductInterface $subject, $withDiscount = true);
+    public function getDiscount(ProductInterface $subject, $price);
 }

@@ -54,7 +54,7 @@ services:
             - '@coreshop.registry.order.purchasable.price_calculators'
 
     coreshop.order.purchasable.price_calculator.product:
-        class: CoreShop\Component\Order\Calculator\DefaultProductPriceCalculator
+        class: CoreShop\Component\Order\Calculator\DefaultPurchasablePriceCalculator
         arguments:
             - '@coreshop.order.purchasable.retail_price_calculator'
             - '@coreshop.order.purchasable.price_discount_calculator'

@@ -18,18 +18,54 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 final class ProductPriceCalculator implements ProductPriceCalculatorInterface
 {
     /**
-     * @var PrioritizedServiceRegistryInterface
+     * @var ProductRetailPriceCalculatorInterface
      */
-    private $priceCalculatorRegistry;
+    private $retailPriceCalculator;
 
     /**
-     * ProductPriceCalculator constructor.
-     *
-     * @param PrioritizedServiceRegistryInterface $priceCalculatorRegistry
+     * @var ProductDiscountPriceCalculatorInterface
      */
-    public function __construct(PrioritizedServiceRegistryInterface $priceCalculatorRegistry)
+    private $discountPriceCalculator;
+
+    /**
+     * @var ProductDiscountCalculatorInterface
+     */
+    private $discountCalculator;
+
+    /**
+     * @param ProductRetailPriceCalculatorInterface $retailPriceCalculator
+     * @param ProductDiscountPriceCalculatorInterface $discountPriceCalculator
+     * @param ProductDiscountCalculatorInterface $discountCalculator
+     */
+    public function __construct(
+        ProductRetailPriceCalculatorInterface $retailPriceCalculator,
+        ProductDiscountPriceCalculatorInterface $discountPriceCalculator,
+        ProductDiscountCalculatorInterface $discountCalculator
+    )
     {
-        $this->priceCalculatorRegistry = $priceCalculatorRegistry;
+        $this->retailPriceCalculator = $retailPriceCalculator;
+        $this->discountPriceCalculator = $discountPriceCalculator;
+        $this->discountCalculator = $discountCalculator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPrice(ProductInterface $product, $includingDiscounts = false)
+    {
+        $retailPrice = $this->getRetailPrice($product);
+        $discountPrice = $this->getDiscountPrice($product);
+        $price = $retailPrice;
+
+        if ($discountPrice > 0 && $discountPrice < $retailPrice) {
+            $price = $discountPrice;
+        }
+
+        if ($includingDiscounts) {
+            $price -= $this->getDiscount($product, $price);
+        }
+
+        return $price;
     }
 
     /**
@@ -37,46 +73,22 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
      */
     public function getRetailPrice(ProductInterface $subject)
     {
-        $price = false;
-
-        foreach ($this->priceCalculatorRegistry->all() as $calculator) {
-            $calcPrice = $calculator->getRetailPrice($subject);
-
-            if (false !== $calcPrice && null !== $calcPrice) {
-                $price = $calcPrice;
-            }
-        }
-
-        return $price;
+        return $this->retailPriceCalculator->getRetailPrice($subject);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDiscountPrice(ProductInterface $subject)
     {
-        $price = false;
-
-        foreach ($this->priceCalculatorRegistry->all() as $calculator) {
-            $calcPrice = $calculator->getDiscountPrice($subject);
-
-            if (false !== $calcPrice && null !== $calcPrice) {
-                $price = $calcPrice;
-            }
-        }
-
-        return $price;
+        return $this->discountPriceCalculator->getDiscountPrice($subject);
     }
-
 
     /**
      * {@inheritdoc}
      */
     public function getDiscount(ProductInterface $subject, $price)
     {
-        $discount = 0;
-
-        foreach ($this->priceCalculatorRegistry->all() as $calculator) {
-            $discount += $calculator->getDiscount($subject, $price);
-        }
-
-        return $discount;
+        return $this->discountCalculator->getDiscount($subject, $price);
     }
 }

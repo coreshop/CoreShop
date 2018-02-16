@@ -72,6 +72,13 @@ services:
         arguments:
             - '@coreshop.context.store'
 
+    coreshop.order.purchasable.price_calculator.product:
+        class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator
+        arguments:
+            - '@coreshop.product.price_calculator'
+        tags:
+            - { name: coreshop.order.purchasable.price_calculator, type: product, priority: 20 }
+
     coreshop.order.purchasable.retail_price_calculator.product:
         class: CoreShop\Component\Core\Order\Calculator\PurchasableProductRetailPriceCalculator
         arguments:

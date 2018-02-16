@@ -105,7 +105,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
 
-        if ($taxCalculator instanceof TaxCalculatorInterface && $withTax) {
+        if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $this->taxApplicator->applyTax($price, $taxCalculator, $withTax);
         }
 
@@ -121,7 +121,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         $discount = $this->discountCalculator->getDiscount($product, $price);
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
 
-        if ($taxCalculator instanceof TaxCalculatorInterface && $withTax) {
+        if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $this->taxApplicator->applyTax($discount, $taxCalculator, $withTax);
         }
 
