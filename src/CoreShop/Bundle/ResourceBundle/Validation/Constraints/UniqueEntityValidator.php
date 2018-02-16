@@ -92,6 +92,11 @@ final class UniqueEntityValidator extends ConstraintValidator
         $elements = $list->load();
 
         if (count($elements) > 0) {
+
+            if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $elements[0]->getId()) {
+                return;
+            }
+
             $this->context->buildViolation($constraint->message)
                 ->atPath($errorPath)
                 ->setParameter('{{ value }}', $criteria[$fields[0]])

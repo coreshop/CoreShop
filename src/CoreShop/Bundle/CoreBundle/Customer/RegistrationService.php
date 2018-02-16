@@ -101,13 +101,9 @@ final class RegistrationService implements RegistrationServiceInterface
      */
     public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false)
     {
-        if ($isGuest) {
-            $existingCustomer = $this->customerRepository->findGuestByEmail($customer->getEmail());
-        } else {
-            $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
-        }
-
-        if ($existingCustomer instanceof CustomerInterface) {
+        $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
+        
+        if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();
         }
 

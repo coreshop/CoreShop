@@ -22,6 +22,8 @@ final class UniqueEntity extends Constraint
 
     public $values = [];
 
+    public $allowSameEntity = false;
+
     /**
      * {@inheritdoc}
      */
