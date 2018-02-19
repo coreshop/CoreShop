@@ -131,7 +131,7 @@ routes:
     module: FrontendBundle
     controller: "@coreshop.frontend.controller.payment"
     action: prepareCapture
-    variables: _locale,order
+    variables: _locale,token
     priority: 3
 
   coreshop_checkout_do:
