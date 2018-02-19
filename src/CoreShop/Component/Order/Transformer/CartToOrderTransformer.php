@@ -45,7 +45,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         $order = $this->transformSale($cart, $order, 'order');
 
         if ($cart->getId()) {
-            //$cart->setOrder($order);
+            $cart->setOrder($order);
 
             VersionHelper::useVersioning(function () use ($cart) {
                 $cart->save();
