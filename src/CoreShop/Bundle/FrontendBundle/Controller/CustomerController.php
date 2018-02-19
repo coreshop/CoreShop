@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
+use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -113,7 +114,9 @@ class CustomerController extends FrontendController
         $addressId = $request->get('address');
         $address = $this->get('coreshop.repository.address')->find($addressId);
 
+        $eventType = 'update';
         if (!$address instanceof AddressInterface) {
+            $eventType = 'add';
             $address = $this->get('coreshop.factory.address')->createNew();
         } else {
             if (!$customer->hasAddress($address)) {
@@ -136,6 +139,13 @@ class CustomerController extends FrontendController
                 $address->setKey(uniqid());
                 $address->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->getParameter('coreshop.folder.address'))));
                 $address->save();
+
+                // todo: move this to a resource controller event
+                $event = new ResourceControllerEvent($address, ['request' => $request]);
+                $this->get('event_dispatcher')->dispatch(
+                    sprintf('%s.%s.post_%s', 'coreshop', 'address', $eventType),
+                    $event
+                );
 
                 $customer->addAddress($address);
                 $customer->save();
@@ -170,6 +180,13 @@ class CustomerController extends FrontendController
             }
         }
 
+        // todo: move this to a resource controller event
+        $event = new ResourceControllerEvent($address, ['request' => $request]);
+        $this->get('event_dispatcher')->dispatch(
+            sprintf('%s.%s.pre_%s', 'coreshop', 'address', 'delete'),
+            $event
+        );
+
         $address->delete();
 
         return $this->redirectToRoute('coreshop_customer_addresses');
@@ -194,6 +211,13 @@ class CustomerController extends FrontendController
             if ($handledForm->isValid()) {
                 $customer = $handledForm->getData();
                 $customer->save();
+
+                // todo: move this to a resource controller event
+                $event = new ResourceControllerEvent($customer, ['request' => $request]);
+                $this->get('event_dispatcher')->dispatch(
+                    sprintf('%s.%s.post_%s', 'coreshop', 'customer', 'update'),
+                    $event
+                );
 
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
