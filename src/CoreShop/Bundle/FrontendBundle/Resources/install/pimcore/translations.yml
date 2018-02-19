@@ -317,18 +317,6 @@ translations:
           en: 'I have read and agree to the terms and conditions'
           de: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
 
-  coreshop.form.customer.email.unique:
-      languages:
-          de_CH: 'Diese E-Mail Addresse ist bereits vergeben.'
-          en: 'This email is already used.'
-          de: 'Diese E-Mail Addresse ist bereits vergeben.'
-
-  coreshop.form.guest.email_is_customer:
-      languages:
-          de_CH: 'Diese E-Mail wird bereits verwendet. Bitte melden Sie sich an oder benutzen Sie Passwort vergessen.'
-          en: 'This email is already registered, please login or use forgotten password.'
-          de: 'Diese E-Mail wird bereits verwendet. Bitte melden Sie sich an oder benutzen Sie Passwort vergessen.'
-
   coreshop.form.customer.terms:
       languages:
           de_CH: 'Ich akzeptiere die allgemeinen Geschäftsbedingungen'
