@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Bundle\MoneyBundle\DependencyInjection;
 
@@ -38,25 +38,25 @@ final class Configuration implements ConfigurationInterface
     {
         $node->children()
             ->arrayNode('pimcore_admin')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('js')
-            ->addDefaultsIfNotSet()
-            ->ignoreExtraKeys(false)
-            ->children()
-            ->scalarNode('core_extension_data_money')->defaultValue('/bundles/coreshopmoney/pimcore/js/coreExtension/data/coreShopMoney.js')->end()
-            ->scalarNode('core_extension_tag_money')->defaultValue('/bundles/coreshopmoney/pimcore/js/coreExtension/tags/coreShopMoney.js')->end()
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('core_extension_data_money')->defaultValue('/bundles/coreshopmoney/pimcore/js/coreExtension/data/coreShopMoney.js')->end()
+                            ->scalarNode('core_extension_tag_money')->defaultValue('/bundles/coreshopmoney/pimcore/js/coreExtension/tags/coreShopMoney.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('index')->defaultValue('/bundles/coreshopmoney/pimcore/css/money.css')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->arrayNode('css')
-            ->addDefaultsIfNotSet()
-            ->ignoreExtraKeys(false)
-            ->children()
-            ->scalarNode('index')->defaultValue('/bundles/coreshopmoney/pimcore/css/money.css')->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
+        ->end();
     }
 }

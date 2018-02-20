@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Bundle\InventoryBundle\DependencyInjection;
 
@@ -28,8 +28,9 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-            ->scalarNode('checker')->defaultValue('coreshop.inventory.availability_checker.default')->cannotBeEmpty()->end()
-            ->end();
+                ->scalarNode('checker')->defaultValue('coreshop.inventory.availability_checker.default')->cannotBeEmpty()->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

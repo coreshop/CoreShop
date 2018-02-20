@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Bundle\PayumBundle\DependencyInjection;
 
@@ -34,8 +34,9 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
+                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->end()
+        ;
 
         $this->addResourcesSection($rootNode);
 
@@ -49,39 +50,40 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-            ->arrayNode('resources')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('gateway_config')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->variableNode('options')->end()
-            ->arrayNode('classes')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('model')->defaultValue(GatewayConfig::class)->cannotBeEmpty()->end()
-            ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-            ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                ->arrayNode('resources')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('gateway_config')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(GatewayConfig::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('payment_security_token')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(PaymentSecurityToken::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->arrayNode('payment_security_token')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->variableNode('options')->end()
-            ->arrayNode('classes')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('model')->defaultValue(PaymentSecurityToken::class)->cannotBeEmpty()->end()
-            ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-            ->scalarNode('factory')->defaultValue(Factory::class)->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
+        ;
     }
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Bundle\NotificationBundle\DependencyInjection;
 
@@ -35,8 +35,9 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
+                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->end()
+        ;
 
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
@@ -51,30 +52,31 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-            ->arrayNode('resources')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('notification_rule')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->variableNode('options')->end()
-            ->scalarNode('permission')->defaultValue('notification')->cannotBeOverwritten()->end()
-            ->arrayNode('classes')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('model')->defaultValue(NotificationRule::class)->cannotBeEmpty()->end()
-            ->scalarNode('interface')->defaultValue(NotificationRuleInterface::class)->cannotBeEmpty()->end()
-            ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-            ->scalarNode('repository')->defaultValue(NotificationRuleRepository::class)->end()
-            ->scalarNode('admin_controller')->defaultValue(NotificationRuleController::class)->cannotBeEmpty()->end()
-            ->scalarNode('form')->defaultValue(NotificationRuleType::class)->cannotBeEmpty()->end()
+                ->arrayNode('resources')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('notification_rule')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->scalarNode('permission')->defaultValue('notification')->cannotBeOverwritten()->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(NotificationRule::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(NotificationRuleInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(NotificationRuleRepository::class)->end()
+                                        ->scalarNode('admin_controller')->defaultValue(NotificationRuleController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(NotificationRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
+        ;
     }
 
     /**
@@ -84,33 +86,33 @@ final class Configuration implements ConfigurationInterface
     {
         $node->children()
             ->arrayNode('pimcore_admin')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('js')
-            ->addDefaultsIfNotSet()
-            ->ignoreExtraKeys(false)
-            ->children()
-            ->scalarNode('resource')->defaultValue('/bundles/coreshopnotification/pimcore/js/resource.js')->end()
-            ->scalarNode('notification_rule_item')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/item.js')->end()
-            ->scalarNode('notification_rule_panel')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/panel.js')->end()
-            ->scalarNode('notification_rule_action')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/action.js')->end()
-            ->scalarNode('notification_rule_condition')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/condition.js')->end()
-            ->scalarNode('notification_rule_action_mail')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/actions/mail.js')->end()
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('js')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopnotification/pimcore/js/resource.js')->end()
+                            ->scalarNode('notification_rule_item')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/item.js')->end()
+                            ->scalarNode('notification_rule_panel')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/panel.js')->end()
+                            ->scalarNode('notification_rule_action')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/action.js')->end()
+                            ->scalarNode('notification_rule_condition')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/condition.js')->end()
+                            ->scalarNode('notification_rule_action_mail')->defaultValue('/bundles/coreshopnotification/pimcore/js/rule/actions/mail.js')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('css')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('notification_rule')->defaultValue('/bundles/coreshopnotification/pimcore/css/notification.css')->end()
+                        ->end()
+                    ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['notification'])
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->arrayNode('css')
-            ->addDefaultsIfNotSet()
-            ->ignoreExtraKeys(false)
-            ->children()
-            ->scalarNode('notification_rule')->defaultValue('/bundles/coreshopnotification/pimcore/css/notification.css')->end()
-            ->end()
-            ->end()
-            ->scalarNode('permissions')
-            ->cannotBeOverwritten()
-            ->defaultValue(['notification'])
-            ->end()
-            ->end()
-            ->end()
-            ->end();
+        ->end();
     }
 }

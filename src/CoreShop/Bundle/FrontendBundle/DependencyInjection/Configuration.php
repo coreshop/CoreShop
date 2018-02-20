@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection;
 
@@ -47,29 +47,28 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addControllerSection(ArrayNodeDefinition $node)
-    {
+    private function addControllerSection(ArrayNodeDefinition $node) {
         $node->children()
-            ->arrayNode('controllers')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('index')->defaultValue(IndexController::class)->end()
-            ->scalarNode('register')->defaultValue(RegisterController::class)->end()
-            ->scalarNode('customer')->defaultValue(CustomerController::class)->end()
-            ->scalarNode('currency')->defaultValue(CurrencyController::class)->end()
-            ->scalarNode('language')->defaultValue(LanguageController::class)->end()
-            ->scalarNode('search')->defaultValue(SearchController::class)->end()
-            ->scalarNode('cart')->defaultValue(CartController::class)->end()
-            ->scalarNode('checkout')->defaultValue(CheckoutController::class)->end()
-            ->scalarNode('order')->defaultValue(OrderController::class)->end()
-            ->scalarNode('category')->defaultValue(CategoryController::class)->end()
-            ->scalarNode('product')->defaultValue(ProductController::class)->end()
-            ->scalarNode('quote')->defaultValue(QuoteController::class)->end()
-            ->scalarNode('security')->defaultValue(SecurityController::class)->end()
-            ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
-            ->scalarNode('wishlist')->defaultValue(WishlistController::class)->end()
-            ->end()
-            ->end();
+                ->arrayNode('controllers')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('index')->defaultValue(IndexController::class)->end()
+                        ->scalarNode('register')->defaultValue(RegisterController::class)->end()
+                        ->scalarNode('customer')->defaultValue(CustomerController::class)->end()
+                        ->scalarNode('currency')->defaultValue(CurrencyController::class)->end()
+                        ->scalarNode('language')->defaultValue(LanguageController::class)->end()
+                        ->scalarNode('search')->defaultValue(SearchController::class)->end()
+                        ->scalarNode('cart')->defaultValue(CartController::class)->end()
+                        ->scalarNode('checkout')->defaultValue(CheckoutController::class)->end()
+                        ->scalarNode('order')->defaultValue(OrderController::class)->end()
+                        ->scalarNode('category')->defaultValue(CategoryController::class)->end()
+                        ->scalarNode('product')->defaultValue(ProductController::class)->end()
+                        ->scalarNode('quote')->defaultValue(QuoteController::class)->end()
+                        ->scalarNode('security')->defaultValue(SecurityController::class)->end()
+                        ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
+                        ->scalarNode('wishlist')->defaultValue(WishlistController::class)->end()
+                    ->end()
+                ->end();
     }
 
     /**
@@ -79,19 +78,19 @@ final class Configuration implements ConfigurationInterface
     {
         $node->children()
             ->arrayNode('pimcore_admin')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('install')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('routes')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/staticroutes.yml'])->end()
-            ->scalarNode('documents')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/documents.yml'])->end()
-            ->scalarNode('image_thumbnails')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/image-thumbnails.yml'])->end()
-            ->scalarNode('translations')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/translations.yml'])->end()
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('routes')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/staticroutes.yml'])->end()
+                            ->scalarNode('documents')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/documents.yml'])->end()
+                            ->scalarNode('image_thumbnails')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/image-thumbnails.yml'])->end()
+                            ->scalarNode('translations')->defaultValue(['@CoreShopFrontendBundle/Resources/install/pimcore/translations.yml'])->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
+        ->end();
     }
 }

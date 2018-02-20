@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 namespace CoreShop\Bundle\SequenceBundle\DependencyInjection;
 
@@ -34,8 +34,9 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
+                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+            ->end()
+        ;
         $this->addModelsSection($rootNode);
 
         return $treeBuilder;
@@ -48,27 +49,28 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-            ->arrayNode('resources')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('sequence')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->variableNode('options')->end()
-            ->arrayNode('classes')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('model')->defaultValue(Sequence::class)->cannotBeEmpty()->end()
-            ->scalarNode('interface')->defaultValue(SequenceInterface::class)->cannotBeEmpty()->end()
-            ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-            ->scalarNode('factory')->defaultValue(SequenceFactory::class)->cannotBeEmpty()->end()
-            ->scalarNode('repository')->defaultValue(SequenceRepository::class)->cannotBeEmpty()->end()
+                ->arrayNode('resources')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('sequence')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(Sequence::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(SequenceInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(SequenceFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(SequenceRepository::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end();
+        ;
     }
 }
