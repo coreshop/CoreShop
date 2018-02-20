@@ -43,6 +43,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\QuoteItemInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -69,6 +70,7 @@ final class Configuration implements ConfigurationInterface
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCartCleanupSection($rootNode);
+        $this->addImplementations($rootNode);
 
         return $treeBuilder;
     }
@@ -99,6 +101,22 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addImplementations(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('implementations')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('purchasable')->defaultValue(PurchasableInterface::class)->cannotBeEmpty()->end()
+
+                ->end()
+            ->end()
+        ->end();
     }
 
     /**
