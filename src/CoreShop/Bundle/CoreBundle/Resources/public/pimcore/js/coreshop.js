@@ -255,7 +255,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
         var productsMenu = [];
 
-        if (user.classes.indexOf(coreshop.class_map['coreshop.product']) >= 0) {
+        if (user.classes.indexOf(coreshop.class_map.coreshop.product) >= 0) {
             productsMenu.push({
                 text: t('coreshop_product_list'),
                 iconCls: 'coreshop_icon_product_list',
@@ -483,7 +483,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     },
 
     postOpenObject: function (tab, type) {
-        if (tab.data.general.o_className === coreshop.class_map['coreshop.cart']) {
+        if (tab.data.general.o_className === coreshop.class_map.coreshop.cart) {
             tab.toolbar.insert(tab.toolbar.items.length,
                 '-'
             );
@@ -497,9 +497,9 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                     }
                 }
             );*/
-        } else if (tab.data.general.o_className === coreshop.class_map['coreshop.product']) {
+        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.product) {
             
-        } else if (tab.data.general.o_className === coreshop.class_map['.coreshop.order']) {
+        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.order) {
             var orderMoreButtons = [];
 
             orderMoreButtons.push(
@@ -549,7 +549,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                     }
                 );
             }
-        } else if (tab.data.general.o_className === coreshop.class_map['coreshop.order_invoice']) {
+        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.order_invoice) {
             var resetChangesFunction = tab.resetChanges;
 
             var renderTab = new coreshop.invoice.render(tab);
@@ -561,7 +561,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
 
                 renderTab.reload();
             };
-        } else if (tab.data.general.o_className === coreshop.class_map['coreshop.order_shipment']) {
+        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.order_shipment) {
             var resetChangesFunction = tab.resetChanges;
 
             var renderTab = new coreshop.shipment.render(tab);
