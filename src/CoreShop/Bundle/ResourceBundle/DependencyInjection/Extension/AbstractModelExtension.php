@@ -71,7 +71,7 @@ abstract class AbstractModelExtension extends Extension
             $alias = $applicationName . '.' . $modelName;
             $modelConfig = array_merge(['driver' => 'pimcore', 'alias' => $this->getAlias()], $modelConfig);
 
-            foreach (['coreshop.pimcore', sprintf('%s.pimcore.classes', $applicationName)] as $parameter) {
+            foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $applicationName)] as $parameter) {
                 $models = $container->hasParameter($parameter) ? $container->getParameter($parameter) : [];
                 $models = array_merge($models, [$alias => $modelConfig]);
                 $container->setParameter($parameter, $models);
@@ -94,12 +94,12 @@ abstract class AbstractModelExtension extends Extension
 
         foreach ($resourceTypes as $resourceType) {
             if (array_key_exists($resourceType, $bundleResources)) {
-                $applicationParameter = sprintf('%s.application.pimcore.admin.%s', $applicationName, $resourceType);
-                $aliasParameter = sprintf('%s.pimcore.admin.%s', $this->getAlias(), $resourceType);
-                $globalParameter = sprintf('resources.admin.%s', $resourceType);
+                $applicationParameter = sprintf('%s.pimcore.admin.%s', $applicationName, $resourceType);
+                //$aliasParameter = sprintf('%s.pimcore.admin.%s', $this->getAlias(), $resourceType);
+                $globalParameter = sprintf('coreshop.all.pimcore.admin.%s', $resourceType);
 
                 $parameters = [
-                    $applicationParameter, $aliasParameter, $globalParameter
+                    $applicationParameter, $globalParameter
                 ];
 
                 foreach ($parameters as $containerParameter) {
@@ -116,11 +116,11 @@ abstract class AbstractModelExtension extends Extension
 
         if (array_key_exists('install', $bundleResources)) {
             foreach ($bundleResources['install'] as $type => $value) {
-                $applicationParameter = sprintf('%s.application.pimcore.admin.install.%s', $applicationName, $type);
-                $aliasParameter = sprintf('%s.pimcore.admin.install.%s', $this->getAlias(), $type);
-                $globalParameter = sprintf('resources.admin.install.%s', $type);
+                $applicationParameter = sprintf('%s.pimcore.admin.install.%s', $applicationName, $type);
+                //$aliasParameter = sprintf('%s.pimcore.admin.install.%s', $this->getAlias(), $type);
+                $globalParameter = sprintf('coreshop.all.pimcore.admin.install.%s', $type);
 
-                foreach ([$applicationParameter, $aliasParameter, $globalParameter] as $containerParameter) {
+                foreach ([$applicationParameter, $globalParameter] as $containerParameter) {
                     $resources = [];
 
                     if ($container->hasParameter($containerParameter)) {
@@ -167,8 +167,8 @@ abstract class AbstractModelExtension extends Extension
      */
     public function registerImplementations($applicationName, $implementations, ContainerBuilder $container)
     {
-        $appParameterName = sprintf('%s.coreshop.application.implementations', $applicationName);
-        $globalParameterName = 'coreshop.implementations';
+        $appParameterName = sprintf('%s.implementations', $applicationName);
+        $globalParameterName = 'coreshop.all.implementations';
 
         foreach ([$appParameterName, $globalParameterName] as $parameterName) {
             $implementationsConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];

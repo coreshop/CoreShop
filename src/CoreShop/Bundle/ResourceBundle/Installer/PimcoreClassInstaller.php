@@ -48,7 +48,7 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
      */
     public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $parameter = $applicationName ? sprintf('%s.pimcore.classes', $applicationName) : 'coreshop.pimcore';
+        $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $pimcoreClasses = $this->kernel->getContainer()->getParameter($parameter);

@@ -19,7 +19,7 @@ coreshop.order.order.list = Class.create(coreshop.order.sale.list, {
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map['order']]
+            [coreshop.class_map['coreshop.order']]
         );
     },
 

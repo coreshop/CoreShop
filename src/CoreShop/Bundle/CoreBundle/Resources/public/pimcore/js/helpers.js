@@ -34,7 +34,7 @@ coreshop.helpers.createOrder = function () {
                 object: ['object']
             },
             specific: {
-                classes: [coreshop.class_map.customer]
+                classes: [coreshop.class_map['coreshop.customer']]
             }
         }
     );

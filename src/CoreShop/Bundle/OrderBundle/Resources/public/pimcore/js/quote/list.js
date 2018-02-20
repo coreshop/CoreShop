@@ -19,7 +19,7 @@ coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map['quote']]
+            [coreshop.class_map['coreshop.quote']]
         );
     },
 

@@ -93,6 +93,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
+
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln('<info>Installing CoreShop...</info>');
         $outputStyle->writeln($this->getCoreShopLogo());

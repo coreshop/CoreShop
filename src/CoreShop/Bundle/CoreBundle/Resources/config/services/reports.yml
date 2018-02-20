@@ -18,8 +18,8 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
-            - '%coreshop.pimcore_class_ids%'
-            - '%coreshop.implementations.coreshop.product%'
+            - '%coreshop.pimcore_classes.ids%'
+            - '%coreshop.implementations.product.pimcore_class_ids%'
         tags:
             - { name: coreshop.report, type: products }
 
@@ -30,7 +30,7 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: categories }
 
@@ -40,7 +40,7 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: customers }
 
@@ -49,7 +49,7 @@ services:
         arguments:
             - '@coreshop.repository.store'
             - '@doctrine.dbal.default_connection'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: carts }
             - { name: coreshop.portlet, type: order_cart }
@@ -59,7 +59,7 @@ services:
         arguments:
             - '@coreshop.repository.store'
             - '@doctrine.dbal.default_connection'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: carts_abandoned }
 
@@ -70,7 +70,7 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: sales }
             - { name: coreshop.portlet, type: sales }
@@ -81,7 +81,7 @@ services:
             - '@coreshop.repository.store'
             - '@doctrine.dbal.default_connection'
             - '@coreshop.repository.carrier'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: carriers }
 
@@ -91,7 +91,7 @@ services:
             - '@coreshop.repository.store'
             - '@doctrine.dbal.default_connection'
             - '@coreshop.repository.payment_provider'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: payment_providers }
 
@@ -102,6 +102,6 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
-            - '%coreshop.pimcore_class_ids%'
+            - '%coreshop.pimcore_classes.ids%'
         tags:
             - { name: coreshop.report, type: vouchers }
