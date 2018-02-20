@@ -2,14 +2,14 @@
     <div class="header-top">
         <div class="container">
             <div class="row">
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-12 col-sm-6">
                     <div class="header-links">
 
                         <ul class="nav navbar-nav pull-left">
                             <li>
                                 <a href="{{ path('coreshop_index') }}">
-                                    <i class="fa fa-home hidden-lg hidden-md" title="{{ 'coreshop.ui.home'|trans }}"></i>
-                                    <span class="hidden-sm hidden-xs">
+                                    <i class="fa fa-home d-block d-sm-none" title="{{ 'coreshop.ui.home'|trans }}"></i>
+                                    <span class="d-none d-sm-inline">
                                         {{ 'coreshop.ui.home'|trans }}
                                     </span>
                                 </a>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-12 col-sm-6">
 
                     <div class="pull-right">
 
@@ -54,13 +54,13 @@
                 <div class="col-md-6">
                     <div id="logo">
                         <a href="{{ path('coreshop_index') }}">
-                            <img src="/bundles/coreshopfrontend/static/images/logo.png" title="CoreShop" alt="CoreShop" class="img-responsive" />
+                            <img src="/bundles/coreshopfrontend/static/images/logo.png" title="CoreShop" alt="CoreShop" class="img-fluid" />
                             {{ 'Core<span class="black">Shop</span>' }}
                         </a>
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 pr-0">
                     {{ render(controller('coreshop.frontend.controller.cart:widgetAction')) }}
                 </div>
             </div>

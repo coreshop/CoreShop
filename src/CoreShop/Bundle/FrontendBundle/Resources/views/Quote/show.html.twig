@@ -31,7 +31,7 @@
                     <td class="text-center">
                         {% if item.getProduct and item.getProduct.getImage() %}
                             <a class="" href="{{ productUrl }}">
-                                {{ item.getProduct.getImage.getThumbnail("coreshop_productQuote").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                                {{ item.getProduct.getImage.getThumbnail("coreshop_productQuote").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
                             </a>
                         {% endif %}
                     </td>

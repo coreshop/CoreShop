@@ -5,7 +5,7 @@
     <div class="image">
         {% if product.getImage() %}
             <a href="{{ href }}">
-                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-responsive', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
+                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-fluid', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
             </a>
         {% endif %}
     </div>

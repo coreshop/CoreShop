@@ -1,13 +1,13 @@
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% import "@CoreShopFrontend/Common/Macro/messages.html.twig" as messages %}
 
 <div class="row">
     <div class="col-sm-6">
-        <div class="panel panel-smart">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ 'coreshop.ui.login'|trans }}</h3>
+        <div class="card panel-smart">
+            <div class="card-header">
+                <h3 class="card-title">{{ 'coreshop.ui.login'|trans }}</h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 {% if last_error %}
                     {{ messages.error(last_error.messageKey|trans(last_error.messageData, 'security')) }}
                 {% endif %}
@@ -25,7 +25,7 @@
                         <input type="hidden" name="_target_path" value="{{ target }}" />
                     {% endif %}
 
-                    <button type="submit" class="ui blue submit button">{{ 'coreshop.ui.login'|trans }}</button>
+                    <button type="submit" class="btn-secondary btn submit button">{{ 'coreshop.ui.login'|trans }}</button>
 
                     <a class="pull-right" href="{{ path('coreshop_customer_password_reset_request') }}">{{ 'coreshop.ui.reset_password'|trans }}</a>
                 {{ form_end(form, {'render_rest': false}) }}
@@ -33,11 +33,11 @@
         </div>
     </div>
     <div class="col-sm-6">
-        <div class="panel panel-smart">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ 'coreshop.ui.create_new_account'|trans }}</h3>
+        <div class="card panel-smart">
+            <div class="card-header">
+                <h3 class="card-title">{{ 'coreshop.ui.create_new_account'|trans }}</h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <p>
                     {{ 'coreshop.ui.registration_text'|trans }}
                 </p>

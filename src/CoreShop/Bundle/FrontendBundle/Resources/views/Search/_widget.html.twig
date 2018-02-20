@@ -1,11 +1,11 @@
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-<div class="col-md-3">
+<div class="col-md-3 pl-0">
     {{ form_start(form, {'attr' : {'id': 'search'}}) }}
         <div class="input-group">
-            {{ form_row(form.text, {'label' : false, 'attr' : {'class': 'input-lg'}}) }}
-            <!--<input type="text" name="text" class="form-control input-lg" placeholder="{{ 'coreshop.ui.search'|trans }}">-->
-            <span class="input-group-btn">
+            {{ form_row(form.text, {'label' : false, 'attr' : {'class': 'form-control-lg'}}) }}
+            <!--<input type="text" name="text" class="form-control form-control-lg" placeholder="{{ 'coreshop.ui.search'|trans }}">-->
+            <span class="input-group-append">
             <button class="btn btn-lg" type="submit">
                 <i class="fa fa-search"></i>
             </button>
