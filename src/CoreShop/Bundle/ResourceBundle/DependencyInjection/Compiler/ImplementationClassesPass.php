@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -22,17 +23,23 @@ final class ImplementationClassesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasParameter('coreshop.pimcore.classes') || !$container->hasParameter('coreshop.implementations')) {
+        if (!$container->hasParameter('coreshop.all.pimcore_classes') || !$container->hasParameter('coreshop.all.implementations')) {
             return;
         }
 
-        $classes = $container->getParameter('coreshop.pimcore');
-        $implementations = $container->getParameter('coreshop.implementations');
+        $classes = $container->getParameter('coreshop.all.pimcore_classes');
+        $implementations = $container->getParameter('coreshop.all.implementations');
 
         $classImplementations = [];
+        $classImplementationsPimcoreClassName = [];
+        $classImplementationsPimcoreClassId = [];
 
         foreach ($implementations as $implementation => $interface) {
+            list($applicationName, $implementationName) = explode('.', $implementation);
+
             $classImplementations[$implementation] = [];
+            $classImplementationsPimcoreClassName[$implementation] = [];
+            $classImplementationsPimcoreClassId[$implementation] = [];
 
             foreach ($classes as $key => $definition) {
                 if (!@class_exists($definition['classes']['model'])) {
@@ -41,12 +48,25 @@ final class ImplementationClassesPass implements CompilerPassInterface
 
                 if (in_array($interface, class_implements($definition['classes']['model']))) {
                     $classImplementations[$implementation][] = $definition['classes']['model'];
+
+                    if (is_subclass_of($definition['classes']['model'], Concrete::class)) {
+                        $fullClassName = $definition['classes']['model'];
+                        $class = str_replace('Pimcore\\Model\\DataObject\\', '', $fullClassName);
+                        $class = str_replace('\\', '', $class);
+
+                        $classImplementationsPimcoreClassName[$implementation][] = $class;
+                        $classImplementationsPimcoreClassId[$implementation][] = $fullClassName::classId();
+                    }
                 }
             }
 
-            $container->setParameter(sprintf('coreshop.implementations.%s', $implementation), $classImplementations[$implementation]);
+            $container->setParameter(sprintf('%s.implementations.%s.fqcns', $applicationName, $implementationName), $classImplementations[$implementation]);
+            $container->setParameter(sprintf('%s.implementations.%s.pimcore_class_names', $applicationName, $implementationName), $classImplementationsPimcoreClassName[$implementation]);
+            $container->setParameter(sprintf('%s.implementations.%s.pimcore_class_ids', $applicationName, $implementationName), $classImplementationsPimcoreClassId[$implementation]);
         }
 
-        $container->setParameter('coreshop.implementations.classes', $classImplementations);
+        $container->setParameter('coreshop.all.implementations.fqcns', $classImplementations);
+        $container->setParameter('coreshop.all.implementations.pimcore_class_names', $classImplementationsPimcoreClassName);
+        $container->setParameter('coreshop.all.implementations.pimcore_class_ids', $classImplementationsPimcoreClassId);
     }
 }

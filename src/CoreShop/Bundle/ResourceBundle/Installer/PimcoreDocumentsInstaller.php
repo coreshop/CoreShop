@@ -41,7 +41,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
      */
     public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.documents', $applicationName) : 'resources.admin.install.documents';
+        $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.documents', $applicationName) : 'coreshop.all.pimcore.admin.install.documents';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $documentFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);

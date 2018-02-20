@@ -53,7 +53,7 @@ coreshop.order.sale.create.panel = Class.create({
                     object: ['object']
                 },
                 specific: {
-                    classes: coreshop.implementations['coreshop.customer']
+                    classes: coreshop.implementations.coreshop.customer
                 }
             }
         );

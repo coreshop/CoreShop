@@ -25,7 +25,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         try {
-            $resources = $container->getParameter('coreshop.pimcore');
+            $resources = $container->getParameter('coreshop.all.pimcore_classes');
             $registry = $container->findDefinition('coreshop.resource_registry');
         } catch (InvalidArgumentException $exception) {
             return;
@@ -62,10 +62,10 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
         }
 
         foreach ($applicationClasses as $applicationName => $values) {
-            $container->setParameter(sprintf('%s.pimcore_class_ids', $applicationName), $values);
+            $container->setParameter(sprintf('%s.pimcore_classes.ids', $applicationName), $values);
         }
 
-        $container->setParameter('coreshop.resource.pimcore_class_ids', $pimcoreClasses);
+        $container->setParameter('coreshop.all.pimcore_classes.ids', $pimcoreClasses);
     }
 
     /**
