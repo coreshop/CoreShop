@@ -136,7 +136,7 @@ abstract class AbstractModelExtension extends Extension
             $applicationPermissions = [];
             $applicationParameter = sprintf('%s.permissions', $applicationName);
             $resourcePermissions = [];
-            $globalParameter = sprintf('coreshop.resource.permissions', $applicationName);
+            $globalParameter = sprintf('coreshop.all.permissions', $applicationName);
 
             if ($container->hasParameter($applicationParameter)) {
                 $applicationPermissions = $container->getParameter($applicationParameter);
