@@ -21,6 +21,7 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Pimcore\Model\Object;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -82,7 +83,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
-            $product = $this->get('coreshop.repository.product')->find($productId);
+            $product = Object::getById($productId);
 
             if ($product instanceof PurchasableInterface) {
                 $productFlat = $this->getDataForObject($product);
@@ -317,7 +318,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
-            $product = $this->get('coreshop.repository.product')->find($productId);
+            $product = Object::getById($productId);
 
             if ($product instanceof PurchasableInterface) {
                 $this->get('coreshop.cart.modifier')->addItem($cart, $product, $productObject['quantity']);
