@@ -100,7 +100,7 @@ install:
     - mkdir -p var/config
     - cp .travis/system.template.php var/config/system.php
     - cp app/config/parameters.example.yml app/config/parameters.yml
-    - composer remove vrana/jush
+    - composer remove vrana/jush --no-scripts
     - if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3; fi
     - if [ $PIMCORE_BRANCH == "tags/v5.1.1" ]; then composer require symfony/symfony:3.4.3; fi
     - composer install
