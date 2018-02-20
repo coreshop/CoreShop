@@ -83,7 +83,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
-            $product = $this->get('coreshop.repository.purchasable')->find($productId);
+            $product = $this->get('coreshop.repository.implementation.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
                 $productFlat = $this->getDataForObject($product);
@@ -318,7 +318,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
-            $product = $this->get('coreshop.repository.purchasable')->get($productId);
+            $product = $this->get('coreshop.repository.implementation.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
                 $this->get('coreshop.cart.modifier')->addItem($cart, $product, $productObject['quantity']);

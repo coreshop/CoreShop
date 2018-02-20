@@ -17,11 +17,9 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleCondit
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
-use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRepositoryPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
-use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterWorkflowManagerPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterWorkflowValidatorPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -52,7 +50,6 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterCartContextsPass());
         $container->addCompilerPass(new PurchasableDiscountPriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableRetailPriceCalculatorsPass());
-        $container->addCompilerPass(new PurchasableRepositoryPass());
     }
 
     /**

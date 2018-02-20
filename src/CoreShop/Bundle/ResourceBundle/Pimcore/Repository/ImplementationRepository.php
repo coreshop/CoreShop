@@ -1,30 +1,36 @@
 <?php
 
-namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
+namespace CoreShop\Bundle\ResourceBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Order\Repository\PurchasableRepositoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Pimcore\Model\Object;
 
-class PurchasableRepository extends PimcoreRepository implements PurchasableRepositoryInterface
+class ImplementationRepository extends PimcoreRepository
 {
     /**
      * @var array
      */
-    private $purchasableImplementations = [];
+    private $implementationClasses = [];
+
+    /**
+     * @var string
+     */
+    private $interface;
 
     /**
      * @param MetadataInterface $metadata
-     * @param array $purchasableImplementations
+     * @param $interface
+     * @param array $implementationClasses
      */
-    public function __construct(MetadataInterface $metadata, array $purchasableImplementations)
+    public function __construct(MetadataInterface $metadata, $interface, array $implementationClasses)
     {
         parent::__construct($metadata);
 
-        foreach ($purchasableImplementations as $implementation) {
-            $this->purchasableImplementations[] = '"' . $implementation . '"';
+        $this->interface = $interface;
+
+        foreach ($implementationClasses as $implementation) {
+            $this->implementationClasses[] = '"' . $implementation . '"';
         }
     }
 
@@ -44,7 +50,7 @@ class PurchasableRepository extends PimcoreRepository implements PurchasableRepo
     public function getList()
     {
         $list = Object::getList();
-        $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->purchasableImplementations)));
+        $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->implementationClasses)));
 
         return $list;
     }
@@ -56,7 +62,7 @@ class PurchasableRepository extends PimcoreRepository implements PurchasableRepo
     {
         $instance = Object::getById($id, $force);
 
-        if (!$instance instanceof PurchasableInterface) {
+        if (!in_array($this->interface, class_implements($instance), true)) {
             return null;
         }
 
@@ -69,7 +75,7 @@ class PurchasableRepository extends PimcoreRepository implements PurchasableRepo
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $criteria[] = [
-            'variable' => implode(',', $this->purchasableImplementations)
+            'variable' => implode(',', $this->implementationClasses)
         ];
 
         return parent::findBy($criteria, $orderBy, $limit, $offset);
@@ -82,7 +88,7 @@ class PurchasableRepository extends PimcoreRepository implements PurchasableRepo
     {
         $instance = parent::findOneBy($criteria);
 
-        if (!$instance instanceof PurchasableInterface) {
+        if (!in_array($this->interface, class_implements($instance), true)) {
             return null;
         }
 
