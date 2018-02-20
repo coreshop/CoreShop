@@ -3,7 +3,5 @@ coreshop:
         customer:
             email:
                 unique: 'Diese E-Mail Addresse wird bereits verwendet.'
-coreshop:
-    form:
         guest:
             email_is_customer: 'Diese E-Mail wird bereits verwendet. Bitte melden Sie sich an oder benutzen Sie die "Passwort zurücksetzen" Funktion.'
