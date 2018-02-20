@@ -34,6 +34,10 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        if (array_key_exists('implementations', $config)) {
+            $this->registerImplementations('coreshop', $config['implementations'], $container);
+        }
+
         $container->setParameter('coreshop.cart.expiration.days', $config['expiration']['cart']['days']);
         $container->setParameter('coreshop.cart.expiration.anonymous', $config['expiration']['cart']['anonymous']);
         $container->setParameter('coreshop.cart.expiration.customer', $config['expiration']['cart']['customer']);

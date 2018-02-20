@@ -115,7 +115,7 @@ class CartController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
-        $product = Object::getById($request->get('product'));
+        $product = $this->get('coreshop.repository.implementation.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
             return $this->redirectToRoute('coreshop_index');
