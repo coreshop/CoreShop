@@ -57,7 +57,7 @@ class ProductsReport implements ReportInterface
     /**
      * @var array
      */
-    private $productImplementationsIds;
+    private $productStackIds;
 
     /**
      * @param RepositoryInterface $storeRepository
@@ -65,7 +65,7 @@ class ProductsReport implements ReportInterface
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface $localeContext
      * @param array $pimcoreClasses
-     * @param array $productImplementationsIds
+     * @param array $productStackIds
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -73,7 +73,7 @@ class ProductsReport implements ReportInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
         array $pimcoreClasses,
-        array $productImplementationsIds
+        array $productStackIds
     )
     {
         $this->storeRepository = $storeRepository;
@@ -81,7 +81,7 @@ class ProductsReport implements ReportInterface
         $this->moneyFormatter = $moneyFormatter;
         $this->localeContext = $localeContext;
         $this->pimcoreClasses = $pimcoreClasses;
-        $this->productImplementationsIds = $productImplementationsIds;
+        $this->productStackIds = $productStackIds;
     }
 
     /**
@@ -118,7 +118,7 @@ class ProductsReport implements ReportInterface
 
         if ($objectTypeFilter === 'container') {
             $unionData = [];
-            foreach ($this->productImplementationsIds as $id) {
+            foreach ($this->productStackIds as $id) {
                 $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
             }
 

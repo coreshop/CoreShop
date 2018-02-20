@@ -16,10 +16,10 @@ pimcore.registerNS('coreshop.rules.conditions.abstract');
 coreshop.rules.conditions.abstract = Class.create(coreshop.rules.abstract, {
     elementType: 'condition',
 
-    getFormattedImplementationsClasses: function (implementationClasses) {
+    getFormattedStackClasses: function (stackClasses) {
         var classes = [];
-        if (Ext.isArray(implementationClasses)) {
-            Ext.Array.each(implementationClasses, function (cClass) {
+        if (Ext.isArray(stackClasses)) {
+            Ext.Array.each(stackClasses, function (cClass) {
                 classes.push({classes: cClass});
             });
         }

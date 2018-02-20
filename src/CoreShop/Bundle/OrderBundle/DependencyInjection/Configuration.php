@@ -70,7 +70,7 @@ final class Configuration implements ConfigurationInterface
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCartCleanupSection($rootNode);
-        $this->addImplementations($rootNode);
+        $this->addStack($rootNode);
 
         return $treeBuilder;
     }
@@ -106,10 +106,10 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addImplementations(ArrayNodeDefinition $node)
+    private function addStack(ArrayNodeDefinition $node)
     {
         $node->children()
-            ->arrayNode('implementations')
+            ->arrayNode('stack')
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('purchasable')->defaultValue(PurchasableInterface::class)->cannotBeEmpty()->end()

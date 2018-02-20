@@ -162,28 +162,28 @@ abstract class AbstractModelExtension extends Extension
 
     /**
      * @param $applicationName
-     * @param $implementations
+     * @param $stack
      * @param ContainerBuilder $container
      */
-    public function registerImplementations($applicationName, $implementations, ContainerBuilder $container)
+    public function registerStack($applicationName, $stack, ContainerBuilder $container)
     {
-        $appParameterName = sprintf('%s.implementations', $applicationName);
-        $globalParameterName = 'coreshop.all.implementations';
+        $appParameterName = sprintf('%s.stack', $applicationName);
+        $globalParameterName = 'coreshop.all.stack';
 
         foreach ([$appParameterName, $globalParameterName] as $parameterName) {
-            $implementationsConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
+            $stackConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
 
-            foreach ($implementations as $key => $interface) {
+            foreach ($stack as $key => $interface) {
                 $key = sprintf('%s.%s', $applicationName, $key);
 
-                if (array_key_exists($key, $implementationsConfig)) {
-                    throw new \RuntimeException(sprintf('Implementations Key %s found twice', $key));
+                if (array_key_exists($key, $stackConfig)) {
+                    throw new \RuntimeException(sprintf('Stack Key %s found twice', $key));
                 }
 
-                $implementationsConfig[$key] = $interface;
+                $stackConfig[$key] = $interface;
             }
 
-            $container->setParameter($parameterName, $implementationsConfig);
+            $container->setParameter($parameterName, $stackConfig);
         }
     }
 }

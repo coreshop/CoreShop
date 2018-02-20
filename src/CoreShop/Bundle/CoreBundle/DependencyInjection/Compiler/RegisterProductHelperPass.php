@@ -16,15 +16,15 @@ class RegisterProductHelperPass implements CompilerPassInterface
             return;
         }
 
-        $implementationId = 'coreshop.implementations.product.pimcore_class_names';
+        $stackId = 'coreshop.stack.product.pimcore_class_names';
         $definitionId = 'coreshop.index.class_helper.product';
 
-        if ($container->hasParameter($implementationId)) {
+        if ($container->hasParameter($stackId)) {
             $registry = $container->getDefinition('coreshop.registry.index.class_helpers');
 
-            $implementations = $container->getParameter($implementationId);
+            $stack = $container->getParameter($stackId);
 
-            foreach ($implementations as $class) {
+            foreach ($stack as $class) {
                 $container->setDefinition($definitionId, new Definition(ProductClassHelper::class));
                 $registry->addMethodCall('register', [$class, new Reference($definitionId)]);
             }
