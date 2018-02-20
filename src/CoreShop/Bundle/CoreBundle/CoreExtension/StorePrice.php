@@ -271,7 +271,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 continue;
             }
 
-            $validData[$storeId] = $price * 100;
+            $validData[$storeId] = (int) (round($price, 2) * 100);
         }
 
         return $validData;
