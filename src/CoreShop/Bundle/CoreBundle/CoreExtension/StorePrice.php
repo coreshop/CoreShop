@@ -298,9 +298,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
             $data = [];
         }
 
-        foreach ($data as $storeData) {
-            $priceValue = $storeData['price'];
-
+        foreach ($data as $priceValue) {
             if (!$this->isEmpty($priceValue) && !is_numeric($priceValue)) {
                 throw new Model\Element\ValidationException('invalid numeric data [' . $priceValue . ']');
             }
