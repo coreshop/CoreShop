@@ -148,7 +148,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (is_numeric($data)) {
+        if (is_numeric($data) && !is_int($data)) {
+            $data = (int)$data;
+        }
+
+        if (is_int($data)) {
             return $data;
         }
 
@@ -212,7 +216,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        return $data * 100;
+        if (is_numeric($data)) {
+            return (int)round((round($data, 2) * 100), 0);
+        }
+
+        return $data;
     }
 
     /**
