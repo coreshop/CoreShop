@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-chmod -R +x lib/CoreShop/bin/travis
+chmod -R +x lib/CoreShop/etc/travis
 
 mysql --version
 mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
