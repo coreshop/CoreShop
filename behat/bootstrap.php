@@ -99,6 +99,8 @@ define('PIMCORE_ADMIN', true);
 
 
 if (file_exists(PIMCORE_PRIVATE_VAR . '/config/system.php')) {
+
+    //rrmdir(PIMCORE_PRIVATE_VAR . "/cache");
     return;
 }
 

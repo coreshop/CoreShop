@@ -5,7 +5,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.factory.product'
             - '@__symfony__.coreshop.repository.product'
-            - '@__symfony__.coreshop.product.price_calculator'
         tags:
             - { name: fob.context_service }
 
