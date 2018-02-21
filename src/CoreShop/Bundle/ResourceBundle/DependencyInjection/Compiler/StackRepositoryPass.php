@@ -12,43 +12,42 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\OrderBundle\Pimcore\Repository\PurchasableRepository;
-use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\ImplementationRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-final class ImplementationRepositoryPass implements CompilerPassInterface
+final class StackRepositoryPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasParameter('coreshop.all.implementations.pimcore_class_names') ||
-            !$container->hasParameter('coreshop.all.implementations')) {
+        if (!$container->hasParameter('coreshop.all.stack.pimcore_class_names') ||
+            !$container->hasParameter('coreshop.all.stack')) {
             return;
         }
 
-        $implementations = $container->getParameter('coreshop.all.implementations');
+        $stackConfig = $container->getParameter('coreshop.all.stack');
 
-        foreach ($container->getParameter('coreshop.all.implementations.pimcore_class_names') as $alias => $classes) {
-            list ($applicationName, $implementation) = explode('.', $alias);
+        foreach ($container->getParameter('coreshop.all.stack.pimcore_class_names') as $alias => $classes) {
+            list ($applicationName, $name) = explode('.', $alias);
 
             $definition = new Definition(Metadata::class);
             $definition
                 ->setFactory([Metadata::class, 'fromAliasAndConfiguration'])
                 ->setArguments([$alias, []]);
 
-            $repositoryDefinition = new Definition(ImplementationRepository::class);
+            $repositoryDefinition = new Definition(StackRepository::class);
             $repositoryDefinition->setArguments([
                 $definition,
-                $implementations[$alias],
+                $stackConfig[$alias],
                 $classes
             ]);
 
-            $container->setDefinition(sprintf('%s.repository.implementation.%s', $applicationName, $implementation), $repositoryDefinition);
+            $container->setDefinition(sprintf('%s.repository.stack.%s', $applicationName, $name), $repositoryDefinition);
         }
     }
 }

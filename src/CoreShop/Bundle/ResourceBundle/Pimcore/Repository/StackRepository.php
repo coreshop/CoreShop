@@ -6,12 +6,12 @@ use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Pimcore\Model\Object;
 
-class ImplementationRepository extends PimcoreRepository
+class StackRepository extends PimcoreRepository
 {
     /**
      * @var array
      */
-    private $implementationClasses = [];
+    private $stackClasses = [];
 
     /**
      * @var string
@@ -21,16 +21,16 @@ class ImplementationRepository extends PimcoreRepository
     /**
      * @param MetadataInterface $metadata
      * @param $interface
-     * @param array $implementationClasses
+     * @param array $stackClasses
      */
-    public function __construct(MetadataInterface $metadata, $interface, array $implementationClasses)
+    public function __construct(MetadataInterface $metadata, $interface, array $stackClasses)
     {
         parent::__construct($metadata);
 
         $this->interface = $interface;
 
-        foreach ($implementationClasses as $implementation) {
-            $this->implementationClasses[] = '"' . $implementation . '"';
+        foreach ($stackClasses as $class) {
+            $this->stackClasses[] = '"' . $class . '"';
         }
     }
 
@@ -50,7 +50,7 @@ class ImplementationRepository extends PimcoreRepository
     public function getList()
     {
         $list = Object::getList();
-        $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->implementationClasses)));
+        $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->stackClasses)));
 
         return $list;
     }
@@ -75,7 +75,7 @@ class ImplementationRepository extends PimcoreRepository
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $criteria[] = [
-            'variable' => implode(',', $this->implementationClasses)
+            'variable' => implode(',', $this->stackClasses)
         ];
 
         return parent::findBy($criteria, $orderBy, $limit, $offset);

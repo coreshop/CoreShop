@@ -34,8 +34,8 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
-        if (array_key_exists('implementations', $config)) {
-            $this->registerImplementations('coreshop', $config['implementations'], $container);
+        if (array_key_exists('stack', $config)) {
+            $this->registerStack('coreshop', $config['stack'], $container);
         }
 
         $loader->load('services.yml');

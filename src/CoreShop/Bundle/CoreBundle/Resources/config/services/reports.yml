@@ -19,7 +19,7 @@ services:
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
             - '%coreshop.pimcore_classes.ids%'
-            - '%coreshop.implementations.product.pimcore_class_ids%'
+            - '%coreshop.stack.product.pimcore_class_ids%'
         tags:
             - { name: coreshop.report, type: products }
 
