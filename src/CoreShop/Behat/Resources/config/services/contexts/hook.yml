@@ -1,0 +1,12 @@
+
+services:
+    coreshop.behat.context.hook.doctrine_orm:
+        class: CoreShop\Behat\Context\Hook\DoctrineORMContext
+        tags:
+            - { name: fob.context_service }
+        arguments: ['@__symfony_shared__.doctrine.orm.entity_manager']
+
+    coreshop.behat.context.hook.pimcore_dao:
+        class: CoreShop\Behat\Context\Hook\PimcoreDaoContext
+        tags:
+            - { name: fob.context_service }

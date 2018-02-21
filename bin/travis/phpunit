@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/ --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests

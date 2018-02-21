@@ -1,0 +1,9 @@
+default:
+    suites:
+        domain_products:
+            contexts_services:
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.store

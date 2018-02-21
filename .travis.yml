@@ -83,37 +83,11 @@ cache:
         - vendor
 
 before_install:
-    - mysql --version
-    - mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
-    - mysql -e "SET GLOBAL innodb_large_prefix=1;"
-    - mysql -e "CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
-    - mkdir $TRAVIS_BUILD_DIR/../lib
-    - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
-    - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
-    - rm -rf $TRAVIS_BUILD_DIR/{.[!.],}*
-    - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
-    - git checkout ${PIMCORE_BRANCH} $TRAVIS_BUILD_DIR
-    - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gitlab-ci/php.ini
+    - bin/travis/setup/before_install
 
 install:
-    # add config templates
-    - mkdir -p var/config
-    - cp .travis/system.template.php var/config/system.php
-    - cp app/config/parameters.example.yml app/config/parameters.yml
-    - composer remove vrana/jush --no-scripts
-    - if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3; fi
-    - if [ $PIMCORE_BRANCH == "tags/v5.1.1" ]; then composer require symfony/symfony:3.4.3; fi
-    - composer install
-
-    # Add path to CoreShop
-    - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
-
-    - composer require doctrine/instantiator:1.0.5
-    # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
-    # this test is kinda stupid
-    - composer require coreshop/core-shop dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT --dev
-    - composer require symfony/phpunit-bridge:^3.3
-    - composer update
+    - bin/travis/setup/install
 
 script:
-    - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/ --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
+    - bin/travis/setup/script
+s

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+vendor/bin/behat --config lib/CoreShop/behat.yml.dist -vvv

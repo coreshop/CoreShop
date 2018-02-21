@@ -1,0 +1,2 @@
+imports:
+    - suites/domain/product/products.yml

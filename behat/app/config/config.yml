@@ -1,0 +1,10 @@
+imports:
+  - { resource: parameters.yml }
+  - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    profiler:
+        collect: false

@@ -1,0 +1,23 @@
+services:
+    coreshop.behat.context.setup.product:
+        class: CoreShop\Behat\Context\Setup\ProductContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.factory.product'
+            - '@__symfony__.coreshop.repository.product'
+            - '@__symfony__.coreshop.product.price_calculator'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.store:
+        class: CoreShop\Behat\Context\Setup\StoreContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.store'
+            - '@__symfony__.coreshop.repository.store'
+            - '@__symfony__.coreshop.factory.currency'
+            - '@__symfony__.coreshop.factory.country'
+            - '@__symfony__.coreshop.context.store.fixed'
+        tags:
+            - { name: fob.context_service }

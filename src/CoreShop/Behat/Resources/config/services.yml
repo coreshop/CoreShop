@@ -1,0 +1,7 @@
+imports:
+    - { resource: "services/contexts.yml" }
+
+
+services:
+    coreshop.behat.shared_storage:
+        class: CoreShop\Behat\Service\SharedStorage
