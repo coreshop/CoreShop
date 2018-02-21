@@ -224,7 +224,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
 
         if (is_array($data)) {
             foreach ($data as $storePrice) {
-                $queryResource[] = $storePrice['id'] . '-' . $storePrice['price'];
+                $queryResource[] = $storePrice;
             }
         }
 
