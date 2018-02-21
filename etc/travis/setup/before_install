@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-chmod -R +x lib/CoreShop/etc/travis
-
 mysql --version
 mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
 mysql -e "SET GLOBAL innodb_large_prefix=1;"
@@ -22,5 +20,6 @@ mkdir $TRAVIS_BUILD_DIR/lib
 mv $TRAVIS_BUILD_DIR/../lib/CoreShop $TRAVIS_BUILD_DIR/lib/CoreShop
 
 cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc $TRAVIS_BUILD_DIR/etc
+chmod -R +x lib/CoreShop/etc/travis
 
 phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gitlab-ci/php.ini
