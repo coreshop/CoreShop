@@ -1,0 +1,7 @@
+services:
+    coreshop.behat.context.transform.product:
+        class: CoreShop\Behat\Context\Transform\ProductContext
+        arguments:
+            - '@__symfony__.coreshop.repository.product'
+        tags:
+            - { name: fob.context_service }

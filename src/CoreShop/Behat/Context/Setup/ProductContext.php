@@ -39,46 +39,31 @@ final class ProductContext implements Context
      */
     private $productRepository;
 
-    /**
-     * @var ProductPriceCalculatorInterface
-     */
-    private $productPriceCalculator;
 
     /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $productFactory
      * @param ProductRepositoryInterface $productRepository
-     * @param ProductPriceCalculatorInterface $productPriceCalculator
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
-        ProductRepositoryInterface $productRepository,
-        ProductPriceCalculatorInterface $productPriceCalculator
+        ProductRepositoryInterface $productRepository
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
-        $this->productPriceCalculator = $productPriceCalculator;
     }
 
     /**
      * @Given /^the site has a product "([^"]+)" priced at ([^"]+)$/
      */
-    public function storeHasAProductPricedAt($productName, $price = 100, StoreInterface $store = null)
+    public function siteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
     {
         $product = $this->createProduct($productName, $price, $store);
 
         $this->saveProduct($product);
-    }
-
-    /**
-     * @Then Product should be priced :price
-     */
-    public function productShouldBePriced(int $price)
-    {
-        Assert::same(intval($price), $this->productPriceCalculator->getPrice($this->sharedStorage->get('product')));
     }
 
     /**
@@ -88,7 +73,7 @@ final class ProductContext implements Context
      *
      * @return ProductInterface
      */
-    private function createProduct($productName, $price = 100, StoreInterface $store = null)
+    private function createProduct(string $productName, int $price = 100, StoreInterface $store = null)
     {
         if (null === $store && $this->sharedStorage->has('store')) {
             $store = $this->sharedStorage->get('store');
@@ -99,7 +84,7 @@ final class ProductContext implements Context
 
         $product->setKey($productName);
         $product->setParent(Folder::getByPath('/'));
-        $product->setName($productName);
+        $product->setName($productName, 'en');
 
         if (null !== $store) {
             $product->setStores([$store->getId()]);
