@@ -117,4 +117,4 @@ class AppExtension extends AbstractModelExtension
  >  - CoreShopOrderItem
  >  - CoreShopQuoteItem
  >
- > Check for the product field and add your new SetProduct there as allowed references.
+ > Check for the product field and add your new ProductSet there as allowed references.
