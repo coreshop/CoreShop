@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-lib/CoreShop/bin/travis/phpunit
-lib/CoreShop/bin/travis/behat
+../phpunit
+../behat
