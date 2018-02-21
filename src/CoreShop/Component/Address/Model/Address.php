@@ -17,17 +17,6 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class Address extends AbstractPimcoreModel implements AddressInterface
 {
-    public $firstname;
-    public $lastname;
-    public $company;
-    public $street;
-    public $number;
-    public $postcode;
-    public $city;
-    public $country;
-    public $state;
-    public $phoneNumber;
-
     /**
      * {@inheritdoc}
      */

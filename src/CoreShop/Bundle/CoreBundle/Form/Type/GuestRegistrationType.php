@@ -43,12 +43,16 @@ class GuestRegistrationType extends AbstractType
                 'label' => 'coreshop.form.customer_registration.address',
                 'label_attr' => [
                     'class' => 'cs-address'
+                ],
+                'constraints' => [
+                    new Valid(['groups' => ['coreshop']])
                 ]
             ])
             ->add('termsAccepted', CheckboxType::class, array(
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
-                'constraints' => new IsTrue(),
+                'validation_groups' => ['coreshop_customer_guest'],
+                'constraints' => new IsTrue(['groups' => ['coreshop_customer_guest']]),
             ))
             ->add('submit', SubmitType::class);
     }

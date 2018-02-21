@@ -48,6 +48,13 @@ class CustomerType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('gender', ChoiceType::class, [
+                'label' => 'coreshop.form.customer.gender',
+                'choices' => array(
+                    'coreshop.form.customer.gender.male' => 'male',
+                    'coreshop.form.customer.gender.female' => 'female'
+                ),
+            ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.customer.firstname'
             ])
@@ -56,6 +63,7 @@ class CustomerType extends AbstractResourceType
             ])
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
+                'invalid_message' => 'coreshop.form.customer.email.must_match',
                 'first_options' => ['label' => 'coreshop.form.customer.email'],
                 'second_options' => ['label' => 'coreshop.form.customer.email_repeat']
             ]);
@@ -64,6 +72,7 @@ class CustomerType extends AbstractResourceType
             $builder
                 ->add('password', RepeatedType::class, [
                     'type' => PasswordType::class,
+                    'invalid_message' => 'coreshop.form.customer.password.must_match',
                     'first_options' => ['label' => 'coreshop.form.customer.password'],
                     'second_options' => ['label' => 'coreshop.form.customer.password_repeat']
                 ]);
@@ -76,19 +85,12 @@ class CustomerType extends AbstractResourceType
             ]);
         }
 
-        $builder
-            ->add('gender', ChoiceType::class, [
-                'label' => 'coreshop.form.customer.gender',
-                'choices' => array(
-                    'coreshop.form.customer.gender.male' => 'male',
-                    'coreshop.form.customer.gender.female' => 'female'
-                ),
-            ]);
-
         if (!$options['guest']) {
             $builder
                 ->add('newsletterActive', ChoiceType::class, [
                     'label' => 'coreshop.form.customer.newsletter',
+                    'required' => false,
+                    'placeholder' => 'coreshop.form.customer.newsletter.no_interaction',
                     'choices' => array(
                         'coreshop.form.customer.newsletter.subscribe' => true,
                         'coreshop.form.customer.newsletter.unsubscribe' => false

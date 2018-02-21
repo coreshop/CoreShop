@@ -941,6 +941,30 @@ translations:
           en: 'Female'
           de: 'Weiblich'
 
+  coreshop.form.customer.newsletter:
+      languages:
+          de_CH: 'Newsletter'
+          en: 'Newsletter'
+          de: 'Newsletter'
+
+  coreshop.form.customer.newsletter.no_interaction:
+      languages:
+          de_CH: 'Überspringen'
+          en: 'Skip'
+          de: 'Überspringen'
+
+  coreshop.form.customer.newsletter.subscribe:
+      languages:
+          de_CH: 'Abonnieren'
+          en: 'Subscribe'
+          de: 'Abonnieren'
+
+  coreshop.form.customer.newsletter.unsubscribe:
+      languages:
+          de_CH: 'Abmelden'
+          en: 'Unsubscribe'
+          de: 'Abmelden'
+
   coreshop.form.login.username:
       languages:
           de_CH: 'Benutzername'

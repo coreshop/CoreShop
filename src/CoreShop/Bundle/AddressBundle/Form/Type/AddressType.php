@@ -54,6 +54,7 @@ final class AddressType extends AbstractResourceType
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'coreshop.form.address.phone_number',
+                'required' => false
             ])
             ->add('_redirect', HiddenType::class, array(
                 'mapped' => false,
