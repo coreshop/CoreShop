@@ -21,4 +21,6 @@ git checkout ${PIMCORE_BRANCH} $TRAVIS_BUILD_DIR
 mkdir $TRAVIS_BUILD_DIR/lib
 mv $TRAVIS_BUILD_DIR/../lib/CoreShop $TRAVIS_BUILD_DIR/lib/CoreShop
 
+cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc $TRAVIS_BUILD_DIR/etc
+
 phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gitlab-ci/php.ini
