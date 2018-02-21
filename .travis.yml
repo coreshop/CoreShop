@@ -83,11 +83,10 @@ cache:
         - vendor
 
 before_install:
-    - bin/travis/setup/before_install
+    - lib/CoreShop/bin/travis/setup/before_install
 
 install:
-    - bin/travis/setup/install
+    - lib/CoreShop/bin/travis/setup/install
 
 script:
-    - bin/travis/setup/script
-s
+    - lib/CoreShop/bin/travis/setup/script
