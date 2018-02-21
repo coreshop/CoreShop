@@ -89,4 +89,5 @@ install:
     - etc/travis/setup/install
 
 script:
-    - etc/travis/setup/script
+    - etc/travis/phpunit
+    - etc/travis/behat
