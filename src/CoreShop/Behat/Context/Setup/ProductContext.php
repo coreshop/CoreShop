@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
@@ -59,9 +60,19 @@ final class ProductContext implements Context
     /**
      * @Given /^the site has a product "([^"]+)" priced at ([^"]+)$/
      */
-    public function siteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
+    public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
     {
         $product = $this->createProduct($productName, $price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") is in (category "[^"]+")$/
+     */
+    public function theProductIsInCategory(ProductInterface $product, CategoryInterface $category)
+    {
+        $product->setCategories([$category]);
 
         $this->saveProduct($product);
     }
@@ -82,7 +93,7 @@ final class ProductContext implements Context
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
-        $product->setKey($productName);
+        $product->setKey($productName . uniqid());
         $product->setParent(Folder::getByPath('/'));
         $product->setName($productName, 'en');
 

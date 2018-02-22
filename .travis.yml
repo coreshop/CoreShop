@@ -131,6 +131,8 @@ env:
         - CORESHOP_MYSQL_HOST=127.0.0.1
         - CORESHOP_MYSQL_DB=coreshop_phpunit
         - CORESHOP_MYSQL_USER=root
+        - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
+
 cache:
     directories:
         - ~/.composer/cache/files

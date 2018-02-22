@@ -10,3 +10,13 @@ services:
         class: CoreShop\Behat\Context\Hook\PimcoreDaoContext
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.hook.pimcore_setup:
+        class: CoreShop\Behat\Context\Hook\PimcoreSetupContext
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.hook.coreshop_setup:
+        class: CoreShop\Behat\Context\Hook\CoreShopSetupContext
+        tags:
+            - { name: fob.context_service }

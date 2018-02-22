@@ -13,39 +13,38 @@
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
-final class ProductContext implements Context
+final class CategoryContext implements Context
 {
     /**
-     * @var ProductRepositoryInterface
+     * @var CategoryRepositoryInterface
      */
-    private $productRepository;
+    private $categoryRepository;
 
     /**
-     * @param ProductRepositoryInterface $productRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
-     * @Transform /^product(?:|s) "([^"]+)"$/
-     * @Transform /^"([^"]+)" product(?:|s)$/
+     * @Transform /^category(?:|s) "([^"]+)"$/
      */
-    public function getProductByName($productName)
+    public function getCategoryByName($categoryName)
     {
-        $list = $this->productRepository->getList();
+        $list = $this->categoryRepository->getList();
         $list->setLocale('en');
-        $list->setCondition('name = ?', [$productName]);
+        $list->setCondition('name = ?', [$categoryName]);
         $list->load();
 
         Assert::eq(
             count($list->getObjects()),
             1,
-            sprintf('%d products has been found with name "%s".', count($list->getObjects()), $productName)
+            sprintf('%d categories has been found with name "%s".', count($list->getObjects()), $categoryName)
         );
 
         return reset($list->getObjects());

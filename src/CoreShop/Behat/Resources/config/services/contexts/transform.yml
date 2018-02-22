@@ -5,3 +5,32 @@ services:
             - '@__symfony__.coreshop.repository.product'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.category:
+        class: CoreShop\Behat\Context\Transform\CategoryContext
+        arguments:
+            - '@__symfony__.coreshop.repository.category'
+        tags:
+            - { name: fob.context_service }
+
+
+    coreshop.behat.context.transform.product_specific_price_rule:
+        class: CoreShop\Behat\Context\Transform\ProductSpecificPriceRuleContext
+        arguments:
+            - '@__symfony__.coreshop.repository.product_specific_price_rule'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.country:
+        class: CoreShop\Behat\Context\Transform\CountryContext
+        arguments:
+            - '@__symfony__.coreshop.repository.country'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.currency:
+        class: CoreShop\Behat\Context\Transform\CurrencyContext
+        arguments:
+            - '@__symfony__.coreshop.repository.currency'
+        tags:
+            - { name: fob.context_service }

@@ -19,11 +19,14 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
+use CoreShop\Component\Product\Model\ProductSpecificPriceRule;
+use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
-final class ProductContext implements Context
+final class ProductSpecificPriceRuleContext implements Context
 {
     /**
      * @var SharedStorageInterface
@@ -31,44 +34,36 @@ final class ProductContext implements Context
     private $sharedStorage;
 
     /**
-     * @var ProductRepositoryInterface
+     * @var RuleValidationProcessorInterface
      */
-    private $productRepository;
-
-    /**
-     * @var ProductPriceCalculatorInterface
-     */
-    private $productPriceCalculator;
+    private $ruleValidationProcessor;
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ProductRepositoryInterface $productRepository
-     * @param ProductPriceCalculatorInterface $productPriceCalculator
+     * @param RuleValidationProcessorInterface $ruleValidationProcessor
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ProductRepositoryInterface $productRepository,
-        ProductPriceCalculatorInterface $productPriceCalculator
+        RuleValidationProcessorInterface $ruleValidationProcessor
     )
     {
         $this->sharedStorage = $sharedStorage;
-        $this->productRepository = $productRepository;
-        $this->productPriceCalculator = $productPriceCalculator;
+        $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
     /**
-     * @Then /^the (product "[^"]+") should be priced at ([^"]+)$/
+     * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be valid$/
      */
-    public function productShouldBePriced(ProductInterface $product, int $price)
+    public function theSpecificPriceRuleForProductShouldBeValid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getPrice($product));
+        Assert::true($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, []));
     }
 
     /**
-     * @Then /^the (product "[^"]+") should be in (category "[^"]+")$/
+     * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be invalid$/
      */
-    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category)
+    public function theSpecificPriceRuleForProductShouldBeInvalid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {
-        Assert::oneOf($category, $product->getCategories());
+        Assert::false($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, []));
     }
 }

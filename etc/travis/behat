@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
+# PIMCORE_TEST_DB_DSN=mysql://coreshop2:coreshop2@localhost/coreshop2___behat
 vendor/bin/behat --config lib/CoreShop/behat.yml.dist -vvv

@@ -10,7 +10,7 @@ default:
             kernel:
                 class: TestAppKernel
                 path: lib/CoreShop/tests/app/TestAppKernel.php
-                bootstrap: lib/CoreShop/tests/bootstrap.php
+                bootstrap: lib/CoreShop/tests/behat-bootstrap.php
 
         FriendsOfBehat\ContextServiceExtension:
             imports:

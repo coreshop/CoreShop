@@ -8,6 +8,16 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.setup.product_specific_price_rule:
+        class: CoreShop\Behat\Context\Setup\ProductSpecificPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.product_specific_price_rule'
+            - '@__symfony__.coreshop.repository.product_specific_price_rule'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.setup.store:
         class: CoreShop\Behat\Context\Setup\StoreContext
         arguments:
@@ -18,5 +28,36 @@ services:
             - '@__symfony__.coreshop.factory.currency'
             - '@__symfony__.coreshop.factory.country'
             - '@__symfony__.coreshop.context.store.fixed'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.category:
+        class: CoreShop\Behat\Context\Setup\CategoryContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.factory.category'
+            - '@__symfony__.coreshop.repository.category'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.country:
+        class: CoreShop\Behat\Context\Setup\CountryContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.country'
+            - '@__symfony__.coreshop.repository.country'
+            - '@__symfony__.coreshop.context.country.fixed'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.currency:
+        class: CoreShop\Behat\Context\Setup\CurrencyContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.currency'
+            - '@__symfony__.coreshop.repository.currency'
+            - '@__symfony__.coreshop.context.currency.fixed'
         tags:
             - { name: fob.context_service }

@@ -6,6 +6,11 @@ mkdir -p var/config
 cp .travis/system.template.php var/config/system.php
 cp app/config/parameters.example.yml app/config/parameters.yml
 
+# add config templates
+mkdir -p var/config
+cp $TRAVIS_BUILD_DIR/lib/CoreShop/.travis/config/system.template.php var/config/system.php
+cp app/config/parameters.example.yml app/config/parameters.yml
+
 # Remove vrana/jush as its only causing problems
 composer remove vrana/jush --no-scripts
 
