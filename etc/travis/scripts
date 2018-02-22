@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-$TRAVIS_BUILD_DIR/etc/travis/phpunit
-
 if [ $CORESHOP_SKIP_BEHAT == 0 ]; then
     $TRAVIS_BUILD_DIR/etc/travis/behat
 fi
+
+$TRAVIS_BUILD_DIR/etc/travis/phpunit

@@ -9,5 +9,4 @@ require __DIR__ . '/app/TestAppKernel.php';
 $loader->add('CoreShop\Test', [__DIR__.'/lib']);
 
 $kernel = new TestAppKernel('test', true);
-Pimcore::setKernel($kernel);
 $kernel->boot();
