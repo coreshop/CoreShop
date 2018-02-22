@@ -124,7 +124,8 @@ class Data
     public static function createData()
     {
         //Clear Database
-        \Pimcore::getContainer()->get('coreshop.test.purger')->purge();
+        $purger = new PurgeDatabase(\Pimcore::getContainer()->get('doctrine.orm.entity_manager'));
+        $purger->purge();
 
         //Install Fixtures
         $parameters = array_merge(

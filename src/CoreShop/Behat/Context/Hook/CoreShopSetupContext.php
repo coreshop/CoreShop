@@ -28,8 +28,10 @@ final class CoreShopSetupContext implements Context
      */
     public static function setupPimcore()
     {
-        return;
-        $installer = \Pimcore::getContainer()->get(Installer::class);
-        $installer->install();
+        if (getenv('CORESHOP_SKIP_DB_SETUP')) {
+            return;
+        }
+
+        \CoreShop\Test\Setup::setupCoreShop();
     }
 }

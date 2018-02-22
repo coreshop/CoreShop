@@ -25,14 +25,6 @@ class TestAppKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function getProjectDir()
-    {
-        return '../';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function boot()
     {
         parent::boot();
@@ -50,13 +42,6 @@ class TestAppKernel extends Kernel
         $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
             $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
             $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MonologChannelLoggerPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
-
-            $purgerDefinition = new \Symfony\Component\DependencyInjection\Definition(\CoreShop\Test\PurgeDatabase::class);
-            $purgerDefinition->setArguments([
-                new \Symfony\Component\DependencyInjection\Reference('doctrine.orm.entity_manager')
-            ]);
-
-            $container->setDefinition('coreshop.test.purger', $purgerDefinition);
         });
     }
 }

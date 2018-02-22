@@ -103,7 +103,7 @@
       "CoreShop\\Bundle\\": "src/CoreShop/Bundle",
       "CoreShop\\Component\\": "src/CoreShop/Component",
       "CoreShop\\Behat\\": "src/CoreShop/Behat/",
-      "CoreShop\\Test\\": "tests/lib/CoreShop/test/CoreShop"
+      "CoreShop\\Test\\": "tests/lib/CoreShop/test"
     }
   },
   "extra": {

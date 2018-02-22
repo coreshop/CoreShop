@@ -27,39 +27,10 @@ final class PimcoreSetupContext implements Context
      */
     public static function setupPimcore()
     {
-        return;
-        $connection = \Pimcore::getContainer()->get('database_connection');
-        
-        $dbName = $connection->getParams()['dbname'];
-        $params = $connection->getParams();
-        $config = $connection->getConfiguration();
-
-        unset($params['url']);
-        unset($params['dbname']);
-
-        // use a dedicated setup connection as the framework connection is bound to the DB and will
-        // fail if the DB doesn't exist
-        $setupConnection = DriverManager::getConnection($params, $config);
-        $schemaManager   = $setupConnection->getSchemaManager();
-
-        $databases = $schemaManager->listDatabases();
-        if (in_array($dbName, $databases)) {
-            $schemaManager->dropDatabase($connection->quoteIdentifier($dbName));
+        if (getenv('CORESHOP_SKIP_DB_SETUP')) {
+            return;
         }
 
-        $schemaManager->createDatabase($connection->quoteIdentifier($dbName));
-
-
-        if (!$connection->isConnected()) {
-            $connection->connect();
-        }
-
-        $setup = new Setup();
-        $setup->database();
-
-        $setup->contents([
-            'username' => 'admin',
-            'password' => microtime()
-        ]);
+        \CoreShop\Test\Setup::setupPimcore();
     }
 }
