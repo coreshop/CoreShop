@@ -22,53 +22,107 @@ matrix:
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.1.0"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.0"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.1.0"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.0"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.0"
+            - CORESHOP_SKIP_BEHAT=0
 
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.1.1"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.1"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.1.1"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.1"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.1"
+            - CORESHOP_SKIP_BEHAT=0
 
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.1.2"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.1.2"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=0
 
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.1.3"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.1.3"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=0
 
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="master"
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="master"
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=0
 
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=0
 
 env:
     global:
@@ -89,5 +143,4 @@ install:
     - etc/travis/setup/install
 
 script:
-    - etc/travis/phpunit
-    - etc/travis/behat
+    - etc/travis/scripts

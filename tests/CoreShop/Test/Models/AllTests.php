@@ -59,6 +59,9 @@ class AllTests extends SuiteBase
             $suite->addTestSuite($test);
         }
 
+        echo "Install Test Data:\n";
+        \CoreShop\Test\Data::createData();
+
         return $suite;
     }
 }

@@ -53,6 +53,7 @@ if (!defined('PIMCORE_PROJECT_ROOT')) {
 if (file_exists('pimcore/config/bootstrap.php'))
     require_once 'pimcore/config/bootstrap.php';
 
+
 include_once CORESHOP_TESTS_PATH . '/app/TestAppKernel.php';
 
 /*
@@ -96,6 +97,18 @@ define('PIMCORE_ORIG_PRIVATE_VAR', PIMCORE_PROJECT_ROOT.'/var/config');
 define('PIMCORE_ADMIN', true);
 define('PIMCORE_DEBUG', true);
 define('PIMCORE_DEVMODE', true);
+
+$kernel = new TestAppKernel('test', true);
+Pimcore::setKernel($kernel);
+
+if (file_exists(PIMCORE_PRIVATE_VAR . '/config/system.php')) {
+
+    rrmdir(PIMCORE_PRIVATE_VAR . "/cache");
+
+    $kernel->boot();
+
+    return;
+}
 
 if (!file_exists(PIMCORE_PRIVATE_VAR)) {
     mkdir(PIMCORE_PRIVATE_VAR, 0777, true); //for first run
@@ -188,9 +201,8 @@ $setup->config([
     'email' => ['debug' => ['emailaddresses' => 'travis@coreshop.org']],
 ]);
 
-$kernel = new TestAppKernel('dev', true);
+
 $kernel->boot();
-Pimcore::setKernel($kernel);
 
 //Start Session before output started
 $kernel->getContainer()->get('session')->start();
@@ -222,29 +234,7 @@ $includePaths = [
     get_include_path(),
 ];
 
-//install CoreShop
-//$install = new \CoreShop\Plugin\Install();
-//$install->executeSQL('CoreShop');
-//$install->executeSQL('CoreShop-States');
-//$install->createConfig();
-//$install->fullInstall();
-
-//\CoreShop\Model\Product::$unitTests = true;
-
 echo "\n\nInstall CoreShop";
-/*$bundleManager = \Pimcore::getContainer()->get('pimcore.extension.bundle_manager');
-$assetsInstaller = \Pimcore::getContainer()->get('pimcore.tool.assets_installer');
-$bundleId = 'CoreShop\Bundle\AdminBundle\CoreShopAdminBundle';
-
-$bundleManager->setState($bundleId, true);
-$bundle = $bundleManager->getActiveBundle($bundleId);
-$bundleManager->install($bundle);
-
-try {
-    $installProcess = $assetsInstaller->install();
-} catch (\Symfony\Component\Process\Exception\ProcessFailedException $e) {
-    throw $e;
-}*/
 
 $fs = new \Symfony\Component\Filesystem\Filesystem();
 $fs->mkdir($kernel->getContainer()->getParameter('kernel.project_dir').'/public');
@@ -254,14 +244,3 @@ $installer->install();
 
 \Pimcore\Cache::clearAll();
 \Pimcore\Cache\Runtime::clear();
-
-//\Pimcore\ExtensionManager::enable("plugin", "CoreShop");
-//\Pimcore\API\Plugin\Broker::getInstance()->registerPlugin(new \CoreShop\Plugin());
-
-\CoreShop\Test\Data::createData(); //TODO: will be done using Fixtures in future
-
-/*
- * bootstrap is done, phpunit_pimcore is up and running.
- * It has a database, admin user and a complete config.
- * We can start running our tests against the phpunit_pimcore instance
- */

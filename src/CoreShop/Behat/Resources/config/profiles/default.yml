@@ -9,8 +9,8 @@ default:
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 class: TestAppKernel
-                path: lib/CoreShop/behat/app/TestAppKernel.php
-                bootstrap: lib/CoreShop/behat/bootstrap.php
+                path: lib/CoreShop/tests/app/TestAppKernel.php
+                bootstrap: lib/CoreShop/tests/bootstrap.php
 
         FriendsOfBehat\ContextServiceExtension:
             imports:

@@ -233,7 +233,7 @@ class NotificationRule extends RuleTest
         $this->assertConditionForm(CarriersConfigurationType::class, 'order.carriers');
 
         $condition = $this->createConditionWithForm('order.carriers', [
-            'carriers' => [Data::$carrier1],
+            'carriers' => [Data::$carrier1->getId()],
         ]);
 
         $order = $this->createOrder();

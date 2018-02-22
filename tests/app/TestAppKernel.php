@@ -24,6 +24,13 @@ class TestAppKernel extends Kernel
         return '../';
     }
 
+    public function boot()
+    {
+        parent::boot();
+
+        \Pimcore::setKernel($this);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,6 +40,13 @@ class TestAppKernel extends Kernel
 
         $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
             $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
+
+            $purgerDefinition = new \Symfony\Component\DependencyInjection\Definition(\CoreShop\Test\PurgeDatabase::class);
+            $purgerDefinition->setArguments([
+                new \Symfony\Component\DependencyInjection\Reference('doctrine.orm.entity_manager')
+            ]);
+
+            $container->setDefinition('coreshop.test.purger', $purgerDefinition);
         });
     }
 }
