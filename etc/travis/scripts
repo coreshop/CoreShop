@@ -1,5 +1,5 @@
-phpunit
+$TRAVIS_BUILD_DIR/etc/travis/phpunit
 
 if [ $CORESHOP_SKIP_BEHAT == 0 ]; then
-    behat
+    $TRAVIS_BUILD_DIR/etc/travis/behat
 fi
