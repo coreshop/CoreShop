@@ -4,7 +4,7 @@ set -e
 # add config templates
 mkdir -p var/config
 cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/system.template.php var/config/system.php
-cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/config.yml app/config/config.yml
+cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/config_test.yml app/config/config_test.yml
 cp app/config/parameters.example.yml app/config/parameters.yml
 
 # Remove vrana/jush as its only causing problems
