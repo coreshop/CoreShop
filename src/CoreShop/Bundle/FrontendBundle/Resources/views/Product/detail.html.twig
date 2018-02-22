@@ -94,7 +94,7 @@
                 {{ product_price.display_product_price(product) }}
             </div>
             <div class="tax">
-                {{ 'incl. %s%% Tax'|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+                {{ 'incl.'|trans ~ ' %s%% '|format(product|coreshop_product_tax_rate) ~ 'Tax'|trans }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
             </div>
 
             <hr/>
