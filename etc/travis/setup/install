@@ -29,4 +29,4 @@ fi
 composer update
 
 
-cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/config_test.yml app/config/config_test.yml
+cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/config.yml app/config/config.yml
