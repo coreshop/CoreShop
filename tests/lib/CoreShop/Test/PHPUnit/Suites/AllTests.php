@@ -14,18 +14,18 @@ namespace CoreShop\Test\PHPUnit\Suites;
 
 use CoreShop\Test\Setup;
 use CoreShop\Test\SuiteBase;
+use PHPUnit\Framework\TestSuite;
 
 class AllTests extends SuiteBase
 {
-    /**
-     * @return AllTests
-     */
     public static function suite()
     {
+        self::bootKernel();
+
         Setup::setupPimcore();
         Setup::setupCoreShop();
 
-        $suite = new self('Models');
+        $suite = new TestSuite('Models');
 
         $tests = [
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Carrier',
