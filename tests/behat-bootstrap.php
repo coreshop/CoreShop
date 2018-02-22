@@ -22,4 +22,9 @@ define('PIMCORE_TEST', true);
 require_once PIMCORE_PROJECT_ROOT . '/pimcore/tests/_support/Util/Autoloader.php';
 require_once PIMCORE_PROJECT_ROOT . '/pimcore/config/bootstrap.php';
 
+/**
+ * @var $loader \Composer\Autoload\ClassLoader
+ */
+$loader->add('CoreShop\Test', [__DIR__.'/lib']);
+
 Autoloader::addNamespace('Pimcore\Model\DataObject', __DIR__ . '/tmp/var/classes/DataObject');
