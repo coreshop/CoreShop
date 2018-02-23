@@ -14,15 +14,15 @@ Feature: Adding a new Product
     Then the product "Shoe" should be priced at 100
     Then I should be logged in with email "some-customer@something.com"
 
-  Scenario: Add a new country product specific price rule which is valid
+  Scenario: Add a new customer product specific price rule which is valid
     Given adding a product specific price rule to product "Shoe" named "customer-discount"
-    Given the specific price rule "customer-discount" is active
-    Given the specific price rule "customer-discount" has a condition customers with customer "some-customer@something.com"
-    Then the specific price rule "customer-discount" for product "Shoe" should be valid
+    And it is active
+    And it has a condition customers with customer "some-customer@something.com"
+    Then it should be valid for product "Shoe"
 
-  Scenario: Add a new country product specific price rule which is invalid
-    Given adding a product specific price rule to product "Shoe" named "customer-discount"
-    Given the specific price rule "customer-discount" is active
+  Scenario: Add a new customer product specific price rule which is invalid
     Given the site has a customer "some-other-customer@something.com"
-    Given the specific price rule "customer-discount" has a condition customers with customer "some-other-customer@something.com"
-    Then the specific price rule "customer-discount" for product "Shoe" should be invalid
+    Given adding a product specific price rule to product "Shoe" named "customer-discount"
+    And it is active
+    And it has a condition customers with customer "some-other-customer@something.com"
+    Then it should be invalid for product "Shoe"

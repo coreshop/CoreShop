@@ -53,6 +53,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
     /**
      * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be valid$/
+     * @Then /^([^"]+) should be valid for (product "[^"]+")$/
      */
     public function theSpecificPriceRuleForProductShouldBeValid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {
@@ -61,6 +62,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
     /**
      * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be invalid$/
+     * @Then /^([^"]+) should be invalid for (product "[^"]+")$/
      */
     public function theSpecificPriceRuleForProductShouldBeInvalid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {

@@ -79,10 +79,13 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
+
+        $this->sharedStorage->set('product-specific-price-rule', $rule);
     }
 
     /**
      * @Given /^the (specific price rule "[^"]+") is active$/
+     * @Given /^([^"]+) is active$/
      */
     public function theProductsSpecificPriceRuleIsActive(ProductSpecificPriceRuleInterface $rule)
     {
@@ -94,6 +97,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
     /**
      * @Given /^the (specific price rule "[^"]+") is inactive$/
+     * @Given /^([^"]+) is inactive$/
      */
     public function theProductsSpecificPriceRuleIsInActive(ProductSpecificPriceRuleInterface $rule)
     {
@@ -105,6 +109,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
     /**
      * @Given /^the (specific price rule "[^"]+") has a condition countries with (country "[^"]+")$/
+     * @Given /^([^"]+) has a condition countries with (country "[^"]+")$/
      */
     public function theProductsSpecificPriceRuleHasACategoryCondition(ProductSpecificPriceRuleInterface $rule, CountryInterface $country)
     {
@@ -123,6 +128,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
     /**
      * @Given /^the (specific price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
+     * @Given /^([^"]+) has a condition customers with (customer "[^"]+")$/
      */
     public function theProductsSpecificPriceRuleHasACCustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer)
     {
