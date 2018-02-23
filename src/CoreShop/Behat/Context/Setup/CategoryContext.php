@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 
 final class CategoryContext implements Context
@@ -74,7 +75,7 @@ final class CategoryContext implements Context
         /** @var CategoryInterface $category */
         $category = $this->categoryFactory->createNew();
 
-        $category->setKey($categoryName);
+        $category->setKey(File::getValidFilename($categoryName));
         $category->setParent(Folder::getByPath('/'));
         $category->setName($categoryName, 'en');
 

@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Context\FixedCustomerContext;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 
 final class CustomerContext implements Context
@@ -88,7 +89,7 @@ final class CustomerContext implements Context
         /** @var CustomerInterface $customer*/
         $customer = $this->customerFactory->createNew();
 
-        $customer->setKey($email);
+        $customer->setKey(File::getValidFilename($email));
         $customer->setParent(Folder::getByPath('/'));
         $customer->setEmail($email);
         $customer->setFirstname(reset(explode('@', $email)));

@@ -20,6 +20,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
@@ -93,7 +94,7 @@ final class ProductContext implements Context
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
-        $product->setKey($productName . uniqid());
+        $product->setKey(File::getValidFilename($productName));
         $product->setParent(Folder::getByPath('/'));
         $product->setName($productName, 'en');
 
