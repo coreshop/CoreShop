@@ -1,6 +1,7 @@
 @product
 Feature: Adding a new Product
   In order to extend my catalog
+  The product has a specific-price-rule for a country
   I want to create a new product
 
   Background:

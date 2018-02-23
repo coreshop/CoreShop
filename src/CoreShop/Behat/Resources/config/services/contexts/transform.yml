@@ -34,3 +34,10 @@ services:
             - '@__symfony__.coreshop.repository.currency'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.customer:
+        class: CoreShop\Behat\Context\Transform\CustomerContext
+        arguments:
+            - '@__symfony__.coreshop.repository.customer'
+        tags:
+            - { name: fob.context_service }

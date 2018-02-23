@@ -15,11 +15,13 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\Condition;
+use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 final class ProductSpecificPriceRuleContext implements Context
@@ -116,6 +118,33 @@ final class ProductSpecificPriceRuleContext implements Context
         $condition->setType('countries');
         $condition->setConfiguration($configuration);
 
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
+     */
+    public function theProductsSpecificPriceRuleHasACCustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer)
+    {
+        $configuration = [
+            'customers' => [
+                $customer->getId()
+            ]
+        ];
+
+        $condition = new Condition();
+        $condition->setType('customers');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @param ProductSpecificPriceRuleInterface $rule
+     * @param ConditionInterface $condition
+     */
+    private function addCondition(ProductSpecificPriceRuleInterface $rule, ConditionInterface $condition)
+    {
         $rule->addCondition($condition);
 
         $this->objectManager->persist($rule);

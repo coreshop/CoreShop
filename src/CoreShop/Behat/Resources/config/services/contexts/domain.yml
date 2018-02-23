@@ -15,3 +15,11 @@ services:
             - '@__symfony__.coreshop.product_specific_price_rule.processor'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.customer:
+        class: CoreShop\Behat\Context\Domain\CustomerContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.customer'
+        tags:
+            - { name: fob.context_service }

@@ -13,6 +13,7 @@ default:
                 - coreshop.behat.context.transform.category
                 - coreshop.behat.context.transform.country
                 - coreshop.behat.context.transform.currency
+                - coreshop.behat.context.transform.customer
 
                 - coreshop.behat.context.setup.product
                 - coreshop.behat.context.setup.product_specific_price_rule
@@ -20,6 +21,8 @@ default:
                 - coreshop.behat.context.setup.category
                 - coreshop.behat.context.setup.country
                 - coreshop.behat.context.setup.currency
+                - coreshop.behat.context.setup.customer
 
                 - coreshop.behat.context.domain.product
                 - coreshop.behat.context.domain.product_specific_price_rule
+                - coreshop.behat.context.domain.customer

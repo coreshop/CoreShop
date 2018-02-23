@@ -61,3 +61,13 @@ services:
             - '@__symfony__.coreshop.context.currency.fixed'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.customer:
+        class: CoreShop\Behat\Context\Setup\CustomerContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.factory.customer'
+            - '@__symfony__.coreshop.repository.customer'
+            - '@__symfony__.coreshop.context.customer.fixed'
+        tags:
+            - { name: fob.context_service }
