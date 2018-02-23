@@ -62,7 +62,7 @@ class Country extends Base
         $address->setPostcode('4600');
         $address->setFirstname('Dominik');
         $address->setLastname('Pfaffenbauer');
-        $address->setKey('test-address');
+        $address->setKey('test-address' . uniqid());
         $address->setParent(Service::createFolderByPath('/'));
         $address->save();
 

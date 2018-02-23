@@ -28,7 +28,7 @@ class Category extends Base
         $category = $this->getFactory('category')->createNew();
         $category->setName('test');
         $category->setPublished(true);
-        $category->setKey('test-category');
+        $category->setKey('test-category' . uniqid());
         $category->setParent(Service::createFolderByPath('/'));
         $category->save();
 

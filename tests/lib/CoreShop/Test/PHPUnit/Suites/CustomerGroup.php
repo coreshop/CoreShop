@@ -28,7 +28,7 @@ class CustomerGroup extends Base
         $customerGroup = $this->getFactory('customer_group')->createNew();
 
         $customerGroup->setName('TestGroup');
-        $customerGroup->setKey('test-group');
+        $customerGroup->setKey('test-group' . uniqid());
         $customerGroup->setParent(Service::createFolderByPath('/'));
         $customerGroup->save();
 
