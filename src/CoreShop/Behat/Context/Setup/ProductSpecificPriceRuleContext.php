@@ -130,7 +130,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
      * @Given /^([^"]+) has a condition customers with (customer "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACCustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer)
+    public function theProductsSpecificPriceRuleHasACustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer)
     {
         $configuration = [
             'customers' => [
@@ -140,6 +140,27 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $condition = new Condition();
         $condition->setType('customers');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
+     * @Given /^([^"]+) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
+     */
+    public function theProductsSpecificPriceRuleHasATimeSpanCondition(ProductSpecificPriceRuleInterface $rule, $from, $to)
+    {
+        $from = new \DateTime($from);
+        $to = new \DateTime($to);
+
+        $configuration = [
+            'dateFrom' => $from->getTimestamp() * 1000,
+            'dateTo' => $to->getTimestamp() * 1000
+        ];
+
+        $condition = new Condition();
+        $condition->setType('timespan');
         $condition->setConfiguration($configuration);
 
         $this->addCondition($rule, $condition);
