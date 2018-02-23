@@ -27,8 +27,6 @@ class TestAppKernel extends Kernel
      */
     public function boot()
     {
-        echo "booting up Kernel";
-
         parent::boot();
 
         \Pimcore::setKernel($this);

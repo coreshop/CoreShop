@@ -349,7 +349,7 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
     /**
      * {@inheritdoc}
      */
-    public function getTaxes($applyDiscountToTaxValues = true)
+    public function getTaxes()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -573,7 +573,7 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
     /**
      * {@inheritdoc}
      */
-    public function getBaseTaxes($applyDiscountToTaxValues = true)
+    public function getBaseTaxes()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
