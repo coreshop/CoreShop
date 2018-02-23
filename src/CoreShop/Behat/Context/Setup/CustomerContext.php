@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Context\FixedCustomerContext;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
@@ -73,6 +74,17 @@ final class CustomerContext implements Context
     }
 
     /**
+     * @Then /^the (customer "[^"]+") is in (customer-group "[^"]+")$/
+     * @Then /^([^"]+) is in (customer-group "[^"]+")$/
+     */
+    public function theCustomerIsInGroup(CustomerInterface $customer, CustomerGroupInterface $group)
+    {
+        $customer->setCustomerGroups([$group]);
+
+        $this->saveCustomer($customer);
+    }
+
+    /**
      * @Given /^I am (customer "[^"]+")$/
      */
     public function iAmCustomer(CustomerInterface $customer)
@@ -104,5 +116,7 @@ final class CustomerContext implements Context
     private function saveCustomer(CustomerInterface $customer)
     {
         $customer->save();
+
+        $this->sharedStorage->set('customer', $customer);
     }
 }

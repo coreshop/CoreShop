@@ -17,6 +17,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -161,6 +162,25 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $condition = new Condition();
         $condition->setType('timespan');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
+     * @Given /^([^"]+) has a condition customer-groups with (customer-group "[^"]+")$/
+     */
+    public function theProductsSpecificPriceRuleHasACustomerGroupCondition(ProductSpecificPriceRuleInterface $rule, CustomerGroupInterface $group)
+    {
+        $configuration = [
+            'customerGroups' => [
+                $group->getId()
+            ]
+        ];
+
+        $condition = new Condition();
+        $condition->setType('customerGroups');
         $condition->setConfiguration($configuration);
 
         $this->addCondition($rule, $condition);

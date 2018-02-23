@@ -47,3 +47,10 @@ services:
             - '@__symfony__.coreshop.repository.customer'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.customer_group:
+        class: CoreShop\Behat\Context\Transform\CustomerGroupContext
+        arguments:
+            - '@__symfony__.coreshop.repository.customer_group'
+        tags:
+            - { name: fob.context_service }
