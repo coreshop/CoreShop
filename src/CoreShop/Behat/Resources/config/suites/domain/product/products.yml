@@ -32,3 +32,4 @@ default:
                 - coreshop.behat.context.domain.product
                 - coreshop.behat.context.domain.product_specific_price_rule
                 - coreshop.behat.context.domain.customer
+                - coreshop.behat.context.domain.currency

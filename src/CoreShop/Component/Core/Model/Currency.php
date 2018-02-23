@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Currency\Model\Currency as BaseCurrency;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Currency extends BaseCurrency implements CurrencyInterface
@@ -21,6 +22,11 @@ class Currency extends BaseCurrency implements CurrencyInterface
      * @var Collection|CountryInterface[]
      */
     protected $countries;
+
+    public function __construct()
+    {
+        $this->countries = new ArrayCollection();
+    }
 
     /**
      * {@inheritdoc}

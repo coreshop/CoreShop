@@ -53,6 +53,8 @@ class Country extends BaseCountry implements CountryInterface
     {
         $this->currency = $currency;
 
+        $currency->addCountry($this);
+
         return $this;
     }
 }

@@ -14,10 +14,9 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Context\FixedCountryContext;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
-use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\FixedCurrencyContext;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -81,6 +80,25 @@ final class CurrencyContext implements Context
     }
 
     /**
+     * @Given /^I am using (currency "[^"]+")$/
+     */
+    public function iAmUsingCurrency(CurrencyInterface $currency)
+    {
+        $this->fixedCurrencyContext->setCurrency($currency);
+    }
+
+    /**
+     * @Given /^the (currency "[^"]+") is valid for (store "[^"]+")$/
+     * @Given /^([^"]+) is valid for (store "[^"]+")$/
+     */
+    public function currencyIsValidForStore(CurrencyInterface $currency, StoreInterface $store)
+    {
+        foreach ($currency->getCountries() as $country) {
+            $country->addStore($store);
+        }
+    }
+
+    /**
      * @param $name
      * @param $iso
      */
@@ -107,5 +125,7 @@ final class CurrencyContext implements Context
     {
         $this->objectManager->persist($currency);
         $this->objectManager->flush();
+
+        $this->sharedStorage->set('currency', $currency);
     }
 }

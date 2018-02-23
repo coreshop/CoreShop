@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -221,6 +222,25 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $condition = new Condition();
         $condition->setType('zones');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
+     * @Given /^([^"]+) has a condition currencies with (currency "[^"]+")$/
+     */
+    public function theProductsSpecificPriceRuleHasACurrency(ProductSpecificPriceRuleInterface $rule, CurrencyInterface $currency)
+    {
+        $configuration = [
+            'currencies' => [
+                $currency->getId()
+            ]
+        ];
+
+        $condition = new Condition();
+        $condition->setType('currencies');
         $condition->setConfiguration($configuration);
 
         $this->addCondition($rule, $condition);
