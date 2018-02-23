@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class Base extends TestCase
+abstract class Base extends TestCase
 {
     /**
      * Print Test Name.
