@@ -14,7 +14,7 @@ namespace CoreShop\Test\PHPUnit\Suites;
 
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Test\Base;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\DataObject\Service;
 
 class Category extends Base
 {

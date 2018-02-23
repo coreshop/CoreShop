@@ -16,7 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
-use Pimcore\Model\Object\Service;
+use Pimcore\Model\DataObject\Service;
 
 class Country extends Base
 {
