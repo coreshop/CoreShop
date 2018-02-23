@@ -30,3 +30,6 @@ composer update
 
 
 cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/config.yml app/config/config.yml
+
+bin/console cache:clear --no-warmup --env=test
+bin/console cache:clear --no-warmup --env=prod
