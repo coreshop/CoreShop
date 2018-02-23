@@ -96,15 +96,30 @@ final class StoreContext implements Context
     /**
      * @Given the site operates on a store in "Austria"
      */
-    public function storeOperatesOnASingleChannelInUnitedStates()
+    public function storeOperatesOnASingleChannelInAustria()
     {
-        $this->createStore('Austria');
+        $store = $this->createStore('Austria');
+
+        $this->fixedStoreContext->setStore($store);
+
+        $this->saveStore($store);
+    }
+
+    /**
+     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$/
+     */
+    public function siteHasAStoreWithCountryAndCurrency($name, CountryInterface $country, CurrencyInterface $currency)
+    {
+        $store = $this->createStore($name, $currency, $country);
+
+        $this->saveStore($store);
     }
 
     /**
      * @param $name
      * @param CurrencyInterface|null $currency
      * @param CountryInterface|null $country
+     * @return StoreInterface
      */
     private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null)
     {
@@ -142,7 +157,7 @@ final class StoreContext implements Context
         $store->setCurrency($currency);
         $store->setBaseCountry($country);
 
-        $this->saveStore($store);
+        return $store;
     }
 
     /**
@@ -154,7 +169,5 @@ final class StoreContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('store', $store);
-
-        $this->fixedStoreContext->setStore($store);
     }
 }

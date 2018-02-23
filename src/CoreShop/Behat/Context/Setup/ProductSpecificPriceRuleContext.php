@@ -14,9 +14,11 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -181,6 +183,44 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $condition = new Condition();
         $condition->setType('customerGroups');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition stores with (store "[^"]+")$/
+     * @Given /^([^"]+) has a condition stores with (store "[^"]+")$/
+     */
+    public function theProductsSpecificPriceRuleHasAStoreCondition(ProductSpecificPriceRuleInterface $rule, StoreInterface $store)
+    {
+        $configuration = [
+            'stores' => [
+                $store->getId()
+            ]
+        ];
+
+        $condition = new Condition();
+        $condition->setType('stores');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
+     * @Given /^([^"]+) has a condition zones with (zone "[^"]+")$/
+     */
+    public function theProductsSpecificPriceRuleHasAZoneCondition(ProductSpecificPriceRuleInterface $rule, ZoneInterface $zone)
+    {
+        $configuration = [
+            'zones' => [
+                $zone->getId()
+            ]
+        ];
+
+        $condition = new Condition();
+        $condition->setType('zones');
         $condition->setConfiguration($configuration);
 
         $this->addCondition($rule, $condition);

@@ -73,7 +73,7 @@ final class CurrencyContext implements Context
     }
 
     /**
-     * @Given /^the site has a currency ("[^"]+") with iso ("[^"]+")$/
+     * @Given /^the site has a currency "([^"]+)" with iso "([^"]+)"$/
      */
     public function theSiteHasACurrency($name, $iso)
     {

@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Context\FixedCountryContext;
+use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
@@ -76,6 +77,16 @@ final class CountryContext implements Context
     public function theSiteHasACountry($name, CurrencyInterface $currency)
     {
         $this->createCountry($name, $currency);
+    }
+
+    /**
+     * @Then /^the (country "[^"]+") is in (zone "[^"]+")$/
+     */
+    public function theCountryIsInZone(CountryInterface $country, ZoneInterface $zone)
+    {
+        $country->setZone($zone);
+
+        $this->saveCountry($country);
     }
 
     /**

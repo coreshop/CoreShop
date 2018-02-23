@@ -54,3 +54,17 @@ services:
             - '@__symfony__.coreshop.repository.customer_group'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.zone:
+        class: CoreShop\Behat\Context\Transform\ZoneContext
+        arguments:
+            - '@__symfony__.coreshop.repository.zone'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.store:
+        class: CoreShop\Behat\Context\Transform\StoreContext
+        arguments:
+            - '@__symfony__.coreshop.repository.store'
+        tags:
+            - { name: fob.context_service }
