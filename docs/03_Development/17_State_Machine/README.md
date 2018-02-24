@@ -2,7 +2,7 @@
 
 The CoreShop [State Machine](https://symfony.com/doc/current/workflow/state-machines.html) is a important core feature which allows to determinate complex workflows securely and in a most modern way.
 Unlike the most eCommerce Frameworks out there, CoreShop does not work with the messy and hard do extend "state/status" concept.
-Every order-section and of course the order itself provides a own state machine which allows us to build a super strong state workflow.
+Every order-section and of course the order itself provides its own state machine which allows us to build a super strong state workflow.
 
 ## Places
 In State Machine context, the well-known "Status" Property is called "Places".
