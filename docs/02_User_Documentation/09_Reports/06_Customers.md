@@ -1,10 +1,10 @@
-# CoreShop Carrier Distribution Report
+# CoreShop Customers Report
 
-![Carrier Distribution](img/carriers.png)
+![Customers Report](img/customers.png)
 
 | Type | Has Pagination |
 |:-----|:-----------|
-| Pie Chart | No |
+| List | No |
 
 ## Available Filters
 
@@ -20,5 +20,10 @@
 | From | Date to Start Filter |
 | To | Date to End Filter |
 
-## Available Chart Fields
-Carrier Distribution
+## Available Grid Fields
+
+| Name | Description |
+|:-----|:------------|
+| Name | Customer Name |
+| Order Count | Amount of Orders |
+| Sales | Sales |
