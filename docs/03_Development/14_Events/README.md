@@ -46,8 +46,8 @@ CoreShop comes with a lot of build-in events.
 
 | Name | EventType | Description |
 |:-----|:------------|:----------|
-| `coreshop.note.*.post_add` | GenericEvent |  |
-| `coreshop.note.*.post_delete` | GenericEvent |  |
+| `coreshop.note.*.post_add` | GenericEvent | Fires after a note of type `*` has been created |
+| `coreshop.note.*.post_delete` | GenericEvent | Fires after a note of type `*` has been deleted |
 
 Replace symbol (*) with one of those note types:
 
