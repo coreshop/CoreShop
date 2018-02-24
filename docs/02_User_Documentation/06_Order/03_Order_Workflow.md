@@ -10,4 +10,4 @@ Click on that button to change the state.
 ## Complete Order
 A Order is complete when:
 - All payments has been changed to `paid`.
-- All shipments has been changed to `shipped.
+- All shipments has been changed to `shipped`.
