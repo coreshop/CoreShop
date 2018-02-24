@@ -34,6 +34,7 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
         this.panel = this.getPanel();
 
         this.parentPanel.getTabPanel().add(this.panel);
+        this.parentPanel.getTabPanel().setActiveTab(this.panel);
     },
 
     getActionContainerClass: function () {
@@ -58,7 +59,13 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
                 name: 'name',
                 fieldLabel: t('name'),
                 width: 250,
-                value: data.name
+                value: data.name,
+                enableKeyEvents: true,
+                listeners: {
+                    keyup: function(field) {
+                        this.panel.setTitle(field.getValue());
+                    }.bind(this)
+                }
             }, {
                 xtype: 'numberfield',
                 name: 'priority',
@@ -69,6 +76,7 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
                 xtype: 'checkbox',
                 name: 'inherit',
                 fieldLabel: t('coreshop_inherit'),
+                hidden: true, // currently not implemented
                 checked: this.data.inherit == '1'
             }, {
                 xtype: 'checkbox',
