@@ -36,7 +36,3 @@ This section provides a quick getting started tutorial for CoreShop and covers t
     6. [Available Quantities](./09_Reports/06_Available_Quantities.md)
     7. [Carrier Distribution](./09_Reports/07_Carrier_Distribution.md)
     8. [Payment Distribution](./09_Reports/08_Payment_Distribution.md)
-9. [Monitoring](./10_Monitoring/README.md)
-    1. [Empty Categories](./10_Monitoring/01_Empty_Categories.md)
-    2. [Disabled Products](./10_Monitoring/02_Disabled_Products.md)
-    3. [Out of Stock Products](./10_Monitoring/03_Out_of_Stock_Products.md)
