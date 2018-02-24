@@ -1,0 +1,1 @@
+# CoreShop State Machine
