@@ -34,6 +34,6 @@ If a transition has been dispatched, it cannot be transformed back unless it has
 
 So let's start:
 
- - [Availble Workflows](./01_Available_Workflows.md)
+ - [Available Workflows](./01_Available_Workflows.md)
  - [Create Callbacks](./02_Create_Callbacks.md)
  - [Things to Know (!)](./03_Things_To_Know.md)
