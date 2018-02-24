@@ -1,0 +1,9 @@
+# Order Comments
+
+![Countries](img/comment2.png)
+CoreShop provides a simple comment interface which allows you to add simple notes to every order.
+
+![Countries](img/comment1.png)
+It's also possible to send the order comment to the customer. Just check "Submit Comment to Customer".
+
+> **Note:** You need a valid Notification Rule to send comments to user.

@@ -3,7 +3,7 @@
 ## Inventory Change
 If a customer adds a item to the cart CoreShop will check if product stock is sufficient. If not, a form error will show up.
 
-## Disable / Delete
+## Disable / Delete Products
 If a product gets disabled or deleted in backend CoreShop will automatically remove this product from all active carts.
 A form error will notify every customer in frontend if the cart has been modified.
 
