@@ -18,7 +18,7 @@ By default, this feature is disabled.
 If you want to swipe abandoned carts by default you need to define a expiration date:
 
 ```yml
-coreshop:
+core_shop_order:
     expiration:
         cart:
             days: 20
