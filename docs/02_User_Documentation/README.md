@@ -2,7 +2,7 @@
 
 This section provides a quick getting started tutorial for CoreShop and covers the following topics: 
 
-1. [Multishop](./01_Stores.md)
+1. [Stores](./01_Stores.md)
 2. [Settings](./02_Settings.md)
 3. [Price Rules](./03_Price_Rules/README.md)
      1. [Cart Price Rules](./03_Price_Rules/01_Cart_Price_Rules.md)
