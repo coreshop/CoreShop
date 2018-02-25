@@ -26,6 +26,7 @@ This section provides a quick getting started tutorial for CoreShop and covers t
     1. [Orders](./06_Order/01_Orders.md)
     2. [Order Detail](./06_Order/02_Order_Detail.md)
     3. [Order Workflow](./06_Order/03_Order_Workflow.md)
+    4. [Order Comments](./06_Order/04_Order_Comments.md)
 8. [Catalog](./07_Catalog/README.md)
     1. [Products](./07_Catalog/01_Products.md)
     2. [Product Variants](./07_Catalog/02_Product_Variants.md)
