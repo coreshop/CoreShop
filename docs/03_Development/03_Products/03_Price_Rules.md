@@ -20,5 +20,5 @@
 #### Get Active Price Rules
 
 ```twig
-{{ dump(product|coreshop_product_price_rules) }}:
+{{ dump(product|coreshop_product_price_rules) }}
 ```
