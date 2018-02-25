@@ -26,3 +26,6 @@ This one needs some further explanation:
 After the checkout is complete, all ordered items will be removed from "On Hand" and get moved to "On Hold" until the payment is complete:
 - If the unpaid order gets cancelled, the reserved "On Hold" amount gets back to "On Hand".
 - If the order payment status switches to `paid`, the reserved "On Hold" amount gets subtracted.
+
+## Cart / Checkout
+If a product stock gets insufficient during a customers checkout, the product gets removed from customers cart following by a form error.
