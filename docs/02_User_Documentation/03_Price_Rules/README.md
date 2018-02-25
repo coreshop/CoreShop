@@ -9,7 +9,7 @@ There are three Price Rule Types.
 Apply Price Rule to the customers cart.
 
 #### 2. Product Price Rules
-Apply Price Rule globally
+Apply Price Rule globally.
 
 #### 3. Specific Product Prices
 Apply Price Rules to specific products.
