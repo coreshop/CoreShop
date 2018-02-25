@@ -9,6 +9,8 @@ This section provides a quick getting started tutorial for CoreShop and covers t
      2. [Product Price Rules](./03_Price_Rules/02_Product_Price_Rules.md)
      3. [Specific Product Price](./03_Price_Rules/03_Specific_Product_Prices.md)
      4. [Vouchers](./03_Price_Rules/04_Vouchers.md)
+     5. [Available Actions](./03_Price_Rules/05_Actions.md)
+     6. [Available Conditions](./03_Price_Rules/06_Conditions.md)
 4. [Localization](./04_Localization/README.md)
      1. [Countries](./04_Localization/01_Countries.md)
      2. [States](./04_Localization/02_States.md)
