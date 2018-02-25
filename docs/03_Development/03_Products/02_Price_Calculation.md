@@ -33,15 +33,11 @@ If you want to calculate the price within a Template, you can do so by using the
 ```php
 <?php
 echo $this->coreshop_product_price($product);
-
-?>
 ```
 
 ```twig
 {{ (product|coreshop_product_price(true)) }}
 ```
-
-</div>
 
 ## Custom Price Calculator Example
 
