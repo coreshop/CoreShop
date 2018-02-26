@@ -23,7 +23,16 @@ services:
     coreshop.behat.context.transform.product_specific_price_rule:
         class: CoreShop\Behat\Context\Transform\ProductSpecificPriceRuleContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.repository.product_specific_price_rule'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.product_price_rule:
+        class: CoreShop\Behat\Context\Transform\ProductPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.product_price_rule'
         tags:
             - { name: fob.context_service }
 

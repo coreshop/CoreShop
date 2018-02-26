@@ -14,13 +14,11 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
-use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
+use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
+use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 use Webmozart\Assert\Assert;
 
-final class ProductSpecificPriceRuleContext implements Context
+final class ProductPriceRuleContext implements Context
 {
     /**
      * @var SharedStorageInterface
@@ -28,43 +26,43 @@ final class ProductSpecificPriceRuleContext implements Context
     private $sharedStorage;
 
     /**
-     * @var ProductSpecificPriceRuleRepositoryInterface
+     * @var ProductPriceRuleRepositoryInterface
      */
-    private $productSpecificPriceRuleRepository;
+    private $productPriceRuleRepository;
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
+     * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
+        ProductPriceRuleRepositoryInterface $productPriceRuleRepository
     )
     {
         $this->sharedStorage = $sharedStorage;
-        $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
+        $this->productPriceRuleRepository = $productPriceRuleRepository;
     }
 
     /**
-     * @Transform /^specific price rule "([^"]+)"$/
+     * @Transform /^price rule "([^"]+)"$/
      */
     public function getPriceRuleByProductAndName($ruleName)
     {
-        $rule = $this->productSpecificPriceRuleRepository->findOneBy(['name' => $ruleName]);
+        $rule = $this->productPriceRuleRepository->findOneBy(['name' => $ruleName]);
 
-        Assert::isInstanceOf($rule, ProductSpecificPriceRuleInterface::class);
+        Assert::isInstanceOf($rule, ProductPriceRuleInterface::class);
 
         return $rule;
     }
 
     /**
-     * @Transform /^(specific price rule)$/
+     * @Transform /^(price rule)$/
      */
-    public function getLatestSpecificPriceRule()
+    public function getLatestPriceRule()
     {
         $resource = $this->sharedStorage->getLatestResource();
 
-        Assert::isInstanceOf($resource, ProductSpecificPriceRuleInterface::class);
+        Assert::isInstanceOf($resource, ProductPriceRuleInterface::class);
 
         return $resource;
     }

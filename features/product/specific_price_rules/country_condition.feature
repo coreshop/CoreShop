@@ -15,13 +15,13 @@ Feature: Adding a new Product
 
   Scenario: Add a new country product specific price rule which is valid
     Given adding a product specific price rule to product "Shoe" named "country-discount"
-    And it is active
-    And it has a condition countries with country "Austria"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition countries with country "Austria"
+    Then the specific price rule should be valid for product "Shoe"
 
   Scenario: Add a new country product specific price rule which is invalid
     Given the site has a country "Germany" with currency "EUR"
     Given adding a product specific price rule to product "Shoe" named "country-discount"
-    And it is active
-    And it has a condition countries with country "Germany"
-    Then it should be invalid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition countries with country "Germany"
+    Then the specific price rule should be invalid for product "Shoe"

@@ -16,13 +16,13 @@ Feature: Adding a new Product
 
   Scenario: Add a new customer product specific price rule which is valid
     Given adding a product specific price rule to product "Shoe" named "customer-discount"
-    And it is active
-    And it has a condition customers with customer "some-customer@something.com"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition customers with customer "some-customer@something.com"
+    Then the specific price rule should be valid for product "Shoe"
 
   Scenario: Add a new customer product specific price rule which is invalid
     Given the site has a customer "some-other-customer@something.com"
     Given adding a product specific price rule to product "Shoe" named "customer-discount"
-    And it is active
-    And it has a condition customers with customer "some-other-customer@something.com"
-    Then it should be invalid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition customers with customer "some-other-customer@something.com"
+    Then the specific price rule should be invalid for product "Shoe"

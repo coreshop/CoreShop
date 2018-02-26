@@ -21,8 +21,8 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
-use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
-use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
+use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
+use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -30,7 +30,7 @@ use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-final class ProductSpecificPriceRuleContext implements Context
+final class ProductPriceRuleContext implements Context
 {
     /**
      * @var SharedStorageInterface
@@ -40,12 +40,12 @@ final class ProductSpecificPriceRuleContext implements Context
     /**
      * @var FactoryInterface
      */
-    private $productSpecificPriceRuleFactory;
+    private $productPriceRuleFactory;
 
     /**
-     * @var ProductSpecificPriceRuleRepositoryInterface
+     * @var ProductPriceRuleRepositoryInterface
      */
-    private $productSpecificPriceRuleRepository;
+    private $productPriceRuleRepository;
 
     /**
      * @var ObjectManager
@@ -53,47 +53,46 @@ final class ProductSpecificPriceRuleContext implements Context
     private $objectManager;
 
     /**
+     * ProductPriceRuleContext constructor.
      * @param SharedStorageInterface $sharedStorage
      * @param ObjectManager $objectManager
-     * @param FactoryInterface $productSpecificPriceRuleFactory
-     * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
+     * @param FactoryInterface $productPriceRuleFactory
+     * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
-        FactoryInterface $productSpecificPriceRuleFactory,
-        ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-    )
+        FactoryInterface $productPriceRuleFactory,
+        ProductPriceRuleRepositoryInterface $productPriceRuleRepository)
     {
         $this->sharedStorage = $sharedStorage;
+        $this->productPriceRuleFactory = $productPriceRuleFactory;
+        $this->productPriceRuleRepository = $productPriceRuleRepository;
         $this->objectManager = $objectManager;
-        $this->productSpecificPriceRuleFactory = $productSpecificPriceRuleFactory;
-        $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
     }
 
     /**
-     * @Given /^adding a product specific price rule to (product "[^"]+") named "([^"]+)"$/
+     * @Given /^adding a product price rule to (product "[^"]+") named "([^"]+)"$/
      */
-    public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName)
+    public function addingAProductPriceRuleToProduct(ProductInterface $product, $ruleName)
     {
         /**
-         * @var $rule ProductSpecificPriceRuleInterface
+         * @var $rule ProductPriceRuleInterface
          */
-        $rule = $this->productSpecificPriceRuleFactory->createNew();
+        $rule = $this->productPriceRuleFactory->createNew();
         $rule->setName($ruleName);
-        $rule->setProduct($product->getId());
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
 
-        $this->sharedStorage->set('product-specific-price-rule', $rule);
+        $this->sharedStorage->set('product-price-rule', $rule);
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") is active$/
-     * @Given /^the (specific price rule) is active$/
+     * @Given /^the (price rule "[^"]+") is active$/
+     * @Given /^the (price rule) is active$/
      */
-    public function theProductsSpecificPriceRuleIsActive(ProductSpecificPriceRuleInterface $rule)
+    public function theProductPriceRuleIsActive(ProductPriceRuleInterface $rule)
     {
         $rule->setActive(true);
 
@@ -102,10 +101,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") is inactive$/
-     * @Given /^the (specific price rule) is inactive$/
+     * @Given /^the (price rule "[^"]+") is inactive$/
+     * @Given /^the (price rule) is inactive$/
      */
-    public function theProductsSpecificPriceRuleIsInActive(ProductSpecificPriceRuleInterface $rule)
+    public function theProductPriceRuleIsInActive(ProductPriceRuleInterface $rule)
     {
         $rule->setActive(false);
 
@@ -114,10 +113,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a condition countries with (country "[^"]+")$/
-     * @Given /^the (specific price rule) has a condition countries with (country "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a condition countries with (country "[^"]+")$/
+     * @Given /^the (price rule) has a condition countries with (country "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACategoryCondition(ProductSpecificPriceRuleInterface $rule, CountryInterface $country)
+    public function theProductPriceRuleHasACategoryCondition(ProductPriceRuleInterface $rule, CountryInterface $country)
     {
         $configuration = [
             'countries' => [
@@ -133,10 +132,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
-     * @Given /^the (specific price rule) has a condition customers with (customer "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
+     * @Given /^the (price rule) has a condition customers with (customer "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer)
+    public function theProductPriceRuleHasACustomerCondition(ProductPriceRuleInterface $rule, CustomerInterface $customer)
     {
         $configuration = [
             'customers' => [
@@ -152,10 +151,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
-     * @Given /^the (specific price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
+     * @Given /^the (price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
+     * @Given /^the (price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
      */
-    public function theProductsSpecificPriceRuleHasATimeSpanCondition(ProductSpecificPriceRuleInterface $rule, $from, $to)
+    public function theProductPriceRuleHasATimeSpanCondition(ProductPriceRuleInterface $rule, $from, $to)
     {
         $from = new \DateTime($from);
         $to = new \DateTime($to);
@@ -173,10 +172,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
-     * @Given /^the (specific price rule) has a condition customer-groups with (customer-group "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
+     * @Given /^the (price rule) has a condition customer-groups with (customer-group "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACustomerGroupCondition(ProductSpecificPriceRuleInterface $rule, CustomerGroupInterface $group)
+    public function theProductPriceRuleHasACustomerGroupCondition(ProductPriceRuleInterface $rule, CustomerGroupInterface $group)
     {
         $configuration = [
             'customerGroups' => [
@@ -192,10 +191,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a condition stores with (store "[^"]+")$/
-     * @Given /^the (specific price rule) has a condition stores with (store "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a condition stores with (store "[^"]+")$/
+     * @Given /^the (price rule) has a condition stores with (store "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasAStoreCondition(ProductSpecificPriceRuleInterface $rule, StoreInterface $store)
+    public function theProductPriceRuleHasAStoreCondition(ProductPriceRuleInterface $rule, StoreInterface $store)
     {
         $configuration = [
             'stores' => [
@@ -211,10 +210,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
-     * @Given /^the (specific price rule) has a condition zones with (zone "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
+     * @Given /^the (price rule) has a condition zones with (zone "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasAZoneCondition(ProductSpecificPriceRuleInterface $rule, ZoneInterface $zone)
+    public function theProductPriceRuleHasAZoneCondition(ProductPriceRuleInterface $rule, ZoneInterface $zone)
     {
         $configuration = [
             'zones' => [
@@ -230,10 +229,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
-     * @Given /^the (specific price rule) has a condition currencies with (currency "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
+     * @Given /^the (price rule) has a condition currencies with (currency "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACurrency(ProductSpecificPriceRuleInterface $rule, CurrencyInterface $currency)
+    public function theProductPriceRuleHasACurrency(ProductPriceRuleInterface $rule, CurrencyInterface $currency)
     {
         $configuration = [
             'currencies' => [
@@ -249,10 +248,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/
-     * @Given /^the (specific price rule) has a action discount-percent with ([^"]+)% discount$/
+     * @Given /^the (price rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/
+     * @Given /^the (price rule) has a action discount-percent with ([^"]+)% discount$/
      */
-    public function theProductSpecificPriceRuleHasADiscountPercentAction(ProductSpecificPriceRuleInterface $rule, $discount)
+    public function theProductPriceRuleHasADiscountPercentAction(ProductPriceRuleInterface $rule, $discount)
     {
         $configuration = [
             'percent' => intval($discount)
@@ -266,10 +265,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
-     * @Given /^the (specific price rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/
+     * @Given /^the (price rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
+     * @Given /^the (price rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/
      */
-    public function theProductSpecificPriceRuleHasADiscountAmountAction(ProductSpecificPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
+    public function theProductPriceRuleHasADiscountAmountAction(ProductPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
     {
         $configuration = [
             'amount' => intval($amount),
@@ -284,10 +283,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a action discount-price of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (specific price rule) has a action discount-price of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a action discount-price of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (price rule) has a action discount-price of ([^"]+) in (currency "[^"]+")$/
      */
-    public function theProductSpecificPriceRuleHasADiscountPrice(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    public function theProductPriceRuleHasADiscountPrice(ProductPriceRuleInterface $rule, $price, CurrencyInterface $currency)
     {
         $configuration = [
             'price' => intval($price),
@@ -302,10 +301,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (specific price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (specific price rule) has a action price of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (price rule) has a action price of ([^"]+) in (currency "[^"]+")$/
      */
-    public function theProductSpecificPriceRuleHasAPrice(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    public function theProductPriceRuleHasAPrice(ProductPriceRuleInterface $rule, $price, CurrencyInterface $currency)
     {
         $configuration = [
             'price' => intval($price),
@@ -320,10 +319,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @param ProductSpecificPriceRuleInterface $rule
+     * @param ProductPriceRuleInterface $rule
      * @param ConditionInterface $condition
      */
-    private function addCondition(ProductSpecificPriceRuleInterface $rule, ConditionInterface $condition)
+    private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition)
     {
         $rule->addCondition($condition);
 
@@ -332,10 +331,10 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @param ProductSpecificPriceRuleInterface $rule
+     * @param ProductPriceRuleInterface $rule
      * @param ActionInterface $action
      */
-    private function addAction(ProductSpecificPriceRuleInterface $rule, ActionInterface $action)
+    private function addAction(ProductPriceRuleInterface $rule, ActionInterface $action)
     {
         $rule->addAction($action);
 

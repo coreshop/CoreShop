@@ -14,12 +14,12 @@ Feature: Adding a new Product
 
   Scenario: Add a new store product specific price rule which is valid
     Given adding a product specific price rule to product "Shoe" named "store-discount"
-    And it is active
-    And it has a condition stores with store "Austria"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition stores with store "Austria"
+    Then the specific price rule should be valid for product "Shoe"
 
   Scenario: Add a new store product specific price rule which is invalid
     Given adding a product specific price rule to product "Shoe" named "store-discount"
-    And it is active
-    And it has a condition stores with store "Asia"
-    Then it should be invalid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition stores with store "Asia"
+    Then the specific price rule should be invalid for product "Shoe"

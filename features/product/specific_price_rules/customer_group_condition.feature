@@ -17,14 +17,14 @@ Feature: Adding a new Product
 
   Scenario: Add a new customer-group product specific price rule which is valid
     Given adding a product specific price rule to product "Shoe" named "customer-group-discount"
-    And it is active
-    And it has a condition customer-groups with customer-group "Frequent Buyers"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition customer-groups with customer-group "Frequent Buyers"
+    Then the specific price rule should be valid for product "Shoe"
 
   Scenario: Add a new customer-group product specific price rule which is invalid
     Given the site has a customer-group "New Customers"
     And the customer "some-customer@something.com" is in customer-group "New Customers"
     And adding a product specific price rule to product "Shoe" named "customer-group-discount"
-    And it is active
-    And it has a condition customer-groups with customer-group "Frequent Buyers"
-    Then it should be invalid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition customer-groups with customer-group "Frequent Buyers"
+    Then the specific price rule should be invalid for product "Shoe"

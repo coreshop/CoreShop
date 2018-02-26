@@ -14,13 +14,13 @@ Feature: Adding a new Product
 
   Scenario: Add a new zone product specific price rule which is valid
     Given adding a product specific price rule to product "Shoe" named "zone-discount"
-    And it is active
-    And it has a condition zones with zone "Europe"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition zones with zone "Europe"
+    Then the specific price rule should be valid for product "Shoe"
 
   Scenario: Add a new zone product specific price rule which is invalid
     Given the site has a zone "Asia"
     Given adding a product specific price rule to product "Shoe" named "zone-discount"
-    And it is active
-    And it has a condition zones with zone "Asia"
-    Then it should be invalid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition zones with zone "Asia"
+    Then the specific price rule should be invalid for product "Shoe"

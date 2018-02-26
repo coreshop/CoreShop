@@ -12,34 +12,34 @@ Feature: Adding a new Product
 
   Scenario: Add a new discount rule with 20 percent discount
     Given adding a product specific price rule to product "Shoe" named "discount"
-    And it is active
-    And it has a action discount-percent with 20% discount
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a action discount-percent with 20% discount
+    Then the specific price rule should be valid for product "Shoe"
     And the product "Shoe" should be priced at 80
     And the product "Shoe" discount should be 20
     And the product "Shoe" retail-price should be 100
 
   Scenario: Add a new discount rule with 20 euro off
     Given adding a product specific price rule to product "Shoe" named "discount"
-    And it is active
-    And it has a action discount with 20 in currency "EUR" off
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a action discount with 20 in currency "EUR" off
+    Then the specific price rule should be valid for product "Shoe"
     And the product "Shoe" should be priced at 80
     And the product "Shoe" discount should be 20
     And the product "Shoe" retail-price should be 100
 
   Scenario: Add a discount-price rule with a price of 80
     Given adding a product specific price rule to product "Shoe" named "discount"
-    And it is active
-    And it has a action discount-price of 80 in currency "EUR"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a action discount-price of 80 in currency "EUR"
+    Then the specific price rule should be valid for product "Shoe"
     And the product "Shoe" should have the prices, price: 80 and discount-price: 80 and retail-price: 100 and discount: 0
 
   Scenario: Add a price rule with a retail price of 80
     Given adding a product specific price rule to product "Shoe" named "discount"
-    And it is active
-    And it has a action price of 80 in currency "EUR"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a action price of 80 in currency "EUR"
+    Then the specific price rule should be valid for product "Shoe"
     And the product "Shoe" should be priced at 80
     And the product "Shoe" discount should be 0
     And the product "Shoe" retail-price should be 80

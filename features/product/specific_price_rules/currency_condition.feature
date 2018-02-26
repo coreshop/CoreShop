@@ -17,13 +17,13 @@ Feature: Adding a new Product
 
   Scenario: Add a new currency product specific price rule which is valid
     Given adding a product specific price rule to product "Shoe" named "currency-discount"
-    And it is active
-    And it has a condition currencies with currency "EUR"
-    Then it should be valid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition currencies with currency "EUR"
+    Then the specific price rule should be valid for product "Shoe"
 
   Scenario: Add a new currency product specific price rule which is invalid
     Given I am using currency "USD"
     And adding a product specific price rule to product "Shoe" named "currency-discount"
-    And it is active
-    And it has a condition currencies with currency "EUR"
-    Then it should be invalid for product "Shoe"
+    And the specific price rule is active
+    And the specific price rule has a condition currencies with currency "EUR"
+    Then the specific price rule should be invalid for product "Shoe"

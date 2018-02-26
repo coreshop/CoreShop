@@ -10,6 +10,7 @@ default:
 
                 - coreshop.behat.context.transform.shared_storage
                 - coreshop.behat.context.transform.product
+                - coreshop.behat.context.transform.product_price_rule
                 - coreshop.behat.context.transform.product_specific_price_rule
                 - coreshop.behat.context.transform.category
                 - coreshop.behat.context.transform.country
@@ -20,6 +21,7 @@ default:
                 - coreshop.behat.context.transform.store
 
                 - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.product_price_rule
                 - coreshop.behat.context.setup.product_specific_price_rule
                 - coreshop.behat.context.setup.store
                 - coreshop.behat.context.setup.category
@@ -30,6 +32,7 @@ default:
                 - coreshop.behat.context.setup.zone
 
                 - coreshop.behat.context.domain.product
+                - coreshop.behat.context.domain.product_price_rule
                 - coreshop.behat.context.domain.product_specific_price_rule
                 - coreshop.behat.context.domain.customer
                 - coreshop.behat.context.domain.currency

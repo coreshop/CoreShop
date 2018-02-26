@@ -15,11 +15,11 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
+use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use Webmozart\Assert\Assert;
 
-final class ProductSpecificPriceRuleContext implements Context
+final class ProductPriceRuleContext implements Context
 {
     /**
      * @var SharedStorageInterface
@@ -45,20 +45,20 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
-     * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be valid$/
-     * @Then /^the (specific price rule) should be valid for (product "[^"]+")$/
+     * @Then /^the (price rule "[^"]+") for (product "[^"]+") should be valid$/
+     * @Then /^the (price rule) should be valid for (product "[^"]+")$/
      */
-    public function theSpecificPriceRuleForProductShouldBeValid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
+    public function theSpecificPriceRuleForProductShouldBeValid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product)
     {
-        Assert::true($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, []));
+        Assert::true($this->ruleValidationProcessor->isValid($product, $productPriceRule, []));
     }
 
     /**
-     * @Then /^the (specific price rule "[^"]+") for (product "[^"]+") should be invalid$/
-     * @Then /^the (specific price rule) should be invalid for (product "[^"]+")$/
+     * @Then /^the (price rule "[^"]+") for (product "[^"]+") should be invalid$/
+     * @Then /^the (price rule) should be invalid for (product "[^"]+")$/
      */
-    public function theSpecificPriceRuleForProductShouldBeInvalid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
+    public function theSpecificPriceRuleForProductShouldBeInvalid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product)
     {
-        Assert::false($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, []));
+        Assert::false($this->ruleValidationProcessor->isValid($product, $productPriceRule, []));
     }
 }
