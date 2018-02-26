@@ -1,10 +1,10 @@
-# CoreShop Carrier Distribution Report
+# CoreShop Categories Report
 
-![Carrier Distribution](img/carriers.png)
+![Categories Report](img/categories.png)
 
 | Type | Has Pagination |
 |:-----|:-----------|
-| Pie Chart | No |
+| List | No |
 
 ## Available Filters
 
@@ -20,5 +20,12 @@
 | From | Date to Start Filter |
 | To | Date to End Filter |
 
-## Available Chart Fields
-Carrier Distribution
+## Available Grid Fields
+
+| Name | Description |
+|:-----|:------------|
+| Name | Product Name |
+| Order Count | Amount of Orders |
+| Quantity| Quantity |
+| Sales | Sales |
+| Profit | Profit |

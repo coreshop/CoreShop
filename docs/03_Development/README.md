@@ -24,7 +24,8 @@ Everytime something is called a Resource, we talk about ORM Models.
 
 ## CoreShop Pimcore Models
 
-CoreShop also takes advantage of Pimcores flexible data-model. Objects that are heavily used and changed are implemented using Data Objects:
+CoreShop also takes advantage of Pimcores flexible data-model.
+Objects that are heavily used and changed are implemented using Data Objects:
 
  - Product
  - Product Category
