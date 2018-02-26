@@ -19,13 +19,6 @@ coreshop.country.item = Class.create(coreshop.country.item, {
             {
                 xtype: 'coreshop.currency',
                 value: data.currency
-            },
-            {
-                xtype: 'coreshop.store',
-                multiSelect: true,
-                typeAhead: false,
-                name: 'stores',
-                value: data.stores
             }
         ]);
 

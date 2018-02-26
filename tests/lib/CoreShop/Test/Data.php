@@ -373,6 +373,8 @@ class Data
         $cart->setParent(Service::createFolderByPath('/'));
         $cart->setCustomer(self::get('coreshop.context.customer')->getCustomer());
         $cart->setStore(self::get('coreshop.context.store')->getStore());
+        $cart->setCurrency(Data::$store->getCurrency());
+        
         self::get('coreshop.cart.manager')->persistCart($cart);
 
         return $cart;

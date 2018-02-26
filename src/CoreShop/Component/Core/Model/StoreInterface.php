@@ -12,10 +12,11 @@
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Address\Model\CountriesAwareInterface;
 use CoreShop\Component\Store\Model\StoreInterface as BaseStoreInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface StoreInterface extends BaseStoreInterface
+interface StoreInterface extends BaseStoreInterface, CountriesAwareInterface
 {
     /**
      * @return bool

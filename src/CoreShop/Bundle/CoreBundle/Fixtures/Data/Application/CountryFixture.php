@@ -65,6 +65,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
     public function load(ObjectManager $manager)
     {
         $countries = CountryLoader::countries(true, true);
+        $store = $this->container->get('coreshop.repository.store')->findStandard();
 
         $addressFormatReplaces = [
             'recipient' => [
@@ -117,7 +118,6 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 $newCountry->setIsoCode($country->getIsoAlpha2());
                 $newCountry->setActive($country->getIsoAlpha2() === 'AT');
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
-                $newCountry->addStore($this->container->get('coreshop.repository.store')->findStandard());
                 $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
 
                 $extra = $country->getExtra();
@@ -165,9 +165,12 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                         }
                     }
                 }
+
+                $store->addCountry($newCountry);
             }
         }
 
+        $manager->persist($store);
         $manager->flush();
 
         $store = $this->container->get('coreshop.repository.store')->findStandard();

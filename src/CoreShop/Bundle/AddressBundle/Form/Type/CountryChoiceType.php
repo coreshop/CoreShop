@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,6 +33,16 @@ final class CountryChoiceType extends AbstractType
     public function __construct(RepositoryInterface $countryRepository)
     {
         $this->countryRepository = $countryRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['multiple']) {
+            $builder->addModelTransformer(new CollectionToArrayTransformer());
+        }
     }
 
     /**

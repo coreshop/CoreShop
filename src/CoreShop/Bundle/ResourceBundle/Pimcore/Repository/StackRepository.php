@@ -4,7 +4,7 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use Pimcore\Model\Object;
+use Pimcore\Model\DataObject;
 
 class StackRepository extends PimcoreRepository
 {
@@ -49,7 +49,7 @@ class StackRepository extends PimcoreRepository
      */
     public function getList()
     {
-        $list = Object::getList();
+        $list = DataObject::getList();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->stackClasses)));
 
         return $list;
@@ -60,7 +60,7 @@ class StackRepository extends PimcoreRepository
      */
     public function forceFind($id, $force = true)
     {
-        $instance = Object::getById($id, $force);
+        $instance = DataObject::getById($id, $force);
 
         if (!in_array($this->interface, class_implements($instance), true)) {
             return null;
