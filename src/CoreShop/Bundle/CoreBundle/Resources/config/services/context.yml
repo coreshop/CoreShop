@@ -17,7 +17,7 @@ services:
             - '@coreshop.repository.currency'
 
     coreshop.context.currency.storage_based:
-        class: CoreShop\Component\Core\Currency\Context\StorageBasedCurrencyContext
+        class: CoreShop\Component\Core\Context\Currency\StorageBasedCurrencyContext
         arguments:
             - '@coreshop.context.store'
             - '@coreshop.storage.currency'
@@ -25,7 +25,7 @@ services:
             - { name: 'coreshop.context.currency' }
 
     coreshop.context.currency.store_aware:
-        class: CoreShop\Component\Core\Currency\Context\StoreAwareCurrencyContext
+        class: CoreShop\Component\Core\Context\Currency\StoreAwareCurrencyContext
         decorates: coreshop.context.currency
         decoration_priority: 256
         arguments:
@@ -34,21 +34,13 @@ services:
             - '@coreshop.repository.currency'
 
     # country store resolver
-    coreshop.context.country.request_based.resolver.store_based:
-        class: CoreShop\Component\Core\Context\StoreBasedCountryResolver
-        public: false
-        arguments:
-            - '@coreshop.context.store'
-        tags:
-            - { name: coreshop.context.country.request_based.resolver, priority: 100 } #Highest Priority, is more like the fallback
-
     coreshop.context.country.request_based.resolver.cart_based:
         class: CoreShop\Component\Core\Context\CartBasedCountryResolver
         public: false
         arguments:
             - '@coreshop.context.cart'
         tags:
-            - { name: coreshop.context.country.request_based.resolver, priority: 1 } #Highest Priority, is more like the fallback
+            - { name: coreshop.context.country.request_based.resolver, priority: 100 } #Highest Priority, is more like the fallback
 
     coreshop.context.cart.new.store_based:
         decorates: coreshop.context.cart.new
@@ -56,3 +48,11 @@ services:
         arguments:
             - '@coreshop.context.cart.new.store_based.inner'
             - '@coreshop.context.shopper'
+
+    coreshop.context.country.store_aware:
+        class: CoreShop\Component\Core\Context\Country\StoreAwareCountryContext
+        decorates: coreshop.context.country
+        decoration_priority: 256
+        arguments:
+            - '@coreshop.context.country.store_aware.inner'
+            - '@coreshop.context.store'

@@ -26,9 +26,6 @@ final class CountryTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('currency', CurrencyChoiceType::class);
-        $builder->add('stores', StoreChoiceType::class, [
-            'multiple' => true,
-        ]);
     }
 
     /**

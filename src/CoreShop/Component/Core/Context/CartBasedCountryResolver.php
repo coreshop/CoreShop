@@ -41,8 +41,6 @@ final class CartBasedCountryResolver implements RequestResolverInterface
             if ($cart->getShippingAddress() instanceof AddressInterface) {
                 return $cart->getShippingAddress()->getCountry();
             }
-
-            return $cart->getInvoiceAddress()->getCountry();
         }
 
         return null;
