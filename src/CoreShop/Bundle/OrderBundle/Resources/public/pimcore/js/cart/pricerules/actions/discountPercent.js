@@ -17,6 +17,7 @@ coreshop.cart.pricerules.actions.discountPercent = Class.create(coreshop.rules.a
 
     getForm: function () {
         var percentValue = 0;
+        var applyOnValue = 'total';
         var me = this;
 
         if (this.data) {
@@ -24,16 +25,30 @@ coreshop.cart.pricerules.actions.discountPercent = Class.create(coreshop.rules.a
         }
 
         var percent = new Ext.form.NumberField({
-            fieldLabel: t('coreshop_action_discountPercent_percent'),
+            fieldLabel: t('coreshop_action_discount_percent_percent'),
             name: 'percent',
             value: percentValue,
             minValue: 0,
             maxValue: 100,
             decimalPrecision: 0
         });
+
+        var applyOn = new Ext.form.ComboBox({
+            store: [['total', t('coreshop_action_discount_apply_on_total')], ['subtotal', t('coreshop_action_discount_apply_on_subtotal')]],
+            triggerAction: 'all',
+            typeAhead: false,
+            editable: false,
+            forceSelection: true,
+            queryMode: 'local',
+            fieldLabel: t('coreshop_action_discount_apply_on'),
+            name: 'applyOn',
+            value: applyOnValue
+        });
+
         this.form = new Ext.form.Panel({
             items: [
-                percent
+                percent,
+                applyOn
             ]
         });
 
