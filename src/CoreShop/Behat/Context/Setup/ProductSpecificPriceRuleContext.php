@@ -24,6 +24,8 @@ use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Rule\Model\Action;
+use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -247,12 +249,95 @@ final class ProductSpecificPriceRuleContext implements Context
     }
 
     /**
+     * @Given /^the (specific price rule "[^"]+") has a action discount-percent with ([^"]+)% discount$/
+     * @Given /^([^"]+) has a action discount-percent with ([^"]+)% discount$/
+     */
+    public function theProductSpecificPriceRuleHasADiscountPercentAction(ProductSpecificPriceRuleInterface $rule, $discount)
+    {
+        $configuration = [
+            'percent' => intval($discount)
+        ];
+
+        $action = new Action();
+        $action->setType('discountPercent');
+        $action->setConfiguration($configuration);
+
+        $this->addAction($rule, $action);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
+     * @Given /^([^"]+) has a action discount with ([^"]+) in (currency "[^"]+") off$/
+     */
+    public function theProductSpecificPriceRuleHasADiscountAmountAction(ProductSpecificPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
+    {
+        $configuration = [
+            'amount' => intval($amount),
+            'currency' => $currency->getId()
+        ];
+
+        $action = new Action();
+        $action->setType('discountAmount');
+        $action->setConfiguration($configuration);
+
+        $this->addAction($rule, $action);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a action discount-price of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^([^"]+) has a action discount-price of ([^"]+) in (currency "[^"]+")$/
+     */
+    public function theProductSpecificPriceRuleHasADiscountPrice(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    {
+        $configuration = [
+            'price' => intval($price),
+            'currency' => $currency->getId()
+        ];
+
+        $action = new Action();
+        $action->setType('discountPrice');
+        $action->setConfiguration($configuration);
+
+        $this->addAction($rule, $action);
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^([^"]+) has a action price of ([^"]+) in (currency "[^"]+")$/
+     */
+    public function theProductSpecificPriceRuleHasAPrice(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    {
+        $configuration = [
+            'price' => intval($price),
+            'currency' => $currency->getId()
+        ];
+
+        $action = new Action();
+        $action->setType('price');
+        $action->setConfiguration($configuration);
+
+        $this->addAction($rule, $action);
+    }
+
+    /**
      * @param ProductSpecificPriceRuleInterface $rule
      * @param ConditionInterface $condition
      */
     private function addCondition(ProductSpecificPriceRuleInterface $rule, ConditionInterface $condition)
     {
         $rule->addCondition($condition);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @param ProductSpecificPriceRuleInterface $rule
+     * @param ActionInterface $action
+     */
+    private function addAction(ProductSpecificPriceRuleInterface $rule, ActionInterface $action)
+    {
+        $rule->addAction($action);
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();

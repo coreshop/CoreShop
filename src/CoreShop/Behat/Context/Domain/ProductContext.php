@@ -61,7 +61,45 @@ final class ProductContext implements Context
      */
     public function productShouldBePriced(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getPrice($product));
+        Assert::same(intval($price), $this->productPriceCalculator->getPrice($product, true));
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") discount-price should be ([^"]+)$/
+     */
+    public function productsDiscountPriceShouldBe(ProductInterface $product, int $price)
+    {
+        Assert::same(intval($price), $this->productPriceCalculator->getDiscountPrice($product));
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") retail-price should be ([^"]+)$/
+     */
+    public function productsRetailPriceShouldBe(ProductInterface $product, int $price)
+    {
+        Assert::same(intval($price), $this->productPriceCalculator->getRetailPrice($product));
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") discount should be ([^"]+)$/
+     */
+    public function productDiscountShouldBe(ProductInterface $product, int $discount)
+    {
+        $productPrice = $this->productPriceCalculator->getPrice($product, false);
+        $productDiscount = $this->productPriceCalculator->getDiscount($product, $productPrice);
+
+        Assert::same($discount, $productDiscount);
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should have the prices, price: ([^"]+) and discount-price: ([^"]+) and retail-price: ([^"]+) and discount: ([^"]+)$/
+     */
+    public function productPricesShouldBe(ProductInterface $product, int $price, $discountPrice, $retailPrice, $discount)
+    {
+        $this->productShouldBePriced($product, $price);
+        $this->productsDiscountPriceShouldBe($product, $discountPrice);
+        $this->productsRetailPriceShouldBe($product, $retailPrice);
+        $this->productDiscountShouldBe($product, $discount);
     }
 
     /**
