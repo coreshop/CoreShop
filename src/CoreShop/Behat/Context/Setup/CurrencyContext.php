@@ -94,7 +94,7 @@ final class CurrencyContext implements Context
     public function currencyIsValidForStore(CurrencyInterface $currency, StoreInterface $store)
     {
         foreach ($currency->getCountries() as $country) {
-            $country->addStore($store);
+            $store->addCountry($country);
         }
     }
 
