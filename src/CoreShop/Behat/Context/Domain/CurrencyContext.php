@@ -19,6 +19,7 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
@@ -35,17 +36,28 @@ final class CurrencyContext implements Context
     private $sharedStorage;
 
     /**
+     * @var CurrencyRepositoryInterface
+     */
+    private $currencyRepository;
+
+    /**
      * @var CurrencyContextInterface
      */
     private $currencyContext;
 
     /**
      * @param SharedStorageInterface $sharedStorage
+     * @param CurrencyRepositoryInterface $currencyRepository
      * @param CurrencyContextInterface $currencyContext
      */
-    public function __construct(SharedStorageInterface $sharedStorage, CurrencyContextInterface $currencyContext)
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        CurrencyRepositoryInterface $currencyRepository,
+        CurrencyContextInterface $currencyContext
+    )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->currencyRepository = $currencyRepository;
         $this->currencyContext = $currencyContext;
     }
 
@@ -61,6 +73,24 @@ final class CurrencyContext implements Context
                 'Given currency (%s) is different from actual currency(%s)',
                 $currency->getIsoCode(),
                 $this->currencyContext->getCurrency()->getIsoCode()
+            )
+        );
+    }
+
+        /**
+     * @Then /^the (store "[^"]+") should have "([^"]+)" currencies$/
+     */
+    public function theStoreShouldHaveXCurrencies(StoreInterface $store, $countOfCurrencies)
+    {
+        $validCurrencies = $this->currencyRepository->findActiveForStore($store);
+
+        Assert::same(
+            count($validCurrencies),
+            intval($countOfCurrencies),
+            sprintf(
+                'Found %s valid currencies insteaof of %s',
+                count($validCurrencies),
+                intval($countOfCurrencies)
             )
         );
     }

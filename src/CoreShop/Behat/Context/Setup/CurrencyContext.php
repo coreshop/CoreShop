@@ -97,6 +97,9 @@ final class CurrencyContext implements Context
         foreach ($currency->getCountries() as $country) {
             $store->addCountry($country);
         }
+
+        $this->objectManager->persist($store);
+        $this->objectManager->flush();
     }
 
     /**

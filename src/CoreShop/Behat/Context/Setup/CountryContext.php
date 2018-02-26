@@ -18,6 +18,7 @@ use CoreShop\Component\Address\Context\FixedCountryContext;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -72,6 +73,17 @@ final class CountryContext implements Context
     }
 
     /**
+     * @Given /^the (country "[^"]+") is valid for (store "[^"]+")$/
+     */
+    public function currencyIsValidForStore(CountryInterface $country, StoreInterface $store)
+    {
+        $store->addCountry($country);
+
+        $this->objectManager->persist($store);
+        $this->objectManager->flush();
+    }
+
+    /**
      * @Given /^the site has a country "([^"]+)" with (currency "[^"]+")$/
      */
     public function theSiteHasACountry($name, CurrencyInterface $currency)
@@ -85,6 +97,16 @@ final class CountryContext implements Context
     public function theCountryIsInZone(CountryInterface $country, ZoneInterface $zone)
     {
         $country->setZone($zone);
+
+        $this->saveCountry($country);
+    }
+
+    /**
+     * @Then /^the (country "[^"]+") is active$/
+     */
+    public function theCountryIsActive(CountryInterface $country)
+    {
+        $country->setActive(true);
 
         $this->saveCountry($country);
     }
@@ -110,7 +132,7 @@ final class CountryContext implements Context
              */
             $country = $this->countryFactory->createNew();
             $country->setName($name, 'en');
-            $country->setIsoCode('AT');
+            $country->setIsoCode($name);
             $country->setActive(true);
             $country->setCurrency($currency);
 

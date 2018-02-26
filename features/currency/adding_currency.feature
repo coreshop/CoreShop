@@ -1,14 +1,14 @@
-@currency
+@product
 Feature: Adding a new Currency
   In Order to increase my sales
-  I want to add a new currency
+  I want to create a new currency
 
   Background:
     Given the site operates on a store in "Austria"
 
-  Scenario: Create a new currency for country US
+  Scenario: Create a new currency
     Given the site has a currency "USD" with iso "USD"
     And the site has a country "USA" with currency "USD"
-    And it has a exchange-rate to currency "EUR" of "1.1"
-    Then price "100" of currency "USD" should exchange to price "110" in currency "EUR"
-    Then price "100" of currency "EUR" should exchange to price "91" in currency "USD"
+    And the country "USA" is active
+    And the country "USA" is valid for store "Austria"
+    Then the store "Austria" should have "2" currencies
