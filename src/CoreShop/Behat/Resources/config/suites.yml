@@ -1,2 +1,3 @@
 imports:
-    - suites/domain/product/products.yml
+    - suites/domain/product.yml
+    - suites/domain/currency.yml

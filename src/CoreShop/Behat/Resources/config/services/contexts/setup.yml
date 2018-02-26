@@ -100,3 +100,13 @@ services:
             - '@__symfony__.coreshop.repository.product_price_rule'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.exchange_rate:
+        class: CoreShop\Behat\Context\Setup\ExchangeRateContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.exchange_rate'
+            - '@__symfony__.coreshop.repository.exchange_rate'
+        tags:
+            - { name: fob.context_service }
