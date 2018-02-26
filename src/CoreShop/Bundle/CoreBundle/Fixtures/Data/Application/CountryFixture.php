@@ -166,7 +166,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     }
                 }
 
-                $store->addCountry($country);
+                $store->addCountry($newCountry);
             }
         }
 
