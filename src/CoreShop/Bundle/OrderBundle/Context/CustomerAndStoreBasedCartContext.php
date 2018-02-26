@@ -61,7 +61,7 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
-            throw new CartNotFoundException('Corehop was not able to find the cart, as there is no current store.');
+            throw new CartNotFoundException('CoreShop was not able to find the cart, as there is no current store.');
         }
 
         try {

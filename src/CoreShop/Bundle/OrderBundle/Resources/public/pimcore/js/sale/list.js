@@ -206,8 +206,8 @@ coreshop.order.sale.list = Class.create({
                 var gridPanels = layout.query('gridpanel');
                 if (gridPanels.length > 0) {
                     var grid = gridPanels[0];
-                    if (!grid._corehop_listener) {
-                        grid._corehop_listener = true;
+                    if (!grid._coreshop_listener) {
+                        grid._coreshop_listener = true;
                         grid.on('beforeedit', function (grid, cell) {
                             if (cell.column.hasEditor() === false) {
                                 return false;
