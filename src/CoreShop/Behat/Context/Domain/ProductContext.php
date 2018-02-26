@@ -92,12 +92,22 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Then /^the (product "[^"]+") should have the prices, price: ([^"]+) and discount-price: ([^"]+) and retail-price: ([^"]+) and discount: ([^"]+)$/
+     * @Then /^the (product "[^"]+") should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
      */
-    public function productPricesShouldBe(ProductInterface $product, int $price, $discountPrice, $retailPrice, $discount)
+    public function productPricesShouldBe(ProductInterface $product, int $price, int $discountPrice, int $retailPrice, int $discount)
     {
         $this->productShouldBePriced($product, $price);
         $this->productsDiscountPriceShouldBe($product, $discountPrice);
+        $this->productsRetailPriceShouldBe($product, $retailPrice);
+        $this->productDiscountShouldBe($product, $discount);
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
+     */
+    public function productPricesShouldBeExceptDiscountPrice(ProductInterface $product, int $price, int $retailPrice, int $discount)
+    {
+        $this->productShouldBePriced($product, $price);
         $this->productsRetailPriceShouldBe($product, $retailPrice);
         $this->productDiscountShouldBe($product, $discount);
     }

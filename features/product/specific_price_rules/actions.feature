@@ -33,7 +33,7 @@ Feature: Adding a new Product
     And the specific price rule is active
     And the specific price rule has a action discount-price of 80 in currency "EUR"
     Then the specific price rule should be valid for product "Shoe"
-    And the product "Shoe" should have the prices, price: 80 and discount-price: 80 and retail-price: 100 and discount: 0
+    And the product "Shoe" should have the prices, price: "80" and discount-price: "80" and retail-price: "100" and discount: "0"
 
   Scenario: Add a price rule with a retail price of 80
     Given adding a product specific price rule to product "Shoe" named "discount"

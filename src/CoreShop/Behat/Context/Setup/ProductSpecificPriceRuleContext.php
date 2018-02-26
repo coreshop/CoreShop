@@ -117,7 +117,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition countries with (country "[^"]+")$/
      * @Given /^the (specific price rule) has a condition countries with (country "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACategoryCondition(ProductSpecificPriceRuleInterface $rule, CountryInterface $country)
+    public function theProductsSpecificPriceRuleHasACountriesCondition(ProductSpecificPriceRuleInterface $rule, CountryInterface $country)
     {
         $configuration = [
             'countries' => [
@@ -233,7 +233,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
      * @Given /^the (specific price rule) has a condition currencies with (currency "[^"]+")$/
      */
-    public function theProductsSpecificPriceRuleHasACurrency(ProductSpecificPriceRuleInterface $rule, CurrencyInterface $currency)
+    public function theProductsSpecificPriceRuleHasACurrencyCondition(ProductSpecificPriceRuleInterface $rule, CurrencyInterface $currency)
     {
         $configuration = [
             'currencies' => [
@@ -287,7 +287,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a action discount-price of ([^"]+) in (currency "[^"]+")$/
      * @Given /^the (specific price rule) has a action discount-price of ([^"]+) in (currency "[^"]+")$/
      */
-    public function theProductSpecificPriceRuleHasADiscountPrice(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    public function theProductSpecificPriceRuleHasADiscountPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
     {
         $configuration = [
             'price' => intval($price),
@@ -305,7 +305,7 @@ final class ProductSpecificPriceRuleContext implements Context
      * @Given /^the (specific price rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
      * @Given /^the (specific price rule) has a action price of ([^"]+) in (currency "[^"]+")$/
      */
-    public function theProductSpecificPriceRuleHasAPrice(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
+    public function theProductSpecificPriceRuleHasAPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
     {
         $configuration = [
             'price' => intval($price),

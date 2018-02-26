@@ -1,7 +1,7 @@
 @product
 Feature: Adding a new Product
   In order to extend my catalog
-  the product has a price-rule for a customer
+  the catalog has a price-rule for a customer
   I want to create a new product
 
   Background:
@@ -14,15 +14,15 @@ Feature: Adding a new Product
     Then the product "Shoe" should be priced at 100
     Then I should be logged in with email "some-customer@something.com"
 
-  Scenario: Add a new customer product price rule which is valid
-    Given adding a product price rule to product "Shoe" named "customer-discount"
+  Scenario: Add a new customer category price rule which is valid
+    Given adding a product price rule named "customer-discount"
     And the price rule is active
     And the price rule has a condition customers with customer "some-customer@something.com"
     Then the price rule should be valid for product "Shoe"
 
-  Scenario: Add a new customer product price rule which is invalid
+  Scenario: Add a new customer category price rule which is invalid
     Given the site has a customer "some-other-customer@something.com"
-    Given adding a product price rule to product "Shoe" named "customer-discount"
+    Given adding a product price rule named "customer-discount"
     And the price rule is active
     And the price rule has a condition customers with customer "some-other-customer@something.com"
     Then the price rule should be invalid for product "Shoe"

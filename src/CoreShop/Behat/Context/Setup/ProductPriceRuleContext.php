@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
+use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -72,9 +73,9 @@ final class ProductPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^adding a product price rule to (product "[^"]+") named "([^"]+)"$/
+     * @Given /^adding a product price rule named "([^"]+)"$/
      */
-    public function addingAProductPriceRuleToProduct(ProductInterface $product, $ruleName)
+    public function addingAProductPriceRule($ruleName)
     {
         /**
          * @var $rule ProductPriceRuleInterface
@@ -116,7 +117,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has a condition countries with (country "[^"]+")$/
      * @Given /^the (price rule) has a condition countries with (country "[^"]+")$/
      */
-    public function theProductPriceRuleHasACategoryCondition(ProductPriceRuleInterface $rule, CountryInterface $country)
+    public function theProductPriceRuleHasACountriesCondition(ProductPriceRuleInterface $rule, CountryInterface $country)
     {
         $configuration = [
             'countries' => [
@@ -232,7 +233,7 @@ final class ProductPriceRuleContext implements Context
      * @Given /^the (price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
      * @Given /^the (price rule) has a condition currencies with (currency "[^"]+")$/
      */
-    public function theProductPriceRuleHasACurrency(ProductPriceRuleInterface $rule, CurrencyInterface $currency)
+    public function theProductPriceRuleHasACurrencyCondition(ProductPriceRuleInterface $rule, CurrencyInterface $currency)
     {
         $configuration = [
             'currencies' => [
@@ -242,6 +243,49 @@ final class ProductPriceRuleContext implements Context
 
         $condition = new Condition();
         $condition->setType('currencies');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition categories with (category "[^"]+")$/
+     * @Given /^the (price rule) has a condition categories with (category "[^"]+")$/
+     */
+    public function theProductPriceRuleHasACategoriesCondition(ProductPriceRuleInterface $rule, CategoryInterface $category)
+    {
+        $configuration = [
+            'categories' => [
+                $category->getId()
+            ]
+        ];
+
+        $condition = new Condition();
+        $condition->setType('categories');
+        $condition->setConfiguration($configuration);
+
+        $this->addCondition($rule, $condition);
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition products with (product "[^"]+")$/
+     * @Given /^the (price rule) has a condition products with (product "[^"]+")$/
+     * @Given /^the (price rule) has a condition products with (product "[^"]+") and (product "[^"]+")$/
+     */
+    public function theProductPriceRuleHasAProductCondition(ProductPriceRuleInterface $rule, ProductInterface $product, ProductInterface $product2 = null)
+    {
+        $configuration = [
+            'products' => [
+                $product->getId()
+            ]
+        ];
+
+        if (null !== $product2) {
+            $configuration['products'][] = $product2->getId();
+        }
+
+        $condition = new Condition();
+        $condition->setType('products');
         $condition->setConfiguration($configuration);
 
         $this->addCondition($rule, $condition);

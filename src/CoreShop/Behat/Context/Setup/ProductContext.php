@@ -69,7 +69,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Then /^the (product "[^"]+") is in (category "[^"]+")$/
+     * @Given /^the (product "[^"]+") is in (category "[^"]+")$/
+     * @Given /^([^"]+) is in (category "[^"]+")$/
      */
     public function theProductIsInCategory(ProductInterface $product, CategoryInterface $category)
     {

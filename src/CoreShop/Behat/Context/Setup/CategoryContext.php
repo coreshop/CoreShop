@@ -61,6 +61,18 @@ final class CategoryContext implements Context
     }
 
     /**
+     * @Given /^the site has two categories "([^"]+)" and "([^"]+)"$/
+     */
+    public function theSiteHasTwoCategories(string $categoryName, string $categoryName2)
+    {
+        $category = $this->createCategory($categoryName);
+        $category2 = $this->createCategory($categoryName2);
+
+        $this->saveCategory($category);
+        $this->saveCategory($category2);
+    }
+
+    /**
      * @param string $categoryName
      * @param StoreInterface|null $store
      *
