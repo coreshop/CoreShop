@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Currency\Context;
+namespace CoreShop\Component\Core\Context\Currency;
 
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;

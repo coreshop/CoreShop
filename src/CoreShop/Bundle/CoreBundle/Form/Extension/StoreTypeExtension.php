@@ -27,6 +27,10 @@ final class StoreTypeExtension extends AbstractTypeExtension
     {
         $builder->add('baseCountry', CountryChoiceType::class);
         $builder->add('useGrossPrice', CheckboxType::class);
+        $builder->add('countries', CountryChoiceType::class, [
+            'multiple' => true,
+            'active' => null
+        ]);
     }
 
     /**

@@ -12,11 +12,14 @@
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Address\Model\CountriesAwareTrait;
 use CoreShop\Component\Store\Model\Store as BaseStore;
 use Doctrine\Common\Collections\Collection;
 
 class Store extends BaseStore implements StoreInterface
 {
+    use CountriesAwareTrait;
+
     /**
      * @var CountryInterface
      */
