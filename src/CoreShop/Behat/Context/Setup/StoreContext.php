@@ -156,6 +156,7 @@ final class StoreContext implements Context
         $store->setName($name);
         $store->setCurrency($currency);
         $store->setBaseCountry($country);
+        $store->addCountry($country);
 
         return $store;
     }
