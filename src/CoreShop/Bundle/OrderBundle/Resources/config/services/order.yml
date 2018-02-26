@@ -68,13 +68,6 @@ services:
             - '@coreshop.resource.object_cloner'
             - '@coreshop.repository.cart_price_rule_voucher_code'
 
-    coreshop.factory.cart:
-        class: CoreShop\Component\Order\Factory\CartFactory
-        arguments:
-            - '%coreshop.model.cart.class%'
-            - '@coreshop.context.currency'
-            - '@coreshop.context.store'
-
     coreshop.templating.helper.order_state:
         class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper
         arguments: ['@coreshop.workflow.state_manager']

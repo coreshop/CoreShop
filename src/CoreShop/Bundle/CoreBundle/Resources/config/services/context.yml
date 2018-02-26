@@ -34,14 +34,6 @@ services:
             - '@coreshop.repository.currency'
 
     # country store resolver
-    coreshop.context.country.request_based.resolver.cart_based:
-        class: CoreShop\Component\Core\Context\CartBasedCountryResolver
-        public: false
-        arguments:
-            - '@coreshop.context.cart'
-        tags:
-            - { name: coreshop.context.country.request_based.resolver, priority: 100 } #Highest Priority, is more like the fallback
-
     coreshop.context.cart.new.store_based:
         decorates: coreshop.context.cart.new
         class: CoreShop\Component\Core\Context\StoreBasedCartContext
@@ -56,3 +48,10 @@ services:
         arguments:
             - '@coreshop.context.country.store_aware.inner'
             - '@coreshop.context.store'
+
+    coreshop.context.currency.country_currency_based:
+        class: CoreShop\Component\Core\Context\Currency\CountryAwareCurrencyContext
+        arguments:
+            - '@coreshop.context.country'
+        tags:
+            - { name: 'coreshop.context.currency' }
