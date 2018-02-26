@@ -1,7 +1,9 @@
 # CoreShop Members Bridge
 
-[Members](https://github.com/dachcom-digital/pimcore-members) is a great plugin developed from [dachcom-digital](https://github.com/dachcom-digital). It can handle restriction
-for Objects, Documents and Assets, as well as, handling registration and authorization.
+> **Note:** The Members Bridge is currently not implemented in CoreShop 2!
+
+[Members](https://github.com/dachcom-digital/pimcore-members) is a great Symfony Bundle developed from [dachcom-digital](https://github.com/dachcom-digital).
+It can handle restriction for Objects, Documents and Assets, as well as handling registration and authorization.
 
 CoreShop tries to take advantage of this great Bundle and integrates Object Restrictions for:
 

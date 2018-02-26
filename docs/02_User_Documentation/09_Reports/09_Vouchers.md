@@ -1,10 +1,8 @@
-# CoreShop Carrier Distribution Report
-
-![Carrier Distribution](img/carriers.png)
+# CoreShop Voucher Report
 
 | Type | Has Pagination |
 |:-----|:-----------|
-| Pie Chart | No |
+| List | Yes |
 
 ## Available Filters
 
@@ -20,5 +18,11 @@
 | From | Date to Start Filter |
 | To | Date to End Filter |
 
-## Available Chart Fields
-Carrier Distribution
+## Available Grid Fields
+
+| Name | Description |
+|:-----|:------------|
+| Code | Applied Code |
+| Discount | Amount of Discount |
+| Price Rule | Name of applied Price Rule |
+| Applied Date | Applied Date |

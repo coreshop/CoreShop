@@ -1,10 +1,8 @@
-# CoreShop Carrier Distribution Report
-
-![Carrier Distribution](img/carriers.png)
+# CoreShop Abandoned Carts Report
 
 | Type | Has Pagination |
 |:-----|:-----------|
-| Pie Chart | No |
+| List | Yes |
 
 ## Available Filters
 
@@ -20,5 +18,14 @@
 | From | Date to Start Filter |
 | To | Date to End Filter |
 
-## Available Chart Fields
-Carrier Distribution
+## Available Grid Fields
+
+| Name | Description |
+|:-----|:------------|
+| Customer Name | Customer name (if available) |
+| Email | Customer Email (if available) |
+| Selected Payment | Name of selected Payment |
+| Creation Date| Creation Date |
+| Modification Date| Modification Date |
+| Items in Cart| Amount of Items in Cart |
+| Action| Open Cart Object |
