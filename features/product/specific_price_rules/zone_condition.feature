@@ -18,7 +18,7 @@ Feature: Adding a new Product
     And it has a condition zones with zone "Europe"
     Then it should be valid for product "Shoe"
 
-  Scenario: Add a new country product specific price rule which is invalid
+  Scenario: Add a new zone product specific price rule which is invalid
     Given the site has a zone "Asia"
     Given adding a product specific price rule to product "Shoe" named "zone-discount"
     And it is active

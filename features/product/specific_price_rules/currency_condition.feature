@@ -21,7 +21,7 @@ Feature: Adding a new Product
     And it has a condition currencies with currency "EUR"
     Then it should be valid for product "Shoe"
 
-  Scenario: Add a new country product specific price rule which is invalid
+  Scenario: Add a new currency product specific price rule which is invalid
     Given I am using currency "USD"
     And adding a product specific price rule to product "Shoe" named "currency-discount"
     And it is active
