@@ -84,6 +84,17 @@ final class CountryContext implements Context
     }
 
     /**
+     * @Given /^the (country "[^"]+") is invalid for (store "[^"]+")$/
+     */
+    public function currencyIsInValidForStore(CountryInterface $country, StoreInterface $store)
+    {
+        $store->removeCountry($country);
+
+        $this->objectManager->persist($store);
+        $this->objectManager->flush();
+    }
+
+    /**
      * @Given /^the site has a country "([^"]+)" with (currency "[^"]+")$/
      */
     public function theSiteHasACountry($name, CurrencyInterface $currency)

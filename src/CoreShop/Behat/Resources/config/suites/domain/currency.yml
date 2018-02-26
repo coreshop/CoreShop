@@ -11,6 +11,7 @@ default:
                 - coreshop.behat.context.transform.shared_storage
                 - coreshop.behat.context.transform.currency
                 - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.country
 
                 - coreshop.behat.context.setup.store
                 - coreshop.behat.context.setup.country
