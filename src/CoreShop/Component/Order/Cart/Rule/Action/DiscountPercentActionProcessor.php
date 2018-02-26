@@ -48,8 +48,17 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
      */
     protected function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
-        $amount = (int)round(($configuration['percent'] / 100) * $cart->getTotal($withTax));
-        $cartAmount = $cart->getTotal($withTax) - $cart->getDiscount($withTax);
+        $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
+
+        if ('total' === $applyOn) {
+            $total = $cart->getTotal($withTax);
+        }
+        else {
+            $total = $cart->getSubtotal($withTax);
+        }
+
+        $amount = (int)round(($configuration['percent'] / 100) * $total);
+        $cartAmount = $total - $cart->getDiscount($withTax);
 
         return $this->getApplicableAmount($cartAmount, $amount);
     }

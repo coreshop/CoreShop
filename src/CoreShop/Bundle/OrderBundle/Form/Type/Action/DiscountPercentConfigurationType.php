@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -33,6 +34,12 @@ final class DiscountPercentConfigurationType extends AbstractType
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                     new Range(['min' => 0, 'max' => 100]),
                 ],
+            ])
+            ->add('applyOn', ChoiceType::class, [
+                'choices' => [
+                    'total' => 'total',
+                    'subtotal' => 'subtotal'
+                ]
             ]);
     }
 
