@@ -118,7 +118,7 @@ install:
 
     # Add path to CoreShop
     - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
-    - composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 coreshop/core-shop dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT
+    - composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 coreshop/core-shop:dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT
 
 script:
     - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/ --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
