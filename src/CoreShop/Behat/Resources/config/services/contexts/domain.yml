@@ -38,6 +38,7 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.repository.currency'
             - '@__symfony__.coreshop.context.currency'
+            - '@__symfony__.coreshop.money_formatter'
         tags:
             - { name: fob.context_service }
 

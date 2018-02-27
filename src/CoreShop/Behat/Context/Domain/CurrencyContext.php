@@ -22,6 +22,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -46,19 +47,27 @@ final class CurrencyContext implements Context
     private $currencyContext;
 
     /**
+     * @var MoneyFormatterInterface
+     */
+    private $moneyFormatter;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param CurrencyContextInterface $currencyContext
+     * @param MoneyFormatterInterface $moneyFormatter
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CurrencyRepositoryInterface $currencyRepository,
-        CurrencyContextInterface $currencyContext
+        CurrencyContextInterface $currencyContext,
+        MoneyFormatterInterface $moneyFormatter
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->currencyRepository = $currencyRepository;
         $this->currencyContext = $currencyContext;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
     /**
@@ -77,7 +86,7 @@ final class CurrencyContext implements Context
         );
     }
 
-        /**
+    /**
      * @Then /^the (store "[^"]+") should have "([^"]+)" currencies$/
      */
     public function theStoreShouldHaveXCurrencies(StoreInterface $store, $countOfCurrencies)
@@ -88,9 +97,27 @@ final class CurrencyContext implements Context
             count($validCurrencies),
             intval($countOfCurrencies),
             sprintf(
-                'Found %s valid currencies insteaof of %s',
+                'Found "%s" valid currencies instead of of "%s"',
                 count($validCurrencies),
                 intval($countOfCurrencies)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the amount "([^"]+)" of (currency "[^"]+") in language "([^"]+)" should be formatted "([^"]+)"$/
+     */
+    public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat)
+    {
+        $format = $this->moneyFormatter->format(intval($amount), $currency->getIsoCode(), $locale);
+
+        Assert::eq(
+            $format,
+            $shouldBeFormat,
+            sprintf(
+                'Given format "%s" is different from actual format "%s"',
+                $shouldBeFormat,
+                $format
             )
         );
     }
