@@ -7,7 +7,9 @@ cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/system.template.php var/conf
 cp app/config/parameters.example.yml app/config/parameters.yml
 
 # Remove vrana/jush as its only causing problems
+composer install --no-dev --no-scripts
 composer remove vrana/jush --no-scripts
+composer remove codeception/codeception --dev --no-scripts
 
 if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3 --no-scripts; fi
 if [ $PIMCORE_BRANCH == "tags/v5.1.1" ]; then composer require symfony/symfony:3.4.3 --no-scripts; fi
@@ -16,13 +18,7 @@ composer install --no-dev
 
 # Add path to CoreShop
 composer config repositories.coreshop path $TRAVIS_BUILD_DIR/lib/CoreShop
-
-composer require doctrine/instantiator:1.0.5 --no-scripts
-
-# Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
-# this is kinda stupid
-composer require coreshop/core-shop dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT --no-scripts
-composer require symfony/phpunit-bridge:^3 phpunit/phpunit:^6 --no-scripts
+composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 coreshop/core-shop:dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT
 
 if [ $CORESHOP_SKIP_BEHAT == 0 ]; then
     composer require behat/behat:^3.3 friends-of-behat/context-service-extension:^1.1 friends-of-behat/cross-container-extension:^1.1 friends-of-behat/service-container-extension:^1.0 friends-of-behat/symfony-extension:^1.2 friends-of-behat/variadic-extension:^1.1 --no-scripts
