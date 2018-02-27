@@ -113,7 +113,7 @@ install:
     - composer remove vrana/jush --no-scripts
     - if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3; fi
     - if [ $PIMCORE_BRANCH == "tags/v5.1.1" ]; then composer require symfony/symfony:3.4.3; fi
-    - composer install
+    - composer install --no-dev
 
     # Add path to CoreShop
     - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
@@ -122,7 +122,7 @@ install:
     # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
     # this test is kinda stupid
     - composer require coreshop/core-shop dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT --dev
-    - composer require symfony/phpunit-bridge:^4
+    - composer require symfony/phpunit-bridge:^3 phpunit/phpunit:^6
     - composer update
 
 script:

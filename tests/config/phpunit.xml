@@ -19,9 +19,9 @@
         <server name="KERNEL_DIR" value="tests/app"/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="1000"/>
     </php>
-    <!--<listeners>
+    <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-    </listeners>-->
+    </listeners>
     <!--<filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../../src</directory>
