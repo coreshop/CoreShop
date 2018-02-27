@@ -28,6 +28,6 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="1000"/>
     </php>
     <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+        <!--<listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>-->
     </listeners>
 </phpunit>
