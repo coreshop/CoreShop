@@ -53,6 +53,10 @@ final class CartShippingProcessor implements CartProcessorInterface
             return;
         }
 
+        if (null === $cart->getShippingAddress()) {
+            return;
+        }
+
         $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), true);
         $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), false);
 
