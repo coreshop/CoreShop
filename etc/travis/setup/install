@@ -20,7 +20,7 @@ composer require doctrine/instantiator:1.0.5 --no-scripts
 # Include CoreShop with specific commit to test it, because of Pimcore's way of dealing not as dependency,
 # this test is kinda stupid
 composer require coreshop/core-shop dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT --dev  --no-scripts
-composer require symfony/phpunit-bridge:^3.3 --no-scripts
+composer require symfony/phpunit-bridge --no-scripts
 
 if [ $CORESHOP_SKIP_BEHAT == 0 ]; then
     composer require behat/behat:^3.3 friends-of-behat/context-service-extension:^1.1 friends-of-behat/cross-container-extension:^1.1 friends-of-behat/service-container-extension:^1.0 friends-of-behat/symfony-extension:^1.2 friends-of-behat/variadic-extension:^1.1 --no-scripts
