@@ -97,6 +97,10 @@ final class CartTaxProcessor implements CartProcessorInterface
             return $usedTaxes;
         }
 
+        if (null === $cart->getShippingAddress()) {
+            return $usedTaxes;
+        }
+
         $carrier = $cart->getCarrier();
 
         if ($carrier instanceof Carrier && $carrier->getTaxRule() instanceof TaxRuleGroup) {
