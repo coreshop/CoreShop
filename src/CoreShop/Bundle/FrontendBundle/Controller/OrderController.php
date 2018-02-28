@@ -66,6 +66,12 @@ class OrderController extends FrontendController
 
                     $this->get('coreshop.cart.manager')->persistCart($cart);
 
+                    $session = $request->getSession();
+                    $session->set(
+                        sprintf('%s.%s', $this->getParameter('coreshop.session.cart'), $cart->getStore()->getId()),
+                        $cart->getId()
+                    );
+
                     return $this->redirectToRoute('coreshop_cart_summary');
                 }
 
