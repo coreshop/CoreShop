@@ -39,9 +39,15 @@ final class CustomerListener extends AbstractNotificationRuleListener
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
-        $this->rulesProcessor->applyRules('user', $event->getSubject(), [
+        $user = $event->getSubject();
+
+        if($user->getIsGuest() === true) {
+            return;
+        }
+
+        $this->rulesProcessor->applyRules('user', $user, [
             'type' => 'register',
-            'recipient' => $event->getSubject()->getEmail(),
+            'recipient' => $user->getEmail(),
             '_locale' => $this->shopperContext->getLocaleCode()
         ]);
     }
