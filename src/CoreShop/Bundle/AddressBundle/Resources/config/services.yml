@@ -31,7 +31,7 @@ services:
         arguments:
             - '@coreshop.repository.country'
         tags:
-            - { name: coreshop.context.country.request_based.resolver, priority: 10 } #Highest Priority, is more like the fallback
+            - { name: coreshop.context.country.request_based.resolver, priority: 10 }
 
     coreshop.address.formatter:
         class: CoreShop\Component\Address\Formatter\AddressFormatter
