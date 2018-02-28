@@ -7,7 +7,7 @@ it uses a concept called context and context resolver.
 
 | Name | Priority | Tag | Description |
 |------|----------|-----|-------------|
-| [FixedStoreContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Store/Context/FixedStoreContext.php) | 2 | `coreshop.context.store ` | Buffer a store within runtime after the store has been resolved by other context classes so we can lower db queries and increase performance |
+| [FixedStoreContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Store/Context/FixedStoreContext.php) | 2 | `coreshop.context.store ` | Used for testing purposes |
 | [StoreContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Store/Context/RequestBased/StoreContext.php) | 1 | `coreshop.context.store ` | Load a store from given request resolver |
 
 ## Resolver

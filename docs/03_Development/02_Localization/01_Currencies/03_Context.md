@@ -6,7 +6,7 @@ For CoreShop to determine the current currency it uses a concept called context 
 
 | Name | Priority | Tag | Description|
 |------|----------|-----|------------|
-| [FixedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Currency/Context/FixedCurrencyContext.php) | default | `coreshop.context.currency` | Buffer a currency within runtime after the currency has been resolved by other context classes so we can lower db queries and increase performance |
+| [FixedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Currency/Context/FixedCurrencyContext.php) | default | `coreshop.context.currency` | Used for testing purposes |
 | [StorageBasedCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/StorageBasedCurrencyContext.php) | default | `coreshop.context.currency` | check if a currency has been changed during a frontend request |
 | [CountryAwareCurrencyContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Currency/CountryAwareCurrencyContext.php) | default | `coreshop.context.currency` | Mostly this context will apply since it will get the currency based on the current country context |
 

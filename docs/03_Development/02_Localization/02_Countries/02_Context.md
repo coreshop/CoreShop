@@ -6,7 +6,7 @@ it uses a concept called context and context resolver.
 ## Context
 | Name | Priority | Tag | Description|
 |------|----------|-----|------------|
-| [FixedCountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/FixedCountryContext.php) | default | `coreshop.context.country` | Buffer a country within runtime after the country has been resolved by other context classes so we can lower db queries and increase performance |
+| [FixedCountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/FixedCountryContext.php) | default | `coreshop.context.country` | Used for testing purposes |
 | [CountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/RequestBased/CountryContext.php) | default | `coreshop.context.country` | Check for a country within the country request resolver |
 | [StoreAwareCountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Country/StoreAwareCountryContext.php) | default | `coreshop.context.country` | Check if current country is available in current store context |
 
