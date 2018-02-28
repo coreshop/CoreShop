@@ -77,3 +77,10 @@ services:
             - '@__symfony__.coreshop.repository.store'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.tax_rate:
+        class: CoreShop\Behat\Context\Transform\TaxRateContext
+        arguments:
+            - '@__symfony__.coreshop.repository.tax_rate'
+        tags:
+            - { name: fob.context_service }

@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\TaxationBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\TaxationBundle\Controller\TaxRuleGroupController;
+use CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRateRepository;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateTranslationType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType;
@@ -78,7 +79,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(TaxRateInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(TaxRateRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(TaxRateType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

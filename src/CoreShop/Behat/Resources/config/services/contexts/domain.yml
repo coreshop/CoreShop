@@ -49,3 +49,11 @@ services:
             - '@__symfony__.coreshop.currency_converter'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.tax_rate:
+        class: CoreShop\Behat\Context\Domain\TaxRateContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.tax_rate'
+        tags:
+            - { name: fob.context_service }

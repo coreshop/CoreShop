@@ -110,3 +110,13 @@ services:
             - '@__symfony__.coreshop.repository.exchange_rate'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.tax_rate:
+        class: CoreShop\Behat\Context\Setup\TaxRateContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.tax_rate'
+            - '@__symfony__.coreshop.repository.tax_rate'
+        tags:
+            - { name: fob.context_service }
