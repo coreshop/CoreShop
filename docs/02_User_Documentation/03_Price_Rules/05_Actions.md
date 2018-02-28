@@ -29,6 +29,7 @@ Set a arbitrary amount of discount.
 | Amount | Define Amount |
 | Gross | If given Amount has included VAT, check it |
 | Currency | Set Currency of given amount |
+| Apply On | Select Between `total` and `subtotal`. **Note:** This option is only available in the cart rule context |
 
 ## Discount Percent
 > **Available for**: Cart Price Rules, Specific Product Price, Product Price
@@ -40,6 +41,8 @@ Set a arbitrary percentage amount of discount.
 | Name | Description|
 |:-----|:--------------------|
 | Percent | Define Amount |
+| Apply On | Select Between `total` and `subtotal`. **Note:** This option is only available in the cart rule context |
+
 
 ## New Price
 > **Available for**: Specific Product Price, Product Price
