@@ -1,13 +1,12 @@
-| Q                | A
-| ---------------- | -----
-| Bug report?      | yes/no
-| Feature request? | yes/no
-| BC Break report? | yes/no
-| RFC?             | yes/no
+| Q             | A
+| ------------- | ---
+| Bug fix?      | yes/no
+| New feature?  | yes/no
+| BC breaks?    | no
+| Deprecations? | yes/no
+| Fixed tickets | #...   <!-- #-prefixed issue number(s), if any -->
 
 <!--
-- Please fill in this template according to your issue.
-- For support request visit https://gitter.im/coreshop/CoreShop
-- For how-tos visit https://www.coreshop.org/docs/2.0.0/index.html
-- Otherwise, replace this comment by the description of your issue.
+Write a short README entry for your feature/bugfix here (replace this comment block.)
+This will help people understand your PR and can be used as a start of the Doc PR.
 -->
