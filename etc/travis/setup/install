@@ -7,8 +7,8 @@ cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/system.template.php var/conf
 cp app/config/parameters.example.yml app/config/parameters.yml
 
 # Remove vrana/jush as its only causing problems
-composer install --no-dev --no-scripts
 composer remove vrana/jush --no-scripts
+composer install --no-dev --no-scripts
 composer remove codeception/codeception --dev --no-scripts
 
 if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3 --no-scripts; fi
