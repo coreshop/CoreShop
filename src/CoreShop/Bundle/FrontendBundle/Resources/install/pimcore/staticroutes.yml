@@ -249,7 +249,7 @@ routes:
     controller: "@coreshop.frontend.controller.customer"
     action: addressDelete
     variables: _locale,address
-    priority: 2
+    priority: 4
 
   coreshop_customer_settings:
     pattern: "/(\\w+)\\/shop\\/customer\\/settings/"
