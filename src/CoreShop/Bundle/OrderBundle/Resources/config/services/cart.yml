@@ -1,4 +1,5 @@
 parameters:
+    coreshop.session.cart: 'coreshop.cart'
     coreshop.form.type.cart.validation_groups: [coreshop]
     coreshop.form.type.cart_item.validation_groups: [coreshop]
 
