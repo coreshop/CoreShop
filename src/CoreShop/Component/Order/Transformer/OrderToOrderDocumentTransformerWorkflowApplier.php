@@ -2,18 +2,9 @@
 
 namespace CoreShop\Component\Order\Transformer;
 
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderPaymentStates;
-use CoreShop\Component\Order\OrderShipmentStates;
-use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocumentTransformerInterface
 {

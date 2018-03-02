@@ -10,7 +10,7 @@ use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 
 final class CartToOrderTransformerWorkflowApplier implements ProposalTransformerInterface
 {

@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Resource\Workflow\MarkingStore;
+namespace CoreShop\Bundle\WorkflowBundle\MarkingStore;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Workflow\Marking;

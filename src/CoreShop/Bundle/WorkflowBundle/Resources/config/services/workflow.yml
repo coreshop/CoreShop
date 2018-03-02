@@ -1,23 +1,23 @@
 services:
     coreshop.state_machine_manager:
-        class: CoreShop\Component\Resource\Workflow\StateMachineManager
+        class: CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager
         arguments:
             - '@workflow.registry'
 
     coreshop.state_machine_applier:
-        class: CoreShop\Component\Resource\Workflow\StateMachineApplier
+        class: CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier
         arguments:
             - '@coreshop.state_machine_manager'
 
     coreshop.state_machine_cascade_transition:
         public: true
-        class: CoreShop\Component\Resource\Workflow\Callback\CascadeTransition
+        class: CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition
         arguments:
             - '@coreshop.state_machine_manager'
 
     ## event handler
     coreshop.state_machine_listener_processor:
-        class: CoreShop\Bundle\ResourceBundle\EventListener\Workflow\WorkflowListener
+        class: CoreShop\Bundle\WorkflowBundle\EventListener\WorkflowListener
         arguments:
             - '%coreshop.state_machine.callbacks%'
             - '@service_container'

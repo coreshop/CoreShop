@@ -5,7 +5,7 @@ namespace CoreShop\Bundle\PayumBundle\Extension;
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;

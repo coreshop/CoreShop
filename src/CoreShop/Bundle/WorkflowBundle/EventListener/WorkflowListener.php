@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ResourceBundle\EventListener\Workflow;
+namespace CoreShop\Bundle\WorkflowBundle\EventListener;
 
 use CoreShop\Component\Pimcore\InheritanceHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
