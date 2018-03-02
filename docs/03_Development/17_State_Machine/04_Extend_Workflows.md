@@ -6,7 +6,7 @@ It's possible to extend all available CoreShop Workflow.
 
 
 ### Workflow Configuration
-```
+```yml
 core_shop_workflow:
     state_machine:
         coreshop_shipment:
@@ -43,7 +43,6 @@ coreshop.ui.workflow.state.coreshop_shipment.reviewed: 'Shipment under Review'
 To allow your new transition, you need to implement a event listener:
 
 ```yml
-
 # app/config/services
 AppBundle\EventListener\WorkflowListener:
     autowire: true
@@ -69,7 +68,6 @@ class WorkflowListener
     }
 }
 ```
-
 
 ## Example B: Change default Transition Behaviour of Shipment Workflow
 
