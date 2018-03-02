@@ -10,7 +10,7 @@ It's possible to extend all available CoreShop Workflow.
 core_shop_workflow:
     state_machine:
         coreshop_shipment:
-            # define a new place "reviewing"
+            # define a new place "reviewed"
             places:
                 - reviewed
             # define a new transition "review"
@@ -20,7 +20,7 @@ core_shop_workflow:
                     to: reviewed
             # add some colors for better ux
             place_colors:
-                reviewing: '#2f819e'
+                reviewed: '#2f819e'
             transition_colors:
                 review: '#2f819e'
 ```
@@ -93,7 +93,7 @@ core_shop_workflow:
             transitions:
                 review:
                     from: [ready]
-                    to: reviewing
+                    to: reviewed
                 # override the default "ship" transition
                 # which only allows [ready] as valid "from" dispatcher
                 ship:
