@@ -79,7 +79,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
-        $color = isset($this->stateColors[$workflowName][$value]) ? $this->stateColors[$workflowName][$value] : '#f6f1de';
+        $color = isset($this->stateColors[$workflowName]['definitions'][$value]) ? $this->stateColors[$workflowName]['definitions'][$value] : '#f6f1de';
 
         $data = [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
@@ -100,7 +100,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
-        $color = isset($this->stateColors[$workflowName . '_transition'][$transition]) ? $this->stateColors[$workflowName . '_transition'][$transition] : '#999999';
+        $color = isset($this->stateColors[$workflowName . '_transition']['definitions'][$transition]) ? $this->stateColors[$workflowName . '_transition']['definitions'][$transition] : '#999999';
 
         $data = [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
