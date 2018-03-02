@@ -186,7 +186,16 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('colors')
                 ->useAttributeAsKey('name')
                 ->arrayPrototype('array')
-                ->prototype('scalar')->end()
+                ->beforeNormalization()
+                    ->ifTrue(function ($v) { return is_array($v) && !isset($v['definitions']); })
+                    ->then(function ($v) { return ['definitions' => $v]; })
+                ->end()
+                    ->children()
+                        ->arrayNode('definitions')
+                            ->useAttributeAsKey('name')
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
     }
