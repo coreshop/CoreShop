@@ -1,22 +1,26 @@
 # CoreShop Payment Providers
 
-A Payment Provider represents a way that your customer pays during the checkout process. It holds a reference to a specific gateway with custom configuration. Gateway is configured for each payment method separately using the payment method form.
+A Payment Provider represents a way that your customer pays during the checkout process.
+It holds a reference to a specific gateway with custom configuration.
+A gateway is configured for each payment method separately using the payment method form.
 
 ## Payment Gateway configuration
 
 ### Payment Gateways that already have a CoreShop bridge
-First you need to create the configuration form type for your gateway. Have a look at the configuration form types of Paypal and Sofort.
+First you need to create the configuration form type for your gateway.
+Have a look at the configuration form types of *Paypal* and *Sofort*.
 
-Then you should register its configuration form type with ```coreshop.gateway_configuration_type``` tag. After that it will be available in the Admin panel in the gateway choice dropdown.
+Then you should register its configuration form type with `coreshop.gateway_configuration_type` tag.
+After that it will be available in the admin panel in the gateway choice dropdown.
 
-> If you are not sure how your configuration form type should look like, head to [Payum documentation](https://github.com/Payum/Payum).
+> If you are not sure how your configuration form type should look like,
+> head to [Payum documentation](https://github.com/Payum/Payum).
 
 ### Other Payment Gateways
 
 > Learn more about integrating payment gateways in the [Payum docs](https://github.com/Payum/Payum).
 
-
-> You’ll probably need also this kind of configuration in your app/config/config.yml for the gateway’s factory:
+> You’ll probably need also this kind of configuration in your `app/config/config.yml` for the gateway’s factory:
 > ```yaml
 > payum:
 >     gateways:
@@ -24,8 +28,7 @@ Then you should register its configuration form type with ```coreshop.gateway_co
 >            factory: yourgateway
 >```
 
-As an example, we add Sofort as Payment Gateway Factory
-
+As an example, we add *Sofort* as a payment gateway factory.
 To add a new gateway configuration you need to add 2 files:
 
  - A new FormType for configuration values
