@@ -1,9 +1,10 @@
 # CoreShop 2 (Development)
 
-**Looking for the current stable (version 1)?
-See https://github.com/coreshop/CoreShop/tree/coreshop1**
+**CoreShop 2 - A eCommerce Framework based on Pimcore and Symfony.**
 
-**I am happy to announce CoreShop 2 - Pimcore eCommerce Framework, the best CoreShop since CoreShop - now totally based on Symfony.**
+### CoreShop 1
+Looking for the current stable (version 1)?
+See https://github.com/coreshop/CoreShop/tree/coreshop1
 
 [![Join the chat at https://gitter.im/coreshop/coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coreshop/coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis](https://img.shields.io/travis/coreshop/CoreShop.svg)](https://travis-ci.org/coreshop/CoreShop)
@@ -20,7 +21,7 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
 * Pimcore 5.1.0
 
 # Installation
- - Install with composer ```composer require coreshop/core-shop dev-master```
+ - Install with composer `composer require coreshop/core-shop dev-master`
  - Add Following Call to AppKernel's registerBundlesToCollection function
     ```php
         \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
@@ -31,8 +32,8 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
             - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
     ```
  - Run Install Command
-    ```php bin/console coreshop:install```
- - Optional: Install Demo Data ```php bin/console coreshop:install:demo```
+    `php bin/console coreshop:install`
+ - Optional: Install Demo Data `php bin/console coreshop:install:demo`
 
 # Further Information
  - [Website](https://www.coreshop.org)
