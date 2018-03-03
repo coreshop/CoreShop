@@ -1,5 +1,6 @@
 parameters:
     coreshop.workflow.manager.order.state_identifier: 'order_state_change'
+    coreshop.workflow.include_invoice_state_to_complete_order: false
 
 services:
     coreshop.state_machine_resolver.order:
@@ -7,6 +8,7 @@ services:
         class: CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver
         arguments:
           - '@coreshop.state_machine_manager'
+          - '%coreshop.workflow.include_invoice_state_to_complete_order%'
 
     coreshop.state_machine_resolver.order_payment:
         public: true
