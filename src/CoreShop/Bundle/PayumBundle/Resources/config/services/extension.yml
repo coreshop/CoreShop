@@ -6,3 +6,11 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: payum.extension, all: true, prepend: true }
+
+    coreshop.payum_extension.update_order_state:
+        class: CoreShop\Bundle\PayumBundle\Extension\UpdateOrderStateExtension
+        arguments:
+            - '@coreshop.state_machine_manager'
+            - '@coreshop.repository.order'
+        tags:
+            - { name: payum.extension, all: true, prepend: true }
