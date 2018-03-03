@@ -39,8 +39,8 @@ coreshop.ui.workflow.state.coreshop_shipment.reviewed: 'Shipment under Review'
 ```
 
 ### Inform CoreShop about new Transition of Shipment Workflow
-
-To allow your new transition, you need to implement a event listener:
+Not all transitions should be available in backend.
+To allow the transition to show up, you need to implement a simple event listener:
 
 ```yml
 # app/config/services
@@ -104,4 +104,23 @@ core_shop_workflow:
                 reviewed: '#2f819e'
             transition_colors:
                 review: '#2f819e'
+```
+
+### Example C: Callback Listener
+If you need to implement some further business logic after the `coreshop_shipment` state has changed to `reviewed`
+you need to define a callback:
+
+> **Note:** Please make sure your service is public available!
+
+```yml
+core_shop_workflow:
+    state_machine:
+        coreshop_shipment:
+            callbacks:
+                after:
+                    do_something_after_review:
+                        on: ['review']
+                        do: ['@your_service', 'yourAction']
+                        # in this context, "object" is the shipment item
+                        args: ['object']
 ```
