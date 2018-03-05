@@ -46,6 +46,7 @@ services:
     coreshop.behat.context.transform.currency:
         class: CoreShop\Behat\Context\Transform\CurrencyContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.repository.currency'
         tags:
             - { name: fob.context_service }
@@ -82,5 +83,13 @@ services:
         class: CoreShop\Behat\Context\Transform\TaxRateContext
         arguments:
             - '@__symfony__.coreshop.repository.tax_rate'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.tax_rule_group:
+        class: CoreShop\Behat\Context\Transform\TaxRuleGroupContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.tax_rule_group'
         tags:
             - { name: fob.context_service }

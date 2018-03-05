@@ -90,7 +90,7 @@ final class CurrencyContext implements Context
 
     /**
      * @Given /^the (currency "[^"]+") is valid for (store "[^"]+")$/
-     * @Given /^([^"]+) is valid for (store "[^"]+")$/
+     * @Given /^the (currency) is valid for (store "[^"]+")$/
      */
     public function currencyIsValidForStore(CurrencyInterface $currency, StoreInterface $store)
     {

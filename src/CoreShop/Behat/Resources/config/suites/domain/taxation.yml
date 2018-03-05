@@ -10,13 +10,18 @@ default:
 
                 - coreshop.behat.context.transform.shared_storage
                 - coreshop.behat.context.transform.tax_rate
+                - coreshop.behat.context.transform.tax_rule_group
                 - coreshop.behat.context.transform.store
                 - coreshop.behat.context.transform.country
+                - coreshop.behat.context.transform.currency
 
                 - coreshop.behat.context.setup.tax_rate
+                - coreshop.behat.context.setup.tax_rule_group
                 - coreshop.behat.context.setup.store
                 - coreshop.behat.context.setup.country
+                - coreshop.behat.context.setup.currency
 
                 - coreshop.behat.context.domain.tax_rate
+                - coreshop.behat.context.domain.tax_rule_group
             filters:
                 tags: "@taxation"

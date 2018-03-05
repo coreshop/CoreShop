@@ -13,23 +13,32 @@
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class CurrencyContext implements Context
 {
     /**
+     * @var SharedStorageInterface
+     */
+    private $sharedStorage;
+
+    /**
      * @var CurrencyRepositoryInterface
      */
     private $currencyRepository;
 
     /**
+     * @param SharedStorageInterface $sharedStorage
      * @param CurrencyRepositoryInterface $currencyRepository
      */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository)
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        CurrencyRepositoryInterface $currencyRepository
+    )
     {
+        $this->sharedStorage = $sharedStorage;
         $this->currencyRepository = $currencyRepository;
     }
 
@@ -47,5 +56,13 @@ final class CurrencyContext implements Context
         );
 
         return reset($currencies);
+    }
+
+    /**
+     * @Transform /^currency$/
+     */
+    public function latestCurrency()
+    {
+        return $this->sharedStorage->get("currency");
     }
 }

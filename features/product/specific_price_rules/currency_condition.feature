@@ -9,7 +9,7 @@ Feature: Adding a new Product
     And the site has a currency "Euro" with iso "EUR"
     And the site has a currency "USD" with iso "USD"
     And the site has a country "USA" with currency "USD"
-    And it is valid for store "Austria"
+    And the currency is valid for store "Austria"
     And I am in country "Austria"
     And the site has a product "Shoe" priced at 100
     Then the product "Shoe" should be priced at 100

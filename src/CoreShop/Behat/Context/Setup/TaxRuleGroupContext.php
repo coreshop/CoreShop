@@ -14,12 +14,14 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
+use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 final class TaxRuleGroupContext implements Context
@@ -72,11 +74,79 @@ final class TaxRuleGroupContext implements Context
     }
 
     /**
-     * @Given /^the site has a tax rule "([^"]+)"$/
+     * @Given /^the site has a tax rule group "([^"]+)"$/
      */
     public function theSiteHasATaxRuleGroup($name)
     {
         $this->createTaxRuleGroup($name);
+    }
+
+    /**
+     * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
+     * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
+     */
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    {
+        /**
+         * @var $taxRule TaxRuleInterface
+         */
+        $taxRule = $this->taxRuleFactory->createNew();
+        $taxRule->setTaxRuleGroup($taxRuleGroup);
+        $taxRule->setTaxRate($taxRate);
+        $taxRule->setCountry($country);
+        $taxRule->setBehavior(TaxCalculatorInterface::DISABLE_METHOD);
+
+        $this->objectManager->persist($taxRule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
+     * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it combines all rules$/
+     */
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    {
+        /**
+         * @var $taxRule TaxRuleInterface
+         */
+        $taxRule = $this->taxRuleFactory->createNew();
+        $taxRule->setTaxRuleGroup($taxRuleGroup);
+        $taxRule->setTaxRate($taxRate);
+        $taxRule->setCountry($country);
+        $taxRule->setBehavior(TaxCalculatorInterface::COMBINE_METHOD);
+
+        $this->objectManager->persist($taxRule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
+     * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+") and it calculates them one after another$/
+     */
+    public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
+    {
+        /**
+         * @var $taxRule TaxRuleInterface
+         */
+        $taxRule = $this->taxRuleFactory->createNew();
+        $taxRule->setTaxRuleGroup($taxRuleGroup);
+        $taxRule->setTaxRate($taxRate);
+        $taxRule->setCountry($country);
+        $taxRule->setBehavior(TaxCalculatorInterface::ONE_AFTER_ANOTHER_METHOD);
+
+        $this->objectManager->persist($taxRule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^the (tax rule group "[^"]+") is valid for (store "[^"]+")$/
+     * @Given /^the (tax rule group) is valid for (store "[^"]+")$/
+     */
+    public function taxRuleGroupIsValidForStore(TaxRuleGroupInterface $taxRuleGroup, StoreInterface $store)
+    {
+        $taxRuleGroup->addStore($store);
+
+        $this->saveTaxRuleGroup($taxRuleGroup);
     }
 
     /**

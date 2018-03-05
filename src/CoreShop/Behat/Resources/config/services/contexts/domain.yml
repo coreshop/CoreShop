@@ -57,3 +57,15 @@ services:
             - '@__symfony__.coreshop.repository.tax_rate'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.tax_rule_group:
+        class: CoreShop\Behat\Context\Domain\TaxRuleGroupContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.factory.address'
+            - '@__symfony__.coreshop.repository.tax_rule_group'
+            - '@__symfony__.coreshop.repository.tax_rule'
+            - '@__symfony__.coreshop.taxation.factory.tax_calculator'
+            - '@__symfony__.coreshop.context.country'
+        tags:
+            - { name: fob.context_service }
