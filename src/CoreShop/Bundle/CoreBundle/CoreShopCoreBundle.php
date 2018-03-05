@@ -23,6 +23,7 @@ use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLo
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
 use CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle;
+use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
 use CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle;
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
@@ -94,7 +95,8 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
             new CoreShopFixtureBundle(),
             new CoreShopShippingBundle(),
             new CoreShopConfigurationBundle(),
-            new CoreShopTrackingBundle()
+            new CoreShopTrackingBundle(),
+            new CoreShopFrontendBundle(),
         ], 1500);
     }
 
