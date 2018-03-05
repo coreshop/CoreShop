@@ -3,15 +3,14 @@
 namespace CoreShop\Bundle\PayumBundle\Extension;
 
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\Generic;
-use Payum\Core\Request\GetStatusInterface;
 use Payum\Core\Request\Notify;
 
 final class UpdateOrderStateExtension implements ExtensionInterface
