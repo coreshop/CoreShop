@@ -32,7 +32,7 @@ class CoreShop_CheckoutController extends Action
         }
 
         if (count($this->view->cart->getItems()) == 0 && !in_array($this->getParam('action'), $allowedActions)) {
-            $this->redirect(\CoreShop::getTools()->url(['act' => 'list'], 'coreshop_cart', true));
+            $this->redirect(\CoreShop::getTools()->url(['act' => 'list', 'lang' => $this->view->language], 'coreshop_cart', true));
         }
 
         if (!is_array($this->session->order)) {
