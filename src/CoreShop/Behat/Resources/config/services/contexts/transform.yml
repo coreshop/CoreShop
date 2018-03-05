@@ -94,3 +94,20 @@ services:
             - '@__symfony__.coreshop.repository.tax_rule_group'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.shipping:
+        class: CoreShop\Behat\Context\Transform\ShippingContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.carrier'
+            - '@__symfony__.coreshop.repository.shipping_rule'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.cart:
+        class: CoreShop\Behat\Context\Transform\CartContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.cart'
+        tags:
+            - { name: fob.context_service }

@@ -4,3 +4,4 @@ imports:
     - suites/domain/taxation.yml
     - suites/domain/cart.yml
     - suites/domain/category.yml
+    - suites/domain/shipping.yml

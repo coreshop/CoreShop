@@ -141,3 +141,14 @@ services:
             - '@__symfony__.coreshop.cart.manager'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.shipping:
+        class: CoreShop\Behat\Context\Setup\ShippingContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.repository.carrier'
+            - '@__symfony__.coreshop.factory.carrier'
+            - '@__symfony__.coreshop.factory.shipping_rule'
+        tags:
+            - { name: fob.context_service }

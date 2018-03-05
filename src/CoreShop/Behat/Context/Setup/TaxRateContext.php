@@ -14,11 +14,9 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
