@@ -8,13 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
@@ -33,7 +34,7 @@ class ShippingRuleConditionChecker extends AbstractConditionChecker
 
     /**
      * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param RepositoryInterface              $shippingRuleRepository
+     * @param RepositoryInterface $shippingRuleRepository
      */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor, RepositoryInterface $shippingRuleRepository)
     {
@@ -50,7 +51,7 @@ class ShippingRuleConditionChecker extends AbstractConditionChecker
         $shippingRule = $this->shippingRuleRepository->find($shippingRuleId);
 
         if ($shippingRule instanceof ShippingRuleInterface) {
-            return $this->ruleValidationProcessor->isValid(['carrier' => $carrier, 'shippable' => $shippable, 'address' => $address], $shippingRule);
+            return $this->ruleValidationProcessor->isValid($carrier, $shippingRule, ['carrier' => $carrier, 'shippable' => $shippable, 'address' => $address]);
         }
 
         return false;

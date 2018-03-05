@@ -55,7 +55,7 @@ class ProductClassHelper implements ClassHelperInterface
                     }
                 }
             }
-            
+
             return [
                 'categoryIds' => implode(',', $categoryIds) . ',',
                 'parentCategoryIds' => ',' . implode(',', $parentCategoryIds) . ',',

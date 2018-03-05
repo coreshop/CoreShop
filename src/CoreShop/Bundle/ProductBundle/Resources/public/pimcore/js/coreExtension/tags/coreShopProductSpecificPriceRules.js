@@ -10,10 +10,10 @@
  *
  */
 
-pimcore.registerNS("pimcore.object.tags.coreShopProductSpecificPriceRules");
+pimcore.registerNS('pimcore.object.tags.coreShopProductSpecificPriceRules');
 pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.object.tags.abstract, {
 
-    type: "coreShopProductSpecificPriceRules",
+    type: 'coreShopProductSpecificPriceRules',
     panels: [],
 
     /**
@@ -42,7 +42,7 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
             renderer: function (key, value, metaData, record) {
                 this.applyPermissionStyle(key, value, metaData, record);
 
-                return t("not_supported");
+                return t('not_supported');
             }.bind(this, field.key)
         };
     },
@@ -57,7 +57,7 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
 
         this.component = this.getLayoutEdit();
 
-        this.component.on("afterrender", function () {
+        this.component.on('afterrender', function () {
             this.component.disable();
         }.bind(this));
 

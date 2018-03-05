@@ -39,7 +39,7 @@ services:
     coreshop.checkout.step.shipping:
         class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
         arguments:
-            - '@coreshop.carrier.discovery'
+            - '@coreshop.carrier.resolver'
             - '@coreshop.shipping.carrier.validator'
             - '@form.factory'
             - '@coreshop.context.store'

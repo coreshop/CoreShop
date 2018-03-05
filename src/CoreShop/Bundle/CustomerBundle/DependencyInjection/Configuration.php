@@ -37,7 +37,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        $this->addImplementations($rootNode);
+        $this->addStack($rootNode);
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -47,9 +47,9 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addImplementations(ArrayNodeDefinition $node) {
+    private function addStack(ArrayNodeDefinition $node) {
         $node->children()
-            ->arrayNode('implementations')
+            ->arrayNode('stack')
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('customer')->defaultValue(CustomerInterface::class)->cannotBeEmpty()->end()

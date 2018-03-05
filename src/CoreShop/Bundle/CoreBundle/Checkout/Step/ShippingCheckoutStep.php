@@ -21,6 +21,7 @@ use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
+use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -29,9 +30,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
     /**
-     * @var ShippableCarriersDiscoveryInterface
+     * @var CarriersResolverInterface
      */
-    private $shippableCarriersDiscovery;
+    private $carriersResolver;
 
     /**
      * @var ShippableCarrierValidatorInterface
@@ -54,21 +55,21 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     private $cartManager;
 
     /**
-     * @param ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery
+     * @param CarriersResolverInterface $carriersResolver
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      * @param FormFactoryInterface $formFactory
      * @param StoreContextInterface $storeContext
      * @param CartManagerInterface $cartManager
      */
     public function __construct(
-        ShippableCarriersDiscoveryInterface $shippableCarriersDiscovery,
+        CarriersResolverInterface $carriersResolver,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
         StoreContextInterface $storeContext,
         CartManagerInterface $cartManager
     )
     {
-        $this->shippableCarriersDiscovery = $shippableCarriersDiscovery;
+        $this->carriersResolver = $carriersResolver;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
         $this->storeContext = $storeContext;
@@ -96,7 +97,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function doAutoForward(CartInterface $cart)
     {
-        return $cart->hasShippableItems()  === false;
+        return $cart->hasShippableItems() === false;
     }
 
     /**
@@ -106,8 +107,8 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     {
         return $cart->hasShippableItems() === false
             || ($cart->hasItems() &&
-            $cart->getCarrier() instanceof CarrierInterface &&
-            $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress()));
+                $cart->getCarrier() instanceof CarrierInterface &&
+                $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress()));
     }
 
     /**
@@ -152,7 +153,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     private function getCarriers(CartInterface $cart)
     {
-        $carriers = $this->shippableCarriersDiscovery->discoverCarriers($cart, $cart->getShippingAddress());
+        $carriers = $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
         return $carriers;
     }
 

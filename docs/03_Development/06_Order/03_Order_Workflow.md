@@ -1,3 +1,3 @@
 # CoreShop Order Workflow
 
-CoreShop uses [Pimcore Workflow](https://pimcore.com/docs/5.0.x/Workflow_Management/index.html) to handle Order States.
+CoreShop uses Symfony Workflow to apply states. Here is the detail information about the [State Machine](../17_State_Machine).

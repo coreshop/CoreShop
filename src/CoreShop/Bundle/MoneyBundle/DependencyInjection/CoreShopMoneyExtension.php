@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\MoneyBundle\DependencyInjection;
 
@@ -24,7 +24,7 @@ final class CoreShopMoneyExtension extends AbstractModelExtension
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);

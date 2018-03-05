@@ -71,8 +71,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         if (null === $objectName) {
             $this->modelsToRemove = [];
             $this->modelsToPersist = [];
-        }
-        else {
+        } else {
             if (isset($this->modelsToRemove[$objectName])) {
                 $this->modelsToRemove[$objectName] = [];
             }

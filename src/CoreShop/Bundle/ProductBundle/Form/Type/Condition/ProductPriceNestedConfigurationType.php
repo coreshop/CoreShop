@@ -8,13 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionCollectionType;
 use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurationType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 final class ProductPriceNestedConfigurationType extends AbstractNestedConfigurationType
 {
@@ -26,8 +28,17 @@ final class ProductPriceNestedConfigurationType extends AbstractNestedConfigurat
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('conditions', ProductPriceRuleConditionCollectionType::class)
-        ;
+            ->add('conditions', ProductPriceRuleConditionCollectionType::class);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (is_array($data)) {
+                $data['conditions'] = [];
+
+                $event->setData($data);
+            }
+        });
     }
 
     /**

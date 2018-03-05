@@ -79,9 +79,17 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
      */
     protected function getDiscount(CartInterface $cart, $withTax, array $configuration)
     {
+        $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
+
+        if ('total' === $applyOn) {
+            $cartAmount = $cart->getTotal($withTax);
+        }
+        else {
+            $cartAmount = $cart->getSubtotal($withTax);
+        }
+
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
-        $cartAmount = $cart->getTotal($withTax);
 
         if ($cart->getSubtotalTax() > 0) {
             $cartAverageTax = $cart->getSubtotalTax() / $cart->getSubtotal(true);
@@ -90,8 +98,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
                 if (!$withTax) {
                     $amount /= 1 + $cartAverageTax;
                 }
-            }
-            else {
+            } else {
                 if ($withTax) {
                     $amount *= 1 + $cartAverageTax;
                 }

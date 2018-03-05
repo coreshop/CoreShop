@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -58,7 +58,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
      */
     public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.grid_config', $applicationName) : 'resources.admin.install.grid_config';
+        $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $routeFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);

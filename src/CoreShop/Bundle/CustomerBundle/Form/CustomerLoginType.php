@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
@@ -26,7 +26,7 @@ class CustomerLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-             ->add('_username', TextType::class, [
+            ->add('_username', TextType::class, [
                 'label' => 'coreshop.form.login.username',
             ])
             ->add('_password', PasswordType::class, [
@@ -35,8 +35,7 @@ class CustomerLoginType extends AbstractType
             ->add('_remember_me', CheckboxType::class, [
                 'label' => 'coreshop.form.login.remember_me',
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     /**

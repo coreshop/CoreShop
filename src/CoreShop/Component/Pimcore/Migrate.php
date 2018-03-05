@@ -36,8 +36,7 @@ final class Migrate
         if ($newClassDefinition instanceof ClassDefinition) {
             if (array_key_exists('delete_existing_class', $options) && $options['delete_existing_class']) {
                 $newClassDefinition->delete();
-            }
-            else {
+            } else {
                 throw new ClassDefinitionAlreadyExistsException();
             }
         }
@@ -121,7 +120,7 @@ final class Migrate
 
     /**
      * Migrates all the data from $oldClassDefinition to $newClassDefinition
-     * 
+     *
      * @param string $oldPimcoreClass
      * @param string $newPimcoreClass
      * @throws \Exception

@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
@@ -42,6 +43,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\QuoteItemInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -68,6 +70,7 @@ final class Configuration implements ConfigurationInterface
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCartCleanupSection($rootNode);
+        $this->addStack($rootNode);
 
         return $treeBuilder;
     }
@@ -79,16 +82,41 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('cleanup')
+                ->arrayNode('expiration')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('expiration_days')->defaultValue(30)->end()
-                        ->booleanNode('anonymous')->defaultValue(true)->end()
-                        ->booleanNode('user')->defaultValue(true)->end()
+                        ->arrayNode('cart')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->integerNode('days')->defaultValue(0)->end()
+                                ->booleanNode('anonymous')->defaultValue(true)->end()
+                                ->booleanNode('customer')->defaultValue(true)->end()
+                            ->end()
+                        ->end()
+                         ->arrayNode('order')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->integerNode('days')->defaultValue(5)->end()
+                            ->end()
+                        ->end()
                     ->end()
+                ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addStack(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('stack')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('purchasable')->defaultValue(PurchasableInterface::class)->cannotBeEmpty()->end()
+
                 ->end()
             ->end()
-        ;
+        ->end();
     }
 
     /**
@@ -198,6 +226,7 @@ final class Configuration implements ConfigurationInterface
                                                 ->scalarNode('default')->defaultValue(OrderController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
                                                 ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
+                                                ->scalarNode('comment')->defaultValue(OrderCommentController::class)->end()
                                             ->end()
                                         ->end()
                                     ->end()
@@ -409,6 +438,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order_edit_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editPayment.js')->end()
                             ->scalarNode('order_edit_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editShipment.js')->end()
                             ->scalarNode('order_edit_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/editInvoice.js')->end()
+                            ->scalarNode('order_comments')->defaultValue('/bundles/coreshoporder/pimcore/js/order/module/orderComments.js')->end()
                             ->scalarNode('order_invoice_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice/render.js')->end()
                             ->scalarNode('order_shipment_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment/render.js')->end()
                             ->scalarNode('order_change_state')->defaultValue('/bundles/coreshoporder/pimcore/js/order/state/changeState.js')->end()

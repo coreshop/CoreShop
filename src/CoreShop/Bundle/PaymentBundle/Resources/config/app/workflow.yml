@@ -5,6 +5,10 @@ framework:
             marking_store:
                 service: coreshop.state_machine.marking_store.payment_orm_marketing_store
             supports: CoreShop\Component\Payment\Model\Payment
+
+core_shop_workflow:
+    state_machine:
+        coreshop_payment:
             places:
                 - new
                 - processing
@@ -28,18 +32,14 @@ framework:
                 refund:
                     from: [completed]
                     to: refunded
-
-core_shop_resource:
-    state_machine:
-        colors:
-            coreshop_payment:
+            place_colors:
                 new: '#61c2cb'
                 processing: '#feb624'
                 completed: '#5b981a'
                 failed: '#83002e'
                 cancelled: '#f2583e'
                 refunded: '#004966'
-            coreshop_payment_transition:
+            transition_colors:
                 create: '#61c2cb'
                 process: '#feb624'
                 complete: '#5b981a'

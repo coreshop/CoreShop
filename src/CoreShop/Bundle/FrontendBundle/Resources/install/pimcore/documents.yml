@@ -124,7 +124,6 @@ documents:
           type: 'objectProperty'
           value: 'Order Confirmation %Text(orderNumber);'
 
-
   -
     key: 'order-shipped'
     type: 'email'
@@ -161,3 +160,35 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Your order has been shipped %Text(orderNumber);'
+  -
+    key: 'user-order-comment'
+    type: 'email'
+    action: 'mail'
+    controller: 'mail'
+    module: 'CoreShopFrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>Hinweise zu Ihrer Bestellung:</p>
+            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+        head:
+          type: 'input'
+          value: 'Hinweise zu Ihrer Bestellung %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Hinweise zu Ihrer Bestellung %Text(orderNumber);'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>Notes on your order:</p>
+            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+        head:
+          type: 'input'
+          value: 'Notes on your order %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Notes on your order %Text(orderNumber);'

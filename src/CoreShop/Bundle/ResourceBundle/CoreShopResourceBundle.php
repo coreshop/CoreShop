@@ -8,12 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ImplementationClassesPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterResourcesPass;
@@ -47,7 +48,8 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $container->addCompilerPass(new RegisterPimcoreResourcesPass());
         $container->addCompilerPass(new DoctrineTargetEntitiesResolverPass());
         $container->addCompilerPass(new RegisterInstallersPass());
-        $container->addCompilerPass(new ImplementationClassesPass());
+        $container->addCompilerPass(new StackClassesPass());
+        $container->addCompilerPass(new StackRepositoryPass());
     }
 
     /**
@@ -99,8 +101,8 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     {
         $jsFiles = [];
 
-        if ($this->container->hasParameter('resources.admin.js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('resources.admin.js'));
+        if ($this->container->hasParameter('coreshop.all.pimcore.admin.js')) {
+            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.js'));
         }
 
         return $jsFiles;
@@ -113,8 +115,8 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     {
         $cssFiles = [];
 
-        if ($this->container->hasParameter('resources.admin.css')) {
-            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('resources.admin.css'));
+        if ($this->container->hasParameter('coreshop.all.pimcore.admin.css')) {
+            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.css'));
         }
 
         return $cssFiles;

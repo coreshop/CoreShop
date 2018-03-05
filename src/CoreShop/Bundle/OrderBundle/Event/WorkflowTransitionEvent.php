@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
 final class WorkflowTransitionEvent extends Event
 {
     /**
-     * @var string
+     * @var array
      */
     protected $allowedTransitions;
 
@@ -29,7 +29,7 @@ final class WorkflowTransitionEvent extends Event
     /**
      * WorkflowTransitionEvent constructor.
      *
-     * @param array  $allowedTransitions
+     * @param array $allowedTransitions
      * @param string $workflowName
      */
     public function __construct(array $allowedTransitions, $workflowName)

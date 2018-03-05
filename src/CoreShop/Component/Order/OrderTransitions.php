@@ -17,6 +17,7 @@ final class OrderTransitions
     const IDENTIFIER = 'coreshop_order';
 
     const TRANSITION_CREATE = 'create';
+    const TRANSITION_CONFIRM = 'confirm';
     const TRANSITION_CANCEL = 'cancel';
     const TRANSITION_COMPLETE = 'complete';
 }

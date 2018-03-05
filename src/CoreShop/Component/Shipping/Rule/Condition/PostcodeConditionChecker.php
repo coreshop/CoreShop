@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
@@ -68,7 +68,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
                         $postcodes = [];
 
                         for ($i = $fromNumber; $i <= $toNumber; ++$i) {
-                            $postcodes[] = $fromText.$i;
+                            $postcodes[] = $fromText . $i;
                         }
                     }
                 }

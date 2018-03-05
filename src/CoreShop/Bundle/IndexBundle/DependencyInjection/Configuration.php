@@ -136,7 +136,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
     }
-    
+
     /**
      * @param ArrayNodeDefinition $node
      */
@@ -158,7 +158,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('index_getter_brick')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/brick.js')->end()
                             ->scalarNode('index_getter_classificationstore')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/classificationstore.js')->end()
                             ->scalarNode('index_getter_fieldcollection')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/fieldcollection.js')->end()
-                            ->scalarNode('index_getter_localizedfield')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/localizedfield.js')->end()
                             ->scalarNode('index_interpreter_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/abstract.js')->end()
                             ->scalarNode('index_interpreter_objectproperty')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/objectproperty.js')->end()
                             ->scalarNode('index_interpreter_objecttype')->defaultValue('/bundles/coreshopindex/pimcore/js/index/objecttype/abstract.js')->end()
@@ -170,8 +169,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('filter_condition')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/condition.js')->end()
                             ->scalarNode('filter_similarity')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/similarity.js')->end()
                             ->scalarNode('filter_condition_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/abstract.js')->end()
-                            ->scalarNode('filter_condition_boolean')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/boolean.js')->end()
-                            ->scalarNode('filter_condition_combined')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/combined.js')->end()
+                            ->scalarNode('filter_condition_nested')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/nested.js')->end()
                             ->scalarNode('filter_condition_multiselect')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/multiselect.js')->end()
                             ->scalarNode('filter_condition_range')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/range.js')->end()
                             ->scalarNode('filter_condition_select')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/select.js')->end()

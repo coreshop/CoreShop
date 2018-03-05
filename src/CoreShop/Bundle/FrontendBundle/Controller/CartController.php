@@ -24,7 +24,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
-use Pimcore\Model\Object;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -96,8 +95,7 @@ class CartController extends FrontendController
 
             $this->get('event_dispatcher')->dispatch('coreshop.cart.update', new GenericEvent($cart));
             $this->getCartManager()->persistCart($cart);
-        }
-        else {
+        } else {
             if ($cart->getId()) {
                 $cart = $this->get('coreshop.repository.cart')->forceFind($cart->getId());
             }
@@ -116,7 +114,7 @@ class CartController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
-        $product = Object::getById($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -139,8 +137,6 @@ class CartController extends FrontendController
 
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
         $this->getCartManager()->persistCart($this->getCart());
-
-        $this->get('event_dispatcher')->dispatch('coreshop.cart.item_added', new GenericEvent($cart));
 
         $this->addFlash('success', 'coreshop.ui.item_added');
 
@@ -168,8 +164,6 @@ class CartController extends FrontendController
 
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
-
-        $this->get('event_dispatcher')->dispatch('coreshop.cart.item_removed', new GenericEvent($this->getCart()));
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }

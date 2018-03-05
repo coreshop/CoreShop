@@ -39,7 +39,6 @@ class SearchController extends FrontendController
             $itemsPerPage = 10;
 
             $query = [
-                'active = 1',
                 'name LIKE ?',
                 'description LIKE ?',
                 'shortDescription LIKE ?',
@@ -53,7 +52,7 @@ class SearchController extends FrontendController
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
-            $list->setCondition(implode(' OR ', $query), $queryParams);
+            $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ')', $queryParams);
 
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);

@@ -27,19 +27,19 @@ final class TranslationConfiguration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('translations')
-                    ->useAttributeAsKey('key')
-                    ->arrayPrototype()
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->scalarNode('key')->cannotBeEmpty()->end()
-                            ->arrayNode('languages')
-                                ->useAttributeAsKey('language')
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('translations')
+            ->useAttributeAsKey('key')
+            ->arrayPrototype()
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('key')->cannotBeEmpty()->end()
+            ->arrayNode('languages')
+            ->useAttributeAsKey('language')
+            ->prototype('scalar')->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
             ->end();
 
         return $treeBuilder;

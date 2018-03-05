@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Report;
 
@@ -58,7 +58,8 @@ class PaymentProvidersReport implements ReportInterface
         Connection $db,
         RepositoryInterface $paymentProviderRepository,
         array $pimcoreClasses
-    ) {
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->paymentProviderRepository = $paymentProviderRepository;
@@ -68,8 +69,9 @@ class PaymentProvidersReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag) {
-        $fromFilter = $parameterBag->get('from' , strtotime(date('01-m-Y')));
+    public function getReportData(ParameterBag $parameterBag)
+    {
+        $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $storeId = $parameterBag->get('store', null);
 
@@ -78,16 +80,16 @@ class PaymentProvidersReport implements ReportInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        if(is_null($storeId)) {
+        if (is_null($storeId)) {
             return [];
         }
 
         $store = $this->storeRepository->find($storeId);
-        if(!$store instanceof StoreInterface) {
+        if (!$store instanceof StoreInterface) {
             return [];
         }
 
-        $tableName = 'object_query_'.$this->pimcoreClasses['order'];;
+        $tableName = 'object_query_' . $this->pimcoreClasses['order'];;
         $sql = "
             SELECT  paymentProvider, 
                     COUNT(1) as total, 
@@ -108,7 +110,7 @@ class PaymentProvidersReport implements ReportInterface
 
         $results = $this->db->fetchAll($sql);
         $data = [];
-        
+
         foreach ($results as $result) {
             $paymentProvider = null;
 

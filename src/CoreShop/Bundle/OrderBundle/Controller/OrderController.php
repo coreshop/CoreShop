@@ -28,15 +28,15 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends AbstractSaleDetailController
 {
-     /**
+    /**
      * @return mixed
      * @throws \Exception
      */
@@ -53,7 +53,7 @@ class OrderController extends AbstractSaleDetailController
 
         $folder = DataObject::getByPath('/' . $folderPath);
 
-        if($folder instanceof DataObject\Folder) {
+        if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
         }
 
@@ -197,7 +197,7 @@ class OrderController extends AbstractSaleDetailController
      */
     protected function getPayments(OrderInterface $order)
     {
-        $payments = $order->getPayments();
+        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
         $return = [];
 
         foreach ($payments as $payment) {

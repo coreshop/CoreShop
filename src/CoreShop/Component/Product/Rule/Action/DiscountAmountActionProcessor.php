@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Rule\Action;
 
@@ -18,9 +18,9 @@ use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use Webmozart\Assert\Assert;
 
-class DiscountAmountActionProcessor implements ProductPriceActionProcessorInterface
+class DiscountAmountActionProcessor implements ProductDiscountActionProcessorInterface
 {
-     /**
+    /**
      * @var CurrencyConverterInterface
      */
     protected $moneyConverter;
@@ -58,13 +58,5 @@ class DiscountAmountActionProcessor implements ProductPriceActionProcessorInterf
         $currency = $this->currencyRepository->find($configuration['currency']);
 
         return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice($subject, array $configuration)
-    {
-        return null;
     }
 }

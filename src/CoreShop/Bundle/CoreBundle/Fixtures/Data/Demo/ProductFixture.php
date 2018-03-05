@@ -73,7 +73,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
             $faker = Factory::create();
             $faker->addProvider(new Lorem($faker));
             $faker->addProvider(new Barcode($faker));
-            $faker->addProvider(new Image($faker));
+            $faker->addProvider($this->container->get('kernel')->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3))));
 
             $categories = $this->container->get('coreshop.repository.category')->findAll();
 

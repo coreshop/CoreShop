@@ -130,7 +130,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     private function createForm(Request $request, CartInterface $cart)
     {
         $form = $this->formFactory->createNamed('', PaymentType::class, $cart, [
-            'store' => $this->storeContext->getStore(),
+            'payment_subject' => $cart
         ]);
 
         if ($request->isMethod('post')) {

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Worker;
 
@@ -35,18 +35,18 @@ interface WorkerInterface
      */
     public function deleteIndexStructures(IndexInterface $index);
 
-   /**
-    * deletes given element from index.
-    *
-    * @param IndexInterface $index
-    * @param IndexableInterface $object
-    */
-   public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
+    /**
+     * deletes given element from index.
+     *
+     * @param IndexInterface $index
+     * @param IndexableInterface $object
+     */
+    public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * updates given element in index.
      *
-     * @param IndexInterface        $index
+     * @param IndexInterface $index
      * @param IndexableInterface $object
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object);

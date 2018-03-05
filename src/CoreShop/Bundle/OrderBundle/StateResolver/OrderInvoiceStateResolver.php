@@ -19,7 +19,7 @@ use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderInvoiceStateResolver implements StateResolverInterface
 {
@@ -34,13 +34,14 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
     protected $orderInvoiceRepository;
 
     /**
-     * @param StateMachineManager             $stateMachineManager
+     * @param StateMachineManager $stateMachineManager
      * @param OrderInvoiceRepositoryInterface $orderInvoiceRepository
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         OrderInvoiceRepositoryInterface $orderInvoiceRepository
-    ) {
+    )
+    {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderInvoiceRepository = $orderInvoiceRepository;
     }
@@ -68,7 +69,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string         $invoiceState
+     * @param string $invoiceState
      *
      * @return int
      */
@@ -89,8 +90,8 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string         $invoiceState
-     * @param string         $orderInvoiceState
+     * @param string $invoiceState
+     * @param string $orderInvoiceState
      *
      * @return bool
      */
@@ -98,7 +99,8 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         OrderInterface $order,
         string $invoiceState,
         string $orderInvoiceState
-    ): bool {
+    ): bool
+    {
         $invoiceInStateAmount = $this->countOrderInvoicesInState($order, $invoiceState);
         $invoiceAmount = count($this->orderInvoiceRepository->getDocuments($order));
 

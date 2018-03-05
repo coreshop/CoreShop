@@ -1,11 +1,30 @@
-CoreShop supports using of "Multiple Stores" in one installation. That means, you can share your products and all of your configuration between multiple domains and stores.
+# CoreShop Stores
+Every CoreShop Installation is bounded to a default Store.
+By default a store is connected with a pimcore Site.
 
-## Configure Pimcore Multi-Site
+![Stores](img/stores.png)
 
-CoreShop Stores System depends on Pimcores Multi-Site System. To get started with Stores, you first need to configure a multi-site in Pimcore: [https://www.pimcore.org/docs/latest/MVC/Routing_and_URLs/Working_with_Sites.html](https://www.pimcore.org/docs/latest/MVC/Routing_and_URLs/Working_with_Sites.html)
+## Domain based Store
+This is CoreShops default behaviour. One store for your default page, which is also your default store.
+If you have multiple Domains it's possible to add a store to each domain.
+
+> **Tip:** Learn more about pimcore multi sites: [https://www.pimcore.org/docs/latest/MVC/Routing_and_URLs/Working_with_Sites.html](https://www.pimcore.org/docs/latest/MVC/Routing_and_URLs/Working_with_Sites.html)
+
+## Custom Store Locator
+Sometimes you have just one site installation but you want do use different Stores.
+Example: `/de-at` should use a austrian store and `/de-de` a german one.
+For that you need to build a custom store locator to do so, checkout the dev section to find out how this can be achieved.
 
 ## Configure CoreShop Stores
+Open CoreShop Menu -> "Stores". There should be already a default store, connected to your default (main-domain) site.
+To create a new store, click on the "Add" button. Proceed wih configuring your new store.
 
-Open CoreShop Menu -> "Stores": Here are all of your stores configured, including your Default (Main-Domain) Store. To create a new Store, click on "Add", give it a Name. Now you need to configure your Mulit-Site and voila, you are ready to go with Stores.
+## Examples
+Stores can be used in many ways, checkout the examples to find out which solution suits you most.
 
-![Sales Report](img/stores.png)
+### Example 1: Global Store
+Use a Store to handle multiple currencies, countries and tax calculations.
+Depending on your product and price strategy, it's possible to use it within one store.
+
+### Example 2: Country Store
+Use a Store for each Country. This allows you to restrict your shop within a country context.

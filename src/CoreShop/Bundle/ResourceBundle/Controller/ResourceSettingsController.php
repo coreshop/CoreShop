@@ -45,31 +45,31 @@ class ResourceSettingsController extends AdminController
     {
         $config = [
             'classMap' => [],
-            'implementations' => []
+            'stack' => []
         ];
 
-        if ($this->container->hasParameter('coreshop.pimcore.classes')) {
-            $classes = $this->getParameter('coreshop.pimcore.classes');
+        if ($this->container->hasParameter('coreshop.all.pimcore_classes')) {
+            $classes = $this->getParameter('coreshop.all.pimcore_classes');
 
             foreach ($classes as $key => $definition) {
                 $alias = explode('.', $key);
+                $application = $alias[0];
                 $alias = $alias[1];
 
                 $class = str_replace('Pimcore\\Model\\DataObject\\', '', $definition['classes']['model']);
                 $class = str_replace('\\', '', $class);
 
-                $config['classMap'][$alias] = $class;
+                $config['classMap'][$application][$alias] = $class;
             }
 
-            $implementations = $this->container->getParameter('coreshop.implementations.classes');
+            $stack = $this->container->getParameter('coreshop.all.stack.pimcore_class_names');
 
-            foreach ($implementations as $implementationKey => $classes) {
-                foreach ($classes as $class) {
-                    $class = str_replace('Pimcore\\Model\\DataObject\\', '', $class);
-                    $class = str_replace('\\', '', $class);
+            foreach ($stack as $key => $impl) {
+                $alias = explode('.', $key);
+                $application = $alias[0];
+                $alias = $alias[1];
 
-                    $config['implementations'][$implementationKey][] = $class;
-                }
+                $config['stack'][$application][$alias] = $impl;
             }
         }
 

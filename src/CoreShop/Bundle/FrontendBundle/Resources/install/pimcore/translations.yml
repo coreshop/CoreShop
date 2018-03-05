@@ -533,6 +533,12 @@ translations:
           en: 'Initialized'
           de: 'Initialisiert'
 
+  coreshop.ui.workflow.state.coreshop_order.confirmed:
+      languages:
+          de_CH: 'Bestätigt'
+          en: 'Confirmed'
+          de: 'Bestätigt'
+          
   coreshop.ui.workflow.state.coreshop_order.cancelled:
       languages:
           de_CH: 'Storniert'
@@ -935,6 +941,30 @@ translations:
           en: 'Female'
           de: 'Weiblich'
 
+  coreshop.form.customer.newsletter:
+      languages:
+          de_CH: 'Newsletter'
+          en: 'Newsletter'
+          de: 'Newsletter'
+
+  coreshop.form.customer.newsletter.no_interaction:
+      languages:
+          de_CH: 'Überspringen'
+          en: 'Skip'
+          de: 'Überspringen'
+
+  coreshop.form.customer.newsletter.subscribe:
+      languages:
+          de_CH: 'Abonnieren'
+          en: 'Subscribe'
+          de: 'Abonnieren'
+
+  coreshop.form.customer.newsletter.unsubscribe:
+      languages:
+          de_CH: 'Abmelden'
+          en: 'Unsubscribe'
+          de: 'Abmelden'
+
   coreshop.form.login.username:
       languages:
           de_CH: 'Benutzername'
@@ -964,6 +994,18 @@ translations:
           de_CH: 'Suchen'
           en: 'Search'
           de: 'Suchen'
+
+  coreshop.form.order.revise.cancel:
+      languages:
+          de_CH: 'Bestellung stornieren und Warenkorb wiederherstellen'
+          en: 'Cancel order and restore cart'
+          de: 'Bestellung stornieren und Warenkorb wiederherstellen'
+
+  coreshop.form.order.revise.submit_payment:
+      languages:
+          de_CH: 'Bezahlung erneut durchführen'
+          en: 'Process payment'
+          de: 'Bezahlung erneut durchführen'
 
   coreshop.global_error.cart_has_changed:
       languages:

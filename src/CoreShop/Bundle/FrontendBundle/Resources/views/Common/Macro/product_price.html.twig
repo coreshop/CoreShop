@@ -1,0 +1,26 @@
+{% macro display_product_price(product, with_tax) %}
+    {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
+    {% if with_tax is null %}
+        {% set with_tax = true %}
+    {% endif %}
+
+    {% set priceUnformatted = product|coreshop_product_price(with_tax) %}
+    {% set price = currency.convertAndFormat(priceUnformatted) %}
+    {% set discountUnformatted = product|coreshop_product_discount(with_tax) %}
+    {% set discount = currency.convertAndFormat(discountUnformatted) %}
+    {% set discountPriceUnformatted = product|coreshop_product_discount_price(with_tax) %}
+    {% set discountPrice = currency.convertAndFormat(discountPriceUnformatted) %}
+    {% set retailPriceUnformatted = product|coreshop_product_retail_price(with_tax) %}
+    {% set retailPrice = currency.convertAndFormat(retailPriceUnformatted) %}
+
+    <span class="price-new">{{ price }}</span>
+    {% if priceUnformatted < discountPriceUnformatted %}
+        <span class="price-old">{{ discountPrice }}</span>
+    {% elseif priceUnformatted < retailPriceUnformatted %}
+        <span class="price-old">{{ retailPrice }}</span>
+    {% endif %}
+    {% if discountUnformatted > 0 %}
+        <span class="price-discount">(-{{ discount }})</span>
+    {% endif %}
+{% endmacro %}

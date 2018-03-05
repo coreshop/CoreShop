@@ -1,0 +1,29 @@
+CoreShop\Component\Customer\Model\Customer:
+    getters:
+        gender:
+            - NotBlank: { groups: [coreshop, coreshop_customer_guest] }
+        firstname:
+            - NotBlank: { groups: [coreshop, coreshop_customer_guest] }
+        lastname:
+            - NotBlank: { groups: [coreshop, coreshop_customer_guest] }
+        email:
+            - NotBlank: { groups: [coreshop, coreshop_customer_guest] }
+            - Email: { groups: [coreshop, coreshop_customer_guest] }
+        password:
+            - NotBlank: { groups: [coreshop] }
+
+    constraints:
+        - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
+              groups: ['coreshop']
+              fields: ['email']
+              values: {isGuest: [false, null]}
+              message: 'coreshop.form.customer.email.unique'
+              allowSameEntity: true
+
+        - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
+              groups: ['coreshop_customer_guest']
+              fields: ['email']
+              values: {isGuest: [false, null]}
+              message: 'coreshop.form.guest.email_is_customer'
+
+

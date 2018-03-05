@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Taxation\Calculator;
 
@@ -55,7 +55,7 @@ interface TaxCalculatorInterface
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
      * @param int $price
-     * @param bool  $asArray
+     * @param bool $asArray
      *
      * @return int|array $taxes_amount
      */

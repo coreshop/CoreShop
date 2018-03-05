@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Rule\Condition;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface RuleValidationProcessorInterface
@@ -19,8 +20,9 @@ interface RuleValidationProcessorInterface
     /**
      * @param $subject
      * @param RuleInterface $rule
+     * @param array $params
      *
      * @return bool
      */
-    public function isValid($subject, RuleInterface $rule);
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = []);
 }

@@ -1,4 +1,4 @@
-{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
 
 <div class="col-md-4 col-sm-6">
     <div class="product-col">
@@ -15,13 +15,7 @@
                 {{ product.getShortDescription }}
             </div>
             <div class="price">
-                <span class="price-new">{{ currency.getPrice(product) }}</span>
-                {% set discount = product|coreshop_product_discount({'with_tax': false}) %}
-                {% if discount > 0 %}
-                    <span class="discount">
-                        - {{- currency.convertAndFormat(discount) }}
-                    </span>
-                {% endif %}
+                {{ product_price.display_product_price(product) }}
             </div>
             <div class="cart-button button-group">
                 <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">

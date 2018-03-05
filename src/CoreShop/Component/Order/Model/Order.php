@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -218,54 +218,6 @@ class Order extends Sale implements OrderInterface
     public function setToken($token)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return PaymentRepositoryInterface
-     */
-    private function getPaymentRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.payment');
-    }
-
-    /**
-     * @return OrderInvoiceRepositoryInterface
-     */
-    private function getOrderInvoiceRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.order_invoice');
-    }
-
-    /**
-     * @return OrderShipmentRepositoryInterface
-     */
-    private function getOrderShipmentRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.order_shipment');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPayments()
-    {
-        return $this->getPaymentRepository()->findForOrderId($this->getId());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShipments()
-    {
-        return $this->getOrderShipmentRepository()->getDocuments($this);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInvoices()
-    {
-        return $this->getOrderInvoiceRepository()->getDocuments($this);
     }
 
     /**

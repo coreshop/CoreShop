@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Address\Formatter;
 
@@ -24,7 +24,7 @@ class AddressFormatter implements AddressFormatterInterface
     {
         $objectVars = get_object_vars($address);
         $objectVars['country'] = $address->getCountry();
-        
+
         $placeHolder = new Placeholder();
         $address = $placeHolder->replacePlaceholders($address->getCountry()->getAddressFormat(), $objectVars);
 

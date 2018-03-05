@@ -85,8 +85,7 @@ class CheckoutController extends FrontendController
 
                     if ($step instanceof RedirectCheckoutStepInterface) {
                         $response = $step->getResponse($cart, $request);
-                    }
-                    else {
+                    } else {
                         $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
                         if ($nextStep) {
@@ -160,7 +159,7 @@ class CheckoutController extends FrontendController
         /**
          * @var $step CheckoutStepInterface
          */
-        foreach ($checkoutManager->getSteps($this->getCart()) as $stepIdentifier) {
+        foreach ($checkoutManager->getSteps() as $stepIdentifier) {
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
@@ -168,7 +167,7 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps($this->getCart())));
+        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps()));
 
         /**
          * If everything is valid, we continue with Order-Creation.
@@ -208,7 +207,7 @@ class CheckoutController extends FrontendController
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
 
-        $payments = $order->getPayments();
+        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
         return $this->renderTemplate('@CoreShopFrontend/Checkout/error.html.twig', [

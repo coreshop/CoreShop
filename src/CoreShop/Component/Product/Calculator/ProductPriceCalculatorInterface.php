@@ -8,26 +8,19 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 
-interface ProductPriceCalculatorInterface
+interface ProductPriceCalculatorInterface extends ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface, ProductDiscountCalculatorInterface
 {
     /**
-     * @param $subject
+     * @param ProductInterface $subject
+     * @param bool $withDiscount
      *
-     * @return mixed
+     * @return int
      */
-    public function getPrice(ProductInterface $subject);
-
-    /**
-     * @param $subject
-     * @param $price
-     *
-     * @return mixed
-     */
-    public function getDiscount(ProductInterface $subject, $price);
+    public function getPrice(ProductInterface $subject, $withDiscount = true);
 }

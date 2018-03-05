@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -125,7 +125,7 @@ class CartPriceRuleController extends ResourceController
         $priceRule = $this->repository->find($id);
 
         if ($priceRule instanceof CartPriceRuleInterface) {
-            $fileName = $priceRule->getName().'_vouchercodes';
+            $fileName = $priceRule->getName() . '_vouchercodes';
             $csvData = [];
 
             $csvData[] = implode(',', [

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Resource\Helper;
 
@@ -46,14 +46,14 @@ class Tool
      */
     protected static function classInterfaceExists($class, $type)
     {
-        $functionName = $type.'_exists';
+        $functionName = $type . '_exists';
 
         // if the class is already loaded we can skip right here
         if ($functionName($class, false)) {
             return true;
         }
 
-        $class = '\\'.ltrim($class, '\\');
+        $class = '\\' . ltrim($class, '\\');
 
         // we need to set a custom error handler here for the time being
         // unfortunately suppressNotFoundWarnings() doesn't work all the time, it has something to do with the calls in

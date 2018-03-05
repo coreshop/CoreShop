@@ -16,12 +16,36 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Tool\Email\Log;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class DataObjectNoteService
 {
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @param $id
+     * @return Note
+     */
+    public function getNoteById($id)
+    {
+        return Note::getById($id);
+    }
+
+    /**
      * @param PimcoreModelInterface $object
-     * @param string                $noteType
+     * @param string $noteType
      * @return Note
      */
     public function createPimcoreNoteInstance(PimcoreModelInterface $object, $noteType)
@@ -49,7 +73,7 @@ class DataObjectNoteService
 
     /**
      * @param PimcoreModelInterface $object
-     * @param string                $noteType
+     * @param string $noteType
      * @return mixed
      */
     public function getObjectNotes(PimcoreModelInterface $object, $noteType)
@@ -64,7 +88,7 @@ class DataObjectNoteService
     }
 
     /**
-     * @param  Note           $note
+     * @param  Note $note
      * @param  Document\Email $emailDocument
      * @return Note
      */
@@ -87,11 +111,40 @@ class DataObjectNoteService
 
     /**
      * @param $note
+     * @param $eventParams
      * @return Note
      */
-    public function storeNote(Note $note)
+    public function storeNote(Note $note, $eventParams = [])
     {
         $note->save();
+
+        $this->eventDispatcher->dispatch(
+            sprintf('coreshop.note.%s.post_add', $note->getType()),
+            new GenericEvent($note, $eventParams)
+        );
+
         return $note;
+    }
+
+    /**
+     * @param $noteId
+     * @param $eventParams
+     * @return void
+     */
+    public function deleteNote($noteId, $eventParams = [])
+    {
+        $note = $this->getNoteById($noteId);
+
+        if (!$note instanceof Note) {
+            return;
+        }
+
+        $noteType = $note->getType();
+        $note->delete();
+
+        $this->eventDispatcher->dispatch(
+            sprintf('coreshop.note.%s.pot_delete', $noteType),
+            new GenericEvent($note, $eventParams)
+        );
     }
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -20,7 +20,7 @@ interface OrderDocumentTransformerInterface
     /**
      * Transforms an order to an invoice.
      *
-     * @param OrderInterface         $order
+     * @param OrderInterface $order
      * @param OrderDocumentInterface $document
      * @param $items
      *

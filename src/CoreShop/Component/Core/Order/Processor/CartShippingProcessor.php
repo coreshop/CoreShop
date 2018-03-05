@@ -48,8 +48,12 @@ final class CartShippingProcessor implements CartProcessorInterface
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return;
         }
-        
+
         if (null === $cart->getCarrier()) {
+            return;
+        }
+
+        if (null === $cart->getShippingAddress()) {
             return;
         }
 

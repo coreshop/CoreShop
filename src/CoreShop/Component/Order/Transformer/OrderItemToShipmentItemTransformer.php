@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -39,15 +39,16 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
     private $eventDispatcher;
 
     /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
+     * @param ObjectServiceInterface $objectService
+     * @param string $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher
-    ) {
+    )
+    {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -69,7 +70,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
 
         $this->eventDispatcher->dispatchPreEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath().'/'.$this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath() . '/' . $this->pathForItems);
 
         $shipmentItem->setKey($orderItem->getKey());
         $shipmentItem->setParent($itemFolder);

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Currency;
 
@@ -19,7 +19,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface CurrencyStorageInterface
 {
     /**
-     * @param StoreInterface    $store
+     * @param StoreInterface $store
      * @param CurrencyInterface $currency
      */
     public function set(StoreInterface $store, CurrencyInterface $currency);

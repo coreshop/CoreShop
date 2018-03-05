@@ -88,6 +88,7 @@ remote taxation-bundle git@github.com:CoreShop/TaxationBundle.git
 remote tracking-bundle git@github.com:CoreShop/TrackingBundle.git
 remote fixture-bundle git@github.com:CoreShop/FixtureBundle.git
 remote inventory-bundle git@github.com:CoreShop/InventoryBundle.git
+remote workflow-bundle git@github.com:CoreShop/WorkflowBundle.git
 
 split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
@@ -134,3 +135,4 @@ split 'src/CoreShop/Bundle/TaxationBundle' taxation-bundle
 split 'src/CoreShop/Bundle/TrackingBundle' tracking-bundle
 split 'src/CoreShop/Bundle/FixtureBundle' fixture-bundle
 split 'src/CoreShop/Bundle/InventoryBundle' inventory-bundle
+split 'src/CoreShop/Bundle/WorkflowBundle' workflow-bundle

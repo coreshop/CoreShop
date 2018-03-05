@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
@@ -31,7 +31,7 @@ class RegisterPaymentSettingsFormsPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('coreshop.payment.form.settings') as $id => $attributes) {
             if (!isset($attributes[0]['payum-factory'])) {
-                throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `payum-factory` attribute.');
+                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `payum-factory` attribute.');
             }
 
             $payumFactory = $attributes[0]['payum-factory'];

@@ -39,6 +39,10 @@ final class StateTransitionChecker extends AbstractConditionChecker
     {
         Assert::isInstanceOf($subject, $this->interface);
 
-        return $configuration['transition'] === $params['transition'];
+        if (isset($params['transition'])) {
+            return $configuration['transition'] === $params['transition'];
+        }
+
+        return false;
     }
 }

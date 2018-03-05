@@ -8,16 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Product\Calculator;
 
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
+use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Webmozart\Assert\Assert;
 
-final class StoreProductPriceCalculator implements ProductPriceCalculatorInterface
+final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
     /**
      * @var StoreContextInterface
@@ -35,7 +36,7 @@ final class StoreProductPriceCalculator implements ProductPriceCalculatorInterfa
     /**
      * {@inheritdoc}
      */
-    public function getPrice(ProductInterface $subject)
+    public function getRetailPrice(ProductInterface $subject)
     {
         /**
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface
@@ -49,13 +50,5 @@ final class StoreProductPriceCalculator implements ProductPriceCalculatorInterfa
         }
 
         return $price;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(ProductInterface $subject, $price)
-    {
-        return 0;
     }
 }

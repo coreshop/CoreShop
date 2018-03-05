@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
@@ -54,6 +54,7 @@ final class AddressType extends AbstractResourceType
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'coreshop.form.address.phone_number',
+                'required' => false
             ])
             ->add('_redirect', HiddenType::class, array(
                 'mapped' => false,

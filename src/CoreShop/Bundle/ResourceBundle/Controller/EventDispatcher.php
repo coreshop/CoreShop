@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
@@ -87,7 +87,7 @@ final class EventDispatcher implements EventDispatcherInterface
 
     /**
      * @param ResourceInterface $resource
-     * @param Request           $request
+     * @param Request $request
      *
      * @return ResourceControllerEvent
      */

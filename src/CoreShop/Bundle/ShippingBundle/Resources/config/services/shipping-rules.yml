@@ -23,6 +23,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.shipping_rule.conditions'
+            - 'Shipping Rules'
 
     coreshop.shipping_rule.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
@@ -39,7 +40,7 @@ services:
     coreshop.shipping_rule.condition.postcodes:
         class: CoreShop\Component\Shipping\Rule\Condition\PostcodeConditionChecker
         tags:
-            - { name: coreshop.shipping_rule.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodesConfigurationType }
+            - { name: coreshop.shipping_rule.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType }
 
     coreshop.shipping_rule.condition.weight:
         class: CoreShop\Component\Shipping\Rule\Condition\WeightConditionChecker

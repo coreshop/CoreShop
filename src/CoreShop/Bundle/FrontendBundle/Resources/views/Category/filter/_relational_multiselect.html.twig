@@ -1,8 +1,10 @@
 {% if objects|length > 0 %}
 <div class="list-group">
-    <div class="list-group-item">
-        {{ label|trans }}
-    </div>
+    {% if label %}
+        <div class="list-group-item">
+            {{ label|trans }}
+        </div>
+    {% endif %}
 
     <div class="list-group-item">
         <div class="filter-group filter-group-checkbox">

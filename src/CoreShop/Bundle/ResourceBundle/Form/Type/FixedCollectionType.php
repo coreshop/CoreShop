@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
@@ -30,7 +30,7 @@ final class FixedCollectionType extends AbstractType
             $entryOptions = $options['entry_options']($entry);
 
             $builder->add($entryName, $entryType, array_replace([
-                'property_path' => '['.$entryName.']',
+                'property_path' => '[' . $entryName . ']',
                 'block_name' => 'entry',
             ], $entryOptions));
         }

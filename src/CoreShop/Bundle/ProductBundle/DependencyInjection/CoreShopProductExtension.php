@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
@@ -25,7 +25,7 @@ final class CoreShopProductExtension extends AbstractModelExtension
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
         $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
@@ -34,8 +34,8 @@ final class CoreShopProductExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
-        if (array_key_exists('implementations', $config)) {
-            $this->registerImplementations('coreshop', $config['implementations'], $container);
+        if (array_key_exists('stack', $config)) {
+            $this->registerStack('coreshop', $config['stack'], $container);
         }
 
         $loader->load('services.yml');

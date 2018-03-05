@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -34,7 +35,12 @@ final class DiscountPercentConfigurationType extends AbstractType
                     new Range(['min' => 0, 'max' => 100]),
                 ],
             ])
-        ;
+            ->add('applyOn', ChoiceType::class, [
+                'choices' => [
+                    'total' => 'total',
+                    'subtotal' => 'subtotal'
+                ]
+            ]);
     }
 
     /**

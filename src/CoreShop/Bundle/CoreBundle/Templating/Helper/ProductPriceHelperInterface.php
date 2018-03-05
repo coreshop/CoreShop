@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
@@ -23,4 +23,25 @@ interface ProductPriceHelperInterface extends HelperInterface
      * @return mixed
      */
     public function getPrice(PurchasableInterface $product, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     * @param bool $withTax
+     * @return mixed
+     */
+    public function getRetailPrice(PurchasableInterface $product, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     * @param bool $withTax
+     * @return mixed
+     */
+    public function getDiscountPrice(PurchasableInterface $product, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     * @param bool $withTax
+     * @return mixed
+     */
+    public function getDiscount(PurchasableInterface $product, $withTax = true);
 }

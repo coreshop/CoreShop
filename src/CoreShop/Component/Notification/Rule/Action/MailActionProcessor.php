@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Notification\Rule\Action;
 
@@ -31,7 +31,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
         }
 
         if (is_null($language)) {
-            throw new \InvalidArgumentException('Locale is not set');
+            throw new \Exception('MailActionProcessor: Language is not set.');
         }
 
         if (array_key_exists($language, $mails)) {

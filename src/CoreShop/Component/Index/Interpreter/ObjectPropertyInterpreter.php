@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
 
@@ -27,7 +27,7 @@ class ObjectPropertyInterpreter implements InterpreterInterface
         if ($value instanceof AbstractObject) {
             if (array_key_exists('property', $config)) {
                 $name = $config['property'];
-                $getter = 'get'.ucfirst($name);
+                $getter = 'get' . ucfirst($name);
 
                 if (method_exists($value, $getter)) {
                     return $value->$getter();

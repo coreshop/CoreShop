@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -61,6 +61,30 @@ interface ProposalItemInterface extends ResourceInterface
      * @param bool $withTax
      */
     public function setItemRetailPrice($itemRetailPrice, $withTax = true);
+
+    /**
+     * @param bool $withTax
+     * @return int
+     */
+    public function getItemDiscountPrice($withTax = true);
+
+    /**
+     * @param int $itemDiscountPrice
+     * @param bool $withTax
+     */
+    public function setItemDiscountPrice($itemDiscountPrice, $withTax = true);
+
+    /**
+     * @param bool $withTax
+     * @return int
+     */
+    public function getItemDiscount($withTax = true);
+
+    /**
+     * @param int $itemDiscount
+     * @param bool $withTax
+     */
+    public function setItemDiscount($itemDiscount, $withTax = true);
 
     /**
      * @return int

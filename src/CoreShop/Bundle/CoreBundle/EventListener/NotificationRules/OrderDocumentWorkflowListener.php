@@ -34,7 +34,7 @@ final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListen
     /**
      * @param Event $event
      */
-    public function applyPaymentWorkflowTransitionCompleted(Event $event)
+    public function applyDocumentWorkflowTransitionCompleted(Event $event)
     {
         $subject = $event->getSubject();
 

@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
+use CoreShop\Component\Order\OrderTransitions;
 
 class OrderCreationController extends AbstractSaleCreationController
 {
@@ -29,6 +30,7 @@ class OrderCreationController extends AbstractSaleCreationController
      */
     protected function afterSaleCreation(ProposalInterface $sale)
     {
+        $this->get('coreshop.state_machine_applier')->apply($sale, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
     }
 
     /**

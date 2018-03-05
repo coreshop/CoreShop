@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Repository;
 
@@ -23,4 +23,10 @@ interface OrderRepositoryInterface extends PimcoreRepositoryInterface
      * @return OrderInterface[]
      */
     public function findByCustomer(CustomerInterface $customer);
+
+    /**
+     * @param $days
+     * @return OrderInterface[]
+     */
+    public function findExpiredOrders($days);
 }

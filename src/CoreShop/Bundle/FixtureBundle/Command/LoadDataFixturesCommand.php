@@ -102,7 +102,7 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return array
      * @throws \RuntimeException if loading of data fixtures should be terminated
@@ -133,9 +133,9 @@ class LoadDataFixturesCommand extends Command
     /**
      * Output list of fixtures
      *
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param array           $fixtures
+     * @param array $fixtures
      */
     protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -153,9 +153,9 @@ class LoadDataFixturesCommand extends Command
     /**
      * Process fixtures
      *
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param array           $fixtures
+     * @param array $fixtures
      */
     protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {

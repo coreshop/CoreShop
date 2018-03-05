@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -48,10 +48,8 @@ final class FilterConditionType extends AbstractResourceType
 
         $builder
             ->add('type', FilterConditionChoiceType::class)
-            ->add('field', TextType::class)
             ->add('label', TextType::class)
-            ->add('quantityUnit', NumberType::class)
-        ;
+            ->add('quantityUnit', NumberType::class);
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
@@ -78,8 +76,7 @@ final class FilterConditionType extends AbstractResourceType
                 }
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['type'], 'default'));
-            })
-        ;
+            });
     }
 
     /**
@@ -91,13 +88,12 @@ final class FilterConditionType extends AbstractResourceType
 
         $resolver
             ->setDefault('configuration_type', null)
-            ->setAllowedTypes('configuration_type', ['string', 'null'])
-        ;
+            ->setAllowedTypes('configuration_type', ['string', 'null']);
     }
 
     /**
      * @param FormInterface $form
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -106,7 +102,7 @@ final class FilterConditionType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed         $data
+     * @param mixed $data
      *
      * @return string|null
      */
@@ -114,10 +110,6 @@ final class FilterConditionType extends AbstractResourceType
     {
         if (null !== $data && null !== $data->getType()) {
             return $data->getType();
-        }
-
-        if (null !== $form->getConfig()->hasOption('configuration_type')) {
-            return $form->getConfig()->getOption('configuration_type');
         }
 
         return null;

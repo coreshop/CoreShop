@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
+use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
@@ -23,16 +24,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class PaymentProviderChoiceType extends AbstractType
 {
     /**
-     * @var PaymentProviderRepositoryInterface
+     * @var PaymentProviderResolverInterface
      */
-    private $paymentProviderRepository;
+    private $paymentProviderResolver;
 
     /**
-     * @param PaymentProviderRepositoryInterface $paymentProviderRepository
+     * @param PaymentProviderResolverInterface $paymentProviderResolver
      */
-    public function __construct(PaymentProviderRepositoryInterface $paymentProviderRepository)
+    public function __construct(PaymentProviderResolverInterface $paymentProviderResolver)
     {
-        $this->paymentProviderRepository = $paymentProviderRepository;
+        $this->paymentProviderResolver = $paymentProviderResolver;
     }
 
     /**
@@ -43,7 +44,7 @@ final class PaymentProviderChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
-                    $paymentProvider = $this->paymentProviderRepository->findActive();
+                    $paymentProvider = $this->paymentProviderResolver->resolvePaymentProviders($options['subject']);
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
@@ -59,20 +60,20 @@ final class PaymentProviderChoiceType extends AbstractType
                 'choice_label' => function ($paymentProvider) {
                     return $paymentProvider->getName();
                 },
-                'choice_attr' => function($val, $key, $index) {
+                'choice_attr' => function ($val, $key, $index) {
                     // adds a class like attending_yes, attending_no, etc
                     return ['data-factory' => $val->getGatewayConfig()->getFactoryName()];
                 },
                 'choice_translation_domain' => false,
                 'active' => true,
-            ])
-        ;
+                'subject' => null
+            ]);
     }
 
     /**
-     * @param FormView      $view
+     * @param FormView $view
      * @param FormInterface $form
-     * @param array         $options
+     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -81,11 +82,11 @@ final class PaymentProviderChoiceType extends AbstractType
         $description = [];
         $instructions = [];
         $paymentProvider = $form->getConfig()->getOption('choices');
-        foreach($paymentProvider as $payment) {
-            if(!empty($payment->getDescription())) {
+        foreach ($paymentProvider as $payment) {
+            if (!empty($payment->getDescription())) {
                 $description[$payment->getId()] = $payment->getDescription();
             }
-            if(!empty($payment->getInstructions())) {
+            if (!empty($payment->getInstructions())) {
                 $instructions[$payment->getId()] = $payment->getInstructions();
             }
         }

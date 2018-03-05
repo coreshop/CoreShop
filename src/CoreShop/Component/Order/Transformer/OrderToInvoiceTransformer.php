@@ -307,8 +307,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         if ($base) {
             $totalDiscount = $invoice->getOrder()->getBaseDiscount();
             $invoicedDiscount = $this->getProcessedValue('baseDiscount', $invoice->getOrder());
-        }
-        else {
+        } else {
             $totalDiscount = $invoice->getOrder()->getDiscount();
             $invoicedDiscount = $this->getProcessedValue('discount', $invoice->getOrder());
         }
@@ -323,8 +322,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $invoice->setBaseDiscount($discountWithTax);
             $invoice->setBaseDiscount($discountWithoutTax, false);
             $invoice->setBaseDiscountTax($discountTax);
-        }
-        else {
+        } else {
             $invoice->setDiscount($discountWithTax);
             $invoice->setDiscount($discountWithoutTax, false);
             $invoice->setDiscountTax($discountTax);
@@ -351,8 +349,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $subtotalWithoutTax = $invoice->getBaseSubtotal(false);
             $shippingWithoutTax = $invoice->getBaseShipping(false);
             $discountWithoutTax = $invoice->getBaseDiscount(false);
-        }
-        else {
+        } else {
             $subtotalTax = $invoice->getSubtotalTax();
             $shippingTax = $invoice->getShippingTax();
             $discountTax = $invoice->getDiscountTax();
@@ -374,8 +371,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $invoice->setBaseTotalTax($totalTax);
             $invoice->setBaseTotal($total);
             $invoice->setBaseTotal($totalWithoutTax, false);
-        }
-        else {
+        } else {
             $invoice->setTotalTax($totalTax);
             $invoice->setTotal($total);
             $invoice->setTotal($totalWithoutTax, false);

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Product;
 
@@ -22,6 +22,13 @@ interface TaxedProductPriceCalculatorInterface
      * @return int
      */
     public function getPrice(PurchasableInterface $product, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     * @param bool $withTax
+     * @return int
+     */
+    public function getDiscountPrice(PurchasableInterface $product, $withTax = true);
 
     /**
      * @param PurchasableInterface $product

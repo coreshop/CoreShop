@@ -18,7 +18,7 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
      * @var ProposalTransformerInterface
      */
     protected $innerCartToOrderTransformer;
-    
+
     /**
      * @var CurrencyConverterInterface
      */
@@ -44,14 +44,14 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
      */
     public function transform(ProposalInterface $cart, ProposalInterface $sale)
     {
-         /**
+        /**
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($sale, SaleInterface::class);
-        
+
         $sale = $this->innerCartToOrderTransformer->transform($cart, $sale);
-        
+
         $fromCurrency = $sale->getBaseCurrency()->getIsoCode();
         $toCurrency = $sale->getCurrency()->getIsoCode();
 

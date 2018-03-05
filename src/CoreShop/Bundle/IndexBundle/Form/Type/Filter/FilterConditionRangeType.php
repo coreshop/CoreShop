@@ -8,12 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -25,6 +26,7 @@ final class FilterConditionRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('field', TextType::class)
             ->add('preSelectMin', NumberType::class, [
                 'constraints' => [
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
@@ -35,13 +37,11 @@ final class FilterConditionRangeType extends AbstractType
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
             ])
-
             ->add('stepCount', NumberType::class, [
                 'constraints' => [
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     /**

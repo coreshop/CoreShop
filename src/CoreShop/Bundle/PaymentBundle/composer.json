@@ -22,6 +22,7 @@
     "coreshop/payment": "^2.0",
     "coreshop/currency-bundle": "^2.0",
     "coreshop/resource-bundle": "^2.0",
+    "coreshop/workflow-bundle": "^2.0",
     "pimcore/core-version": "^5.1.2"
   },
   "config": {

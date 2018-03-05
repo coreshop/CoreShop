@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Pimcore;
 
-final class ClassDefinitionFieldNotFoundException extends \Exception {
+final class ClassDefinitionFieldNotFoundException extends \Exception
+{
 
 }

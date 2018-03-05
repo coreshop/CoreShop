@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ProductBundle\EventListener;
 
@@ -32,8 +32,7 @@ final class CategoryPersistEventListener
 
             if ($parent instanceof CategoryInterface) {
                 $object->setParentCategory($parent);
-            }
-            else {
+            } else {
                 $object->setParentCategory(null);
             }
         }

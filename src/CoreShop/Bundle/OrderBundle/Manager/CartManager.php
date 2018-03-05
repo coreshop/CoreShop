@@ -74,6 +74,11 @@ final class CartManager implements CartManagerInterface
 
             $cart->setItems($tempItems);
             $this->cartProcessor->process($cart);
+
+            foreach ($cart->getItems() as $cartItem) {
+                $cartItem->save();
+            }
+
             $cart->save();
         }, false);
     }

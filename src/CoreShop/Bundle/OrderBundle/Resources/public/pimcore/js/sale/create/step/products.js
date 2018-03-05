@@ -209,7 +209,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                                 object: ['object', 'variant']
                             },
                             specific: {
-                                classes: coreshop.implementations['coreshop.product']
+                                classes: coreshop.stack.coreshop.product
                             }
                         }
                     );

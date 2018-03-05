@@ -25,7 +25,7 @@ class DataFixturesLoader extends ContainerAwareLoader
     /**
      * Constructor.
      *
-     * @param EntityManager      $em
+     * @param EntityManager $em
      * @param ContainerInterface $container
      */
     public function __construct(EntityManager $em, ContainerInterface $container)
@@ -40,7 +40,7 @@ class DataFixturesLoader extends ContainerAwareLoader
      */
     public function getFixtures()
     {
-        $sorter   = new DataFixturesSorter();
+        $sorter = new DataFixturesSorter();
         $fixtures = $sorter->sort($this->getAllFixtures());
 
         // remove already loaded fixtures

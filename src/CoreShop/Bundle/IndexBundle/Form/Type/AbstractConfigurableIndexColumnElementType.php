@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -69,8 +69,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
                 }
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['objectType'], 'default'));
-            })
-        ;
+            });
     }
 
     /**
@@ -82,13 +81,12 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
         $resolver
             ->setDefault('configuration_type', null)
-            ->setAllowedTypes('configuration_type', ['string', 'null'])
-        ;
+            ->setAllowedTypes('configuration_type', ['string', 'null']);
     }
 
     /**
      * @param FormInterface $form
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -99,7 +97,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
     /**
      * @param FormInterface $form
-     * @param mixed         $data
+     * @param mixed $data
      *
      * @return string|null
      */

@@ -29,8 +29,7 @@ final class ExchangeRateType extends AbstractResourceType
             ->add('toCurrency', CurrencyChoiceType::class, [
                 'required' => true,
                 'empty_data' => false
-            ])
-        ;
+            ]);
     }
 
     /**

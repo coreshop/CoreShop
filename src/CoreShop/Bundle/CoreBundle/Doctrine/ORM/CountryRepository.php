@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
@@ -31,7 +31,6 @@ class CountryRepository extends BaseCountryRepository implements CountryReposito
             ->getQuery()
             ->useResultCache(true)
             ->useQueryCache(true)
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

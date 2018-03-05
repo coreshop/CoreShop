@@ -9,8 +9,8 @@ services:
         public: false
 
     # Carrier Processor
-    coreshop.carrier.discovery:
-        class: CoreShop\Component\Shipping\Discover\ShippableCarriersDiscovery
+    coreshop.carrier.resolver:
+        class: CoreShop\Component\Shipping\Resolver\CarriersResolver
         arguments:
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Address\Context;
 
@@ -28,7 +28,7 @@ final class CompositeCountryContext implements CountryContextInterface
 
     /**
      * @param CountryContextInterface $countryContexts
-     * @param int                     $priority
+     * @param int $priority
      */
     public function addContext(CountryContextInterface $countryContexts, $priority = 0)
     {

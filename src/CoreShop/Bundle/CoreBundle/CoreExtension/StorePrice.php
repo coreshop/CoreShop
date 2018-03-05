@@ -151,17 +151,17 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     public function getGetterCode($class)
     {
         $key = $this->getName();
-        $code  = '/**' . "\n";
+        $code = '/**' . "\n";
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return ' . $this->getPhpdocType() . "\n";
         $code .= '*/' . "\n";
         $code .= 'public function get' . ucfirst($key) . ' (\CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
         $code .= "\t" . 'if (is_null($store)) {' . "\n";
-        $code .= "\t\t"     . 'return $this->' . $key . ";\n";
+        $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
         $code .= "\t" . 'if (array_key_exists($store->getId(), $data) && is_numeric($data[$store->getId()])) {' . "\n";
-        $code .= "\t\t"     . 'return intval($data[$store->getId()]);' . "\n";
+        $code .= "\t\t" . 'return intval($data[$store->getId()]);' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t return null;" . "\n";
         $code .= "}\n\n";
@@ -172,19 +172,20 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     public function getSetterCode($class)
     {
         $key = $this->getName();
-        $code  = '/**' . "\n";
+        $code = '/**' . "\n";
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
-        $code .= '* @return ' . $this->getPhpdocType() . "\n";
+        $code .= '* @return static' . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' ($'.$key.', \CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
-        $code .= "\t" . 'if (is_array( $'.$key.')) {' . "\n";
-        $code .= "\t\t"   . '$this->'.$key.' = $'.$key.';' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' ($' . $key . ', \CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
+        $code .= "\t" . 'if (is_null($' . $key . ')) {' . "\n";
+        $code .= "\t\t" . '$' . $key . ' = [];' . "\n";
         $code .= "\t" . '}' . "\n";
-        $code .= "\t" . 'else {' . "\n";
-        $code .= "\t\t" . 'if (is_null($store)) {' . "\n";
-        $code .= "\t\t\t"     . '$store = \\Pimcore::getContainer()->get(\'coreshop.context.store\')->getStore();' . "\n";
-        $code .= "\t\t" . '}' . "\n";
-        $code .= "\t\t" . '$this->'.$key.'[$store->getId()] = $'.$key.';' . "\n";
+        $code .= "\t" . "\n";
+        $code .= "\t" . 'if (is_array($' . $key . ')) {' . "\n";
+        $code .= "\t\t" . '$this->' . $key . ' = $' . $key . ';' . "\n";
+        $code .= "\t" . '}' . "\n";
+        $code .= "\t" . 'else if (!is_null($store)) {' . "\n";
+        $code .= "\t\t" . '$this->' . $key . '[$store->getId()] = $' . $key . ';' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . 'return $this;' . "\n";
         $code .= "}\n\n";
@@ -207,8 +208,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     {
         if (is_null($data)) {
             $data = [];
-        }
-        else {
+        } else {
             $data = unserialize($data);
         }
 
@@ -224,7 +224,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
 
         if (is_array($data)) {
             foreach ($data as $storePrice) {
-                $queryResource[] = $storePrice['id'] . '-' . $storePrice['price'];
+                $queryResource[] = $storePrice;
             }
         }
 
@@ -271,7 +271,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 continue;
             }
 
-            $validData[$storeId] = $price * 100;
+            $validData[$storeId] = (int)round((round($price, 2) * 100), 0);
         }
 
         return $validData;
@@ -298,9 +298,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
             $data = [];
         }
 
-        foreach ($data as $storeData) {
-            $priceValue = $storeData['price'];
-
+        foreach ($data as $priceValue) {
             if (!$this->isEmpty($priceValue) && !is_numeric($priceValue)) {
                 throw new Model\Element\ValidationException('invalid numeric data [' . $priceValue . ']');
             }

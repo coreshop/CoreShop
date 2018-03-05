@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -61,6 +61,6 @@ class ProductController extends FrontendController
      */
     private function getProductByRequest(Request $request)
     {
-        return $product = DataObject::getById($request->get('product'));
+        return $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
     }
 }

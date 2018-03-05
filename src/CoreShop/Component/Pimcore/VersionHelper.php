@@ -31,8 +31,7 @@ class VersionHelper
 
         if ($enabled) {
             Version::enable();
-        }
-        else {
+        } else {
             Version::disable();
         }
 
@@ -40,8 +39,7 @@ class VersionHelper
 
         if ($backup) {
             Version::disable();
-        }
-        else {
+        } else {
             Version::enable();
         }
 

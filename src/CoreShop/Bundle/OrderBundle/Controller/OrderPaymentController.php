@@ -23,7 +23,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -93,7 +93,7 @@ class OrderPaymentController extends PimcoreController
             if ($provider instanceof PaymentProviderInterface) {
                 $result[] = [
                     'name' => $provider->getName(),
-                    'id'   => $provider->getId(),
+                    'id' => $provider->getId(),
                 ];
             }
         }
@@ -150,7 +150,7 @@ class OrderPaymentController extends PimcoreController
                 $workflow->apply($payment, PaymentTransitions::TRANSITION_CREATE);
 
                 return $this->viewHandler->handle([
-                    'success'    => true,
+                    'success' => true,
                     'totalPayed' => $order->getTotalPayed()
                 ]);
             }

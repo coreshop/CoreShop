@@ -5,6 +5,10 @@ framework:
             marking_store:
                 service: coreshop.state_machine.marking_store.order_payment_pimcore_marking_store
             supports: CoreShop\Component\Order\Model\Order
+
+core_shop_workflow:
+    state_machine:
+        coreshop_order_payment:
             places:
                 - new
                 - awaiting_payment
@@ -32,11 +36,7 @@ framework:
                 refund:
                     from: [paid, partially_paid, partially_refunded]
                     to: refunded
-
-core_shop_resource:
-    state_machine:
-        colors:
-            coreshop_order_payment:
+            place_colors:
                 new: '#61c2cb'
                 awaiting_payment: '#feb624'
                 partially_paid: '#f27024'
@@ -44,8 +44,7 @@ core_shop_resource:
                 paid: '#5b981a'
                 partially_refunded: '#77bed2'
                 refunded: '#004966'
-        callbacks:
-            coreshop_order_payment:
+            callbacks:
                 after:
                     resolve_state:
                         on: ['pay']

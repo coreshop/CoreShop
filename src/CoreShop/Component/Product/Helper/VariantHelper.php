@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Helper;
 
@@ -34,9 +34,9 @@ class VariantHelper
     /**
      * @param ProductInterface $master
      * @param ProductInterface $currentProduct
-     * @param string           $type
-     * @param string           $field
-     * @param string           $language
+     * @param string $type
+     * @param string $field
+     * @param string $language
      *
      * @return array
      */
@@ -114,8 +114,8 @@ class VariantHelper
 
     /**
      * @param ProductInterface $master
-     * @param string           $classificationStoreField
-     * @param string           $language
+     * @param string $classificationStoreField
+     * @param string $language
      *
      * @return array
      */
@@ -128,7 +128,7 @@ class VariantHelper
         if ($definition instanceof ClassDefinition\Data\Classificationstore) {
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge([$master], $productVariants);
-            $getter = 'get'.ucfirst($classificationStoreField);
+            $getter = 'get' . ucfirst($classificationStoreField);
 
             $storeId = $definition->getStoreId();
 
@@ -145,7 +145,7 @@ class VariantHelper
                 foreach ($relations as $relation) {
                     $keyConfig = KeyConfig::getById($relation->getKeyId());
 
-                    $dimensionInfo[$groupConfig->getId().$keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
+                    $dimensionInfo[$groupConfig->getId() . $keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
                 }
             }
 
@@ -171,10 +171,10 @@ class VariantHelper
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__'.$keyData['groupId'].$keyData['keyId'].'__';
+                            $secureNameSpace = '__' . $keyData['groupId'] . $keyData['keyId'] . '__';
                             $variantName = $keyData['name'];
 
-                            $compareValues[$secureNameSpace.$variantName][$productId] = $value;
+                            $compareValues[$secureNameSpace . $variantName][$productId] = $value;
                             $variantUrls[$productVariant->getId()] = $productVariant->getName();
                         }
                     }
@@ -194,8 +194,8 @@ class VariantHelper
      * get data for variants from a brick-field.
      *
      * @param ProductInterface $master
-     * @param string           $brickField
-     * @param string           $language
+     * @param string $brickField
+     * @param string $language
      *
      * @return array
      *
@@ -251,24 +251,24 @@ class VariantHelper
                         } elseif (!method_exists($getter, 'getValueForVariant')) {
                             throw new \Exception('Variant Class needs a implemented "getValueForVariant" Method.');
                         } else {*/
-                            foreach ($dimensionMethodData as $dMethod) {
-                                $variantValue = $getter->getValueForVariant($dMethod, $language);
-                                $variantName = $getter->getNameForVariant($dMethod);
+                        foreach ($dimensionMethodData as $dMethod) {
+                            $variantValue = $getter->getValueForVariant($dMethod, $language);
+                            $variantName = $getter->getNameForVariant($dMethod);
 
-                                if ($variantValue === false) {
-                                    continue;
-                                }
-
-                                if (!is_string($variantValue) && !is_numeric($variantValue)) {
-                                    throw new \Exception('Variant return value needs to be string or numeric, '.gettype($variantValue).' given.');
-                                }
-
-                                //Add a namespace, so fields from different blocks can have same name!
-                                $secureNameSpace = '__'.$getter->getType().'__';
-
-                                $compareValues[$secureNameSpace.$variantName][$productId] = $variantValue;
-                                $variantUrls[$productVariant->getId()] = $productVariant->getName();
+                            if ($variantValue === false) {
+                                continue;
                             }
+
+                            if (!is_string($variantValue) && !is_numeric($variantValue)) {
+                                throw new \Exception('Variant return value needs to be string or numeric, ' . gettype($variantValue) . ' given.');
+                            }
+
+                            //Add a namespace, so fields from different blocks can have same name!
+                            $secureNameSpace = '__' . $getter->getType() . '__';
+
+                            $compareValues[$secureNameSpace . $variantName][$productId] = $variantValue;
+                            $variantUrls[$productVariant->getId()] = $productVariant->getName();
+                        }
                         //}
                     }
                 }
@@ -326,7 +326,7 @@ class VariantHelper
 
     /**
      * @param Classificationstore\GroupConfig $group
-     * @param KeyConfig                       $field
+     * @param KeyConfig $field
      *
      * @return array
      */
@@ -394,15 +394,15 @@ class VariantHelper
         $list = \Pimcore::getContainer()->get('coreshop.repository.product')->getList();
 
         $condition = 'o_path LIKE ?';
-        $conditionParams = [$object->getFullPath().'/%'];
+        $conditionParams = [$object->getFullPath() . '/%'];
 
         $storeParams = [];
 
         foreach ($object->getStores() as $shop) {
-            $storeParams[] = "stores LIKE '%,".$shop.",%'";
+            $storeParams[] = "stores LIKE '%," . $shop . ",%'";
         }
 
-        $condition .= ' AND ('.implode(' OR ', $storeParams).')';
+        $condition .= ' AND (' . implode(' OR ', $storeParams) . ')';
 
         $list->setCondition($condition, $conditionParams);
         $list->setOrderKey('o_key');

@@ -1,0 +1,5 @@
+services:
+    coreshop.payment.payment_provider_resolver:
+        class: CoreShop\Component\Payment\Resolver\PaymentProviderResolver
+        arguments:
+            - '@coreshop.repository.payment_provider'

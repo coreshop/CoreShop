@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -137,7 +137,7 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      */
     public function getWeight();
 
-     /**
+    /**
      * @return Fieldcollection
      */
     public function getTaxes();

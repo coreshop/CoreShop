@@ -8,27 +8,19 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 
-class PropertyPriceCalculator implements ProductPriceCalculatorInterface
+class PropertyPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getPrice(ProductInterface $subject)
+    public function getRetailPrice(ProductInterface $subject)
     {
         return $subject->getPrice();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscount(ProductInterface $subject, $price)
-    {
-        return 0;
     }
 }

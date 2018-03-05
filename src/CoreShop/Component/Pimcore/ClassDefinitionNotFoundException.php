@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Pimcore;
 
-final class ClassDefinitionNotFoundException extends \Exception {
+final class ClassDefinitionNotFoundException extends \Exception
+{
 
 }

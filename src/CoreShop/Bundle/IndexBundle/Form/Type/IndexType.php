@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -47,8 +47,7 @@ class IndexType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('worker', IndexWorkerChoiceType::class)
             ->add('class', PimcoreClassChoiceType::class)
-            ->add('columns', IndexColumnCollectionType::class)
-        ;
+            ->add('columns', IndexColumnCollectionType::class);
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
@@ -75,13 +74,12 @@ class IndexType extends AbstractResourceType
                 }
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['worker'], 'default'));
-            })
-        ;
+            });
     }
 
     /**
      * @param FormInterface $form
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -90,7 +88,7 @@ class IndexType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed         $data
+     * @param mixed $data
      *
      * @return string|null
      */

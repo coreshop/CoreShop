@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Registry;
 
@@ -35,8 +35,8 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Add new item to map.
      *
-     * @param string $key      name
-     * @param string $value    value
+     * @param string $key name
+     * @param string $value value
      * @param int $priority priority
      *
      * @return PriorityMap
@@ -46,7 +46,7 @@ class PriorityMap implements \Iterator, \Countable
         $key = $this->getScalarKey($key);
         $this->list[$key] = new \stdclass();
         $this->list[$key]->value = $value;
-        $this->list[$key]->priority = (int) $priority;
+        $this->list[$key]->priority = (int)$priority;
         $this->list[$key]->sequence = $this->lastSequence++;
 
         return $this->list[$key];
@@ -101,7 +101,7 @@ class PriorityMap implements \Iterator, \Countable
      */
     public function getKeys()
     {
-        uasort($this->list, [$this, $this->order.'SortStrategy']);
+        uasort($this->list, [$this, $this->order . 'SortStrategy']);
         return array_keys($this->list);
     }
 
@@ -178,7 +178,7 @@ class PriorityMap implements \Iterator, \Countable
      */
     public function rewind()
     {
-        uasort($this->list, [$this, $this->order.'SortStrategy']);
+        uasort($this->list, [$this, $this->order . 'SortStrategy']);
         reset($this->list);
     }
 

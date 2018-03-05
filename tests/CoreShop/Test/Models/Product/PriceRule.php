@@ -180,7 +180,7 @@ class PriceRule extends RuleTest
             'dateTo' => $yesterday->getTimestamp() * 1000,
         ]);
 
-        $this->assertRuleCondition($this->product, $condition, false);
+        $this->assertRuleCondition($this->product, $condition, [], false);
     }
 
     /**
@@ -246,7 +246,7 @@ class PriceRule extends RuleTest
             'products' => [Data::$product2->getId()],
         ]);
 
-        $this->assertRuleCondition($this->product, $condition, false);
+        $this->assertRuleCondition($this->product, $condition, [],false);
     }
 
     /**
@@ -267,7 +267,7 @@ class PriceRule extends RuleTest
             'categories' => [Data::$category2->getId()],
         ]);
 
-        $this->assertRuleCondition($this->product, $condition, false);
+        $this->assertRuleCondition($this->product, $condition, [],false);
     }
 
     /**
@@ -419,7 +419,7 @@ class PriceRule extends RuleTest
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
         $action = $this->createActionWithForm('price', [
-            'price' => 100,
+            'price' => 1,
             'currency' => Data::$store->getCurrency()->getId(),
         ]);
 
@@ -432,8 +432,43 @@ class PriceRule extends RuleTest
         $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getStorePrice(Data::$store));
 
         $this->assertEquals(0, $discount);
-        $this->assertEquals(10000, $this->getTaxedPriceCalculator()->getPrice($this->product,false));
-        $this->assertEquals(12000, $this->getTaxedPriceCalculator()->getPrice($this->product));
+        $this->assertEquals(100, $this->getTaxedPriceCalculator()->getPrice($this->product,false));
+        $this->assertEquals(120, $this->getTaxedPriceCalculator()->getPrice($this->product));
+        $this->assertEquals(100, $this->getTaxedPriceCalculator()->getRetailPrice($this->product,false));
+        $this->assertEquals(120, $this->getTaxedPriceCalculator()->getRetailPrice($this->product));
+
+        $this->getEntityManager()->remove($rule);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Test Price Rule Action Discount Price.
+     */
+    public function testPriceRuleActionDiscountPrice()
+    {
+        $this->printTestName();
+        $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
+
+        $action = $this->createActionWithForm('discountPrice', [
+            'price' => 1,
+            'currency' => Data::$store->getCurrency()->getId(),
+        ]);
+
+        $rule = $this->createRule();
+        $rule->addAction($action);
+
+        $this->getEntityManager()->persist($rule);
+        $this->getEntityManager()->flush();
+
+        $discount = $this->getPriceCalculator()->getDiscount($this->product, $this->product->getStorePrice(Data::$store));
+
+        $this->assertEquals(0, $discount);
+        $this->assertEquals(1500, $this->getTaxedPriceCalculator()->getRetailPrice($this->product,false));
+        $this->assertEquals(1800, $this->getTaxedPriceCalculator()->getRetailPrice($this->product));
+        $this->assertEquals(100, $this->getTaxedPriceCalculator()->getDiscountPrice($this->product,false));
+        $this->assertEquals(120, $this->getTaxedPriceCalculator()->getDiscountPrice($this->product));
+        $this->assertEquals(100, $this->getTaxedPriceCalculator()->getPrice($this->product,false));
+        $this->assertEquals(120, $this->getTaxedPriceCalculator()->getPrice($this->product));
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();

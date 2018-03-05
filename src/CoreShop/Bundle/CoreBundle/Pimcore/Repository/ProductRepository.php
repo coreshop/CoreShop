@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
@@ -41,14 +41,14 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'only_active'     => true,
-            'categories'      => [],
-            'store'           => null,
-            'order_key'       => 'name',
-            'order'           => 'ASC',
+            'only_active' => true,
+            'categories' => [],
+            'store' => null,
+            'order_key' => 'name',
+            'order' => 'ASC',
             'order_key_quote' => true,
-            'object_types'    => null,
-            'return_type'     => 'objects'
+            'object_types' => null,
+            'return_type' => 'objects'
         ]);
 
         $resolver->setRequired(['store']);

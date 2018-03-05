@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PaymentBundle\Doctrine\ORM;
 
@@ -25,7 +25,6 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = true')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

@@ -17,6 +17,8 @@ services:
         class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
         arguments:
             - '@coreshop.order.purchasable.price_calculator'
+            - '@coreshop.order.purchasable.retail_price_calculator'
+            - '@coreshop.order.purchasable.price_discount_calculator'
             - '@coreshop.order.purchasable.discount_calculator'
             - '@coreshop.product.tax_factory'
             - '@coreshop.taxation.tax_applicator'
@@ -50,26 +52,12 @@ services:
         tags:
             - { name: twig.extension }
 
-    coreshop.templating.helper.discount:
-        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductDiscountHelper
-        arguments:
-            - '@coreshop.product.taxed_price_calculator'
-        tags:
-          - { name: templating.helper, alias: coreshop_product_discount}
-
     coreshop.templating.helper.configuration:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelper
         arguments:
             - '@coreshop.configuration.service'
         tags:
           - { name: templating.helper, alias: coreshop_configuration}
-
-    coreshop.twig.extension.discount:
-        class: CoreShop\Bundle\CoreBundle\Twig\ProductDiscountExtension
-        arguments:
-            - '@coreshop.templating.helper.discount'
-        tags:
-            - { name: twig.extension }
 
     coreshop.twig.extension.configuration:
         class: CoreShop\Bundle\CoreBundle\Twig\ConfigurationExtension
@@ -91,9 +79,23 @@ services:
         tags:
             - { name: coreshop.order.purchasable.price_calculator, type: product, priority: 20 }
 
+    coreshop.order.purchasable.retail_price_calculator.product:
+        class: CoreShop\Component\Core\Order\Calculator\PurchasableProductRetailPriceCalculator
+        arguments:
+            - '@coreshop.product.price_calculator'
+        tags:
+            - { name: coreshop.order.purchasable.retail_price_calculator, type: product, priority: 20 }
+
     coreshop.order.purchasable.discount_calculator.product:
       class: CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountCalculator
       arguments:
           - '@coreshop.product.price_calculator'
       tags:
           - { name: coreshop.order.purchasable.discount_calculator, type: product, priority: 20 }
+
+    coreshop.order.purchasable.discount_price_calculator.product:
+      class: CoreShop\Component\Core\Order\Calculator\PurchasableProductDiscountPriceCalculator
+      arguments:
+          - '@coreshop.product.price_calculator'
+      tags:
+          - { name: coreshop.order.purchasable.discount_price_calculator, type: product, priority: 20 }

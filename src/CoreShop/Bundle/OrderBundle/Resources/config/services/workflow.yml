@@ -1,5 +1,6 @@
 parameters:
-    coreshop.workflow.manager.order.state_identifier: 'Order State Change'
+    coreshop.workflow.manager.order.state_identifier: 'order_state_change'
+    coreshop.workflow.include_invoice_state_to_complete_order: false
 
 services:
     coreshop.state_machine_resolver.order:
@@ -7,12 +8,14 @@ services:
         class: CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver
         arguments:
           - '@coreshop.state_machine_manager'
+          - '%coreshop.workflow.include_invoice_state_to_complete_order%'
 
     coreshop.state_machine_resolver.order_payment:
         public: true
         class: CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver
         arguments:
             - '@coreshop.state_machine_manager'
+            - '@coreshop.repository.payment'
 
     coreshop.state_machine_resolver.order_shipment:
         public: true
@@ -35,7 +38,7 @@ services:
             - paymentState
 
     coreshop.state_machine.marking_store.order_payment_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.order_payment_state'
 
@@ -45,7 +48,7 @@ services:
             - orderState
 
     coreshop.state_machine.marking_store.order_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_state'
 
@@ -55,7 +58,7 @@ services:
             - shippingState
 
     coreshop.state_machine.marking_store.order_shipment_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_shipment_state'
 
@@ -65,7 +68,7 @@ services:
             - invoiceState
 
     coreshop.state_machine.marking_store.order_invoice_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
@@ -80,12 +83,12 @@ services:
             - state
 
     coreshop.state_machine.marking_store.shipment_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.shipment_state'
 
     coreshop.state_machine.marking_store.invoice_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.invoice_state'
 
@@ -97,8 +100,6 @@ services:
           - '@pimcore.translator'
           - '%coreshop.workflow.manager.order.state_identifier%'
           - '%coreshop.state_machine.colors%'
-        tags:
-          - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
 
     coreshop.workflow.state_history_logger:
         class: CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger
@@ -108,11 +109,3 @@ services:
           - '@coreshop.object_note_service'
           - '@pimcore.translator'
           - '%coreshop.workflow.manager.order.state_identifier%'
-        tags:
-          - {name: coreshop.workflow.manager, type: '%coreshop.model.order.class%' }
-
-    coreshop.workflow.order_id_wrapper_resolver:
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderIdPaymentStateResolver
-        arguments:
-            - '@coreshop.repository.order'
-            - '@coreshop.state_machine_resolver.order_payment'

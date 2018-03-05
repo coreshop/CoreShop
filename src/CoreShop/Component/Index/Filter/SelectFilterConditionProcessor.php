@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
@@ -26,14 +26,16 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        $rawValues = $list->getGroupByValues($condition->getField(), true);
+        $field = $condition->getConfiguration()['field'];
+
+        $rawValues = $list->getGroupByValues($field, true);
 
         return [
             'type' => 'select',
             'label' => $condition->getLabel(),
-            'currentValue' => $currentFilter[$condition->getField()],
+            'currentValue' => $currentFilter[$field],
             'values' => array_values($rawValues),
-            'fieldName' => $condition->getField(),
+            'fieldName' => $field,
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
@@ -43,7 +45,8 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
-        $value = $parameterBag->get($condition->getField());
+        $field = $condition->getConfiguration()['field'];
+        $value = $parameterBag->get($field);
 
         if (empty($value)) {
             $value = $condition->getConfiguration()['preSelect'];
@@ -51,16 +54,16 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
 
         $value = trim($value);
 
-        $currentFilter[$condition->getField()] = $value;
-
         if (!empty($value)) {
-            $fieldName = $condition->getField();
+            $currentFilter[$field] = $value;
+
+            $fieldName = $field;
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_'.$fieldName;
+                $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
-            $list->addCondition(Condition::match($condition->getField(), $value), $fieldName);
+            $list->addCondition(Condition::match($field, $value), $fieldName);
         }
 
         return $currentFilter;

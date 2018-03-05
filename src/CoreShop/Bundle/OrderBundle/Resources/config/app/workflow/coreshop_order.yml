@@ -5,32 +5,36 @@ framework:
             marking_store:
                 service: coreshop.state_machine.marking_store.order_pimcore_marking_store
             supports: CoreShop\Component\Order\Model\Order
+
+core_shop_workflow:
+    state_machine:
+        coreshop_order:
             places:
                 - initialized
                 - new
+                - confirmed
                 - cancelled
                 - complete
             transitions:
                 create:
                     from: [initialized]
                     to: new
-                cancel:
+                confirm:
                     from: new
+                    to: confirmed
+                cancel:
+                    from: [new, confirmed]
                     to:   cancelled
                 complete:
-                    from: new
+                    from: confirmed
                     to:   complete
-
-core_shop_resource:
-    state_machine:
-        colors:
-            coreshop_order:
+            place_colors:
                 initialized: '#d6e1dd'
                 new: '#61c2cb'
+                confirmed: '#919d7f'
                 cancelled: '#f2583e'
                 complete: '#5b981a'
-        callbacks:
-            coreshop_order:
+            callbacks:
                 after:
                     request_payment:
                         on: ['create']
@@ -39,15 +43,15 @@ core_shop_resource:
                     cancel_payment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                        args: ['object.getPayments()', 'event', '"cancel"', '"coreshop_payment"']
+                        args: ["service('coreshop.repository.payment').findForOrder(object)", 'event', '"cancel"', '"coreshop_payment"']
                     cancel_shipment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                        args: ['object.getShipments()', 'event', '"cancel"', '"coreshop_shipment"']
+                        args: ["service('coreshop.repository.order_shipment').getDocuments(object)", 'event', '"cancel"', '"coreshop_shipment"']
                     cancel_invoice:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                        args: ['object.getInvoices()', 'event', '"cancel"', '"coreshop_invoice"']
+                        args: ["service('coreshop.repository.order_invoice').getDocuments(object)", 'event', '"cancel"', '"coreshop_invoice"']
                     cancel_order_payment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
@@ -61,6 +65,6 @@ core_shop_resource:
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
                         args: ['object', 'event', '"cancel"', '"coreshop_order_invoice"']
                     add_to_history:
-                          on: ['create', 'cancel', 'complete']
+                          on: ['create', 'confirm', 'cancel', 'complete']
                           do: ['@coreshop.workflow.state_history_logger', 'log']
                           args: ['object.getId()', 'event']

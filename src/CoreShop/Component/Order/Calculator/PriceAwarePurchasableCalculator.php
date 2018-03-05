@@ -15,13 +15,12 @@ namespace CoreShop\Component\Order\Calculator;
 use CoreShop\Component\Order\Model\PriceAwarePurchasableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-final class PriceAwarePurchasableCalculator implements PurchasablePriceCalculatorInterface
+final class PriceAwarePurchasableCalculator implements PurchasableRetailPriceCalculatorInterface
 {
     /**
-     * @param PurchasableInterface $purchasable
-     * @return int
+     * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable)
+    public function getRetailPrice(PurchasableInterface $purchasable)
     {
         if ($purchasable instanceof PriceAwarePurchasableInterface) {
             return $purchasable->getPrice();

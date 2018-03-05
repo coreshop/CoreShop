@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
@@ -37,7 +37,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
      */
     public function installResources(OutputInterface $output, $applicationName = null)
     {
-        $parameter = $applicationName ? sprintf('%s.permissions', $applicationName) : 'coreshop.resource.permissions';
+        $parameter = $applicationName ? sprintf('%s.permissions', $applicationName) : 'coreshop.all.permissions';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $permissions = $this->kernel->getContainer()->getParameter($parameter);

@@ -79,7 +79,7 @@
       {
         "type": "order.orderTransition",
         "configuration": {
-          "orderState": "create"
+          "orderState": "confirm"
         }
       }
     ],
@@ -90,6 +90,30 @@
           "mails": {
             "de": "/de/shop/email/order-confirmation",
             "en": "/en/shop/email/order-confirmation"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "Order Comment",
+    "type": "order",
+    "active": true,
+    "conditions": [
+      {
+        "type": "order.comment",
+        "configuration": {
+          "commentAction": "create"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "order.orderMail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/user-order-comment",
+            "en": "/en/shop/email/user-order-comment"
           }
         }
       }

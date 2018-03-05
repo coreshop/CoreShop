@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Helper;
 
@@ -54,7 +54,7 @@ class ArrayHelper
 
     /**
      * @param AbstractObject $object
-     * @param null           $fieldDefintions
+     * @param null $fieldDefintions
      *
      * @return array|false
      */
@@ -81,7 +81,7 @@ class ArrayHelper
         $collection = [];
         foreach ($fieldDefintions as $fd) {
             $fieldName = $fd->getName();
-            $getter = 'get'.ucfirst($fieldName);
+            $getter = 'get' . ucfirst($fieldName);
             $value = $object->$getter();
 
             switch ($fd->getFieldtype()) {

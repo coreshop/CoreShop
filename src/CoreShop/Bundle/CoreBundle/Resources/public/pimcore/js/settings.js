@@ -439,12 +439,6 @@ coreshop.core.settings = Class.create({
                     defaults: {width: 600},
                     items: [
                         {
-                            fieldLabel: t('coreshop_invoice_create'),
-                            xtype: 'checkbox',
-                            name: 'system.invoice.create',
-                            checked: this.getValue(shopId, 'system.invoice.create')
-                        },
-                        {
                             fieldLabel: t('coreshop_prefix'),
                             name: 'system.invoice.prefix',
                             value: this.getValue(shopId, 'system.invoice.prefix')
@@ -471,12 +465,6 @@ coreshop.core.settings = Class.create({
                     defaultType: 'textfield',
                     defaults: {width: 600},
                     items: [
-                        {
-                            fieldLabel: t('coreshop_shipment_create'),
-                            xtype: 'checkbox',
-                            name: 'system.shipment.create',
-                            checked: this.getValue(shopId, 'system.shipment.create')
-                        },
                         {
                             fieldLabel: t('coreshop_prefix'),
                             name: 'system.shipment.prefix',

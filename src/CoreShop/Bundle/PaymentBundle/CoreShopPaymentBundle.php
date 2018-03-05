@@ -8,13 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PaymentBundle;
 
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopPaymentBundle extends AbstractResourceBundle
@@ -37,7 +38,8 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         parent::registerDependentBundles($collection);
 
         $collection->addBundles([
-            new CoreShopCurrencyBundle()
+            new CoreShopCurrencyBundle(),
+            new CoreShopWorkflowBundle()
         ], 1500);
     }
 

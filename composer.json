@@ -64,7 +64,8 @@
     "coreshop/pimcore": "self.version",
     "coreshop/storage-list": "self.version",
     "coreshop/inventory": "self.version",
-    "coreshop/inventory-bundle": "self.version"
+    "coreshop/inventory-bundle": "self.version",
+    "coreshop/workflow-bundle": "self.version"
   },
   "require": {
     "doctrine/orm": "^2.5",
@@ -86,11 +87,11 @@
     "symfony/twig-bundle": "~3.2",
     "symfony/intl": "^3.2",
     "doctrine/data-fixtures": "^1.0",
-    "pimcore/core-version": "^5.0.2"
+    "pimcore/core-version": "^5.1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.0",
-    "symfony/phpunit-bridge": "^3.3"
+    "phpunit/phpunit": "^6",
+    "symfony/phpunit-bridge": "^3"
   },
   "autoload": {
     "psr-4": {

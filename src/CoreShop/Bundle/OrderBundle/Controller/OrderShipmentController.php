@@ -20,12 +20,11 @@ use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\ShipmentStates;
-use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -49,7 +48,9 @@ class OrderShipmentController extends PimcoreController
 
         $itemsToReturn = [];
 
-        if (count($order->getPayments()) === 0) {
+        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
+
+        if (count($payments) === 0) {
             return $this->viewHandler->handle([
                 'success' => false,
                 'message' => 'Can\'t create Shipment without valid order payment'
@@ -66,15 +67,15 @@ class OrderShipmentController extends PimcoreController
             $orderItem = $item['item'];
             if ($orderItem instanceof OrderItemInterface) {
                 $itemsToReturn[] = [
-                    'orderItemId'     => $orderItem->getId(),
-                    'price'           => $orderItem->getItemPrice(),
-                    'maxToShip'       => $item['quantity'],
-                    'quantity'        => $orderItem->getQuantity(),
+                    'orderItemId' => $orderItem->getId(),
+                    'price' => $orderItem->getItemPrice(),
+                    'maxToShip' => $item['quantity'],
+                    'quantity' => $orderItem->getQuantity(),
                     'quantityShipped' => $orderItem->getQuantity() - $item['quantity'],
-                    'toShip'          => $item['quantity'],
-                    'tax'             => $orderItem->getTotalTax(),
-                    'total'           => $orderItem->getTotal(),
-                    'name'            => $orderItem->getName(),
+                    'toShip' => $item['quantity'],
+                    'tax' => $orderItem->getTotalTax(),
+                    'total' => $orderItem->getTotal(),
+                    'name' => $orderItem->getName(),
                 ];
             }
         }
@@ -212,7 +213,7 @@ class OrderShipmentController extends PimcoreController
                 $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
                 200,
                 [
-                    'Content-Type'        => 'application/pdf',
+                    'Content-Type' => 'application/pdf',
                     'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
                 ]
             );

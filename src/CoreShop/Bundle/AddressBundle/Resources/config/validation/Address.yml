@@ -1,5 +1,5 @@
 CoreShop\Component\Address\Model\Address:
-    properties:
+    getters:
         firstname:
             - NotBlank: { groups: [coreshop] }
         lastname:

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
@@ -17,6 +17,7 @@ use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 
 final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
 {
@@ -36,7 +37,7 @@ final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
         try {
             /**

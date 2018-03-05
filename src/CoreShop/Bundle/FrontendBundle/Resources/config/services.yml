@@ -1,9 +1,6 @@
 imports:
     - { resource: "services/wishlist.yml" }
 
-parameters:
-    coreshop.frontend.base.url: /test/shop
-
 services:
     coreshop.frontend.controller.index:
         class: '%coreshop.frontend.controller.index%'
@@ -72,7 +69,7 @@ services:
         arguments:
             - '@security.authentication_utils'
             - '@form.factory'
-            - '@templating'
+            - '@coreshop.context.shopper'
         calls:
             - [setContainer, ['@service_container']]
 

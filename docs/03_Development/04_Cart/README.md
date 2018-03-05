@@ -6,6 +6,8 @@ This guide should lead you through how CoreShop handles the Cart.
  - [Cart Manager](./02_Cart_Manager.md)
  - [Cart Modifier](./03_Cart_Modifier.md)
  - [Cart Processor](./04_Cart_Processor.md)
+ - [Commands](./05_Commands.md)
+ - [Cart Context](./06_Context.md)
 
 ## Introduction
 

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
@@ -23,7 +23,7 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -40,12 +40,14 @@ class OrderInvoiceController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $itemsToReturn = [];
 
-        if (count($order->getPayments()) === 0) {
+        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
+
+        if (count($payments) === 0) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'Can\'t create Invoice without valid order payment']);
         }
 
@@ -144,7 +146,7 @@ class OrderInvoiceController extends PimcoreController
                 200,
                 [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
+                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
                 ]
             );
         }

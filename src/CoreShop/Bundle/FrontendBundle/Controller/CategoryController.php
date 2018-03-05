@@ -42,6 +42,16 @@ class CategoryController extends FrontendController
     protected $requestIdentifier = 'category';
 
     /**
+     * @var string
+     */
+    protected $defaultSortName = 'name';
+
+    /**
+     * @var string
+     */
+    protected $defaultSortDirection = 'asc';
+
+    /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -126,7 +136,7 @@ class CategoryController extends FrontendController
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? 'name' : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? 'asc' : strtoupper($orderDirection));
+            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
             $sort = $request->get('sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
@@ -149,7 +159,7 @@ class CategoryController extends FrontendController
 
         } else {
             //Classic Listing Mode
-            $sort = $request->get('sort', 'name_asc');
+            $sort = $request->get('sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
@@ -160,10 +170,10 @@ class CategoryController extends FrontendController
             }
 
             $options = [
-                'order_key'   => $sortParsed['name'],
-                'order'       => $sortParsed['direction'],
-                'categories'  => $categories,
-                'store'       => $this->getContext()->getStore(),
+                'order_key' => $sortParsed['name'],
+                'order' => $sortParsed['direction'],
+                'categories' => $categories,
+                'store' => $this->getContext()->getStore(),
                 'return_type' => 'list'
             ];
 

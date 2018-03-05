@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -61,8 +61,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
                 ],
             ])
             ->add('getter', IndexColumnGetterChoiceType::class)
-            ->add('interpreter', IndexColumnInterpreterChoiceType::class)
-        ;
+            ->add('interpreter', IndexColumnInterpreterChoiceType::class);
 
         /*
          * Getter Configurations
@@ -92,8 +91,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
                 }
 
                 $this->addGetterConfigurationFields($event->getForm(), $this->getterTypeRegistry->get($data['getter'], 'default'));
-            })
-        ;
+            });
 
         /*
          * Interpreter Configurations
@@ -123,13 +121,12 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
                 }
 
                 $this->addInterpreterConfigurationFields($event->getForm(), $this->interpreterTypeRegistry->get($data['interpreter'], 'default'));
-            })
-        ;
+            });
     }
 
     /**
      * @param FormInterface $form
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addGetterConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -138,7 +135,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -147,7 +144,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param mixed         $data
+     * @param mixed $data
      *
      * @return string|null
      */
@@ -162,7 +159,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param mixed         $data
+     * @param mixed $data
      *
      * @return string|null
      */

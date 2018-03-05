@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Model;
 
@@ -30,11 +30,15 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
     public function setType($type);
 
     /**
+     * @deprecated don't use anymore, it is inside configuration now
+     *
      * @return string
      */
     public function getField();
 
     /**
+     * @deprecated don't use anymore, it is inside configuration now
+     *
      * @param string $field
      *
      * @return static

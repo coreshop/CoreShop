@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
@@ -45,8 +45,7 @@ class EntityRepository extends BaseEntityRepository implements RepositoryInterfa
     {
         return $this->createQueryBuilder('o')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -57,7 +56,7 @@ class EntityRepository extends BaseEntityRepository implements RepositoryInterfa
     protected function getPropertyName($name)
     {
         if (false === strpos($name, '.')) {
-            return 'o'.'.'.$name;
+            return 'o' . '.' . $name;
         }
 
         return $name;

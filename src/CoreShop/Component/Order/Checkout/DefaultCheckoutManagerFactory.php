@@ -37,11 +37,11 @@ final class DefaultCheckoutManagerFactory implements CheckoutManagerFactoryInter
             $step = $this->steps->get($identifier);
 
             Assert::isInstanceOf($step, CheckoutStepInterface::class);
-            
+
             if ($step instanceof OptionalCheckoutStepInterface && !$step->isRequired($cart)) {
                 continue;
             }
-            
+
             $serviceRegistry->register($identifier, $priority, $step);
         }
 

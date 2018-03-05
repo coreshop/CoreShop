@@ -200,7 +200,7 @@ class AnalyticsEnhancedEcommerce extends AbstractClientTracker
     {
         return [
             'id' => $actionData->getId(),
-            'affilation' => $actionData->getAffiliation() ? : '',
+            'affilation' => $actionData->getAffiliation() ?: '',
             'revenue' => $actionData->getRevenue(),
             'tax' => $actionData->getTax(),
             'shipping' => $actionData->getShipping()

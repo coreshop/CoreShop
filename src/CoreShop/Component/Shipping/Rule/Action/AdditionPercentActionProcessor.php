@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Rule\Action;
 
@@ -31,6 +31,6 @@ class AdditionPercentActionProcessor implements CarrierPriceActionProcessorInter
      */
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
     {
-        return (int) round($price * ($configuration['percent'] / 100));
+        return (int)round($price * ($configuration['percent'] / 100));
     }
 }

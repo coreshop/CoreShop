@@ -82,7 +82,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
-            $product = $this->get('coreshop.repository.product')->find($productId);
+            $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
                 $productFlat = $this->getDataForObject($product);
@@ -163,12 +163,11 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         try {
             $this->prepareCart($request, $cart);
-        }
-        catch (\InvalidArgumentException $ex) {
+        } catch (\InvalidArgumentException $ex) {
             return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
 
-        $this->get('coreshop.cart.manager')->persistCart($cart);
+        $this->get('coreshop.cart_processor')->process($cart);
 
         $totals = $this->getTotalArray($cart);
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
@@ -181,8 +180,6 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
             $totalEntry['valueFormatted'] = $priceFormatted;
         }
-
-        $cart->delete();
 
         return $this->viewHandler->handle(['success' => true, 'summary' => $totals]);
     }
@@ -240,20 +237,18 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         try {
             $this->prepareCart($request, $cart);
-        }
-        catch (\InvalidArgumentException $ex) {
+        } catch (\InvalidArgumentException $ex) {
             return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
 
         $cart->setStore($store);
-        $this->get('coreshop.cart.manager')->persistCart($cart);
+        $cart->setPaymentProvider($paymentModule);
+        $this->get('coreshop.cart_processor')->process($cart);
 
         $sale = $this->factory->createNew();
         $sale = $this->getTransformer()->transform($cart, $sale);
 
         $this->afterSaleCreation($sale);
-
-        $cart->delete();
 
         return $this->viewHandler->handle(['success' => true, 'id' => $sale->getId()]);
     }
@@ -322,7 +317,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
 
-            $product = $this->get('coreshop.repository.product')->find($productId);
+            $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
                 $this->get('coreshop.cart.modifier')->addItem($cart, $product, $productObject['quantity']);

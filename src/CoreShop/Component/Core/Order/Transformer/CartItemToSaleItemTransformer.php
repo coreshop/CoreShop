@@ -25,7 +25,7 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
     }
 
     /**
-     * @param ProposalInterface     $proposal
+     * @param ProposalInterface $proposal
      * @param ProposalItemInterface $fromProposalItem
      * @param ProposalItemInterface $toProposal
      * @return mixed

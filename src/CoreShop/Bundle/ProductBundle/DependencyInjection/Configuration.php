@@ -51,7 +51,7 @@ final class Configuration implements ConfigurationInterface
 
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
-        $this->addImplementations($rootNode);
+        $this->addStack($rootNode);
 
         return $treeBuilder;
     }
@@ -59,9 +59,9 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addImplementations(ArrayNodeDefinition $node) {
+    private function addStack(ArrayNodeDefinition $node) {
         $node->children()
-            ->arrayNode('implementations')
+            ->arrayNode('stack')
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('product')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
@@ -208,9 +208,11 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('product_price_rule_action_discount_amount')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/discountAmount.js')->end()
                             ->scalarNode('product_price_rule_action_discount_percent')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/discountPercent.js')->end()
                             ->scalarNode('product_price_rule_action_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/price.js')->end()
+                            ->scalarNode('product_price_rule_action_discount_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/discountPrice.js')->end()
                             ->scalarNode('product_specific_price_rule_action')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/action.js')->end()
                             ->scalarNode('product_specific_price_rule_condition')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice//condition.js')->end()
                             ->scalarNode('product_specific_price_action_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/actions/price.js')->end()
+                            ->scalarNode('product_specific_price_action_discount_price')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/actions/discountPrice.js')->end()
                             ->scalarNode('product_specific_price_action_discount_amount')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/actions/discountAmount.js')->end()
                             ->scalarNode('product_specific_price_action_discount_percent')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/actions/discountPercent.js')->end()
                             ->scalarNode('product_specific_price_condition_nested')->defaultValue('/bundles/coreshopproduct/pimcore/js/specificprice/conditions/nested.js')->end()
