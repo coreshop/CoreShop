@@ -14,6 +14,19 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
+use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionType;
+use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -29,13 +42,37 @@ use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormFactoryInterface;
 
 final class ProductSpecificPriceRuleContext implements Context
 {
+    use ConditionFormTrait;
+    use ActionFormTrait;
+
     /**
      * @var SharedStorageInterface
      */
     private $sharedStorage;
+
+    /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var FormTypeRegistryInterface
+     */
+    private $conditionFormTypeRegistry;
+
+    /**
+     * @var FormTypeRegistryInterface
+     */
+    private $actionFormTypeRegistry;
 
     /**
      * @var FactoryInterface
@@ -48,25 +85,29 @@ final class ProductSpecificPriceRuleContext implements Context
     private $productSpecificPriceRuleRepository;
 
     /**
-     * @var ObjectManager
-     */
-    private $objectManager;
-
-    /**
      * @param SharedStorageInterface $sharedStorage
      * @param ObjectManager $objectManager
+     * @param FormFactoryInterface $formFactory
+     * @param FormTypeRegistryInterface $conditionFormTypeRegistry
+     * @param FormTypeRegistryInterface $actionFormTypeRegistry
      * @param FactoryInterface $productSpecificPriceRuleFactory
      * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
+        FormFactoryInterface $formFactory,
+        FormTypeRegistryInterface $conditionFormTypeRegistry,
+        FormTypeRegistryInterface $actionFormTypeRegistry,
         FactoryInterface $productSpecificPriceRuleFactory,
         ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
+        $this->formFactory = $formFactory;
+        $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
+        $this->actionFormTypeRegistry = $actionFormTypeRegistry;
         $this->productSpecificPriceRuleFactory = $productSpecificPriceRuleFactory;
         $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
     }
@@ -119,17 +160,13 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductsSpecificPriceRuleHasACountriesCondition(ProductSpecificPriceRuleInterface $rule, CountryInterface $country)
     {
-        $configuration = [
+        $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
+
+        $this->addCondition($rule, $this->createConditionWithForm('countries', [
             'countries' => [
                 $country->getId()
             ]
-        ];
-
-        $condition = new Condition();
-        $condition->setType('countries');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -138,17 +175,13 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductsSpecificPriceRuleHasACustomerCondition(ProductSpecificPriceRuleInterface $rule, CustomerInterface $customer)
     {
-        $configuration = [
+        $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
+
+        $this->addCondition($rule, $this->createConditionWithForm('customers', [
             'customers' => [
                 $customer->getId()
             ]
-        ];
-
-        $condition = new Condition();
-        $condition->setType('customers');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -157,19 +190,15 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductsSpecificPriceRuleHasATimeSpanCondition(ProductSpecificPriceRuleInterface $rule, $from, $to)
     {
+        $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
+
         $from = new \DateTime($from);
         $to = new \DateTime($to);
 
-        $configuration = [
+        $this->addCondition($rule, $this->createConditionWithForm('timespan', [
             'dateFrom' => $from->getTimestamp() * 1000,
             'dateTo' => $to->getTimestamp() * 1000
-        ];
-
-        $condition = new Condition();
-        $condition->setType('timespan');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -178,17 +207,13 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductsSpecificPriceRuleHasACustomerGroupCondition(ProductSpecificPriceRuleInterface $rule, CustomerGroupInterface $group)
     {
-        $configuration = [
+        $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
+
+        $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
             'customerGroups' => [
                 $group->getId()
             ]
-        ];
-
-        $condition = new Condition();
-        $condition->setType('customerGroups');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -197,17 +222,13 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductsSpecificPriceRuleHasAStoreCondition(ProductSpecificPriceRuleInterface $rule, StoreInterface $store)
     {
-        $configuration = [
+        $this->assertConditionForm(StoresConfigurationType::class, 'stores');
+
+        $this->addCondition($rule, $this->createConditionWithForm('stores', [
             'stores' => [
                 $store->getId()
             ]
-        ];
-
-        $condition = new Condition();
-        $condition->setType('stores');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -216,17 +237,13 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductsSpecificPriceRuleHasAZoneCondition(ProductSpecificPriceRuleInterface $rule, ZoneInterface $zone)
     {
-        $configuration = [
+        $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
+
+        $this->addCondition($rule, $this->createConditionWithForm('zones', [
             'zones' => [
                 $zone->getId()
             ]
-        ];
-
-        $condition = new Condition();
-        $condition->setType('zones');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -235,17 +252,13 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductsSpecificPriceRuleHasACurrencyCondition(ProductSpecificPriceRuleInterface $rule, CurrencyInterface $currency)
     {
-        $configuration = [
+        $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
+
+        $this->addCondition($rule, $this->createConditionWithForm('currencies', [
             'currencies' => [
                 $currency->getId()
             ]
-        ];
-
-        $condition = new Condition();
-        $condition->setType('currencies');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -254,15 +267,11 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductSpecificPriceRuleHasADiscountPercentAction(ProductSpecificPriceRuleInterface $rule, $discount)
     {
-        $configuration = [
+        $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
+
+        $this->addAction($rule, $this->createActionWithForm('discountPercent', [
             'percent' => intval($discount)
-        ];
-
-        $action = new Action();
-        $action->setType('discountPercent');
-        $action->setConfiguration($configuration);
-
-        $this->addAction($rule, $action);
+        ]));
     }
 
     /**
@@ -271,16 +280,12 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductSpecificPriceRuleHasADiscountAmountAction(ProductSpecificPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
     {
-        $configuration = [
+        $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
+
+        $this->addAction($rule, $this->createActionWithForm('discountAmount', [
             'amount' => intval($amount),
             'currency' => $currency->getId()
-        ];
-
-        $action = new Action();
-        $action->setType('discountAmount');
-        $action->setConfiguration($configuration);
-
-        $this->addAction($rule, $action);
+        ]));
     }
 
     /**
@@ -289,16 +294,12 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductSpecificPriceRuleHasADiscountPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
     {
-        $configuration = [
+        $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
+
+        $this->addAction($rule, $this->createActionWithForm('discountPrice', [
             'price' => intval($price),
             'currency' => $currency->getId()
-        ];
-
-        $action = new Action();
-        $action->setType('discountPrice');
-        $action->setConfiguration($configuration);
-
-        $this->addAction($rule, $action);
+        ]));
     }
 
     /**
@@ -307,16 +308,12 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theProductSpecificPriceRuleHasAPriceAction(ProductSpecificPriceRuleInterface $rule, $price, CurrencyInterface $currency)
     {
-        $configuration = [
+        $this->assertActionForm(PriceConfigurationType::class, 'price');
+
+        $this->addAction($rule, $this->createActionWithForm('price', [
             'price' => intval($price),
             'currency' => $currency->getId()
-        ];
-
-        $action = new Action();
-        $action->setType('price');
-        $action->setConfiguration($configuration);
-
-        $this->addAction($rule, $action);
+        ]));
     }
 
     /**
@@ -341,5 +338,45 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormRegistry()
+    {
+        return $this->conditionFormTypeRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormClass()
+    {
+        return ProductSpecificPriceRuleConditionType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormRegistry()
+    {
+        return $this->actionFormTypeRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormClass()
+    {
+        return ProductSpecificPriceRuleActionType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFormFactory()
+    {
+        return $this->formFactory;
     }
 }

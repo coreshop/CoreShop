@@ -12,7 +12,7 @@ Feature: Adding a new Shipping Rule
     And the site has a tax rule group "AT"
     And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
     And the tax rule group is valid for store "Austria"
-    And the site has a product "Shoe" priced at 100
+    And the site has a product "Shoe" priced at 10000
     And it has the tax rule group "AT"
     And I add the product "Shoe" to my cart
     And the site has a carrier "Post"

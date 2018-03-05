@@ -14,6 +14,9 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -22,9 +25,12 @@ use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormFactoryInterface;
 
 final class ShippingContext implements Context
 {
+    use ConditionFormTrait;
+
     /**
      * @var SharedStorageInterface
      */
@@ -34,6 +40,21 @@ final class ShippingContext implements Context
      * @var ObjectManager
      */
     private $objectManager;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var FormTypeRegistryInterface
+     */
+    private $conditionFormTypeRegistry;
+
+    /**
+     * @var FormTypeRegistryInterface
+     */
+    private $actionFormTypeRegistry;
 
     /**
      * @var CarrierRepositoryInterface
@@ -53,6 +74,9 @@ final class ShippingContext implements Context
     /**
      * @param SharedStorageInterface $sharedStorage
      * @param ObjectManager $objectManager
+     * @param FormFactoryInterface $formFactory
+     * @param FormTypeRegistryInterface $conditionFormTypeRegistry
+     * @param FormTypeRegistryInterface $actionFormTypeRegistry
      * @param CarrierRepositoryInterface $carrierRepository
      * @param FactoryInterface $carrierFactory
      * @param FactoryInterface $shippingRuleFactory
@@ -60,6 +84,9 @@ final class ShippingContext implements Context
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
+        FormFactoryInterface $formFactory,
+        FormTypeRegistryInterface $conditionFormTypeRegistry,
+        FormTypeRegistryInterface $actionFormTypeRegistry,
         CarrierRepositoryInterface $carrierRepository,
         FactoryInterface $carrierFactory,
         FactoryInterface $shippingRuleFactory
@@ -67,6 +94,9 @@ final class ShippingContext implements Context
     {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
+        $this->formFactory = $formFactory;
+        $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
+        $this->actionFormTypeRegistry = $actionFormTypeRegistry;
         $this->carrierRepository = $carrierRepository;
         $this->carrierFactory = $carrierFactory;
         $this->shippingRuleFactory = $shippingRuleFactory;
@@ -103,16 +133,12 @@ final class ShippingContext implements Context
      */
     public function theShippingRuleHasAAmountCondition(ShippingRuleInterface $rule, $minAmount, $maxAmount)
     {
-        $configuration = [
+        $this->assertConditionForm(AmountConfigurationType::class, 'amount');
+
+        $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
             'maxAmount' => $maxAmount
-        ];
-
-        $condition = new Condition();
-        $condition->setType('amount');
-        $condition->setConfiguration($configuration);
-
-        $this->addCondition($rule, $condition);
+        ]));
     }
 
     /**
@@ -162,5 +188,30 @@ final class ShippingContext implements Context
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormRegistry()
+    {
+        return $this->conditionFormTypeRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConditionFormClass()
+    {
+        return ShippingRuleConditionType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFormFactory()
+    {
+        return $this->formFactory;
     }
 }

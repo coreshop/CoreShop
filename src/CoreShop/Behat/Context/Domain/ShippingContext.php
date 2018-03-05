@@ -14,26 +14,14 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CategoryInterface;
-use CoreShop\Component\Core\Model\CurrencyInterface;
-use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
-use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
-use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
-use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
-use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
-use Pimcore\Model\DataObject\Folder;
+use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context

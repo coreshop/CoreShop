@@ -13,6 +13,9 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.form.factory'
+            - '@__symfony__.coreshop.form_registry.product_specific_price_rule.conditions'
+            - '@__symfony__.coreshop.form_registry.product_specific_price_rule.actions'
             - '@__symfony__.coreshop.factory.product_specific_price_rule'
             - '@__symfony__.coreshop.repository.product_specific_price_rule'
         tags:
@@ -96,6 +99,9 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.form.factory'
+            - '@__symfony__.coreshop.form_registry.product_price_rule.conditions'
+            - '@__symfony__.coreshop.form_registry.product_price_rule.actions'
             - '@__symfony__.coreshop.factory.product_price_rule'
             - '@__symfony__.coreshop.repository.product_price_rule'
         tags:
@@ -147,6 +153,9 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.form.factory'
+            - '@__symfony__.coreshop.form_registry.shipping_rule.conditions'
+            - '@__symfony__.coreshop.form_registry.shipping_rule.actions'
             - '@__symfony__.coreshop.repository.carrier'
             - '@__symfony__.coreshop.factory.carrier'
             - '@__symfony__.coreshop.factory.shipping_rule'
