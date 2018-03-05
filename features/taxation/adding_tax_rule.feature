@@ -6,7 +6,7 @@ Feature: Adding a new Tax Rule
     Given the site operates on a store in "Austria"
     And the site has a tax rate "AT" with "20%" rate
     And the site has a tax rule group "AT"
-    And it has a tax rule for country "Austria" with tax rate "AT"
+    And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
     And the tax rule group is valid for store "Austria"
     Then there should be a tax rule group "AT" with "1" rule
 
@@ -18,7 +18,7 @@ Feature: Adding a new Tax Rule
     Given the site has a country "Germany" with currency "EUR"
     And the site has a tax rate "DE" with "19%" rate
     And the site has a tax rule group "Europe"
-    And it has a tax rule for country "Germany" with tax rate "DE"
+    And the tax rule group has a tax rule for country "Germany" with tax rate "DE"
     Then the tax calculator should be null for tax rule group in country "Germany"
 
   Scenario: Tax calculator should return same price when country is not configured
