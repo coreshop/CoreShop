@@ -13,8 +13,8 @@ Feature: Adding a new Product
     Given it is in category "Shoes"
     Given the site has a product "Shoe 2" priced at 150
     Given it is in category "Shoes"
-    Then the product "Shoe" should be priced at 100
-    Then the product "Shoe 2" should be priced at 150
+    Then the product "Shoe" should be priced at "100"
+    Then the product "Shoe 2" should be priced at "150"
 
   Scenario: Add a new country category price rule which is valid
     Given adding a product price rule named "country-discount"

@@ -15,9 +15,9 @@ Feature: Adding a new Product
     Given it is in category "Shoes"
     Given the site has a product "Jacket" priced at 400
     Given it is in category "Coats"
-    Then the product "Shoe" should be priced at 100
-    Then the product "Shoe 2" should be priced at 150
-    Then the product "Jacket" should be priced at 400
+    Then the product "Shoe" should be priced at "100"
+    Then the product "Shoe 2" should be priced at "150"
+    Then the product "Jacket" should be priced at "400"
 
   Scenario: Add a new category catalog price rule which is valid
     Given adding a product price rule named "category-discount"

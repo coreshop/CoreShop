@@ -10,7 +10,7 @@ Feature: Adding a new Product
     And the country "Austria" is in zone "Europe"
     And I am in country "Austria"
     And the site has a product "Shoe" priced at 100
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
 
   Scenario: Add a new zone category price rule which is valid
     Given adding a product price rule named "zone-discount"

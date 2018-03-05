@@ -11,7 +11,7 @@ Feature: Adding a new Product
     Given the site has a customer "some-customer@something.com"
     Given I am customer "some-customer@something.com"
     Given the site has a product "Shoe" priced at 100
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
     Then I should be logged in with email "some-customer@something.com"
 
   Scenario: Add a new customer product specific price rule which is valid

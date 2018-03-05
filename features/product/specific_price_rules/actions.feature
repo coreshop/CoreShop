@@ -8,25 +8,25 @@ Feature: Adding a new Product
     Given the site has a currency "Euro" with iso "EUR"
     Given I am in country "Austria"
     Given the site has a product "Shoe" priced at 100
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
 
   Scenario: Add a new discount rule with 20 percent discount
     Given adding a product specific price rule to product "Shoe" named "discount"
     And the specific price rule is active
     And the specific price rule has a action discount-percent with 20% discount
     Then the specific price rule should be valid for product "Shoe"
-    And the product "Shoe" should be priced at 80
-    And the product "Shoe" discount should be 20
-    And the product "Shoe" retail-price should be 100
+    And the product "Shoe" should be priced at "80"
+    And the product "Shoe" discount should be "20"
+    And the product "Shoe" retail-price should be "100"
 
   Scenario: Add a new discount rule with 20 euro off
     Given adding a product specific price rule to product "Shoe" named "discount"
     And the specific price rule is active
     And the specific price rule has a action discount with 20 in currency "EUR" off
     Then the specific price rule should be valid for product "Shoe"
-    And the product "Shoe" should be priced at 80
-    And the product "Shoe" discount should be 20
-    And the product "Shoe" retail-price should be 100
+    And the product "Shoe" should be priced at "80"
+    And the product "Shoe" discount should be "20"
+    And the product "Shoe" retail-price should be "100"
 
   Scenario: Add a discount-price rule with a price of 80
     Given adding a product specific price rule to product "Shoe" named "discount"
@@ -40,6 +40,6 @@ Feature: Adding a new Product
     And the specific price rule is active
     And the specific price rule has a action price of 80 in currency "EUR"
     Then the specific price rule should be valid for product "Shoe"
-    And the product "Shoe" should be priced at 80
-    And the product "Shoe" discount should be 0
-    And the product "Shoe" retail-price should be 80
+    And the product "Shoe" should be priced at "80"
+    And the product "Shoe" discount should be "0"
+    And the product "Shoe" retail-price should be "80"

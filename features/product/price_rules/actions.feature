@@ -13,9 +13,9 @@ Feature: Adding a new Product
     And it is in category "Shoes"
     And the site has a product "Jacket" priced at 400
     And it is in category "Coats"
-    Then the product "Shoe" should be priced at 100
-    Then the product "Shoe 2" should be priced at 150
-    Then the product "Jacket" should be priced at 400
+    Then the product "Shoe" should be priced at "100"
+    Then the product "Shoe 2" should be priced at "150"
+    Then the product "Jacket" should be priced at "400"
 
   Scenario: Add a new discount rule with 20 percent discount for all products
     Given adding a product price rule named "discount"

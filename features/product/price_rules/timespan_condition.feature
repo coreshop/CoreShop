@@ -7,7 +7,7 @@ Feature: Adding a new Product
   Background:
     Given the site operates on a store in "Austria"
     Given the site has a product "Shoe" priced at 100
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
 
   Scenario: Add a new timespan category price rule which is valid
     Given adding a product price rule named "timespan-discount"

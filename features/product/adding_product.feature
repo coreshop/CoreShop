@@ -6,8 +6,8 @@ Feature: Adding a new Product
   Background:
     Given the site operates on a store in "Austria"
     Given the site has a product "Shoe" priced at 100
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
 
   Scenario: Create a new product
     Given the site has a product "Shoe 2" priced at 200
-    Then the product "Shoe 2" should be priced at 200
+    Then the product "Shoe 2" should be priced at "200"

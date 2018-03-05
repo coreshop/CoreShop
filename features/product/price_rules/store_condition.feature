@@ -10,7 +10,7 @@ Feature: Adding a new Product
     And the site has a currency "YEN" with iso "YEN"
     And the site has a country "China" with currency "YEN"
     And the site has a store "Asia" with country "China" and currency "Yen"
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
 
   Scenario: Add a new store category price rule which is valid
     Given adding a product price rule named "store-discount"

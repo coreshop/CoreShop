@@ -12,7 +12,7 @@ Feature: Adding a new Product
     And it is in customer-group "Frequent Buyers"
     And I am customer "some-customer@something.com"
     And the site has a product "Shoe" priced at 100
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
     Then I should be logged in with email "some-customer@something.com"
 
   Scenario: Add a new customer-group category price rule which is valid

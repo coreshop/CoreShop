@@ -14,13 +14,11 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
@@ -41,23 +39,31 @@ final class ProductContext implements Context
     private $productPriceCalculator;
 
     /**
+     * @var TaxedProductPriceCalculatorInterface
+     */
+    private $taxedProductPriceCalculator;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param ProductRepositoryInterface $productRepository
      * @param ProductPriceCalculatorInterface $productPriceCalculator
+     * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductRepositoryInterface $productRepository,
-        ProductPriceCalculatorInterface $productPriceCalculator
+        ProductPriceCalculatorInterface $productPriceCalculator,
+        TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->productRepository = $productRepository;
         $this->productPriceCalculator = $productPriceCalculator;
+        $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
     }
 
     /**
-     * @Then /^the (product "[^"]+") should be priced at ([^"]+)$/
+     * @Then /^the (product "[^"]+") should be priced at "([^"]+)"$/
      */
     public function productShouldBePriced(ProductInterface $product, int $price)
     {
@@ -65,7 +71,7 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Then /^the (product "[^"]+") discount-price should be ([^"]+)$/
+     * @Then /^the (product "[^"]+") discount-price should be "([^"]+)"$/
      */
     public function productsDiscountPriceShouldBe(ProductInterface $product, int $price)
     {
@@ -73,7 +79,7 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Then /^the (product "[^"]+") retail-price should be ([^"]+)$/
+     * @Then /^the (product "[^"]+") retail-price should be "([^"]+)"$/
      */
     public function productsRetailPriceShouldBe(ProductInterface $product, int $price)
     {
@@ -81,7 +87,7 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Then /^the (product "[^"]+") discount should be ([^"]+)$/
+     * @Then /^the (product "[^"]+") discount should be "([^"]+)"$/
      */
     public function productDiscountShouldBe(ProductInterface $product, int $discount)
     {
@@ -110,5 +116,29 @@ final class ProductContext implements Context
         $this->productShouldBePriced($product, $price);
         $this->productsRetailPriceShouldBe($product, $retailPrice);
         $this->productDiscountShouldBe($product, $discount);
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should be priced at "([^"]+)" including tax$/
+     */
+    public function productTaxedPriceShouldBe(ProductInterface $product, int $price)
+    {
+        Assert::same(intval($price), $this->taxedProductPriceCalculator->getPrice($product));
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") retail-price should be "([^"]+)" including tax$/
+     */
+    public function productTaxedRetailPriceShouldBe(ProductInterface $product, int $price)
+    {
+        Assert::same(intval($price), $this->taxedProductPriceCalculator->getRetailPrice($product));
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should have (tax rule group "[^"]+")$/
+     */
+    public function theProductShouldHaveTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup)
+    {
+        Assert::eq($product->getTaxRule()->getId(), $taxRuleGroup->getId());
     }
 }

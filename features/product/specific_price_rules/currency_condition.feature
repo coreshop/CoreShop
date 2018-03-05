@@ -12,7 +12,7 @@ Feature: Adding a new Product
     And the currency is valid for store "Austria"
     And I am in country "Austria"
     And the site has a product "Shoe" priced at 100
-    Then the product "Shoe" should be priced at 100
+    Then the product "Shoe" should be priced at "100"
     Then the site should be using currency "EUR"
 
   Scenario: Add a new currency product specific price rule which is valid
