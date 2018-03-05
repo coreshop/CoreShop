@@ -3,3 +3,4 @@ imports:
     - suites/domain/currency.yml
     - suites/domain/taxation.yml
     - suites/domain/cart.yml
+    - suites/domain/category.yml

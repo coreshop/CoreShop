@@ -77,3 +77,11 @@ services:
             - '@__symfony__.coreshop.context.cart'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.category:
+        class: CoreShop\Behat\Context\Domain\CategoryContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.category'
+        tags:
+            - { name: fob.context_service }

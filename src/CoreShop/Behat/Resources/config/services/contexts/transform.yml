@@ -16,6 +16,7 @@ services:
     coreshop.behat.context.transform.category:
         class: CoreShop\Behat\Context\Transform\CategoryContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.repository.category'
         tags:
             - { name: fob.context_service }

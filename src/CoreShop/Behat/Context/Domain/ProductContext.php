@@ -111,12 +111,4 @@ final class ProductContext implements Context
         $this->productsRetailPriceShouldBe($product, $retailPrice);
         $this->productDiscountShouldBe($product, $discount);
     }
-
-    /**
-     * @Then /^the (product "[^"]+") should be in (category "[^"]+")$/
-     */
-    public function theProductShouldBeInCategory(ProductInterface $product, CategoryInterface $category)
-    {
-        Assert::oneOf($category, $product->getCategories());
-    }
 }
