@@ -10,7 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Resource\Workflow;
+namespace CoreShop\Bundle\WorkflowBundle\Applier;
+
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class StateMachineApplier
 {

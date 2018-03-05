@@ -45,6 +45,7 @@ class RegisterBundleHelper
         $collection->addBundle(new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(), 1700);
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(), 1600);
+        $collection->addBundle(new \CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle(), 1550);
         $collection->addBundle(new \FOS\RestBundle\FOSRestBundle(), 1500);
         $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
         $collection->addBundle(new \Payum\Bundle\PayumBundle\PayumBundle(), 1300);

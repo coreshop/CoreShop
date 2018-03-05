@@ -38,7 +38,7 @@ services:
             - paymentState
 
     coreshop.state_machine.marking_store.order_payment_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.order_payment_state'
 
@@ -48,7 +48,7 @@ services:
             - orderState
 
     coreshop.state_machine.marking_store.order_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_state'
 
@@ -58,7 +58,7 @@ services:
             - shippingState
 
     coreshop.state_machine.marking_store.order_shipment_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_shipment_state'
 
@@ -68,7 +68,7 @@ services:
             - invoiceState
 
     coreshop.state_machine.marking_store.order_invoice_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
@@ -83,12 +83,12 @@ services:
             - state
 
     coreshop.state_machine.marking_store.shipment_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.shipment_state'
 
     coreshop.state_machine.marking_store.invoice_pimcore_marking_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\PimcorePersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
           - '@coreshop.state_machine.marking_store.single_state.invoice_state'
 

@@ -5,6 +5,10 @@ framework:
             marking_store:
                 service: coreshop.state_machine.marking_store.invoice_pimcore_marking_store
             supports: CoreShop\Component\Order\Model\OrderInvoice
+
+core_shop_workflow:
+    state_machine:
+        coreshop_invoice:
             places:
                 - new
                 - ready
@@ -20,27 +24,22 @@ framework:
                 complete:
                     from: [ready]
                     to:   complete
-
-core_shop_resource:
-    state_machine:
-        colors:
-            coreshop_invoice:
+            place_colors:
                 new: '#feb624'
                 ready: '#feb624'
                 cancelled: '#f2583e'
                 complete: '#5b981a'
-            coreshop_invoice_transition:
+            transition_colors:
                 create: '#feb624'
                 cancel: '#f2583e'
                 complete: '#5b981a'
-        callbacks:
-            coreshop_invoice:
+            callbacks:
                 after:
-                  resolve_state:
-                      on: ['complete']
-                      do: ['@coreshop.state_machine_resolver.order_invoice', 'resolve']
-                      args: ['object.getOrder()']
-                  add_to_history:
-                      on: ['cancel', 'complete']
-                      do: ['@coreshop.workflow.state_history_logger', 'log']
-                      args: ['object.getOrder().getId()', 'event']
+                    resolve_state:
+                        on: ['complete']
+                        do: ['@coreshop.state_machine_resolver.order_invoice', 'resolve']
+                        args: ['object.getOrder()']
+                    add_to_history:
+                        on: ['cancel', 'complete']
+                        do: ['@coreshop.workflow.state_history_logger', 'log']
+                        args: ['object.getOrder().getId()', 'event']

@@ -1,11 +1,12 @@
 {
-  "name": "coreshop/order-bundle",
-  "type": "symfony-bundle",
-  "description": "CoreShop - Order Bundle",
+  "name": "coreshop/workflow-bundle",
+  "type": "pimcore-bundle",
+  "description": "CoreShop - Workflow Bundle",
   "keywords": [
     "coreshop",
     "pimcore",
-    "ecommerce"
+    "ecommerce",
+    "workflow"
   ],
   "homepage": "http://www.coreshop.org",
   "license": "GPL-3.0-or-later",
@@ -15,19 +16,20 @@
       "email": "dominik@pfaffenbauer.at",
       "homepage": "https://www.pfaffenbauer.at/",
       "role": "Developer"
+    },
+    {
+      "name": "Stefan Hagspiel",
+      "email": "shagspiel@dachcom.com",
+      "role": "Developer"
     }
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/currency-bundle": "^2.0",
-    "coreshop/customer-bundle": "^2.0",
-    "coreshop/payment-bundle": "^2.0",
-    "coreshop/locale-bundle": "^2.0",
+    "coreshop/pimcore": "^2.0",
     "coreshop/registry": "^2.0",
-    "coreshop/rule-bundle": "^2.0",
-    "coreshop/store-bundle": "^2.0",
-    "coreshop/money-bundle": "^2.0",
-    "coreshop/workflow-bundle": "^2.0",
+    "symfony/config": "^3.3",
+    "symfony/workflow": "~3.3|~4.0",
+    "symfony/yaml": "^3.3",
     "pimcore/core-version": "^5.1.0"
   },
   "config": {
@@ -35,7 +37,7 @@
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Bundle\\OrderBundle\\": ""
+      "CoreShop\\Bundle\\WorkflowBundle\\": ""
     }
   },
   "minimum-stability": "dev",

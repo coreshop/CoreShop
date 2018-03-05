@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Workflow;
 use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Pimcore\Model\Element\Note;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -79,7 +79,8 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
-        $color = isset($this->stateColors[$workflowName]['definitions'][$value]) ? $this->stateColors[$workflowName]['definitions'][$value] : '#f6f1de';
+
+        $color = isset($this->stateColors[$workflowName]['place_colors'][$value]) ? $this->stateColors[$workflowName]['place_colors'][$value] : '#f6f1de';
 
         $data = [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
@@ -100,7 +101,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
         $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
-        $color = isset($this->stateColors[$workflowName . '_transition']['definitions'][$transition]) ? $this->stateColors[$workflowName . '_transition']['definitions'][$transition] : '#999999';
+        $color = isset($this->stateColors[$workflowName]['transition_colors'][$transition]) ? $this->stateColors[$workflowName]['transition_colors'][$transition] : '#999999';
 
         $data = [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),

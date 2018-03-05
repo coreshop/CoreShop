@@ -13,24 +13,12 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
-use CoreShop\Component\Order\InvoiceStates;
-use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
-use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Notes;
-use CoreShop\Component\Order\Processable\ProcessableInterface;
-use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
-use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
-use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\User;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderCommentController extends PimcoreController
 {
