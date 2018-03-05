@@ -19,7 +19,7 @@ use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderInvoiceStateResolver implements StateResolverInterface
 {

@@ -3,7 +3,6 @@ imports:
     - { resource: "services/controller.yml" }
     - { resource: "services/installer.yml" }
     - { resource: "services/commands.yml" }
-    - { resource: "services/workflow.yml" }
     - { resource: "services/validators.yml" }
 
 parameters:

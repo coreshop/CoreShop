@@ -18,9 +18,13 @@ class RegisterBundleHelper
 {
     /**
      * @param BundleCollection $collection
+     *
+     * @deprecated Don't use anymore, will be removed on beta-1
+     * @deprecated Bundles are automatically recognized and registered
      */
-    public static function registerBundles(BundleCollection $collection)
-    {
+    public static function registerBundles(BundleCollection $collection) {
+        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-alpha.5 and will be removed in CoreShop 2.0.0-beta.1. Bundles are automatically registered.', __METHOD__), E_USER_DEPRECATED);
+
         $collection->addBundle(new \JMS\SerializerBundle\JMSSerializerBundle(), 3900);
         $collection->addBundle(new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(), 3800);
         $collection->addBundle(new \CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle(), 3700);
@@ -45,6 +49,7 @@ class RegisterBundleHelper
         $collection->addBundle(new \CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new \CoreShop\Bundle\PayumBundle\CoreShopPayumBundle(), 1700);
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(), 1600);
+        $collection->addBundle(new \CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle(), 1550);
         $collection->addBundle(new \FOS\RestBundle\FOSRestBundle(), 1500);
         $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
         $collection->addBundle(new \Payum\Bundle\PayumBundle\PayumBundle(), 1300);

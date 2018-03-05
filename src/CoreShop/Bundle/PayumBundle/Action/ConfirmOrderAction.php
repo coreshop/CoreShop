@@ -17,7 +17,7 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface

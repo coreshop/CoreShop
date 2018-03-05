@@ -4,3 +4,6 @@ pimcore:
             data:
                 map:
                     coreShopStorePrice: CoreShop\Bundle\CoreBundle\CoreExtension\StorePrice
+
+imports:
+    - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }

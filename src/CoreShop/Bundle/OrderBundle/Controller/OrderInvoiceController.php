@@ -23,7 +23,7 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

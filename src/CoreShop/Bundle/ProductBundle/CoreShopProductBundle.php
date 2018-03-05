@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle;
 
+use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleActionPass;
@@ -22,6 +23,8 @@ use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPr
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductValidPriceRuleFetcherPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopProductBundle extends AbstractResourceBundle
@@ -36,6 +39,9 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -49,6 +55,17 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductRetailPriceCalculatorsPass());
         $container->addCompilerPass(new ProductDiscountPriceCalculatorsPass());
         $container->addCompilerPass(new ProductDiscountCalculatorsPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
     }
 
     /**

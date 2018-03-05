@@ -12,6 +12,10 @@
 
 namespace CoreShop\Bundle\OrderBundle;
 
+use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
+use CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle;
+use CoreShop\Bundle\LocaleBundle\CoreShopLocaleBundle;
+use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleConditionPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountCalculatorsPass;
@@ -21,8 +25,13 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPr
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterWorkflowValidatorPass;
+use CoreShop\Bundle\PaymentBundle\CoreShopPaymentBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
+use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
+use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopOrderBundle extends AbstractResourceBundle
@@ -37,6 +46,9 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -50,6 +62,23 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterCartContextsPass());
         $container->addCompilerPass(new PurchasableDiscountPriceCalculatorsPass());
         $container->addCompilerPass(new PurchasableRetailPriceCalculatorsPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundle(new CoreShopWorkflowBundle(), 3600);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
+        $collection->addBundle(new CoreShopLocaleBundle(), 3400);
+        $collection->addBundle(new CoreShopCustomerBundle(), 3100);
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
+        $collection->addBundle(new CoreShopStoreBundle(), 2500);
+        $collection->addBundle(new CoreShopPaymentBundle(), 2200);
+        $collection->addBundle(new CoreShopMoneyBundle(), 1550);
     }
 
     /**

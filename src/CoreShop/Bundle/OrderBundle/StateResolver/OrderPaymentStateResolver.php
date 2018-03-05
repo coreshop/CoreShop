@@ -17,7 +17,7 @@ use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\Workflow\Workflow;
 
 final class OrderPaymentStateResolver implements StateResolverInterface

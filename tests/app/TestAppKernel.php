@@ -19,7 +19,7 @@ class TestAppKernel extends Kernel
      */
     public function registerBundlesToCollection(\Pimcore\HttpKernel\BundleCollection\BundleCollection $collection)
     {
-        \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
+        $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
     }
 
     /**

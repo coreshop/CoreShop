@@ -12,10 +12,13 @@
 
 namespace CoreShop\Bundle\StoreBundle;
 
+use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeStoreContextPass;
+use Liip\ThemeBundle\LiipThemeBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopStoreBundle extends AbstractResourceBundle
@@ -39,6 +42,17 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
 
         $container->addCompilerPass(new CompositeStoreContextPass());
         $container->addCompilerPass(new CompositeRequestResolverPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
+        $collection->addBundle(new LiipThemeBundle(), 1100);
     }
 
     /**

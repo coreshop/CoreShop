@@ -31,6 +31,9 @@ final class CoreShopPayumExtension extends AbstractModelExtension implements Pre
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
         $loader->load('services.yml');
+
+        $container->setParameter('payum.template.layout', $config['template']['layout']);
+        $container->setParameter('payum.template.obtain_credit_card', $config['template']['obtain_credit_card']);
     }
 
     /**

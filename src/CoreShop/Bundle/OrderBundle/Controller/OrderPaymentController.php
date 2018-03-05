@@ -23,7 +23,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 
 

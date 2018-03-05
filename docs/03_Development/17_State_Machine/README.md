@@ -37,3 +37,4 @@ So let's start:
  - [Available Workflows](./01_Available_Workflows.md)
  - [Create Callbacks](./02_Create_Callbacks.md)
  - [Things to Know (!)](./03_Things_To_Know.md)
+ - [Extend Workflows](./04_Extend_Workflows.md)

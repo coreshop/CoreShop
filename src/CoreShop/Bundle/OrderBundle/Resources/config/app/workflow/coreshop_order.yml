@@ -5,6 +5,10 @@ framework:
             marking_store:
                 service: coreshop.state_machine.marking_store.order_pimcore_marking_store
             supports: CoreShop\Component\Order\Model\Order
+
+core_shop_workflow:
+    state_machine:
+        coreshop_order:
             places:
                 - initialized
                 - new
@@ -24,18 +28,13 @@ framework:
                 complete:
                     from: confirmed
                     to:   complete
-
-core_shop_resource:
-    state_machine:
-        colors:
-            coreshop_order:
+            place_colors:
                 initialized: '#d6e1dd'
                 new: '#61c2cb'
                 confirmed: '#919d7f'
                 cancelled: '#f2583e'
                 complete: '#5b981a'
-        callbacks:
-            coreshop_order:
+            callbacks:
                 after:
                     request_payment:
                         on: ['create']

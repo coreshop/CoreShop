@@ -12,13 +12,9 @@
 
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
-use Carbon\Carbon;
-use CoreShop\Component\Order\OrderPaymentStates;
-use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 
 final class OrderExpiration implements ProposalExpirationInterface
 {

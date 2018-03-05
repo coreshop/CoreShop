@@ -1,6 +1,6 @@
 {
   "name": "coreshop/taxation-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Taxation Bundle",
   "keywords": [
     "coreshop",
