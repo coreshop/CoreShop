@@ -70,17 +70,19 @@ abstract class AbstractRule extends AbstractModel
     public function prepareActions($actions)
     {
         $actionInstances = [];
+        if ($actions) {
+            foreach ($actions as $action) {
+                $className = $this->getMyActionDispatcher()->getClassForType($action['type']);
 
-        foreach ($actions as $action) {
-            $className = $this->getMyActionDispatcher()->getClassForType($action['type']);
+                if ($className && Tool::classExists($className)) {
+                    $instance = new $className();
+                    $instance->setValues($action);
 
-            if ($className && Tool::classExists($className)) {
-                $instance = new $className();
-                $instance->setValues($action);
-
-                $actionInstances[] = $instance;
-            } else {
-                throw new Exception(sprintf('Action with type %s and class %s not found', $action['type'], $className));
+                    $actionInstances[] = $instance;
+                } else {
+                    throw new Exception(sprintf('Action with type %s and class %s not found', $action['type'],
+                        $className));
+                }
             }
         }
 
@@ -96,22 +98,24 @@ abstract class AbstractRule extends AbstractModel
     public function prepareConditions($conditions)
     {
         $conditionInstances = [];
+        if ($conditions) {
+            foreach ($conditions as $condition) {
+                $className = $this->getMyConditionDispatcher()->getClassForType($condition['type']);
 
-        foreach ($conditions as $condition) {
-            $className = $this->getMyConditionDispatcher()->getClassForType($condition['type']);
+                if ($className && Tool::classExists($className)) {
+                    if ($condition['type'] === "conditions") {
+                        $nestedConditions = static::prepareConditions($condition['conditions']);
+                        $condition['conditions'] = $nestedConditions;
+                    }
 
-            if ($className && Tool::classExists($className)) {
-                if ($condition['type'] === "conditions") {
-                    $nestedConditions = static::prepareConditions($condition['conditions']);
-                    $condition['conditions'] = $nestedConditions;
+                    $instance = new $className();
+                    $instance->setValues($condition);
+
+                    $conditionInstances[] = $instance;
+                } else {
+                    throw new Exception(sprintf('Condition with type %s and class %s not found', $condition['type'],
+                        $className));
                 }
-
-                $instance = new $className();
-                $instance->setValues($condition);
-
-                $conditionInstances[] = $instance;
-            } else {
-                throw new Exception(sprintf('Condition with type %s and class %s not found', $condition['type'], $className));
             }
         }
 
