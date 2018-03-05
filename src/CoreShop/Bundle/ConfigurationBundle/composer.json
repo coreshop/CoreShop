@@ -1,6 +1,6 @@
 {
   "name": "coreshop/configuration-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Configuration Bundle",
   "keywords": [
     "coreshop",
@@ -21,7 +21,7 @@
     "php": "^7.0",
     "coreshop/configuration": "^2.0",
     "coreshop/resource-bundle": "^2.0",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/core-version": "^5.1.2"
   },
   "config": {
     "bin-dir": "bin"

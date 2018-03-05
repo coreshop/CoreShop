@@ -12,8 +12,11 @@
 
 namespace CoreShop\Bundle\PaymentBundle;
 
+use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopPaymentBundle extends AbstractResourceBundle
 {
@@ -25,6 +28,19 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundles([
+            new CoreShopCurrencyBundle(),
+            new CoreShopWorkflowBundle()
+        ], 1500);
     }
 
     /**

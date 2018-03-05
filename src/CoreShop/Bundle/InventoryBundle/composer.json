@@ -1,6 +1,6 @@
 {
   "name": "coreshop/inventory-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Inventory Bundle",
   "keywords": [
     "coreshop",

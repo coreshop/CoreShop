@@ -10,11 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\MoneyBundle;
+namespace CoreShop\Bundle\ResourceBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-final class CoreShopMoneyBundle extends Bundle
+interface ComposerPackageBundleInterface
 {
-
+    /**
+     * @return string
+     */
+    public function getPackageName();
 }

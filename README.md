@@ -18,19 +18,12 @@ CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore 
 ![CoreShop Interface](docs/img/screenshot5.png)
 
 # Requirements
-* Pimcore 5.1.0
+* Pimcore 5.1.2
 
 # Installation
- - Install with composer `composer require coreshop/core-shop dev-master`
- - Add Following Call to AppKernel's registerBundlesToCollection function
-    ```php
-        \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
-    ```
- - Add Following to your app/config/config.yml
-    ```yml
-        imports:
-            - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
-    ```
+ - Install with composer ```composer require coreshop/core-shop dev-master```
+ - Run enable Bundle command
+    ```php bin/console pimcore:bundle:enable CoreShopFrontendBundle```
  - Run Install Command
     `php bin/console coreshop:install`
  - Optional: Install Demo Data `php bin/console coreshop:install:demo`

@@ -11,6 +11,7 @@ security:
     firewalls:
         coreshop_frontend:
             anonymous: ~
+            pattern: ^/(?!(admin)).*$
             context: shop
             form_login:
                 login_path: coreshop_login
