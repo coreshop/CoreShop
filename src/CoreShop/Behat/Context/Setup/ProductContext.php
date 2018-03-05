@@ -17,6 +17,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -75,6 +76,17 @@ final class ProductContext implements Context
     public function theProductIsInCategory(ProductInterface $product, CategoryInterface $category)
     {
         $product->setCategories([$category]);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (tax rule group "[^"]+")$/
+     * @Given /^([^"]+) has the (tax rule group "[^"]+")$/
+     */
+    public function theProductHasTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup)
+    {
+        $product->setTaxRule($taxRuleGroup);
 
         $this->saveProduct($product);
     }

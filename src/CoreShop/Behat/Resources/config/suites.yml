@@ -2,3 +2,4 @@ imports:
     - suites/domain/product.yml
     - suites/domain/currency.yml
     - suites/domain/taxation.yml
+    - suites/domain/cart.yml

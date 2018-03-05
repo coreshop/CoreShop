@@ -131,3 +131,13 @@ services:
             - '@__symfony__.coreshop.repository.tax_rule_group'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.cart:
+        class: CoreShop\Behat\Context\Setup\CartContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.cart'
+            - '@__symfony__.coreshop.cart.modifier'
+            - '@__symfony__.coreshop.cart.manager'
+        tags:
+            - { name: fob.context_service }

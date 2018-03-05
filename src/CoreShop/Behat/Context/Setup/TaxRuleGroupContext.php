@@ -83,7 +83,7 @@ final class TaxRuleGroupContext implements Context
 
     /**
      * @Given /^the (tax rule group "[^"]+") has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
-     * @Given /^([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
+     * @Given /^the ([^"]+) has a tax rule for (country "[^"]+") with (tax rate "[^"]+")$/
      */
     public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {

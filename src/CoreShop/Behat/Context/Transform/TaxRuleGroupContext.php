@@ -57,7 +57,7 @@ final class TaxRuleGroupContext implements Context
         return reset($groups);
     }
 
-        /**
+    /**
      * @Transform /^tax rule group$/
      */
     public function theTaxRuleGroup()
