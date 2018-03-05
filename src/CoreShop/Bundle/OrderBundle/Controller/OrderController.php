@@ -28,7 +28,6 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -201,15 +200,6 @@ class OrderController extends AbstractSaleDetailController
         $return = [];
 
         foreach ($payments as $payment) {
-            //TODO: Whatever this was for
-            //TODO: Actually, this was not bad at all, it saved history for payments, but needs to be different now
-            //TODO: Payment Model has a detail array, where it can store any info
-            /*$noteList = new \Pimcore\Model\Element\Note\Listing();
-            $noteList->addConditionParam('type = ?', \CoreShop\Model\Order\Payment::NOTE_TRANSACTION);
-            $noteList->addConditionParam('cid = ?', $payment->getId());
-            $noteList->setOrderKey('date');
-            $noteList->setOrder('desc');*/
-
             $details = [];
             if (is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
                 foreach ($payment->getDetails() as $detailName => $detailValue) {
@@ -232,7 +222,6 @@ class OrderController extends AbstractSaleDetailController
                 'provider' => $payment->getPaymentProvider()->getName(),
                 'paymentNumber' => $payment->getNumber(),
                 'details' => $details,
-                //'transactionNotes' => $noteList->load(),
                 'amount' => $payment->getTotalAmount(),
                 'stateInfo' => $this->getWorkflowStateManager()->getStateInfo('coreshop_payment', $payment->getState(), false),
                 'transitions' => $availableTransitions
@@ -411,14 +400,6 @@ class OrderController extends AbstractSaleDetailController
     private function getWorkflowStateManager()
     {
         return $this->get('coreshop.workflow.state_manager');
-    }
-
-    /**
-     * @return StateMachineApplier
-     */
-    private function getStateMachineApplier()
-    {
-        return $this->get('coreshop.state_machine_applier');
     }
 
     /**
