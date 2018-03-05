@@ -71,16 +71,14 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopCurrencyBundle(),
-            new CoreShopCustomerBundle(),
-            new CoreShopPaymentBundle(),
-            new CoreShopLocaleBundle(),
-            new CoreShopRuleBundle(),
-            new CoreShopStoreBundle(),
-            new CoreShopMoneyBundle(),
-            new CoreShopWorkflowBundle()
-        ], 1500);
+        $collection->addBundle(new CoreShopWorkflowBundle(), 3600);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
+        $collection->addBundle(new CoreShopLocaleBundle(), 3400);
+        $collection->addBundle(new CoreShopCustomerBundle(), 3100);
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
+        $collection->addBundle(new CoreShopStoreBundle(), 2500);
+        $collection->addBundle(new CoreShopPaymentBundle(), 2200);
+        $collection->addBundle(new CoreShopMoneyBundle(), 1550);
     }
 
     /**

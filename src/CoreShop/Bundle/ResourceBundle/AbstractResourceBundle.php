@@ -77,9 +77,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
      */
     public static function registerDependentBundles(BundleCollection $collection)
     {
-        $collection->addBundles([
-            new CoreShopResourceBundle()
-        ], 200);
+        $collection->addBundle(new CoreShopResourceBundle(), 3800);
     }
 
     /**

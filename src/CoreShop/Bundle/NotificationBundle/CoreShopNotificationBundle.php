@@ -52,7 +52,7 @@ final class CoreShopNotificationBundle extends AbstractResourceBundle
 
         $collection->addBundles([
             new CoreShopRuleBundle()
-        ], 1500);
+        ], 3500);
     }
 
 

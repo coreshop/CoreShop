@@ -52,14 +52,9 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopOrderBundle(),
-            new CoreShopPaymentBundle(),
-        ], 1500);
-
-        $collection->addBundles([
-            new PayumBundle()
-        ], 200);
+        $collection->addBundle(new CoreShopOrderBundle(), 3200);
+        $collection->addBundle(new CoreShopPaymentBundle(), 2200);
+        $collection->addBundle(new PayumBundle(), 1300);
     }
 
     /**

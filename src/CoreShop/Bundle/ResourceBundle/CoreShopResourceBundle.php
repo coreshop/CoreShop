@@ -57,13 +57,11 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
      */
     public static function registerDependentBundles(BundleCollection $collection)
     {
-        $collection->addBundle(new JMSSerializerBundle(), 200);
+        $collection->addBundle(new JMSSerializerBundle(), 3900);
+        $collection->addBundle(new \FOS\RestBundle\FOSRestBundle(), 1500);
+        $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
+        $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
 
-        $collection->addBundles([
-            new \FOS\RestBundle\FOSRestBundle(),
-            new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-        ], 2000);
     }
 
     /**

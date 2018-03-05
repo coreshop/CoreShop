@@ -36,9 +36,7 @@ final class CoreShopTaxationBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopMoneyBundle(),
-        ], 1500);
+        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
     }
 
     /**

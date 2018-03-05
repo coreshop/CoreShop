@@ -57,12 +57,10 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopAddressBundle(),
-            new CoreShopRuleBundle(),
-            new CoreShopMoneyBundle(),
-            new CoreShopCurrencyBundle()
-        ], 1500);
+        $collection->addBundle(new CoreShopAddressBundle(), 2800);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
+        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
     }
 
     /**

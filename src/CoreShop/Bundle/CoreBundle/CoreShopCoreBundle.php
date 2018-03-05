@@ -77,27 +77,25 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopOrderBundle(),
-            new CoreShopCustomerBundle(),
-            new CoreShopInventoryBundle(),
-            new CoreShopProductBundle(),
-            new CoreShopAddressBundle(),
-            new CoreShopCurrencyBundle(),
-            new CoreShopMoneyBundle(),
-            new CoreShopTaxationBundle(),
-            new CoreShopStoreBundle(),
-            new CoreShopIndexBundle(),
-            new CoreShopSequenceBundle(),
-            new CoreShopPaymentBundle(),
-            new CoreShopPayumBundle(),
-            new CoreShopNotificationBundle(),
-            new CoreShopFixtureBundle(),
-            new CoreShopShippingBundle(),
-            new CoreShopConfigurationBundle(),
-            new CoreShopTrackingBundle(),
-            new CoreShopFrontendBundle(),
-        ], 1500);
+        $collection->addBundle(new CoreShopFixtureBundle(), 3700);
+        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
+        $collection->addBundle(new CoreShopConfigurationBundle(), 3300);
+        $collection->addBundle(new CoreShopOrderBundle(), 3200);
+        $collection->addBundle(new CoreShopCustomerBundle(), 3100);
+        $collection->addBundle(new CoreShopInventoryBundle(), 3000);
+        $collection->addBundle(new CoreShopProductBundle(), 2900);
+        $collection->addBundle(new CoreShopAddressBundle(), 2800);
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
+        $collection->addBundle(new CoreShopTaxationBundle(), 2600);
+        $collection->addBundle(new CoreShopStoreBundle(), 2500);
+        $collection->addBundle(new CoreShopIndexBundle(), 2400);
+        $collection->addBundle(new CoreShopShippingBundle(), 2300);
+        $collection->addBundle(new CoreShopPaymentBundle(), 2200);
+        $collection->addBundle(new CoreShopSequenceBundle(), 2100);
+        $collection->addBundle(new CoreShopNotificationBundle(), 2000);
+        $collection->addBundle(new CoreShopTrackingBundle(), 2000);
+        $collection->addBundle(new CoreShopFrontendBundle(), 1800);
+        $collection->addBundle(new CoreShopPayumBundle(), 1700);
     }
 
     /**

@@ -25,10 +25,8 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
      */
     public static function registerDependentBundles(BundleCollection $collection)
     {
-        $collection->addBundles([
-            new CoreShopCoreBundle(),
-            new EmailizrBundle()
-        ], 200);
+        $collection->addBundle(new CoreShopCoreBundle(), 1600);
+        $collection->addBundle(new EmailizrBundle(), 1000);
     }
 
     /**

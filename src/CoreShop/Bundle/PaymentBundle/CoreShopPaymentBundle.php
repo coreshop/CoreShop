@@ -37,10 +37,8 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopCurrencyBundle(),
-            new CoreShopWorkflowBundle()
-        ], 1500);
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
+        $collection->addBundle(new CoreShopWorkflowBundle(), 1550);
     }
 
     /**

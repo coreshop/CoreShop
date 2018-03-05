@@ -51,13 +51,8 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopCurrencyBundle(),
-        ], 1500);
-
-        $collection->addBundles([
-            new LiipThemeBundle(),
-        ], 200);
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
+        $collection->addBundle(new LiipThemeBundle(), 1100);
     }
 
     /**

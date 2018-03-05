@@ -35,8 +35,6 @@ final class CoreShopTrackingBundle extends Bundle implements DependentBundleInte
      */
     public static function registerDependentBundles(BundleCollection $collection)
     {
-        $collection->addBundles([
-            new CoreShopOrderBundle(),
-        ], 1500);
+        $collection->addBundle(new CoreShopOrderBundle(), 3200);
     }
 }

@@ -64,10 +64,8 @@ final class CoreShopProductBundle extends AbstractResourceBundle
     {
         parent::registerDependentBundles($collection);
 
-        $collection->addBundles([
-            new CoreShopRuleBundle(),
-            new CoreShopMoneyBundle(),
-        ], 1500);
+        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
     }
 
     /**
