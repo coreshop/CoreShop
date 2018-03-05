@@ -3,4 +3,3 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: 'local/' }
-    - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
