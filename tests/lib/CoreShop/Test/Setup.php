@@ -17,9 +17,16 @@ use Doctrine\DBAL\DriverManager;
 
 class Setup
 {
+    private static $pimcoreSetupDone = false;
+    private static $coreShopSetupDone = false;
+
     public static function setupPimcore()
     {
         if (getenv('CORESHOP_SKIP_DB_SETUP')) {
+            return;
+        }
+
+        if (static::$pimcoreSetupDone) {
             return;
         }
 
@@ -56,6 +63,8 @@ class Setup
             'username' => 'admin',
             'password' => microtime()
         ]);
+
+        static::$pimcoreSetupDone = true;
     }
 
     public static function setupCoreShop()
@@ -64,7 +73,13 @@ class Setup
             return;
         }
 
+        if (static::$coreShopSetupDone) {
+            return;
+        }
+
         $installer = \Pimcore::getContainer()->get(Installer::class);
         $installer->install();
+
+        static::$coreShopSetupDone = true;
     }
 }
