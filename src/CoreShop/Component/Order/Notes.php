@@ -19,6 +19,11 @@ final class Notes
      */
     const NOTE_PAYMENT = 'payment';
 
+     /**
+     * Note Identifier for Order History State Logging
+     */
+    const ORDER_HISTORY_STATE_LOG = 'order_state_change';
+
     /**
      * Note Identifier for Update Order
      */

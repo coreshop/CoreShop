@@ -66,5 +66,5 @@ core_shop_workflow:
                         args: ['object', 'event', '"cancel"', '"coreshop_order_invoice"']
                     add_to_history:
                           on: ['create', 'confirm', 'cancel', 'complete']
-                          do: ['@coreshop.workflow.state_history_logger', 'log']
+                          do: ['@coreshop.workflow.order_state_history_logger', 'log']
                           args: ['object.getId()', 'event']
