@@ -11,7 +11,7 @@ Feature: Adding a new Product
     And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
     And the tax rule group is valid for store "Austria"
     And the site has a product "T-Shirt" priced at 2000
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
 
   Scenario: Test product tax rule group
     Then the product "T-Shirt" should have tax rule group "AT"

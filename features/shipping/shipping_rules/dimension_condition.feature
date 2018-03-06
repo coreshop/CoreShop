@@ -14,7 +14,7 @@ Feature: Adding a new Shipping Rule
     And the tax rule group is valid for store "Austria"
     And the site has a product "Shoe" priced at 10000
     And the product measurements are 100x100x100
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And I add the product "Shoe" to my cart
     And the site has a carrier "Post"
 

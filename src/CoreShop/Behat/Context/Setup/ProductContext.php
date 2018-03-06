@@ -82,7 +82,7 @@ final class ProductContext implements Context
 
     /**
      * @Given /^the (product "[^"]+") has (tax rule group "[^"]+")$/
-     * @Given /^([^"]+) has the (tax rule group "[^"]+")$/
+     * @Given /^the (product) has the (tax rule group "[^"]+")$/
      */
     public function theProductHasTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup)
     {

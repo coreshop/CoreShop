@@ -17,14 +17,14 @@ Feature: Create a new cart
   Scenario: Create a new cart and add a product, cart should weigh 10kg
     And the site has a product "Shoe" priced at 10000
     And the product weighs 10kg
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And I add the product "Shoe" to my cart
     Then the cart should weigh 10kg
 
   Scenario: Create a new cart and one product twice, cart should weigh 20kg
     And the site has a product "Shoe" priced at 10000
     And the product weighs 10kg
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And I add the product "Shoe" to my cart
     And I add the product "Shoe" to my cart
     Then the cart should weigh 20kg
@@ -32,10 +32,10 @@ Feature: Create a new cart
   Scenario: Create a new cart and add two products, cart should weigh 12kg
     And the site has a product "Shoe" priced at 10000
     And the product weighs 7kg
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And the site has a product "Dress" priced at 20000
     And the product weighs 5kg
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And I add the product "Shoe" to my cart
     And I add the product "Dress" to my cart
     Then the cart should weigh 12kg

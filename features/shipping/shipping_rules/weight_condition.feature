@@ -14,11 +14,10 @@ Feature: Adding a new Shipping Rule
     And the tax rule group is valid for store "Austria"
     And the site has a product "Shoe" priced at 10000
     And the product weighs 10kg
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And I add the product "Shoe" to my cart
     And the site has a carrier "Post"
     Then the cart should weigh 10kg
-
 
   Scenario: Add a new weight shipping rule which is valid
     Given adding a shipping rule named "weight"
@@ -29,3 +28,12 @@ Feature: Adding a new Shipping Rule
     Given adding a shipping rule named "amount"
     And the shipping rule has a condition weight from "20" to "30"
     Then the shipping rule should be invalid for my cart with carrier "Post"
+
+  Scenario: Add a new weight shipping rule which is valid with floating numbers
+    Given adding a shipping rule named "amount"
+    And the site has a product "Dress" priced at 10000
+    And the product weighs 4.2kg
+    And the product has the tax rule group "AT"
+    And I add the product "Dress" to my cart
+    And the shipping rule has a condition weight from "14.19" to "30.95"
+    Then the shipping rule should be valid for my cart with carrier "Post"

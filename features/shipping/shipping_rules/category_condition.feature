@@ -15,10 +15,10 @@ Feature: Adding a new Shipping Rule
     And the site has two categories "Shoes" and "Coats"
     And the site has a product "Shoe" priced at 10000
     And it is in category "Shoes"
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And the site has a product "Jacket" priced at 400
     And it is in category "Coats"
-    And it has the tax rule group "AT"
+    And the product has the tax rule group "AT"
     And the site has a carrier "Post"
 
   Scenario: Add a new category shipping rule which is valid
