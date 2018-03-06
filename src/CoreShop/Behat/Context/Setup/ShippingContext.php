@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
@@ -30,6 +31,7 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\Condition;
@@ -284,6 +286,19 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
             'customers' => [$customer->getId()]
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition customer-groups with (customer-group "[^"]+")$/
+     */
+    public function theShippingRuleHasACustomerGroupsCondition(ShippingRuleInterface $rule, CustomerGroupInterface $customerGroup)
+    {
+        $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
+
+        $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
+            'customerGroups' => [$customerGroup->getId()]
         ]));
     }
 
