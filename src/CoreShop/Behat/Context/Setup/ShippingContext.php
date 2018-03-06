@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
@@ -23,6 +24,7 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationT
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -226,6 +228,32 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
             'categories' => array_map(function($category) {return $category->getId();}, $categories)
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition products with (product "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition products with (product "[^"]+")$/
+     */
+    public function theShippingRuleHasAProductsCondition(ShippingRuleInterface $rule, ProductInterface $product)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', [
+            'products' => [$product->getId()]
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition products with (products "[^"]+", "[^"]+")$/
+     */
+    public function theShippingRuleHasAProductsConditionWithTwoProducts(ShippingRuleInterface $rule, array $products)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', [
+            'products' => array_map(function($product) {return $product->getId();}, $products)
         ]));
     }
 

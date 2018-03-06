@@ -63,6 +63,20 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Transform /^products "([^"]+)", "([^"]+)"$/
+     */
+    public function getProductsByName($product1, $product2)
+    {
+        $products = [];
+
+        foreach ([$product1, $product2] as $cat) {
+            $products[] = $this->getProductByName($cat);
+        }
+
+        return $products;
+    }
+
+    /**
      * @Transform /^product/
      */
     public function product()
