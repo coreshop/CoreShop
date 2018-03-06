@@ -925,9 +925,9 @@ translations:
 
   coreshop.form.customer.gender:
       languages:
-          de_CH: 'Geschlecht'
-          en: 'Gender'
-          de: 'Geschlecht'
+          de_CH: 'Anrede'
+          en: 'Salutation'
+          de: 'Anrede'
 
   coreshop.form.customer.gender.male:
       languages:
@@ -947,23 +947,11 @@ translations:
           en: 'Newsletter'
           de: 'Newsletter'
 
-  coreshop.form.customer.newsletter.no_interaction:
-      languages:
-          de_CH: 'Überspringen'
-          en: 'Skip'
-          de: 'Überspringen'
-
   coreshop.form.customer.newsletter.subscribe:
       languages:
-          de_CH: 'Abonnieren'
-          en: 'Subscribe'
-          de: 'Abonnieren'
-
-  coreshop.form.customer.newsletter.unsubscribe:
-      languages:
-          de_CH: 'Abmelden'
-          en: 'Unsubscribe'
-          de: 'Abmelden'
+          de_CH: 'Ja, ich möchte den Newsletter abonnieren'
+          en: 'I would like to subscribe to the newsletter'
+          de: 'Ja, ich möchte den Newsletter abonnieren'
 
   coreshop.form.login.username:
       languages:
