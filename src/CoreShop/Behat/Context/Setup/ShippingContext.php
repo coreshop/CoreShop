@@ -19,12 +19,14 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationTy
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
+use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
@@ -299,6 +301,19 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
             'customerGroups' => [$customerGroup->getId()]
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition zones with (zone "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition zones with (zone "[^"]+")$/
+     */
+    public function theShippingRuleHasAZonesCondition(ShippingRuleInterface $rule, ZoneInterface $zone)
+    {
+        $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
+
+        $this->addCondition($rule, $this->createConditionWithForm('zones', [
+            'zones' => [$zone->getId()]
         ]));
     }
 

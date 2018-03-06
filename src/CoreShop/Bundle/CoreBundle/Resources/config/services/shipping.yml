@@ -19,6 +19,11 @@ services:
         tags:
             - { name: coreshop.shipping_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 
+    coreshop.shipping_rule.condition.zones:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\ZonesConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
+
     coreshop.carrier.price_calculator.taxed:
         class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
         arguments:
