@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
@@ -31,6 +32,7 @@ use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -329,6 +331,19 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('stores', [
             'stores' => [$store->getId()]
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition currencies with (currency "[^"]+")$/
+     */
+    public function theShippingRuleHasACurrenciesCondition(ShippingRuleInterface $rule, CurrencyInterface $currency)
+    {
+        $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
+
+        $this->addCondition($rule, $this->createConditionWithForm('currencies', [
+            'currencies' => [$currency->getId()]
         ]));
     }
 
