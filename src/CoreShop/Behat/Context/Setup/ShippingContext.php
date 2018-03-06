@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
@@ -21,6 +22,7 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfiguratio
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -198,6 +200,32 @@ final class ShippingContext implements Context
             'width' => $width,
             'height' => $height,
             'depth' => $depth
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition categories with (category "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition categories with (category "[^"]+")$/
+     */
+    public function theShippingRuleHasACategoriesCondition(ShippingRuleInterface $rule, CategoryInterface $category)
+    {
+        $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
+
+        $this->addCondition($rule, $this->createConditionWithForm('categories', [
+            'categories' => [$category->getId()]
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition categories with (categories "[^"]+", "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition categories with (categories "[^"]+", "[^"]+")$/
+     */
+    public function theShippingRuleHasACategoriesConditionWithTwoCategories(ShippingRuleInterface $rule, array $categories)
+    {
+        $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
+
+        $this->addCondition($rule, $this->createConditionWithForm('categories', [
+            'categories' => array_map(function($category) {return $category->getId();}, $categories)
         ]));
     }
 

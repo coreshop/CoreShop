@@ -62,6 +62,20 @@ final class CategoryContext implements Context
     }
 
     /**
+     * @Transform /^categories "([^"]+)", "([^"]+)"$/
+     */
+    public function getCategoriesByName($category1, $category2)
+    {
+        $categories = [];
+
+        foreach ([$category1, $category2] as $cat) {
+            $categories[] = $this->getCategoryByName($cat);
+        }
+
+        return $categories;
+    }
+
+    /**
      * @Transform /^category$/
      */
     public function category()
