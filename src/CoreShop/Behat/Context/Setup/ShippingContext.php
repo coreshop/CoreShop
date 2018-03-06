@@ -23,10 +23,16 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationTyp
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionAmountActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
@@ -42,6 +48,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -49,6 +56,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 final class ShippingContext implements Context
 {
     use ConditionFormTrait;
+    use ActionFormTrait;
 
     /**
      * @var SharedStorageInterface
@@ -91,6 +99,11 @@ final class ShippingContext implements Context
     private $shippingRuleFactory;
 
     /**
+     * @var FactoryInterface
+     */
+    private $shippingRuleGroupFactory;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param ObjectManager $objectManager
      * @param FormFactoryInterface $formFactory
@@ -99,6 +112,7 @@ final class ShippingContext implements Context
      * @param CarrierRepositoryInterface $carrierRepository
      * @param FactoryInterface $carrierFactory
      * @param FactoryInterface $shippingRuleFactory
+     * @param FactoryInterface $shippingRuleGroupFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -108,7 +122,8 @@ final class ShippingContext implements Context
         FormTypeRegistryInterface $actionFormTypeRegistry,
         CarrierRepositoryInterface $carrierRepository,
         FactoryInterface $carrierFactory,
-        FactoryInterface $shippingRuleFactory
+        FactoryInterface $shippingRuleFactory,
+        FactoryInterface $shippingRuleGroupFactory
     )
     {
         $this->sharedStorage = $sharedStorage;
@@ -119,6 +134,7 @@ final class ShippingContext implements Context
         $this->carrierRepository = $carrierRepository;
         $this->carrierFactory = $carrierFactory;
         $this->shippingRuleFactory = $shippingRuleFactory;
+        $this->shippingRuleGroupFactory = $shippingRuleGroupFactory;
     }
 
     /**
@@ -144,6 +160,24 @@ final class ShippingContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('shipping-rule', $rule);
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") belongs to (carrier "[^"]+")$/
+     * @Given /^the (shipping rule) belongs to (carrier "[^"]+")$/
+     */
+    public function addingShippingRuleToCarrier(ShippingRuleInterface $shippingRule, CarrierInterface $carrier)
+    {
+        /**
+         * @var $shippingRuleGroup ShippingRuleGroupInterface
+         */
+        $shippingRuleGroup = $this->shippingRuleGroupFactory->createNew();
+        $shippingRuleGroup->setShippingRule($shippingRule);
+        $shippingRuleGroup->setPriority(1);
+
+        $carrier->addShippingRule($shippingRuleGroup);
+
+        $this->saveCarrier($carrier);
     }
 
     /**
@@ -348,6 +382,74 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (shipping rule "[^"]+") has a action price of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (shipping rule) has a action price of ([^"]+) in (currency "[^"]+")$/
+     */
+    public function theShippingRuleHasAPriceAction(ShippingRuleInterface $rule, $price, CurrencyInterface $currency)
+    {
+        $this->assertActionForm(PriceActionConfigurationType::class, 'price');
+
+        $this->addAction($rule, $this->createActionWithForm('price', [
+            'price' => intval($price),
+            'currency' => $currency->getId()
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a action additional-amount of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (shipping rule) has a action additional-amount of ([^"]+) in (currency "[^"]+")$/
+     */
+    public function theShippingRuleHasAAdditionalAmountAction(ShippingRuleInterface $rule, $amount, CurrencyInterface $currency)
+    {
+        $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
+
+        $this->addAction($rule, $this->createActionWithForm('additionAmount', [
+            'amount' => intval($amount),
+            'currency' => $currency->getId()
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a action additional-percent of ([^"]+)%$/
+     * @Given /^the (shipping rule) has a action additional-percent of ([^"]+)%$/
+     */
+    public function theShippingRuleHasAAdditionalPercentAction(ShippingRuleInterface $rule, $amount)
+    {
+        $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
+
+        $this->addAction($rule, $this->createActionWithForm('additionPercent', [
+            'percent' => intval($amount)
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a action discount-amount of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (shipping rule) has a action discount-amount of ([^"]+) in (currency "[^"]+")$/
+     */
+    public function theShippingRuleHasADiscountAmountAction(ShippingRuleInterface $rule, $amount, CurrencyInterface $currency)
+    {
+        $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
+
+        $this->addAction($rule, $this->createActionWithForm('discountAmount', [
+            'amount' => intval($amount),
+            'currency' => $currency->getId()
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a action discount-percent of ([^"]+)%$/
+     * @Given /^the (shipping rule) has a action discount-percent of ([^"]+)%$/
+     */
+    public function theShippingRuleHasADiscountPercentAction(ShippingRuleInterface $rule, $amount)
+    {
+        $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
+
+        $this->addAction($rule, $this->createActionWithForm('discountPercent', [
+            'percent' => intval($amount)
+        ]));
+    }
+
+    /**
      * @param $name
      */
     private function createCarrier($name)
@@ -411,6 +513,22 @@ final class ShippingContext implements Context
     protected function getConditionFormClass()
     {
         return ShippingRuleConditionType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormRegistry()
+    {
+        return $this->actionFormTypeRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActionFormClass()
+    {
+        return ShippingRuleActionType::class;
     }
 
     /**

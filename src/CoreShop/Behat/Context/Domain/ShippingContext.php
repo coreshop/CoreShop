@@ -14,14 +14,13 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
@@ -47,22 +46,30 @@ final class ShippingContext implements Context
     private $addressFactory;
 
     /**
+     * @var CarrierPriceCalculatorInterface
+     */
+    private $carrierPriceCalculator;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param CarrierRepositoryInterface $carrierRepository
      * @param RuleValidationProcessorInterface $ruleValidationProcessor
      * @param FactoryInterface $addressFactory
+     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
-        FactoryInterface $addressFactory
+        FactoryInterface $addressFactory,
+        CarrierPriceCalculatorInterface $carrierPriceCalculator
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->addressFactory = $addressFactory;
+        $this->carrierPriceCalculator = $carrierPriceCalculator;
     }
 
     /**
@@ -105,5 +112,15 @@ final class ShippingContext implements Context
             'shippable' => $cart,
             'address' => $address
         ]));
+    }
+
+    /**
+     * @Then /^shipping for (my cart) with (carrier "[^"]+") should be priced at "([^"]+)"$/
+     */
+    public function shippingShouldBePriced(CartInterface $cart, CarrierInterface $carrier, int $price)
+    {
+        $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
+
+        Assert::same(intval($price), $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
     }
 }

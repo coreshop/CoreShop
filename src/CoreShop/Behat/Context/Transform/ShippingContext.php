@@ -95,7 +95,7 @@ final class ShippingContext implements Context
      */
     public function getLatestShippingRule()
     {
-        $resource = $this->sharedStorage->getLatestResource();
+        $resource = $this->sharedStorage->get('shipping-rule');
 
         Assert::isInstanceOf($resource, ShippingRuleInterface::class);
 

@@ -94,5 +94,6 @@ services:
             - '@__symfony__.coreshop.repository.carrier'
             - '@__symfony__.coreshop.shipping_rule.processor'
             - '@__symfony__.coreshop.factory.address'
+            - '@__symfony__.coreshop.carrier.price_calculator'
         tags:
             - { name: fob.context_service }

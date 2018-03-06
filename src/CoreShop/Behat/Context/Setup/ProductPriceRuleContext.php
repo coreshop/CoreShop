@@ -336,7 +336,6 @@ final class ProductPriceRuleContext implements Context
     {
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
-
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
             'price' => intval($price),
             'currency' => $currency->getId()
