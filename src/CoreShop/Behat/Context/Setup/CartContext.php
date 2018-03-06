@@ -14,10 +14,13 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
@@ -70,5 +73,43 @@ final class CartContext implements Context
         $this->cartModifier->addItem($cart, $product);
 
         $this->cartManager->persistCart($cart);
+    }
+
+    /**
+     * @Given /^the cart belongs to (customer "[^"]+")$/
+     */
+    public function theCartBelongsToCustomer(CustomerInterface $customer)
+    {
+        $this->cartContext->getCart()->setCustomer($customer);
+
+        $this->cartManager->persistCart($this->cartContext->getCart());
+    }
+
+    /**
+     * @Given /^the cart ships to (customer "[^"]+") first address$/
+     */
+    public function theCartShipsToCustomersFirstAddress(CustomerInterface $customer)
+    {
+        Assert::greaterThan(count($customer->getAddresses()), 0);
+
+        $this->cartContext->getCart()->setShippingAddress(reset($customer->getAddresses()));
+        $this->cartManager->persistCart($this->cartContext->getCart());
+    }
+
+    /**
+     * @Given /^the cart ships to (customer "[^"]+") address with postcode "([^"]+)"$/
+     */
+    public function theCartShipsToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode)
+    {
+        Assert::greaterThan(count($customer->getAddresses()), 0);
+
+        $address = current(array_filter($customer->getAddresses(), function($address) use ($postcode) {
+            return $address->getPostcode() === $postcode;
+        }));
+
+        Assert::isInstanceOf($address, AddressInterface::class);
+
+        $this->cartContext->getCart()->setShippingAddress(reset($customer->getAddresses()));
+        $this->cartManager->persistCart($this->cartContext->getCart());
     }
 }

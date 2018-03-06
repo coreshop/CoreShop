@@ -17,12 +17,12 @@ Feature: Adding a new Shipping Rule
     And I add the product "Shoe" to my cart
     And the site has a carrier "Post"
 
-  Scenario: Add a new category catalog price rule which is valid
+  Scenario: Add a new amount shipping rule which is valid
     Given adding a shipping rule named "amount"
     And the shipping rule has a condition amount from "50" to "150"
     Then the shipping rule should be valid for my cart with carrier "Post"
 
-  Scenario: Add a new category catalog price rule which is invalid
+  Scenario: Add a new amoung shipping rule which is invalid
     Given adding a shipping rule named "amount"
     And the shipping rule has a condition amount from "50" to "99"
     Then the shipping rule should be invalid for my cart with carrier "Post"

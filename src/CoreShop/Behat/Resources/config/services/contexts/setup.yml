@@ -72,6 +72,7 @@ services:
             - '@__symfony__.coreshop.factory.customer'
             - '@__symfony__.coreshop.repository.customer'
             - '@__symfony__.coreshop.context.customer.fixed'
+            - '@__symfony__.coreshop.factory.address'
         tags:
             - { name: fob.context_service }
 

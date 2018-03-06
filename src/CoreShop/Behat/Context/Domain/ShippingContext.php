@@ -85,7 +85,7 @@ final class ShippingContext implements Context
      */
     public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, CartInterface $cart, CarrierInterface $carrier)
     {
-        $address = $this->addressFactory->createNew();
+        $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
         Assert::true($this->ruleValidationProcessor->isValid($carrier, $rule, [
             'shippable' => $cart,
@@ -99,7 +99,7 @@ final class ShippingContext implements Context
      */
     public function theShippingRuleShouldBeInvalid(ShippingRuleInterface $rule, CartInterface $cart, CarrierInterface $carrier)
     {
-        $address = $this->addressFactory->createNew();
+        $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
         Assert::false($this->ruleValidationProcessor->isValid($carrier, $rule, [
             'shippable' => $cart,

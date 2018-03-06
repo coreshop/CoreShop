@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
@@ -138,6 +139,34 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
             'maxAmount' => $maxAmount
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition postcode with "([^"]+)"$/
+     * @Given /^the (shipping rule) has a condition postcode with "([^"]+)"$/
+     */
+    public function theShippingRuleHasAPostcodeCondition(ShippingRuleInterface $rule, $postcodes)
+    {
+        $this->assertConditionForm(PostcodeConfigurationType::class, 'postcodes');
+
+        $this->addCondition($rule, $this->createConditionWithForm('postcodes', [
+            'postcodes' => $postcodes,
+            'exclusion' => false
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition postcode exclusion with "([^"]+)"$/
+     * @Given /^the (shipping rule) has a condition postcode exclusion with "([^"]+)"$/
+     */
+    public function theShippingRuleHasAPostcodeExclusionCondition(ShippingRuleInterface $rule, $postcodes)
+    {
+        $this->assertConditionForm(PostcodeConfigurationType::class, 'postcodes');
+
+        $this->addCondition($rule, $this->createConditionWithForm('postcodes', [
+            'postcodes' => $postcodes,
+            'exclusion' => true
         ]));
     }
 

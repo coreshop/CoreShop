@@ -14,6 +14,8 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Context\FixedCustomerContext;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
@@ -45,22 +47,30 @@ final class CustomerContext implements Context
     private $fixedCustomerContext;
 
     /**
+     * @var FactoryInterface
+     */
+    private $addressFactory;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $customerFactory
      * @param CustomerRepositoryInterface $customerRepository
      * @param FixedCustomerContext $fixedCustomerContext
+     * @param FactoryInterface $addressFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerFactory,
         CustomerRepositoryInterface $customerRepository,
-        FixedCustomerContext $fixedCustomerContext
+        FixedCustomerContext $fixedCustomerContext,
+        FactoryInterface $addressFactory
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->customerFactory = $customerFactory;
         $this->customerRepository = $customerRepository;
         $this->fixedCustomerContext = $fixedCustomerContext;
+        $this->addressFactory = $addressFactory;
     }
 
     /**
@@ -90,6 +100,35 @@ final class CustomerContext implements Context
     public function iAmCustomer(CustomerInterface $customer)
     {
         $this->fixedCustomerContext->setCustomer($customer);
+    }
+
+    /**
+     * @Given /^the (customer "[^"]+") has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     */
+    public function theCustomerHasAnAddress(
+        CustomerInterface $customer,
+        CountryInterface $country,
+        $postcode,
+        $city,
+        $street,
+        $nr
+    ) {
+        /**
+         * @var $address AddressInterface
+         */
+        $address = $this->addressFactory->createNew();
+        $address->setCountry($country);
+        $address->setPostcode($postcode);
+        $address->setCity($city);
+        $address->setStreet($street);
+        $address->setNumber($nr);
+        $address->setKey(uniqid());
+        $address->setPublished(true);
+        $address->setParent($customer);
+        $address->save();
+
+        $customer->addAddress($address);
+        $customer->save();
     }
 
     /**
