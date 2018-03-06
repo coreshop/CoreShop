@@ -120,4 +120,20 @@ final class CartContext implements Context
             )
         );
     }
+
+    /**
+     * @Then /^the cart should weigh ([^"]+)kg$/
+     */
+    public function cartShouldWeigh($kg)
+    {
+        Assert::eq(
+            $kg,
+            $this->cartContext->getCart()->getWeight(),
+            sprintf(
+                'Cart is expected to weigh %skg, but it weighs %skg',
+                $kg,
+                $this->cartContext->getCart()->getWeight()
+            )
+        );
+    }
 }

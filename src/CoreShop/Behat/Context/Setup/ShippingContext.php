@@ -17,6 +17,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
@@ -167,6 +168,20 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('postcodes', [
             'postcodes' => $postcodes,
             'exclusion' => true
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition weight from "([^"]+)" to "([^"]+)"$/
+     * @Given /^the (shipping rule) has a condition weight from "([^"]+)" to "([^"]+)"$/
+     */
+    public function theShippingRuleHasAWeightCondition(ShippingRuleInterface $rule, $minWeight, $maxWeight)
+    {
+        $this->assertConditionForm(WeightConfigurationType::class, 'weight');
+
+        $this->addCondition($rule, $this->createConditionWithForm('weight', [
+            'minWeight' => $minWeight,
+            'maxWeight' => $maxWeight
         ]));
     }
 

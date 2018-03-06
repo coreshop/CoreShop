@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Listing;
 
 final class PimcoreDaoContext implements Context
 {
@@ -24,7 +25,11 @@ final class PimcoreDaoContext implements Context
      */
     public function purgeObjects()
     {
+        /**
+         * @var $list Listing
+         */
         $list = Concrete::getList();
+        $list->setUnpublished(true);
         $list->setCondition('o_id <> 1');
         $list->load();
 

@@ -92,6 +92,17 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") weighs ([^"]+)kg$/
+     * @Given /^the (product) weighs ([^"]+)kg$/
+     */
+    public function theProductWeighsKg(ProductInterface $product, $kg)
+    {
+        $product->setWeight($kg);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @param string $productName
      * @param int $price
      * @param StoreInterface|null $store

@@ -13,21 +13,32 @@
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
     /**
+     * @var SharedStorageInterface
+     */
+    private $sharedStorage;
+
+    /**
      * @var ProductRepositoryInterface
      */
     private $productRepository;
 
     /**
+     * @param SharedStorageInterface $sharedStorage
      * @param ProductRepositoryInterface $productRepository
      */
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        ProductRepositoryInterface $productRepository
+    )
     {
+        $this->sharedStorage = $sharedStorage;
         $this->productRepository = $productRepository;
     }
 
@@ -49,5 +60,13 @@ final class ProductContext implements Context
         );
 
         return reset($list->getObjects());
+    }
+
+    /**
+     * @Transform /^product/
+     */
+    public function product()
+    {
+        return $this->sharedStorage->get('product');
     }
 }

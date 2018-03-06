@@ -40,5 +40,6 @@ default:
                 - coreshop.behat.context.setup.cart
 
                 - coreshop.behat.context.domain.shipping
+                - coreshop.behat.context.domain.cart
             filters:
                 tags: "@shipping"
