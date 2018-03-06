@@ -9,5 +9,5 @@ core_shop_workflow:
                       args: ["service('coreshop.repository.order').find(object.getOrderId())"]
                   add_to_history:
                       on: ['process', 'complete', 'fail', 'cancel', 'refund']
-                      do: ['@coreshop.workflow.state_history_logger', 'log']
+                      do: ['@coreshop.workflow.order_state_history_logger', 'log']
                       args: ['object.getOrderId()', 'event']

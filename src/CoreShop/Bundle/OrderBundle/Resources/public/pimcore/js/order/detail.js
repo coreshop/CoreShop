@@ -195,6 +195,14 @@ coreshop.order.order.detail = Class.create(coreshop.order.sale.detail, {
                 margin: '0 0 15 0',
                 cls: 'coreshop-detail-grid',
                 store: this.saleStatesStore,
+                plugins: [{
+                  ptype: 'rowexpander',
+                  rowBodyTpl : [
+                    '<div style="padding:0 0 10px 0;">',
+                        '{description}',
+                    '</div>'
+                  ]
+                }],
                 columns: [
                     {
                         xtype: 'gridcolumn',
