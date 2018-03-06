@@ -109,7 +109,7 @@ final class CartContext implements Context
 
         Assert::isInstanceOf($address, AddressInterface::class);
 
-        $this->cartContext->getCart()->setShippingAddress(reset($customer->getAddresses()));
+        $this->cartContext->getCart()->setShippingAddress($address);
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 }

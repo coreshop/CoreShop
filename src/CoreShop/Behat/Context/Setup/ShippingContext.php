@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
@@ -24,6 +25,7 @@ use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationT
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -254,6 +256,19 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('products', [
             'products' => array_map(function($product) {return $product->getId();}, $products)
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition countries with (country "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition countries with (country "[^"]+")$/
+     */
+    public function theShippingRuleHasACountriesCondition(ShippingRuleInterface $rule, CountryInterface $country)
+    {
+        $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
+
+        $this->addCondition($rule, $this->createConditionWithForm('countries', [
+            'countries' => [$country->getId()]
         ]));
     }
 

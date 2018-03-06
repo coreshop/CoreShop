@@ -1,8 +1,8 @@
-@shipping @shipping_rules @shipping_rule_condition_postcode
+@shipping @shipping_rules @shipping_rule_condition_country
 Feature: Adding a new Shipping Rule
   In order to calculate shipping
   I'll create a new shipping rule
-  with an postcodes condition
+  with an country condition
 
   Background:
     Given the site operates on a store in "Austria"
@@ -22,26 +22,23 @@ Feature: Adding a new Shipping Rule
     And the cart ships to customer "some-customer@something.com" first address
     And the site has a carrier "Post"
 
-  Scenario: Add a new postcode range shipping rule which is valid
-    Given adding a shipping rule named "postcodes"
-    And the shipping rule has a condition postcode with "46-48"
+  Scenario: Add a new country shipping rule which is valid
+    Given adding a shipping rule named "country"
+    And the shipping rule has a condition countries with country "Austria"
     Then the shipping rule should be valid for my cart with carrier "Post"
 
-  Scenario: Add a new postcode range shipping rule which is valid for another address
-    Given adding a shipping rule named "postcodes"
-    And the shipping rule has a condition postcode with "46-48"
+  Scenario: Add a new country shipping rule which is invalid
+    Given adding a shipping rule named "amount"
+    And the site has a country "Germany" with currency "EUR"
     And the customer "some-customer@something.com" has an address with country "Austria", "4720", "Anytown", "Anystreet", "9"
     And the cart ships to customer "some-customer@something.com" address with postcode "4720"
+    And the shipping rule has a condition countries with country "Germany"
+    Then the shipping rule should be invalid for my cart with carrier "Post"
+
+  Scenario: Add a new country shipping rule which is valid for a different country
+    Given adding a shipping rule named "amount"
+    And the site has a country "Germany" with currency "EUR"
+    And the customer "some-customer@something.com" has an address with country "Germany", "47200", "Anytown", "Anystreet", "9"
+    And the cart ships to customer "some-customer@something.com" address with postcode "47200"
+    And the shipping rule has a condition countries with country "Germany"
     Then the shipping rule should be valid for my cart with carrier "Post"
-
-  Scenario: Add a new postcode range shipping rule which is invalid
-    Given adding a shipping rule named "postcodes"
-    And the shipping rule has a condition postcode with "40-45"
-    Then the shipping rule should be invalid for my cart with carrier "Post"
-
-  Scenario: Add a new postcode range shipping rule which is invalid for another address
-    Given adding a shipping rule named "postcodes"
-    And the shipping rule has a condition postcode with "46-48"
-    And the customer "some-customer@something.com" has an address with country "Austria", "4500", "Anytown", "Anystreet", "9"
-    And the cart ships to customer "some-customer@something.com" address with postcode "4500"
-    Then the shipping rule should be invalid for my cart with carrier "Post"
