@@ -19,6 +19,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationTy
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
@@ -32,6 +33,7 @@ use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -314,6 +316,19 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('zones', [
             'zones' => [$zone->getId()]
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition stores with (store "[^"]+")$/
+     * @Given /^the (shipping rule) has a condition stores with (store "[^"]+")$/
+     */
+    public function theShippingRuleHasAStoresCondition(ShippingRuleInterface $rule, StoreInterface $store)
+    {
+        $this->assertConditionForm(StoresConfigurationType::class, 'stores');
+
+        $this->addCondition($rule, $this->createConditionWithForm('stores', [
+            'stores' => [$store->getId()]
         ]));
     }
 
