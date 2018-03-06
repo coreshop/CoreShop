@@ -1,4 +1,4 @@
-@cart
+@cart @cart_weight
 Feature: Create a new cart
   In Order for a customer to purchase something
   he needs to create a cart first

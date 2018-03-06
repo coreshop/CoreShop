@@ -1,4 +1,4 @@
-@currency
+@currency @money_formatter
 Feature: Formatting money in different currencies
   In order to displays currencies right, we need to format them properly
 

@@ -1,4 +1,4 @@
-@taxation
+@taxation @taxation_tax_rule
 Feature: Adding a new Tax Rule
   I want to create a new tax rule
 

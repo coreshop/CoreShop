@@ -1,4 +1,4 @@
-@product @product_specific_price_rules
+@product @product_specific_price_rules @product_specific_price_rules_condition_customer_group
 Feature: Adding a new Product
   In order to extend my catalog
   the product has a specific-price-rule for a customer group

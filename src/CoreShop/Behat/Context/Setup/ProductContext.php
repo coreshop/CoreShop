@@ -103,6 +103,19 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") measurements are ([^"]+)x([^"]+)x([^"]+)$/
+     * @Given /^the (product) measurements are ([^"]+)x([^"]+)x([^"]+)$/
+     */
+    public function theProductsMeasurementsAre(ProductInterface $product, $width, $height, $depth)
+    {
+        $product->setWidth($width);
+        $product->setHeight($height);
+        $product->setDepth($depth);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @param string $productName
      * @param int $price
      * @param StoreInterface|null $store

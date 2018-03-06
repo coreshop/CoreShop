@@ -1,4 +1,4 @@
-@shipping @shipping_rules
+@shipping @shipping_rules @shipping_rule_condition_postcode
 Feature: Adding a new Shipping Rule
   In order to calculate shipping
   I'll create a new shipping rule

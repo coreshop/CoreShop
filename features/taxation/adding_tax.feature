@@ -1,4 +1,4 @@
-@taxation
+@taxation @taxation_tax_rate
 Feature: Adding a new Tax
   In Order to tax my products
   I want to create a new tax rate

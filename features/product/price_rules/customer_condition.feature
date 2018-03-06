@@ -1,4 +1,4 @@
-@product @product_price_rules
+@product @product_price_rules @product_price_rules_condition_customer
 Feature: Adding a new Product
   In order to extend my catalog
   the catalog has a price-rule for a customer

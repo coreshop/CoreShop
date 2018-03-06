@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
+use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
@@ -182,6 +183,21 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('weight', [
             'minWeight' => $minWeight,
             'maxWeight' => $maxWeight
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition dimension with ([^"]+)x([^"]+)x([^"]+)$/
+     * @Given /^the (shipping rule) has a condition dimension with ([^"]+)x([^"]+)x([^"]+)$/
+     */
+    public function theShippingRuleHasADimensionCondition(ShippingRuleInterface $rule, $width, $height, $depth)
+    {
+        $this->assertConditionForm(DimensionConfigurationType::class, 'dimension');
+
+        $this->addCondition($rule, $this->createConditionWithForm('dimension', [
+            'width' => $width,
+            'height' => $height,
+            'depth' => $depth
         ]));
     }
 

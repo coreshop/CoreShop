@@ -1,4 +1,4 @@
-@currency
+@currency @exchange_rate
 Feature: Adding a new Currency
   In Order to increase my sales
   I want to add a new currency with an exchange-rate

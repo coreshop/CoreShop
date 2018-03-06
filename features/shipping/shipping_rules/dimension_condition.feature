@@ -1,8 +1,8 @@
-@shipping @shipping_rules @shipping_rule_condition_amount
+@shipping @shipping_rules @shipping_rule_condition_dimension
 Feature: Adding a new Shipping Rule
   In order to calculate shipping
   I'll create a new shipping rule
-  with an amount condition
+  with an dimension condition
 
   Background:
     Given the site operates on a store in "Austria"
@@ -13,16 +13,17 @@ Feature: Adding a new Shipping Rule
     And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
     And the tax rule group is valid for store "Austria"
     And the site has a product "Shoe" priced at 10000
+    And the product measurements are 100x100x100
     And it has the tax rule group "AT"
     And I add the product "Shoe" to my cart
     And the site has a carrier "Post"
 
-  Scenario: Add a new amount shipping rule which is valid
-    Given adding a shipping rule named "amount"
-    And the shipping rule has a condition amount from "50" to "150"
+  Scenario: Add a new dimension shipping rule which is valid
+    Given adding a shipping rule named "weight"
+    And the shipping rule has a condition dimension with 150x150x150
     Then the shipping rule should be valid for my cart with carrier "Post"
 
-  Scenario: Add a new amoung shipping rule which is invalid
+  Scenario: Add a new dimension shipping rule which is invalid
     Given adding a shipping rule named "amount"
-    And the shipping rule has a condition amount from "50" to "99"
+    And the shipping rule has a condition dimension with 50x50x50
     Then the shipping rule should be invalid for my cart with carrier "Post"

@@ -1,4 +1,4 @@
-@product @product_price_rules
+@product @product_price_rules @product_price_rules_actions
 Feature: Adding a new Product
   In order to increase my sales, I created catalog rules for products
 
