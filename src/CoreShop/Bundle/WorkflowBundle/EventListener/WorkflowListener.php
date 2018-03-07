@@ -66,7 +66,7 @@ class WorkflowListener implements EventSubscriberInterface
             return;
         }
 
-        $afterActions = $workflowCallbacks['after'];
+        $afterActions = $this->setCallbacksPriority($workflowCallbacks['after']);
         foreach ($afterActions as $callback) {
             if (!in_array($transitionName, $callback['on'])) {
                 continue;
@@ -119,5 +119,20 @@ class WorkflowListener implements EventSubscriberInterface
         }
 
         call_user_func_array($callable, $args);
+    }
+
+    /**
+     * @param array $callbacks
+     * @return array
+     */
+    protected function setCallbacksPriority(array $callbacks)
+    {
+        uasort($callbacks, function ($a, $b) {
+            if ($a['priority'] === $b['priority']) {
+                return 0;
+            }
+            return $a['priority'] < $b['priority'] ? -1 : 1;
+        });
+        return $callbacks;
     }
 }
