@@ -24,11 +24,18 @@ class ProcessableOrderItems implements ProcessableInterface
     private $documentsRepository;
 
     /**
-     * @param OrderDocumentRepositoryInterface $documentsRepository
+     * @var string
      */
-    public function __construct(OrderDocumentRepositoryInterface $documentsRepository)
+    private $stateCancelled;
+
+    /**
+     * @param OrderDocumentRepositoryInterface $documentsRepository
+     * @param string $stateCancelled
+     */
+    public function __construct(OrderDocumentRepositoryInterface $documentsRepository, $stateCancelled)
     {
         $this->documentsRepository = $documentsRepository;
+        $this->stateCancelled = $stateCancelled;
     }
 
     /**
@@ -72,6 +79,10 @@ class ProcessableOrderItems implements ProcessableInterface
         $processedItems = [];
 
         foreach ($documents as $document) {
+            if ($document->getState() === $this->stateCancelled) {
+                continue;
+            }
+
             foreach ($document->getItems() as $processedItem) {
                 $orderItem = $processedItem->getOrderItem();
 

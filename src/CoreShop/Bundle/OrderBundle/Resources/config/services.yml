@@ -35,11 +35,13 @@ services:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems
         arguments:
             - '@coreshop.repository.order_invoice'
+            - !php/const CoreShop\Component\Order\InvoiceStates::STATE_CANCELLED
 
     coreshop.order.shipment.processable:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems
         arguments:
             - '@coreshop.repository.order_shipment'
+            - !php/const CoreShop\Component\Order\ShipmentStates::STATE_CANCELLED
 
     coreshop.transformer.event_dispatcher:
         class: CoreShop\Component\Order\Transformer\TransformerEventDispatcher
