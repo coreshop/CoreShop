@@ -12,7 +12,7 @@ Feature: Adding a new Tax Rule
 
   Scenario: Simple Tax Rule with 20%
     Given I am in country "Austria"
-    Then it should add "4" to the price "20"
+    Then the tax rule group should add "4" to the price "20"
 
   Scenario: Tax calculator should be null when no stores are assigned
     Given the site has a country "Germany" with currency "EUR"
@@ -26,7 +26,7 @@ Feature: Adding a new Tax Rule
     And the country "Germany" is active
     And the country "Germany" is valid for store "Austria"
     And I am in country "Germany"
-    Then it should add "0" to the price "20"
+    Then the tax rule group should add "0" to the price "20"
 
   Scenario: Canadian PST/GST/HST VAT
     Given the site has a currency "Canadian Dollar" with iso "CAD"
@@ -41,4 +41,4 @@ Feature: Adding a new Tax Rule
     And it has a tax rule for country "Canada" with tax rate "PST-BC" and it combines all rules
     And the tax rule group is valid for store "Austria"
     And I am in country "Canada"
-    Then it should add "120" to the price "1000"
+    Then the tax rule group should add "120" to the price "1000"

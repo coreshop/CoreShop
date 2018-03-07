@@ -110,7 +110,7 @@ final class TaxRuleGroupContext implements Context
 
     /**
      * @Then /^the (tax rule group "[^"]+") should add "([^"]+)" to the price "([^"]+)"$/
-     * @Then /^([^"]+) should add "([^"]+)" to the price "([^"]+)"$/
+     * @Then /^the (tax rule group) should add "([^"]+)" to the price "([^"]+)"$/
      */
     public function taxRuleShouldTaxThePrice(TaxRuleGroupInterface $taxRuleGroup, $tax, $price)
     {
