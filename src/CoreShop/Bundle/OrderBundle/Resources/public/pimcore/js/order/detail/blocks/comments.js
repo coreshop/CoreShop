@@ -10,20 +10,14 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.order.module.orderComments');
-coreshop.order.order.module.orderComments = Class.create({
-    initialize: function (sale) {
-        this.layout = null;
-        this.sale = sale;
-    },
+pimcore.registerNS('coreshop.order.sale.detail.blocks.comments');
+coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.sale.detail.abstractBlock, {
+    saleInfo: null,
 
-    getLayout: function () {
+    initBlock: function () {
+        var me = this;
 
-        if (this.layout !== null) {
-            return this.layout;
-        }
-
-        this.layout = Ext.create('Ext.panel.Panel', {
+        me.layout = Ext.create('Ext.panel.Panel', {
             title: t('coreshop_order_comments'),
             margin: '0 0 20 0',
             border: true,
@@ -33,52 +27,49 @@ coreshop.order.order.module.orderComments = Class.create({
                 {
                     type: 'coreshop-add',
                     tooltip: t('add'),
-                    handler: this.createComment.bind(this)
+                    handler: me.createComment.bind(me)
                 }
-            ],
-        })
-
-        this.loadList();
-
-        return this.layout;
+            ]
+        });
     },
 
     loadList: function () {
+        var me = this;
 
-        this.layout.removeAll();
-        this.layout.setLoading(t('loading'));
+        me.layout.removeAll();
+        me.layout.setLoading(t('loading'));
 
         Ext.Ajax.request({
             url: '/admin/coreshop/order-comment/list',
             params: {
-                id: this.sale.o_id
+                id: me.sale.o_id
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);
-                this.layout.setLoading(false);
+                me.layout.setLoading(false);
+
                 if (res.success) {
                     if (res.comments.length === 0) {
-                        this.layout.add({
+                        me.layout.add({
                             'xtype': 'panel',
                             'html': '<span class="coreshop-order-comments-nothing-found">' + t('coreshop_order_comments_nothing_found') + '</span>'
                         })
                     } else {
                         Ext.each(res.comments, function (comment) {
-                            this.addCommentToList(comment);
-                        }.bind(this));
+                            me.addCommentToList(comment);
+                        });
                     }
                 } else {
                     Ext.Msg.alert(t('error'), res.message);
                 }
 
-            }.bind(this)
+            }
         });
-
     },
 
     addCommentToList: function (comment) {
-
-        var commentDate = Ext.Date.format(new Date(intval(comment.date) * 1000), 'd.m.Y H:i'),
+        var me = this,
+            commentDate = Ext.Date.format(new Date(intval(comment.date) * 1000), 'd.m.Y H:i'),
             notificationApplied = comment.submitAsEmail === true;
 
         var commentPanel = {
@@ -92,7 +83,7 @@ coreshop.order.order.module.orderComments = Class.create({
                 {
                     type: 'coreshop-remove',
                     tooltip: t('add'),
-                    handler: this.deleteComment.bind(this, comment)
+                    handler: me.deleteComment.bind(me, comment)
                 }
             ],
             items: [
@@ -109,19 +100,17 @@ coreshop.order.order.module.orderComments = Class.create({
             ]
         };
 
-        this.layout.add(commentPanel);
+        me.layout.add(commentPanel);
     },
 
     createComment: function (tab) {
-
-        var noteLabel = new Ext.form.Label({
-            flex: 1,
-            text: t('coreshop_order_comment_customer_locale_note') + ' ' + this.sale.orderLanguage,
-            style: 'color: gray; font-style: italic; text-align: right; padding: 0px 2px 0px 0px;',
-            hidden: true
-        });
-
-        var _ = this,
+        var me = this,
+            noteLabel = new Ext.form.Label({
+                flex: 1,
+                text: t('coreshop_order_comment_customer_locale_note') + ' ' + me.sale.orderLanguage,
+                style: 'color: gray; font-style: italic; text-align: right; padding: 0px 2px 0px 0px;',
+                hidden: true
+            }),
             window = new Ext.window.Window({
                 width: 600,
                 height: 400,
@@ -140,7 +129,7 @@ coreshop.order.order.module.orderComments = Class.create({
                     buttons: [
                         {
                             text: t('coreshop_order_comment_create'),
-                            handler: _.saveComment.bind(_),
+                            handler: me.saveComment.bind(me),
                             iconCls: 'pimcore_icon_apply'
                         }
                     ],
@@ -169,7 +158,7 @@ coreshop.order.order.module.orderComments = Class.create({
                                     listeners: {
                                         'change': function (b) {
                                             noteLabel.setHidden(!b.checked)
-                                        }.bind(this)
+                                        }
                                     }
                                 },
                                 noteLabel
@@ -183,8 +172,8 @@ coreshop.order.order.module.orderComments = Class.create({
     },
 
     saveComment: function (btn, event) {
-
-        var formWindow = btn.up('window'),
+        var me = this,
+            formWindow = btn.up('window'),
             form = formWindow.down('form').getForm();
 
         formWindow.setLoading(t('loading'));
@@ -195,7 +184,7 @@ coreshop.order.order.module.orderComments = Class.create({
 
         var formValues = form.getFieldValues();
 
-        formValues['id'] = this.sale.o_id;
+        formValues['id'] = me.sale.o_id;
 
         Ext.Ajax.request({
             url: '/admin/coreshop/order-comment/add',
@@ -208,24 +197,25 @@ coreshop.order.order.module.orderComments = Class.create({
                     if (response.success === true) {
                         formWindow.close();
                         formWindow.destroy();
-                        this.loadList();
+                        me.loadList();
                     } else {
                         Ext.Msg.alert(t('error'), response.message);
                     }
                 } catch (e) {
                     formWindow.setLoading(false);
                 }
-            }.bind(this)
+            }
         });
     },
 
     deleteComment: function (comment, ev, el) {
+        var me = this;
 
         Ext.MessageBox.confirm(t('info'), t('coreshop_delete_order_comment_confirm'), function (buttonValue) {
 
             if (buttonValue === 'yes') {
 
-                this.layout.setLoading(t('loading'));
+                me.layout.setLoading(t('loading'));
 
                 Ext.Ajax.request({
                     url: '/admin/coreshop/order-comment/delete',
@@ -234,21 +224,40 @@ coreshop.order.order.module.orderComments = Class.create({
                         id: comment.id
                     },
                     callback: function (request, success, response) {
+                        me.layout.setLoading(false);
+
                         try {
-                            this.layout.setLoading(false);
                             response = Ext.decode(response.responseText);
                             if (response.success === true) {
-                                this.loadList();
+                                me.loadList();
                             } else {
                                 Ext.Msg.alert(t('error'), response.message);
                             }
                         } catch (e) {
-                            this.layout.setLoading(false);
+
                         }
-                    }.bind(this)
+                    }
                 });
             }
 
-        }.bind(this));
+        });
+    },
+
+    getPriority: function () {
+        return 20;
+    },
+
+    getPosition: function () {
+        return 'right';
+    },
+
+    getPanel: function () {
+        return this.layout;
+    },
+
+    updateSale: function () {
+        var me = this;
+
+        me.loadList();
     }
 });
