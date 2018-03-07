@@ -23,7 +23,7 @@ coreshop.order.sale.create.panel = Class.create({
     initialize: function () {
         var me = this;
 
-        me.eventManager = new CoreShop.order.sale.create.EventManager();
+        me.eventManager = new CoreShop.resource.EventManager();
         me.eventManager.on('validation', function () {
             var valid = true;
 

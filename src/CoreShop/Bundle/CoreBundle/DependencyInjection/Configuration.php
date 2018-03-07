@@ -55,7 +55,7 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('provider_item')->defaultValue('/bundles/coreshopcore/pimcore/js/payment/provider/item.js')->end()
-                            ->scalarNode('order_detail')->defaultValue('/bundles/coreshopcore/pimcore/js/order/detail.js')->end()
+                            ->scalarNode('order_detail_carriage')->defaultValue('/bundles/coreshopcore/pimcore/js/order/detail/blocks/carriage.js')->end()
                             ->scalarNode('order_shipment')->defaultValue('/bundles/coreshopcore/pimcore/js/order/shipment.js')->end()
                             ->scalarNode('order_create_step_base')->defaultValue('/bundles/coreshopcore/pimcore/js/sale/create/step/base.js')->end()
                             ->scalarNode('order_create_step_shipping')->defaultValue('/bundles/coreshopcore/pimcore/js/sale/create/step/shipping.js')->end()

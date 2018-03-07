@@ -10,7 +10,7 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.quote.detail');
-coreshop.order.quote.detail = Class.create(coreshop.order.sale.detail, {
-    type: 'quote'
+pimcore.registerNS('coreshop.order.sale.detail.blocks.correspondence');
+coreshop.order.order.detail.blocks.correspondence = Class.create(coreshop.order.sale.detail.blocks.correspondence, {
+
 });
