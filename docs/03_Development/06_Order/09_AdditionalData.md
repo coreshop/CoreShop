@@ -115,6 +115,10 @@ coreshop.order.order.detail.blocks.yourBlockName = Class.create(coreshop.order.s
             items: subItems
         });
 
+        // remove all before adding new ones
+        // otherwise they will append during a refresh
+        this.saleInfo.removeAll();
+
         this.saleInfo.add(items);
     },
 
