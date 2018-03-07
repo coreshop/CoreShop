@@ -97,3 +97,13 @@ services:
             - '@__symfony__.coreshop.carrier.price_calculator'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.country:
+        class: CoreShop\Behat\Context\Domain\CountryContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.country'
+            - '@__symfony__.coreshop.context.country'
+            - '@__symfony__.coreshop.address.formatter'
+        tags:
+            - { name: fob.context_service }

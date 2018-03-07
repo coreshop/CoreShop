@@ -138,6 +138,8 @@ final class StoreContext implements Context
             $currency->setSymbol('€');
 
             $this->objectManager->persist($currency);
+
+            $this->sharedStorage->set('currency', $country);
         }
 
         if (null === $country) {
@@ -151,6 +153,8 @@ final class StoreContext implements Context
             $country->setActive(true);
 
             $this->objectManager->persist($country);
+
+            $this->sharedStorage->set('country', $country);
         }
 
         $store->setName($name);

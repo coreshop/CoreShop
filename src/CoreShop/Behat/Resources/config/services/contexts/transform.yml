@@ -41,6 +41,7 @@ services:
     coreshop.behat.context.transform.country:
         class: CoreShop\Behat\Context\Transform\CountryContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.repository.country'
         tags:
             - { name: fob.context_service }
@@ -110,5 +111,13 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.context.cart'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.address:
+        class: CoreShop\Behat\Context\Transform\AddressContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.address'
         tags:
             - { name: fob.context_service }

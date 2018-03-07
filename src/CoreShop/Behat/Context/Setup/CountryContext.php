@@ -74,6 +74,7 @@ final class CountryContext implements Context
 
     /**
      * @Given /^the (country "[^"]+") is valid for (store "[^"]+")$/
+     * @Given /^the (country) is valid for (store "[^"]+")$/
      */
     public function currencyIsValidForStore(CountryInterface $country, StoreInterface $store)
     {
@@ -131,6 +132,17 @@ final class CountryContext implements Context
     }
 
     /**
+     * @Given /^the (countries) address format is "(.*)"$/
+     * @Given /^the (countries "[^"]+") address format is "(.*)"$/
+     */
+    public function theCountriesAddressFormatIs(CountryInterface $country, $format)
+    {
+        $country->setAddressFormat(str_replace("'", '"', $format));
+
+        $this->saveCountry($country);
+    }
+
+    /**
      * @param $name
      */
     private function createCountry($name, CurrencyInterface $currency)
@@ -158,5 +170,7 @@ final class CountryContext implements Context
     {
         $this->objectManager->persist($country);
         $this->objectManager->flush();
+
+        $this->sharedStorage->set('country', $country);
     }
 }

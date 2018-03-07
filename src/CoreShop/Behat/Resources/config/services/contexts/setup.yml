@@ -163,3 +163,12 @@ services:
             - '@__symfony__.coreshop.factory.shipping_rule_group'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.address:
+        class: CoreShop\Behat\Context\Setup\AddressContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.factory.address'
+            - '@__symfony__.coreshop.repository.address'
+        tags:
+            - { name: fob.context_service }

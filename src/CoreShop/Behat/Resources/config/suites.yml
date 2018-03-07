@@ -5,3 +5,4 @@ imports:
     - suites/domain/cart.yml
     - suites/domain/category.yml
     - suites/domain/shipping.yml
+    - suites/domain/country.yml
