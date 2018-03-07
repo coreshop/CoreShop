@@ -107,9 +107,11 @@ class OrderPaymentController extends PimcoreController
      */
     public function addPaymentAction(Request $request)
     {
+        //TODO: Use Form here
+
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = doubleval($request->get('amount', 0));
+        $amount = doubleval($request->get('amount', 0)) * 100;
 
         $paymentProviderId = $request->get('paymentProvider');
 
@@ -117,14 +119,21 @@ class OrderPaymentController extends PimcoreController
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
+        $payments = $this->getPaymentRepository()->findForOrder($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
+        $totalPayed = array_sum(array_map(function(PaymentInterface $payment) {
+            if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
+                $payment->getState() === PaymentInterface::STATE_REFUNDED) {
+                return 0;
+            }
+
+            return $payment->getTotalAmount();
+        }, $payments));
 
         if ($paymentProvider instanceof PaymentProviderInterface) {
-            $payedTotal = $order->getTotalPayed();
+            $totalPaymentWouldBe = $totalPayed + $amount;
 
-            $payedTotal += $amount;
-
-            if ($payedTotal > $order->getTotal()) {
+            if ($totalPaymentWouldBe > $order->getTotal()) {
                 return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
                 /**
@@ -138,7 +147,7 @@ class OrderPaymentController extends PimcoreController
                 $payment->setNumber($orderNumber);
                 $payment->setPaymentProvider($paymentProvider);
                 $payment->setCurrency($order->getCurrency());
-                $payment->setTotalAmount($order->getTotal());
+                $payment->setTotalAmount($amount);
                 $payment->setState(PaymentInterface::STATE_NEW);
                 $payment->setDatePayment(Carbon::now());
                 $payment->setOrderId($order->getId());
@@ -147,11 +156,11 @@ class OrderPaymentController extends PimcoreController
                 $this->getEntityManager()->flush();
 
                 $workflow = $this->getStateMachineManager()->get($payment, 'coreshop_payment');
-                $workflow->apply($payment, PaymentTransitions::TRANSITION_CREATE);
+                $workflow->apply($payment, PaymentTransitions::TRANSITION_PROCESS);
 
                 return $this->viewHandler->handle([
                     'success' => true,
-                    'totalPayed' => $order->getTotalPayed()
+                    'totalPayed' => $totalPayed
                 ]);
             }
         } else {
@@ -160,7 +169,7 @@ class OrderPaymentController extends PimcoreController
     }
 
     /**
-     * @return RepositoryInterface
+     * @return PaymentRepositoryInterface
      */
     private function getPaymentRepository()
     {
