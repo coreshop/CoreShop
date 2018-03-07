@@ -103,6 +103,11 @@ coreshop.order.order.detail.blocks.yourBlockName = Class.create(coreshop.order.s
             })
         });
 
+        if (subItems.length === 0) {
+            this.hasItems = false;
+            return;
+        }
+
         items.push({
             xtype: 'panel',
             bodyPadding: 10,
