@@ -75,11 +75,11 @@ coreshop.order.order.detail.blocks.yourBlockName = Class.create(coreshop.order.s
         var items = [],
             subItems = [];
 
-        //console.log(this.additionalData);
+        //console.log(this.sale.additionalData);
 
         var items = [], subItems = [];
 
-        Ext.Array.each(this.additionalData, function (block, i) {
+        Ext.Array.each(this.sale.additionalData, function (block, i) {
             var data = block.data;
             subItems.push({
                 xtype: 'label',
