@@ -173,25 +173,25 @@ coreshop.order.sale.detail.panel = Class.create({
             var position = block.getPosition();
             var layout = block.getLayout();
 
+            if (layout === false || layout === null) {
+                return false;
+            }
+
             switch (position) {
                 case 'top':
                     layout.setMargin('0 0 20 0');
-
                     topItems.push(layout);
                     break;
                 case 'left':
                     layout.setMargin('0 20 20 0');
-
                     leftItems.push(layout);
                     break;
                 case 'bottom':
                     layout.setMargin('0 0 20 0');
-
                     bottomItems.push(layout);
                     break;
                 case 'right':
                     layout.setMargin('0 0 20 0');
-
                     rightItems.push(layout);
                     break;
             }
