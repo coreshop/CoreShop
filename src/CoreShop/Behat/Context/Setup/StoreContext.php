@@ -139,7 +139,7 @@ final class StoreContext implements Context
 
             $this->objectManager->persist($currency);
 
-            $this->sharedStorage->set('currency', $country);
+            $this->sharedStorage->set('currency', $currency);
         }
 
         if (null === $country) {

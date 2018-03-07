@@ -62,8 +62,8 @@ final class ExchangeRateContext implements Context
     }
 
     /**
-     * @Given /^(currency "[^"]+") has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
-     * @Given /^([^"]+) has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
+     * @Given /^the (currency "[^"]+") has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
+     * @Given /^the (currency) has a exchange-rate to (currency "[^"]+") of "([^"]+)"$/
      */
     public function currencyHasExchangeRateTo(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency, float $rate)
     {
