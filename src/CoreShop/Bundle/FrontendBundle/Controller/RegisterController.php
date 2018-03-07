@@ -33,7 +33,7 @@ class RegisterController extends FrontendController
     {
         $customer = $this->getCustomer();
 
-        if ($customer instanceof CustomerInterface) {
+        if ($customer instanceof CustomerInterface && $customer->getIsGuest() === false) {
             return $this->redirectToRoute('coreshop_customer_profile');
         }
 

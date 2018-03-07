@@ -33,6 +33,17 @@ interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterfac
     public function setOrder($order);
 
     /**
+     * @return string
+     */
+    public function getState();
+
+    /**
+     * @param string $state
+     */
+    public function setState($state);
+
+
+    /**
      * @return \DateTime
      */
     public function getDocumentDate();

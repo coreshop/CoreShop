@@ -35,16 +35,6 @@ interface OrderInvoiceInterface extends OrderDocumentInterface
     public function setInvoiceNumber($invoiceNumber);
 
     /**
-     * @return string
-     */
-    public function getState();
-
-    /**
-     * @param string $state
-     */
-    public function setState($state);
-
-    /**
      * @return mixed
      */
     public function getPriceRuleItems();

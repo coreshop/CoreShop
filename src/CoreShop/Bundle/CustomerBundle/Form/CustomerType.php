@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -87,15 +88,9 @@ class CustomerType extends AbstractResourceType
 
         if (!$options['guest']) {
             $builder
-                ->add('newsletterActive', ChoiceType::class, [
-                    'label' => 'coreshop.form.customer.newsletter',
+                ->add('newsletterActive', CheckboxType::class, [
+                    'label' => 'coreshop.form.customer.newsletter.subscribe',
                     'required' => false,
-                    'placeholder' => 'coreshop.form.customer.newsletter.no_interaction',
-                    'choices' => array(
-                        'coreshop.form.customer.newsletter.subscribe' => true,
-                        'coreshop.form.customer.newsletter.unsubscribe' => false
-                    ),
-                    'expanded' => true
                 ]);
         }
     }

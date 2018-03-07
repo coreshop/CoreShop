@@ -60,7 +60,7 @@ class SecurityController extends FrontendController
      */
     public function loginAction(Request $request)
     {
-        if ($this->shopperContext->hasCustomer()) {
+        if ($this->shopperContext->hasCustomer() && $this->shopperContext->getCustomer()->getIsGuest() === false) {
             return $this->redirectToRoute('coreshop_index');
         }
 
