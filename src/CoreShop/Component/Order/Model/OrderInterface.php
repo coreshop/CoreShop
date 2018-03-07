@@ -99,16 +99,6 @@ interface OrderInterface extends SaleInterface
     public function setToken($token);
 
     /**
-     * @return int
-     */
-    public function getTotalPayed();
-
-    /**
-     * @return bool
-     */
-    public function getIsPayed();
-
-    /**
      * @return PaymentProviderInterface
      */
     public function getPaymentProvider();

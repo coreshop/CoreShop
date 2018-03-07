@@ -22,30 +22,6 @@ class Order extends Sale implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalPayed()
-    {
-        $totalPayed = 0;
-
-        foreach ($this->getPayments() as $payment) {
-            if ($payment->getTotalAmount()) {
-                $totalPayed += $payment->getTotalAmount();
-            }
-        }
-
-        return $totalPayed;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIsPayed()
-    {
-        return $this->getTotal() === $this->getTotalPayed();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSaleLanguage()
     {
         return $this->getOrderLanguage();

@@ -51,27 +51,35 @@ core_shop_core:
             filter_condition_relational_multi_select: '/bundles/app/additionalData.js'
 ```
 
-This file needs to implement a method called `getItems` and must return a array:
+This file has to extend `coreshop.order.sale.detail.abstractBlock`
+and requires several methods: `initBlock`,  `updateSale`,  `getPanel`,  `getPriority` and `getPosition`.
 
 ```js
-pimcore.registerNS('coreshop.order.sale.detail.additionalData');
-coreshop.order.sale.detail.additionalData = Class.create({
+pimcore.registerNS('coreshop.order.order.detail.blocks.yourBlockName');
+coreshop.order.order.detail.blocks.yourBlockName = Class.create(coreshop.order.sale.detail.abstractBlock, {
 
-    order: null,
-    additionalData: null,
+    saleInfo: {},
+    hasItems: true,
 
-    initialize: function (order, additionalData) {
-        this.order = order;
-        this.additionalData = additionalData;
+    initBlock: function () {
+        this.saleInfo = Ext.create('Ext.panel.Panel', {
+            title: t('coreshop_order_additional_data'),
+            margin: '0 20 20 0',
+            border: true,
+            flex: 8
+        });
     },
 
-    getItems: function () {
+    updateSale: function () {
 
-        //console.log(this.additionalData);
+        var items = [],
+            subItems = [];
+
+        //console.log(this.sale.additionalData);
 
         var items = [], subItems = [];
 
-        Ext.Array.each(this.additionalData, function (block, i) {
+        Ext.Array.each(this.sale.additionalData, function (block, i) {
             var data = block.data;
             subItems.push({
                 xtype: 'label',
@@ -95,6 +103,11 @@ coreshop.order.sale.detail.additionalData = Class.create({
             })
         });
 
+        if (subItems.length === 0) {
+            this.hasItems = false;
+            return;
+        }
+
         items.push({
             xtype: 'panel',
             bodyPadding: 10,
@@ -102,7 +115,23 @@ coreshop.order.sale.detail.additionalData = Class.create({
             items: subItems
         });
 
-        return items;
+        // remove all before adding new ones
+        // otherwise they will append during a refresh
+        this.saleInfo.removeAll();
+
+        this.saleInfo.add(items);
+    },
+
+    getPanel: function () {
+        return this.hasItems ? this.saleInfo : null;
+    },
+
+    getPriority: function () {
+        return 10;
+    },
+
+    getPosition: function () {
+        return 'right';
     }
 });
 ```

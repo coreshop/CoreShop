@@ -32,6 +32,7 @@ coreshop.order.order.createPayment = {
         var window = new Ext.window.Window({
             width: 380,
             height: 380,
+            modal: true,
             resizeable: false,
             layout: 'fit',
             items: [{
@@ -54,11 +55,15 @@ coreshop.order.order.createPayment = {
 
                                 formValues['o_id'] = orderId;
 
+                                window.setLoading(t('loading'));
+
                                 Ext.Ajax.request({
                                     url: '/admin/coreshop/order-payment/add-payment',
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {
+                                        window.setLoading(false);
+
                                         try {
                                             response = Ext.decode(response.responseText);
 

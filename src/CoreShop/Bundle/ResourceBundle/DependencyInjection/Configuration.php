@@ -131,6 +131,7 @@ final class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('broker')->defaultValue('/bundles/coreshopresource/pimcore/js/broker.js')->end()
                             ->scalarNode('global')->defaultValue('/bundles/coreshopresource/pimcore/js/global.js')->end()
+                            ->scalarNode('event_manager')->defaultValue('/bundles/coreshopresource/pimcore/js/eventManager.js')->end()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/js/resource.js')->end()
                             ->scalarNode('resource_panel')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/panel.js')->end()
                             ->scalarNode('resource_item')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/item.js')->end()

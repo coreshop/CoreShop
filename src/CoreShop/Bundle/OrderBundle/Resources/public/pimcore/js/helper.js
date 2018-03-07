@@ -28,7 +28,7 @@ coreshop.order.helper.openSale = function (id, type, callback) {
                 var res = Ext.decode(response.responseText);
 
                 if (res.success) {
-                    pimcore.globalmanager.add(cacheIdentifier, new coreshop.order[type].detail(res.sale));
+                    pimcore.globalmanager.add(cacheIdentifier, new coreshop.order[type].detail.panel(res.sale));
                 } else {
                     Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
                 }

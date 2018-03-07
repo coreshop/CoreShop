@@ -1,4 +1,4 @@
-Ext.define('CoreShop.order.sale.create.EventManager', {
+Ext.define('CoreShop.resource.EventManager', {
     mixins: ['Ext.mixin.Observable'],
 
     constructor: function () {

@@ -154,8 +154,6 @@ coreshop.order.order.shipment = Class.create({
                                 if (res.success) {
                                     pimcore.helpers.showNotification(t('success'), t('success'), 'success');
 
-                                    pimcore.helpers.openObject(res.shipmentId, 'object');
-
                                     if (Ext.isFunction(this.cb)) {
                                         this.cb();
                                     }

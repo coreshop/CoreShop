@@ -51,6 +51,7 @@ coreshop.order.order.state.changeState = {
         window = new Ext.window.Window({
             width: 450,
             height: 170,
+            modal: true,
             resizeable: false,
             title: t('coreshop_change_state'),
             layout: 'fit',
