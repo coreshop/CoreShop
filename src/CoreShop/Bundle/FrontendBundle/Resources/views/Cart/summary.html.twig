@@ -15,14 +15,14 @@
     {% endif %}
 
     <div class="row">
-        <div class="col-xs-12 col-sm-2">
-            <a href="{{ path('coreshop_index') }}" class="btn btn-default w-100">
+        <div class="col-12 col-sm-2 offset-sm-8">
+            <a href="{{ path('coreshop_index') }}" class="btn btn-secondary w-100">
                 {{ 'coreshop.ui.continue_shopping'|trans }}
             </a>
         </div>
         {% if cart.hasItems() %}
-            <div class="col-xs-12 col-sm-1 col-sm-push-9">
-                <a href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}" class="btn btn-main w-100">
+            <div class="col-12 col-sm-2">
+                <a href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}" class="btn btn-success w-100">
                     {{ 'coreshop.ui.checkout'|trans }}
                 </a>
             </div>

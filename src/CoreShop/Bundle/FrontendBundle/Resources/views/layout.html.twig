@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="{{ app.request.locale|slice(0, 2) }}">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>{% block title %}{% endblock %} CoreShop</title>
-
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     {% block metatags %}
     {% endblock %}
@@ -18,30 +15,27 @@
     {% endblock %}
 </head>
 
-<body class="pushable">
-<div class="pusher">
-    <div class="ui container">
-        {% block header %}
-            <header>
-                {% include '@CoreShopFrontend/_header.html.twig' %}
+<body>
+{% block header %}
+    <header>
+        {% include '@CoreShopFrontend/_header.html.twig' %}
+    </header>
+{% endblock %}
 
-                <!-- TODO: Render Url -->
-            </header>
-        {% endblock %}
+<div class="main-container container">
+    {% include '@CoreShopFrontend/Common/global_flash_messages.html.twig' %}
 
-         {% include '@CoreShopFrontend/Common/global_flash_messages.html.twig' %}
-
-        {% block content %}
-        {% endblock %}
-    </div>
-
-    {% block footer %}
-        {% include '@CoreShopFrontend/_footer.html.twig' %}
+    {% block content %}
     {% endblock %}
 </div>
 
+{% block footer %}
+    {% include '@CoreShopFrontend/_footer.html.twig' %}
+{% endblock %}
+
 {% block javascripts %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/jquery-1.11.1.min.js'} %}
+    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/popper.min.js'} %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/bootstrap.min.js'} %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/owl.carousel.min.js'} %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/handle-prototypes.js'} %}
