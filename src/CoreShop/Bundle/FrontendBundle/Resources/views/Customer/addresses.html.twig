@@ -17,17 +17,18 @@
     </h2>
 
     <section class="addresses-area">
-        <div class="row">
+        <div class="row mb-4">
             {% for address in customer.getAddresses %}
             <div class="col-6">
-                <div class="card panel-smart">
+                <div class="card card-smart">
                     <div class="card-body">
                         {{ address|coreshop_format_address }}
                         <br/>
-                        <a href="{{ path('coreshop_customer_address_edit', {name: address.getStreet, address: address.getId}) }}" class="btn btn-secondary">
+                        <br/>
+                        <a href="{{ path('coreshop_customer_address_edit', {name: address.getStreet, address: address.getId}) }}" class="btn btn-success">
                             {{ 'coreshop.ui.edit'|trans }}
                         </a>
-                        <a href="{{ path('coreshop_customer_address_delete', {address: address.getId}) }}" class="btn btn-secondary">
+                        <a href="{{ path('coreshop_customer_address_delete', {address: address.getId}) }}" class="btn btn-danger">
                             {{ 'coreshop.ui.delete'|trans }}
                         </a>
                     </div>
@@ -37,7 +38,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <a href="{{ path('coreshop_customer_address_new') }}" class="btn btn-secondary">
+                <a href="{{ path('coreshop_customer_address_new') }}" class="btn btn-success">
                     {{ 'coreshop.ui.add_new_address'|trans }}
                 </a>
             </div>

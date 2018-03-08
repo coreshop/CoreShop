@@ -7,6 +7,9 @@
 
 {% block checkout %}
     <div class="card">
+        <div class="card-header">
+            {{ 'coreshop.ui.address'|trans }}
+        </div>
         <div class="card-body">
             {% if form.invoiceAddress.vars.choices|length > 0 or form.shippingAddress.vars.choices|length > 0 %}
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -20,7 +23,8 @@
                     </div>
 
                     {% if hasShippableItems %}
-                        <div class="col-12 col-sm-6 shipping-address-selector" style="{% if hasShippableItems == true and form.useInvoiceAsShipping.vars.data %} display:none; {% endif %}">
+                        <div class="col-12 col-sm-6 shipping-address-selector"
+                             style="{% if hasShippableItems == true and form.useInvoiceAsShipping.vars.data %} display:none; {% endif %}">
                             {{ form_row(form.shippingAddress) }}
                         </div>
                     {% endif %}
@@ -35,10 +39,10 @@
                     </div>
                 {% endif %}
 
-                <div class="row">
+                <div class="row mb-4">
 
                     <div class="col-12 col-sm-6">
-                        <div class="card panel-smart">
+                        <div class="card card-smart">
                             <div class="card-header">
                                 <h4 class="card-title">
                                     {{ 'coreshop.ui.invoice_address'|trans }}
@@ -52,7 +56,7 @@
 
                     {% if hasShippableItems %}
                         <div class="col-12 col-sm-6">
-                            <div class="card panel-smart">
+                            <div class="card card-smart">
                                 <div class="card-header">
                                     <h4 class="card-title">
                                         {{ 'coreshop.ui.shipping_address'|trans }}
@@ -67,25 +71,25 @@
 
                 </div>
 
-                <div class="row">
+                <div class="row mb-4">
                     <div class="col-12">
-                        <a href="{{ path('coreshop_customer_address_new', {'_redirect': path('coreshop_checkout', {stepIdentifier: identifier})}) }}" class="btn btn-secondary pull-left">
+                        <a href="{{ path('coreshop_customer_address_new', {'_redirect': path('coreshop_checkout', {stepIdentifier: identifier})}) }}"
+                           class="btn btn-info pull-left">
                             {{ 'coreshop.ui.add_new_address'|trans }}
                         </a>
                     </div>
                 </div>
-                <br>
-                 <div class="row">
+                <div class="row">
                     {% set previousStep = coreshop_checkout_steps_get_previous() %}
                     {% if previousStep is not null %}
                         <div class="col-12 col-sm-6">
-                            <a href="{{ path('coreshop_checkout', {'stepIdentifier': previousStep}) }}" class="btn">
+                            <a href="{{ path('coreshop_checkout', {'stepIdentifier': previousStep}) }}" class="btn btn-secondary">
                                 {{ 'coreshop.ui.back'|trans }}
                             </a>
                         </div>
                     {% endif %}
                     <div class="col-12 {{ previousStep is not null ? 'col-sm-6' : '' }}">
-                        <button type="submit" class="btn btn-secondary pull-right">
+                        <button type="submit" class="btn btn-success pull-right">
                             {{ 'coreshop.ui.proceed'|trans }}
                         </button>
                     </div>
@@ -98,7 +102,8 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <a href="{{ path('coreshop_customer_address_new', {'_redirect': path('coreshop_checkout', {stepIdentifier: identifier})}) }}" class="btn btn-secondary pull-left">
+                        <a href="{{ path('coreshop_customer_address_new', {'_redirect': path('coreshop_checkout', {stepIdentifier: identifier})}) }}"
+                           class="btn btn-info pull-left">
                             {{ 'coreshop.ui.add_new_address'|trans }}
                         </a>
                     </div>

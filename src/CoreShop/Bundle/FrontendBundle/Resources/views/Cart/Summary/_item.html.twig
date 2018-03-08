@@ -43,8 +43,7 @@
     <td class="text-center">
         {% if not item.getIsGiftItem %}
             <a href="{{ path('coreshop_cart_remove', {cartItem: item.getId}) }}"
-               title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-secondary tool-tip removeFromCart"
-               data-id="{{ item.getId }}">
+               title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ item.getId }}">
                 <i class="fa fa-times-circle"></i>
             </a>
         {% endif %}

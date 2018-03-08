@@ -10,7 +10,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('coreshop_checkout', {'stepIdentifier': 'cart'}) }}">
+        <a class="nav-link" href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
             {{ 'coreshop.ui.checkout'|trans }}
         </a>
     </li>

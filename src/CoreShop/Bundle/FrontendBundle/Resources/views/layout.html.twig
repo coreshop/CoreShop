@@ -22,7 +22,7 @@
     </header>
 {% endblock %}
 
-<div class="ui container">
+<div class="main-container container">
     {% include '@CoreShopFrontend/Common/global_flash_messages.html.twig' %}
 
     {% block content %}
@@ -35,6 +35,7 @@
 
 {% block javascripts %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/jquery-1.11.1.min.js'} %}
+    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/popper.min.js'} %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/bootstrap.min.js'} %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/owl.carousel.min.js'} %}
     {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/handle-prototypes.js'} %}

@@ -2572,8 +2572,8 @@ fieldset:disabled a.btn {
 
 .btn-success {
     color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
+    background-color: #5cb672;
+    border-color: #5cb672;
 }
 
 .btn-success:hover {
@@ -5008,7 +5008,7 @@ tbody.collapse.show {
 .alert-success {
     color: #155724;
     background-color: #d4edda;
-    border-color: #c3e6cb;
+    border-color: #5cb672;
 }
 
 .alert-success hr {
@@ -11326,38 +11326,6 @@ a.text-dark:hover, a.text-dark:focus {
     content: "";
 }
 
-.btn-black {
-    background-color: #303030;
-}
-
-.btn-black:hover,
-.btn-black:focus,
-.btn-black:active,
-.btn-black.active,
-.btn-main {
-    background-color: #5cb672;
-}
-
-.btn-main:hover,
-.btn-main:focus,
-.btn-main:active,
-.btn-main.active {
-    background-color: #3e9144;
-}
-
-.btn-black,
-.btn-black:hover,
-.btn-black:focus,
-.btn-black:active,
-.btn-black.active,
-.btn-main,
-.btn-main:hover,
-.btn-main:focus,
-.btn-main:active,
-.btn-main.active {
-    color: #fff;
-}
-
 .btn.w-100 {
     width: 100%;
 }
@@ -11870,7 +11838,7 @@ hr {
     margin-top: 20px;
 }
 
-.tabs-panel.panel-smart {
+.tabs-panel.card-smart {
     padding: 0;
 }
 
@@ -12027,9 +11995,16 @@ hr {
     margin-left: 20px;
 }
 
+.main-container {
+    padding: 0 0 60px 0;
+}
+
 /* Footer Links Styles Starts */
 #footer-area {
-    margin-top: 20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 65px;
 }
 
 .footer-links {
@@ -12526,10 +12501,6 @@ hr {
     font-size: 14px;
 }
 
-.compare-table tbody > tr > td a:hover {
-    color: #252a2f;
-}
-
 .compare-table td {
     text-align: center;
 }
@@ -12608,7 +12579,7 @@ hr {
     margin-bottom: 0;
 }
 
-.panel-smart {
+.card-smart {
     padding: 20px;
     background: #fff;
     border: 1px solid #e8e8e8;
@@ -12617,17 +12588,18 @@ hr {
     border-radius: 0;
 }
 
-.panel-smart .panel-heading {
+.card-smart .card-header {
     padding: 5px 0 15px 0;
     color: #252a2f;
     border-bottom: 1px solid #929497;
+    background: white;
 }
 
-.panel-smart h3.panel-title {
+.card-smart h3.panel-title {
     font-size: 24px;
 }
 
-.panel-smart .panel-body {
+.card-smart .card-body {
     padding: 20px 0 0;
 }
 
@@ -12657,7 +12629,7 @@ hr {
     font-size: 18px;
 }
 
-.panel-smart blockquote {
+.card-smart blockquote {
     margin: 0;
     padding: 5px 15px;
     color: #8b8b8b;
@@ -12665,7 +12637,7 @@ hr {
     border: none;
 }
 
-.panel-smart blockquote footer {
+.card-smart blockquote footer {
     padding-top: 10px;
     color: #252a2f;
     font-size: 14px;
@@ -13265,10 +13237,17 @@ hr {
 .copyright {
     min-height: 5em;
 }
-.card-header {
-    background-color: rgba(255, 255, 255, 1);
-}
 #cart .dropdown-menu {
     left: initial;
     right: 0;
+}
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
 }

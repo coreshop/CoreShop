@@ -23,7 +23,7 @@
         <section class="registration-area">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card panel-smart">
+                    <div class="card card-smart">
                         <div class="card-body">
                             {{ form_start(form) }}
                                 {{ form_errors(form) }}
@@ -38,8 +38,8 @@
                                 {{ form_row(form.country) }}
                                 {{ form_row(form.phoneNumber) }}
 
-                                <div class="form-control">
-                                    <button type="submit" class="btn btn-black">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success">
                                         {% if not address.getId %}
                                             {{ 'coreshop.ui.add'|trans }}
                                         {% else %}

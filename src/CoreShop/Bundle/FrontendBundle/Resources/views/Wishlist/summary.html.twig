@@ -45,7 +45,7 @@
                         {{ currency.getPrice(product) }}
                     </td>
                     <td class="text-center">
-                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" type="button" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-secondary tool-tip removeFromWishlist" data-id="{{ product.getId }}">
+                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ product.getId }}">
                             <i class="fa fa-times-circle"></i>
                         </a>
                     </td>

@@ -21,12 +21,12 @@
         {% if lastPayment.state == 'cancelled' %}
             <p>{{ 'coreshop.ui.checkout.error.cancelled'|trans }}</p>
             <p>
-                <a href="{{ path('coreshop_cart_summary') }}" class="btn btn-black text-uppercase">{{ 'coreshop.ui.cart'|trans }}</a>
+                <a href="{{ path('coreshop_cart_summary') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.cart'|trans }}</a>
             </p>
         {% else %}
             <p>{{ 'coreshop.ui.checkout.error.default'|trans }}</p>
             <p>
-                <a href="{{ path('coreshop_index') }}" class="btn btn-black text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
+                <a href="{{ path('coreshop_index') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
             </p>
         {% endif %}
     </div>
