@@ -13,17 +13,19 @@
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
+use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Lorem;
+use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CarrierFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
+class PaymentProviderFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -49,44 +51,39 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
     /**
      * {@inheritdoc}
      */
-    public function getDependencies()
-    {
-        return [
-            TaxRuleGroupFixture::class
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function load(ObjectManager $manager)
     {
-        if (!count($this->container->get('coreshop.repository.carrier')->findAll())) {
+        if (!count($this->container->get('coreshop.repository.payment_provider')->findAll())) {
             $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
 
             $faker = Factory::create();
             $faker->addProvider(new Lorem($faker));
 
             /**
-             * @var $carrier CarrierInterface
+             * @var $provider PaymentProviderInterface
              */
-            $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
-            $carrier->setName('Standard');
-            $carrier->setLabel('Standard');
-            $carrier->setRangeBehaviour(\CoreShop\Component\Shipping\Model\CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
-            $carrier->setTrackingUrl('https://coreshop.at/track/%s');
-            $carrier->setIsFree(false);
-            $carrier->setTaxRule($this->getReference('taxRule'));
-            $carrier->addStore($defaultStore);
+            $provider = $this->container->get('coreshop.factory.payment_provider')->createNew();
+
+            $gatewayConfig = new GatewayConfig();
+            $gatewayConfig->setFactoryName('offline');
+            $gatewayConfig->setGatewayName('offline');
+
+            $provider->setIdentifier('Bankwire');
+            $provider->setActive(true);
+            $provider->setPosition(1);
+            $provider->addStore($defaultStore);
+            $provider->setGatewayConfig($gatewayConfig);
 
             foreach (Tool::getValidLanguages() as $lang) {
-                $carrier->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
+                $provider->setName('Bankwire', $lang);
+                $provider->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
+                $provider->setInstructions(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
             }
 
-            $manager->persist($carrier);
+            $manager->persist($provider);
             $manager->flush();
 
-            $this->setReference('carrier', $carrier);
+            $this->setReference('payment_provider', $provider);
         }
     }
 }
