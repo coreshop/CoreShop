@@ -2,9 +2,9 @@
 
 {% block center %}
     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
         {% for cat in category.getHierarchy() %}
-            <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
         {% endfor %}
     </ol>
 
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="col-md-2 text-right">
-                <label class="control-label">{{ 'coreshop.ui.sort'|trans }}</label>
+                <label class="col-form-label">{{ 'coreshop.ui.sort'|trans }}</label>
             </div>
             <div class="col-md-3 text-right">
                 {#
@@ -41,7 +41,7 @@
                 </select>
             </div>
             <div class="col-md-1 text-right">
-                <label class="control-label">{{ 'coreshop.ui.show'|trans }}</label>
+                <label class="col-form-label">{{ 'coreshop.ui.show'|trans }}</label>
             </div>
             <div class="col-md-2 text-right">
                 <select class="form-control site-reload" name="perPage">

@@ -1,5 +1,5 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
-{% form_theme guestForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme guestForm 'bootstrap_4_layout.html.twig' %}
 
 {% block checkout_title %}
     {{ 'coreshop.ui.customer'|trans }}
@@ -16,8 +16,8 @@
         <section class="registration-area">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="panel panel-smart">
-                        <div class="panel-body">
+                    <div class="card">
+                        <div class="card-body">
                             {{ form(guestForm, {'method': 'POST'}) }}
                         </div>
                     </div>

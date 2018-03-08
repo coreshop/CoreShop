@@ -1,6 +1,6 @@
 {% extends '@CoreShopFrontend/Order/layout.html.twig' %}
 {% import "@CoreShopFrontend/Common/Macro/messages.html.twig" as messages %}
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block checkout_title %}
     {{ 'coreshop.ui.order_revise'|trans }}
@@ -39,11 +39,11 @@
         {% endfor %}
 
         <div class="row">
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-12 col-sm-6">
                 {{ form_widget(form.cancel, {attr: {class: 'btn btn-danger'}}) }}
             </div>
 
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-12 col-sm-6">
                 {{ form_widget(form.submitPayment, {attr: {class: 'btn btn-success pull-right'}}) }}
             </div>
         </div>

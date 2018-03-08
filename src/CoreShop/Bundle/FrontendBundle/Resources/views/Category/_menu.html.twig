@@ -1,27 +1,26 @@
-<nav id="main-menu" class="navbar" role="navigation">
+<nav id="main-menu" class="navbar navbar-expand-md navbar-light bg-green" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-cat-collapse">
-                <span class="sr-only">{{ 'coreshop.ui.toggle_navigation'|trans }}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarcatcollapse" aria-controls="#navbarcatcollapse" aria-expanded="false" aria-label="{{ 'coreshop.ui.toggle_navigation'|trans }}">
                 <i class="fa fa-bars"></i>
             </button>
         </div>
 
-        <div class="collapse navbar-collapse navbar-cat-collapse">
-            <ul class="nav navbar-nav">
+        <div id="navbarcatcollapse" class="collapse navbar-collapse navbar-cat-collapse">
+            <ul class="nav navbar-nav mr-auto mt-2 mt-lg-0">
                 {% for category in categories %}
                     {% set dropdown = category.hasChildCategories %}
 
-                    <li class="{% if dropdown %} dropdown {% endif %}">
+                    <li class="nav-item{% if dropdown %} dropdown {% endif %}">
                         <!-- TODO: URL -->
-                        <a href="{{ path('coreshop_category_list', {name: category.getName, category: category.getId}) }}" {% if dropdown %} class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10" {%  endif %}>
+                        <a href="{{ path('coreshop_category_list', {name: category.getName, category: category.getId}) }}" class="nav-link{% if dropdown %} dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10{%  endif %}">
                             {{ category.getName() }}
                         </a>
 
                         {% if dropdown  %}
                             <ul class="dropdown-menu" role="menu">
                                 {% for childCategory in category.getChildCategories() %}
-                                    <li>
+                                    <li class="dropdown-item">
                                         <!-- TODO: URL -->
                                         <a tabindex="-1" href="#">
                                             {{ childCategory.getName() }}

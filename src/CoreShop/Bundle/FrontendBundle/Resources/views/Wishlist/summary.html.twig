@@ -32,7 +32,7 @@
                     <td class="text-center">
                         {% if item.getProduct and item.getProduct.getImage() %}
                             <a class="" href="{{ productUrl }}">
-                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
                             </a>
                         {% endif %}
                     </td>
@@ -45,7 +45,7 @@
                         {{ currency.getPrice(product) }}
                     </td>
                     <td class="text-center">
-                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" type="button" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromWishlist" data-id="{{ product.getId }}">
+                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" type="button" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-secondary tool-tip removeFromWishlist" data-id="{{ product.getId }}">
                             <i class="fa fa-times-circle"></i>
                         </a>
                     </td>

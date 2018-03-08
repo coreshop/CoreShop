@@ -5,14 +5,14 @@
 
 {% block center %}
     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
         {% if product.getCategories|length > 0 %}
             {% for cat in product.getCategories|first.getHierarchy() %}
                 <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
             {% endfor %}
         {% endif %}
 
-        <li class="active"><a href="{{ path('coreshop_product_detail', {name: product.getName, product: product.getId}) }}">{{ product.getName }}</a></li>
+        <li class="breadcrumb-item active"><a href="{{ path('coreshop_product_detail', {name: product.getName, product: product.getId}) }}">{{ product.getName }}</a></li>
     </ol>
 
 
@@ -20,14 +20,14 @@
 
         <div class="col-sm-5 images-block">
              {% if product.getImage %}
-                 {{ product.getImage().getThumbnail("coreshop_productDetail").getHtml({"class": "img-responsive thumbnail"})|raw }}
+                 {{ product.getImage().getThumbnail("coreshop_productDetail").getHtml({"class": "img-fluid thumbnail"})|raw }}
             {% endif %}
 
             {% if product.getImages|length > 0 %}
                 <ul class="list-unstyled list-inline">
                     {% for image in product.getImages %}
-                        <li>
-                            {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive thumbnail"})|raw }}
+                        <li class="list-inline-item">
+                            {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-fluid thumbnail"})|raw }}
                         </li>
                     {% endfor %}
                 </ul>
@@ -60,12 +60,12 @@
                     <span>{{ 'coreshop.ui.availability'|trans }}:</span>
                     {%  if product.getIsTracked %}
                         {%  if coreshop_inventory_is_sufficient(product) %}
-                        <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
+                        <strong class="badge badge-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
                         {% elseif product.getIsAvailableWhenOutOfStock %}
                             {{ 'coreshop.ui.out_of_stock'|trans }}
                         {% endif %}
                     {% else %}
-                        <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
+                        <strong class="badge badge-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
                     {% endif %}
                 </li>
             </ul>
@@ -77,7 +77,7 @@
             {% if variants %}
                 {% for variant in variants %}
                     <h4>{{ variant['variantName'] }}</h4>
-                    <div class="form-group">
+                    <div class="form-control">
                         <select name="variant" class="form-control selectpicker btn-white">
                             {% for variantValue in variant['variantValues'] %}
                                 <option data-href="{{ path('coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
@@ -94,7 +94,7 @@
                 {{ product_price.display_product_price(product) }}
             </div>
             <div class="tax">
-                {{ 'incl. %s%% Tax'|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+                {{ 'incl.'|trans ~ '%s%%'|format(product|coreshop_product_tax_rate) ~ 'Tax'|trans }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
             </div>
 
             <hr/>
@@ -123,8 +123,8 @@
 
     <div class="tabs-panel panel-smart">
         <ul class="nav nav-tabs">
-            <li class="active">
-                <a href="#tab-description">{{ 'coreshop.ui.description'|trans }}</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#tab-description">{{ 'coreshop.ui.description'|trans }}</a>
             </li>
         </ul>
 
