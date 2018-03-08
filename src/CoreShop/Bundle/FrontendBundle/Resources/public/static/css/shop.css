@@ -11595,7 +11595,7 @@ hr {
 #header-area .main-header #search .input-group .form-control {
     background: none;
     border: solid #5cb672;
-    border-width: 1px 0 1px 1px;
+    border-width: 1px 1px 1px 1px;
     color: #878a8c;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
