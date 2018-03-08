@@ -115,6 +115,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.sale.d
                 width: 600,
                 height: 400,
                 resizeable: false,
+                modal: true,
                 layout: 'fit',
                 title: t('coreshop_order_comment_create'),
                 items: [{
