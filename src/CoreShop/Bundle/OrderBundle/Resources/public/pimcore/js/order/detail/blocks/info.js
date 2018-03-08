@@ -45,7 +45,7 @@ coreshop.order.order.detail.blocks.info = Class.create(coreshop.order.sale.detai
                         success: function (response) {
                             var res = Ext.decode(response.responseText);
                             if(res.success === true) {
-                                context.reload();
+                                me.panel.reload();
                             } else {
                                 Ext.Msg.alert(t('error'), res.message);
                                 btn.enable();
