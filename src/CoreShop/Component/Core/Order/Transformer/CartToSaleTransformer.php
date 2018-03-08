@@ -10,6 +10,7 @@ use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
+use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use Webmozart\Assert\Assert;
 
 final class CartToSaleTransformer implements ProposalTransformerInterface
@@ -59,7 +60,11 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
             if ($cart->getCarrier() instanceof CarrierInterface) {
                 $sale->setCarrier($cart->getCarrier());
                 $sale->setComment($cart->getComment());
-                $sale->setPaymentSettings($cart->getPaymentSettings());
+
+                if ($sale instanceof PaymentSettingsAwareInterface) {
+                    $sale->setPaymentSettings($cart->getPaymentSettings());
+                }
+                
                 $sale->setAdditionalData($cart->getAdditionalData());
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(true), $fromCurrency, $toCurrency), true);
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(false), $fromCurrency, $toCurrency), false);
