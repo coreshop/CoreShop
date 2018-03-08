@@ -13,7 +13,15 @@ core_shop_resource:
                         on: ['confirm']
                         do: ['@AppBundle\EventListener\SpecialListener', 'doSomething']
                         args: ['object']
+                        priority: -10 # fire action early!
 ```
+
+| Name | Description |
+|:-----|:------------|
+| `on` | transition name |
+| `do` | service and method to dispatch |
+| `args` | `object` or `event`. Object type depends on state machine type. |
+| `priority` | set priority. default is `0` |
 
 And your Service:
 

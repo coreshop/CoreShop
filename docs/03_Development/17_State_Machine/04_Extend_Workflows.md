@@ -123,4 +123,5 @@ core_shop_workflow:
                         do: ['@your_service', 'yourAction']
                         # in this context, "object" is the shipment item
                         args: ['object']
+                        priority: -10 # fire action early!
 ```
