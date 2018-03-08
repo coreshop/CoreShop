@@ -17,6 +17,8 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
@@ -107,7 +109,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $mail->setEnableLayoutOnPlaceholderRendering(false);
 
         if ($sendInvoices) {
-            $invoices = $this->invoiceRepository->getDocuments($order);
+            $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
 
             foreach ($invoices as $invoice) {
                 if ($invoice instanceof OrderInvoiceInterface) {
@@ -119,7 +121,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         }
 
         if ($sendShipments) {
-            $shipments = $this->shipmentRepository->getDocuments($order);
+            $shipments = $this->shipmentRepository->getDocumentsNotInState($order, OrderShipmentStates::STATE_CANCELLED);
 
             foreach ($shipments as $shipment) {
                 if ($shipment instanceof OrderShipmentInterface) {

@@ -20,6 +20,7 @@ use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
+use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -386,7 +387,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     private function getProcessedValue($field, OrderInterface $order)
     {
-        $invoices = $this->invoiceRepository->getDocuments($order);
+        $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
         $processedValue = 0;
 
         foreach ($invoices as $invoice) {

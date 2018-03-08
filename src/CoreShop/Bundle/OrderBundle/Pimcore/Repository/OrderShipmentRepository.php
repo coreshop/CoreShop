@@ -25,4 +25,15 @@ class OrderShipmentRepository extends PimcoreRepository implements OrderShipment
     {
         return $this->findBy(['order__id' => $order->getId()]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDocumentsNotInState(OrderInterface $order, $state)
+    {
+        $list = $this->getList();
+        $list->setCondition('order__id = ? AND state <> ?', [$order->getId(), $state]);
+
+        return $list->getObjects();
+    }
 }
