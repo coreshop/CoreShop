@@ -75,14 +75,10 @@ class ProcessableOrderItems implements ProcessableInterface
      */
     public function getProcessedItems(OrderInterface $order)
     {
-        $documents = $this->documentsRepository->getDocuments($order);
+        $documents = $this->documentsRepository->getDocumentsNotInState($order, $this->stateCancelled);
         $processedItems = [];
 
         foreach ($documents as $document) {
-            if ($document->getState() === $this->stateCancelled) {
-                continue;
-            }
-
             foreach ($document->getItems() as $processedItem) {
                 $orderItem = $processedItem->getOrderItem();
 
