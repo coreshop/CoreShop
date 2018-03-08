@@ -32,7 +32,7 @@ coreshop.shippingrule.conditions.weight = Class.create(coreshop.rules.conditions
             name: 'minWeight',
             value: minWeightValue,
             minValue: 0,
-            decimalPrecision: 2,
+            decimalPrecision: 5,
             step: 1
         });
 
@@ -41,7 +41,7 @@ coreshop.shippingrule.conditions.weight = Class.create(coreshop.rules.conditions
             name: 'maxWeight',
             value: maxWeightValue,
             minValue: 0,
-            decimalPrecision: 2,
+            decimalPrecision: 5,
             step: 1
         });
 
