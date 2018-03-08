@@ -836,7 +836,7 @@ translations:
   coreshop.form.customer_registration.address:
       languages:
           de_CH: 'Adressinformationen'
-          en: 'Addres Information'
+          en: 'Address Information'
           de: 'Adressinformationen'
 
   coreshop.form.address.company:
