@@ -73,7 +73,7 @@ class WishlistController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        return $this->renderTemplate('CoreShopFrontendBundle:Wishlist:summary.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist:summary.html'), [
             'wishlist' => $this->getWishlist()
         ]);
     }

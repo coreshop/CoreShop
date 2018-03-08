@@ -90,7 +90,7 @@ class OrderController extends FrontendController
             'form' => $form->createView()
         ];
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Order:revise.html.twig', $args);
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
     }
 
     /**

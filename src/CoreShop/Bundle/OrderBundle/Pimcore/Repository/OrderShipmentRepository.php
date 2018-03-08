@@ -23,7 +23,7 @@ class OrderShipmentRepository extends PimcoreRepository implements OrderShipment
      */
     public function getDocuments(OrderInterface $order)
     {
-        return $this->findBy(['order__id' => $order->getId()]);
+        return $this->findBy(['order__id' => $order->getId()], [['key' => 'o_id', 'direction' => 'DESC']]);
     }
 
     /**

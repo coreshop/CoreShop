@@ -59,7 +59,7 @@ class CategoryController extends FrontendController
     {
         $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Category:_menu.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu.html'), [
             'categories' => $categories,
         ]);
     }
@@ -79,7 +79,7 @@ class CategoryController extends FrontendController
             $activeSubCategories = $this->getRepository()->findChildCategoriesForStore($activeCategory, $this->getContext()->getStore());
         }
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Category:_menu-left.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
             'activeSubCategories' => $activeSubCategories
@@ -202,7 +202,7 @@ class CategoryController extends FrontendController
             $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
         }
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Category:index.html.twig', $viewParameters);
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
     /**

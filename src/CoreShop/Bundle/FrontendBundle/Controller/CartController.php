@@ -36,7 +36,7 @@ class CartController extends FrontendController
      */
     public function widgetAction(Request $request)
     {
-        return $this->renderTemplate('CoreShopFrontendBundle:Cart:_widget.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/_widget.html'), [
             'cart' => $this->getCart(),
         ]);
     }
@@ -60,7 +60,7 @@ class CartController extends FrontendController
 
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                     $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
-                    return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
+                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
                         'cart' => $this->getCart(),
                         'form' => $form->createView()
                     ]);
@@ -74,7 +74,7 @@ class CartController extends FrontendController
 
                     if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
                         $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
-                        return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
+                        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
                             'cart' => $this->getCart(),
                             'form' => $form->createView()
                         ]);
@@ -101,7 +101,7 @@ class CartController extends FrontendController
             }
         }
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Cart:summary.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
             'cart' => $cart,
             'form' => $form->createView()
         ]);

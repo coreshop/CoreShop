@@ -127,7 +127,9 @@ class CheckoutController extends FrontendController
      */
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
     {
-        return $this->renderTemplate(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
+        $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
+
+        return $this->renderTemplate($template, $dataForStep);
     }
 
     /**
@@ -210,7 +212,7 @@ class CheckoutController extends FrontendController
         $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
-        return $this->renderTemplate('@CoreShopFrontend/Checkout/error.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [
             'order' => $order,
             'payments' => $payments,
             'lastPayment' => $lastPayment
@@ -242,7 +244,7 @@ class CheckoutController extends FrontendController
             $this->get('security.token_storage')->setToken(null);
         }
 
-        return $this->renderTemplate('@CoreShopFrontend/Checkout/thank-you.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
     }

@@ -274,6 +274,12 @@ translations:
           de_CH: 'Abmelden'
           en: 'Logout'
           de: 'Abmelden'
+          
+  coreshop.ui.order:
+        languages:
+          de_CH: 'Bestellung'
+          en: 'Order'
+          de: 'Bestellung'
 
   coreshop.ui.order_history_and_details:
       languages:
@@ -286,6 +292,12 @@ translations:
           de_CH: 'Bestellnummer'
           en: 'Order Number'
           de: 'Bestellnummer'
+          
+  coreshop.ui.remove:
+      languages:
+          de_CH: 'Entfernen'
+          en: 'Remove'
+          de: 'Entfernen'
 
   coreshop.ui.shipment_number:
       languages:
@@ -403,9 +415,9 @@ translations:
 
   coreshop.ui.registration_text:
       languages:
-          de_CH: ''
-          en: ''
-          de: ''
+          de_CH: 'Einen neuen Account anlegen'
+          en: 'Create a new account'
+          de: 'Einen neuen Account anlegen'
 
   coreshop.ui.reset_password:
       languages:
@@ -824,7 +836,7 @@ translations:
   coreshop.form.customer_registration.address:
       languages:
           de_CH: 'Adressinformationen'
-          en: 'Addres Information'
+          en: 'Address Information'
           de: 'Adressinformationen'
 
   coreshop.form.address.company:
@@ -946,7 +958,7 @@ translations:
           de_CH: 'Newsletter'
           en: 'Newsletter'
           de: 'Newsletter'
-
+          
   coreshop.form.customer.newsletter.subscribe:
       languages:
           de_CH: 'Ja, ich möchte den Newsletter abonnieren'
@@ -1000,5 +1012,10 @@ translations:
           de_CH: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
           en: 'Some Products are not available anymore. Please check your cart for completeness.'
           de: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
-
+          
+  coreshop.product.tax.inc:
+        languages:
+          de_CH: 'inkl. %s% Steuer'
+          en: 'incl. %s% Tax'
+          de: 'inkl. %s% Steuer'
 

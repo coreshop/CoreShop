@@ -4,17 +4,17 @@
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
 {% block center %}
-    <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-        {% if product.getCategories|length > 0 %}
-            {% for cat in product.getCategories|first.getHierarchy() %}
-                <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
-            {% endfor %}
-        {% endif %}
-
-        <li class="active"><a href="{{ path('coreshop_product_detail', {name: product.getName, product: product.getId}) }}">{{ product.getName }}</a></li>
-    </ol>
-
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            {% if product.getCategories|length > 0 %}
+                {% for cat in product.getCategories|first.getHierarchy() %}
+                    <li class="breadcrumb-item"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
+                {% endfor %}
+            {% endif %}
+            <li class="breadcrumb-item active">{{ product.getName }}</li>
+        </ol>
+    </nav>
 
     <div class="row product-info">
 
@@ -24,13 +24,13 @@
             {% endif %}
 
             {% if product.getImages|length > 0 %}
-                <ul class="list-unstyled list-inline">
+                <div class="row">
                     {% for image in product.getImages %}
-                        <li>
+                        <div class="col-xs-12 col-sm-6">
                             {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive thumbnail"})|raw }}
-                        </li>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             {% endif %}
         </div>
 
@@ -94,22 +94,19 @@
                 {{ product_price.display_product_price(product) }}
             </div>
             <div class="tax">
-                {{ 'incl. %s%% Tax'|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+                {{ 'coreshop_product_tax_inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
             </div>
 
             <hr/>
 
             <div class="options">
-                <div class="cart-button button-group">
-                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" type="button" title="{{ 'coreshop.ui.wishlist'|trans }}" class="btn btn-wishlist">
+                <div class="cart-button btn-group">
+                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
                         <i class="fa fa-heart"></i>
                     </a>
-                    <button type="button" title="{{ 'coreshop.ui.compare'|trans }}" class="btn btn-compare" data-id="{{ product.getId }}">
-                        <i class="fa fa-bar-chart-o"></i>
-                    </button>
-
                     {% if coreshop_inventory_is_available(product) %}
-                        <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart" rel="nofollow">
+                        <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" class="btn btn-cart"
+                           rel="nofollow">
                             {{ 'coreshop.ui.add_to_cart'|trans }}
                             <i class="fa fa-shopping-cart"></i>
                         </a>
@@ -121,10 +118,10 @@
         </div>
     </div>
 
-    <div class="tabs-panel panel-smart">
+    <div class="tabs-panel card-smart">
         <ul class="nav nav-tabs">
-            <li class="active">
-                <a href="#tab-description">{{ 'coreshop.ui.description'|trans }}</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#tab-description">{{ 'coreshop.ui.description'|trans }}</a>
             </li>
         </ul>
 

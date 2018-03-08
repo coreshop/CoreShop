@@ -2,39 +2,42 @@
 {% extends '@CoreShopFrontend/layout-full.html.twig' %}
 
 {% block center %}
-    <div id="main-container" class="container">
+    <div id="main-container" class="container p-0">
 
-        <ol class="breadcrumb">
-            <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
-        </ol>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
+                <li class="breadcrumb-item active">{{ 'coreshop.ui.order'|trans }}</li>
+            </ol>
+        </nav>
 
         <h2 class="main-heading text-center">
             {{ 'coreshop.ui.order'|trans }} {{ order.getOrderNumber }}
         </h2>
 
         <div class="row">
-            <div class="col-xs-12 col-sm-6">
-                <div class="panel panel-smart">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
+            <div class="col-12 col-sm-6">
+                <div class="card card-smart">
+                    <div class="card-header">
+                        <h4 class="card-title">
                             {{ 'coreshop.ui.shipping_address'|trans }}
                         </h4>
                     </div>
-                    <div class="panel-body panel-delivery-address">
+                    <div class="card-body panel-delivery-address">
                         {{ order.getShippingAddress|coreshop_format_address }}
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6">
-                <div class="panel panel-smart">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
+            <div class="col-12 col-sm-6">
+                <div class="card card-smart">
+                    <div class="card-header">
+                        <h4 class="card-title">
                             {{ 'coreshop.ui.invoice_address'|trans }}
                         </h4>
                     </div>
-                    <div class="panel-body panel-delivery-address">
+                    <div class="card-body panel-delivery-address">
                         {{ order.getInvoiceAddress|coreshop_format_address }}
                     </div>
                 </div>
@@ -77,7 +80,7 @@
                             <td class="text-center">
                                 {% if productIsAvailable and item.getProduct.getImage() %}
                                     <a class="" href="{{ productUrl }}">
-                                        {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                                        {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
                                     </a>
                                 {% endif %}
                             </td>

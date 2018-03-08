@@ -1,5 +1,5 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% set shipping = cart.getShipping(false) %}
 {% set shippingIt = cart.getShipping(true) %}
@@ -19,7 +19,7 @@
 <tr>
     <td colspan="3" rowspan="{{ rowspan }}">
         {{ form_row(form.cartRuleCoupon) }}
-        <button type="submit" class="btn btn-black">{{ 'coreshop.ui.voucher.apply_code'|trans }}</button>
+        <button type="submit" class="btn btn-secondary">{{ 'coreshop.ui.voucher.apply_code'|trans }}</button>
     </td>
     <td class="text-right">
         <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>

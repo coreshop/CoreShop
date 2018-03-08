@@ -11,6 +11,7 @@ Always check this page for some important upgrade notes before updating to the l
     - remove ```RegisterBundles``` entry from ```app/AppKernel.php```
     - remove loading CoreShopCoreBundle Configuration in ```app/config.yml```
     - enable CoreShopCoreBundle via CLI or manually in ```var/config/extensions.php```: ```"CoreShop\\Bundle\\CoreBundle\\CoreShopCoreBundle" => TRUE```
+ - **BC break** Upgraded Default Layout to Bootstrap 4. This will most certainly cause issues when you just override certain templates. Best would be to copy all templates from before the Bootstrap 4 Upgrade.
 
 ### 2.0.0-alpha.4 to 2.0.0-alpha.5
  - **BC break** added Component\Core\Model\OrderItem and Component\Core\Model\QuoteItem. If you already customized them, inherit them from the Core Models.

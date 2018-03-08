@@ -12,7 +12,20 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+
 class FrontendController extends \Pimcore\Controller\FrontendController
 {
-
+    /**
+     * @var TemplateConfiguratorInterface
+     */
+    protected $templateConfigurator;
+    
+    /**
+     * @param TemplateConfiguratorInterface $templateConfigurator
+     */
+    public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator)
+    {
+        $this->templateConfigurator = $templateConfigurator;
+    }
 }

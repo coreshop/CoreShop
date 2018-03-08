@@ -41,34 +41,45 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('coreshop_frontend');
 
+        $rootNode
+            ->children()
+                ->scalarNode('view_suffix')->defaultValue('twig')->end()
+                ->scalarNode('view_bundle')->defaultValue('CoreShopFrontend')->end()
+            ->end()
+        ;
+
         $this->addPimcoreResourcesSection($rootNode);
         $this->addControllerSection($rootNode);
 
         return $treeBuilder;
     }
 
-    private function addControllerSection(ArrayNodeDefinition $node) {
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addControllerSection(ArrayNodeDefinition $node)
+    {
         $node->children()
-                ->arrayNode('controllers')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('index')->defaultValue(IndexController::class)->end()
-                        ->scalarNode('register')->defaultValue(RegisterController::class)->end()
-                        ->scalarNode('customer')->defaultValue(CustomerController::class)->end()
-                        ->scalarNode('currency')->defaultValue(CurrencyController::class)->end()
-                        ->scalarNode('language')->defaultValue(LanguageController::class)->end()
-                        ->scalarNode('search')->defaultValue(SearchController::class)->end()
-                        ->scalarNode('cart')->defaultValue(CartController::class)->end()
-                        ->scalarNode('checkout')->defaultValue(CheckoutController::class)->end()
-                        ->scalarNode('order')->defaultValue(OrderController::class)->end()
-                        ->scalarNode('category')->defaultValue(CategoryController::class)->end()
-                        ->scalarNode('product')->defaultValue(ProductController::class)->end()
-                        ->scalarNode('quote')->defaultValue(QuoteController::class)->end()
-                        ->scalarNode('security')->defaultValue(SecurityController::class)->end()
-                        ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
-                        ->scalarNode('wishlist')->defaultValue(WishlistController::class)->end()
-                    ->end()
-                ->end();
+            ->arrayNode('controllers')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('index')->defaultValue(IndexController::class)->end()
+                    ->scalarNode('register')->defaultValue(RegisterController::class)->end()
+                    ->scalarNode('customer')->defaultValue(CustomerController::class)->end()
+                    ->scalarNode('currency')->defaultValue(CurrencyController::class)->end()
+                    ->scalarNode('language')->defaultValue(LanguageController::class)->end()
+                    ->scalarNode('search')->defaultValue(SearchController::class)->end()
+                    ->scalarNode('cart')->defaultValue(CartController::class)->end()
+                    ->scalarNode('checkout')->defaultValue(CheckoutController::class)->end()
+                    ->scalarNode('order')->defaultValue(OrderController::class)->end()
+                    ->scalarNode('category')->defaultValue(CategoryController::class)->end()
+                    ->scalarNode('product')->defaultValue(ProductController::class)->end()
+                    ->scalarNode('quote')->defaultValue(QuoteController::class)->end()
+                    ->scalarNode('security')->defaultValue(SecurityController::class)->end()
+                    ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
+                    ->scalarNode('wishlist')->defaultValue(WishlistController::class)->end()
+                ->end()
+            ->end();
     }
 
     /**
