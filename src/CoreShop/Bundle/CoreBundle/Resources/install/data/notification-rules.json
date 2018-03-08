@@ -55,7 +55,7 @@
       {
         "type": "order.orderShippingTransition",
         "configuration": {
-          "shipmentState": "ship"
+          "transition": "ship"
         }
       }
     ],
@@ -79,7 +79,7 @@
       {
         "type": "order.orderTransition",
         "configuration": {
-          "orderState": "confirm"
+          "transition": "confirm"
         }
       }
     ],
