@@ -275,7 +275,7 @@ translations:
           en: 'Logout'
           de: 'Abmelden'
           
-  coreshop.ui.order
+  coreshop.ui.order:
         languages:
           de_CH: 'Bestellung'
           en: 'Order'
@@ -293,7 +293,7 @@ translations:
           en: 'Order Number'
           de: 'Bestellnummer'
           
-   coreshop.ui.remove
+   coreshop.ui.remove:
       languages:
           de_CH: 'Entfernen'
           en: 'Remove'
