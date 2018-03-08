@@ -958,24 +958,12 @@ translations:
           de_CH: 'Newsletter'
           en: 'Newsletter'
           de: 'Newsletter'
-
-  coreshop.form.customer.newsletter.no_interaction:
-      languages:
-          de_CH: 'Weder an- noch abmelden'
-          en: 'Neighter sub- nor unsubscribe'
-          de: 'Weder an- noch abmelden'
           
   coreshop.form.customer.newsletter.subscribe:
       languages:
           de_CH: 'Ja, ich möchte den Newsletter abonnieren'
           en: 'I would like to subscribe to the newsletter'
           de: 'Ja, ich möchte den Newsletter abonnieren'
-          
-  coreshop.form.customer.newsletter.unsubscribe:
-      languages:
-          de_CH: 'Vom Newsletter abmelden'
-          en: 'Unsubscribe from the newsletter'
-          de: 'Vom Newsletter abmelden'
 
   coreshop.form.login.username:
       languages:
