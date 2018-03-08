@@ -6,36 +6,43 @@ services:
         class: '%coreshop.frontend.controller.index%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.register:
         class: '%coreshop.frontend.controller.register%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.customer:
         class: '%coreshop.frontend.controller.customer%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.currency:
         class: '%coreshop.frontend.controller.currency%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.language:
         class: '%coreshop.frontend.controller.language%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.search:
         class: '%coreshop.frontend.controller.search%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.cart:
         class: '%coreshop.frontend.controller.cart%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.checkout:
         class: '%coreshop.frontend.controller.checkout%'
@@ -43,26 +50,31 @@ services:
             - '@coreshop.checkout_manager.factory'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.order:
         class: '%coreshop.frontend.controller.order%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.category:
         class: '%coreshop.frontend.controller.category%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.product:
         class: '%coreshop.frontend.controller.product%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.quote:
         class: '%coreshop.frontend.controller.quote%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.security:
         class: '%coreshop.frontend.controller.security%'
@@ -72,6 +84,7 @@ services:
             - '@coreshop.context.shopper'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
 
     coreshop.frontend.controller.payment:
         class: '%coreshop.frontend.controller.payment%'
@@ -88,3 +101,10 @@ services:
         class: '%coreshop.frontend.controller.wishlist%'
         calls:
             - [setContainer, ['@service_container']]
+            - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
+
+    coreshop.frontend.template_configurator:
+        class: CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator
+        arguments:
+            - '%coreshop.frontend.view_bundle%'
+            - '%coreshop.frontend.view_suffix%'

@@ -41,7 +41,7 @@ class QuoteController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Quote:show.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Quote/show.html'), [
             'quote' => $quote,
         ]);
     }

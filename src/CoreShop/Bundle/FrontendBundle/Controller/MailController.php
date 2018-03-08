@@ -23,7 +23,7 @@ class MailController extends FrontendController
      */
     public function mailAction(Request $request)
     {
-        return $this->renderTemplate('CoreShopFrontendBundle:Mail:mail.html.twig');
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/mail.html'));
     }
 
     /**
@@ -39,6 +39,6 @@ class MailController extends FrontendController
             $viewParameters['order'] = $order;
         }
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Mail:order-confirmation.html.twig', $viewParameters);
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
     }
 }

@@ -10,16 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\FrontendBundle\Controller;
+namespace CoreShop\Bundle\FrontendBundle\TemplateConfigurator;
 
-use Symfony\Component\HttpFoundation\Request;
-
-class LanguageController extends FrontendController
+interface TemplateConfiguratorInterface
 {
-    public function widgetAction(Request $request)
-    {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Language/_widget.html'), [
-            'languages' => ['de', 'en'], //$this->get('pimcore.locale')->getLocaleList()
-        ]);
-    }
+    /**
+     * @param $templateName
+     * @return string
+     */
+    public function findTemplate($templateName);
 }
