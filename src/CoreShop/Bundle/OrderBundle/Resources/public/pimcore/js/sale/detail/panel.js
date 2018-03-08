@@ -166,7 +166,17 @@ coreshop.order.sale.detail.panel = Class.create({
         });
 
         blocks = blocks.sort(function (blockA, blockB) {
-            return blockA.getPriority() > blockB.getPriority();
+            var blockAPriority = blockA.getPriority();
+            var blockBPriority = blockB.getPriority();
+
+            if (blockAPriority > blockBPriority) {
+                return 1;
+            }
+            if (blockAPriority < blockBPriority) {
+                return -1;
+            }
+
+            return 0;
         });
 
         blocks.forEach(function (block) {
