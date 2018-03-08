@@ -26,6 +26,7 @@ class PaymentRepository extends EntityRepository implements PaymentRepositoryInt
         return $this->createQueryBuilder('o')
             ->andWhere('o.orderId = :orderId')
             ->setParameter('orderId', $order->getId())
+            ->orderBy('o.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
