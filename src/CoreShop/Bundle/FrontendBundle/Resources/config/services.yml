@@ -59,6 +59,10 @@ services:
         class: '%coreshop.frontend.controller.quote%'
         parent: coreshop.frontend.controller.abstract
 
+    coreshop.frontend.controller.mail:
+        class: '%coreshop.frontend.controller.mail%'
+        parent: coreshop.frontend.controller.abstract
+
     coreshop.frontend.controller.security:
         class: '%coreshop.frontend.controller.security%'
         arguments:
