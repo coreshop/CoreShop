@@ -18,6 +18,6 @@ class IndexController extends FrontendController
 {
     public function indexAction(Request $request)
     {
-        return $this->renderTemplate('CoreShopFrontendBundle:Index:index.html.twig');
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Index/index.html'));
     }
 }

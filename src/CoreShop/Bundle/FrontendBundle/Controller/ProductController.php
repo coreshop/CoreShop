@@ -27,7 +27,7 @@ class ProductController extends FrontendController
     {
         $productRepository = $this->get('coreshop.repository.product');
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Product:_latest.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/_latest.html'), [
             'products' => $productRepository->findLatestByStore($this->get('coreshop.context.store')->getStore()),
         ]);
     }
@@ -50,7 +50,7 @@ class ProductController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Product:detail.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,
         ]);
     }

@@ -53,7 +53,7 @@ class RegisterController extends FrontendController
                 if (!$customer instanceof \CoreShop\Component\Core\Model\CustomerInterface ||
                     !$address instanceof AddressInterface
                 ) {
-                    return $this->renderTemplate('CoreShopFrontendBundle:Register:register.html.twig', [
+                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
                         'form' => $form->createView()
                     ]);
                 }
@@ -63,7 +63,7 @@ class RegisterController extends FrontendController
                 try {
                     $registrationService->registerCustomer($customer, $address, $formData, false);
                 } catch (CustomerAlreadyExistsException $e) {
-                    return $this->renderTemplate('CoreShopFrontendBundle:Register:register.html.twig', [
+                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
                         'form' => $form->createView()
                     ]);
                 }
@@ -72,7 +72,7 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Register:register.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
             'form' => $form->createView()
         ]);
     }
@@ -111,7 +111,7 @@ class RegisterController extends FrontendController
             }
         }
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Register:password-reset-request.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset-request.html'), [
             'form' => $form->createView()
         ]);
     }
@@ -143,7 +143,7 @@ class RegisterController extends FrontendController
                 }
             }
 
-            return $this->renderTemplate('CoreShopFrontendBundle:Register:password-reset.html.twig', [
+            return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset.html'), [
                 'form' => $form->createView()
             ]);
         }

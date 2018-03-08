@@ -22,7 +22,7 @@ class SearchController extends FrontendController
     {
         $form = $this->createSearchForm();
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Search:_widget.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/_widget.html'), [
             'form' => $form->createView()
         ]);
     }
@@ -58,7 +58,7 @@ class SearchController extends FrontendController
             $paginator->setCurrentPageNumber($page);
             $paginator->setItemCountPerPage($itemsPerPage);
 
-            return $this->renderTemplate('CoreShopFrontendBundle:Search:search.html.twig', [
+            return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
                 'searchText' => $text
             ]);
