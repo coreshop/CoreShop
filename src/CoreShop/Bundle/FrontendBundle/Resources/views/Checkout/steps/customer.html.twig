@@ -9,7 +9,7 @@
     {{ render(controller('coreshop.frontend.controller.security:loginAction', {renderLayout: false, target: pimcore_url()})) }}
 
     {% if coreshop_configuration('system.guest.checkout') %}
-        <h2 class="main-heading text-center">
+        <h2 class="main-heading text-center mt-4">
             {{ 'coreshop.ui.guest_register'|trans }} <br/>
         </h2>
 
