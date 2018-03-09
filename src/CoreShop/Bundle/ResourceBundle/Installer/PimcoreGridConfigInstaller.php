@@ -28,20 +28,28 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     protected $kernel;
 
     /**
+     * @var array
+     */
+    protected $classIds;
+
+    /**
      * @var GridConfigInstallerInterface
      */
     protected $gridConfigInstaller;
 
     /**
      * @param KernelInterface $kernel
+     * @param array $classIds
      * @param GridConfigInstallerInterface $gridConfigInstaller
      */
     public function __construct(
         KernelInterface $kernel,
+        array $classIds,
         GridConfigInstallerInterface $gridConfigInstaller
     )
     {
         $this->kernel = $kernel;
+        $this->classIds = $classIds;
         $this->gridConfigInstaller = $gridConfigInstaller;
     }
 
@@ -51,7 +59,6 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     public function installResources(OutputInterface $output, $applicationName = null)
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';
-        $classIds = $this->kernel->getContainer()->getParameter('coreshop.all.pimcore_classes.ids');
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $routeFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
@@ -85,11 +92,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             foreach ($gridConfigsToInstall as $name => $gridData) {
                 $progress->setMessage(sprintf('<error>Install Grid Config %s</error>', $name));
 
-                if (!isset($classIds[$gridData['class']])) {
-                    throw new \InvalidArgumentException(sprintf('ClassID for resource "%s" not found', $gridData['class']));
-                }
-
-                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $classIds[$gridData['class']], true);
+                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->classIds[$gridData['class']], true);
 
                 $progress->advance();
             }
