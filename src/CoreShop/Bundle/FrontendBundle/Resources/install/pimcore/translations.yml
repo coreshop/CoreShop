@@ -1015,7 +1015,7 @@ translations:
           
   coreshop.product.tax.inc:
         languages:
-          de_CH: 'inkl. %s% Steuer'
-          en: 'incl. %s% Tax'
-          de: 'inkl. %s% Steuer'
+          de_CH: 'inkl. %s%% Steuer'
+          en: 'incl. %s%% Tax'
+          de: 'inkl. %s%% Steuer'
 

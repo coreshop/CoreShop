@@ -15,7 +15,7 @@ documents:
     key: 'user-registered'
     type: 'email'
     action: 'mail'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -52,7 +52,7 @@ documents:
     key: 'user-reset-password'
     type: 'email'
     action: 'mail'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -91,7 +91,7 @@ documents:
     key: 'order-confirmation'
     type: 'email'
     action: 'order-confirmation'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -128,7 +128,7 @@ documents:
     key: 'order-shipped'
     type: 'email'
     action: 'mail'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -164,7 +164,7 @@ documents:
     key: 'user-order-comment'
     type: 'email'
     action: 'mail'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:

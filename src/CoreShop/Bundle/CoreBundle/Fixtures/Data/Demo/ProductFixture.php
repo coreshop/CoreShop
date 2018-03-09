@@ -73,7 +73,6 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
             $faker = Factory::create();
             $faker->addProvider(new Lorem($faker));
             $faker->addProvider(new Barcode($faker));
-            $faker->addProvider($this->container->get('kernel')->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3))));
 
             $categories = $this->container->get('coreshop.repository.category')->findAll();
 
@@ -86,8 +85,10 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 $images = [];
 
                 for ($j = 0; $j < 3; $j++) {
+                    $imagePath = $this->container->get('kernel')->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3)));
+
                     $image = new \Pimcore\Model\Asset\Image();
-                    $image->setData(file_get_contents($faker->imageUrl(1000, 1000, 'technics')));
+                    $image->setData(file_get_contents($imagePath));
                     $image->setParent(\Pimcore\Model\Asset\Service::createFolderByPath(sprintf('/demo/products/%s', $usedCategory->getName())));
                     $image->setFilename('image' . ($i) . '_' . ($j) . '.jpg');
                     \Pimcore\Model\Asset\Service::getUniqueKey($image);

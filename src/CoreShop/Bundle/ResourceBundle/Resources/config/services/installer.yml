@@ -70,6 +70,7 @@ services:
             - '@kernel'
             - '%coreshop.all.pimcore_classes.ids%'
             - '@coreshop.grid_config_installer'
+            - '@coreshop.resource.installer.classes'
         tags:
             - { name: 'coreshop.resource.installer', type: 'grid_config', priority: 200}
 

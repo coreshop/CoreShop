@@ -19,6 +19,7 @@ use CoreShop\Bundle\FrontendBundle\Controller\CurrencyController;
 use CoreShop\Bundle\FrontendBundle\Controller\CustomerController;
 use CoreShop\Bundle\FrontendBundle\Controller\IndexController;
 use CoreShop\Bundle\FrontendBundle\Controller\LanguageController;
+use CoreShop\Bundle\FrontendBundle\Controller\MailController;
 use CoreShop\Bundle\FrontendBundle\Controller\OrderController;
 use CoreShop\Bundle\FrontendBundle\Controller\ProductController;
 use CoreShop\Bundle\FrontendBundle\Controller\QuoteController;
@@ -78,6 +79,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('security')->defaultValue(SecurityController::class)->end()
                     ->scalarNode('payment')->defaultValue(PaymentController::class)->end()
                     ->scalarNode('wishlist')->defaultValue(WishlistController::class)->end()
+                    ->scalarNode('mail')->defaultValue(MailController::class)->end()
                 ->end()
             ->end();
     }
