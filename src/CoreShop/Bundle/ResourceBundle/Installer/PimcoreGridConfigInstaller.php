@@ -14,10 +14,11 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\GridConfigConfiguration;
 use CoreShop\Component\Pimcore\GridConfigInstallerInterface;
+use Pimcore\Model\DataObject\ClassDefinition;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
@@ -38,14 +39,21 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     protected $gridConfigInstaller;
 
     /**
+     * @var PimcoreClassInstallerInterface
+     */
+    protected $pimcoreClassInstaller;
+
+    /**
      * @param KernelInterface $kernel
      * @param array $classIds
      * @param GridConfigInstallerInterface $gridConfigInstaller
+     * @param PimcoreClassInstallerInterface $classInstaller
      */
     public function __construct(
         KernelInterface $kernel,
         array $classIds,
-        GridConfigInstallerInterface $gridConfigInstaller
+        GridConfigInstallerInterface $gridConfigInstaller,
+        PimcoreClassInstallerInterface $classInstaller
     )
     {
         $this->kernel = $kernel;
@@ -92,12 +100,35 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             foreach ($gridConfigsToInstall as $name => $gridData) {
                 $progress->setMessage(sprintf('<error>Install Grid Config %s</error>', $name));
 
-                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->classIds[$gridData['class']], true);
+                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->findClassId($gridData['class']), true);
 
                 $progress->advance();
             }
 
             $progress->finish();
         }
+    }
+
+    /**
+     * @param $classIdentifier
+     * @return int
+     */
+    protected function findClassId($classIdentifier)
+    {
+        if (isset($this->classIds[$classIdentifier])) {
+            return $this->classIds[$classIdentifier];
+        }
+
+        $freshlyInstalledClasses = $this->pimcoreClassInstaller->getInstalledClasses();
+
+        if (isset($freshlyInstalledClasses[$classIdentifier])) {
+            $class = $freshlyInstalledClasses[$classIdentifier];
+
+            if ($class instanceof ClassDefinition) {
+                return $class->getId();
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('Could\'nt find ClassID for Identifier %s', $classIdentifier));
     }
 }
