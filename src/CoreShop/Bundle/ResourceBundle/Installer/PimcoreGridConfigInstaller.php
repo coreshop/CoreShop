@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\GridConfigConfiguration;
 use CoreShop\Component\Pimcore\GridConfigInstallerInterface;
+use Pimcore\Model\DataObject\ClassDefinition;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -28,28 +29,20 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     protected $kernel;
 
     /**
-     * @var array
-     */
-    protected $classIds;
-
-    /**
      * @var GridConfigInstallerInterface
      */
     protected $gridConfigInstaller;
 
     /**
      * @param KernelInterface $kernel
-     * @param array $classIds
      * @param GridConfigInstallerInterface $gridConfigInstaller
      */
     public function __construct(
         KernelInterface $kernel,
-        array $classIds,
         GridConfigInstallerInterface $gridConfigInstaller
     )
     {
         $this->kernel = $kernel;
-        $this->classIds = $classIds;
         $this->gridConfigInstaller = $gridConfigInstaller;
     }
 
@@ -90,9 +83,15 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             $progress->start(count($gridConfigsToInstall));
 
             foreach ($gridConfigsToInstall as $name => $gridData) {
+                $class = ClassDefinition::getByName($gridData['class']);
+
+                if (!$class instanceof ClassDefinition) {
+                    throw new \InvalidArgumentException(sprintf('Class with name "%s" not found', $gridData['class']));
+                }
+
                 $progress->setMessage(sprintf('<error>Install Grid Config %s</error>', $name));
 
-                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->classIds[$gridData['class']], true);
+                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $class->getId(), true);
 
                 $progress->advance();
             }
