@@ -59,6 +59,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         $this->kernel = $kernel;
         $this->classIds = $classIds;
         $this->gridConfigInstaller = $gridConfigInstaller;
+        $this->pimcoreClassInstaller = $classInstaller;
     }
 
     /**
