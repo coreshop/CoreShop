@@ -49,6 +49,10 @@ class CheckoutController extends FrontendController
      */
     public function processAction(Request $request)
     {
+        if (!$this->getCart()->hasItems()) {
+            return $this->redirectToRoute('coreshop_cart_summary');
+        }
+
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
 
         /**
