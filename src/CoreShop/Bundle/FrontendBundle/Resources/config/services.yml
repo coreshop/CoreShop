@@ -65,11 +65,11 @@ services:
 
     coreshop.frontend.controller.security:
         class: '%coreshop.frontend.controller.security%'
+        parent: coreshop.frontend.controller.abstract
         arguments:
             - '@security.authentication_utils'
             - '@form.factory'
             - '@coreshop.context.shopper'
-        parent: coreshop.frontend.controller.abstract
 
     coreshop.frontend.controller.wishlist:
         class: '%coreshop.frontend.controller.wishlist%'
