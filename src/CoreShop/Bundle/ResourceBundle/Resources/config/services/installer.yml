@@ -68,7 +68,6 @@ services:
         class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller
         arguments:
             - '@kernel'
-            - '%coreshop.all.pimcore_classes.ids%'
             - '@coreshop.grid_config_installer'
         tags:
             - { name: 'coreshop.resource.installer', type: 'grid_config', priority: 200}
