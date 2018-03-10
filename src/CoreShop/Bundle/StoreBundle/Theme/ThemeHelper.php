@@ -41,7 +41,12 @@ final class ThemeHelper implements ThemeHelperInterface
 
         $result = $function();
 
-        $this->activeTheme->setName($backupTheme);
+        if (in_array($backupTheme, $this->activeTheme->getThemes())) {
+            $this->activeTheme->setName($backupTheme);
+        }
+        else {
+            $this->activeTheme->setName('standard');
+        }
 
         return $result;
     }
