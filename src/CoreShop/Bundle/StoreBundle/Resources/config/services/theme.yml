@@ -6,6 +6,11 @@ services:
             - '@coreshop.context.store'
             - '@coreshop.repository.store'
 
+    coreshop.store.theme_helper:
+        class: CoreShop\Bundle\StoreBundle\Theme\ThemeHelper
+        arguments:
+            - '@liip_theme.active_theme'
+
     coreshop.listener.theme_request:
         class: CoreShop\Bundle\StoreBundle\EventListener\ThemeRequestListener
         arguments:
