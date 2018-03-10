@@ -42,8 +42,8 @@ final class ThemeResolver implements ThemeResolverInterface
     public function __construct(
         ActiveTheme $activeTheme,
         StoreContextInterface $storeContext,
-        RepositoryInterface $storeRepository)
-
+        RepositoryInterface $storeRepository
+    )
     {
         $this->activeTheme = $activeTheme;
         $this->storeContext = $storeContext;
