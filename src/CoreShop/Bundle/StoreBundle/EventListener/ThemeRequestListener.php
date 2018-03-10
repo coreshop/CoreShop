@@ -47,12 +47,4 @@ final class ThemeRequestListener
 
         $this->themeResolver->resolveTheme();
     }
-
-    /**
-     * @param ConsoleCommandEvent $event
-     */
-    public function onConsoleCommand(ConsoleCommandEvent $event)
-    {
-        $this->themeResolver->resolveTheme();
-    }
 }

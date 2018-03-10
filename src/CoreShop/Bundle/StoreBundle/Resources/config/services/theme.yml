@@ -9,6 +9,7 @@ services:
     coreshop.store.theme_helper:
         class: CoreShop\Bundle\StoreBundle\Theme\ThemeHelper
         arguments:
+            - '@coreshop.store.theme_resolver'
             - '@liip_theme.active_theme'
 
     coreshop.listener.theme_request:
@@ -17,4 +18,3 @@ services:
             - '@coreshop.store.theme_resolver'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-            - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }

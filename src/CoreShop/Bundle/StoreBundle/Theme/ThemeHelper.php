@@ -17,15 +17,25 @@ use Liip\ThemeBundle\ActiveTheme;
 final class ThemeHelper implements ThemeHelperInterface
 {
     /**
+     * @var ThemeResolverInterface
+     */
+    private $themeResolver;
+
+    /**
      * @var ActiveTheme
      */
     private $activeTheme;
 
     /**
+     * @param ThemeResolverInterface $themeResolver
      * @param ActiveTheme $activeTheme
      */
-    public function __construct(ActiveTheme $activeTheme)
+    public function __construct(
+        ThemeResolverInterface $themeResolver,
+        ActiveTheme $activeTheme
+    )
     {
+        $this->themeResolver = $themeResolver;
         $this->activeTheme = $activeTheme;
     }
 
@@ -36,6 +46,8 @@ final class ThemeHelper implements ThemeHelperInterface
      */
     public function useTheme($themeName, \Closure $function)
     {
+        $this->themeResolver->resolveTheme();
+
         $backupTheme = $this->activeTheme->getName();
         $this->activeTheme->setName($themeName);
 
