@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\StoreBundle\EventListener;
 
 use CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class ThemeRequestListener
@@ -44,6 +45,14 @@ final class ThemeRequestListener
             }
         }
 
+        $this->themeResolver->resolveTheme();
+    }
+
+    /**
+     * @param ConsoleCommandEvent $event
+     */
+    public function onConsoleCommand(ConsoleCommandEvent $event)
+    {
         $this->themeResolver->resolveTheme();
     }
 }

@@ -65,6 +65,10 @@ final class ThemeResolver implements ThemeResolverInterface
             }
         }
 
+        if (!in_array('standard', $themes)) {
+            $themes[] = 'standard';
+        }
+
         $this->activeTheme->setThemes($themes);
 
         try {

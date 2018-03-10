@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Order;
 
+use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -54,18 +55,25 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $noteService;
 
     /**
+     * @var ThemeHelperInterface
+     */
+    private $themeHelper;
+
+    /**
      * @param MoneyFormatterInterface $priceFormatter
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
      * @param OrderDocumentRendererInterface $orderDocumentRenderer
      * @param DataObjectNoteService $noteService
+     * @param ThemeHelperInterface $themeHelper
      */
     public function __construct(
         MoneyFormatterInterface $priceFormatter,
         OrderInvoiceRepositoryInterface $invoiceRepository,
         OrderShipmentRepositoryInterface $shipmentRepository,
         OrderDocumentRendererInterface $orderDocumentRenderer,
-        DataObjectNoteService $noteService
+        DataObjectNoteService $noteService,
+        ThemeHelperInterface $themeHelper
     )
     {
         $this->priceFormatter = $priceFormatter;
@@ -73,6 +81,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $this->shipmentRepository = $shipmentRepository;
         $this->orderDocumentRenderer = $orderDocumentRenderer;
         $this->noteService = $noteService;
+        $this->themeHelper = $themeHelper;
     }
 
     /**
@@ -132,7 +141,10 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             }
         }
 
-        $mail->send();
+        $this->themeHelper->useTheme($order->getStore()->getTemplate(), function() use ($mail) {
+            $mail->send();
+        });
+
         $this->addOrderNote($order, $emailDocument, $mail);
 
         return true;
