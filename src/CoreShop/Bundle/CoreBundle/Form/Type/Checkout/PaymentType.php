@@ -168,6 +168,7 @@ final class PaymentType extends AbstractResourceType
             return;
         }
 
+        $form->getData()->setPaymentSettings(null);
         $form->remove('paymentSettings');
     }
 
