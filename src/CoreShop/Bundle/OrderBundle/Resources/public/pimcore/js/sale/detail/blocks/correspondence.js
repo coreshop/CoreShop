@@ -89,6 +89,7 @@ coreshop.order.sale.detail.blocks.correspondence = Class.create(coreshop.order.s
                                                 width: iFrameSettings.width,
                                                 height: iFrameSettings.height,
                                                 layout: 'fit',
+                                                modal: true,
                                                 items: [
                                                     {
                                                         xtype: 'box',
