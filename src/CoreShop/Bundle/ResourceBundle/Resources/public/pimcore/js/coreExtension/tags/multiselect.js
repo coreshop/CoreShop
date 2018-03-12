@@ -18,10 +18,10 @@ coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect,
         // generate store
         var store = [];
 
-        if (pimcore.globalmanager.exists('coreshop_' + this.storeName)) {
-            store = pimcore.globalmanager.get('coreshop_' + this.storeName);
+        if (pimcore.globalmanager.exists(this.storeName)) {
+            store = pimcore.globalmanager.get(this.storeName);
         } else {
-            console.log('coreshop_' + this.storeName + ' should be added as valid store');
+            console.log(this.storeName + ' should be added as valid store');
         }
 
         var options = {

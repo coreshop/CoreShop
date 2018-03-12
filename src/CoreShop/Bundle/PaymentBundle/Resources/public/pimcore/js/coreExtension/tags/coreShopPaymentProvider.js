@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopPaymentProvider');
 pimcore.object.tags.coreShopPaymentProvider = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopPaymentProvider',
-    storeName: 'payment_provider'
+    storeName: 'coreshop_payment_provider'
 });

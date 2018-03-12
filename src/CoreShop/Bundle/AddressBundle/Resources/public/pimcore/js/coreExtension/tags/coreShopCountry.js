@@ -14,6 +14,6 @@ pimcore.registerNS('pimcore.object.tags.coreShopCountry');
 pimcore.object.tags.coreShopCountry = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopCountry',
-    storeName: 'countries'
+    storeName: 'coreshop_countries'
 
 });

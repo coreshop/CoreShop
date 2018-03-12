@@ -70,7 +70,7 @@ coreshop.resource.panel = Class.create({
     },
 
     getTitle: function () {
-        return t('coreshop_' + this.type);
+        return t(this.type);
     },
 
     refresh: function () {
@@ -213,9 +213,7 @@ coreshop.resource.panel = Class.create({
 
                     this.grid.getStore().reload();
 
-                    if (pimcore.globalmanager.exists('coreshop_' + this.type)) {
-                        pimcore.globalmanager.get('coreshop_' + this.type).load();
-                    }
+                    this.refresh();
 
                     if (!data || !data.success) {
                         Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
@@ -239,9 +237,7 @@ coreshop.resource.panel = Class.create({
             success: function () {
                 this.grid.getStore().reload();
 
-                if (pimcore.globalmanager.exists('coreshop_' + this.type)) {
-                    pimcore.globalmanager.get('coreshop_' + this.type).load();
-                }
+                this.refresh();
 
                 if (this.panels[this.getPanelKey(record)]) {
                     this.panels[this.getPanelKey(record)].destroy();

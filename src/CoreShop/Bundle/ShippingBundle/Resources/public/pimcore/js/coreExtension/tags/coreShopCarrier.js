@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopCarrier');
 pimcore.object.tags.coreShopCarrier = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopCarrier',
-    storeName: 'carriers'
+    storeName: 'coreshop_carriers'
 });

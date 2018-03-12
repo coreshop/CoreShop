@@ -19,7 +19,7 @@ coreshop.country.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_countries_panel',
     storeId: 'coreshop_countries',
     iconCls: 'coreshop_icon_country',
-    type: 'countries',
+    type: 'coreshop_countries',
 
     url: {
         add: '/admin/coreshop/countries/add',

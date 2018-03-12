@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopCurrency');
 pimcore.object.tags.coreShopCurrency = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopCurrency',
-    storeName: 'currencies'
+    storeName: 'coreshop_currencies'
 });

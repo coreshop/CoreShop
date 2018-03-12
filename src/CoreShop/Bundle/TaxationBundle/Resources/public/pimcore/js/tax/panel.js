@@ -19,7 +19,7 @@ coreshop.tax.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_taxes_panel',
     storeId: 'coreshop_tax_rates',
     iconCls: 'coreshop_icon_taxes',
-    type: 'taxes',
+    type: 'coreshop_taxes',
 
     url: {
         add: '/admin/coreshop/tax_rates/add',

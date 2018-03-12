@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopState');
 pimcore.object.tags.coreShopState = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopState',
-    storeName: 'states'
+    storeName: 'coreshop_states'
 });
