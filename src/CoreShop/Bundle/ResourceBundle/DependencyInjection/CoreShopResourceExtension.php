@@ -46,6 +46,10 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             $container->setParameter('coreshop.all.pimcore_classes', []);
         }
 
+        if (!$container->hasParameter('coreshop.all.stack')) {
+            $container->setParameter('coreshop.all.stack', []);
+        }
+
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
     }
 
