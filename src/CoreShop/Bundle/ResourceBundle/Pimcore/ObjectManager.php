@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use Pimcore\Model\AbstractModel;
+use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
 final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
@@ -108,6 +109,10 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         }
 
         foreach ($this->modelsToPersist as $model) {
+            if (!$model->getPublished()) {
+                $model->setOmitMandatoryCheck(true);
+            }
+
             $model->save();
         }
     }
