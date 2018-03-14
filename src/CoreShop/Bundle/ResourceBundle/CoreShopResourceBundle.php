@@ -100,7 +100,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $jsFiles = [];
 
         if ($this->container->hasParameter('coreshop.all.pimcore.admin.js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.js'));
+            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.js'), true);
         }
 
         return $jsFiles;

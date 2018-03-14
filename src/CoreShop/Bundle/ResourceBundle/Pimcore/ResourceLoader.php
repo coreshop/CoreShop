@@ -18,11 +18,12 @@ final class ResourceLoader
 {
     /**
      * @param $resources
+     * @param $minify
      * @return array
      */
-    public function loadResources($resources)
+    public function loadResources($resources, $minify = false)
     {
-        if (PIMCORE_DEVMODE) {
+        if (PIMCORE_DEVMODE || !$minify) {
             return $resources;
         }
 
