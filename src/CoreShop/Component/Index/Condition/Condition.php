@@ -47,6 +47,19 @@ class Condition implements ConditionInterface
      * IN Condition (in).
      *
      * @param $fieldName
+     * @param $null
+     *
+     * @return Condition
+     */
+    public static function is($fieldName, $null)
+    {
+        return new self($fieldName, 'is', $null);
+    }
+
+    /**
+     * IN Condition (in).
+     *
+     * @param $fieldName
      * @param $array
      *
      * @return Condition

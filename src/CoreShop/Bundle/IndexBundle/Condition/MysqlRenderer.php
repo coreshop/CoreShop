@@ -47,10 +47,22 @@ class MysqlRenderer extends AbstractRenderer
         }
 
         if (count($inValues) > 0) {
-            return 'TRIM(`' . $condition->getFieldName() . '`) IN (' . implode(',', $inValues) . ')';
+            return '' . $condition->getFieldName() . ' IN (' . implode(',', $inValues) . ')';
         }
 
         return '';
+    }
+
+    /**
+     * @param ConditionInterface $condition
+     *
+     * @return string
+     */
+    protected function renderIs(ConditionInterface $condition)
+    {
+        $value = $condition->getValues();
+
+        return '' . $condition->getFieldName() . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
     }
 
     /**
@@ -78,7 +90,7 @@ class MysqlRenderer extends AbstractRenderer
                 break;
         }
 
-        return 'TRIM(`' . $condition->getFieldName() . '`) LIKE ' . $this->database->quote($patternValue);
+        return '' . $condition->getFieldName() . ' LIKE ' . $this->database->quote($patternValue);
     }
 
     /**
@@ -90,7 +102,7 @@ class MysqlRenderer extends AbstractRenderer
     {
         $values = $condition->getValues();
 
-        return 'TRIM(`' . $condition->getFieldName() . '`) >= ' . $values['from'] . ' AND TRIM(`' . $condition->getFieldName() . '`) <= ' . $values['to'];
+        return '' . $condition->getFieldName() . ' >= ' . $values['from'] . ' AND ' . $condition->getFieldName() . ' <= ' . $values['to'];
     }
 
     /**
@@ -121,6 +133,6 @@ class MysqlRenderer extends AbstractRenderer
         $value = $values['value'];
         $operator = $values['operator'];
 
-        return 'TRIM(`' . $condition->getFieldName() . '`) ' . $operator . ' ' . $this->database->quote($value);
+        return '' . $condition->getFieldName() . ' ' . $operator . ' ' . $this->database->quote($value);
     }
 }

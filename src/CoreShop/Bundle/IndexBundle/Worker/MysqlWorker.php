@@ -69,7 +69,10 @@ class MysqlWorker extends AbstractWorker
      */
     protected function processTable(IndexInterface $index)
     {
-        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+        /**
+         * @var $classHelpers ClassHelperInterface[]
+         */
+        $classHelpers = $this->getHelpers($index);
 
         $columns = $this->getTableColumns($this->getTablename($index));
         $columnsToDelete = $columns;
@@ -92,7 +95,7 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
-        if ($classHelper instanceof ClassHelperInterface) {
+        foreach ($classHelpers as $classHelper) {
             foreach ($classHelper->getSystemColumns() as $name => $type) {
                 if (!array_key_exists($name, $columns)) {
                     $columnTypeForIndex = $this->renderFieldType($type);
@@ -114,7 +117,10 @@ class MysqlWorker extends AbstractWorker
      */
     protected function processLocalizedTable(IndexInterface $index)
     {
-        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+        /**
+         * @var $classHelpers ClassHelperInterface[]
+         */
+        $classHelpers = $this->getHelpers($index);
 
         $localizedColumns = $this->getTableColumns($this->getLocalizedTablename($index));
         $localizedColumnsToAdd = [];
@@ -135,7 +141,7 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
-        if ($classHelper instanceof ClassHelperInterface) {
+        foreach ($classHelpers as $classHelper) {
             foreach ($classHelper->getLocalizedSystemColumns() as $name => $type) {
                 if (!array_key_exists($name, $localizedColumns)) {
                     $columnTypeForIndex = $this->renderFieldType($type);

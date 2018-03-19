@@ -30,13 +30,7 @@ final class RegisterClassHelperPass implements CompilerPassInterface
         $registry = $container->getDefinition('coreshop.registry.index.class_helpers');
 
         foreach ($container->findTaggedServiceIds('coreshop.index.class_helper') as $id => $attributes) {
-            if (!isset($attributes[0]['class'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `class` attributes.');
-            }
-
-            $class = $attributes[0]['class'];
-
-            $registry->addMethodCall('register', [$class, new Reference($id)]);
+            $registry->addMethodCall('register', [$id, new Reference($id)]);
         }
     }
 }

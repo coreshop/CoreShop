@@ -17,7 +17,6 @@ class RegisterProductHelperPass implements CompilerPassInterface
         }
 
         $stackId = 'coreshop.stack.product.pimcore_class_names';
-        $definitionId = 'coreshop.index.class_helper.product';
 
         if ($container->hasParameter($stackId)) {
             $registry = $container->getDefinition('coreshop.registry.index.class_helpers');
@@ -25,7 +24,13 @@ class RegisterProductHelperPass implements CompilerPassInterface
             $stack = $container->getParameter($stackId);
 
             foreach ($stack as $class) {
-                $container->setDefinition($definitionId, new Definition(ProductClassHelper::class));
+                $definitionId = sprintf('%s.%s', 'coreshop.index.class_helper.product', strtolower($class));
+                $definition = new Definition(ProductClassHelper::class);
+                $definition->setArguments([
+                    $class
+                ]);
+
+                $container->setDefinition($definitionId, $definition);
                 $registry->addMethodCall('register', [$class, new Reference($definitionId)]);
             }
         }

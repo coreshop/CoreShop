@@ -10,32 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Index\ClassHelper;
+namespace CoreShop\Component\Index\Worker;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use Doctrine\DBAL\Query\QueryBuilder;
 
-interface ClassHelperInterface
+interface IndexQueryHelperInterface
 {
     /**
-     * @return array
+     * @param IndexInterface $index
+     * @return ConditionInterface[]
      */
-    public function getSystemColumns();
-
-    /**
-     * @return array
-     */
-    public function getLocalizedSystemColumns();
-
-    /**
-     * @param IndexableInterface $indexable
-     * @return array
-     */
-    public function getIndexColumns(IndexableInterface $indexable);
+    public function preConditionQuery(IndexInterface $index);
 
     /**
      * @param IndexInterface $index
-     * @return boolean
+     * @param QueryBuilder $queryBuilder
+     * @return array
      */
-    public function supports(IndexInterface $index);
+    public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder);
 }

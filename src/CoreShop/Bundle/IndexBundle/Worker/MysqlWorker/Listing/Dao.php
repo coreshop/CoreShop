@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Db;
 
 class Dao
@@ -45,104 +46,71 @@ class Dao
     }
 
     /**
+     * @return QueryBuilder
+     */
+    public function createQueryBuilder()
+    {
+        return new QueryBuilder($this->database);
+    }
+
+    /**
      * Load objects.
      *
-     * @param $condition
-     * @param null|string $orderBy
-     * @param null|int $limit
-     * @param null|int $offset
+     * @param QueryBuilder $queryBuilder
      *
      * @return array
      */
-    public function load($condition, $orderBy = null, $limit = null, $offset = null)
+    public function load(QueryBuilder $queryBuilder)
     {
-        if (is_string($condition)) {
-            $condition = 'WHERE ' . $condition;
-        }
-
-        if (is_string($orderBy)) {
-            $orderBy = ' ORDER BY ' . $orderBy;
-        }
-
-        if (is_integer($limit)) {
-            if (is_integer($offset)) {
-                $limit = 'LIMIT ' . $offset . ', ' . $limit;
-            } else {
-                $limit = 'LIMIT ' . $limit;
-            }
-        }
-
+        $queryBuilder->from($this->model->getQueryTableName(), 'q');
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            if (!is_null($orderBy)) {
-                $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualObjectId as o_id FROM '
-                    . $this->model->getQueryTableName() . ' a '
-                    . $this->model->getJoins()
-                    . $condition . ' GROUP BY o_virtualObjectId' . $orderBy . ' ' . $limit;
+            if (!is_null($queryBuilder->getQueryPart('orderBy'))) {
+                $queryBuilder->select('DISTINCT o_virtualObjectId as o_id');
+                $queryBuilder->addGroupBy('o_virtualObjectId');
             } else {
-                $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualObjectId as o_id FROM '
-                    . $this->model->getQueryTableName() . ' a '
-                    . $this->model->getJoins()
-                    . $condition . ' ' . $limit;
+                $queryBuilder->select('DISTINCT o_virtualObjectId as o_id');
             }
         } else {
-            $query = 'SELECT SQL_CALC_FOUND_ROWS a.o_id FROM '
-                . $this->model->getQueryTableName() . ' a '
-                . $this->model->getJoins()
-                . $condition . $orderBy . ' ' . $limit;
+            $queryBuilder->select('DISTINCT o_id');
         }
-
-        $result = $this->database->fetchAll($query);
-        $this->lastRecordCount = (int)$this->database->fetchOne('SELECT FOUND_ROWS()');
-
-        return $result;
+        $result = $this->database->executeQuery($queryBuilder->getSQL());
+        $this->lastRecordCount = $result->rowCount();
+        return $result->fetchAll();
     }
 
     /**
      * Load Group by values.
      *
-     * @param $fieldname
-     * @param $condition
+     * @param QueryBuilder $queryBuilder
+     * @param $fieldName
      * @param bool $countValues
      *
      * @return array
      */
-    public function loadGroupByValues($fieldname, $condition, $countValues = false)
+    public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
-        if ($condition) {
-            $condition = 'WHERE ' . $condition;
-        }
-
+        $queryBuilder->from($this->model->getQueryTableName(), 'q');
+        $queryBuilder->groupBy($fieldName);
+        $queryBuilder->orderBy($fieldName);
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualObjectId) as `count` FROM "
-                    . $this->model->getQueryTableName() . ' a '
-                    . $this->model->getJoins()
-                    . $condition . ' GROUP BY TRIM(`' . $fieldname . '`) ORDER BY ' . $this->database->quoteIdentifier($fieldname);
+                $queryBuilder->select($fieldName . ' as value, count(DISTINCT o_virtualObjectId) as count');
             } else {
-                $query = "SELECT TRIM(`$fieldname`) as `value`, count(*) as `count` FROM "
-                    . $this->model->getQueryTableName() . ' a '
-                    . $this->model->getJoins()
-                    . $condition . ' GROUP BY TRIM(`' . $fieldname . '`) ORDER BY ' . $this->database->quoteIdentifier($fieldname);
+                $queryBuilder->select($fieldName . ' as value, count(*) as count');
             }
-
-            $result = $this->database->fetchAll($query);
-
+            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+            $result = $stmt->fetchAll();
             return $result;
         } else {
-            $query = 'SELECT ' . $this->database->quoteIdentifier($fieldname) . ' FROM '
-                . $this->model->getQueryTableName() . ' a '
-                . $this->model->getJoins()
-                . $condition . ' GROUP BY ' . $this->database->quoteIdentifier($fieldname) . ' ORDER BY ' . $this->database->quoteIdentifier($fieldname);
-
-            $queryResult = $this->database->fetchAll($query);
+            $queryBuilder->select($fieldName);
+            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+            $queryResult = $stmt->fetchAll();
             $result = [];
-
             foreach ($queryResult as $row) {
-                if ($row[$fieldname]) {
-                    $result[] = $row[$fieldname];
+                if ($row[$fieldName]) {
+                    $result[] = $row[$fieldName];
                 }
             }
-
             return $result;
         }
     }
@@ -150,52 +118,41 @@ class Dao
     /**
      * Load Grouo by Relation values.
      *
-     * @param $fieldname
-     * @param $condition
+     * @param QueryBuilder $queryBuilder
+     * @param $fieldName
      * @param bool $countValues
      *
      * @return array
      */
-    public function loadGroupByRelationValues($fieldname, $condition, $countValues = false)
+    public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
-        if ($condition) {
-            $condition = 'WHERE ' . $condition;
-        }
-
+        $queryBuilder->from($this->model->getRelationTablename(), 'q');
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $query = 'SELECT dest as `value`, count(DISTINCT src_virtualObjectId) as `count` FROM '
-                    . $this->model->getRelationTablename() . ' a '
-                    . 'WHERE fieldname = ' . $this->quote($fieldname);
+                $queryBuilder->select('dest as `value`, count(DISTINCT src_virtualObjectId) as `count`');
+                $queryBuilder->where('fieldname = ' . $fieldName);
             } else {
-                $query = 'SELECT dest as `value`, count(*) as `count` FROM '
-                    . $this->model->getRelationTablename() . ' a '
-                    . 'WHERE fieldname = ' . $this->quote($fieldname);
+                $queryBuilder->select('dest as `value`, count(*) as `count`');
+                $queryBuilder->where('fieldname = ' . $fieldName);
             }
-
-            $subquery = 'SELECT a.o_id FROM '
-                . $this->model->getQueryTableName() . ' a '
-                . $this->model->getJoins()
-                . $condition;
-
-            $query .= ' AND src IN (' . $subquery . ') GROUP BY dest';
-
-            $result = $this->database->fetchAssoc($query);
-
+            $subQueryBuilder = new QueryBuilder($this->database);
+            $subQueryBuilder->select('o_id');
+            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+            $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
+            $queryBuilder->andWhere('src in ('.$subQueryBuilder->getSQL().') GROUP BY dest');
+            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+            $result = $stmt->fetchAll();
             return $result;
         } else {
-            $query = 'SELECT dest FROM ' . $this->model->getRelationTablename() . ' a '
-                . 'WHERE fieldname = ' . $this->quote($fieldname);
-
-            $subquery = 'SELECT a.o_id FROM '
-                . $this->model->getQueryTableName() . ' a '
-                . $this->model->getJoins()
-                . $condition;
-
-            $query .= ' AND src IN (' . $subquery . ') GROUP BY dest';
-
-            $result = $this->database->fetchCol($query);
-
+            $queryBuilder->select('dest as `value`, count(DISTINCT src_virtualObjectId) as `count`');
+            $queryBuilder->where('fieldname = ' . $fieldName);
+            $subQueryBuilder = new QueryBuilder($this->database);
+            $subQueryBuilder->select('o_id');
+            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+            $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
+            $queryBuilder->andWhere('src in ('.$subQueryBuilder->getSQL().') GROUP BY dest');
+            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+            $result = $stmt->fetchColumn();
             return $result;
         }
     }
@@ -203,45 +160,20 @@ class Dao
     /**
      * Get Count.
      *
-     * @param $condition
-     * @param null $orderBy
-     * @param null $limit
-     * @param null $offset
+     * @param QueryBuilder $queryBuilder
      *
      * @return int
      */
-    public function getCount($condition, $orderBy = null, $limit = null, $offset = null)
+    public function getCount(QueryBuilder $queryBuilder)
     {
-        if ($condition) {
-            $condition = 'WHERE ' . $condition;
-        }
-
-        if ($orderBy) {
-            $orderBy = ' ORDER BY ' . $orderBy;
-        }
-
-        if ($limit) {
-            if ($offset) {
-                $limit = 'LIMIT ' . $offset . ', ' . $limit;
-            } else {
-                $limit = 'LIMIT ' . $limit;
-            }
-        }
-
+        $queryBuilder->from($this->model->getQueryTableName(), 'q');
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            $query = 'SELECT count(DISTINCT o_virtualObjectId) FROM '
-                . $this->model->getQueryTableName() . ' a '
-                . $this->model->getJoins()
-                . $condition . $orderBy . ' ' . $limit;
+            $queryBuilder->select('count(DISTINCT o_virtualObjectId)');
         } else {
-            $query = 'SELECT count(*) FROM '
-                . $this->model->getQueryTableName() . ' a '
-                . $this->model->getJoins()
-                . $condition . $orderBy . ' ' . $limit;
+            $queryBuilder->select('count(*)');
         }
-        $result = $this->database->fetchOne($query);
-
-        return $result;
+        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+        return $stmt->fetchColumn();
     }
 
     /**

@@ -77,6 +77,23 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * {@inheritdoc}
      */
+    public function getHelpers(IndexInterface $index)
+    {
+        $classHelpers = $this->classHelperRegistry->all();
+        $eligibleHelpers = [];
+
+        foreach ($classHelpers as $classHelper) {
+            if ($classHelper instanceof ClassHelperInterface && $classHelper->supports($index)) {
+                $eligibleHelpers[] = $classHelper;
+            }
+        }
+
+        return $eligibleHelpers;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function prepareData(IndexInterface $index, IndexableInterface $object)
     {
         $inAdmin = \Pimcore::inAdmin();
@@ -85,7 +102,7 @@ abstract class AbstractWorker implements WorkerInterface
         AbstractObject::setHideUnpublished(false);
 
         $result = InheritanceHelper::useInheritedValues(function () use ($index, $object) {
-            $classHelper = $this->classHelperRegistry->has($object->getClassName()) ? $this->classHelperRegistry->get($object->getClassName()) : null;
+            $classHelpers = $this->getHelpers($index);
 
             $virtualObjectId = $object->getId();
             $virtualObjectActive = $object->getEnabled();
@@ -113,8 +130,10 @@ abstract class AbstractWorker implements WorkerInterface
                 'o_type' => $object->getType()
             ];
 
-            if ($classHelper instanceof ClassHelperInterface) {
-                $data = array_merge($data, $classHelper->getIndexColumns($object));
+            foreach ($classHelpers as $classHelper) {
+                if ($classHelper instanceof ClassHelperInterface && $classHelper->supports($index)) {
+                    $data = array_merge($data, $classHelper->getIndexColumns($object));
+                }
             }
 
             $data['active'] = $object->getEnabled();

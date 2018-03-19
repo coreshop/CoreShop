@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Index\Worker;
 
+use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -50,6 +51,12 @@ interface WorkerInterface
      * @param IndexableInterface $object
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object);
+
+    /**
+     * @param IndexInterface $index
+     * @return ClassHelperInterface[]
+     */
+    public function getHelpers(IndexInterface $index);
 
     /**
      * returns product list implementation valid and configured for this worker/tenant.
