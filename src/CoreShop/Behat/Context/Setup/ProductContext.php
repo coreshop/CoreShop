@@ -116,6 +116,28 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") ean is "([^"]+)"$/
+     * @Given /^the (products) ean is "([^"]+)"$/
+     */
+    public function theProductsEanIs(ProductInterface $product, $ean)
+    {
+        $product->setEan($ean);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") sku is "([^"]+)"$/
+     * @Given /^the (products) sku is "([^"]+)"$/
+     */
+    public function theProductsSkuIs(ProductInterface $product, $sku)
+    {
+        $product->setSku($sku);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @param string $productName
      * @param int $price
      * @param StoreInterface|null $store

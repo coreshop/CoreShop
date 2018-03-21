@@ -8,21 +8,28 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Bundle\CoreBundle\Installer;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\Tool\Setup;
 
 final class CoreShopSetupContext implements Context
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @BeforeSuite
      */
@@ -33,5 +40,29 @@ final class CoreShopSetupContext implements Context
         }
 
         \CoreShop\Test\Setup::setupCoreShop();
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function purgeIndexTables()
+    {
+        $connection = $this->entityManager->getConnection();
+        $schemaManager = $connection->getSchemaManager();
+
+        $tables = $schemaManager->listTableNames();
+        $views = $schemaManager->listViews();
+
+        foreach ($tables as $tbl) {
+            if (strpos($tbl, 'coreshop_index_mysql_') === 0) {
+                $schemaManager->dropTable($tbl);
+            }
+        }
+
+        foreach ($views as $view) {
+            if (strpos($view->getName(), 'coreshop_index_mysql_') === 0) {
+                $schemaManager->dropView($view->getName());
+            }
+        }
     }
 }

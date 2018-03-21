@@ -107,3 +107,12 @@ services:
             - '@__symfony__.coreshop.address.formatter'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.index:
+        class: CoreShop\Behat\Context\Domain\IndexContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.index'
+            - '@__symfony__.doctrine.orm.entity_manager'
+        tags:
+            - { name: fob.context_service }

@@ -6,6 +6,13 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.transform.pimcore:
+        class: CoreShop\Behat\Context\Transform\PimcoreContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.transform.product:
         class: CoreShop\Behat\Context\Transform\ProductContext
         arguments:
@@ -119,5 +126,13 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.repository.address'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.index:
+        class: CoreShop\Behat\Context\Transform\IndexContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.index'
         tags:
             - { name: fob.context_service }
