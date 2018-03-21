@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopCarrierMultiselect');
 pimcore.object.tags.coreShopCarrierMultiselect = Class.create(coreshop.object.tags.multiselect, {
 
     type: 'coreShopCarrierMultiselect',
-    storeName: 'carriers'
+    storeName: 'coreshop_carriers'
 });

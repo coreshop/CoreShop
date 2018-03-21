@@ -18,7 +18,7 @@ coreshop.shippingrule.panel = Class.create(coreshop.rules.panel, {
     layoutId: 'coreshop_carrier_shipping_rule_panel',
     storeId: 'coreshop_carrier_shipping_rules',
     iconCls: 'coreshop_icon_carrier_shipping_rule',
-    type: 'carriers_shipping_rules',
+    type: 'coreshop_carriers_shipping_rules',
 
     url: {
         add: '/admin/coreshop/shipping_rules/add',

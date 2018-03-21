@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopCurrencyMultiselect');
 pimcore.object.tags.coreShopCurrencyMultiselect = Class.create(coreshop.object.tags.multiselect, {
 
     type: 'coreShopCurrencyMultiselect',
-    storeName: 'currencies'
+    storeName: 'coreshop_currencies'
 });

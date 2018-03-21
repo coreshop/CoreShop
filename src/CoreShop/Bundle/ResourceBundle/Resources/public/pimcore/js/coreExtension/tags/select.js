@@ -26,10 +26,10 @@ coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
         var store = [];
         var validValues = [];
 
-        if (pimcore.globalmanager.exists('coreshop_' + this.storeName)) {
-            store = pimcore.globalmanager.get('coreshop_' + this.storeName);
+        if (pimcore.globalmanager.exists(this.storeName)) {
+            store = pimcore.globalmanager.get(this.storeName);
         } else {
-            throw 'coreshop_' + this.storeName + ' should be added as valid store';
+            throw this.storeName + ' should be added as valid store';
         }
 
         var comboBoxStore = new Ext.data.Store({

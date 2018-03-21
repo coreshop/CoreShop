@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopStoreMultiselect');
 pimcore.object.tags.coreShopStoreMultiselect = Class.create(coreshop.object.tags.multiselect, {
 
     type: 'coreShopStoreMultiselect',
-    storeName: 'stores'
+    storeName: 'coreshop_stores'
 });

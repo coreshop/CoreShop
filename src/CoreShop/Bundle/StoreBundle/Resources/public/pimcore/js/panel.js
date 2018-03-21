@@ -19,7 +19,7 @@ coreshop.store.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_stores_panel',
     storeId: 'coreshop_stores',
     iconCls: 'coreshop_icon_store',
-    type: 'stores',
+    type: 'coreshop_stores',
 
     url: {
         add: '/admin/coreshop/stores/add',

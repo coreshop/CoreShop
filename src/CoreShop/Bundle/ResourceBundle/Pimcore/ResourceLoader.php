@@ -12,24 +12,29 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
+use Pimcore\Tool\Admin;
+
 final class ResourceLoader
 {
-    protected $loadedResources = [];
-
     /**
      * @param $resources
+     * @param $minify
      * @return array
      */
-    public function loadResources($resources)
+    public function loadResources($resources, $minify = false)
     {
-        $resourcesToLoad = [];
+        if (PIMCORE_DEVMODE || !$minify) {
+            return $resources;
+        }
 
-        foreach ($resources as $resource) {
-            if (!in_array($resource, $this->loadedResources)) {
-                $resourcesToLoad[] = $resource;
+        $scriptContents = "";
+
+        foreach ($resources as $scriptUrl) {
+            if (is_file(PIMCORE_WEB_ROOT . $scriptUrl)) {
+                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT . $scriptUrl) . "\n\n\n";
             }
         }
 
-        return $resourcesToLoad;
+        return [Admin::getMinimizedScriptPath($scriptContents)];
     }
 }

@@ -19,7 +19,7 @@ coreshop.currency.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_currencies_panel',
     storeId: 'coreshop_currencies',
     iconCls: 'coreshop_icon_currency',
-    type: 'currencies',
+    type: 'coreshop_currencies',
 
     url: {
         add: '/admin/coreshop/currencies/add',

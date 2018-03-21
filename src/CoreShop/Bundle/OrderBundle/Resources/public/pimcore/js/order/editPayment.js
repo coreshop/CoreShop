@@ -18,6 +18,7 @@ coreshop.order.order.editPayment = {
             width: 600,
             height: 450,
             resizeable: false,
+            modal: true,
             layout: 'fit',
             items: [{
                 xtype: 'form',

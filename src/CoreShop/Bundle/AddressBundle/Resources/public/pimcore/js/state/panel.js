@@ -19,7 +19,7 @@ coreshop.state.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_states_panel',
     storeId: 'coreshop_states',
     iconCls: 'coreshop_icon_state',
-    type: 'states',
+    type: 'coreshop_states',
 
     url: {
         add: '/admin/coreshop/states/add',

@@ -20,7 +20,7 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_filters_panel',
     storeId: 'coreshop_filters',
     iconCls: 'coreshop_icon_filters',
-    type: 'filters',
+    type: 'coreshop_filters',
 
     url: {
         add: '/admin/coreshop/filters/add',

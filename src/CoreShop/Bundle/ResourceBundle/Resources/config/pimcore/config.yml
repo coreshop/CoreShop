@@ -11,3 +11,9 @@ pimcore:
             data:
                 map:
                     coreShopSerializedData: CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData
+
+
+doctrine:
+    dbal:
+        types:
+            pimcoreObject: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject

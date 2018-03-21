@@ -18,6 +18,7 @@ coreshop.order.order.editInvoice = {
             width: 600,
             height: 450,
             resizeable: false,
+            modal: true,
             layout: 'fit',
             items: [{
                 xtype: 'form',
@@ -108,6 +109,8 @@ coreshop.order.order.editInvoice = {
                         tooltip: t('open'),
                         handler: function (widgetColumn) {
                             pimcore.helpers.openObject(invoice.get('o_id'), 'object');
+
+                            window.close();
                         },
                         listeners: {
                             beforerender: function (widgetColumn) {
