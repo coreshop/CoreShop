@@ -14,3 +14,13 @@ services:
             - '%coreshop.folder.guest%'
             - '%coreshop.folder.address%'
 
+
+    coreshop.customer.request_newsletter_confirm.listener:
+        class: CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener
+        arguments:
+            - '@router'
+            - '@request_stack'
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.customer.register, method: checkCustomerNewsletterConfirmation }
+            - { name: kernel.event_listener, event: coreshop.customer.update_post, method: checkCustomerNewsletterConfirmation }

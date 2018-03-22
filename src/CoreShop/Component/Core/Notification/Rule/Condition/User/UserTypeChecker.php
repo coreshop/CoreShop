@@ -21,6 +21,10 @@ class UserTypeChecker extends AbstractConditionChecker
 
     const TYPE_PASSWORD_RESET = 'password-reset';
 
+    const TYPE_NEWSLETTER_DOUBLE_OPT_IN = 'newsletter-double-opt-in';
+
+    const TYPE_NEWSLETTER_CONFIRMED = 'newsletter-confirmed';
+
     /**
      * {@inheritdoc}
      */

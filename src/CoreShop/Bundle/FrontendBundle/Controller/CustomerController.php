@@ -19,6 +19,7 @@ use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use Pimcore\Tool\Newsletter;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontendController
@@ -305,6 +306,42 @@ class CustomerController extends FrontendController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmNewsletterAction(Request $request)
+    {
+        $token = $request->get('token');
+        $newsletterUser = null;
+
+        if (!$token) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $newsletterTool = new Newsletter($this->getParameter('coreshop.model.customer.pimcore_class_id'));
+
+        if ($success = $newsletterTool->confirm($token)) {
+            $newsletterUser = $newsletterTool->getObjectByToken($token);
+
+            $event = new ResourceControllerEvent($newsletterUser, ['request' => $request]);
+            $this->get('event_dispatcher')->dispatch(
+                sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'newsletter_confirm'),
+                $event
+            );
+
+            $this->addFlash('success', 'coreshop.ui.newsletter_confirmed');
+        } else {
+            $this->addFlash('error', 'coreshop.ui.newsletter_confirmation_error');
+        }
+
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'), [
+            'newsletterUser' => $newsletterUser,
+            'success' => $success
+        ]);
+    }
+
 
     /**
      * @return CustomerInterface|null

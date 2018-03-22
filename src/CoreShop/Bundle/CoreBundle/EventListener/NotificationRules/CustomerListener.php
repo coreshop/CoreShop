@@ -12,8 +12,12 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
+use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Tool\Newsletter;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
@@ -25,7 +29,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
     public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event)
     {
         $this->rulesProcessor->applyRules('user', $event->getCustomer(), [
-            'type' => 'password-reset',
+            'type' => UserTypeChecker::TYPE_PASSWORD_RESET,
             'recipient' => $event->getCustomer()->getEmail(),
             'resetLink' => $event->getResetLink(),
             '_locale' => $this->shopperContext->getLocaleCode()
@@ -39,14 +43,82 @@ final class CustomerListener extends AbstractNotificationRuleListener
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
+        /**
+         * @var $user CustomerInterface
+         */
         $user = $event->getSubject();
 
-        if($user->getIsGuest() === true) {
+        if ($user->getIsGuest() === true) {
             return;
         }
 
         $this->rulesProcessor->applyRules('user', $user, [
-            'type' => 'register',
+            'type' => UserTypeChecker::TYPE_REGISTER,
+            'recipient' => $user->getEmail(),
+            '_locale' => $this->shopperContext->getLocaleCode()
+        ]);
+    }
+
+    /**
+     * @param RequestNewsletterConfirmationEvent $event
+     */
+    public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event)
+    {
+        Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
+
+        /**
+         * @var $user CustomerInterface
+         */
+        $user = $event->getCustomer();
+
+        if ($user->getIsGuest() === true) {
+            return;
+        }
+
+        if (!$user instanceof Concrete) {
+            return;
+        }
+
+        $newsletterTool = new Newsletter($user::classId());
+        $user = $newsletterTool->subscribe([
+            'email' => $user->getEmail()
+        ]);
+
+        $confirmLink = $event->getConfirmLink();
+        $confirmLink = $confirmLink . (parse_url($confirmLink, PHP_URL_QUERY) ? '&' : '?') . 'token=' . $user->getProperty('token');
+
+        $this->rulesProcessor->applyRules('user', $user, [
+            'type' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
+            'recipient' => $user->getEmail(),
+            '_locale' => $this->shopperContext->getLocaleCode(),
+            'gender' => $user->getGender(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+            'email' => $user->getEmail(),
+            'token' => $user->getProperty('token'),
+            'object' => $user,
+            'confirmLink' => $confirmLink
+        ]);
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function applyNewsletterConfirmed(GenericEvent $event)
+    {
+        Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
+
+        /**
+         * @var $user CustomerInterface
+         */
+        $user = $event->getSubject();
+
+        if ($user->getIsGuest() === true) {
+            return;
+        }
+
+        $this->rulesProcessor->applyRules('user', $user, [
+            'type' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
             'recipient' => $user->getEmail(),
             '_locale' => $this->shopperContext->getLocaleCode()
         ]);
