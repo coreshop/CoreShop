@@ -175,6 +175,7 @@ class CustomerController extends FrontendController
                 $customer->addAddress($address);
                 $customer->save();
 
+                $this->addFlash('success', sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated'));
                 return $this->redirect($handledForm->get('_redirect')->getData());
             }
         }
@@ -218,6 +219,7 @@ class CustomerController extends FrontendController
 
         $address->delete();
 
+        $this->addFlash('success', 'coreshop.ui.customer.address_successfully_deleted');
         return $this->redirectToRoute('coreshop_customer_addresses');
     }
 
@@ -252,6 +254,7 @@ class CustomerController extends FrontendController
                     $event
                 );
 
+                $this->addFlash('success', 'coreshop.ui.customer.profile_successfully_updated');
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }
@@ -292,6 +295,7 @@ class CustomerController extends FrontendController
                     $event
                 );
 
+                $this->addFlash('success', 'coreshop.ui.customer.password_successfully_changed');
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }

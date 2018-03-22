@@ -14,6 +14,8 @@
         {{ 'coreshop.ui.account'|trans }}
     </h2>
 
+    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
+
     <div class="list-group">
         <a href="{{ path('coreshop_customer_orders') }}" title="{{ 'coreshop.ui.orders'|trans }}" class="list-group-item">
             <i class="fa fa-list-ol"></i>
