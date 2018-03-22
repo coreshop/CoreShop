@@ -8,9 +8,9 @@ CoreShop comes with a lot of build-in events.
 |:-----|:------------|:----------|
 | `coreshop.customer.update_post` | ResourceControllerEvent | Fires after Customer has updated the profile |
 | `coreshop.customer.change_password_post` | ResourceControllerEvent | Fires after Customer has changed the password |
-| `coreshop.customer.address.add_post` | ResourceControllerEvent | Fires after Customer has added a new address |
-| `coreshop.customer.address.update_post` | ResourceControllerEvent | Fires after Customer has updated a address |
-| `coreshop.customer.address.delete_pre` | ResourceControllerEvent | Fires before Customer deletes a address |
+| `coreshop.address.add_post` | ResourceControllerEvent | Fires after Customer has added a new address |
+| `coreshop.address.update_post` | ResourceControllerEvent | Fires after Customer has updated a address |
+| `coreshop.address.delete_pre` | ResourceControllerEvent | Fires before Customer deletes a address |
 
 ## Cart
 

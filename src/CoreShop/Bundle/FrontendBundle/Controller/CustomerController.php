@@ -166,9 +166,10 @@ class CustomerController extends FrontendController
                 $address->save();
 
                 // todo: move this to a resource controller event
+                print_r( sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType)); exit;
                 $event = new ResourceControllerEvent($address, ['request' => $request]);
                 $this->get('event_dispatcher')->dispatch(
-                    sprintf('%s.%s.post_%s', 'coreshop', 'address', $eventType),
+                    sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType),
                     $event
                 );
 
@@ -213,7 +214,7 @@ class CustomerController extends FrontendController
         // todo: move this to a resource controller event
         $event = new ResourceControllerEvent($address, ['request' => $request]);
         $this->get('event_dispatcher')->dispatch(
-            sprintf('%s.%s.pre_%s', 'coreshop', 'address', 'delete'),
+            sprintf('%s.%s.%s_pre', 'coreshop', 'address', 'delete'),
             $event
         );
 
