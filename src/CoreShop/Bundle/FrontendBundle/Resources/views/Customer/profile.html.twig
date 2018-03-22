@@ -23,9 +23,13 @@
             <i class="fa fa-building"></i>
             <span>{{ 'coreshop.ui.addresses'|trans }}</span>
         </a>
-        <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'coreshop.ui.settings'|trans }}" class="list-group-item">
+        <a href="{{ path('coreshop_customer_settings') }}" title="{{ 'coreshop.ui.personal_information'|trans }}" class="list-group-item">
             <i class="fa fa-user"></i>
             <span>{{ 'coreshop.ui.personal_information'|trans }}</span>
+        </a>
+        <a href="{{ path('coreshop_customer_change_password') }}" title="{{ 'coreshop.ui.change_password'|trans }}" class="list-group-item">
+            <i class="fa fa-lock"></i>
+            <span>{{ 'coreshop.ui.change_password'|trans }}</span>
         </a>
     </div>
 </div>

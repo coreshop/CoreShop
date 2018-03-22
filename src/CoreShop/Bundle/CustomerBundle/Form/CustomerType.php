@@ -69,16 +69,6 @@ class CustomerType extends AbstractResourceType
                 'second_options' => ['label' => 'coreshop.form.customer.email_repeat']
             ]);
 
-        if (!$options['guest']) {
-            $builder
-                ->add('password', RepeatedType::class, [
-                    'type' => PasswordType::class,
-                    'invalid_message' => 'coreshop.form.customer.password.must_match',
-                    'first_options' => ['label' => 'coreshop.form.customer.password'],
-                    'second_options' => ['label' => 'coreshop.form.customer.password_repeat']
-                ]);
-        }
-
         if ($options['allow_default_address'] && $options['customer']) {
             $builder->add('defaultAddress', AddressChoiceType::class, [
                 'customer' => $options['customer'],

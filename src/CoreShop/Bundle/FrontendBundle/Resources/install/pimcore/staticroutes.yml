@@ -260,6 +260,15 @@ routes:
     variables: _locale
     priority: 2
 
+  coreshop_customer_change_password:
+    pattern: "/(\\w+)\\/shop\\/customer\\/change-password/"
+    reverse: "/%_locale/shop/customer/change-password"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.customer"
+    action: changePassword
+    variables: _locale
+    priority: 2
+
   coreshop_customer_password_reset_request:
     pattern: "/(\\w+)\\/shop\\/password-reset-request/"
     reverse: "/%_locale/shop/password-reset-request"

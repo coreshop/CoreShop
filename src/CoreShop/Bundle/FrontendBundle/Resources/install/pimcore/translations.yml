@@ -365,6 +365,12 @@ translations:
           en: 'Personal Information'
           de: 'Persönliche Informationen'
 
+  coreshop.ui.change_password:
+      languages:
+          de_CH: 'Passwort ändern'
+          en: 'Change Password'
+          de: 'Passwort ändern'
+
   coreshop.ui.price:
       languages:
           de_CH: 'Preis'
@@ -917,6 +923,12 @@ translations:
           en: 'Repeat Email Addres'
           de: 'E-Mail-Adresse wiederholen'
 
+  coreshop.form.customer.current_password:
+      languages:
+          de_CH: 'Aktuelles Passwort'
+          en: 'Current Password'
+          de: 'Aktuelles Passwort'
+
   coreshop.form.customer.password:
       languages:
           de_CH: 'Passwort'
@@ -928,6 +940,18 @@ translations:
           de_CH: 'Passwort wiederholen'
           en: 'Repeat Password'
           de: 'Passwort wiederholen'
+
+  coreshop.form.customer.new_password:
+      languages:
+          de_CH: 'Neues Passwort'
+          en: 'New Password'
+          de: 'Neues Passwort'
+
+  coreshop.form.customer.new_password_repeat:
+      languages:
+          de_CH: 'Neues Passwort wiederholen'
+          en: 'New Repeat Password'
+          de: 'Neues Passwort wiederholen'
 
   coreshop.form.customer.default_address:
       languages:

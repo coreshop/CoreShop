@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -22,6 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontendController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function headerAction(Request $request)
     {
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/_header.html'), [
@@ -30,6 +35,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function footerAction()
     {
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/_footer.html'), [
@@ -38,6 +46,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function profileAction()
     {
         $customer = $this->getCustomer();
@@ -51,6 +62,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function ordersAction()
     {
         $customer = $this->getCustomer();
@@ -65,6 +79,10 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function orderDetailAction(Request $request)
     {
         $orderId = $request->get('order');
@@ -90,6 +108,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function addressesAction()
     {
         $customer = $this->getCustomer();
@@ -103,6 +124,10 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function addressAction(Request $request)
     {
         $customer = $this->getCustomer();
@@ -161,6 +186,10 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function addressDeleteAction(Request $request)
     {
         $customer = $this->getCustomer();
@@ -192,6 +221,10 @@ class CustomerController extends FrontendController
         return $this->redirectToRoute('coreshop_customer_addresses');
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function settingsAction(Request $request)
     {
         $customer = $this->getCustomer();
@@ -229,6 +262,49 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $customer = $this->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $form = $this->get('form.factory')->createNamed('', ChangePasswordType::class);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+            $handledForm = $form->handleRequest($request);
+
+            if ($handledForm->isValid()) {
+
+                $formData = $handledForm->getData();
+                $customer->setPassword($formData['password']);
+                $customer->save();
+
+                // todo: move this to a resource controller event
+                $event = new ResourceControllerEvent($customer, ['request' => $request]);
+                $this->get('event_dispatcher')->dispatch(
+                    sprintf('%s.%s.post_%s', 'coreshop', 'customer', 'change_password'),
+                    $event
+                );
+
+                return $this->redirectToRoute('coreshop_customer_profile');
+            }
+        }
+
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/change_password.html'), [
+            'customer' => $customer,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @return CustomerInterface|null
+     */
     protected function getCustomer()
     {
         try {
