@@ -23,6 +23,7 @@ use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
+use Pimcore\Tool;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
@@ -155,7 +156,10 @@ final class ProductContext implements Context
 
         $product->setKey(File::getValidFilename($productName));
         $product->setParent(Folder::getByPath('/'));
-        $product->setName($productName, 'en');
+
+        foreach (Tool::getValidLanguages() as $lang) {
+            $product->setName($productName, $lang);
+        }
 
         if (null !== $store) {
             $product->setStores([$store->getId()]);
