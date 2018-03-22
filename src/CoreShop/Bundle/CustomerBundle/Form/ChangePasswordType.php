@@ -34,6 +34,7 @@ class ChangePasswordType extends AbstractType
         $builder
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'invalid_message' => 'coreshop.form.customer.password.must_match',
                 'first_options' => ['label' => 'coreshop.form.customer.new_password'],
                 'second_options' => ['label' => 'coreshop.form.customer.new_password_repeat']
             ]);

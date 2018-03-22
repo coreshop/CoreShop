@@ -248,7 +248,7 @@ class CustomerController extends FrontendController
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($customer, ['request' => $request]);
                 $this->get('event_dispatcher')->dispatch(
-                    sprintf('%s.%s.post_%s', 'coreshop', 'customer', 'update'),
+                    sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'update'),
                     $event
                 );
 
@@ -288,7 +288,7 @@ class CustomerController extends FrontendController
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($customer, ['request' => $request]);
                 $this->get('event_dispatcher')->dispatch(
-                    sprintf('%s.%s.post_%s', 'coreshop', 'customer', 'change_password'),
+                    sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'change_password'),
                     $event
                 );
 
