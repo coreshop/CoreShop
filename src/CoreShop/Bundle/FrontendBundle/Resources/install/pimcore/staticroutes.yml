@@ -62,6 +62,15 @@ routes:
     variables: _locale
     priority: 3
 
+  coreshop_cart_check_shipment:
+    pattern: "/(\\w+)\\/shop\\/cart\\/shipment-calculation/"
+    reverse: "/%_locale/shop/cart/shipment-calculation"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.cart"
+    action: shipmentCalculation
+    variables: _locale
+    priority: 3
+
   coreshop_login:
     pattern: "/(\\w+)\\/shop\\/login/"
     reverse: "/%_locale/shop/login"

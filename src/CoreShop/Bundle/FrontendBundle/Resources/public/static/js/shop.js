@@ -8,12 +8,34 @@ $(document).ready(function () {
 
     shop.init = function () {
         shop.initChangeAddress();
+        shop.initCartShipmentCalculator();
 
         $('#paymentProvider').handlePrototypes({
             'prototypePrefix': 'paymentProvider',
             'containerSelector': '.paymentSettings',
             'selectorAttr': 'data-factory'
         });
+    };
+
+    shop.initCartShipmentCalculator = function () {
+
+        $(document).on('submit', 'form[name="coreshop_shipping_calculator"]', function (ev) {
+            ev.preventDefault();
+            var $form = $(this);
+            $form.addClass('loading');
+            $form.find('button[type="submit"]').attr('disabled', 'disabled');
+            $form.closest('.cart-shipment-calculation-box').find('.cart-shipment-available-carriers').css('opacity', .2);
+            $.ajax({
+                url: $form.attr('action'),
+                method: 'POST',
+                data: $form.serialize(),
+                success: function(res) {
+                    $form.removeClass('loading');
+                    $form.closest('.cart-shipment-calculation-box').replaceWith($(res));
+                }
+            });
+        });
+
     };
 
     shop.initChangeAddress = function () {

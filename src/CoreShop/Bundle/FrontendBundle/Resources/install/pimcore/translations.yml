@@ -233,6 +233,30 @@ translations:
           en: 'Update Cart'
           de: 'Warenkorb aktualisieren'
 
+  coreshop.ui.cart.shipment.available_carriers:
+      languages:
+          de_CH: 'Verfügbare Versanddienste'
+          en: 'Available Carriers'
+          de: 'Verfügbare Versanddienste'
+
+  coreshop.ui.cart.shipment.is_free_shipping:
+      languages:
+          de_CH: 'Kostenlose Lieferung'
+          en: 'Free Shipping'
+          de: 'Kostenlose Lieferung'
+
+  coreshop.ui.cart.shipment.no_valid_carrier_found:
+      languages:
+          de_CH: 'Es wurden keine Versanddienste gefunden'
+          en: 'No valid carrier found'
+          de: 'Es wurden keine Versanddienste gefunden'
+
+  coreshop.ui.cart.shipment.search_for_carrier:
+      languages:
+          de_CH: 'Passenden Versanddienst finden'
+          en: 'Search for Carrier'
+          de: 'Passenden Versanddienst finden'
+
   coreshop.ui.items:
       languages:
           de_CH: 'Produkte'
@@ -1060,6 +1084,24 @@ translations:
           de_CH: 'Bezahlung erneut durchführen'
           en: 'Process payment'
           de: 'Bezahlung erneut durchführen'
+
+  coreshop.form.cart.carrier.country:
+      languages:
+          de_CH: 'Land'
+          en: 'Country'
+          de: 'Land'
+
+  coreshop.form.cart.carrier.zip:
+      languages:
+          de_CH: 'PLZ'
+          en: 'Post Code'
+          de: 'PLZ'
+
+  coreshop.form.cart.carrier.submit:
+      languages:
+          de_CH: 'Suchen'
+          en: 'Search'
+          de: 'Suchen'
 
   coreshop.global_error.cart_has_changed:
       languages:
