@@ -26,6 +26,14 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
     public function findByResetToken($resetToken);
 
     /**
+     * Find customer by newsletter token
+     *
+     * @param $newsletterToken
+     * @return CustomerInterface|null
+     */
+    public function findByNewsletterToken($newsletterToken);
+
+    /**
      * Find Customer by email.
      *
      * @param $email

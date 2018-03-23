@@ -929,6 +929,18 @@ translations:
           en: 'Address has been removed'
           de: 'Adresse wurde gelöscht'
 
+  coreshop.ui.newsletter_confirmed:
+      languages:
+          de_CH: 'Vielen Dank. Ihre E-Mail-Adresse ist nun bestätigt.'
+          en: 'Thank you. Your e-mail address is now confirmed.'
+          de: 'Vielen Dank. Ihre E-Mail-Adresse ist nun bestätigt.'
+
+  coreshop.ui.newsletter_confirmation_error:
+      languages:
+          de_CH: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
+          en: 'Error confirming your e-mail address.'
+          de: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
+
   coreshop.form.customer.firstname:
       languages:
           de_CH: 'Vorname'

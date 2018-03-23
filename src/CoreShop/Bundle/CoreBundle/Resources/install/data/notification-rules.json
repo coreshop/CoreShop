@@ -48,6 +48,54 @@
     ]
   },
   {
+    "name": "User Newsletter Double-Opt-In",
+    "type": "user",
+    "active": true,
+    "conditions": [
+      {
+        "type": "user.userType",
+        "configuration": {
+          "userType": "newsletter-double-opt-in"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "user.mail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/user-newsletter-confirm",
+            "en": "/en/shop/email/user-newsletter-confirm"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "User Newsletter Confirmed",
+    "type": "user",
+    "active": true,
+    "conditions": [
+      {
+        "type": "user.userType",
+        "configuration": {
+          "userType": "newsletter-confirmed"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "user.mail",
+        "configuration": {
+          "mails": {
+            "de": "/de/shop/email/user-newsletter-confirmed",
+            "en": "/en/shop/email/user-newsletter-confirmed"
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "Order Shipped",
     "type": "order",
     "active": true,

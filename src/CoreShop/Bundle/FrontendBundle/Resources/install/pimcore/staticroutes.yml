@@ -287,6 +287,15 @@ routes:
     variables: _locale
     priority: 5
 
+  coreshop_customer_confirm_newsletter:
+    pattern: "/(\\w+)\\/shop\\/customer\\/confirm-newsletter/"
+    reverse: "/%_locale/shop/customer/confirm-newsletter"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.customer"
+    action: confirmNewsletter
+    variables: _locale
+    priority: 2
+
   coreshop_search:
     pattern: "/(\\w+)\\/shop\\/search/"
     reverse: "/%_locale/shop/search"

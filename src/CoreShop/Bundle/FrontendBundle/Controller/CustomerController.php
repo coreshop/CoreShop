@@ -17,8 +17,9 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontendController
@@ -305,6 +306,50 @@ class CustomerController extends FrontendController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmNewsletterAction(Request $request)
+    {
+        $token = $request->get('token');
+        $newsletterUser = null;
+
+        if (!$token) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        /**
+         * @var $customer CustomerInterface
+         */
+        $customer = $this->get('coreshop.repository.customer')->findByNewsletterToken($token);
+
+        if ($success = $customer instanceof CustomerInterface) {
+            $customer->setNewsletterConfirmed(true);
+            $customer->setNewsletterToken(null);
+
+            VersionHelper::useVersioning(function () use ($customer) {
+                $customer->save();
+            }, false);
+
+            $event = new ResourceControllerEvent($customer, ['request' => $request]);
+            $this->get('event_dispatcher')->dispatch(
+                sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'newsletter_confirm'),
+                $event
+            );
+
+            $this->addFlash('success', 'coreshop.ui.newsletter_confirmed');
+        } else {
+            $this->addFlash('error', 'coreshop.ui.newsletter_confirmation_error');
+        }
+
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'), [
+            'newsletterUser' => $newsletterUser,
+            'success' => $success
+        ]);
+    }
+
 
     /**
      * @return CustomerInterface|null
