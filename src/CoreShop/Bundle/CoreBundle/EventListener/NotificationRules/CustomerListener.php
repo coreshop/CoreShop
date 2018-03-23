@@ -88,7 +88,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $confirmLink = $confirmLink . (parse_url($confirmLink, PHP_URL_QUERY) ? '&' : '?') . 'token=' . $user->getProperty('token');
 
         $this->rulesProcessor->applyRules('user', $user, [
-            'type' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
+            'type' => UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
             'recipient' => $user->getEmail(),
             '_locale' => $this->shopperContext->getLocaleCode(),
             'gender' => $user->getGender(),
