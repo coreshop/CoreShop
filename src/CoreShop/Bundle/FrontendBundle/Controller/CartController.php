@@ -141,7 +141,7 @@ class CartController extends FrontendController
                 $price = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress);
                 $priceWithoutTax = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress, false);
                 $availableCarriers[] = [
-                    'name'            => $carrier->getName(),
+                    'name'            => $carrier->getLabel(),
                     'isFreeShipping'  => $price === 0,
                     'price'           => $price,
                     'priceWithoutTax' => $priceWithoutTax,
