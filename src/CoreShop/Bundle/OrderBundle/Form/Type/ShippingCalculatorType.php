@@ -27,7 +27,7 @@ final class ShippingCalculatorType extends AbstractType
     {
         $builder
             ->add('country', CountryChoiceType::class, [
-                'active' => null,
+                'active' => true,
                 'label' => 'coreshop.form.cart.carrier.country',
             ])
             ->add('zip', TextType::class, [
