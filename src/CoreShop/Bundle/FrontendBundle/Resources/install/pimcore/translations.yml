@@ -931,15 +931,15 @@ translations:
 
   coreshop.ui.newsletter_confirmed:
       languages:
-          de_CH: 'Vielen Dank. Ihre E-Mail Adresse ist nun bestätigt.'
+          de_CH: 'Vielen Dank. Ihre E-Mail-Adresse ist nun bestätigt.'
           en: 'Thank you. Your e-mail address is now confirmed.'
-          de: 'Vielen Dank. Ihre E-Mail Adresse ist nun bestätigt.'
+          de: 'Vielen Dank. Ihre E-Mail-Adresse ist nun bestätigt.'
 
   coreshop.ui.newsletter_confirmation_error:
       languages:
-          de_CH: 'Fehler beim bestätigen Ihrer E-Mail Adresse.'
+          de_CH: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
           en: 'Error confirming your e-mail address.'
-          de: 'Fehler beim bestätigen Ihrer E-Mail Adresse.'
+          de: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
 
   coreshop.form.customer.firstname:
       languages:
