@@ -14,7 +14,7 @@ namespace CoreShop\Component\Pimcore;
 
 use Pimcore\Model\DataObject;
 
-class ClassUpdate implements ClassUpdateInterface
+class ClassUpdate extends AbstractDefinitionUpdate
 {
     /**
      * @var string
@@ -25,16 +25,6 @@ class ClassUpdate implements ClassUpdateInterface
      * @var DataObject\ClassDefinition
      */
     private $classDefinition;
-
-    /**
-     * @var array
-     */
-    private $jsonDefinition;
-
-    /**
-     * @var array
-     */
-    private $classFieldDefinitions;
 
     /**
      * @param $className
@@ -49,7 +39,7 @@ class ClassUpdate implements ClassUpdateInterface
             throw new ClassDefinitionNotFoundException(sprintf('ClassDefinition %s not found', $className));
         }
 
-        $this->classFieldDefinitions = $this->classDefinition->getFieldDefinitions();
+        $this->fieldDefinitions = $this->classDefinition->getFieldDefinitions();
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition), true);
     }
 
@@ -59,126 +49,5 @@ class ClassUpdate implements ClassUpdateInterface
     public function save()
     {
         return DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProperty($property)
-    {
-        return $this->jsonDefinition[$property];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProperty($property, $value)
-    {
-        $this->jsonDefinition[$property] = $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasField($fieldName)
-    {
-        return array_key_exists($fieldName, $this->classFieldDefinitions);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition)
-    {
-        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-            if ($index === 0) {
-                $index = 1;
-            }
-
-            $childs = $parent['childs'];
-
-            array_splice($childs, $index, 0, [$jsonFieldDefinition]);
-
-            $parent['childs'] = $childs;
-        });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition)
-    {
-        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-            $childs = $parent['childs'];
-
-            array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
-
-            $parent['childs'] = $childs;
-        });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceField($fieldName, $jsonFieldDefinition)
-    {
-        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-            $foundField = $jsonFieldDefinition;
-        });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceFieldProperties($fieldName, array $keyValues)
-    {
-        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($keyValues) {
-            foreach ($keyValues as $key => $value) {
-                $foundField[$key] = $value;
-            }
-        });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeField($fieldName)
-    {
-        $this->findField($fieldName, function (&$foundField, $index, &$parent) {
-            unset($parent['childs'][$index]);
-        });
-    }
-
-    /**
-     * @param string $fieldName
-     * @param \Closure $callback
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    protected function findField(string $fieldName, \Closure $callback)
-    {
-        $found = false;
-
-        $traverseFunction = function ($children) use (&$traverseFunction, $fieldName, $callback, &$found) {
-            foreach ($children['childs'] as $index => &$child) {
-                if ($child['name'] === $fieldName) {
-                    $callback($child, $index, $children);
-                    $found = true;
-                    break;
-                } else {
-                    if (array_key_exists('childs', $child)) {
-                        $child = $traverseFunction($child);
-                    }
-                }
-            }
-
-            return $children;
-        };
-
-        $this->jsonDefinition['layoutDefinitions'] = $traverseFunction($this->jsonDefinition['layoutDefinitions']);
-
-        if (!$found) {
-            throw new ClassDefinitionFieldNotFoundException(sprintf('Field with name %s not found', $fieldName));
-        }
     }
 }

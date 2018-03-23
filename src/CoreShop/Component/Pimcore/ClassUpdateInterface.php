@@ -52,6 +52,15 @@ interface ClassUpdateInterface
     public function hasField($fieldName);
 
     /**
+     * Insert Field at the end
+     *
+     * @param $jsonFieldDefinition
+     *
+     * @throws ClassDefinitionFieldNotFoundException
+     */
+    public function insertField($jsonFieldDefinition);
+
+    /**
      * Insert Field before another field
      *
      * @param $fieldName

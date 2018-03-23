@@ -6,8 +6,8 @@ services:
         tags:
             - { name: fob.context_service }
 
-    coreshop.behat.context.transform.pimcore:
-        class: CoreShop\Behat\Context\Transform\PimcoreContext
+    coreshop.behat.context.transform.pimcore_class:
+        class: CoreShop\Behat\Context\Transform\PimcoreClassContext
         arguments:
             - '@coreshop.behat.shared_storage'
         tags:

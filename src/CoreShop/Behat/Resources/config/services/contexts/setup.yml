@@ -1,11 +1,4 @@
 services:
-    coreshop.behat.context.setup.pimcore:
-        class: CoreShop\Behat\Context\Setup\PimcoreContext
-        arguments:
-            - '@coreshop.behat.shared_storage'
-        tags:
-            - { name: fob.context_service }
-
     coreshop.behat.context.setup.product:
         class: CoreShop\Behat\Context\Setup\ProductContext
         arguments:
@@ -189,5 +182,12 @@ services:
             - '@__symfony__.coreshop.repository.index'
             - '@__symfony__.coreshop.registry.index.worker'
             - '@__symfony__.coreshop.factory.index_column'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.pimcore_class:
+        class: CoreShop\Behat\Context\Setup\PimcoreClassContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }

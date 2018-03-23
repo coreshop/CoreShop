@@ -8,15 +8,16 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManagerInterface;
+use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Listing;
+use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 final class PimcoreDaoContext implements Context
 {
@@ -35,6 +36,62 @@ final class PimcoreDaoContext implements Context
 
         foreach ($list->getObjects() as $obj) {
             $obj->delete();
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function purgeClasses()
+    {
+        $list = new ClassDefinition\Listing();
+        $list->setCondition('name LIKE ?', ['Behat%']);
+        $list->load();
+
+        foreach ($list->getClasses() as $class) {
+            if (!$class instanceof ClassDefinition) {
+                continue;
+            }
+
+            $class->delete();
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function purgeBricks()
+    {
+        $list = new Objectbrick\Definition\Listing();
+        $list->load();
+
+        foreach ($list->load() as $brick) {
+            if (!$brick instanceof Objectbrick\Definition) {
+                continue;
+            }
+
+            if (strpos($brick->getKey(), 'Behat') === 0) {
+                $brick->delete();
+            }
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function purgeFieldCollections()
+    {
+        $list = new Fieldcollection\Definition\Listing();
+        $list->load();
+
+        foreach ($list->load() as $collection) {
+            if (!$collection instanceof Fieldcollection\Definition) {
+                continue;
+            }
+
+            if (strpos($collection->getKey(), 'Behat') === 0) {
+                $collection->delete();
+            }
         }
     }
 }

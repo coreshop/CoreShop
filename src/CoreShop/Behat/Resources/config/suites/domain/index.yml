@@ -9,7 +9,7 @@ default:
                 - coreshop.behat.context.hook.pimcore_dao
 
                 - coreshop.behat.context.transform.shared_storage
-                - coreshop.behat.context.transform.pimcore
+                - coreshop.behat.context.transform.pimcore_class
                 - coreshop.behat.context.transform.product
                 - coreshop.behat.context.transform.store
                 - coreshop.behat.context.transform.index

@@ -116,3 +116,10 @@ services:
             - '@__symfony__.doctrine.orm.entity_manager'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.pimcore_class:
+        class: CoreShop\Behat\Context\Domain\PimcoreClassContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
