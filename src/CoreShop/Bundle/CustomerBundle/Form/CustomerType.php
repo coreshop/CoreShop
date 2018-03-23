@@ -69,6 +69,16 @@ class CustomerType extends AbstractResourceType
                 'second_options' => ['label' => 'coreshop.form.customer.email_repeat']
             ]);
 
+        if (!$options['guest'] && $options['allow_password_field']) {
+            $builder
+                ->add('password', RepeatedType::class, [
+                    'type' => PasswordType::class,
+                    'invalid_message' => 'coreshop.form.customer.password.must_match',
+                    'first_options' => ['label' => 'coreshop.form.customer.password'],
+                    'second_options' => ['label' => 'coreshop.form.customer.password_repeat']
+                ]);
+        }
+
         if ($options['allow_default_address'] && $options['customer']) {
             $builder->add('defaultAddress', AddressChoiceType::class, [
                 'customer' => $options['customer'],
@@ -94,6 +104,7 @@ class CustomerType extends AbstractResourceType
 
         $resolver->setDefault('guest', false);
         $resolver->setDefault('allow_default_address', false);
+        $resolver->setDefault('allow_password_field', false);
         $resolver->setDefault('customer', false);
         $resolver->setDefaults(array(
             'validation_groups' => function (FormInterface $form) {
