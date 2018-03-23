@@ -177,6 +177,7 @@ services:
         class: CoreShop\Behat\Context\Setup\IndexContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@coreshop.behat.class_storage'
             - '@__symfony__.doctrine.orm.entity_manager'
             - '@__symfony__.coreshop.factory.index'
             - '@__symfony__.coreshop.repository.index'
@@ -189,5 +190,6 @@ services:
         class: CoreShop\Behat\Context\Setup\PimcoreClassContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@coreshop.behat.class_storage'
         tags:
             - { name: fob.context_service }

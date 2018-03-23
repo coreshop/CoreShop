@@ -42,24 +42,6 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
-    public function purgeClasses()
-    {
-        $list = new ClassDefinition\Listing();
-        $list->setCondition('name LIKE ?', ['Behat%']);
-        $list->load();
-
-        foreach ($list->getClasses() as $class) {
-            if (!$class instanceof ClassDefinition) {
-                continue;
-            }
-
-            $class->delete();
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
     public function purgeBricks()
     {
         $list = new Objectbrick\Definition\Listing();
@@ -73,6 +55,24 @@ final class PimcoreDaoContext implements Context
             if (strpos($brick->getKey(), 'Behat') === 0) {
                 $brick->delete();
             }
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function purgeClasses()
+    {
+        $list = new ClassDefinition\Listing();
+        $list->setCondition('name LIKE ?', ['Behat%']);
+        $list->load();
+
+        foreach ($list->getClasses() as $class) {
+            if (!$class instanceof ClassDefinition) {
+                continue;
+            }
+
+            $class->delete();
         }
     }
 

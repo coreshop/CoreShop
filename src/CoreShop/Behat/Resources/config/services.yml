@@ -5,3 +5,6 @@ imports:
 services:
     coreshop.behat.shared_storage:
         class: CoreShop\Behat\Service\SharedStorage
+
+    coreshop.behat.class_storage:
+        class: CoreShop\Behat\Service\ClassStorage

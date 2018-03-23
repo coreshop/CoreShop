@@ -13,14 +13,18 @@
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Pimcore\BrickDefinitionUpdate;
 use CoreShop\Component\Pimcore\ClassUpdate;
 use CoreShop\Component\Pimcore\ClassUpdateInterface;
 use CoreShop\Component\Pimcore\FieldCollectionDefinitionUpdate;
 use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Tool;
 
 final class PimcoreClassContext implements Context
 {
@@ -30,11 +34,21 @@ final class PimcoreClassContext implements Context
     private $sharedStorage;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @var ClassStorageInterface
      */
-    public function __construct(SharedStorageInterface $sharedStorage)
+    private $classStorage;
+
+    /**
+     * @param SharedStorageInterface $sharedStorage
+     * @param ClassStorageInterface $classStorage
+     */
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        ClassStorageInterface $classStorage
+    )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->classStorage = $classStorage;
     }
 
     /**
@@ -42,8 +56,10 @@ final class PimcoreClassContext implements Context
      */
     public function createClassNamed($className)
     {
+        $name = $this->classStorage->set($className);
+
         $classDefinition = new ClassDefinition();
-        $classDefinition->setName($this->getBehatKey($className));
+        $classDefinition->setName($name);
         $classDefinition->setLayoutDefinitions(
             json_decode('')
         );
@@ -117,7 +133,7 @@ final class PimcoreClassContext implements Context
 
         ClassDefinition\Service::importClassDefinitionFromJson($classDefinition, $json, true);
 
-        $this->sharedStorage->set('pimcore_definition_name', $classDefinition->getName());
+        $this->sharedStorage->set('pimcore_definition_name', $className);
         $this->sharedStorage->set('pimcore_definition_class', get_class($classDefinition));
     }
 
@@ -126,8 +142,10 @@ final class PimcoreClassContext implements Context
      */
     public function createBrickNamed($brickName)
     {
+      $name = $this->classStorage->set($brickName);
+
         $brickDefinition = new Objectbrick\Definition();
-        $brickDefinition->setKey($this->getBehatKey($brickName));
+        $brickDefinition->setKey($name);
         $brickDefinition->save();
 
         $json = '{
@@ -174,7 +192,7 @@ final class PimcoreClassContext implements Context
 
         ClassDefinition\Service::importObjectBrickFromJson($brickDefinition, $json, true);
 
-        $this->sharedStorage->set('pimcore_definition_name', $brickDefinition->getKey());
+        $this->sharedStorage->set('pimcore_definition_name', $brickName);
         $this->sharedStorage->set('pimcore_definition_class', get_class($brickDefinition));
     }
 
@@ -183,8 +201,10 @@ final class PimcoreClassContext implements Context
      */
     public function createCollectionNamed($collection)
     {
+        $name = $this->classStorage->set($collection);
+
         $collectionDefinition = new Fieldcollection\Definition();
-        $collectionDefinition->setKey($this->getBehatKey($collection));
+        $collectionDefinition->setKey($name);
         $collectionDefinition->save();
 
         $json = '{
@@ -230,8 +250,37 @@ final class PimcoreClassContext implements Context
 
         ClassDefinition\Service::importFieldCollectionFromJson($collectionDefinition, $json, true);
 
-        $this->sharedStorage->set('pimcore_definition_name', $collectionDefinition->getKey());
+        $this->sharedStorage->set('pimcore_definition_name', $collection);
         $this->sharedStorage->set('pimcore_definition_class', get_class($collectionDefinition));
+    }
+
+    /**
+     * @Given /^the (definitions) parent class is set to "([^"]+)"$/
+     */
+    public function definitionsParentClassIsSetTo($definition, $parentClass)
+    {
+        $definitionUpdater = $this->getUpdater($definition);
+        $definitionUpdater->setProperty('parentClass', $parentClass);
+        $definitionUpdater->save();
+    }
+
+    /**
+     * @Given /^the (definition) is allowed for (behat-class "[^"]+") in field "([^"]+)"$/
+     */
+    public function theDefinitionIsAllowedForClass($definition, ClassDefinition $class, $field)
+    {
+        if (!$definition instanceof Objectbrick\Definition) {
+            throw new \InvalidArgumentException('This call is only allowed for brick definitions');
+        }
+
+        $definitionUpdater = $this->getUpdater($definition);
+        $definitionUpdater->setProperty('classDefinitions', [
+            [
+                "classname" => $class->getName(),
+                "fieldname" => $field
+            ]
+        ]);
+        $definitionUpdater->save();
     }
 
     /**
@@ -269,11 +318,223 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^the (definition) has a checkbox field "([^"]+)"$/
+     */
+    public function definitionHasCheckboxField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "checkbox",
+                "defaultValue": 0,
+                "queryColumnType": "tinyint(1)",
+                "columnType": "tinyint(1)",
+                "phpdocType": "boolean",
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": true,
+                "index": null,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": true,
+                "visibleSearch": true
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
+     * @Given /^the (definition) has a localized input field "([^"]+)"$/
+     */
+    public function definitionHasLocalizedInputField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "localizedfields",
+                "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
+                "childs": [
+                    {
+                        "fieldtype": "input",
+                        "width": null,
+                        "queryColumnType": "varchar",
+                        "columnType": "varchar",
+                        "columnLength": 190,
+                        "phpdocType": "string",
+                        "regex": "",
+                        "unique": false,
+                        "name": "%s",
+                        "title": "%s",
+                        "tooltip": "",
+                        "mandatory": false,
+                        "noteditable": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "permissions": null,
+                        "datatype": "data",
+                        "relationType": false,
+                        "invisible": false,
+                        "visibleGridView": false,
+                        "visibleSearch": false
+                    }
+                ],
+                "name": "localizedfields",
+                "region": null,
+                "layout": null,
+                "title": null,
+                "width": "",
+                "height": "",
+                "maxTabs": null,
+                "labelWidth": null,
+                "hideLabelsWhenTabsReached": null,
+                "fieldDefinitionsCache": null,
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": false,
+                "index": null,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "columnType": null,
+                "queryColumnType": null,
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": true,
+                "visibleSearch": true
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
+     * @Given /^the (definition) has a brick field "([^"]+)"$/
+     */
+    public function definitionHasABrickField($definition, $name)
+    {
+        if (!$definition instanceof ClassDefinition) {
+            throw new \InvalidArgumentException('Bricks are only allowed in Classes');
+        }
+
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "objectbricks",
+                "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
+                "allowedTypes": [],
+                "maxItems": "",
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": false,
+                "index": false,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "columnType": null,
+                "queryColumnType": null,
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": false,
+                "visibleSearch": false
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
+     * @Given /^there is an instance of (class|behat-class "[^"]+") with key "([^"]+)"$/
+     */
+    public function thereIsAnInstanceofClassWithKey(ClassDefinition $definition, $key)
+    {
+        $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
+        /**
+         * @var $instance Concrete
+         */
+        $instance = new $className();
+        $instance->setKey($key);
+        $instance->setParentId(1);
+        $instance->save();
+
+        $this->sharedStorage->set('object-instance', $instance);
+    }
+
+    /**
+     * @Given /the (object-instance) has following values:/
+     */
+    public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table)
+    {
+        $hash = $table->getHash();
+
+        foreach ($hash as $row) {
+            switch ($row['type']) {
+                case 'checkbox':
+                    $object->setValue($row['key'], boolval($row['value']));
+                    break;
+
+                case 'input':
+                    $object->setValue($row['key'], $row['value']);
+                    break;
+
+                case 'localized':
+                    $setter = 'set' . ucfirst($row['key']);
+
+                    foreach (Tool::getValidLanguages() as $lang) {
+                        $object->$setter($row['val'], $lang);
+                    }
+                    break;
+
+                case 'brick':
+                    $config = json_decode(stripslashes($row['value']), true);
+                    $type = $this->classStorage->get($config['type']);
+                    $className = sprintf('Pimcore\\Model\\DataObject\\Objectbrick\\Data\\%s', $type);
+
+                    $brickInstance = new $className($object);
+
+                    foreach ($config['values'] as $key => $value) {
+                        $brickInstance->setValue($key, $value);
+                    }
+
+
+                    $object->{'get' . ucfirst($row['key'])}()->{'set' . ucfirst($type)}($brickInstance);
+                    break;
+
+                default:
+                    throw new \InvalidArgumentException(sprintf('Type %s not yet supported', $row['type']));
+                    break;
+            }
+        }
+
+        $object->save();
+    }
+
+    /**
      * @param $definition
      * @param $fieldDefinition
      * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
      */
     private function addFieldDefinitionToDefinition($definition, $fieldDefinition)
+    {
+        $definitionUpdater = $this->getUpdater($definition);
+        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition)));
+        $definitionUpdater->save();
+    }
+
+    /**
+     * @param $definition
+     * @return BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate|null
+     * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
+     */
+    private function getUpdater($definition)
     {
         $definitionUpdater = null;
 
@@ -291,16 +552,6 @@ final class PimcoreClassContext implements Context
             throw new \InvalidArgumentException('Invalid Definition Updater Class given');
         }
 
-        $definitionUpdater->insertField(json_decode($fieldDefinition));
-        $definitionUpdater->save();
-    }
-
-    /**
-     * @param $key
-     * @return string
-     */
-    private function getBehatKey($key)
-    {
-        return sprintf('Behat%s', ucfirst($key));
+        return $definitionUpdater;
     }
 }

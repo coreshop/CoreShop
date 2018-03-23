@@ -13,6 +13,7 @@
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -27,13 +28,21 @@ final class PimcoreClassContext implements Context
     private $sharedStorage;
 
     /**
+     * @var ClassStorageInterface
+     */
+    private $classStorage;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
+     * @param ClassStorageInterface $classStorage
      */
     public function __construct(
-        SharedStorageInterface $sharedStorage
+        SharedStorageInterface $sharedStorage,
+        ClassStorageInterface $classStorage
     )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->classStorage = $classStorage;
     }
 
     /**
@@ -41,7 +50,7 @@ final class PimcoreClassContext implements Context
      */
     public function thereShouldBeAPimcoreClass($name)
     {
-        $definition = ClassDefinition::getByName($this->getBehatKey($name));
+        $definition = ClassDefinition::getByName($this->classStorage->get($name));
 
         Assert::notNull(
             $definition,
@@ -54,7 +63,7 @@ final class PimcoreClassContext implements Context
      */
     public function thereShouldBeAPimcoreBrick($name)
     {
-        $definition = Objectbrick\Definition::getByKey($this->getBehatKey($name));
+        $definition = Objectbrick\Definition::getByKey($this->classStorage->get($name));
 
         Assert::notNull(
             $definition,
@@ -67,7 +76,7 @@ final class PimcoreClassContext implements Context
      */
     public function thereShouldBeAPimcoreCollection($name)
     {
-        $definition = Fieldcollection\Definition::getByKey($this->getBehatKey($name));
+        $definition = Fieldcollection\Definition::getByKey($this->classStorage->get($name));
 
         Assert::notNull(
             $definition,
@@ -96,11 +105,15 @@ final class PimcoreClassContext implements Context
     }
 
     /**
-     * @param $key
-     * @return string
+     * @Then /^an instance of (definition) should implement "([^"]+)"$/
      */
-    private function getBehatKey($key)
+    public function anInstanceofDefinitionShouldImplement($definition, $class)
     {
-        return sprintf('Behat%s', ucfirst($key));
+        if ($definition instanceof ClassDefinition) {
+            $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
+            $instance = new $className();
+
+            Assert::isInstanceOf($instance, $class);
+        }
     }
 }

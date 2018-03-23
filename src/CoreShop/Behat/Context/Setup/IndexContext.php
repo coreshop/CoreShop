@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -30,6 +31,11 @@ final class IndexContext implements Context
      * @var SharedStorageInterface
      */
     private $sharedStorage;
+
+    /**
+     * @var ClassStorageInterface
+     */
+    private $classStorage;
 
     /**
      * @var ObjectManager
@@ -58,6 +64,7 @@ final class IndexContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
+     * @param ClassStorageInterface $classStorage
      * @param ObjectManager $objectManager
      * @param FactoryInterface $indexFactory
      * @param RepositoryInterface $indexRepository
@@ -66,6 +73,7 @@ final class IndexContext implements Context
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
+        ClassStorageInterface $classStorage,
         ObjectManager $objectManager,
         FactoryInterface $indexFactory,
         RepositoryInterface $indexRepository,
@@ -74,6 +82,7 @@ final class IndexContext implements Context
     )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
         $this->indexFactory = $indexFactory;
         $this->indexRepository = $indexRepository;
@@ -83,6 +92,7 @@ final class IndexContext implements Context
 
     /**
      * @Given /^the site has a index "([^"]+)" for (class "[^"]+") with type "([^"]+)"$/
+     * @Given /^the site has a index "([^"]+)" for (behat-class "[^"]+") with type "([^"]+)"$/
      */
     public function theSiteHasAIndexForClassWithType($name, ClassDefinition $class, $type)
     {
@@ -105,9 +115,32 @@ final class IndexContext implements Context
             $column->setObjectKey($row['key']);
             $column->setObjectType($row['type']);
             $column->setGetter($row['getter']);
-            $column->setInterpreter($row['interpreter']);
             $column->setColumnType($row['columnType']);
             $column->setDataType('input');
+
+            if (array_key_exists('interpreter', $row)) {
+                $column->setInterpreter($row['interpreter']);
+            }
+
+            if (array_key_exists('getterConfig', $row)) {
+                $column->setGetterConfig(json_decode($row['getterConfig'], true));
+            }
+
+            if (array_key_exists('interpreterConfig', $row)) {
+                $column->setInterpreterConfig(json_decode($row['interpreterConfig'], true));
+            }
+
+            if (array_key_exists('configuration', $row)) {
+                $configuration = json_decode($row['configuration'], true);
+
+                foreach ($configuration as $key => &$value) {
+                    if ($key === 'className') {
+                        $value = $this->classStorage->get($value);
+                    }
+                }
+
+                $column->setConfiguration($configuration);
+            }
 
             $index->addColumn($column);
 

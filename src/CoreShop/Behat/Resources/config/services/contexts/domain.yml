@@ -121,5 +121,6 @@ services:
         class: CoreShop\Behat\Context\Domain\PimcoreClassContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@coreshop.behat.class_storage'
         tags:
             - { name: fob.context_service }

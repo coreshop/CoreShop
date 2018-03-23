@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
 final class IndexContext implements Context
@@ -111,33 +112,34 @@ final class IndexContext implements Context
 
     /**
      * @Then /^the (index) column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
+     * @Then /^the (index) column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      */
-    public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, ProductInterface $product, $value)
+    public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
     {
-        $this->indexEntryShouldHaveValue($index, $product, $column, $value);
+        $this->indexEntryShouldHaveValue($index, $object, $column, $value);
     }
 
     /**
      * @Then /^the (index) localized column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
+     * @Then /^the (index) localized column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      */
-    public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, ProductInterface $product, $value)
+    public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
     {
-        $this->indexEntryShouldHaveValue($index, $product, $column, $value, true);
-
+        $this->indexEntryShouldHaveValue($index, $object, $column, $value, true);
     }
 
     /**
      * @param IndexInterface $index
-     * @param ProductInterface $product
+     * @param Concrete $object
      * @param $column
      * @param $value
      * @param bool $localized
      */
-    protected function indexEntryShouldHaveValue(IndexInterface $index, ProductInterface $product, $column, $value, $localized = false)
+    protected function indexEntryShouldHaveValue(IndexInterface $index, Concrete $object, $column, $value, $localized = false)
     {
-        $productEntry = $this->fetchAllFromIndex($index, $product, $localized);
+        $productEntry = $this->fetchAllFromIndex($index, $object, $localized);
 
-        Assert::isArray($productEntry, sprintf('Could not find index entry for product %s', $product->getId()));
+        Assert::isArray($productEntry, sprintf('Could not find index entry for product %s', $object->getId()));
         Assert::keyExists($productEntry, $column, sprintf('Could not find column %s in index', $column));
         Assert::same(
             $productEntry[$column],
@@ -153,11 +155,11 @@ final class IndexContext implements Context
 
     /**
      * @param IndexInterface $index
-     * @param ProductInterface|null $product
+     * @param Concrete|null $object
      * @param bool $localized
      * @return array
      */
-    protected function fetchAllFromIndex(IndexInterface $index, ProductInterface $product = null, $localized = false)
+    protected function fetchAllFromIndex(IndexInterface $index, Concrete $object = null, $localized = false)
     {
         if ($localized) {
             $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
@@ -166,12 +168,12 @@ final class IndexContext implements Context
         }
 
 
-        if ($product instanceof ProductInterface) {
+        if ($object instanceof Concrete) {
             if ($localized) {
-                return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE oo_id = %s', $tableName, $product->getId()));
+                return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE oo_id = %s', $tableName, $object->getId()));
             }
 
-            return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE o_id = %s', $tableName, $product->getId()));
+            return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE o_id = %s', $tableName, $object->getId()));
         }
 
         return $this->entityManager->getConnection()->fetchAll(sprintf('SELECT * FROM %s', $tableName));

@@ -58,7 +58,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function insertField($jsonFieldDefinition)
     {
-        $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'] = $jsonFieldDefinition;
+        $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'][] = $jsonFieldDefinition;
     }
 
     /**

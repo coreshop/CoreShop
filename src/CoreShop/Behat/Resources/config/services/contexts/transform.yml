@@ -10,6 +10,7 @@ services:
         class: CoreShop\Behat\Context\Transform\PimcoreClassContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@coreshop.behat.class_storage'
         tags:
             - { name: fob.context_service }
 

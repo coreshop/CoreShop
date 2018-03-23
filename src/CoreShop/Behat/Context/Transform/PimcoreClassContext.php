@@ -13,7 +13,9 @@
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Pimcore\ClassLoader;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -27,11 +29,21 @@ final class PimcoreClassContext implements Context
     private $sharedStorage;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @var ClassStorageInterface
      */
-    public function __construct(SharedStorageInterface $sharedStorage)
+    private $classStorage;
+
+    /**
+     * @param SharedStorageInterface $sharedStorage
+     * @param ClassStorageInterface $classStorage
+     */
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        ClassStorageInterface $classStorage
+    )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->classStorage = $classStorage;
     }
 
     /**
@@ -39,6 +51,10 @@ final class PimcoreClassContext implements Context
      */
     public function class($name)
     {
+        Runtime::clear();
+
+        ClassLoader::forceLoadDataObjectClass($name);
+
         $classDefinition = ClassDefinition::getByName($name);
 
         Assert::notNull($classDefinition, sprintf('Class Definition for class with name %s not found', $name));
@@ -47,7 +63,24 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Transform /^behat-class "([^"]+)"$/
+     */
+    public function behatClass($name)
+    {
+        return $this->class($this->classStorage->get($name));
+    }
+
+    /**
+     * @Transform /^object-instance$/
+     */
+    public function objectInstance()
+    {
+        return $this->sharedStorage->get('object-instance');
+    }
+
+    /**
      * @Transform /^definition/
+     * @Transform /^definitions/
      */
     public function definition()
     {
@@ -57,9 +90,9 @@ final class PimcoreClassContext implements Context
         $class = $this->sharedStorage->get('pimcore_definition_class');
 
         if ($class === ClassDefinition::class) {
-            return ClassDefinition::getByName($name);
+            return ClassDefinition::getByName($this->classStorage->get($name));
         }
 
-        return $class::getByKey($name);
+        return $class::getByKey($this->classStorage->get($name));
     }
 }
