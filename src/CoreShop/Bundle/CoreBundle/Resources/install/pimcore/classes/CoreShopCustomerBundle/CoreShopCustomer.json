@@ -186,6 +186,27 @@
                                 "visibleSearch": true
                             },
                             {
+                                "fieldtype": "input",
+                                "width": "",
+                                "queryColumnType": "varchar(190)",
+                                "columnType": "varchar(190)",
+                                "phpdocType": "string",
+                                "name": "newsletterToken",
+                                "title": "Newsletter Token",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
                                 "fieldtype": "checkbox",
                                 "defaultValue": 0,
                                 "queryColumnType": "tinyint(1)",

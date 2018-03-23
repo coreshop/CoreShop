@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
+use CoreShop\Component\Pimcore\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
@@ -23,6 +24,38 @@ class Version20180322165817 extends AbstractPimcoreMigration implements Containe
         $options = ['allowed' => ['coreshop_customer_confirm_newsletter']];
         $this->container->get('coreshop.resource.installer.routes')->installResources(new NullOutput(), 'coreshop', $options);
 
+        $fieldDefinition = [
+            'fieldtype' => 'input',
+            'width' => null,
+            'queryColumnType' => 'varchar',
+            'columnType' => 'varchar',
+            'columnLength' => 190,
+            'phpdocType' => 'string',
+            'regex' => '',
+            'unique' => false,
+            'name' => 'newsletterToken',
+            'title' => 'Newsletter Token',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => true,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
+        ];
+
+        $customerClass = $this->container->getParameter('coreshop.model.customer.pimcore_class_name');
+        $classUpdate = new ClassUpdate($customerClass);
+
+        if (!$classUpdate->hasField('newsletterToken')) {
+            $classUpdate->insertFieldAfter('newsletterConfirmed', $fieldDefinition);
+            $classUpdate->save();
+        }
     }
 
     /**

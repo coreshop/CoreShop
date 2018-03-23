@@ -47,4 +47,14 @@ interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterfa
      * @param boolean $newsletterConfirmed
      */
     public function setNewsletterConfirmed($newsletterConfirmed);
+
+    /**
+     * @return string
+     */
+    public function getNewsletterToken();
+
+    /**
+     * @param string $newsletterToken
+     */
+    public function setNewsletterToken($newsletterToken);
 }

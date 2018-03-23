@@ -17,9 +17,9 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use Pimcore\Tool\Newsletter;
+use CoreShop\Component\Pimcore\VersionHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontendController
@@ -320,12 +320,20 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $newsletterTool = new Newsletter($this->getParameter('coreshop.model.customer.pimcore_class_id'));
+        /**
+         * @var $customer CustomerInterface
+         */
+        $customer = $this->get('coreshop.repository.customer')->findByNewsletterToken($token);
 
-        if ($success = $newsletterTool->confirm($token)) {
-            $newsletterUser = $newsletterTool->getObjectByToken($token);
+        if ($success = $customer instanceof CustomerInterface) {
+            $customer->setNewsletterConfirmed(true);
+            $customer->setNewsletterToken(null);
 
-            $event = new ResourceControllerEvent($newsletterUser, ['request' => $request]);
+            VersionHelper::useVersioning(function () use ($customer) {
+                $customer->save();
+            }, false);
+
+            $event = new ResourceControllerEvent($customer, ['request' => $request]);
             $this->get('event_dispatcher')->dispatch(
                 sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'newsletter_confirm'),
                 $event
