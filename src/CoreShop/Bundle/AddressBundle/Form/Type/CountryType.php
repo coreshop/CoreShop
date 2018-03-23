@@ -35,7 +35,8 @@ final class CountryType extends AbstractResourceType
             ->add('zone', ZoneChoiceType::class, [
                 'active' => null,
             ])
-            ->add('addressFormat', TextareaType::class);
+            ->add('addressFormat', TextareaType::class)
+            ->add('salutationPrefix', TextType::class);
     }
 
     /**

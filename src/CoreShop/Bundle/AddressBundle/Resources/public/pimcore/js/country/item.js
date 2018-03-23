@@ -77,6 +77,11 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
                 xtype: 'textarea',
                 name: 'addressFormat',
                 value: data.addressFormat
+            },
+            {
+                fieldLabel: t('coreshop_country_salutationPrefix'),
+                name: 'salutationPrefix',
+                value: data.salutationPrefix
             }
         ];
 

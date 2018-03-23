@@ -22,6 +22,10 @@ CoreShop\Component\Address\Model\Country:
             expose: true
             type: string
             groups: [Detailed]
+        salutationPrefix:
+            expose: true
+            type: string
+            groups: [Detailed]
         translations:
             expose: true
             type: array

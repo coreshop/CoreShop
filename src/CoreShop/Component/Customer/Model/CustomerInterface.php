@@ -20,6 +20,16 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface
     /**
      * @return string
      */
+    public function getSalutation();
+
+    /**
+     * @param string $salutation
+     */
+    public function setSalutation($salutation);
+
+    /**
+     * @return string
+     */
     public function getFirstname();
 
     /**

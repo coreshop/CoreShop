@@ -22,6 +22,22 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
     /**
      * {@inheritdoc}
      */
+    public function getSalutation()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSalutation($salutation)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFirstname()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
