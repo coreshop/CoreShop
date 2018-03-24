@@ -28,7 +28,7 @@ class Country extends Base
         $this->printTestName();
 
         /**
-         * @var CountryInterface
+         * @var $country CountryInterface
          */
         $country = $this->getFactory('country')->createNew();
 
@@ -36,6 +36,7 @@ class Country extends Base
         $country->setActive(true);
         $country->setIsoCode('TEC');
         $country->setZone($this->getRepository('zone')->find(1));
+        $country->setSalutations(['mrs', 'mr']);
 
         $this->assertNull($country->getId());
 
