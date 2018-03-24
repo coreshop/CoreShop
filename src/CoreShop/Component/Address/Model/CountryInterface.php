@@ -74,4 +74,16 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
      * @return static
      */
     public function setAddressFormat($addressFormat);
+
+    /**
+     * @return array
+     */
+    public function getSalutations();
+
+    /**
+     * @param array $salutations
+     *
+     * @return static
+     */
+    public function setSalutations($salutations);
 }

@@ -9,6 +9,7 @@ interface ResourceInstallerInterface
     /**
      * @param OutputInterface $output
      * @param string $applicationName
+     * @param array $options
      */
-    public function installResources(OutputInterface $output, $applicationName = null);
+    public function installResources(OutputInterface $output, $applicationName = null, $options = []);
 }

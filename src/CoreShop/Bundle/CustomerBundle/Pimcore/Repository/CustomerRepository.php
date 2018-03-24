@@ -36,6 +36,22 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
+    public function findByNewsletterToken($newsletterToken)
+    {
+        $list = $this->getList();
+        $list->setCondition('newsletterToken = ?', [$newsletterToken]);
+        $objects = $list->load();
+
+        if (count($objects) === 1) {
+            return $objects[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findUniqueByEmail($email, $isGuest)
     {
         $list = $this->getList();

@@ -13,15 +13,21 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Pimcore\VersionHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontendController
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function headerAction(Request $request)
     {
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/_header.html'), [
@@ -30,6 +36,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function footerAction()
     {
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/_footer.html'), [
@@ -38,6 +47,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function profileAction()
     {
         $customer = $this->getCustomer();
@@ -51,6 +63,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function ordersAction()
     {
         $customer = $this->getCustomer();
@@ -65,6 +80,10 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function orderDetailAction(Request $request)
     {
         $orderId = $request->get('order');
@@ -90,6 +109,9 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function addressesAction()
     {
         $customer = $this->getCustomer();
@@ -103,6 +125,10 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function addressAction(Request $request)
     {
         $customer = $this->getCustomer();
@@ -143,13 +169,14 @@ class CustomerController extends FrontendController
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($address, ['request' => $request]);
                 $this->get('event_dispatcher')->dispatch(
-                    sprintf('%s.%s.post_%s', 'coreshop', 'address', $eventType),
+                    sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType),
                     $event
                 );
 
                 $customer->addAddress($address);
                 $customer->save();
 
+                $this->addFlash('success', sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated'));
                 return $this->redirect($handledForm->get('_redirect')->getData());
             }
         }
@@ -161,6 +188,10 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function addressDeleteAction(Request $request)
     {
         $customer = $this->getCustomer();
@@ -183,15 +214,20 @@ class CustomerController extends FrontendController
         // todo: move this to a resource controller event
         $event = new ResourceControllerEvent($address, ['request' => $request]);
         $this->get('event_dispatcher')->dispatch(
-            sprintf('%s.%s.pre_%s', 'coreshop', 'address', 'delete'),
+            sprintf('%s.%s.%s_pre', 'coreshop', 'address', 'delete'),
             $event
         );
 
         $address->delete();
 
+        $this->addFlash('success', 'coreshop.ui.customer.address_successfully_deleted');
         return $this->redirectToRoute('coreshop_customer_addresses');
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function settingsAction(Request $request)
     {
         $customer = $this->getCustomer();
@@ -215,10 +251,11 @@ class CustomerController extends FrontendController
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($customer, ['request' => $request]);
                 $this->get('event_dispatcher')->dispatch(
-                    sprintf('%s.%s.post_%s', 'coreshop', 'customer', 'update'),
+                    sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'update'),
                     $event
                 );
 
+                $this->addFlash('success', 'coreshop.ui.customer.profile_successfully_updated');
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }
@@ -229,6 +266,94 @@ class CustomerController extends FrontendController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $customer = $this->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        $form = $this->get('form.factory')->createNamed('', ChangePasswordType::class);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
+            $handledForm = $form->handleRequest($request);
+
+            if ($handledForm->isValid()) {
+
+                $formData = $handledForm->getData();
+                $customer->setPassword($formData['password']);
+                $customer->save();
+
+                // todo: move this to a resource controller event
+                $event = new ResourceControllerEvent($customer, ['request' => $request]);
+                $this->get('event_dispatcher')->dispatch(
+                    sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'change_password'),
+                    $event
+                );
+
+                $this->addFlash('success', 'coreshop.ui.customer.password_successfully_changed');
+                return $this->redirectToRoute('coreshop_customer_profile');
+            }
+        }
+
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/change_password.html'), [
+            'customer' => $customer,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmNewsletterAction(Request $request)
+    {
+        $token = $request->get('token');
+        $newsletterUser = null;
+
+        if (!$token) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
+        /**
+         * @var $customer CustomerInterface
+         */
+        $customer = $this->get('coreshop.repository.customer')->findByNewsletterToken($token);
+
+        if ($success = $customer instanceof CustomerInterface) {
+            $customer->setNewsletterConfirmed(true);
+            $customer->setNewsletterToken(null);
+
+            VersionHelper::useVersioning(function () use ($customer) {
+                $customer->save();
+            }, false);
+
+            $event = new ResourceControllerEvent($customer, ['request' => $request]);
+            $this->get('event_dispatcher')->dispatch(
+                sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'newsletter_confirm'),
+                $event
+            );
+
+            $this->addFlash('success', 'coreshop.ui.newsletter_confirmed');
+        } else {
+            $this->addFlash('error', 'coreshop.ui.newsletter_confirmation_error');
+        }
+
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'), [
+            'newsletterUser' => $newsletterUser,
+            'success' => $success
+        ]);
+    }
+
+
+    /**
+     * @return CustomerInterface|null
+     */
     protected function getCustomer()
     {
         try {

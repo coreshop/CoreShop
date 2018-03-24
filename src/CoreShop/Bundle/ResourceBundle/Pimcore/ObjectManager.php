@@ -109,8 +109,10 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
         }
 
         foreach ($this->modelsToPersist as $model) {
-            if (!$model->getPublished()) {
-                $model->setOmitMandatoryCheck(true);
+            if ($model instanceof Concrete) {
+                if (!$model->getPublished()) {
+                    $model->setOmitMandatoryCheck(true);
+                }
             }
 
             $model->save();

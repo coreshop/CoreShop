@@ -39,7 +39,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.documents', $applicationName) : 'coreshop.all.pimcore.admin.install.documents';
 

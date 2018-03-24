@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
+use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
@@ -104,6 +106,57 @@ class CartController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
             'cart' => $cart,
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function shipmentCalculationAction(Request $request)
+    {
+        $cart = $this->getCart();
+        $form = $this->createForm(ShippingCalculatorType::class, null, [
+                'action' => $this->generateUrl('coreshop_cart_check_shipment')
+            ]
+        );
+
+        $availableCarriers = [];
+        $form->handleRequest($request);
+
+        //check if there is a shipping calculation request
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
+
+            $shippingCalculatorFormData = $form->getData();
+            $carrierPriceCalculator = $this->get('coreshop.carrier.price_calculator.taxed');
+            $carriersResolver = $this->get('coreshop.carrier.resolver');
+
+            /** @var AddressInterface $virtualAddress */
+            $virtualAddress = $this->get('coreshop.factory.address')->createNew();
+            $virtualAddress->setCountry($shippingCalculatorFormData['country']);
+            $virtualAddress->setPostcode($shippingCalculatorFormData['zip']);
+
+            $carriers = $carriersResolver->resolveCarriers($cart, $virtualAddress);
+            foreach ($carriers as $carrier) {
+                $price = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress);
+                $priceWithoutTax = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress, false);
+                $availableCarriers[] = [
+                    'name'            => $carrier->getLabel(),
+                    'isFreeShipping'  => $price === 0,
+                    'price'           => $price,
+                    'priceWithoutTax' => $priceWithoutTax,
+                    'data'            => $carrier
+                ];
+            }
+            uasort($availableCarriers, function ($a, $b) {
+                return ($a['price'] > $b['price']);
+            });
+        }
+
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
+            'cart' => $cart,
+            'form' => $form->createView(),
+            'availableCarriers' => $availableCarriers
         ]);
     }
 

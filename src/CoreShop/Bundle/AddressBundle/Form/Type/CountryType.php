@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\AddressBundle\Form\Type;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,7 +36,12 @@ final class CountryType extends AbstractResourceType
             ->add('zone', ZoneChoiceType::class, [
                 'active' => null,
             ])
-            ->add('addressFormat', TextareaType::class);
+            ->add('addressFormat', TextareaType::class)
+            ->add('salutations', CollectionType::class, [
+                'entry_type' => TextType::class,
+                'allow_delete' => true,
+                'allow_add' => true
+            ]);
     }
 
     /**
