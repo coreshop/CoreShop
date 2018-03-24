@@ -1,0 +1,37 @@
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+<div class="cart-shipment-calculation-box">
+    <div class="row">
+        <div class="col-12 col-sm-6 offset-sm-6">
+
+            {% if availableCarriers|length > 0 %}
+                <div class="cart-shipment-available-carriers">
+                    <h3>{{ 'coreshop.ui.cart.shipment.available_carriers'|trans }}</h3>
+                    <table class="table table-bordered">
+                        {% for carrier in availableCarriers %}
+                            <tr>
+                                <td><strong>{{ carrier.name }}</strong></td>
+                                <td>{{ currency.convertAndFormat(carrier.price) }} {% if carrier.isFreeShipping %}<span class="badge badge-pill badge-success">{{ 'coreshop.ui.cart.shipment.is_free_shipping'|trans }}</span>{% endif %}</td>
+                                {# <td>{{ currency.convertAndFormat(carrier.priceWithoutTax) }}</td> #}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                {% if app.request.method == 'POST' %}
+                    <div class="alert alert-warning no-carrier-found">{{ 'coreshop.ui.cart.shipment.no_valid_carrier_found'|trans }}</div>
+                {% endif %}
+            {% endif %}
+
+            <h3>{{ 'coreshop.ui.cart.shipment.search_for_carrier'|trans }}</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td colspan="2">
+                        {{ form(form, {'method': 'POST'}) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
