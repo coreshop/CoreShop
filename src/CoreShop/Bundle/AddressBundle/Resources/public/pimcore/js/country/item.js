@@ -25,7 +25,10 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
 
     getFormPanel: function () {
         var data = this.data,
-            langTabs = [];
+            langTabs = [],
+            salutationsStore = Ext.create('Ext.data.ArrayStore', {
+                fields: ['name']
+            });
 
         Ext.each(pimcore.settings.websiteLanguages, function (lang) {
             var tab = {
@@ -79,9 +82,22 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
                 value: data.addressFormat
             },
             {
-                fieldLabel: t('coreshop_country_salutationPrefix'),
-                name: 'salutationPrefix',
-                value: data.salutationPrefix
+                xtype: 'tagfield',
+                fieldLabel: t('coreshop_country_salutations'),
+                store: new Ext.data.ArrayStore({
+                    fields: [
+                        'salutation'
+                    ],
+                    data: []
+                }),
+                value: data.salutations,
+                name: 'salutations',
+                createNewOnEnter: true,
+                createNewOnBlur: true,
+                queryMode: 'local',
+                displayField: 'salutation',
+                valueField: 'salutation',
+                hideTrigger: true
             }
         ];
 

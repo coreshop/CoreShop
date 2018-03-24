@@ -88,7 +88,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             'region' => ''
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
-        $defaultSalutationPrefix = 'mrs;mr';
+        $defaultSalutations = ['mrs', 'mr'];
         $languages = Tool::getValidLanguages();
         $alpha3CodeMap = [];
 
@@ -141,7 +141,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 }
 
                 $newCountry->setAddressFormat($addressFormat);
-                $newCountry->setSalutationPrefix($defaultSalutationPrefix);
+                $newCountry->setSalutations($defaultSalutations);
                 $manager->persist($newCountry);
 
                 if ($country->getIsoAlpha2() === 'AT') {

@@ -52,9 +52,9 @@ class Country extends AbstractResource implements CountryInterface
     protected $addressFormat = '';
 
     /**
-     * @var string
+     * @var array
      */
-    protected $salutationPrefix = '';
+    protected $salutations = [];
 
     public function __construct()
     {
@@ -134,17 +134,17 @@ class Country extends AbstractResource implements CountryInterface
     /**
      * {@inheritdoc}
      */
-    public function getSalutationPrefix()
+    public function getSalutations()
     {
-        return $this->salutationPrefix;
+        return $this->salutations;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setSalutationPrefix($salutationPrefix)
+    public function setSalutations($salutations)
     {
-        $this->salutationPrefix = $salutationPrefix;
+        $this->salutations = $salutations;
 
         return $this;
     }

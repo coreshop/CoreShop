@@ -6,6 +6,7 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Pimcore\ClassUpdate;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Schema\Schema;
+use Pimcore\Db;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -67,9 +68,8 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
 
         //add country salutation prefix
         if ($schema->hasTable('coreshop_country')) {
-            $table = $schema->getTable('coreshop_country');
-            if (!$table->hasColumn('salutationPrefix')) {
-                $table->addColumn('salutationPrefix', 'string', ['expose' => true, 'groups' => ['Detailed']]);
+            if (!$schema->getTable('coreshop_country')->hasColumn('salutations')) {
+                Db::get()->executeQuery('ALTER TABLE coreshop_country ADD salutations LONGTEXT NOT NULL COMMENT \'(DC2Type:simple_array)\';');
             }
         }
 
@@ -78,13 +78,13 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
         $countryRepository = $this->container->get('coreshop.repository.country');
         $manager = $this->container->get('doctrine.orm.entity_manager');
 
-        $defaultSalutationPrefix = 'mrs;mr';
+        $defaultSalutations = ['mrs', 'mr'];
 
         /** @var CountryInterface $country */
         foreach ($countryRepository->findAll() as $country) {
 
             //set salutation
-            $country->setSalutationPrefix($defaultSalutationPrefix);
+            $country->setSalutations($defaultSalutations);
 
             //update address format
             $addressFormat = $country->getAddressFormat();
