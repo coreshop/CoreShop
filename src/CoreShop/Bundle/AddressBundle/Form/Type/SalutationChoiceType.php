@@ -42,13 +42,13 @@ final class SalutationChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
+            ->setDefault('country', $this->countryContext->getCountry())
+            ->setAllowedValues('country', function ($country) {
+                return $country instanceof CountryInterface;
+            })
             ->setDefaults([
                 'choices' => function (Options $options) {
-
-                    /** @var CountryInterface $currentCountry */
-                    $currentCountry = $this->countryContext->getCountry();
-
-                    $salutations = $currentCountry->getSalutations();
+                    $salutations = $options['country']->getSalutations();
                     $choices = [];
                     foreach ($salutations as $salutation) {
                         $translationKey = 'coreshop.form.customer.salutation.' . str_replace(' ', '_', strtolower(trim($salutation)));

@@ -58,7 +58,7 @@ class CustomerType extends AbstractResourceType
                 ),
             ])
             ->add('salutation', SalutationChoiceType::class, [
-                'label' => 'coreshop.form.customer.salutation',
+                'label' => 'coreshop.form.customer.salutation'
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.customer.firstname'
