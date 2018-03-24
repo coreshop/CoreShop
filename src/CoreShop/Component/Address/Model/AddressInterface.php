@@ -20,6 +20,16 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     /**
      * @return string
      */
+    public function getSalutation();
+
+    /**
+     * @param $salutation
+     */
+    public function setSalutation($salutation);
+
+    /**
+     * @return string
+     */
     public function getFirstname();
 
     /**
