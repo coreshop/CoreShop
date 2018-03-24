@@ -869,6 +869,12 @@ translations:
           en: 'Address Information'
           de: 'Adressinformationen'
 
+  coreshop.form.address.salutation:
+      languages:
+          de_CH: 'Anrede'
+          en: 'Salutation'
+          de: 'Anrede'
+
   coreshop.form.address.company:
       languages:
           de_CH: 'Firmenname'
@@ -965,6 +971,24 @@ translations:
           en: 'Error confirming your e-mail address.'
           de: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
 
+  coreshop.form.customer.salutation:
+      languages:
+          de_CH: 'Anrede'
+          en: 'Salutation'
+          de: 'Anrede'
+
+  coreshop.form.customer.salutation.mr:
+      languages:
+          de_CH: 'Herr'
+          en: 'Mr.'
+          de: 'Herr'
+
+  coreshop.form.customer.salutation.mrs:
+      languages:
+          de_CH: 'Frau'
+          en: 'Mrs.'
+          de: 'Frau'
+
   coreshop.form.customer.firstname:
       languages:
           de_CH: 'Vorname'
@@ -1027,9 +1051,9 @@ translations:
 
   coreshop.form.customer.gender:
       languages:
-          de_CH: 'Anrede'
-          en: 'Salutation'
-          de: 'Anrede'
+          de_CH: 'Geschlecht'
+          en: 'Gender'
+          de: 'Geschlecht'
 
   coreshop.form.customer.gender.male:
       languages:

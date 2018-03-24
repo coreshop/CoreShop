@@ -71,6 +71,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             'recipient' => [
                 '%Text(company);',
                 PHP_EOL,
+                '%Text(salutation);',
                 '%Text(firstname);',
                 '%Text(lastname);',
             ],
@@ -87,6 +88,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             'region' => ''
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
+        $defaultSalutations = ['mrs', 'mr'];
         $languages = Tool::getValidLanguages();
         $alpha3CodeMap = [];
 
@@ -139,6 +141,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 }
 
                 $newCountry->setAddressFormat($addressFormat);
+                $newCountry->setSalutations($defaultSalutations);
                 $manager->persist($newCountry);
 
                 if ($country->getIsoAlpha2() === 'AT') {

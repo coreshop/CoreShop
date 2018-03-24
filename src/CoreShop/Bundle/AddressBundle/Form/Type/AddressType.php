@@ -30,6 +30,9 @@ final class AddressType extends AbstractResourceType
                 'label' => 'coreshop.form.address.company',
                 'required' => false
             ])
+            ->add('salutation', SalutationChoiceType::class, [
+                'label' => 'coreshop.form.address.salutation',
+            ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.address.firstname',
             ])

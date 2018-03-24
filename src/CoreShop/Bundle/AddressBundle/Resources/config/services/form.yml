@@ -14,6 +14,13 @@ services:
         tags:
             -  { name: form.type }
 
+    coreshop.form.type.salutation_choice:
+        class: CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType
+        arguments:
+            - '@coreshop.context.country'
+        tags:
+            -  { name: form.type }
+
     coreshop.form.type.country:
         class: CoreShop\Bundle\AddressBundle\Form\Type\CountryType
         arguments:
