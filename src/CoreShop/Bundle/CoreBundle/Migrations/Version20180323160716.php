@@ -69,7 +69,7 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
         //add country salutation prefix
         if ($schema->hasTable('coreshop_country')) {
             if (!$schema->getTable('coreshop_country')->hasColumn('salutations')) {
-                Db::get()->executeQuery('ALTER TABLE coreshop_country ADD salutations LONGTEXT NOT NULL COMMENT \'(DC2Type:simple_array)\';');
+                Db::get()->executeQuery('ALTER TABLE coreshop_country ADD salutations LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\';');
             }
         }
 
