@@ -953,6 +953,18 @@ translations:
           en: 'Salutation'
           de: 'Anrede'
 
+  coreshop.form.customer.salutation.mr:
+      languages:
+          de_CH: 'Herr'
+          en: 'Mr.'
+          de: 'Herr'
+
+  coreshop.form.customer.salutation.mrs:
+      languages:
+          de_CH: 'Frau'
+          en: 'Mrs.'
+          de: 'Frau'
+
   coreshop.form.customer.firstname:
       languages:
           de_CH: 'Vorname'

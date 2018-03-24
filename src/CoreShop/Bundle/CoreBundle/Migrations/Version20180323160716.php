@@ -2,7 +2,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
+use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
@@ -70,6 +72,32 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
                 $table->addColumn('salutationPrefix', 'string', ['expose' => true, 'groups' => ['Detailed']]);
             }
         }
+
+        //add default salutation prefixes
+        /** @var RepositoryInterface $countryRepository */
+        $countryRepository = $this->container->get('coreshop.repository.country');
+        $manager = $this->container->get('doctrine.orm.entity_manager');
+
+        $defaultSalutationPrefix = 'mrs;mr';
+
+        /** @var CountryInterface $country */
+        foreach ($countryRepository->findAll() as $country) {
+
+            //set salutation
+            $country->setSalutationPrefix($defaultSalutationPrefix);
+
+            //update address format
+            $addressFormat = $country->getAddressFormat();
+            if (strpos($addressFormat, '%Text(firstname);') !== false && strpos($addressFormat, '%Text(salutation);') === false) {
+                $addressFormat = str_replace('%Text(firstname);', '%Text(salutation); %Text(firstname);', $addressFormat);
+                $country->setAddressFormat($addressFormat);
+            }
+
+            $manager->persist($country);
+
+        }
+
+        $manager->flush();
 
         $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
     }

@@ -49,25 +49,15 @@ final class SalutationChoiceType extends AbstractType
                     $currentCountry = $this->countryContext->getCountry();
 
                     $prefix = $currentCountry->getSalutationPrefix();
-
-                    if (empty($prefix)) {
-                        $choices = [
-                            'Mr.'  => 'mr',
-                            'Mrs.' => 'mrs',
-                            'Ms'  => 'ms'
-                        ];
-                    } else {
-                        $salutations = explode(';', $prefix);
-                        $choices = [];
-                        foreach ($salutations as $salutation) {
-                            $choices[$salutation] = strtolower($salutation);
-                        }
+                    $salutations = explode(';', $prefix);
+                    $choices = [];
+                    foreach ($salutations as $salutation) {
+                        $translationKey = 'coreshop.form.customer.salutation.' . str_replace(' ', '_', strtolower(trim($salutation)));
+                        $choices[$translationKey] = $salutation;
                     }
 
                     return $choices;
-                },
-                'choice_translation_domain' => false,
-                'active'                    => true,
+                }
             ]);
     }
 
