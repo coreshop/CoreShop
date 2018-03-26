@@ -27,4 +27,14 @@ interface CustomerGroupInterface extends ResourceInterface
      * @return static
      */
     public function setName($name);
+
+    /**
+     * @return array
+     */
+    public function getRoles();
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles($roles);
 }
