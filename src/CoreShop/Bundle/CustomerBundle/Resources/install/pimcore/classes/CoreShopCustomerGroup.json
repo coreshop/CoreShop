@@ -59,6 +59,32 @@
                         "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false
+                    },
+                    {
+                        "fieldtype": "multiselect",
+                        "options": [],
+                        "width": "",
+                        "height": "",
+                        "maxItems": "",
+                        "optionsProviderClass": "CoreShop\\Bundle\\CustomerBundle\\CoreExtension\\Provider\\RoleOptionsProvider",
+                        "optionsProviderData": "",
+                        "queryColumnType": "text",
+                        "columnType": "text",
+                        "phpdocType": "array",
+                        "name": "roles",
+                        "title": "roles",
+                        "tooltip": "",
+                        "mandatory": false,
+                        "noteditable": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "permissions": null,
+                        "datatype": "data",
+                        "relationType": false,
+                        "invisible": false,
+                        "visibleGridView": false,
+                        "visibleSearch": false
                     }
                 ],
                 "locked": false
