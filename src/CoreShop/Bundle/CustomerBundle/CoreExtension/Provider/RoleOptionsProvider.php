@@ -80,7 +80,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      */
     public function hasStaticOptions($context, $fieldDefinition)
     {
-        return FALSE;
+        return false;
     }
 
     /**
