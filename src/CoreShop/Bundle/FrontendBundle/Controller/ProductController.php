@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Product\Model\ProductInterface;
+use FOS\RestBundle\View\View;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,10 +27,15 @@ class ProductController extends FrontendController
     public function latestAction(Request $request)
     {
         $productRepository = $this->get('coreshop.repository.product');
+        $latestProducts = $productRepository->findLatestByStore($this->get('coreshop.context.store')->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/_latest.html'), [
-            'products' => $productRepository->findLatestByStore($this->get('coreshop.context.store')->getStore()),
-        ]);
+        $view = View::create($latestProducts)
+            ->setTemplate($this->templateConfigurator->findTemplate('Product/_latest.html'))
+            ->setTemplateData([
+                'products' => $latestProducts
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -50,9 +56,13 @@ class ProductController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
-            'product' => $product,
-        ]);
+        $view = View::create($product)
+            ->setTemplate($this->templateConfigurator->findTemplate('Product/detail.html'))
+            ->setTemplateData([
+                'product' => $product
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**

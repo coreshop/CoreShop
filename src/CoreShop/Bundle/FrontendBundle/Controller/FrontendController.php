@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use FOS\RestBundle\View\ViewHandlerInterface;
 
 class FrontendController extends \Pimcore\Controller\FrontendController
 {
@@ -20,12 +21,25 @@ class FrontendController extends \Pimcore\Controller\FrontendController
      * @var TemplateConfiguratorInterface
      */
     protected $templateConfigurator;
-    
+
+    /**
+     * @var ViewHandlerInterface
+     */
+    protected $viewHandler;
+
     /**
      * @param TemplateConfiguratorInterface $templateConfigurator
      */
     public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator)
     {
         $this->templateConfigurator = $templateConfigurator;
+    }
+
+    /**
+     * @param ViewHandlerInterface $viewHandler
+     */
+    public function setViewHandler(ViewHandlerInterface $viewHandler)
+    {
+        $this->viewHandler = $viewHandler;
     }
 }

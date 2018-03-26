@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\Context;
 use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
+use Pimcore\Model\AbstractModel;
 
 class RelationsHandler
 {
@@ -84,6 +85,10 @@ class RelationsHandler
      */
     protected function getSingleEntityRelation($relation)
     {
+        if ($relation instanceof AbstractModel) {
+            return $relation->getId();
+        }
+
         $metadata = $this->manager->getClassMetadata(get_class($relation));
 
         $ids = $metadata->getIdentifierValues($relation);

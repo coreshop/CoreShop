@@ -16,21 +16,23 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WishlistController extends FrontendController
 {
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addItemAction(Request $request)
     {
         $product = $this->get('coreshop.repository.product')->find($request->get('product'));
 
         if (!$product instanceof ProductInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new NotFoundHttpException();
         }
 
         $quantity = intval($request->get('quantity', 1));
@@ -43,27 +45,27 @@ class WishlistController extends FrontendController
 
         $this->addFlash('success', 'coreshop.ui.item_added');
 
-        return $this->redirectToRoute('coreshop_wishlist_summary');
+        return $this->viewHandler->handle(View::createRouteRedirect('coreshop_wishlist_summary'));
     }
 
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeItemAction(Request $request)
     {
         $product = $this->get('coreshop.repository.product')->find($request->get('product'));
 
         if (!$product instanceof ProductInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new NotFoundHttpException();
         }
 
         $this->addFlash('success', 'coreshop.ui.item_removed');
 
         $this->getWishlistModifier()->updateItemQuantity($this->getWishlist(), $product, 0);
 
-        return $this->redirectToRoute('coreshop_wishlist_summary');
+        return $this->viewHandler->handle(View::createRouteRedirect('coreshop_wishlist_summary'));
     }
 
     /**
@@ -73,9 +75,13 @@ class WishlistController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist:summary.html'), [
-            'wishlist' => $this->getWishlist()
-        ]);
+        $view = View::create($this->getWishlist())
+            ->setTemplate($this->templateConfigurator->findTemplate('Wishlist/summary.html'))
+            ->setTemplateData([
+                'whishlist' => $this->getWishlist()
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**

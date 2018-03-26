@@ -26,8 +26,11 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use FOS\RestBundle\View\View;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartController extends FrontendController
 {
@@ -53,6 +56,13 @@ class CartController extends FrontendController
         $form = $this->createForm(CartType::class, $cart);
         $form->handleRequest($request);
 
+        $view = View::create($cart)
+            ->setTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'))
+            ->setTemplateData([
+                'cart' => $cart,
+                'form' => $form->createView()
+            ]);
+
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
             $cart = $form->getData();
             $code = $form->get('cartRuleCoupon')->getData();
@@ -62,10 +72,8 @@ class CartController extends FrontendController
 
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                     $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
-                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
-                        'cart' => $this->getCart(),
-                        'form' => $form->createView()
-                    ]);
+
+                    return $this->viewHandler->handle($view);
                 }
 
                 // TODO: would be better to do that inside the form
@@ -76,10 +84,8 @@ class CartController extends FrontendController
 
                     if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
                         $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
-                        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
-                            'cart' => $this->getCart(),
-                            'form' => $form->createView()
-                        ]);
+
+                        return $this->viewHandler->handle($view);
                     }
                 }
 
@@ -99,14 +105,14 @@ class CartController extends FrontendController
             $this->getCartManager()->persistCart($cart);
         } else {
             if ($cart->getId()) {
-                $cart = $this->get('coreshop.repository.cart')->forceFind($cart->getId());
+                $view->setTemplateData([
+                    'cart' => $this->get('coreshop.repository.cart')->forceFind($cart->getId()),
+                    'form' => $form->createView()
+                ]);
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
-            'cart' => $cart,
-            'form' => $form->createView()
-        ]);
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -141,11 +147,11 @@ class CartController extends FrontendController
                 $price = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress);
                 $priceWithoutTax = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress, false);
                 $availableCarriers[] = [
-                    'name'            => $carrier->getLabel(),
-                    'isFreeShipping'  => $price === 0,
-                    'price'           => $price,
+                    'name' => $carrier->getLabel(),
+                    'isFreeShipping' => $price === 0,
+                    'price' => $price,
                     'priceWithoutTax' => $priceWithoutTax,
-                    'data'            => $carrier
+                    'data' => $carrier
                 ];
             }
             uasort($availableCarriers, function ($a, $b) {
@@ -153,24 +159,29 @@ class CartController extends FrontendController
             });
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
-            'cart' => $cart,
-            'form' => $form->createView(),
-            'availableCarriers' => $availableCarriers
-        ]);
+        $view = View::create($cart)
+            ->setTemplate($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'))
+            ->setTemplateVar('cart')
+            ->setTemplateData([
+                'cart' => $cart,
+                'form' => $form->createView(),
+                'availableCarriers' => $availableCarriers
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addItemAction(Request $request)
     {
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new NotFoundHttpException();
         }
 
         $quantity = intval($request->get('quantity', 1));
@@ -184,7 +195,7 @@ class CartController extends FrontendController
 
             if (!$hasStock) {
                 $this->addFlash('error', 'coreshop.ui.item_is_out_of_stock');
-                return $this->redirectToRoute('coreshop_cart_summary');
+                return $this->viewHandler->handle(View::createRouteRedirect('coreshop_cart_summary'));
             }
         }
 
@@ -193,24 +204,24 @@ class CartController extends FrontendController
 
         $this->addFlash('success', 'coreshop.ui.item_added');
 
-        return $this->redirectToRoute('coreshop_cart_summary');
+        return $this->viewHandler->handle(View::createRouteRedirect('coreshop_cart_summary'));
     }
 
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeItemAction(Request $request)
     {
         $cartItem = $this->get('coreshop.repository.cart_item')->find($request->get('cartItem'));
 
         if (!$cartItem instanceof CartItemInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new NotFoundHttpException();
         }
 
         if ($cartItem->getCart()->getId() !== $this->getCart()->getId()) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         $this->addFlash('success', 'coreshop.ui.item_removed');
@@ -218,13 +229,13 @@ class CartController extends FrontendController
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
-        return $this->redirectToRoute('coreshop_cart_summary');
+        return $this->viewHandler->handle(View::createRouteRedirect('coreshop_cart_summary'));
     }
 
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removePriceRuleAction(Request $request)
     {
@@ -234,7 +245,7 @@ class CartController extends FrontendController
         $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
         if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-            return $this->redirectToRoute('coreshop_cart_summary');
+            return $this->viewHandler->handle(View::createRouteRedirect('coreshop_cart_summary'));
         }
 
         $priceRule = $voucherCode->getCartPriceRule();
@@ -242,7 +253,7 @@ class CartController extends FrontendController
         $this->getCartPriceRuleUnProcessor()->unProcess($cart, $priceRule, $voucherCode);
         $this->getCartManager()->persistCart($cart);
 
-        return $this->redirectToRoute('coreshop_cart_summary');
+        return $this->viewHandler->handle(View::createRouteRedirect('coreshop_cart_summary'));
     }
 
     /**
@@ -254,7 +265,7 @@ class CartController extends FrontendController
         $quote = $this->getQuoteFactory()->createNew();
         $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
 
-        return $this->redirectToRoute('coreshop_quote_detail', ['quote' => $quote->getId()]);
+        return $this->viewHandler->handle(View::createRouteRedirect('coreshop_quote_detail', ['quote' => $quote->getId()]));
     }
 
     /**

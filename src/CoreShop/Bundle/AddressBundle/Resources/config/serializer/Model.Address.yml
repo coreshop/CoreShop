@@ -1,0 +1,57 @@
+CoreShop\Component\Address\Model\Address:
+    exclusion_policy: ALL
+    xml_root_name: cart
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getSalutation:
+            serialized_name: salutation
+            type: string
+            groups: [List, Detailed]
+        getFirstname:
+            serialized_name: firstname
+            type: string
+            groups: [List, Detailed]
+        getLastname:
+            serialized_name: lastname
+            type: string
+            groups: [List, Detailed]
+        getCompany:
+            serialized_name: company
+            type: string
+            groups: [List, Detailed]
+        getStreet:
+            serialized_name: street
+            type: string
+            groups: [List, Detailed]
+        getNumber:
+            serialized_name: number
+            type: string
+            groups: [List, Detailed]
+        getPostcode:
+            serialized_name: postcode
+            type: string
+            groups: [List, Detailed]
+        getCity:
+            serialized_name: city
+            type: string
+            groups: [List, Detailed]
+        getCountry:
+            serialized_name: country
+            groups: [List, Detailed]
+        getState:
+            serialized_name: state
+            groups: [List, Detailed]
+        getPhoneNumber:
+            serialized_name: phoneNumber
+            type: string
+            groups: [List, Detailed]
+        getFormatted:
+            serialized_name: formatted
+            exp: service('coreshop.address.formatter').formatAddress(object)
+            type: string
+            groups: [List, Detailed]
+

@@ -1,0 +1,13 @@
+Pimcore\Model\Asset:
+    exclusion_policy: ALL
+    xml_root_name: asset
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getFullPath:
+            serialized_name: fullPath
+            type: string
+            groups: [List, Detailed]

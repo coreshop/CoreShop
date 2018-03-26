@@ -19,9 +19,11 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends FrontendController
@@ -72,25 +74,31 @@ class OrderController extends FrontendController
                         $cart->getId()
                     );
 
-                    return $this->redirectToRoute('coreshop_cart_summary');
+                    return $this->viewHandler->handle(View::createRouteRedirect('coreshop_cart_summary'));;
                 }
 
-                return $this->redirectToRoute('coreshop_index');
+                if ($request->isXmlHttpRequest()) {
+                    return $this->viewHandler->handle(View::create(null, Response::HTTP_NO_CONTENT));
+                }
+
+                return $this->viewHandler->handle(View::createRouteRedirect('coreshop_index'));
             } else if ($form->isValid()) {
                 $order = $form->getData();
                 $order->save();
 
-                return $this->redirectToRoute('coreshop_order_revise_pay', ['token' => $token]);
+                $this->viewHandler->handle(View::createRouteRedirect('coreshop_order_revise_pay', ['token' => $token]));
             }
         }
 
-        $args = [
-            'order' => $order,
-            'payment' => $payment,
-            'form' => $form->createView()
-        ];
+        $view = View::create($form)
+            ->setTemplate($this->templateConfigurator->findTemplate('Order/revise.html'))
+            ->setTemplateData([
+                'order' => $order,
+                'payment' => $payment,
+                'form' => $form->createView()
+            ]);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
+        return $this->viewHandler->handle($view);
     }
 
     /**

@@ -63,15 +63,24 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
                 'rules' => [
                     [
                         'path' => '^/admin/coreshop',
-                        'priorities' => ['json', 'xml'],
-                        'fallback_format' => 'json',
-                        'prefer_extension' => true
+                        'priorities' => ['json'],
+                        'fallback_format' => 'json'
                     ],
                     [
                         'path' => '^/',
-                        'stop' => true
+                        'priorities' => ['html', 'json'],
+                        'fallback_format' => 'html'
                     ]
                 ]
+            ],
+            'view' => [
+                'formats' => [
+                    'json' => true
+                ],
+                'empty_content' => 204
+            ],
+            'serializer' => [
+                'serialize_null' => true
             ]
         ];
 

@@ -1,0 +1,16 @@
+CoreShop\Component\Core\Model\Customer:
+    exclusion_policy: ALL
+    xml_root_name: customer
+    virtual_properties:
+        getDefaultAddress:
+            serialized_name: defaultAddress
+            type: relation
+            groups: [List, Detailed]
+        getNewsletterActive:
+            serialized_name: newsletterActive
+            type: boolean
+            groups: [List, Detailed]
+        getNewsletterConfirmed:
+            serialized_name: newsletterConfirmed
+            type: boolean
+            groups: [List, Detailed]

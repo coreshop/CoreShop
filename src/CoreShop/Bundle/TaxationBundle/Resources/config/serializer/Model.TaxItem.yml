@@ -1,0 +1,16 @@
+CoreShop\Component\Taxation\Model\TaxItem:
+    exclusion_policy: ALL
+    xml_root_name: tax_item
+    virtual_properties:
+        getName:
+            serialized_name: name
+            type: string
+            groups: [List, Detailed]
+        getRate:
+            serialized_name: rate
+            type: float
+            groups: [List, Detailed]
+        getAmount:
+            serialized_name: amount
+            type: integer
+            groups: [List, Detailed]

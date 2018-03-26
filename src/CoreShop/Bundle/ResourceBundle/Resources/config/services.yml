@@ -68,3 +68,9 @@ services:
         class: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
         arguments:
             - '@Pimcore\Cache\Core\CoreHandlerInterface'
+
+    coreshop.jms_serializer.pimcore_object_driver:
+        class: CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreClassDriver
+        decorates: jms_serializer.metadata.chain_driver
+        arguments:
+            - '@coreshop.jms_serializer.pimcore_object_driver.inner'

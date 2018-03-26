@@ -1,0 +1,49 @@
+CoreShop\Component\Order\Model\SaleItem:
+    exclusion_policy: ALL
+    xml_root_name: sale_item
+    virtual_properties:
+        getName:
+            serialized_name: name
+            type: string
+            groups: [List, Detailed]
+        getBaseItemPriceNet:
+            serialized_name: baseItemPriceNet
+            exp: object.getBaseItemPrice(false)
+            type: int
+            groups: [List, Detailed]
+        getBaseItemPriceGross:
+            serialized_name: baseItemPriceGross
+            exp: object.getBaseItemPrice(true)
+            type: int
+            groups: [List, Detailed]
+        getBaseItemRetailPriceNet:
+            serialized_name: baseItemRetailPriceNet
+            exp: object.getBaseItemRetailPrice(false)
+            type: int
+            groups: [List, Detailed]
+        getBaseItemRetailPriceGross:
+            serialized_name: baseItemRetailPriceGross
+            exp: object.getBaseItemRetailPrice(true)
+            type: int
+            groups: [List, Detailed]
+        getBaseItemTax:
+            serialized_name: baseItemTax
+            type: int
+            groups: [List, Detailed]
+        getBaseTotalTax:
+            serialized_name: baseTotalTax
+            type: int
+            groups: [List, Detailed]
+        getBaseTotalNet:
+            serialized_name: baseTotalNet
+            exp: object.getBaseTotal(false)
+            type: int
+            groups: [List, Detailed]
+        getBaseTotalGross:
+            serialized_name: baseTotalGross
+            exp: object.getBaseTotal(true)
+            type: int
+            groups: [List, Detailed]
+        getBaseTaxes:
+            serialized_name: baseTaxes
+            groups: [List, Detailed]

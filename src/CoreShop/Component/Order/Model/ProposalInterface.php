@@ -20,7 +20,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface
 {
-
     /**
      * @return CurrencyInterface
      */

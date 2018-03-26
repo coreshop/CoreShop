@@ -1,0 +1,19 @@
+CoreShop\Component\Product\Model\Category:
+    exclusion_policy: ALL
+    xml_root_name: category
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getName:
+            serialized_name: name
+            type: string
+            groups: [List, Detailed]
+        getParentCategory:
+            serialized_name: parentCategory
+            groups: [List, Detailed]
+        getChildCategories:
+            serialized_name: childCategories
+            groups: [List, Detailed]

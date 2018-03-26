@@ -20,7 +20,11 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Pimcore\VersionHelper;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerController extends FrontendController
 {
@@ -54,13 +58,17 @@ class CustomerController extends FrontendController
     {
         $customer = $this->getCustomer();
 
+        $view = View::create($customer)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/profile.html'))
+            ->setTemplateData([
+                'customer' => $customer
+            ]);
+
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/profile.html'), [
-            'customer' => $customer,
-        ]);
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -71,13 +79,17 @@ class CustomerController extends FrontendController
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/orders.html'), [
-            'customer' => $customer,
-            'orders' => $this->get('coreshop.repository.order')->findByCustomer($this->getCustomer())
-        ]);
+        $view = View::create($customer)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/orders.html'))
+            ->setTemplateData([
+                'customer' => $customer,
+                'orders' => $this->get('coreshop.repository.order')->findByCustomer($this->getCustomer())
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -90,23 +102,27 @@ class CustomerController extends FrontendController
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         $order = $this->get('coreshop.repository.order')->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->redirectToRoute('coreshop_customer_orders');
+            throw new NotFoundHttpException();
         }
 
         if (!$order->getCustomer() instanceof CustomerInterface || $order->getCustomer()->getId() !== $customer->getId()) {
-            return $this->redirectToRoute('coreshop_customer_orders');
+            throw new AccessDeniedHttpException();
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/order_detail.html'), [
-            'customer' => $customer,
-            'order' => $order
-        ]);
+        $view = View::create($order)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/order_detail.html'))
+            ->setTemplateData([
+                'order' => $order,
+                'customer' => $customer
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -117,12 +133,17 @@ class CustomerController extends FrontendController
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/addresses.html'), [
-            'customer' => $customer,
-        ]);
+        $view = View::create($customer)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/addresses.html'))
+            ->setTemplateData([
+                'customer' => $customer,
+                'addresses' => $customer->getAddresses()
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -134,7 +155,7 @@ class CustomerController extends FrontendController
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         $addressId = $request->get('address');
@@ -146,7 +167,7 @@ class CustomerController extends FrontendController
             $address = $this->get('coreshop.factory.address')->createNew();
         } else {
             if (!$customer->hasAddress($address)) {
-                return $this->redirectToRoute('coreshop_customer_addresses');
+                return $this->viewHandler->handle(View::createRouteRedirect('coreshop_customer_addresses'));
             }
         }
 
@@ -177,37 +198,46 @@ class CustomerController extends FrontendController
                 $customer->save();
 
                 $this->addFlash('success', sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated'));
-                return $this->redirect($handledForm->get('_redirect')->getData());
+
+                if ($request->isXmlHttpRequest()) {
+                    return $this->viewHandler->handle(View::create(null, Response::HTTP_NO_CONTENT));
+                }
+
+                return $this->viewHandler->handle(View::createRedirect($handledForm->get('_redirect')->getData()));
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/address.html'), [
-            'address' => $address,
-            'customer' => $customer,
-            'form' => $form->createView()
-        ]);
+        $view = View::create($form)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/address.html'))
+            ->setTemplateData([
+                'address' => $address,
+                'customer' => $customer,
+                'form' => $form->createView()
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addressDeleteAction(Request $request)
     {
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         $addressId = $request->get('address');
         $address = $this->get('coreshop.repository.address')->find($addressId);
 
         if (!$address instanceof AddressInterface) {
-            return $this->redirectToRoute('coreshop_customer_addresses');
+            throw new NotFoundHttpException();
         } else {
             if (!$customer->hasAddress($address)) {
-                return $this->redirectToRoute('coreshop_customer_addresses');
+                throw new AccessDeniedHttpException();
             }
         }
 
@@ -221,19 +251,24 @@ class CustomerController extends FrontendController
         $address->delete();
 
         $this->addFlash('success', 'coreshop.ui.customer.address_successfully_deleted');
-        return $this->redirectToRoute('coreshop_customer_addresses');
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->viewHandler->handle(View::create(null, Response::HTTP_NO_CONTENT));
+        }
+
+        return $this->viewHandler->handle(View::createRouteRedirect('coreshop_customer_addresses'));
     }
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function settingsAction(Request $request)
     {
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         $form = $this->get('form.factory')->createNamed('', CustomerType::class, $customer, [
@@ -256,14 +291,23 @@ class CustomerController extends FrontendController
                 );
 
                 $this->addFlash('success', 'coreshop.ui.customer.profile_successfully_updated');
-                return $this->redirectToRoute('coreshop_customer_profile');
+
+                if ($request->isXmlHttpRequest()) {
+                    return $this->viewHandler->handle(View::create(null, Response::HTTP_NO_CONTENT));
+                }
+
+                return $this->viewHandler->handle(View::createRouteRedirect('coreshop_customer_profile'));
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/settings.html'), [
-            'customer' => $customer,
-            'form' => $form->createView()
-        ]);
+        $view = View::create($form)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/settings.html'))
+            ->setTemplateData([
+                'customer' => $customer,
+                'form' => $form->createView()
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -275,7 +319,7 @@ class CustomerController extends FrontendController
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         $form = $this->get('form.factory')->createNamed('', ChangePasswordType::class);
@@ -297,14 +341,23 @@ class CustomerController extends FrontendController
                 );
 
                 $this->addFlash('success', 'coreshop.ui.customer.password_successfully_changed');
-                return $this->redirectToRoute('coreshop_customer_profile');
+
+                if ($request->isXmlHttpRequest()) {
+                    return $this->viewHandler->handle(View::create(null, Response::HTTP_NO_CONTENT));
+                }
+
+                return $this->viewHandler->handle(View::createRouteRedirect('coreshop_customer_profile'));
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/change_password.html'), [
-            'customer' => $customer,
-            'form' => $form->createView()
-        ]);
+        $view = View::create($form)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/change_password.html'))
+            ->setTemplateData([
+                'customer' => $customer,
+                'form' => $form->createView()
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -317,7 +370,7 @@ class CustomerController extends FrontendController
         $newsletterUser = null;
 
         if (!$token) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         /**
@@ -344,10 +397,14 @@ class CustomerController extends FrontendController
             $this->addFlash('error', 'coreshop.ui.newsletter_confirmation_error');
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'), [
-            'newsletterUser' => $newsletterUser,
-            'success' => $success
-        ]);
+        $view = View::create($customer)
+            ->setTemplate($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'))
+            ->setTemplateData([
+                'newsletterUser' => $newsletterUser,
+                'success' => $success
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
 

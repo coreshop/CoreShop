@@ -1,0 +1,13 @@
+CoreShop\Component\Customer\Model\CustomerGroup:
+    exclusion_policy: ALL
+    xml_root_name: customer_group
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getName:
+            serialized_name: name
+            type: string
+            groups: [List, Detailed]
