@@ -20,6 +20,7 @@ use CoreShop\Component\Pimcore\BrickDefinitionUpdate;
 use CoreShop\Component\Pimcore\ClassUpdate;
 use CoreShop\Component\Pimcore\ClassUpdateInterface;
 use CoreShop\Component\Pimcore\FieldCollectionDefinitionUpdate;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -318,6 +319,50 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^the (definition) has a href field "([^"]+)"$/
+     */
+    public function definitionHasHrefField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "href",
+                "width": "",
+                "assetUploadPath": "",
+                "relationType": true,
+                "queryColumnType": {
+                    "id": "int(11)",
+                    "type": "enum(\'document\',\'asset\',\'object\')"
+                },
+                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
+                "objectsAllowed": true,
+                "assetsAllowed": false,
+                "assetTypes": [],
+                "documentsAllowed": false,
+                "documentTypes": [],
+                "lazyLoading": true,
+                "classes": [],
+                "pathFormatterClass": "",
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": false,
+                "index": false,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "columnType": null,
+                "invisible": false,
+                "visibleGridView": false,
+                "visibleSearch": false
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
      * @Given /^the (definition) has a checkbox field "([^"]+)"$/
      */
     public function definitionHasCheckboxField($definition, $name)
@@ -590,6 +635,10 @@ final class PimcoreClassContext implements Context
 
                 case 'input':
                     $object->setValue($row['key'], $row['value']);
+                    break;
+
+                case 'href':
+                    $object->setValue($row['key'], DataObject::getById($row['value']));
                     break;
 
                 case 'localized':
