@@ -9,7 +9,7 @@ CoreShop\Component\Order\Model\Cart:
             groups: [List, Detailed]
         getOrder:
             serialized_name: order
-            type: relation
+            type: pimcoreObject
             groups: [List, Detailed]
         getPriceRuleItems:
             serialized_name: priceRuleItems

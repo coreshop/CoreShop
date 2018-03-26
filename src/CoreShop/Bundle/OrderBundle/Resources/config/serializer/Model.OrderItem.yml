@@ -5,5 +5,5 @@ CoreShop\Component\Order\Model\OrderItem:
         getOrderId:
             serialized_name: order
             exp: object.getOrder()
-            type: relation
+            type: pimcoreObject
             groups: [List, Detailed]

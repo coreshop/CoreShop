@@ -12,28 +12,13 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
-use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\Context;
 use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
+use Pimcore\Model\DataObject;
 
-class RelationsHandler
+class PimcoreDataObjectHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * RelationsHandler constructor.
-     *
-     * @param EntityManagerInterface $manager
-     */
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->manager = $manager;
-    }
-
     public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
     {
         if ($relation instanceof \Traversable) {
@@ -49,29 +34,13 @@ class RelationsHandler
 
     public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
     {
-        $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
-
-        $metadata = $this->manager->getClassMetadata($className);
-
         if (!is_array($relation)) {
-            return $this->manager->getReference($metadata->getName(), $relation);
-        }
-
-        $single = false;
-        if ($metadata->isIdentifierComposite) {
-            $single = true;
-            foreach ($metadata->getIdentifierFieldNames() as $idName) {
-                $single = $single && array_key_exists($idName, $relation);
-            }
-        }
-
-        if ($single) {
-            return $this->manager->getReference($className, $relation);
+            return DataObject::getById($relation);
         }
 
         $objects = [];
         foreach ($relation as $idSet) {
-            $objects[] = $this->manager->getReference($className, $idSet);
+            $objects[] = DataObject::getById($idSet);
         }
 
         return $objects;
@@ -84,13 +53,6 @@ class RelationsHandler
      */
     protected function getSingleEntityRelation($relation)
     {
-        $metadata = $this->manager->getClassMetadata(get_class($relation));
-
-        $ids = $metadata->getIdentifierValues($relation);
-        if (!$metadata->isIdentifierComposite) {
-            $ids = array_shift($ids);
-        }
-
-        return $ids;
+        return $relation->getId();
     }
 }

@@ -4,7 +4,7 @@ CoreShop\Component\Core\Model\Customer:
     virtual_properties:
         getDefaultAddress:
             serialized_name: defaultAddress
-            type: relation
+            type: pimcoreObject
             groups: [List, Detailed]
         getNewsletterActive:
             serialized_name: newsletterActive

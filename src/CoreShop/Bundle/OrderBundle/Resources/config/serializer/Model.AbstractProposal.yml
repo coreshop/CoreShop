@@ -15,7 +15,7 @@ CoreShop\Component\Order\Model\AbstractProposal:
             groups: [List, Detailed]
         getCustomer:
             serialized_name: customer
-            type: relation
+            type: pimcoreObject
             groups: [List, Detailed]
         getShippingAddress:
             serialized_name: shippingAddress
