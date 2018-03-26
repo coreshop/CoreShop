@@ -515,6 +515,50 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^the (definition) has a field-collection field "([^"]+)" for (field-collection "[^"]+")$/
+     */
+    public function definitionHasAFieldCollectionField($definition, $name, Fieldcollection\Definition $fieldCollectionDefinition)
+    {
+        if (!$definition instanceof ClassDefinition) {
+            throw new \InvalidArgumentException('Fieldcollections are only allowed in Classes');
+        }
+
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "fieldcollections",
+                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
+                "allowedTypes": [
+                    "%s"
+                ],
+                "lazyLoading": true,
+                "maxItems": "",
+                "disallowAddRemove": false,
+                "disallowReorder": false,
+                "collapsed": false,
+                "collapsible": false,
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": false,
+                "index": false,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "columnType": null,
+                "queryColumnType": null,
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": false,
+                "visibleSearch": false
+            }
+        ', $fieldCollectionDefinition->getKey(), $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
      * @Given /^there is an instance of (class|behat-class "[^"]+") with key "([^"]+)"$/
      */
     public function thereIsAnInstanceofClassWithKey(ClassDefinition $definition, $key)
@@ -569,6 +613,26 @@ final class PimcoreClassContext implements Context
 
 
                     $object->{'get' . ucfirst($row['key'])}()->{'set' . ucfirst($type)}($brickInstance);
+                    break;
+
+                case 'collection':
+                    $config = json_decode(stripslashes($row['value']), true);
+                    $type = $this->classStorage->get($config['type']);
+                    $className = sprintf('Pimcore\\Model\\DataObject\\Fieldcollection\\Data\\%s', $type);
+
+                    $items = new Fieldcollection();
+
+                    foreach ($config['values'] as $itemValues) {
+                        $collectionInstance = new $className();
+
+                        foreach ($itemValues as $key => $value) {
+                            $collectionInstance->setValue($key, $value);
+                        }
+
+                        $items->add($collectionInstance);
+                    }
+
+                    $object->{'set' . ucfirst($row['key'])}($items);
                     break;
 
                 default:

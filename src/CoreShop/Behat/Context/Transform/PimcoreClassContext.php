@@ -19,6 +19,7 @@ use CoreShop\Component\Pimcore\ClassLoader;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Fieldcollection\Definition;
 use Webmozart\Assert\Assert;
 
 final class PimcoreClassContext implements Context
@@ -68,6 +69,20 @@ final class PimcoreClassContext implements Context
     public function behatClass($name)
     {
         return $this->class($this->classStorage->get($name));
+    }
+
+    /**
+     * @Transform /^field-collection "([^"]+)"$/
+     */
+    public function fieldCollection($name)
+    {
+        $name = $this->classStorage->get($name);
+
+        $definition = Definition::getByKey($name);
+
+        Assert::notNull($definition, sprintf('Definition for fieldcollection with key %s not found', $name));
+
+        return $definition;
     }
 
     /**

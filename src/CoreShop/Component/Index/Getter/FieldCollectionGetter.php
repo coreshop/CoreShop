@@ -30,7 +30,7 @@ class FieldCollectionGetter implements GetterInterface
         $collectionContainerGetter = 'get' . ucfirst($collectionField);
         $collectionContainer = $object->$collectionContainerGetter();
         $validItems = [];
-        $fieldGetter = 'get' . ucfirst($columnConfig['key']);
+        $fieldGetter = 'get' . ucfirst($config->getObjectKey());
 
         if ($collectionContainer instanceof Fieldcollection) {
             foreach ($collectionContainer->getItems() as $item) {
