@@ -38,6 +38,16 @@ interface ShippingRuleGroupInterface extends ResourceInterface, TimestampableInt
     public function setPriority($priority);
 
     /**
+     * @return bool
+     */
+    public function getStopPropagation();
+
+    /**
+     * @param bool $stopPropagation
+     */
+    public function setStopPropagation($stopPropagation);
+
+    /**
      * @return ShippingRuleInterface
      */
     public function getShippingRule();
