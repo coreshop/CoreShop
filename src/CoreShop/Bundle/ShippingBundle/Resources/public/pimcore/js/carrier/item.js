@@ -138,7 +138,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             columns: [
                 {
                     header: t('coreshop_carriers_shipping_rule'),
-                    flex: 1,
+                    flex: 2,
                     dataIndex: 'shippingRule',
                     editor: new Ext.form.ComboBox({
                         store: pimcore.globalmanager.get('coreshop_carrier_shipping_rules'),
@@ -168,6 +168,25 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                     }
                 },
                 {
+                    header: t('coreshop_carriers_stop_propagation'),
+                    dataIndex: 'stopPropagation',
+                    flex: 1,
+                    xtype: 'checkcolumn',
+                    listeners: {
+                        checkchange: function (column, rowIndex, checked, eOpts) {
+                            var grid = column.up('grid'),
+                                store = grid.getStore();
+                            if (checked) {
+                                store.each(function (record, index) {
+                                    if (rowIndex !== index) {
+                                        record.set('stopPropagation', false);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                },
+                {
                     xtype: 'actioncolumn',
                     width: 40,
                     items: [{
@@ -189,6 +208,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                             id: null,
                             carrier: this.data.id,
                             shippingRule: null,
+                            stopPropagation: false,
                             priority: 100
                         });
                     }.bind(this),
@@ -250,6 +270,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         Ext.each(ruleGroups, function (group) {
             var rule = {
                 priority: group.get('priority'),
+                stopPropagation: group.get('stopPropagation'),
                 shippingRule: group.get('shippingRule'),
                 carrier: this.data.id
             };
