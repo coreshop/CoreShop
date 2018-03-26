@@ -415,6 +415,69 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^the (definition) has a localized textarea field "([^"]+)"$/
+     */
+    public function definitionHasLocalizedTextareaField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "localizedfields",
+                "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
+                "childs": [
+                    {
+                        "fieldtype": "textarea",
+                        "width": "",
+                        "height": "",
+                        "queryColumnType": "longtext",
+                        "columnType": "longtext",
+                        "phpdocType": "string",
+                        "name": "%s",
+                        "title": "%s",
+                        "tooltip": "",
+                        "mandatory": false,
+                        "noteditable": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "permissions": null,
+                        "datatype": "data",
+                        "relationType": false,
+                        "invisible": false,
+                        "visibleGridView": false,
+                        "visibleSearch": false
+                    }
+                ],
+                "name": "localizedfields",
+                "region": null,
+                "layout": null,
+                "title": null,
+                "width": "",
+                "height": "",
+                "maxTabs": null,
+                "labelWidth": null,
+                "hideLabelsWhenTabsReached": null,
+                "fieldDefinitionsCache": null,
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": false,
+                "index": null,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "columnType": null,
+                "queryColumnType": null,
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": true,
+                "visibleSearch": true
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
      * @Given /^the (definition) has a brick field "([^"]+)"$/
      */
     public function definitionHasABrickField($definition, $name)
@@ -489,7 +552,7 @@ final class PimcoreClassContext implements Context
                     $setter = 'set' . ucfirst($row['key']);
 
                     foreach (Tool::getValidLanguages() as $lang) {
-                        $object->$setter($row['val'], $lang);
+                        $object->$setter($row['value'], $lang);
                     }
                     break;
 
