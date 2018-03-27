@@ -193,3 +193,55 @@ services:
             - '@coreshop.behat.class_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.order:
+        class: CoreShop\Behat\Context\Setup\OrderContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.order.transformer.cart_to_order'
+            - '@__symfony__.coreshop.factory.order'
+            - '@__symfony__.coreshop.repository.payment'
+            - '@__symfony__.coreshop.state_machine_applier'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.order_shipment:
+        class: CoreShop\Behat\Context\Setup\OrderShipmentContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.order.transformer.order_to_shipment'
+            - '@__symfony__.coreshop.factory.order_shipment'
+            - '@__symfony__.coreshop.repository.order_shipment'
+            - '@__symfony__.coreshop.state_machine_applier'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.order_invoice:
+        class: CoreShop\Behat\Context\Setup\OrderInvoiceContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.order.transformer.order_to_invoice'
+            - '@__symfony__.coreshop.factory.order_invoice'
+            - '@__symfony__.coreshop.repository.order_invoice'
+            - '@__symfony__.coreshop.state_machine_applier'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.locale:
+        class: CoreShop\Behat\Context\Setup\LocaleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.locale.fixed'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.payment:
+        class: CoreShop\Behat\Context\Setup\PaymentContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.payment'
+            - '@__symfony__.coreshop.factory.payment_provider'
+            - '@__symfony__.coreshop.factory.gateway_config'
+        tags:
+            - { name: fob.context_service }

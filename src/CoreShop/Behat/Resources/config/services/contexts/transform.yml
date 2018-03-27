@@ -137,3 +137,18 @@ services:
             - '@__symfony__.coreshop.repository.index'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.order:
+        class: CoreShop\Behat\Context\Transform\OrderContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.payment:
+        class: CoreShop\Behat\Context\Transform\PaymentContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.payment_provider'
+        tags:
+            - { name: fob.context_service }

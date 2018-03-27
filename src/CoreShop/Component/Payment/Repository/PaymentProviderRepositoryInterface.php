@@ -18,6 +18,14 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 interface PaymentProviderRepositoryInterface extends RepositoryInterface
 {
     /**
+     * @param string $name
+     * @param string $locale
+     *
+     * @return PaymentProviderInterface[]
+     */
+    public function findByName($name, $locale);
+
+    /**
      * @return PaymentProviderInterface[]
      */
     public function findActive();

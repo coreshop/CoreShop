@@ -124,3 +124,11 @@ services:
             - '@coreshop.behat.class_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.order:
+        class: CoreShop\Behat\Context\Domain\OrderContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.state_machine_manager'
+        tags:
+            - { name: fob.context_service }

@@ -24,6 +24,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Context\FixedStoreContext;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
@@ -35,9 +36,9 @@ final class StoreContext implements Context
     private $sharedStorage;
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private $objectManager;
+    private $entityManager;
 
     /**
      * @var FactoryInterface
@@ -67,7 +68,7 @@ final class StoreContext implements Context
     /**
      * StoreContext constructor.
      * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager,
+     * @param EntityManagerInterface $entityManager
      * @param FactoryInterface $storeFactory
      * @param StoreRepositoryInterface $storeRepository
      * @param FactoryInterface $currencyFactory
@@ -76,7 +77,7 @@ final class StoreContext implements Context
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ObjectManager $objectManager,
+        EntityManagerInterface $entityManager,
         FactoryInterface $storeFactory,
         StoreRepositoryInterface $storeRepository,
         FactoryInterface $currencyFactory,
@@ -85,7 +86,7 @@ final class StoreContext implements Context
     )
     {
         $this->sharedStorage = $sharedStorage;
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->storeFactory = $storeFactory;
         $this->storeRepository = $storeRepository;
         $this->currencyFactory = $currencyFactory;
@@ -137,7 +138,7 @@ final class StoreContext implements Context
             $currency->setName('EURO');
             $currency->setSymbol('€');
 
-            $this->objectManager->persist($currency);
+            $this->entityManager->persist($currency);
 
             $this->sharedStorage->set('currency', $currency);
         }
@@ -152,10 +153,12 @@ final class StoreContext implements Context
             $country->setCurrency($currency);
             $country->setActive(true);
 
-            $this->objectManager->persist($country);
+            $this->entityManager->persist($country);
 
             $this->sharedStorage->set('country', $country);
         }
+
+        $this->entityManager->flush();
 
         $store->setName($name);
         $store->setCurrency($currency);
@@ -170,8 +173,8 @@ final class StoreContext implements Context
      */
     private function saveStore(StoreInterface $store)
     {
-        $this->objectManager->persist($store);
-        $this->objectManager->flush();
+        $this->entityManager->persist($store);
+        $this->entityManager->flush();
 
         $this->sharedStorage->set('store', $store);
     }

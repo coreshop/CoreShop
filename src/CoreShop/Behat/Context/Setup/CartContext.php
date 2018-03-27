@@ -112,4 +112,21 @@ final class CartContext implements Context
         $this->cartContext->getCart()->setShippingAddress($address);
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
+
+    /**
+     * @Given /^the cart invoices to (customer "[^"]+") address with postcode "([^"]+)"$/
+     */
+    public function theCartInvoicesToCustomersAddressWithPostcode(CustomerInterface $customer, $postcode)
+    {
+        Assert::greaterThan(count($customer->getAddresses()), 0);
+
+        $address = current(array_filter($customer->getAddresses(), function($address) use ($postcode) {
+            return $address->getPostcode() === $postcode;
+        }));
+
+        Assert::isInstanceOf($address, AddressInterface::class);
+
+        $this->cartContext->getCart()->setInvoiceAddress($address);
+        $this->cartManager->persistCart($this->cartContext->getCart());
+    }
 }
