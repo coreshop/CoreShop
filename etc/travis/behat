@@ -2,5 +2,13 @@
 set -e
 
 rm -rf var/cache
+
 # PIMCORE_TEST_DB_DSN=mysql://coreshop2:coreshop2@localhost/coreshop2___behat
-vendor/bin/behat --config lib/CoreShop/behat.yml.dist -vvv
+
+if [ $CORESHOP_CODE_COVERAGE == 1 ]; then
+    phpdbg -qrr vendor/bin/behat --config lib/CoreShop/behat.yml.dist -vvv
+fi
+
+if [ $CORESHOP_CODE_COVERAGE == 0 ]; then
+    vendor/bin/behat --config lib/CoreShop/behat.yml.dist -vvv
+fi
