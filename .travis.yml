@@ -124,6 +124,16 @@ matrix:
             - PIMCORE_BRANCH="master"
             - CORESHOP_SKIP_BEHAT=0
 
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=0
+            - CORESHOP_CODE_COVERAGE=1
+
+    allow_failures:
+        - env: CORESHOP_CODE_COVERAGE=1
 env:
     global:
         - PIMCORE_ENVIRONMENT=test
@@ -132,6 +142,7 @@ env:
         - CORESHOP_MYSQL_DB=coreshop_phpunit
         - CORESHOP_MYSQL_USER=root
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
+        - CORESHOP_CODE_COVERAGE=0
 
 cache:
     directories:
@@ -146,3 +157,6 @@ install:
 
 script:
     - etc/travis/scripts
+
+after_script:
+    - etc/travis/after

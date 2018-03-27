@@ -1,0 +1,4 @@
+if [ $CORESHOP_CODE_COVERAGE == 1 ]; then
+    wget https://scrutinizer-ci.com/ocular.phar
+    php ocular.phar code-coverage:upload --format=php-clover lib/CoreShop/build/coverage.clover
+fi

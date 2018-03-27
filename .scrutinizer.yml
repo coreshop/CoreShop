@@ -50,6 +50,8 @@ tools:
   php_pdepend: true
   php_sim: true
   php_changetracking: true
+  external_code_coverage: true
+  php_code_coverage: true
 filter:
   excluded_paths:
     - "tests/"

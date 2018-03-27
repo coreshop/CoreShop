@@ -2,7 +2,13 @@
 set -e
 
 if [ $CORESHOP_SKIP_BEHAT == 0 ]; then
-    $TRAVIS_BUILD_DIR/etc/travis/behat
+    if [ $CORESHOP_CODE_COVERAGE == 1 ]; then
+        phpdbg -qrr $TRAVIS_BUILD_DIR/etc/travis/behat
+    fi
+
+    if [ $CORESHOP_CODE_COVERAGE == 0 ]; then
+        $TRAVIS_BUILD_DIR/etc/travis/behat
+    fi
 fi
 
 $TRAVIS_BUILD_DIR/etc/travis/phpunit

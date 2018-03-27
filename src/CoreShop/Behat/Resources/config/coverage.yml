@@ -1,0 +1,15 @@
+default:
+  extensions:
+    LeanPHP\Behat\CodeCoverage\Extension:
+      drivers:
+        - local
+      filter:
+        whitelist:
+          include:
+            directories:
+              'lib/CoreShop/src/CoreShop/Component': ~
+              'lib/CoreShop/src/CoreShop/Bundle': ~
+      report:
+        format:   clover
+        options:
+          target: lib/CoreShop/build/coverage.clover

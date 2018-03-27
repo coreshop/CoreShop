@@ -97,7 +97,8 @@
     "friends-of-behat/cross-container-extension": "^1.1",
     "friends-of-behat/service-container-extension": "^1.0",
     "friends-of-behat/symfony-extension": "^1.2",
-    "friends-of-behat/variadic-extension": "^1.1"
+    "friends-of-behat/variadic-extension": "^1.1",
+    "leanphp/behat-code-coverage": "^3.2"
   },
   "autoload": {
     "psr-4": {
