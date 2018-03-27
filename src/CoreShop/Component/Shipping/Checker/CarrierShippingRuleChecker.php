@@ -40,7 +40,15 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
         $shippingRules = $carrier->getShippingRules();
 
         foreach ($shippingRules as $rule) {
-            if ($this->ruleValidationProcessor->isValid($carrier, $rule->getShippingRule(), [$carrier, 'shippable' => $shippable, 'address' => $address])) {
+            $isValid = $this->ruleValidationProcessor->isValid($carrier, $rule->getShippingRule(), [
+                $carrier,
+                'shippable' => $shippable,
+                'address'   => $address
+            ]);
+
+            if ($isValid === false && $rule->getStopPropagation() === true) {
+                return false;
+            } elseif ($isValid === true) {
                 return $rule;
             }
         }

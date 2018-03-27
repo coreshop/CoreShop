@@ -17,8 +17,13 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class Customer extends AbstractPimcoreModel implements CustomerInterface, UserInterface
+class Customer extends AbstractPimcoreModel implements CustomerInterface
 {
+    /**
+     * @var array
+     */
+    private $roles = [];
+
     /**
      * {@inheritdoc}
      */
@@ -207,7 +212,19 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
      */
     public function getRoles()
     {
-        return $this->getCustomerGroups();
+        $roles = $this->roles;
+
+        /** @var CustomerGroupInterface $group */
+        foreach ($this->getCustomerGroups() as $group) {
+            $groupRoles = $group->getRoles();
+            $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);
+        }
+
+
+        // we need to make sure to have at least one role
+        $roles[] = static::ROLE_DEFAULT;
+
+        return array_unique($roles);
     }
 
     /**
@@ -216,5 +233,13 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
     public function getUsername()
     {
         return $this->getEmail();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        return $user instanceof self && $user->getId() === $this->getId();
     }
 }
