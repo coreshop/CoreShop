@@ -86,6 +86,27 @@ matrix:
           sudo: required
           php: 7
           env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=1
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7
+          env:
             - PIMCORE_BRANCH="master"
             - CORESHOP_SKIP_BEHAT=1
 
