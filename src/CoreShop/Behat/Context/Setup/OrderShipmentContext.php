@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
@@ -76,23 +77,24 @@ final class OrderShipmentContext implements Context
      */
     public function iCreateAFullShipmentForOrder(OrderInterface $order)
     {
+        $orderItem = reset($order->getItems());
+
         $orderShipment = $this->orderShipmentFactory->createNew();
         $orderShipment = $this->shipmentTransformer->transform($order, $orderShipment, [
-            'orderItemId' => reset($order->getItems())->getId(),
-            'quantity' => 1
+            [
+                'orderItemId' => $orderItem->getId(),
+                'quantity' => 1
+            ]
         ]);
 
         $this->sharedStorage->set('orderShipment', $orderShipment);
     }
 
     /**
-     * @Given /^I apply shipment transition "([^"]+)" to latest (order) shipment$/
+     * @Given /^I apply shipment transition "([^"]+)" to (latest order shipment)$/
      */
-    public function iApplyShipmentTransitionToOrderShipment($shipmentTransition, OrderInterface $order)
+    public function iApplyShipmentTransitionToOrderShipment($shipmentTransition, OrderShipmentInterface $shipment)
     {
-        $shipments = $this->orderShipmentRepository->getDocuments($order);
-        $shipment = end($shipments);
-
         $this->stateMachineApplier->apply($shipment, ShipmentTransitions::IDENTIFIER, $shipmentTransition);
     }
 }

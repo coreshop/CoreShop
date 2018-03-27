@@ -17,6 +17,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\InvoiceTransitions;
+use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -76,23 +77,24 @@ final class OrderInvoiceContext implements Context
      */
     public function iCreateAInvoiceForOrder(OrderInterface $order)
     {
+        $orderItem = reset($order->getItems());
+
         $orderInvoice = $this->orderInvoiceFactory->createNew();
         $orderInvoice = $this->invoiceTransformer->transform($order, $orderInvoice, [
-            'orderItemId' => reset($order->getItems())->getId(),
-            'quantity' => 1
+            [
+                'orderItemId' => $orderItem->getId(),
+                'quantity' => 1
+            ]
         ]);
 
         $this->sharedStorage->set('orderInvoice', $orderInvoice);
     }
 
     /**
-     * @Given /^I apply invoice transition "([^"]+)" to latest (order) invoice$/
+     * @Given /^I apply invoice transition "([^"]+)" to (latest order invoice)$/
      */
-    public function iApplyInvoiceTransitionToOrderInvoice($invoiceTransition, OrderInterface $order)
+    public function iApplyInvoiceTransitionToOrderInvoice($invoiceTransition, OrderInvoiceInterface $invoice)
     {
-        $invoices = $this->orderInvoiceRepository->getDocuments($order);
-        $invoice = end($invoices);
-
         $this->stateMachineApplier->apply($invoice, InvoiceTransitions::IDENTIFIER, $invoiceTransition);
     }
 }
