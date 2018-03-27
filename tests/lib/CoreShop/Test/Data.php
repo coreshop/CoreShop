@@ -31,6 +31,9 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class Data
@@ -120,6 +123,19 @@ class Data
      */
     public static function createData()
     {
+        //Clear Database
+        $purger = new PurgeDatabase(\Pimcore::getContainer()->get('doctrine.orm.entity_manager'));
+        $purger->purge();
+
+        //Install Fixtures
+        $parameters = array_merge(
+            ['command' => 'coreshop:install:fixtures']
+        );
+
+        $application = new Application(\Pimcore::getKernel());
+        $application->setAutoExit(false);
+        $application->run(new ArrayInput($parameters), new ConsoleOutput());
+
         self::$store = $standardStore = self::get('coreshop.repository.store')->findStandard();
 
         self::createGrossStore();

@@ -1,0 +1,24 @@
+default:
+    suites:
+        domain_currency:
+            contexts_services:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+                - coreshop.behat.context.transform.currency
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.country
+
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.country
+                - coreshop.behat.context.setup.currency
+                - coreshop.behat.context.setup.exchange_rate
+
+                - coreshop.behat.context.domain.currency
+                - coreshop.behat.context.domain.exchange_rate
+            filters:
+                tags: "@currency"

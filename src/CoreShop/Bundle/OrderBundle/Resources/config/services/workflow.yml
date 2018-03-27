@@ -23,6 +23,7 @@ services:
         arguments:
             - '@coreshop.state_machine_manager'
             - '@coreshop.repository.order_shipment'
+            - '@coreshop.order.shipment.processable'
 
     # @coreshop.order.invoice.processable
     coreshop.state_machine_resolver.order_invoice:
@@ -31,6 +32,7 @@ services:
         arguments:
             - '@coreshop.state_machine_manager'
             - '@coreshop.repository.order_invoice'
+            - '@coreshop.order.invoice.processable'
 
     coreshop.state_machine.marking_store.single_state.order_payment_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore

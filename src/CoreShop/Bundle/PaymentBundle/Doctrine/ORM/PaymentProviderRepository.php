@@ -20,6 +20,23 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
     /**
      * {@inheritdoc}
      */
+    public function findByName($name, $locale)
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.translations', 'translation')
+            ->andWhere('translation.name = :name')
+            ->andWhere('translation.locale = :locale')
+            ->setParameter('name', $name)
+            ->setParameter('locale', $locale)
+            ->getQuery()
+            ->useQueryCache(true)
+            ->useResultCache(true)
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findActive()
     {
         return $this->createQueryBuilder('o')

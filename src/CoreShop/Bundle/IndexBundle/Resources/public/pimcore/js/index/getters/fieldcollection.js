@@ -19,9 +19,9 @@ coreshop.index.getters.fieldcollection = Class.create(coreshop.index.getters.abs
             {
                 xtype: 'textfield',
                 fieldLabel: t('coreshop_index_field_collectionfield'),
-                name: 'classificationStoreField',
+                name: 'collectionField',
                 length: 255,
-                value: record.data.getterConfig ? record.data.getterConfig.classificationStoreField : null,
+                value: record.data.getterConfig ? record.data.getterConfig.collectionField : null,
                 allowBlank: false
             }
         ];

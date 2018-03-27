@@ -12,13 +12,13 @@
 
 namespace CoreShop\Test;
 
-use PHPUnit\Framework\TestSuite;
 use Pimcore\Model\DataObject\AbstractObject;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class SuiteBase.
  */
-class SuiteBase extends TestSuite
+class SuiteBase extends KernelTestCase
 {
     /**
      * Setup.

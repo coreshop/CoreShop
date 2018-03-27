@@ -22,43 +22,107 @@ matrix:
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.1.2"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.1.2"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=0
 
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.1.3"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.1.3"
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=0
 
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="tags/v5.2.0"
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="tags/v5.2.0"
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+            - CORESHOP_SKIP_BEHAT=0
 
         - os: linux
           sudo: required
           php: 7
-          env: PIMCORE_BRANCH="master"
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=1
 
         - os: linux
           sudo: required
           php: 7.1
-          env: PIMCORE_BRANCH="master"
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=0
 
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=1
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=0
 
 env:
     global:
@@ -67,38 +131,18 @@ env:
         - CORESHOP_MYSQL_HOST=127.0.0.1
         - CORESHOP_MYSQL_DB=coreshop_phpunit
         - CORESHOP_MYSQL_USER=root
+        - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
+
 cache:
     directories:
         - ~/.composer/cache/files
         - vendor
 
 before_install:
-    - mysql --version
-    - mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
-    - mysql -e "SET GLOBAL innodb_large_prefix=1;"
-    - mysql -e "CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
-    - mkdir $TRAVIS_BUILD_DIR/../lib
-    - mkdir $TRAVIS_BUILD_DIR/../lib/CoreShop
-    - mv $TRAVIS_BUILD_DIR/{.[!.],}* $TRAVIS_BUILD_DIR/../lib/CoreShop
-    - rm -rf $TRAVIS_BUILD_DIR/{.[!.],}*
-    - git clone https://github.com/pimcore/pimcore.git $TRAVIS_BUILD_DIR
-    - git checkout ${PIMCORE_BRANCH} $TRAVIS_BUILD_DIR
-    - phpenv config-add $TRAVIS_BUILD_DIR/../lib/CoreShop/.gitlab-ci/php.ini
+    - etc/travis/setup/before_install
 
 install:
-    # add config templates
-    - mkdir -p var/config
-    - cp .travis/system.template.php var/config/system.php
-    - cp app/config/parameters.example.yml app/config/parameters.yml
-    - composer remove vrana/jush --no-scripts
-    - composer install --no-dev --no-scripts
-    - composer remove codeception/codeception --dev --no-scripts
-    - if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3; fi
-    - if [ $PIMCORE_BRANCH == "tags/v5.1.1" ]; then composer require symfony/symfony:3.4.3; fi
-
-    # Add path to CoreShop
-    - composer config repositories.coreshop path $TRAVIS_BUILD_DIR/../lib/CoreShop
-    - composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 coreshop/core-shop:dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT
+    - etc/travis/setup/install
 
 script:
-    - vendor/bin/phpunit -c vendor/coreshop/core-shop/tests/config/ --bootstrap vendor/coreshop/core-shop/tests/bootstrap.php vendor/coreshop/core-shop/tests/AllTests
+    - etc/travis/scripts
