@@ -72,8 +72,8 @@ final class OrderShipmentContext implements Context
     }
 
     /**
-     * @Given /^I create a shipment for the (order)$/
-     * @Given /^I create another shipment for the (order)$/
+     * @Given /^I create a shipment for (my order)$/
+     * @Given /^I create another shipment for (my order)$/
      */
     public function iCreateAFullShipmentForOrder(OrderInterface $order)
     {

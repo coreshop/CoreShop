@@ -15,15 +15,16 @@ Feature: Create a new order and add a payment
     And I add the product "T-Shirt" to my cart
     And the cart ships to customer "some-customer@something.com" address with postcode "4600"
     And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
+    And the cart belongs to customer "some-customer@something.com"
     And There is a payment provider "Bankwire" using factory "Bankwire"
     And I create an order from my cart
 
   Scenario: Create fully payment
-    Given I create a payment for order with payment provider "Bankwire" and amount 2400
+    Given I create a payment for my order with payment provider "Bankwire" and amount 2400
     And I apply payment transition "complete" to latest order payment
     Then the order payment state should be "paid"
 
   Scenario: Create partially paid payment
-    Given I create a payment for order with payment provider "Bankwire" and amount 1800
+    Given I create a payment for my order with payment provider "Bankwire" and amount 1800
     And I apply payment transition "complete" to latest order payment
     Then the order payment state should be "partially_paid"

@@ -101,7 +101,7 @@ final class PaymentContext implements Context
     }
 
     /**
-     * @Given /^I create a payment for (order) with (payment provider "[^"]+") and amount ([^"]+)$/
+     * @Given /^I create a payment for (my order) with (payment provider "[^"]+") and amount ([^"]+)$/
      */
     public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount)
     {

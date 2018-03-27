@@ -12,6 +12,7 @@ Feature: Create a new order
     And the product has the tax rule group "AT"
     And the site has a customer "some-customer@something.com"
     And the customer "some-customer@something.com" has an address with country "Austria", "4600", "Wels", "Freiung", "9-11/N3"
+    And the cart belongs to customer "some-customer@something.com"
 
   Scenario: Create a new order and add a product
     Given I add the product "T-Shirt" to my cart
@@ -19,6 +20,7 @@ Feature: Create a new order
     And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
     And I create an order from my cart
     Then there should be one product in my order
+    And the notification rule for "order" should have been fired
 
    Scenario: Create a new order and add a product and calculate totals
     Given I add the product "T-Shirt" to my cart
@@ -27,6 +29,7 @@ Feature: Create a new order
     And I create an order from my cart
     Then the order total should be "2400" including tax
     And the order total should be "2000" excluding tax
+    And the notification rule for "order" should have been fired
 
   Scenario: Create a new order and add a product and calculate subtotals
     Given I add the product "T-Shirt" to my cart
@@ -35,6 +38,7 @@ Feature: Create a new order
     And I create an order from my cart
     Then the order subtotal should be "2400" including tax
     And the order subtotal should be "2000" excluding tax
+    And the notification rule for "order" should have been fired
 
   Scenario: Create a new order and add a product when I come from a different country
     Given the site has a country "Germany" with currency "EUR"
@@ -50,3 +54,4 @@ Feature: Create a new order
     And the order total should be "2000" excluding tax
     And the order subtotal should be "2000" including tax
     And the order subtotal should be "2000" excluding tax
+    And the notification rule for "order" should have been fired

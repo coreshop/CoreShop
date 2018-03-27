@@ -13,6 +13,7 @@ Feature: Create a new order and change states
     And the site has a customer "some-customer@something.com"
     And the customer "some-customer@something.com" has an address with country "Austria", "4600", "Wels", "Freiung", "9-11/N3"
     And I add the product "T-Shirt" to my cart
+    And the cart belongs to customer "some-customer@something.com"
     And the cart ships to customer "some-customer@something.com" address with postcode "4600"
     And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
     And I create an order from my cart

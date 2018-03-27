@@ -72,8 +72,8 @@ final class OrderInvoiceContext implements Context
     }
 
     /**
-     * @Given /^I create a invoice for the (order)$/
-     * @Given /^I create another invoice for the (order)$/
+     * @Given /^I create a invoice for (my order)$/
+     * @Given /^I create another invoice for (my order)$/
      */
     public function iCreateAInvoiceForOrder(OrderInterface $order)
     {

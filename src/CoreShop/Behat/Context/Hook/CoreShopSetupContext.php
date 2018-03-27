@@ -13,7 +13,11 @@
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\NotificationRuleListenerInterface;
+use CoreShop\Bundle\NotificationBundle\Events;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CoreShopSetupContext implements Context
 {
@@ -23,11 +27,29 @@ final class CoreShopSetupContext implements Context
     private $entityManager;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @var NotificationRuleListenerInterface
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    private $notificationRuleListener;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param NotificationRuleListenerInterface $notificationRuleListener
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        NotificationRuleListenerInterface $notificationRuleListener,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
         $this->entityManager = $entityManager;
+        $this->notificationRuleListener = $notificationRuleListener;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -64,5 +86,20 @@ final class CoreShopSetupContext implements Context
                 $schemaManager->dropView($view->getName());
             }
         }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearNotificationRuleListener()
+    {
+        $this->notificationRuleListener->clear();
+
+        $function = function (GenericEvent $event) {
+            $this->notificationRuleListener->applyNewFired($event->getSubject());
+        };
+
+        $this->eventDispatcher->removeListener(Events::PRE_APPLY, $function);
+        $this->eventDispatcher->addListener(Events::PRE_APPLY, $function);
     }
 }

@@ -15,25 +15,26 @@ Feature: Create a new order and add a invoice
     And I add the product "T-Shirt" to my cart
     And the cart ships to customer "some-customer@something.com" address with postcode "4600"
     And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
+    And the cart belongs to customer "some-customer@something.com"
 
   Scenario: Create full invoice
     Given I create an order from my cart
-    And I create a invoice for the order
+    And I create a invoice for my order
     And I apply invoice transition "complete" to latest order invoice
     Then the order invoice state should be "invoiced"
 
   Scenario: Create partial invoice
     Given I add the product "T-Shirt" to my cart
     And I create an order from my cart
-    And I create a invoice for the order
+    And I create a invoice for my order
     And I apply invoice transition "complete" to latest order invoice
     Then the order invoice state should be "partially_invoiced"
 
   Scenario: Create two partial invoices
     Given I add the product "T-Shirt" to my cart
     And I create an order from my cart
-    And I create a invoice for the order
+    And I create a invoice for my order
     And I apply invoice transition "complete" to latest order invoice
-    And I create another invoice for the order
+    And I create another invoice for my order
     And I apply invoice transition "complete" to latest order invoice
     Then the order invoice state should be "invoiced"

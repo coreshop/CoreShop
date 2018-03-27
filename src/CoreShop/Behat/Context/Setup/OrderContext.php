@@ -94,7 +94,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Given /^I apply transition "([^"]+)" to (order)$/
+     * @Given /^I apply transition "([^"]+)" to (my order)$/
      */
     public function iApplyTransitionToOrder($transition, OrderInterface $order)
     {

@@ -46,3 +46,10 @@ services:
 
     coreshop.form_registry.notification_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    coreshop.notification_rule.event_rule_processor:
+        class: CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor
+        decorates: coreshop.notification_rule.processor
+        arguments:
+            - '@coreshop.notification_rule.event_rule_processor.inner'
+            - '@event_dispatcher'

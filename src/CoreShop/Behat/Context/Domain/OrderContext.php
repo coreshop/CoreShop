@@ -48,7 +48,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^there should be one product in my (order)$/
+     * @Then /^there should be one product in (my order)$/
      */
     public function thereShouldBeOneProductInTheOrder(OrderInterface $order)
     {
@@ -63,7 +63,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) total should be "([^"]+)" including tax$/
+     * @Then /^(the order) total should be "([^"]+)" including tax$/
      */
     public function orderTotalShouldBeIncludingTax(OrderInterface $order, $total)
     {
@@ -79,7 +79,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) total should be "([^"]+)" excluding tax$/
+     * @Then /^(the order) total should be "([^"]+)" excluding tax$/
      */
     public function orderTotalShouldBeExcludingTax(OrderInterface $order, $total)
     {
@@ -95,7 +95,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) subtotal should be "([^"]+)" including tax$/
+     * @Then /^(the order) subtotal should be "([^"]+)" including tax$/
      */
     public function orderSubtotalShouldBeIncludingTax(OrderInterface $order, $total)
     {
@@ -111,7 +111,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) subtotal should be "([^"]+)" excluding tax$/
+     * @Then /^(the order) subtotal should be "([^"]+)" excluding tax$/
      */
     public function orderSubtotalShouldBeExcludingTax(OrderInterface $order, $total)
     {
@@ -127,7 +127,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) should weigh ([^"]+)kg$/
+     * @Then /^(the order) should weigh ([^"]+)kg$/
      */
     public function orderShouldWeigh(OrderInterface $order, $kg)
     {
@@ -143,7 +143,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) state should be "([^"]+)"$/
+     * @Then /^(the order) state should be "([^"]+)"$/
      */
     public function orderStateShouldBeState(OrderInterface $order, $state)
     {
@@ -159,7 +159,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) payment state should be "([^"]+)"$/
+     * @Then /^(the order) payment state should be "([^"]+)"$/
      */
     public function orderPaymentStateShouldBeState(OrderInterface $order, $state)
     {
@@ -175,7 +175,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) shipping state should be "([^"]+)"$/
+     * @Then /^(the order) shipping state should be "([^"]+)"$/
      */
     public function orderShippingStateShouldBeState(OrderInterface $order, $state)
     {
@@ -191,7 +191,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^the (order) invoice state should be "([^"]+)"$/
+     * @Then /^(the order) invoice state should be "([^"]+)"$/
      */
     public function orderInvoiceStateShouldBeState(OrderInterface $order, $state)
     {
@@ -207,7 +207,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should not be able to apply transition "([^"]+)" to my (order)$/
+     * @Then /^I should not be able to apply transition "([^"]+)" to (my order)$/
      */
     public function iShouldNotBeAbleToApplyTransition($transition, OrderInterface $order)
     {
@@ -217,7 +217,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should be able to apply transition "([^"]+)" to my (order)$/
+     * @Then /^I should be able to apply transition "([^"]+)" to (my order)$/
      */
     public function iShouldBeAbleToApplyTransition($transition, OrderInterface $order)
     {
@@ -227,7 +227,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should not be able to apply payment transition "([^"]+)" to my (order)$/
+     * @Then /^I should not be able to apply payment transition "([^"]+)" to (my order)$/
      */
     public function iShouldNotBeAbleToApplyPaymentTransition($transition, OrderInterface $order)
     {
@@ -237,7 +237,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should be able to apply payment transition "([^"]+)" to my (order)$/
+     * @Then /^I should be able to apply payment transition "([^"]+)" to (my order)$/
      */
     public function iShouldBeAbleToApplyPaymentTransition($transition, OrderInterface $order)
     {
@@ -247,7 +247,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should not be able to apply shipping transition "([^"]+)" to my (order)$/
+     * @Then /^I should not be able to apply shipping transition "([^"]+)" to (my order)$/
      */
     public function iShouldNotBeAbleToApplyShippingTransition($transition, OrderInterface $order)
     {
@@ -257,7 +257,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should be able to apply shipping transition "([^"]+)" to my (order)$/
+     * @Then /^I should be able to apply shipping transition "([^"]+)" to (my order)$/
      */
     public function iShouldBeAbleToApplyShippingTransition($transition, OrderInterface $order)
     {
@@ -267,7 +267,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should not be able to apply invoice transition "([^"]+)" to my (order)$/
+     * @Then /^I should not be able to apply invoice transition "([^"]+)" to (my order)$/
      */
     public function iShouldNotBeAbleToApplyInvoiceTransition($transition, OrderInterface $order)
     {
@@ -277,7 +277,7 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Then /^I should be able to apply invoice transition "([^"]+)" to my (order)$/
+     * @Then /^I should be able to apply invoice transition "([^"]+)" to (my order)$/
      */
     public function iShouldBeAbleToApplyInvoiceTransition($transition, OrderInterface $order)
     {

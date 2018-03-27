@@ -31,7 +31,8 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Transform /^order/
+     * @Transform /^the order/
+     * @Transform /^my order/
      */
     public function order()
     {
