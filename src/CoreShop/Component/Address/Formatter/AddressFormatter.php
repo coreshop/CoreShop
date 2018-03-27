@@ -14,9 +14,25 @@ namespace CoreShop\Component\Address\Formatter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use Pimcore\Placeholder;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AddressFormatter implements AddressFormatterInterface
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * AddressFormatter constructor.
+     *
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -24,6 +40,12 @@ class AddressFormatter implements AddressFormatterInterface
     {
         $objectVars = get_object_vars($address);
         $objectVars['country'] = $address->getCountry();
+
+        //translate salutation
+        if (!empty($address->getSalutation())) {
+            $translationKey = 'coreshop.form.customer.salutation.' . $address->getSalutation();
+            $objectVars['salutation'] = $this->translator->trans($translationKey);
+        }
 
         $placeHolder = new Placeholder();
         $address = $placeHolder->replacePlaceholders($address->getCountry()->getAddressFormat(), $objectVars);

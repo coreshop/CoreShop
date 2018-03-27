@@ -15,10 +15,8 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type;
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Valid;
 
 class GuestRegistrationType extends AbstractType
@@ -48,12 +46,7 @@ class GuestRegistrationType extends AbstractType
                     new Valid(['groups' => ['coreshop']])
                 ]
             ])
-            ->add('termsAccepted', CheckboxType::class, array(
-                'label' => 'coreshop.form.customer.terms',
-                'mapped' => false,
-                'validation_groups' => ['coreshop_customer_guest'],
-                'constraints' => new IsTrue(['groups' => ['coreshop_customer_guest']]),
-            ))
+
             ->add('submit', SubmitType::class);
     }
 

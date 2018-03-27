@@ -22,6 +22,7 @@ use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Image;
 use Faker\Provider\Lorem;
+use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -81,16 +82,26 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                  * @var $usedCategory CategoryInterface
                  */
                 $usedCategory = $categories[rand(0, count($categories) - 1)];
+                $folder = \Pimcore\Model\Asset\Service::createFolderByPath(sprintf('/demo/products/%s', $usedCategory->getName()));
 
                 $images = [];
 
                 for ($j = 0; $j < 3; $j++) {
                     $imagePath = $this->container->get('kernel')->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3)));
 
+                    $fileName = 'image' . ($i) . '_' . ($j) . '.jpg';
+                    $fullPath = $folder->getFullPath() . '/' . $fileName;
+
+                    $existingImage = Asset::getByPath($fullPath);
+
+                    if ($existingImage instanceof Asset) {
+                        $existingImage->delete();
+                    }
+
                     $image = new \Pimcore\Model\Asset\Image();
                     $image->setData(file_get_contents($imagePath));
-                    $image->setParent(\Pimcore\Model\Asset\Service::createFolderByPath(sprintf('/demo/products/%s', $usedCategory->getName())));
-                    $image->setFilename('image' . ($i) . '_' . ($j) . '.jpg');
+                    $image->setParent($folder);
+                    $image->setFilename($fileName);
                     \Pimcore\Model\Asset\Service::getUniqueKey($image);
                     $image->save();
 

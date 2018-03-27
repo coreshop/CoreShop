@@ -35,7 +35,7 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->andWhere('translation.name = :name')
             ->andWhere('translation.locale = :locale')
             ->setParameter('name', $name)
-            ->setParameter('localeCode', $locale)
+            ->setParameter('locale', $locale)
             ->getQuery()
             ->useQueryCache(true)
             ->useResultCache(true)

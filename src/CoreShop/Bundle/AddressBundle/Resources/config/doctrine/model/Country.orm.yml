@@ -22,6 +22,10 @@ CoreShop\Component\Address\Model\Country:
         addressFormat:
             column: addressFormat
             type: string
+        salutations:
+            column: salutations
+            type: simple_array
+            nullable: true
         creationDate:
             type: datetime
             gedmo:

@@ -35,7 +35,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
         $parameter = $applicationName ? sprintf('%s.permissions', $applicationName) : 'coreshop.all.permissions';
 

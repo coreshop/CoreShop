@@ -14,9 +14,24 @@ namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-interface CustomerInterface extends ResourceInterface, PimcoreModelInterface
+interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, UserInterface, EquatableInterface
 {
+    const ROLE_DEFAULT = 'ROLE_USER';
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
+    /**
+     * @return string
+     */
+    public function getSalutation();
+
+    /**
+     * @param string $salutation
+     */
+    public function setSalutation($salutation);
+
     /**
      * @return string
      */

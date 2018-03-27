@@ -35,6 +35,8 @@ services:
 
     coreshop.address.formatter:
         class: CoreShop\Component\Address\Formatter\AddressFormatter
+        arguments:
+            - '@pimcore.translator'
 
     coreshop.templating.helper.format_address:
         class: CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper

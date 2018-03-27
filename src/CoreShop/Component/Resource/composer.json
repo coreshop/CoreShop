@@ -20,7 +20,8 @@
   "require": {
     "php": "^7.0",
     "doctrine/common": "^2.6",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/core-version": "^5.1.0",
+    "webmozart/assert": "^1.2"
   },
   "config": {
     "bin-dir": "bin"

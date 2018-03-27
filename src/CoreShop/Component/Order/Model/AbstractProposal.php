@@ -50,7 +50,7 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
             }
         }
 
-        $this->setItems($items);
+        $this->setItems(array_values($items));
     }
 
     /**

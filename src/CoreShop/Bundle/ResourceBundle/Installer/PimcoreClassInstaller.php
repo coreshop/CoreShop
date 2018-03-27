@@ -61,7 +61,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
         $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 

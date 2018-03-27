@@ -50,7 +50,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
         $parameter = $this->getIdentifier($applicationName);
 

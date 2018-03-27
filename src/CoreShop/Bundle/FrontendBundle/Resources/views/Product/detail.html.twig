@@ -26,7 +26,7 @@
             {% if product.getImages|length > 0 %}
                 <div class="row">
                     {% for image in product.getImages %}
-                        <div class="col-xs-12 col-sm-6">
+                        <div class="col-12 col-sm-6">
                             {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive thumbnail"})|raw }}
                         </div>
                     {% endfor %}

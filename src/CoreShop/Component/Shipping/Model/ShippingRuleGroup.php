@@ -36,6 +36,11 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
     private $priority;
 
     /**
+     * @var bool
+     */
+    private $stopPropagation = false;
+
+    /**
      * @var ShippingRuleInterface
      */
     private $shippingRule;
@@ -78,6 +83,22 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
     public function setPriority($priority)
     {
         $this->priority = $priority;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStopPropagation()
+    {
+        return $this->stopPropagation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStopPropagation($stopPropagation)
+    {
+        $this->stopPropagation = $stopPropagation;
     }
 
     /**

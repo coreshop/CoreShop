@@ -16,6 +16,7 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderShipmentTransitions;
+use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
@@ -34,16 +35,24 @@ final class OrderShippingStateResolver implements StateResolverInterface
     protected $orderShipmentRepository;
 
     /**
+     * @var ProcessableInterface
+     */
+    protected $processable;
+
+    /**
      * @param StateMachineManager $stateMachineManager
      * @param OrderShipmentRepositoryInterface $orderShipmentRepository
+     * @param ProcessableInterface $processable
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
-        OrderShipmentRepositoryInterface $orderShipmentRepository
+        OrderShipmentRepositoryInterface $orderShipmentRepository,
+        ProcessableInterface $processable
     )
     {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderShipmentRepository = $orderShipmentRepository;
+        $this->processable = $processable;
     }
 
     /**
@@ -105,7 +114,9 @@ final class OrderShippingStateResolver implements StateResolverInterface
         $shipmentInStateAmount = $this->countOrderShipmentsInState($order, $shipmentState);
         $shipmentAmount = count($this->orderShipmentRepository->getDocuments($order));
 
-        return $shipmentAmount === $shipmentInStateAmount && $orderShippingState !== $order->getShippingState();
+        return $shipmentAmount === $shipmentInStateAmount &&
+            $orderShippingState !== $order->getShippingState() &&
+            $this->processable->isFullyProcessed($order);
     }
 
     /**
@@ -116,11 +127,10 @@ final class OrderShippingStateResolver implements StateResolverInterface
     private function isPartiallyShippedButOrderStateNotUpdated(OrderInterface $order): bool
     {
         $shipmentInShippedStateAmount = $this->countOrderShipmentsInState($order, ShipmentStates::STATE_SHIPPED);
-        $shipmentAmount = count($this->orderShipmentRepository->getDocuments($order));
 
         return
-            1 <= $shipmentInShippedStateAmount &&
-            $shipmentInShippedStateAmount < $shipmentAmount &&
+            $shipmentInShippedStateAmount > 0 &&
+            !$this->processable->isFullyProcessed($order) &&
             OrderShipmentStates::STATE_PARTIALLY_SHIPPED !== $order->getShippingState();
     }
 }

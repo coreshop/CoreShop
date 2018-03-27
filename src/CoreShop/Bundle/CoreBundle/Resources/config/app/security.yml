@@ -13,6 +13,7 @@ security:
             anonymous: ~
             pattern: ^/(?!(admin)).*$
             context: shop
+            logout_on_user_change: true
             form_login:
                 login_path: coreshop_login
                 check_path: coreshop_login_check

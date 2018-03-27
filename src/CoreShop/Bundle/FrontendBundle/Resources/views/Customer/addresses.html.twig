@@ -16,6 +16,8 @@
         {{ 'coreshop.ui.addresses'|trans }}
     </h2>
 
+    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
+
     <section class="addresses-area">
         <div class="row mb-4">
             {% for address in customer.getAddresses %}
