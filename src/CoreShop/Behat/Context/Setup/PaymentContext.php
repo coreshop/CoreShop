@@ -121,5 +121,7 @@ final class PaymentContext implements Context
         $this->entityManager->persist($payment->getCurrency());
         $this->entityManager->persist($payment);
         $this->entityManager->flush();
+
+        $this->sharedStorage->set('orderPayment', $payment);
     }
 }

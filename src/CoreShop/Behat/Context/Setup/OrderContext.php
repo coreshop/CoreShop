@@ -15,20 +15,14 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Transformer\CartToOrderTransformer;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\StorageList\StorageListModifierInterface;
-use Webmozart\Assert\Assert;
 
 final class OrderContext implements Context
 {
@@ -92,13 +86,19 @@ final class OrderContext implements Context
     }
 
     /**
-     * @Given /^I apply payment transition "([^"]+)" to latest (order) payment$/
+     * @Given /^I apply payment transition "([^"]+)" to (latest order payment)$/
      */
-    public function iApplyPaymentStateToLatestOrderPayment($paymentTransition, OrderInterface $order)
+    public function iApplyPaymentStateToLatestOrderPayment($paymentTransition, PaymentInterface $payment)
     {
-        $payments = $this->paymentRepository->findForOrder($order);
-        $payment = end($payments);
-
         $this->stateMachineApplier->apply($payment, PaymentTransitions::IDENTIFIER, $paymentTransition);
     }
+
+    /**
+     * @Given /^I apply transition "([^"]+)" to (order)$/
+     */
+    public function iApplyTransitionToOrder($transition, OrderInterface $order)
+    {
+        $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, $transition);
+    }
+
 }

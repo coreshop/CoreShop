@@ -53,4 +53,12 @@ final class OrderContext implements Context
     {
         return $this->sharedStorage->get('orderShipment');
     }
+
+    /**
+     * @Transform /^latest order payment/
+     */
+    public function latestOrderPayment()
+    {
+        return $this->sharedStorage->get('orderPayment');
+    }
 }
