@@ -149,16 +149,14 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->eventDispatcher->dispatchPreEvent($type, $sale, ['cart' => $cart]);
 
         $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
-        $saleNumber = $this->numberGenerator->generate($sale);
+
         /**
          * @var $sale SaleInterface
          */
         $sale->setBaseCurrency($fromCurrency);
         $sale->setCurrency($toCurrency);
-        $sale->setKey($this->keyTransformer->transform($saleNumber));
-        $sale->setSaleNumber($saleNumber);
-        $sale->setParent($orderFolder);
         $sale->setPublished(true);
+        $sale->setParent($orderFolder);
         $sale->setCustomer($cart->getCustomer());
         $sale->setSaleLanguage($this->localeContext->getLocaleCode());
         $sale->setSaleDate(Carbon::now());
@@ -191,6 +189,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
                 }
             }
         }
+
+        $saleNumber = $this->numberGenerator->generate($sale);
+
+        $sale->setKey($this->keyTransformer->transform($saleNumber));
+        $sale->setSaleNumber($saleNumber);
 
         /*
          * We need to save the sale twice in order to create the object in the tree for pimcore
