@@ -3,69 +3,23 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Pimcore\ClassUpdate;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20180323160716 extends AbstractPimcoreMigration implements ContainerAwareInterface
+class Version20180328093814 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
+    private $hadSalutationsColumn = false;
+
     /**
      * @param Schema $schema
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
-     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     public function up(Schema $schema)
     {
-        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
-
-        $fieldDefinition = [
-            'fieldtype' => 'input',
-            'width' => null,
-            'queryColumnType' => 'varchar',
-            'columnType' => 'varchar',
-            'columnLength' => 190,
-            'phpdocType' => 'string',
-            'regex' => '',
-            'unique' => false,
-            'name' => 'salutation',
-            'title' => 'Salutation',
-            'tooltip' => '',
-            'mandatory' => false,
-            'noteditable' => false,
-            'index' => false,
-            'locked' => null,
-            'style' => '',
-            'permissions' => null,
-            'datatype' => 'data',
-            'relationType' => false,
-            'invisible' => false,
-            'visibleGridView' => false,
-            'visibleSearch' => false,
-        ];
-
-        $addressClass = $this->container->getParameter('coreshop.model.address.pimcore_class_name');
-        $classUpdate = new ClassUpdate($addressClass);
-
-        if (!$classUpdate->hasField('salutation')) {
-            $classUpdate->insertFieldBefore('firstname', $fieldDefinition);
-            $classUpdate->save();
-        }
-
-        $customerClass = $this->container->getParameter('coreshop.model.customer.pimcore_class_name');
-        $classUpdate = new ClassUpdate($customerClass);
-
-        if (!$classUpdate->hasField('salutation')) {
-            $classUpdate->insertFieldBefore('firstname', $fieldDefinition);
-            $classUpdate->save();
-        }
-
-        //add country salutation prefix
         if ($schema->hasTable('coreshop_country')) {
             if (!$schema->getTable('coreshop_country')->hasColumn('salutations')) {
                 $schema->getTable('coreshop_country')->addColumn(
@@ -76,6 +30,17 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
                     ]
                 );
             }
+            else {
+                $this->hadSalutationsColumn = true;
+            }
+        }
+        if ($schema->hasTable('coreshop_shipping_rule_group')) {
+            if (!$schema->getTable('coreshop_shipping_rule_group')->hasColumn('stopPropagation')) {
+                $schema->getTable('coreshop_shipping_rule_group')->addColumn(
+                    'stopPropagation',
+                    'boolean'
+                );
+            }
         }
 
         $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
@@ -83,6 +48,10 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
 
     public function postUp(Schema $schema)
     {
+        if ($this->hadSalutationsColumn) {
+            return;
+        }
+
         //add default salutation prefixes
         /** @var RepositoryInterface $countryRepository */
         $countryRepository = $this->container->get('coreshop.repository.country');
@@ -115,6 +84,7 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
+        // this down() migration is auto-generated, please modify it to your needs
 
     }
 }
