@@ -198,6 +198,7 @@ services:
         class: CoreShop\Behat\Context\Setup\OrderContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.store'
             - '@__symfony__.coreshop.order.transformer.cart_to_order'
             - '@__symfony__.coreshop.factory.order'
             - '@__symfony__.coreshop.repository.payment'
