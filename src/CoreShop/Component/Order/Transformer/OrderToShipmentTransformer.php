@@ -114,6 +114,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         $shipmentFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->shipmentFolderPath));
 
+        $shipment->setOrder($order);
+
         $shipmentNumber = $this->numberGenerator->generate($shipment);
 
         /**
@@ -125,7 +127,6 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipment->setParent($shipmentFolder);
         $shipment->setPublished(true);
         $shipment->setShipmentDate(Carbon::now());
-        $shipment->setOrder($order);
         $shipment->setWeight($order->getWeight());
 
         /*

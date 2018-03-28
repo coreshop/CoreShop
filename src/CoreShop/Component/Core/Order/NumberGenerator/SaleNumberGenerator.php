@@ -69,7 +69,7 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
         }
 
         if ($store instanceof StoreInterface) {
-            return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey, $model->getStore()), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey, $model->getStore()));
+            return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey, $store), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey, $store));
         }
 
         return $this->numberGenerator->generate($model);
