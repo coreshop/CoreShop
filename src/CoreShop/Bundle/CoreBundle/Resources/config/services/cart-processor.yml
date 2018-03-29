@@ -28,7 +28,7 @@ services:
         class: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
         arguments:
             - '@coreshop.carrier.price_calculator.taxed'
-            - '@coreshop.carrier.default_resolver.default'
+            - '@coreshop.carrier.default_resolver'
         tags:
             - { name: coreshop.cart_processor, priority: 450 }
 

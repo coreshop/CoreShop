@@ -40,7 +40,7 @@ services:
         arguments:
             - ['@coreshop.carrier.price_calculator']
 
-    coreshop.carrier.default_resolver.default:
+    coreshop.shipping.default_resolver.cheapest:
         class: CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver
         arguments:
             - '@coreshop.carrier.resolver'
