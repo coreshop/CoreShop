@@ -29,6 +29,7 @@ services:
         arguments:
             - '@coreshop.carrier.price_calculator.taxed'
             - '@coreshop.carrier.default_resolver'
+            - '@coreshop.provider.store_based_default_address_provider'
         tags:
             - { name: coreshop.cart_processor, priority: 450 }
 

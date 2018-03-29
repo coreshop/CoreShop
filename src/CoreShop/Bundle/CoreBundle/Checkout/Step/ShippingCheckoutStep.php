@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
@@ -108,6 +109,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         return $cart->hasShippableItems() === false
             || ($cart->hasItems() &&
                 $cart->getCarrier() instanceof CarrierInterface &&
+                $cart->getShippingAddress() instanceof AddressInterface &&
                 $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress()));
     }
 
