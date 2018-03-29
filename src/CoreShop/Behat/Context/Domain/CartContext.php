@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use Webmozart\Assert\Assert;
 
@@ -166,6 +167,33 @@ final class CartContext implements Context
                 $shipping,
                 $this->cartContext->getCart()->getShipping(true)
             )
+        );
+    }
+
+    /**
+     * @Then /^the cart should use (carrier "[^"]+")$/
+     */
+    public function cartShouldUseCarrier(CarrierInterface $carrier)
+    {
+        Assert::eq(
+            $carrier->getId(),
+            $this->cartContext->getCart()->getCarrier()->getId(),
+            sprintf(
+                'Cart is expected to use carrier %s, but found %s',
+                $carrier->getName(),
+                $this->cartContext->getCart()->getCarrier()->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the cart should not have a carrier$/
+     */
+    public function cartShouldNotHaveACarrier()
+    {
+        Assert::null(
+            $this->cartContext->getCart()->getCarrier(),
+            'Cart is expected to not have a carrier but found one'
         );
     }
 }
