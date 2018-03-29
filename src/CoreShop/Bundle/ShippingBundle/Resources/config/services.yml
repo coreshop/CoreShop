@@ -39,3 +39,9 @@ services:
         class: CoreShop\Component\Shipping\Calculator\CompositePriceCalculator
         arguments:
             - ['@coreshop.carrier.price_calculator']
+
+    coreshop.carrier.default_resolver.default:
+        class: CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver
+        arguments:
+            - '@coreshop.carrier.resolver'
+            - '@coreshop.carrier.price_calculator'

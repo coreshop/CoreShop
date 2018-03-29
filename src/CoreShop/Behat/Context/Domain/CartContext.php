@@ -136,4 +136,36 @@ final class CartContext implements Context
             )
         );
     }
+
+    /**
+     * @Then /^the cart shipping should be "([^"]+)" excluding tax$/
+     */
+    public function cartShippingCostShouldBeExcludingTax($shipping)
+    {
+        Assert::eq(
+            $shipping,
+            $this->cartContext->getCart()->getShipping(false),
+            sprintf(
+                'Cart shipping is expected to be %s, but it is %s',
+                $shipping,
+                $this->cartContext->getCart()->getShipping(false)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the cart shipping should be "([^"]+)" including tax$/
+     */
+    public function cartShippingCostShouldBeIncludingTax($shipping)
+    {
+        Assert::eq(
+            $shipping,
+            $this->cartContext->getCart()->getShipping(true),
+            sprintf(
+                'Cart shipping is expected to be %s, but it is %s',
+                $shipping,
+                $this->cartContext->getCart()->getShipping(true)
+            )
+        );
+    }
 }
