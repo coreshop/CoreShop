@@ -55,11 +55,19 @@ class Cart extends Base
     {
         $this->printTestName();
 
+        //Disable Carrier for testing purposes, otherwise this would cause the default carrier resolver
+        Data::$carrier1->removeStore(Data::$store);
+
+        $this->getEntityManager()->persist(Data::$carrier1);
+        $this->getEntityManager()->flush();
+
         $cart = Data::createCartWithProducts();
 
         $total = $cart->getTotal();
         $tax = $cart->getTotalTax();
         $totalWT = $total - $tax;
+
+        $this->get('coreshop.cart.manager')->persistCart($cart);
 
         $this->assertEquals(28800, $cart->getSubtotal() + $cart->getShipping());
         $this->assertEquals(28800, $total);
@@ -76,6 +84,11 @@ class Cart extends Base
         $this->assertEquals(1200, $cart->getShipping());
         $this->assertEquals(1000, $cart->getShipping(false));
         $this->assertEquals(30000, $cart->getTotal());
+
+        Data::$carrier1->addStore(Data::$store);
+
+        $this->getEntityManager()->persist(Data::$carrier1);
+        $this->getEntityManager()->flush();
     }
 
     /**
