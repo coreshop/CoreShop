@@ -52,16 +52,6 @@ class Product extends Base
     }
 
     /**
-     * Test Product Tax.
-     */
-    public function testProductTax()
-    {
-        $this->printTodoTestName();
-
-        //$this->assertEquals(300, Data::$product1->getTaxAmount());
-    }
-
-    /**
      * @return TaxedProductPriceCalculatorInterface
      */
     private function getPriceCalculator()

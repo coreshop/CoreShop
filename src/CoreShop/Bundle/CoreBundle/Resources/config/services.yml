@@ -66,5 +66,7 @@ services:
             - '@coreshop.factory.configuration'
             - '@coreshop.context.store'
 
-
-
+    coreshop.provider.store_based_default_address_provider:
+        class: CoreShop\Component\Core\Provider\StoreBasedAddressProvider
+        arguments:
+            - '@coreshop.factory.address'

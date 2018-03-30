@@ -41,7 +41,6 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\PHPUnit\\Suites\\OrderInvoice',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\OrderShipment',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Taxation',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\Customer',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Zone',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Product\\Filter',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Product\\Index',

@@ -139,6 +139,7 @@ final class ShippingContext implements Context
 
     /**
      * @Given /^the site has a carrier "([^"]+)"$/
+     * @Given /^the site has another carrier "([^"]+)"$/
      */
     public function theSiteHasACarrier($name)
     {
@@ -459,6 +460,10 @@ final class ShippingContext implements Context
          */
         $carrier = $this->carrierFactory->createNew();
         $carrier->setName($name);
+
+        if ($this->sharedStorage->has('store')) {
+            $carrier->addStore($this->sharedStorage->get('store'));
+        }
 
         $this->saveCarrier($carrier);
     }

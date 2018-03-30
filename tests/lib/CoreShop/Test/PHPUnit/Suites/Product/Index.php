@@ -52,24 +52,6 @@ class Index extends Base
         $this->assertNull($index->getId());
     }
 
-    public function testIndexWorkerMysql()
-    {
-        $this->printTestName();
-
-        $index = $this->createIndex();
-
-        $this->getEntityManager()->persist($index);
-        $this->getEntityManager()->flush();
-
-        $workerServiceRegistry = $this->get('coreshop.registry.index.worker');
-
-        /**
-         * @var WorkerInterface
-         */
-        $worker = $workerServiceRegistry->get($index->getWorker());
-        $worker->createOrUpdateIndexStructures($index);
-    }
-
     public function testIndexListing()
     {
         $this->printTestName();
