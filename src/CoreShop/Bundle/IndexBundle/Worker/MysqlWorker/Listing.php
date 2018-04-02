@@ -12,13 +12,13 @@
 
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
+use CoreShop\Bundle\IndexBundle\Extension\MysqlIndexQueryExtensionInterface;
 use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Index\Worker\IndexQueryHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -576,11 +576,11 @@ class Listing extends AbstractListing
         if ($this->getCategory()) {
             $queryBuilder->andWhere('parentCategoryIds LIKE \'%,' . $this->getCategory()->getId() . ',%\'');
         }
-        $helpers = $this->getWorker()->getHelpers($this->getIndex());
+        $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
-        foreach ($helpers as $helper) {
-            if ($helper instanceof IndexQueryHelperInterface) {
-                $conditions = $helper->preConditionQuery($this->getIndex());
+        foreach ($extensions as $extension) {
+            if ($extension instanceof MysqlIndexQueryExtensionInterface) {
+                $conditions = $extension->preConditionQuery($this->getIndex());
                 foreach ($conditions as $cond) {
                     $queryBuilder->andWhere($this->worker->renderCondition($cond));
                 }
@@ -699,10 +699,11 @@ class Listing extends AbstractListing
             //innerJoin($fromAlias, $join, $alias, $condition = null)
             $queryBuilder->$function($joinName, $table, $joinName, $objectKeyField . ' = a.o_id');
         }
-        $helpers = $this->getWorker()->getHelpers($this->getIndex());
-        foreach ($helpers as $helper) {
-            if ($helper instanceof IndexQueryHelperInterface) {
-                $helper->addJoins($this->getIndex(), $queryBuilder);
+        $extensions = $this->getWorker()->getExtensions($this->getIndex());
+
+        foreach ($extensions as $extension) {
+            if ($extension instanceof MysqlIndexQueryExtensionInterface) {
+                $extension->addJoins($this->getIndex(), $queryBuilder);
             }
         }
     }

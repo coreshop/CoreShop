@@ -1,15 +1,15 @@
 <?php
 
-namespace CoreShop\Component\Core\Index;
+namespace CoreShop\Component\Core\Index\Extensions;
 
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 
-final class ProductClassHelper implements ClassHelperInterface
+final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
     protected $productClassName;
 

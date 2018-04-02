@@ -10,13 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Index\Worker;
+namespace CoreShop\Bundle\IndexBundle\Extension;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 
-interface IndexQueryHelperInterface
+interface MysqlIndexQueryExtensionInterface
 {
     /**
      * @param IndexInterface $index

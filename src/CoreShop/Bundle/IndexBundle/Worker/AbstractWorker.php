@@ -12,8 +12,9 @@
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
-use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
+use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
@@ -38,7 +39,7 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @var ServiceRegistryInterface
      */
-    protected $classHelperRegistry;
+    protected $extensions;
 
     /**
      * @var ServiceRegistryInterface
@@ -56,19 +57,19 @@ abstract class AbstractWorker implements WorkerInterface
     protected $filterGroupHelper;
 
     /**
-     * @param ServiceRegistryInterface $classHelperRegistry
+     * @param ServiceRegistryInterface $extensions
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
-        ServiceRegistryInterface $classHelperRegistry,
+        ServiceRegistryInterface $extensions,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper
     )
     {
-        $this->classHelperRegistry = $classHelperRegistry;
+        $this->extensions = $extensions;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
         $this->filterGroupHelper = $filterGroupHelper;
@@ -77,18 +78,18 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * {@inheritdoc}
      */
-    public function getHelpers(IndexInterface $index)
+    public function getExtensions(IndexInterface $index)
     {
-        $classHelpers = $this->classHelperRegistry->all();
-        $eligibleHelpers = [];
+        $extensions = $this->extensions->all();
+        $eligibleExtensions = [];
 
-        foreach ($classHelpers as $classHelper) {
-            if ($classHelper instanceof ClassHelperInterface && $classHelper->supports($index)) {
-                $eligibleHelpers[] = $classHelper;
+        foreach ($extensions as $extension) {
+            if ($extension instanceof IndexExtensionInterface && $extension->supports($index)) {
+                $eligibleExtensions[] = $extension;
             }
         }
 
-        return $eligibleHelpers;
+        return $eligibleExtensions;
     }
 
     /**
@@ -102,7 +103,7 @@ abstract class AbstractWorker implements WorkerInterface
         AbstractObject::setHideUnpublished(false);
 
         $result = InheritanceHelper::useInheritedValues(function () use ($index, $object) {
-            $classHelpers = $this->getHelpers($index);
+            $extensions = $this->getExtensions($index);
 
             $virtualObjectId = $object->getId();
             $virtualObjectActive = $object->getEnabled();
@@ -130,9 +131,9 @@ abstract class AbstractWorker implements WorkerInterface
                 'o_type' => $object->getType()
             ];
 
-            foreach ($classHelpers as $classHelper) {
-                if ($classHelper instanceof ClassHelperInterface && $classHelper->supports($index)) {
-                    $data = array_merge($data, $classHelper->getIndexColumns($object));
+            foreach ($extensions as $extension) {
+                if ($extension instanceof IndexColumnsExtensionInterface) {
+                    $data = array_merge($data, $extension->getIndexColumns($object));
                 }
             }
 
