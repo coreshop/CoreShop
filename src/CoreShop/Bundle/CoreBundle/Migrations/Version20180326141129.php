@@ -25,6 +25,11 @@ class Version20180326141129 extends AbstractPimcoreMigration implements Containe
         if ($schema->hasTable('coreshop_shipping_rule_group')) {
             if (!$schema->getTable('coreshop_shipping_rule_group')->hasColumn('stopPropagation')) {
                 Db::get()->executeQuery('ALTER TABLE coreshop_shipping_rule_group ADD stopPropagation TINYINT(1) NOT NULL;');
+
+                $schema->getTable('coreshop_shipping_rule_group')->addColumn(
+                    'stopPropagation',
+                    'boolean'
+                );
             }
         }
 

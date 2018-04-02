@@ -136,6 +136,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
 
+        $invoice->setOrder($order);
+
         $invoiceNumber = $this->numberGenerator->generate($invoice);
 
         /**
@@ -147,7 +149,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoice->setParent($invoiceFolder);
         $invoice->setPublished(true);
         $invoice->setInvoiceDate(Carbon::now());
-        $invoice->setOrder($order);
 
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore

@@ -12,9 +12,14 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CartInterface as CoreCartInterface;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
+use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
@@ -24,11 +29,29 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $carrierPriceCalculator;
 
     /**
-     * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
+     * @var DefaultCarrierResolverInterface
      */
-    public function __construct(TaxedShippingCalculatorInterface $carrierPriceCalculator)
+    private $defaultCarrierResolver;
+
+    /**
+     * @var AddressProviderInterface
+     */
+    private $defaultAddressProvider;
+
+    /**
+     * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
+     * @param DefaultCarrierResolverInterface $defaultCarrierResolver
+     * @param AddressProviderInterface $defaultAddressProvider
+     */
+    public function __construct(
+        TaxedShippingCalculatorInterface $carrierPriceCalculator,
+        DefaultCarrierResolverInterface $defaultCarrierResolver,
+        AddressProviderInterface $defaultAddressProvider
+    )
     {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->defaultCarrierResolver = $defaultCarrierResolver;
+        $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
     /**
@@ -40,18 +63,41 @@ final class CartShippingProcessor implements CartProcessorInterface
             return;
         }
 
+        $address = $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart);
+
+        if (null === $address) {
+            return;
+        }
+
         if (null === $cart->getCarrier()) {
-            return;
+            $this->resolveDefaultCarrier($cart, $address);
+
+            if (null === $cart->getCarrier()) {
+                return;
+            }
         }
 
-        if (null === $cart->getShippingAddress()) {
-            return;
-        }
-
-        $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), true);
-        $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $cart->getShippingAddress(), false);
+        $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, true);
+        $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, false);
 
         $cart->setShipping($priceWithTax, true);
         $cart->setShipping($priceWithoutTax, false);
+    }
+
+    /**
+     * @param CartInterface $cart
+     * @param AddressInterface $address
+     */
+    private function resolveDefaultCarrier(CartInterface $cart, AddressInterface $address)
+    {
+        if (!$cart instanceof CoreCartInterface) {
+            return;
+        }
+
+        try {
+            $cart->setCarrier($this->defaultCarrierResolver->getDefaultCarrier($cart, $address));
+        } catch (UnresolvedDefaultCarrierException $ex) {
+
+        }
     }
 }

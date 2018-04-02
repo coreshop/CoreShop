@@ -13,6 +13,9 @@
 namespace CoreShop\Component\Core\Order\NumberGenerator;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Order\Model\OrderDocumentInterface;
+use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
@@ -57,6 +60,18 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
      */
     public function generate(ResourceInterface $model)
     {
-        return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey));
+        $store = null;
+
+        if ($model instanceof SaleInterface) {
+            $store = $model->getStore();
+        } else if ($model instanceof OrderDocumentInterface) {
+            $store = $model->getOrder()->getStore();
+        }
+
+        if ($store instanceof StoreInterface) {
+            return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey, $store), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey, $store));
+        }
+
+        return $this->numberGenerator->generate($model);
     }
 }

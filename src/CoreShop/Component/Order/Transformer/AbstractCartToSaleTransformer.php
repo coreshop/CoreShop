@@ -28,7 +28,6 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Pimcore\ObjectCloner;
 use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
@@ -66,11 +65,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $localeContext;
 
     /**
-     * @var StoreContextInterface
-     */
-    protected $storeContext;
-
-    /**
      * @var PimcoreFactoryInterface
      */
     protected $saleItemFactory;
@@ -103,7 +97,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param ObjectServiceInterface $objectService
      * @param LocaleContextInterface $localeContext
      * @param PimcoreFactoryInterface $saleItemFactory
-     * @param StoreContextInterface $storeContext
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param CurrencyConverterInterface $currencyConverter
      * @param ObjectCloner $objectCloner
@@ -117,7 +110,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         ObjectServiceInterface $objectService,
         LocaleContextInterface $localeContext,
         PimcoreFactoryInterface $saleItemFactory,
-        StoreContextInterface $storeContext,
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter,
         ObjectCloner $objectCloner,
@@ -131,7 +123,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->objectService = $objectService;
         $this->localeContext = $localeContext;
         $this->saleItemFactory = $saleItemFactory;
-        $this->storeContext = $storeContext;
         $this->eventDispatcher = $eventDispatcher;
         $this->currencyConverter = $currencyConverter;
         $this->objectCloner = $objectCloner;
@@ -149,7 +140,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($sale, SaleInterface::class);
 
-        $fromCurrency = $this->storeContext->getStore()->getCurrency();
+        $fromCurrency = $cart->getStore()->getCurrency();
         $toCurrency = $cart->getCurrency() instanceof CurrencyInterface ? $cart->getCurrency() : $fromCurrency;
 
         $fromCurrencyCode = $fromCurrency->getIsoCode();
@@ -158,20 +149,18 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->eventDispatcher->dispatchPreEvent($type, $sale, ['cart' => $cart]);
 
         $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
-        $saleNumber = $this->numberGenerator->generate($sale);
+
         /**
          * @var $sale SaleInterface
          */
         $sale->setBaseCurrency($fromCurrency);
         $sale->setCurrency($toCurrency);
-        $sale->setKey($this->keyTransformer->transform($saleNumber));
-        $sale->setSaleNumber($saleNumber);
-        $sale->setParent($orderFolder);
         $sale->setPublished(true);
+        $sale->setParent($orderFolder);
         $sale->setCustomer($cart->getCustomer());
         $sale->setSaleLanguage($this->localeContext->getLocaleCode());
         $sale->setSaleDate(Carbon::now());
-        $sale->setStore($this->storeContext->getStore());
+        $sale->setStore($cart->getStore());
 
         $sale->setTotal($this->currencyConverter->convert($cart->getTotal(true), $fromCurrencyCode, $toCurrencyCode), true);
         $sale->setTotal($this->currencyConverter->convert($cart->getTotal(false), $fromCurrencyCode, $toCurrencyCode), false);
@@ -200,6 +189,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
                 }
             }
         }
+
+        $saleNumber = $this->numberGenerator->generate($sale);
+
+        $sale->setKey($this->keyTransformer->transform($saleNumber));
+        $sale->setSaleNumber($saleNumber);
 
         /*
          * We need to save the sale twice in order to create the object in the tree for pimcore

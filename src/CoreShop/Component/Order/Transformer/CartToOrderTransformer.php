@@ -35,10 +35,6 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         Assert::isInstanceOf($order, OrderInterface::class);
 
         $tokenGenerator = new UniqueTokenGenerator();
-
-        $fromCurrency = $this->storeContext->getStore()->getCurrency()->getIsoCode();
-        $toCurrency = $cart->getCurrency() instanceof CurrencyInterface ? $cart->getCurrency()->getIsoCode() : $fromCurrency;
-
         $order->setPaymentProvider($cart->getPaymentProvider());
         $order->setToken($tokenGenerator->generate(10));
 

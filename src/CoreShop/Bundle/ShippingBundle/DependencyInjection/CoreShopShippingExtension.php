@@ -33,6 +33,8 @@ final class CoreShopShippingExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        $container->setAlias('coreshop.carrier.default_resolver', $config['default_resolver']);
+
         $loader->load('services.yml');
     }
 }

@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -81,6 +81,14 @@ final class CartBlamerListener
         }
 
         $cart->setCustomer($user);
+
+        if (null === $cart->getShippingAddress()) {
+            $cart->setShippingAddress($user->getDefaultAddress());
+        }
+
+        if (null === $cart->getInvoiceAddress()) {
+            $cart->setInvoiceAddress($user->getDefaultAddress());
+        }
 
         $this->cartManager->persistCart($cart);
     }

@@ -87,7 +87,7 @@ final class ShippingContext implements Context
     }
 
     /**
-     * @Then /^the (shipping rule "[^"]+") for (my cart) with (carrier "[^"]+")$/
+     * @Then /^the (shipping rule "[^"]+") should be valid for (my cart) with (carrier "[^"]+")$/
      * @Then /^the (shipping rule) should be valid for (my cart) with (carrier "[^"]+")$/
      */
     public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, CartInterface $cart, CarrierInterface $carrier)

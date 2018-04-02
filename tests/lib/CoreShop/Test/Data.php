@@ -69,11 +69,6 @@ class Data
     public static $carrier1;
 
     /**
-     * @var CarrierInterface
-     */
-    public static $carrier2;
-
-    /**
      * @var TaxRuleGroupInterface
      */
     public static $taxRuleGroup;
