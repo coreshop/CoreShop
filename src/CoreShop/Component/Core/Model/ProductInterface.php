@@ -26,11 +26,11 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
-     * @param int $price
+     * @param $price
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      * @return static
      */
-    public function setStorePrice(int $price, \CoreShop\Component\Store\Model\StoreInterface $store = null);
+    public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
      * @param TaxRuleGroupInterface $taxRule

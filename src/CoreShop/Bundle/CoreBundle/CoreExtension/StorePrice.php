@@ -176,7 +176,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
         $code .= '* @return static' . "\n";
         $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' (int $' . $key . ', \CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' ($' . $key . ', \CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
         $code .= "\t" . 'if (is_null($' . $key . ')) {' . "\n";
         $code .= "\t\t" . '$' . $key . ' = [];' . "\n";
         $code .= "\t" . '}' . "\n";

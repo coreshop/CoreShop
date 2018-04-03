@@ -114,7 +114,7 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setStorePrice(int $price, \CoreShop\Component\Store\Model\StoreInterface $store = null)
+    public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
