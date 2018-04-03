@@ -181,6 +181,9 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= "\t\t" . '$' . $key . ' = [];' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . "\n";
+        $code .= "\t" . 'if (!is_int($' . $key . ') && !is_array($' . $key . ')) {' . "\n";
+        $code .= "\t\t" .  'throw new \InvalidArgumentException(sprintf(\'Expected value to either be an array or an int, "%s" given\', gettype($storePrice)));' . "\n";
+        $code .= "\t" . '}' . "\n";
         $code .= "\t" . 'if (is_array($' . $key . ')) {' . "\n";
         $code .= "\t\t" . '$this->' . $key . ' = $' . $key . ';' . "\n";
         $code .= "\t" . '}' . "\n";
