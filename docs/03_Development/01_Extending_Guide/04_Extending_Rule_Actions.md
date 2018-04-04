@@ -42,6 +42,10 @@ We also need a FormType for the actions configurations:
 //AppBundle/Form/Type/CustomActionType.php
 namespace AppBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 final class CustomActionType extends AbstractType
 {
     /**
@@ -59,7 +63,7 @@ final class CustomActionType extends AbstractType
 With configuration, comes a Javascript file as well:
 
 ```javascript
-//AppBundle/Resources/public/pimcore/js/custom_action.js
+//web/bundles/app/pimcore/js/custom_action.js
 
 pimcore.registerNS('coreshop.product.pricerule.actions.custom');
 coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.abstract, {
