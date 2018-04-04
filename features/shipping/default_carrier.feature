@@ -51,3 +51,16 @@ Feature: In Order to make checkout easier
     And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
     Then the shipping rule "Post" should be invalid for my cart with carrier "Post"
     And the cart shipping should be "4000" excluding tax
+
+  Scenario: The site has 2 carriers and should resolve to the first default one
+    Given the site has another carrier "DPD"
+    And adding a shipping rule named "DPD"
+    And the shipping rule has a action price of 40 in currency "EUR"
+    And the shipping rule belongs to carrier "DPD"
+    And I add the product "Shoe" to my cart
+    And the site has a customer "some-customer@something.com"
+    And the customer "some-customer@something.com" has an address with country "Austria", "4600", "Wels", "Freiung", "9-11/N3"
+    And the cart belongs to customer "some-customer@something.com"
+    And the cart ships to customer "some-customer@something.com" address with postcode "4600"
+    And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
+    And the cart shipping should be "2000" excluding tax
