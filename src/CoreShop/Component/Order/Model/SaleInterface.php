@@ -163,7 +163,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      */
     public function getShippingTaxRate();
 
-
     /**
      * @param bool $withTax
      * @return int

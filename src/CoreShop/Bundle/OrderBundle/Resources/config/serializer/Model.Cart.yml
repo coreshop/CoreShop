@@ -1,0 +1,21 @@
+CoreShop\Component\Order\Model\Cart:
+    exclusion_policy: ALL
+    xml_root_name: cart
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getOrder:
+            serialized_name: order
+            type: pimcoreObject
+            groups: [List, Detailed]
+        getPriceRuleItems:
+            serialized_name: priceRuleItems
+            type: array
+            groups: [List, Detailed]
+        getPaymentProvider:
+            serialized_name: paymentProvider
+            type: array
+            groups: [List, Detailed]

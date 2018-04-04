@@ -1,0 +1,10 @@
+CoreShop\Component\Core\Model\Order:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        getCarrier:
+            serialized_name: carrier
+            groups: [List, Detailed]
+        getPaymentSettings:
+            serialized_name: paymentSettings
+            groups: [List, Detailed]

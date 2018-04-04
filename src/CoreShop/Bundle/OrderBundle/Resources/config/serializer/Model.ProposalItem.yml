@@ -1,0 +1,88 @@
+CoreShop\Component\Order\Model\ProposalItem:
+    exclusion_policy: ALL
+    xml_root_name: proposal_item
+    virtual_properties:
+        getProduct:
+            serialized_name: product
+            groups: [List, Detailed]
+        getQuantity:
+            serialized_name: quantity
+            type: int
+            groups: [List, Detailed]
+        getItemPriceNet:
+            serialized_name: itemPriceNet
+            exp: object.getItemPrice(false)
+            type: int
+            groups: [List, Detailed]
+        getItemPriceGross:
+            serialized_name: itemPriceGross
+            exp: object.getItemPrice(true)
+            type: int
+            groups: [List, Detailed]
+        getItemRetailPriceNet:
+            serialized_name: itemRetailPriceNet
+            exp: object.getItemRetailPrice(false)
+            type: int
+            groups: [List, Detailed]
+        getItemRetailPriceGross:
+            serialized_name: itemRetailPriceGross
+            exp: object.getItemRetailPrice(true)
+            type: int
+            groups: [List, Detailed]
+        getItemDiscountPriceNet:
+            serialized_name: itemDiscountPriceNet
+            exp: object.getItemDiscountPrice(false)
+            type: int
+            groups: [List, Detailed]
+        getItemDiscountPriceGross:
+            serialized_name: itemDiscountPriceGross
+            exp: object.getItemDiscountPrice(true)
+            type: int
+            groups: [List, Detailed]
+        getItemDiscountNet:
+            serialized_name: itemDiscountNet
+            exp: object.getItemDiscount(false)
+            type: int
+            groups: [List, Detailed]
+        getItemDiscountGross:
+            serialized_name: itemDiscountGross
+            exp: object.getItemDiscount(true)
+            type: int
+            groups: [List, Detailed]
+        getItemWholesalePrice:
+            serialized_name: itemWholesalePrice
+            type: int
+            groups: [List, Detailed]
+        getItemTax:
+            serialized_name: itemTax
+            type: int
+            groups: [List, Detailed]
+        getTotalTax:
+            serialized_name: totalTax
+            type: int
+            groups: [List, Detailed]
+        getTotalNet:
+            serialized_name: totalNet
+            exp: object.getTotal(false)
+            type: int
+            groups: [List, Detailed]
+        getTotalGross:
+            serialized_name: totalGross
+            exp: object.getTotal(true)
+            type: int
+            groups: [List, Detailed]
+        getIsGiftItem:
+            serialized_name: isGiftItem
+            type: boolean
+            groups: [List, Detailed]
+        getItemWeight:
+            serialized_name: itemWeight
+            type: float
+            groups: [List, Detailed]
+        getTotalWeight:
+            serialized_name: totalWeight
+            type: float
+            groups: [List, Detailed]
+        getTaxes:
+            serialized_name: taxes
+            groups: [List, Detailed]

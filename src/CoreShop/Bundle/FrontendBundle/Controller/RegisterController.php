@@ -19,8 +19,10 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use FOS\RestBundle\View\View;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RegisterController extends FrontendController
@@ -34,12 +36,18 @@ class RegisterController extends FrontendController
         $customer = $this->getCustomer();
 
         if ($customer instanceof CustomerInterface && $customer->getIsGuest() === false) {
-            return $this->redirectToRoute('coreshop_customer_profile');
+            return $this->viewHandler->handle(View::createRouteRedirect('coreshop_customer_profile'));
         }
 
         $form = $this->get('form.factory')->createNamed('', CustomerRegistrationType::class);
 
         $redirect = $request->get('_redirect', $this->generateUrl('coreshop_customer_profile'));
+
+        $view = View::create($form)
+            ->setTemplate($this->templateConfigurator->findTemplate('Register/register.html'))
+            ->setTemplateData([
+                'form' => $form->createView()
+            ]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
@@ -53,9 +61,7 @@ class RegisterController extends FrontendController
                 if (!$customer instanceof \CoreShop\Component\Core\Model\CustomerInterface ||
                     !$address instanceof AddressInterface
                 ) {
-                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
-                        'form' => $form->createView()
-                    ]);
+                    return $this->viewHandler->handle($view);
                 }
 
                 $registrationService = $this->get('coreshop.customer.registration_service');
@@ -63,18 +69,14 @@ class RegisterController extends FrontendController
                 try {
                     $registrationService->registerCustomer($customer, $address, $formData, false);
                 } catch (CustomerAlreadyExistsException $e) {
-                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
-                        'form' => $form->createView()
-                    ]);
+                    return $this->viewHandler->handle($view);
                 }
 
-                return $this->redirect($redirect);
+                return $this->viewHandler->handle(View::createRedirect($redirect));
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
-            'form' => $form->createView()
-        ]);
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -85,6 +87,12 @@ class RegisterController extends FrontendController
     {
         $form = $this->get('form.factory')->createNamed('', RequestResetPasswordType::class);
 
+        $view = View::create($form)
+            ->setTemplate($this->templateConfigurator->findTemplate('Register/password-reset-request.html'))
+            ->setTemplateData([
+                'form' => $form->createView()
+            ]);
+
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
@@ -94,7 +102,7 @@ class RegisterController extends FrontendController
                 $customer = $this->get('coreshop.repository.customer')->findCustomerByEmail($passwordReset['email']);
 
                 if (!$customer instanceof CustomerInterface) {
-                    return $this->redirectToRoute('coreshop_index');
+                    return $this->viewHandler->handle(View::createRouteRedirect('coreshop_index'));
                 }
 
                 $customer->setPasswordResetHash(hash('md5', $customer->getId().$customer->getEmail().mt_rand().time()));
@@ -107,13 +115,11 @@ class RegisterController extends FrontendController
 
                 $this->addFlash('success', 'coreshop.ui.password_reset_request_success');
 
-                return $this->redirectToRoute('coreshop_login');
+                return $this->viewHandler->handle(View::createRouteRedirect('coreshop_login'));
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset-request.html'), [
-            'form' => $form->createView()
-        ]);
+        return $this->viewHandler->handle($view);
     }
 
     public function passwordResetAction(Request $request)
@@ -124,6 +130,12 @@ class RegisterController extends FrontendController
             $customer = $this->get('coreshop.repository.customer')->findByResetToken($resetToken);
 
             $form = $this->get('form.factory')->createNamed('', ResetPasswordType::class);
+
+            $view = View::create($form)
+                ->setTemplate($this->templateConfigurator->findTemplate('Register/password-reset.html'))
+                ->setTemplateData([
+                    'form' => $form->createView()
+                ]);
 
             if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
                 $handledForm = $form->handleRequest($request);
@@ -139,16 +151,14 @@ class RegisterController extends FrontendController
                     $dispatcher = $this->container->get('event_dispatcher');
                     $dispatcher->dispatch('coreshop.customer.password_reset', new GenericEvent($customer));
 
-                    return $this->redirectToRoute('coreshop_login');
+                    return $this->viewHandler->handle(View::createRouteRedirect('coreshop_login'));
                 }
             }
 
-            return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset.html'), [
-                'form' => $form->createView()
-            ]);
+            return $this->viewHandler->handle($view);
         }
 
-        return $this->redirectToRoute('coreshop_index');
+        throw new NotFoundHttpException();
     }
 
     /**

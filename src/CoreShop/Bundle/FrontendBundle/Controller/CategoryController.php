@@ -20,6 +20,7 @@ use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Paginator\Paginator;
@@ -59,9 +60,13 @@ class CategoryController extends FrontendController
     {
         $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu.html'), [
-            'categories' => $categories,
-        ]);
+        $view = View::create($categories)
+            ->setTemplate($this->templateConfigurator->findTemplate('Category/_menu.html'))
+            ->setTemplateData([
+                'categories' => $categories
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -79,11 +84,15 @@ class CategoryController extends FrontendController
             $activeSubCategories = $this->getRepository()->findChildCategoriesForStore($activeCategory, $this->getContext()->getStore());
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
-            'categories' => $firstLevelCategories,
-            'activeCategory' => $activeCategory,
-            'activeSubCategories' => $activeSubCategories
-        ]);
+        $view = View::create($firstLevelCategories)
+            ->setTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'))
+            ->setTemplateData([
+                'categories' => $firstLevelCategories,
+                'activeCategory' => $activeCategory,
+                'activeSubCategories' => $activeSubCategories
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 
     /**
@@ -202,7 +211,11 @@ class CategoryController extends FrontendController
             $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
+        $view = View::create(iterator_to_array($paginator))
+            ->setTemplate($this->templateConfigurator->findTemplate('Category/index.html'))
+            ->setTemplateData($viewParameters);;
+
+        return $this->viewHandler->handle($view);
     }
 
     /**

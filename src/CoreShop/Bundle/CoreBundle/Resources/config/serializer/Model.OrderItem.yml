@@ -1,0 +1,10 @@
+CoreShop\Component\Core\Model\OrderItem:
+    exclusion_policy: ALL
+    xml_root_name: order_item
+    virtual_properties:
+        getDigitalProduct:
+            serialized_name: digitalProduct
+            type: boolean
+            groups: [List, Detailed]
+
+        

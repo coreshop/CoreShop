@@ -8,6 +8,7 @@ services:
         calls:
             - [setContainer, ['@service_container']]
             - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
+            - [setViewHandler, ['@fos_rest.view_handler']]
 
     coreshop.frontend.controller.index:
         class: '%coreshop.frontend.controller.index%'

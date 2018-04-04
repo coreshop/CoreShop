@@ -38,6 +38,12 @@ services:
             - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation}
             - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation}
 
+    coreshop.jms_serializer.handler.pimcore_object:
+        class: CoreShop\Bundle\ResourceBundle\Serialization\PimcoreDataObjectHandler
+        tags:
+            - { name: jms_serializer.handler, type: pimcoreObject, direction: serialization, format: json, method: serializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreObject, direction: deserialization, format: json, method: deserializeRelation}
+
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
         public: false
@@ -68,3 +74,9 @@ services:
         class: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
         arguments:
             - '@Pimcore\Cache\Core\CoreHandlerInterface'
+
+    coreshop.jms_serializer.pimcore_object_driver:
+        class: CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreClassDriver
+        decorates: jms_serializer.metadata.chain_driver
+        arguments:
+            - '@coreshop.jms_serializer.pimcore_object_driver.inner'

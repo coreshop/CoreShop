@@ -1,0 +1,39 @@
+CoreShop\Component\Order\Model\Order:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        getOrderState:
+            serialized_name: orderState
+            type: string
+            groups: [List, Detailed]
+        getShippingState:
+            serialized_name: shippingState
+            type: string
+            groups: [List, Detailed]
+        getInvoiceState:
+            serialized_name: invoiceState
+            type: string
+            groups: [List, Detailed]
+        getPaymentState:
+            serialized_name: paymentState
+            type: string
+            groups: [List, Detailed]
+        getOrderLanguage:
+            serialized_name: orderLanguage
+            type: string
+            groups: [List, Detailed]
+        getOrderDate:
+            serialized_name: orderDate
+            type: DateTime
+            groups: [List, Detailed]
+        getOrderNumber:
+            serialized_name: orderNumber
+            type: string
+            groups: [List, Detailed]
+        getToken:
+            serialized_name: token
+            type: string
+            groups: [List, Detailed]
+        getPaymentProvider:
+            serialized_name: paymentProvider
+            groups: [List, Detailed]

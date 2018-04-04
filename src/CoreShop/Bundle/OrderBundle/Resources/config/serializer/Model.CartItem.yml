@@ -1,0 +1,59 @@
+CoreShop\Component\Order\Model\CartItem:
+    exclusion_policy: ALL
+    xml_root_name: cart_item
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getProduct:
+            serialized_name: product
+            groups: [List, Detailed]
+        getQuantity:
+            serialized_name: quantity
+            type: integer
+            groups: [List, Detailed]
+        getItemPrice:
+            serialized_name: itemPrice
+            type: int
+            groups: [List, Detailed]
+        getItemRetailPrice:
+            serialized_name: itemRetailPrice
+            type: int
+            groups: [List, Detailed]
+        getItemDiscountPrice:
+            serialized_name: itemDiscountPrice
+            type: int
+            groups: [List, Detailed]
+        getItemDiscount:
+            serialized_name: itemDiscount
+            type: int
+            groups: [List, Detailed]
+        getItemWholesalePrice:
+            serialized_name: itemWholesalePrice
+            type: int
+            groups: [List, Detailed]
+        getTotalTax:
+            serialized_name: totalTax
+            type: int
+            groups: [List, Detailed]
+        getTotal:
+            serialized_name: total
+            type: int
+            groups: [List, Detailed]
+        getIsGiftItem:
+            serialized_name: isGiftItem
+            type: boolean
+            groups: [List, Detailed]
+        getItemWeight:
+            serialized_name: itemWeight
+            type: int
+            groups: [List, Detailed]
+        getTotalWeight:
+            serialized_name: totalWeight
+            type: int
+            groups: [List, Detailed]
+        getTaxes:
+            serialized_name: taxes
+            groups: [List, Detailed]

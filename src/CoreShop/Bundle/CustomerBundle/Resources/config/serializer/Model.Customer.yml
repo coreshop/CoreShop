@@ -1,0 +1,40 @@
+CoreShop\Component\Customer\Model\Customer:
+    exclusion_policy: ALL
+    xml_root_name: customer
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getSalutation:
+            serialized_name: salutation
+            type: string
+            groups: [List, Detailed]
+        getFirstname:
+            serialized_name: firstname
+            type: string
+            groups: [List, Detailed]
+        getLastname:
+            serialized_name: lastname
+            type: string
+            groups: [List, Detailed]
+        getGender:
+            serialized_name: gender
+            type: string
+            groups: [List, Detailed]
+        getEmail:
+            serialized_name: email
+            type: string
+            groups: [List, Detailed]
+        getLocale:
+            serialized_name: locale
+            type: string
+            groups: [List, Detailed]
+        getIsGuest:
+            serialized_name: isGuest
+            type: boolean
+            groups: [List, Detailed]
+        getCustomerGroups:
+            serialized_name: customerGroups
+            groups: [List, Detailed]

@@ -15,7 +15,10 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\QuoteInterface;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class QuoteController extends FrontendController
 {
@@ -26,23 +29,27 @@ class QuoteController extends FrontendController
         try {
             $currentCustomer = $this->get('coreshop.context.customer')->getCustomer();
         } catch (CustomerNotFoundException $ex) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         if (!$quote instanceof QuoteInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new NotFoundHttpException();
         }
 
         if (!$quote->getCustomer() instanceof CustomerInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
         if ($quote->getCustomer()->getId() !== $currentCustomer->getId()) {
-            return $this->redirectToRoute('coreshop_index');
+            throw new AccessDeniedHttpException();
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Quote/show.html'), [
-            'quote' => $quote,
-        ]);
+        $view = View::create($quote)
+            ->setTemplate($this->templateConfigurator->findTemplate('Quote/show.html'))
+            ->setTemplateData([
+                'quote' => $quote
+            ]);
+
+        return $this->viewHandler->handle($view);
     }
 }

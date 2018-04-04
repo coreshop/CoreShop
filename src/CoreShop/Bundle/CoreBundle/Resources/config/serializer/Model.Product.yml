@@ -1,0 +1,52 @@
+CoreShop\Component\Core\Model\Product:
+    exclusion_policy: ALL
+    xml_root_name: product
+    virtual_properties:
+        getPriceGross:
+            serialized_name: priceGross
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getPrice(object, true)
+            groups: [List, Detailed]
+        getPriceNet:
+            serialized_name: priceNet
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getPrice(object, false)
+            groups: [List, Detailed]
+        getDiscountPriceNet:
+            serialized_name: discountPriceNet
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getDiscountPrice(object, true)
+            groups: [List, Detailed]
+        getDiscountPriceGross:
+            serialized_name: discountPriceGross
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getDiscountPrice(object, false)
+            groups: [List, Detailed]
+        getDiscountNet:
+            serialized_name: discountNet
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getDiscount(object, true)
+            groups: [List, Detailed]
+        getDiscountGross:
+            serialized_name: discountGross
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getDiscount(object, false)
+            groups: [List, Detailed]
+        getRetailPriceNet:
+            serialized_name: retailPriceNet
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getRetailPrice(object, true)
+            groups: [List, Detailed]
+        getRetailPriceGross:
+            serialized_name: retailPriceGross
+            type: int
+            exp: service('coreshop.product.taxed_price_calculator').getRetailPrice(object, false)
+            groups: [List, Detailed]
+        isStockAvailable:
+            serialized_name: isStockAvailable
+            type: boolean
+            exp: service('coreshop.inventory.availability_checker').isStockAvailable(object)
+        getDigitalProduct:
+            serialized_name: digitalProduct
+            type: boolean
+            groups: [List, Detailed]

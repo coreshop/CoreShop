@@ -1,0 +1,61 @@
+CoreShop\Component\Product\Model\Product:
+    exclusion_policy: ALL
+    xml_root_name: product
+    virtual_properties:
+        getId:
+            serialized_name: id
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        getSku:
+            serialized_name: sku
+            type: string
+            groups: [List, Detailed]
+        getName:
+            serialized_name: name
+            type: string
+            groups: [List, Detailed]
+        getWholesalePrice:
+            serialized_name: wholesalePrice
+            type: int
+            groups: [List, Detailed]
+        getCategories:
+            serialized_name: categories
+            groups: [List, Detailed]
+        getImage:
+            serialized_name: image
+            groups: [List, Detailed]
+        getImages:
+            serialized_name: images
+            groups: [List, Detailed]
+        getManufacturer:
+            serialized_name: manufacturer
+            groups: [List, Detailed]
+        getEan:
+            serialized_name: ean
+            type: string
+            groups: [List, Detailed]
+        getShortDescription:
+            serialized_name: shortDescription
+            type: string
+            groups: [List, Detailed]
+        getDescription:
+            serialized_name: description
+            type: string
+            groups: [List, Detailed]
+        getWeight:
+            serialized_name: weight
+            type: float
+            groups: [List, Detailed]
+        getWidth:
+            serialized_name: width
+            type: float
+            groups: [List, Detailed]
+        getHeight:
+            serialized_name: height
+            type: float
+            groups: [List, Detailed]
+        getDepth:
+            serialized_name: depth
+            type: float
+            groups: [List, Detailed]

@@ -1,0 +1,73 @@
+CoreShop\Component\Order\Model\AbstractProposal:
+    exclusion_policy: ALL
+    xml_root_name: cart
+    virtual_properties:
+        getStore:
+            serialized_name: store
+            type: relation
+            groups: [List, Detailed]
+        getCurrency:
+            serialized_name: currency
+            type: relation
+            groups: [List, Detailed]
+        getItems:
+            serialized_name: items
+            groups: [List, Detailed]
+        getCustomer:
+            serialized_name: customer
+            type: pimcoreObject
+            groups: [List, Detailed]
+        getShippingAddress:
+            serialized_name: shippingAddress
+            groups: [List, Detailed]
+        getInvoiceAddress:
+            serialized_name: invoiceAddress
+            groups: [List, Detailed]
+        getTaxes:
+            serialized_name: taxes
+            groups: [List, Detailed]
+        getComment:
+            serialized_name: comment
+            type: string
+            groups: [List, Detailed]
+        getAdditionalData:
+            serialized_name: additionalData
+            groups: [List, Detailed]
+        getTotalNet:
+            serialized_name: totalNet
+            exp: object.getTotal(false)
+            type: integer
+            groups: [List, Detailed]
+        getTotalGross:
+            serialized_name: totalGross
+            exp: object.getTotal(true)
+            type: integer
+            groups: [List, Detailed]
+        getTotalTax:
+            serialized_name: totalTax
+            type: integer
+            groups: [List, Detailed]
+        getSubtotalNet:
+            serialized_name: subtotalNet
+            exp: object.getSubtotal(false)
+            type: integer
+            groups: [List, Detailed]
+        getSubtotalGross:
+            serialized_name: subtotalGross
+            exp: object.getSubtotal(true)
+            type: integer
+            groups: [List, Detailed]
+        getSubtotalTax:
+            serialized_name: subtotalTax
+            type: integer
+            groups: [List, Detailed]
+        getDiscountNet:
+            serialized_name: discountNet
+            exp: object.getDiscount(false)
+            type: integer
+            groups: [List, Detailed]
+        getDiscountGross:
+            serialized_name: discountGross
+            exp: object.getDiscount(true)
+            type: integer
+            groups: [List, Detailed]

@@ -1,0 +1,9 @@
+CoreShop\Component\Order\Model\OrderItem:
+    exclusion_policy: ALL
+    xml_root_name: order_item
+    virtual_properties:
+        getOrderId:
+            serialized_name: order
+            exp: object.getOrder()
+            type: pimcoreObject
+            groups: [List, Detailed]

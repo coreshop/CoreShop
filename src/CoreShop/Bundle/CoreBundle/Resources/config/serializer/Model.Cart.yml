@@ -1,0 +1,32 @@
+CoreShop\Component\Core\Model\Cart:
+    exclusion_policy: ALL
+    xml_root_name: cart
+    virtual_properties:
+        hasShippableItems:
+            serialized_name: hasShippableItems
+            type: boolean
+            groups: [List, Detailed]
+        getShippingNet:
+            serialized_name: shippingNet
+            exp: object.getShipping(false)
+            type: integer
+            groups: [List, Detailed]
+        getShippingGross:
+            serialized_name: shippingGross
+            exp: object.getShipping(true)
+            type: integer
+            groups: [List, Detailed]
+        getShippingTax:
+            serialized_name: shippingTax
+            type: integer
+            groups: [List, Detailed]
+        getShippingTaxRate:
+            serialized_name: shippingTaxRate
+            type: integer
+            groups: [List, Detailed]
+        getCarrier:
+            serialized_name: carrier
+            groups: [List, Detailed]
+        getPaymentSettings:
+            serialized_name: paymentSettings
+            groups: [List, Detailed]
