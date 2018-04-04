@@ -28,7 +28,7 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture implements
 
         $idsResult = $objectRepository
             ->createQueryBuilder('t')
-            ->select('t.' . $idField)
+            ->select('t.'.$idField)
             ->getQuery()
             ->getArrayResult();
 

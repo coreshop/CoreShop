@@ -64,7 +64,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
         $className = $this->metadata->getClass('model');
 
         //Refactor as soon as Pimcore introduces changes to $className::getList()
-        $listClass = $className . '\\Listing';
+        $listClass = $className.'\\Listing';
         $list = \Pimcore::getContainer()->get('pimcore.model.factory')->build($listClass);
 
         return $list;
@@ -189,7 +189,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                         $normalizedCriterion['condition'] = $criterion;
                     }
                 } else {
-                    $normalizedCriterion['condition'] = $key . " = ?";
+                    $normalizedCriterion['condition'] = $key." = ?";
                     $normalizedCriterion['variable'] = [$criterion];
                 }
 

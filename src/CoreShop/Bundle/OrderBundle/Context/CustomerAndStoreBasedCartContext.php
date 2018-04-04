@@ -67,8 +67,8 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
      */
     public function getCart()
     {
-        if($this->pimcoreRequestHelper->hasMasterRequest()) {
-            if($this->pimcoreRequestHelper->getMasterRequest()->get('_route') !== 'coreshop_login_check') {
+        if ($this->pimcoreRequestHelper->hasMasterRequest()) {
+            if ($this->pimcoreRequestHelper->getMasterRequest()->get('_route') !== 'coreshop_login_check') {
                 throw new CartNotFoundException('CustomerAndStoreBasedCartContext can only be applied in coreshop_login_check route.');
             }
         }

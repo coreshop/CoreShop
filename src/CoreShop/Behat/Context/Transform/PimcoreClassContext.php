@@ -16,7 +16,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Pimcore\ClassLoader;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection\Definition;

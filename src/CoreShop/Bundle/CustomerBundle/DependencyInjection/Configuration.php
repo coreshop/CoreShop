@@ -116,9 +116,9 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
-     /**
-     * @param ArrayNodeDefinition $node
-     */
+        /**
+         * @param ArrayNodeDefinition $node
+         */
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()

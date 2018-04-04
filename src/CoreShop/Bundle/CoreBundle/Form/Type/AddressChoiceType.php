@@ -43,7 +43,7 @@ final class AddressChoiceType extends AbstractType
         $resolver->setRequired('customer');
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => function(Options $options) {
                     $customer = $this->customerRepository->find($options['customer']);
 
                     if (!$customer instanceof CustomerInterface) {
@@ -53,7 +53,7 @@ final class AddressChoiceType extends AbstractType
                     return $customer->getAddresses();
                 },
                 'choice_value' => 'o_id',
-                'choice_label' => function ($value, $key, $index) {
+                'choice_label' => function($value, $key, $index) {
                     if ($value instanceof AddressInterface) {
                         return sprintf('%s %s', $value->getStreet(), $value->getNumber());
                     }

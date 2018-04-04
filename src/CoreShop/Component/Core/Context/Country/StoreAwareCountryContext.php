@@ -68,7 +68,7 @@ final class StoreAwareCountryContext implements CountryContextInterface
      */
     private function isCountryAvailable(CountryInterface $country, StoreInterface $store)
     {
-        return in_array($country->getIsoCode(), array_map(function (CountryInterface $country) {
+        return in_array($country->getIsoCode(), array_map(function(CountryInterface $country) {
             return $country->getIsoCode();
         }, $store->getCountries()->toArray()));
     }

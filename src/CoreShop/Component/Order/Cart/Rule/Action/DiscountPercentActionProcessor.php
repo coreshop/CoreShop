@@ -52,12 +52,11 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
 
         if ('total' === $applyOn) {
             $total = $cart->getTotal($withTax);
-        }
-        else {
+        } else {
             $total = $cart->getSubtotal($withTax);
         }
 
-        $amount = (int)round(($configuration['percent'] / 100) * $total);
+        $amount = (int) round(($configuration['percent'] / 100) * $total);
         $cartAmount = $total - $cart->getDiscount($withTax);
 
         return $this->getApplicableAmount($cartAmount, $amount);

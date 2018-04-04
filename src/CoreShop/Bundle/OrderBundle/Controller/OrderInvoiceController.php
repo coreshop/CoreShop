@@ -40,7 +40,7 @@ class OrderInvoiceController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $itemsToReturn = [];
@@ -146,7 +146,7 @@ class OrderInvoiceController extends PimcoreController
                 200,
                 [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
+                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
                 ]
             );
         }

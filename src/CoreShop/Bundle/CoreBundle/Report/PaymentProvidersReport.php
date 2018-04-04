@@ -89,7 +89,7 @@ class PaymentProvidersReport implements ReportInterface
             return [];
         }
 
-        $tableName = 'object_query_' . $this->pimcoreClasses['order'];;
+        $tableName = 'object_query_'.$this->pimcoreClasses['order']; ;
         $sql = "
             SELECT  paymentProvider, 
                     COUNT(1) as total, 

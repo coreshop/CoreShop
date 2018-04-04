@@ -111,7 +111,7 @@ class CustomerType extends AbstractResourceType
         $resolver->setDefault('allow_password_field', false);
         $resolver->setDefault('customer', false);
         $resolver->setDefaults(array(
-            'validation_groups' => function (FormInterface $form) {
+            'validation_groups' => function(FormInterface $form) {
                 $isGuest = $form->getConfig()->getOption('guest');
                 $validationGroups = $this->validationGroups;
 

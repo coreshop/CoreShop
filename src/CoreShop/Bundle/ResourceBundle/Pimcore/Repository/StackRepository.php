@@ -30,7 +30,7 @@ class StackRepository extends PimcoreRepository
         $this->interface = $interface;
 
         foreach ($stackClasses as $class) {
-            $this->stackClasses[] = '"' . $class . '"';
+            $this->stackClasses[] = '"'.$class.'"';
         }
     }
 

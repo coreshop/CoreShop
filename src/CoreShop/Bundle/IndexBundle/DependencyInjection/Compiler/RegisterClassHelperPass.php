@@ -31,7 +31,7 @@ final class RegisterClassHelperPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('coreshop.index.class_helper') as $id => $attributes) {
             if (!isset($attributes[0]['class'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `class` attributes.');
+                throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `class` attributes.');
             }
 
             $class = $attributes[0]['class'];

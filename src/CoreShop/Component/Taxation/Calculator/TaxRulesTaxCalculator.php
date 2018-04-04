@@ -33,7 +33,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {
         $this->taxRates = $taxRates;
-        $this->computationMethod = (int)$computationMethod;
+        $this->computationMethod = (int) $computationMethod;
     }
 
     /**
@@ -41,7 +41,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
      */
     public function applyTaxes($price)
     {
-        return (int)round($price * (1 + ($this->getTotalRate() / 100)));
+        return (int) round($price * (1 + ($this->getTotalRate() / 100)));
     }
 
     /**
@@ -49,7 +49,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
      */
     public function removeTaxes($price)
     {
-        return (int)round($price / (1 + $this->getTotalRate() / 100));
+        return (int) round($price / (1 + $this->getTotalRate() / 100));
     }
 
     /**
@@ -72,7 +72,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
             }
         }
 
-        return (float)$taxes;
+        return (float) $taxes;
     }
 
     /**
@@ -85,10 +85,10 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
 
         foreach ($this->getTaxRates() as $tax) {
             if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
-                $taxesAmounts[$tax->getId()] = (int)round($price * (abs($tax->getRate()) / 100));
+                $taxesAmounts[$tax->getId()] = (int) round($price * (abs($tax->getRate()) / 100));
                 $price = $price + $taxesAmounts[$tax->getId()];
             } else {
-                $taxesAmounts[$tax->getId()] = (int)round(($price * (abs($tax->getRate()) / 100)));
+                $taxesAmounts[$tax->getId()] = (int) round(($price * (abs($tax->getRate()) / 100)));
             }
         }
 

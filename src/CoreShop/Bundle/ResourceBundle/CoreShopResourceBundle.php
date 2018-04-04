@@ -13,17 +13,17 @@
 namespace CoreShop\Bundle\ResourceBundle;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterResourcesPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
-use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface

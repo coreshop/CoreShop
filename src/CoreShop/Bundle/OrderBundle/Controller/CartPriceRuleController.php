@@ -125,7 +125,7 @@ class CartPriceRuleController extends ResourceController
         $priceRule = $this->repository->find($id);
 
         if ($priceRule instanceof CartPriceRuleInterface) {
-            $fileName = $priceRule->getName() . '_vouchercodes';
+            $fileName = $priceRule->getName().'_vouchercodes';
             $csvData = [];
 
             $csvData[] = implode(',', [

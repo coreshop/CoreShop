@@ -105,7 +105,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $recipient = [
             [
                 $order->getCustomer()->getEmail(),
-                $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
+                $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname()
             ],
         ];
 
@@ -201,7 +201,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $noteInstance->setTitle('Order Mail');
 
         $noteInstance->addData('document', 'text', $emailDocument->getId());
-        $noteInstance->addData('recipient', 'text', implode(', ', (array)$mail->getTo()));
+        $noteInstance->addData('recipient', 'text', implode(', ', (array) $mail->getTo()));
         $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
 
         foreach ($params as $key => $value) {

@@ -2,9 +2,9 @@
 
 namespace CoreShop\Component\Order\Transformer;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocumentTransformerInterface
 {

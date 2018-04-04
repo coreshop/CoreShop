@@ -94,7 +94,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $this->eventDispatcher->dispatchPreEvent($type, $cartItem, ['sale' => $sale, 'cart' => $cartItem->getCart(), 'item' => $saleItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath().'/'.$this->pathForItems);
 
         $this->objectService->copyObject($cartItem, $saleItem);
 
@@ -149,7 +149,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
             $saleItem->setName($cartItem->getProduct()->getName($locale), $locale);
         }
 
-        VersionHelper::useVersioning(function () use ($saleItem) {
+        VersionHelper::useVersioning(function() use ($saleItem) {
             $saleItem->save();
         }, false);
 

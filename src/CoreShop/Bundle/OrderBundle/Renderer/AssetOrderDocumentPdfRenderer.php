@@ -47,7 +47,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $assetPath = $orderDocument->getFullPath();
         $assetName = sprintf('%s.pdf', $orderDocument::getDocumentType());
 
-        $document = Asset\Document::getByPath($assetPath . '/' . $assetName);
+        $document = Asset\Document::getByPath($assetPath.'/'.$assetName);
 
         if ($document instanceof Asset\Document) {
             $document->delete();

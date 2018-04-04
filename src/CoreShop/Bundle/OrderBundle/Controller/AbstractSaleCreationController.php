@@ -61,15 +61,15 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $customer = $this->get('coreshop.repository.customer')->find($request->get('customer'));
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '" . $request->get('customer') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '".$request->get('customer')."' not found"]);
         }
 
         if (!$store instanceof StoreInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '" . $request->get('store') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '".$request->get('store')."' not found"]);
         }
 
         if (!$currency instanceof CurrencyInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '" . $request->get('currency') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '".$request->get('currency')."' not found"]);
         }
 
         $this->get('coreshop.context.store.fixed')->setStore($store);
