@@ -31,14 +31,14 @@ class BrickGetter implements GetterInterface
 
         $brickField = $getterConfig['brickField'];
 
-        $brickContainerGetter = 'get' . ucfirst($brickField);
+        $brickContainerGetter = 'get'.ucfirst($brickField);
 
         if (!method_exists($object, $brickContainerGetter)) {
             return null;
         }
 
         $brickContainer = $object->$brickContainerGetter();
-        $brickGetter = 'get' . ucfirst($columnConfig['className']);
+        $brickGetter = 'get'.ucfirst($columnConfig['className']);
 
         if (!$brickContainer) {
             return null;
@@ -47,7 +47,7 @@ class BrickGetter implements GetterInterface
         $brick = $brickContainer->$brickGetter();
 
         if ($brick) {
-            $fieldGetter = 'get' . ucfirst($columnConfig['key']);
+            $fieldGetter = 'get'.ucfirst($columnConfig['key']);
 
             return $brick->$fieldGetter();
         }

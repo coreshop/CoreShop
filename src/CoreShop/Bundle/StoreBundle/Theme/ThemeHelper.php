@@ -55,8 +55,7 @@ final class ThemeHelper implements ThemeHelperInterface
 
         if (in_array($backupTheme, $this->activeTheme->getThemes())) {
             $this->activeTheme->setName($backupTheme);
-        }
-        else {
+        } else {
             $this->activeTheme->setName('standard');
         }
 

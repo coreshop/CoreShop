@@ -123,7 +123,7 @@ class CategoriesReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $catSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
+        $catSales = InheritanceHelper::useInheritedValues(function() use ($productSales) {
 
             $catSales = [];
             foreach ($productSales as $productSale) {
@@ -151,7 +151,7 @@ class CategoriesReport implements ReportInterface
 
         });
 
-        usort($catSales, function ($a, $b) {
+        usort($catSales, function($a, $b) {
             return $b['orderCount'] <=> $a['orderCount'];
         });
 

@@ -81,7 +81,7 @@ final class IndexCommand extends Command
         $classProgress->setProgressCharacter('#');
 
         foreach ($classesToUpdate as $class) {
-            $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
+            $list = '\Pimcore\Model\DataObject\\'.$class.'\Listing';
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);

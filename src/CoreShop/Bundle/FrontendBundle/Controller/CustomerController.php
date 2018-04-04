@@ -329,7 +329,7 @@ class CustomerController extends FrontendController
             $customer->setNewsletterConfirmed(true);
             $customer->setNewsletterToken(null);
 
-            VersionHelper::useVersioning(function () use ($customer) {
+            VersionHelper::useVersioning(function() use ($customer) {
                 $customer->save();
             }, false);
 

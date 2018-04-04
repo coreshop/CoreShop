@@ -87,18 +87,18 @@ final class CarrierType extends AbstractResourceType
                 'expanded' => true,
                 'label' => 'coreshop.ui.carrier',
                 'choices' => $options['carriers'],
-                'choice_value' => function ($carrier) {
+                'choice_value' => function($carrier) {
                     if ($carrier instanceof CarrierInterface) {
                         return $carrier->getId();
                     }
                     return null;
                 },
-                'choice_label' => function ($carrier) use ($cart) {
+                'choice_label' => function($carrier) use ($cart) {
                     if ($carrier instanceof CarrierInterface) {
                         $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
                         $amount = $this->currencyConverter->convert($carrierPrice, $this->shopperContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
                         $formattedAmount = $this->moneyFormatter->format($amount, $this->shopperContext->getCurrency()->getIsoCode(), $this->shopperContext->getLocaleCode());
-                        $label = 'coreshop.ui.carrier.' . strtolower(str_replace(' ', '_', $carrier->getLabel()));
+                        $label = 'coreshop.ui.carrier.'.strtolower(str_replace(' ', '_', $carrier->getLabel()));
                         return sprintf('%s %s', $this->translator->trans($label), $formattedAmount);
                     }
 
@@ -123,7 +123,7 @@ final class CarrierType extends AbstractResourceType
         $resolver->setDefault('cart', null);
         $resolver->setAllowedTypes('cart', [CartInterface::class]);
         $resolver->setAllowedTypes('carriers', 'array')
-            ->setAllowedValues('carriers', function (array $carriers) {
+            ->setAllowedValues('carriers', function(array $carriers) {
                 // we already know it is an array as types are validated first
                 foreach ($carriers as $carrier) {
                     if (!$carrier instanceof CarrierInterface) {

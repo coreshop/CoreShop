@@ -132,7 +132,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($shipment) {
+        VersionHelper::useVersioning(function() use ($shipment) {
             $shipment->save();
         }, false);
         $items = [];
@@ -151,7 +151,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         }
 
         $shipment->setItems($items);
-        VersionHelper::useVersioning(function () use ($shipment) {
+        VersionHelper::useVersioning(function() use ($shipment) {
             $shipment->save();
         }, false);
 

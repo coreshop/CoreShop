@@ -143,7 +143,7 @@ final class PimcoreClassContext implements Context
      */
     public function createBrickNamed($brickName)
     {
-      $name = $this->classStorage->set($brickName);
+        $name = $this->classStorage->set($brickName);
 
         $brickDefinition = new Objectbrick\Definition();
         $brickDefinition->setKey($name);
@@ -642,7 +642,7 @@ final class PimcoreClassContext implements Context
                     break;
 
                 case 'localized':
-                    $setter = 'set' . ucfirst($row['key']);
+                    $setter = 'set'.ucfirst($row['key']);
 
                     foreach (Tool::getValidLanguages() as $lang) {
                         $object->$setter($row['value'], $lang);
@@ -661,7 +661,7 @@ final class PimcoreClassContext implements Context
                     }
 
 
-                    $object->{'get' . ucfirst($row['key'])}()->{'set' . ucfirst($type)}($brickInstance);
+                    $object->{'get'.ucfirst($row['key'])}()->{'set'.ucfirst($type)}($brickInstance);
                     break;
 
                 case 'collection':
@@ -681,7 +681,7 @@ final class PimcoreClassContext implements Context
                         $items->add($collectionInstance);
                     }
 
-                    $object->{'set' . ucfirst($row['key'])}($items);
+                    $object->{'set'.ucfirst($row['key'])}($items);
                     break;
 
                 default:

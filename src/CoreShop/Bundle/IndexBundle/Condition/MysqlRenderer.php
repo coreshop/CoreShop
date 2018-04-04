@@ -47,7 +47,7 @@ class MysqlRenderer extends AbstractRenderer
         }
 
         if (count($inValues) > 0) {
-            return '' . $condition->getFieldName() . ' IN (' . implode(',', $inValues) . ')';
+            return ''.$condition->getFieldName().' IN ('.implode(',', $inValues).')';
         }
 
         return '';
@@ -90,7 +90,7 @@ class MysqlRenderer extends AbstractRenderer
                 break;
         }
 
-        return '' . $condition->getFieldName() . ' LIKE ' . $this->database->quote($patternValue);
+        return ''.$condition->getFieldName().' LIKE '.$this->database->quote($patternValue);
     }
 
     /**
@@ -102,7 +102,7 @@ class MysqlRenderer extends AbstractRenderer
     {
         $values = $condition->getValues();
 
-        return '' . $condition->getFieldName() . ' >= ' . $values['from'] . ' AND ' . $condition->getFieldName() . ' <= ' . $values['to'];
+        return ''.$condition->getFieldName().' >= '.$values['from'].' AND '.$condition->getFieldName().' <= '.$values['to'];
     }
 
     /**
@@ -119,7 +119,7 @@ class MysqlRenderer extends AbstractRenderer
             $conditions[] = $this->render($cond);
         }
 
-        return '(' . implode(' ' . trim($values['operator']) . ' ', $conditions) . ')';
+        return '('.implode(' '.trim($values['operator']).' ', $conditions).')';
     }
 
     /**
@@ -133,6 +133,6 @@ class MysqlRenderer extends AbstractRenderer
         $value = $values['value'];
         $operator = $values['operator'];
 
-        return '' . $condition->getFieldName() . ' ' . $operator . ' ' . $this->database->quote($value);
+        return ''.$condition->getFieldName().' '.$operator.' '.$this->database->quote($value);
     }
 }

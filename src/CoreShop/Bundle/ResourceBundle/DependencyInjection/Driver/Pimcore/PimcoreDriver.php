@@ -91,7 +91,7 @@ final class PimcoreDriver extends AbstractDriver
         $serviceId = $metadata->getServiceId('pimcore_controller');
 
         if (null !== $suffix && 'default' !== $suffix) {
-            $serviceId .= '_' . $suffix;
+            $serviceId .= '_'.$suffix;
         }
 
         $container->setDefinition($serviceId, $definition);

@@ -92,7 +92,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         $value = $status->getValue();
         if (PaymentInterface::STATE_UNKNOWN !== $value) {
             $order = $this->orderRepository->find($payment->getOrderId());
-            if($order instanceof OrderInterface) {
+            if ($order instanceof OrderInterface) {
                 $this->confirmOrderState($order);
             }
         }

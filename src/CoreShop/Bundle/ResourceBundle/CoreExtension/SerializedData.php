@@ -188,7 +188,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
     public function setValues($data = [])
     {
         foreach ($data as $key => $value) {
-            $method = 'set' . $key;
+            $method = 'set'.$key;
             if (method_exists($this, $method)) {
                 $this->$method($value);
             }

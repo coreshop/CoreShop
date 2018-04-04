@@ -40,14 +40,14 @@ class PriceActionConfigurationType extends AbstractType
             ]);
 
         $builder->get('currency')->addModelTransformer(new CallbackTransformer(
-            function ($currency) {
+            function($currency) {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }
 
                 return null;
             },
-            function ($currency) {
+            function($currency) {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }

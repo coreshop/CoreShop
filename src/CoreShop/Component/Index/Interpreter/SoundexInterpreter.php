@@ -29,11 +29,11 @@ class SoundexInterpreter implements InterpreterInterface
             sort($value);
             $string = implode(' ', $value);
         } else {
-            $string = (string)$value;
+            $string = (string) $value;
         }
 
         $soundEx = soundex($string);
 
-        return intval(ord(substr($soundEx, 0, 1)) . substr($soundEx, 1));
+        return intval(ord(substr($soundEx, 0, 1)).substr($soundEx, 1));
     }
 }

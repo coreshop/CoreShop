@@ -68,7 +68,7 @@ final class ProductAvailabilityEventListener
          * return if new state is published
          *
          * @var \Pimcore\Model\Version $currentVersion
-        **/
+         **/
         $currentVersion = $versions[0];
         if (!$currentVersion->getData() instanceof PurchasableInterface || $currentVersion->getData()->isPublished() === true) {
             return;
@@ -133,7 +133,7 @@ final class ProductAvailabilityEventListener
 
             $cart->removeItem($cartItem);
 
-            VersionHelper::useVersioning(function () use ($cart) {
+            VersionHelper::useVersioning(function() use ($cart) {
                 $cart->setNeedsRecalculation(true);
                 $cart->save();
             }, false);

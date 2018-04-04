@@ -39,7 +39,7 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
     )
     {
         $this->carriersResolver = $carriersResolver;
-        $this->carrierPriceCalculator = $carriersResolver;
+        $this->carrierPriceCalculator = $carrierPriceCalculator;
     }
 
     /**
@@ -53,7 +53,7 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
             throw new UnresolvedDefaultCarrierException();
         }
 
-        uasort($carriers, function ($a, $b) use ($shippable, $address) {
+        uasort($carriers, function($a, $b) use ($shippable, $address) {
             $aPrice = $this->carrierPriceCalculator->getPrice($a, $shippable, $address);
             $bPrice = $this->carrierPriceCalculator->getPrice($b, $shippable, $address);
 

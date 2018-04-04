@@ -198,7 +198,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         /*
          * We need to save the sale twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($sale) {
+        VersionHelper::useVersioning(function() use ($sale) {
             $sale->save();
         }, false);
 
@@ -213,7 +213,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             'invoice'
         );
 
-        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {
+        VersionHelper::useVersioning(function() use ($shippingAddress, $invoiceAddress) {
             $shippingAddress->save();
             $invoiceAddress->save();
         }, false);
@@ -247,7 +247,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $this->eventDispatcher->dispatchPostEvent($type, $sale, ['cart' => $cart]);
 
-        VersionHelper::useVersioning(function () use ($sale) {
+        VersionHelper::useVersioning(function() use ($sale) {
             $sale->save();
         }, false);
 

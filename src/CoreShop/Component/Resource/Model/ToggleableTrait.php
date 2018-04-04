@@ -32,7 +32,7 @@ trait ToggleableTrait
      */
     public function setActive($enabled)
     {
-        $this->active = (bool)$enabled;
+        $this->active = (bool) $enabled;
     }
 
     public function activate()

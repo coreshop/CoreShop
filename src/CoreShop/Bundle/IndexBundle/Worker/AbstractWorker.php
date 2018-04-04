@@ -19,9 +19,9 @@ use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Pimcore\InheritanceHelper;
@@ -102,6 +102,7 @@ abstract class AbstractWorker implements WorkerInterface
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
         AbstractObject::setHideUnpublished(false);
 
+
         $result = InheritanceHelper::useInheritedValues(function () use ($index, $object) {
             $extensions = $this->getExtensions($index);
 
@@ -163,7 +164,7 @@ abstract class AbstractWorker implements WorkerInterface
                     if ($column->hasGetter()) {
                         $value = $this->processGetter($column, $object);
                     } else {
-                        $getter = 'get' . ucfirst($column->getObjectKey());
+                        $getter = 'get'.ucfirst($column->getObjectKey());
 
                         if (method_exists($object, $getter)) {
                             $value = $object->$getter();
@@ -177,14 +178,14 @@ abstract class AbstractWorker implements WorkerInterface
 
                     if ($value) {
                         if (is_array($value)) {
-                            $value = ',' . implode($value, ',') . ',';
+                            $value = ','.implode($value, ',').',';
                         }
 
                         $data[$column->getName()] = $value;
                     }
 
                 } catch (\Exception $e) {
-                    $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
+                    $this->logger->error('Exception in CoreShopIndexService: '.$e->getMessage(), [$e]);
                     throw $e;
                 }
             }
@@ -207,7 +208,7 @@ abstract class AbstractWorker implements WorkerInterface
 
     protected function prepareLocalizedFields(IndexColumnInterface $column, IndexableInterface $object, $virtualObjectId)
     {
-        $getter = 'get' . ucfirst($column->getObjectKey());
+        $getter = 'get'.ucfirst($column->getObjectKey());
 
         $validLanguages = Tool::getValidLanguages();
 
@@ -231,7 +232,7 @@ abstract class AbstractWorker implements WorkerInterface
                 }
 
                 if (is_array($value)) {
-                    $value = ',' . implode($value, ',') . ',';
+                    $value = ','.implode($value, ',').',';
                 }
 
                 $localizedData['values'][$language][$column->getName()] = $value;

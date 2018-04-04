@@ -27,7 +27,7 @@ class ObjectPropertyInterpreter implements InterpreterInterface
         if ($value instanceof AbstractObject) {
             if (array_key_exists('property', $config)) {
                 $name = $config['property'];
-                $getter = 'get' . ucfirst($name);
+                $getter = 'get'.ucfirst($name);
 
                 if (method_exists($value, $getter)) {
                     return $value->$getter();

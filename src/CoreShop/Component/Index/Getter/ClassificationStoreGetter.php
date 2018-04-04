@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Index\Getter;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use Pimcore\Model\DataObject\Classificationstore;
 
 class ClassificationStoreGetter implements GetterInterface
@@ -26,7 +26,7 @@ class ClassificationStoreGetter implements GetterInterface
         $columnConfig = $config->getConfiguration();
 
         $classificationStore = $config->getGetterConfig()['classificationStoreField'];
-        $classificationStoreGetter = 'get' . ucfirst($classificationStore);
+        $classificationStoreGetter = 'get'.ucfirst($classificationStore);
 
         if (method_exists($object, $classificationStoreGetter)) {
             $classificationStore = $object->$classificationStoreGetter();

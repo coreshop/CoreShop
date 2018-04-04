@@ -45,14 +45,14 @@ class SearchController extends FrontendController
                 'sku LIKE ?'
             ];
             $queryParams = [
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%'
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%'
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
-            $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ')', $queryParams);
+            $list->setCondition('active = 1 AND ('.implode(' OR ', $query).')', $queryParams);
 
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);

@@ -121,7 +121,7 @@ class LoadDataFixturesCommand extends Command
             if (!empty($excludeBundles) && in_array($bundle->getName(), $excludeBundles)) {
                 continue;
             }
-            $path = $bundle->getPath() . $fixtureRelativePath;
+            $path = $bundle->getPath().$fixtureRelativePath;
             if (is_dir($path)) {
                 $this->fixtureLoader->loadFromDirectory($path);
             }
@@ -167,7 +167,7 @@ class LoadDataFixturesCommand extends Command
         );
 
         $this->fixtureExecutor->setLogger(
-            function ($message) use ($output) {
+            function($message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
             }
         );
@@ -193,6 +193,6 @@ class LoadDataFixturesCommand extends Command
             ? self::DEMO_FIXTURES_PATH
             : self::MAIN_FIXTURES_PATH;
 
-        return str_replace('/', DIRECTORY_SEPARATOR, '/' . $fixtureRelativePath);
+        return str_replace('/', DIRECTORY_SEPARATOR, '/'.$fixtureRelativePath);
     }
 }

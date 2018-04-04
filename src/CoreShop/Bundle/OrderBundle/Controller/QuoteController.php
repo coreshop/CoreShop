@@ -31,7 +31,7 @@ class QuoteController extends AbstractSaleDetailController
         $folderPath = $this->getParameter('coreshop.folder.quote');
         $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
 
-        $folder = DataObject::getByPath('/' . $folderPath);
+        $folder = DataObject::getByPath('/'.$folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
