@@ -86,7 +86,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     public function getVersion()
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . " (" . $this->getComposerVersion() . ")";
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion()." (".$this->getComposerVersion().")";
         }
 
         return $this->getComposerVersion();
@@ -101,8 +101,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
 
         if ($this instanceof ComposerPackageBundleInterface && isset(Versions::VERSIONS[$this->getPackageName()])) {
             $version = Versions::getVersion($this->getPackageName());
-        }
-        else if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+        } else if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
             $version = Versions::getVersion('coreshop/core-shop');
         }
 

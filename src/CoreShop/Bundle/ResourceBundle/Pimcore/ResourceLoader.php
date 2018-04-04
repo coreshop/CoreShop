@@ -30,8 +30,8 @@ final class ResourceLoader
         $scriptContents = "";
 
         foreach ($resources as $scriptUrl) {
-            if (is_file(PIMCORE_WEB_ROOT . $scriptUrl)) {
-                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT . $scriptUrl) . "\n\n\n";
+            if (is_file(PIMCORE_WEB_ROOT.$scriptUrl)) {
+                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT.$scriptUrl)."\n\n\n";
             }
         }
 

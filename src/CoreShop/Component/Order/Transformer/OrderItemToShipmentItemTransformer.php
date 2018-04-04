@@ -70,7 +70,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
 
         $this->eventDispatcher->dispatchPreEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath().'/'.$this->pathForItems);
 
         $shipmentItem->setKey($orderItem->getKey());
         $shipmentItem->setParent($itemFolder);
@@ -86,7 +86,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
 
         $shipmentItem->setWeight($orderItem->getTotalWeight());
 
-        VersionHelper::useVersioning(function () use ($shipmentItem) {
+        VersionHelper::useVersioning(function() use ($shipmentItem) {
             $shipmentItem->save();
         }, false);
 

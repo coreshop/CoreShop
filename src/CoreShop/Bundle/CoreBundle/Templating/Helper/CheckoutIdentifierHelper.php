@@ -94,12 +94,12 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
             $step = $checkoutManager->getStep($identifier);
             $isValid = $step instanceof ValidationCheckoutStepInterface ? $step->validate($cart) : false;
 
-            $shopSteps[(string)$identifier] = [
-                'waiting' => is_null($stepIdentifier) || (int)$currentStep < $stepIndex,
-                'done' => !is_null($stepIdentifier) && (int)$currentStep > $stepIndex,
-                'current' => !is_null($stepIdentifier) && (int)$currentStep === $stepIndex,
+            $shopSteps[(string) $identifier] = [
+                'waiting' => is_null($stepIdentifier) || (int) $currentStep < $stepIndex,
+                'done' => !is_null($stepIdentifier) && (int) $currentStep > $stepIndex,
+                'current' => !is_null($stepIdentifier) && (int) $currentStep === $stepIndex,
                 'valid' => $isValid,
-                'url' => $this->router->generate('coreshop_checkout', ['stepIdentifier' => (string)$identifier])
+                'url' => $this->router->generate('coreshop_checkout', ['stepIdentifier' => (string) $identifier])
             ];
         }
 
@@ -114,7 +114,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     {
         $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
 
-        $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))) . 'StepIdentifier';
+        $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))).'StepIdentifier';
         if (!method_exists($this, $getter)) {
             throw new \InvalidArgumentException(sprintf('invalid identifier guess "%s", available guesses are: %s', $type, implode(', ', $validGuesser)));
         }

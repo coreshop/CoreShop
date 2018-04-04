@@ -149,7 +149,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_numeric($data) && !is_int($data)) {
-            $data = (int)$data;
+            $data = (int) $data;
         }
 
         if (is_int($data)) {
@@ -217,7 +217,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
-            return (int)round((round($data, 2) * 100), 0);
+            return (int) round((round($data, 2) * 100), 0);
         }
 
         return $data;
@@ -248,11 +248,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
+            throw new Model\Element\ValidationException('Empty mandatory field [ '.$this->getName().' ]');
         }
 
         if (!$this->isEmpty($data) && !is_numeric($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
+            throw new Model\Element\ValidationException('invalid numeric data ['.$data.']');
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
@@ -263,11 +263,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
             }
 
             if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
+                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is not at least '.$this->getMinValue());
             }
 
             if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
+                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is bigger than '.$this->getMaxValue());
             }
         }
     }
@@ -333,10 +333,10 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     protected function toNumeric($value)
     {
-        if (strpos((string)$value, '.') === false) {
-            return (int)$value;
+        if (strpos((string) $value, '.') === false) {
+            return (int) $value;
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 }

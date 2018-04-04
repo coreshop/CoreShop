@@ -47,7 +47,7 @@ class MysqlRenderer extends AbstractRenderer
         }
 
         if (count($inValues) > 0) {
-            return 'TRIM(`' . $condition->getFieldName() . '`) IN (' . implode(',', $inValues) . ')';
+            return 'TRIM(`'.$condition->getFieldName().'`) IN ('.implode(',', $inValues).')';
         }
 
         return '';
@@ -68,17 +68,17 @@ class MysqlRenderer extends AbstractRenderer
 
         switch ($pattern) {
             case 'left':
-                $patternValue = '%' . $value;
+                $patternValue = '%'.$value;
                 break;
             case 'right':
-                $patternValue = $value . '%';
+                $patternValue = $value.'%';
                 break;
             case 'both':
-                $patternValue = '%' . $value . '%';
+                $patternValue = '%'.$value.'%';
                 break;
         }
 
-        return 'TRIM(`' . $condition->getFieldName() . '`) LIKE ' . $this->database->quote($patternValue);
+        return 'TRIM(`'.$condition->getFieldName().'`) LIKE '.$this->database->quote($patternValue);
     }
 
     /**
@@ -90,7 +90,7 @@ class MysqlRenderer extends AbstractRenderer
     {
         $values = $condition->getValues();
 
-        return 'TRIM(`' . $condition->getFieldName() . '`) >= ' . $values['from'] . ' AND TRIM(`' . $condition->getFieldName() . '`) <= ' . $values['to'];
+        return 'TRIM(`'.$condition->getFieldName().'`) >= '.$values['from'].' AND TRIM(`'.$condition->getFieldName().'`) <= '.$values['to'];
     }
 
     /**
@@ -107,7 +107,7 @@ class MysqlRenderer extends AbstractRenderer
             $conditions[] = $this->render($cond);
         }
 
-        return '(' . implode(' ' . trim($values['operator']) . ' ', $conditions) . ')';
+        return '('.implode(' '.trim($values['operator']).' ', $conditions).')';
     }
 
     /**
@@ -121,6 +121,6 @@ class MysqlRenderer extends AbstractRenderer
         $value = $values['value'];
         $operator = $values['operator'];
 
-        return 'TRIM(`' . $condition->getFieldName() . '`) ' . $operator . ' ' . $this->database->quote($value);
+        return 'TRIM(`'.$condition->getFieldName().'`) '.$operator.' '.$this->database->quote($value);
     }
 }

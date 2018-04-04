@@ -144,7 +144,7 @@ class SalesReport implements ReportInterface, PortletInterface
               SELECT DATE(FROM_UNIXTIME(orderDate)) AS dayDate, orderDate, SUM(totalGross) AS total 
               FROM object_query_$classId as orders
               WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? 
-              GROUP BY " . $groupSelector;
+              GROUP BY ".$groupSelector;
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
 

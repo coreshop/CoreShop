@@ -59,7 +59,7 @@ class CartPriceRuleVoucherCodeGenerator
 
             case self::FORMAT_ALPHANUMERIC:
             default:
-                $lettersToUse = implode('', range(chr(65), chr(90))) . implode('', range(chr(48), chr(57)));
+                $lettersToUse = implode('', range(chr(65), chr(90))).implode('', range(chr(48), chr(57)));
                 break;
         }
 
@@ -96,14 +96,14 @@ class CartPriceRuleVoucherCodeGenerator
      */
     protected static function generateCode($letters, $length)
     {
-        srand((float)microtime() * 1000000);
+        srand((float) microtime() * 1000000);
         $i = 0;
         $code = '';
 
         while ($i <= $length) {
             $num = rand() % 33;
             $tmp = substr($letters, $num, 1);
-            $code = $code . $tmp;
+            $code = $code.$tmp;
             ++$i;
         }
 

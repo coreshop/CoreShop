@@ -75,7 +75,7 @@ final class Metadata implements MetadataInterface
      */
     public function getAlias()
     {
-        return $this->applicationName . '.' . $this->name;
+        return $this->applicationName.'.'.$this->name;
     }
 
     /**

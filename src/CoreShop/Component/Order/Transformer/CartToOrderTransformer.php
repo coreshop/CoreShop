@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Transformer;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
@@ -43,7 +42,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         if ($cart->getId()) {
             $cart->setOrder($order);
 
-            VersionHelper::useVersioning(function () use ($cart) {
+            VersionHelper::useVersioning(function() use ($cart) {
                 $cart->save();
             }, false);
         }

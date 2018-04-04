@@ -175,10 +175,10 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->validate()
-                                ->ifTrue(function ($array) {
+                                ->ifTrue(function($array) {
                                     $notValid = false;
                                     foreach ($array as $key => $value) {
-                                        if($key === 'cart') {
+                                        if ($key === 'cart') {
                                             $notValid = true;
                                             break;
                                         }

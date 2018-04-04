@@ -25,37 +25,37 @@ final class CoreShopWorkflowExtension extends Extension
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('services.yml');
 
         $callbackConfig = [];
         $colorConfig = [];
 
-        if(is_array($config['state_machine'])) {
-            foreach($config['state_machine'] as $stateMachineName => $stateMachineConfig) {
+        if (is_array($config['state_machine'])) {
+            foreach ($config['state_machine'] as $stateMachineName => $stateMachineConfig) {
                 $data = [];
-                if(isset($stateMachineConfig['places'])) {
+                if (isset($stateMachineConfig['places'])) {
                     $data['places'] = $stateMachineConfig['places'];
                 }
-                if(isset($stateMachineConfig['transitions'])) {
+                if (isset($stateMachineConfig['transitions'])) {
                     $data['transitions'] = $stateMachineConfig['transitions'];
                 }
                 $container->prependExtensionConfig('framework', ['workflows' => [$stateMachineName => $data]]);
 
-                if(isset($stateMachineConfig['callbacks'])) {
-                    $callbackConfig[$stateMachineName] =$stateMachineConfig['callbacks'];
+                if (isset($stateMachineConfig['callbacks'])) {
+                    $callbackConfig[$stateMachineName] = $stateMachineConfig['callbacks'];
                 }
 
-                if(isset($stateMachineConfig['callbacks'])) {
-                    $callbackConfig[$stateMachineName] =$stateMachineConfig['callbacks'];
+                if (isset($stateMachineConfig['callbacks'])) {
+                    $callbackConfig[$stateMachineName] = $stateMachineConfig['callbacks'];
                 }
 
-                if(isset($stateMachineConfig['place_colors'])) {
+                if (isset($stateMachineConfig['place_colors'])) {
                     $colorConfig[$stateMachineName]['place_colors'] = $stateMachineConfig['place_colors'];
                 }
 
-                if(isset($stateMachineConfig['transition_colors'])) {
+                if (isset($stateMachineConfig['transition_colors'])) {
                     $colorConfig[$stateMachineName]['transition_colors'] = $stateMachineConfig['transition_colors'];
                 }
             }

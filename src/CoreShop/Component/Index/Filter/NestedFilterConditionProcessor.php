@@ -12,12 +12,10 @@
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
-use Pimcore\Model\DataObject\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class NestedFilterConditionProcessor implements FilterConditionProcessorInterface

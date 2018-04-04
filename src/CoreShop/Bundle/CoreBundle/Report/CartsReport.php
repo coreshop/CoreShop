@@ -132,7 +132,7 @@ class CartsReport implements ReportInterface, PortletInterface
             ";
         }
 
-        $data = $this->db->fetchAll(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
+        $data = $this->db->fetchAll(implode(PHP_EOL.'UNION ALL'.PHP_EOL, $queries).'  ORDER BY timestamp ASC');
 
         foreach ($data as &$day) {
             $date = Carbon::createFromTimestamp(strtotime($day['timestamp']));

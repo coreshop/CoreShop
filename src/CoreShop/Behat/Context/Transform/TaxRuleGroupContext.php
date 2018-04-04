@@ -14,9 +14,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class TaxRuleGroupContext implements Context

@@ -31,7 +31,7 @@ abstract class AbstractModelExtension extends Extension
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
 
         foreach ($resources as $resourceName => $resourceConfig) {
-            $alias = $applicationName . '.' . $resourceName;
+            $alias = $applicationName.'.'.$resourceName;
             $resourceConfig = array_merge(['driver' => $driver], $resourceConfig);
 
             $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
@@ -43,7 +43,7 @@ abstract class AbstractModelExtension extends Extension
             DriverProvider::get($metadata)->load($container, $metadata);
 
             if ($metadata->hasParameter('translation')) {
-                $alias = $alias . '_translation';
+                $alias = $alias.'_translation';
                 $resourceConfig = array_merge(['driver' => $driver], $resourceConfig['translation']);
 
                 $resources = $container->hasParameter('coreshop.resources') ? $container->getParameter('coreshop.resources') : [];
@@ -68,7 +68,7 @@ abstract class AbstractModelExtension extends Extension
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), 'pimcore');
 
         foreach ($models as $modelName => $modelConfig) {
-            $alias = $applicationName . '.' . $modelName;
+            $alias = $applicationName.'.'.$modelName;
             $modelConfig = array_merge(['driver' => 'pimcore', 'alias' => $this->getAlias()], $modelConfig);
 
             foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $applicationName)] as $parameter) {

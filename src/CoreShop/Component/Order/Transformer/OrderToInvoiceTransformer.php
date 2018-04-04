@@ -153,7 +153,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -174,7 +174,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoice->setItems($items);
 
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -199,7 +199,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->calculateTotal($invoice, true);
         $this->calculateTotal($invoice, false);
 
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
     }

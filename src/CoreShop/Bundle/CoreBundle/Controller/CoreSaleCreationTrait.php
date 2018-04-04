@@ -139,7 +139,7 @@ trait CoreSaleCreationTrait
             $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
 
             if (!$carrier instanceof CarrierInterface) {
-                throw new \InvalidArgumentException('Carrier with ID ' . $carrierId . ' not found');
+                throw new \InvalidArgumentException('Carrier with ID '.$carrierId.' not found');
             }
 
             $cart->setCarrier($carrier);

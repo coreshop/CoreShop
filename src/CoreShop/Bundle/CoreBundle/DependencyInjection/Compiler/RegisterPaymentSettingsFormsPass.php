@@ -31,7 +31,7 @@ class RegisterPaymentSettingsFormsPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('coreshop.payment.form.settings') as $id => $attributes) {
             if (!isset($attributes[0]['payum-factory'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `payum-factory` attribute.');
+                throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `payum-factory` attribute.');
             }
 
             $payumFactory = $attributes[0]['payum-factory'];

@@ -89,8 +89,8 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 for ($j = 0; $j < 3; $j++) {
                     $imagePath = $this->container->get('kernel')->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3)));
 
-                    $fileName = 'image' . ($i) . '_' . ($j) . '.jpg';
-                    $fullPath = $folder->getFullPath() . '/' . $fileName;
+                    $fileName = 'image'.($i).'_'.($j).'.jpg';
+                    $fullPath = $folder->getFullPath().'/'.$fileName;
 
                     $existingImage = Asset::getByPath($fullPath);
 

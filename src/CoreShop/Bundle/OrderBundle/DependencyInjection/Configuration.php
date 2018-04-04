@@ -93,7 +93,7 @@ final class Configuration implements ConfigurationInterface
                                 ->booleanNode('customer')->defaultValue(true)->end()
                             ->end()
                         ->end()
-                         ->arrayNode('order')
+                            ->arrayNode('order')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->integerNode('days')->defaultValue(5)->end()

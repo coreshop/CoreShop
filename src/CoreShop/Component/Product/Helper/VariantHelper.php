@@ -128,7 +128,7 @@ class VariantHelper
         if ($definition instanceof ClassDefinition\Data\Classificationstore) {
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge([$master], $productVariants);
-            $getter = 'get' . ucfirst($classificationStoreField);
+            $getter = 'get'.ucfirst($classificationStoreField);
 
             $storeId = $definition->getStoreId();
 
@@ -145,7 +145,7 @@ class VariantHelper
                 foreach ($relations as $relation) {
                     $keyConfig = KeyConfig::getById($relation->getKeyId());
 
-                    $dimensionInfo[$groupConfig->getId() . $keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
+                    $dimensionInfo[$groupConfig->getId().$keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
                 }
             }
 
@@ -171,10 +171,10 @@ class VariantHelper
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__' . $keyData['groupId'] . $keyData['keyId'] . '__';
+                            $secureNameSpace = '__'.$keyData['groupId'].$keyData['keyId'].'__';
                             $variantName = $keyData['name'];
 
-                            $compareValues[$secureNameSpace . $variantName][$productId] = $value;
+                            $compareValues[$secureNameSpace.$variantName][$productId] = $value;
                             $variantUrls[$productVariant->getId()] = $productVariant->getName();
                         }
                     }
@@ -260,13 +260,13 @@ class VariantHelper
                             }
 
                             if (!is_string($variantValue) && !is_numeric($variantValue)) {
-                                throw new \Exception('Variant return value needs to be string or numeric, ' . gettype($variantValue) . ' given.');
+                                throw new \Exception('Variant return value needs to be string or numeric, '.gettype($variantValue).' given.');
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__' . $getter->getType() . '__';
+                            $secureNameSpace = '__'.$getter->getType().'__';
 
-                            $compareValues[$secureNameSpace . $variantName][$productId] = $variantValue;
+                            $compareValues[$secureNameSpace.$variantName][$productId] = $variantValue;
                             $variantUrls[$productVariant->getId()] = $productVariant->getName();
                         }
                         //}
@@ -394,15 +394,15 @@ class VariantHelper
         $list = \Pimcore::getContainer()->get('coreshop.repository.product')->getList();
 
         $condition = 'o_path LIKE ?';
-        $conditionParams = [$object->getFullPath() . '/%'];
+        $conditionParams = [$object->getFullPath().'/%'];
 
         $storeParams = [];
 
         foreach ($object->getStores() as $shop) {
-            $storeParams[] = "stores LIKE '%," . $shop . ",%'";
+            $storeParams[] = "stores LIKE '%,".$shop.",%'";
         }
 
-        $condition .= ' AND (' . implode(' OR ', $storeParams) . ')';
+        $condition .= ' AND ('.implode(' OR ', $storeParams).')';
 
         $list->setCondition($condition, $conditionParams);
         $list->setOrderKey('o_key');

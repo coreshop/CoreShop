@@ -148,7 +148,7 @@ class CartController extends FrontendController
                     'data'            => $carrier
                 ];
             }
-            uasort($availableCarriers, function ($a, $b) {
+            uasort($availableCarriers, function($a, $b) {
                 return ($a['price'] > $b['price']);
             });
         }

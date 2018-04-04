@@ -85,19 +85,19 @@ final class OrderStateHistoryLogger
         $from = $this->getFrom($transition->getFroms());
         $to = $this->getTo($transition->getTos());
 
-        $fromValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $from;
-        $toValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $to;
+        $fromValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$from;
+        $toValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$to;
 
         $objectIdInfo = '';
         // add id if it's not an order (since payment/shipping/invoice could be more than one)
         if (!$subject instanceof OrderInterface) {
-            $objectIdInfo = ' (Id ' . $subject->getId() . ')';
+            $objectIdInfo = ' (Id '.$subject->getId().')';
         }
 
         $note = $this->noteService->createPimcoreNoteInstance($order, $this->noteIdentifier);
         $note->setTitle(
             sprintf('%s%s: %s %s %s %s',
-                $this->translator->trans('coreshop_workflow_name_' . $event->getWorkflowName(), [], 'admin'),
+                $this->translator->trans('coreshop_workflow_name_'.$event->getWorkflowName(), [], 'admin'),
                 $objectIdInfo,
                 $this->translator->trans('coreshop_workflow_state_changed_from', [], 'admin'),
                 $this->translator->trans($fromValue, [], 'admin'),

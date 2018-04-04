@@ -58,7 +58,7 @@ final class CartManager implements CartManagerInterface
     {
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
 
-        VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
+        VersionHelper::useVersioning(function() use ($cart, $cartsFolder) {
             $tempItems = $cart->getItems();
 
             if (!$cart->getId()) {
