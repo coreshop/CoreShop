@@ -105,7 +105,6 @@ class Carrier extends RuleTest
         $carrier = $this->createResourceWithForm('carrier', CarrierInterface::class, [
             'label' => 'Test',
             'name' => 'Test',
-            'rangeBehaviour' => 'deactivate',
             'translations' => [
                 'en' => [
                     'description' => 'TEST'
@@ -138,7 +137,6 @@ class Carrier extends RuleTest
         $carrier = $this->createResourceWithForm('carrier', CarrierInterface::class, [
             'label' => 'Test',
             'name' => 'Test',
-            'rangeBehaviour' => 'deactivate',
             'taxRule' => Data::$taxRuleGroup->getId(),
         ]);
 

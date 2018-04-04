@@ -239,18 +239,6 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
                 value: parseInt(this.data.isFree)
-            }, {
-                fieldLabel: t('coreshop_carrier_rangeBehaviour'),
-                name: 'rangeBehaviour',
-                value: this.data.rangeBehaviour,
-                width: 500,
-                xtype: 'combo',
-                store: [['largest', t('coreshop_carrier_rangeBehaviour_largest')], ['deactivate', t('coreshop_carrier_rangeBehaviour_deactivate')]],
-                triggerAction: 'all',
-                typeAhead: false,
-                editable: false,
-                forceSelection: true,
-                mode: 'local'
             }, this.getShippingRulesGrid()]
         });
 
