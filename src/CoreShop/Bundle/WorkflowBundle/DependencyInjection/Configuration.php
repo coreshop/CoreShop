@@ -59,7 +59,7 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('transitions')
                 ->beforeNormalization()
                     ->always()
-                    ->then(function ($transitions) {
+                    ->then(function($transitions) {
                         // It's an indexed array, we let the validation occurs
                         if (isset($transitions[0])) {
                             return $transitions;
@@ -94,7 +94,7 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function ($v) { return array($v); })
+                                ->then(function($v) { return array($v); })
                             ->end()
                             ->requiresAtLeastOneElement()
                             ->prototype('scalar')
@@ -105,7 +105,7 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function ($v) { return array($v); })
+                                ->then(function($v) { return array($v); })
                             ->end()
                             ->requiresAtLeastOneElement()
                             ->prototype('scalar')

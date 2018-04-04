@@ -68,12 +68,12 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
-        return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function () use ($orderDocument) {
+        return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function() use ($orderDocument) {
             $params = [
                 'id' => $orderDocument->getId(),
                 'order' => $orderDocument->getOrder(),
                 'document' => $orderDocument,
-                'language' => (string)$orderDocument->getOrder()->getOrderLanguage(),
+                'language' => (string) $orderDocument->getOrder()->getOrderLanguage(),
                 'type' => $orderDocument::getDocumentType(),
                 $orderDocument::getDocumentType() => $orderDocument,
             ];

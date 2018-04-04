@@ -44,7 +44,7 @@ final class Migrate
         $classDefinition = ClassDefinition::getByName($fromClass);
 
         //Somehow ::generateClassDefinitionJson destroys the field-definitions, this line repairs it. So we just remove it from \Zend_Registry
-        Cache\Runtime::getInstance()->offsetUnset("class_" . $classDefinition->getId());
+        Cache\Runtime::getInstance()->offsetUnset("class_".$classDefinition->getId());
 
         if (!$classDefinition instanceof ClassDefinition) {
             throw new ClassDefinitionNotFoundException();
@@ -155,19 +155,19 @@ final class Migrate
                 foreach ($fd->getAllowedTypes() as $type) {
                     $definition = Objectbrick\Definition::getByKey($type);
 
-                    $tablesToMigrate["object_brick_query_" . $definition->getKey() . "_%s"] = false;
-                    $tablesToMigrate["object_brick_store_" . $definition->getKey() . "_%s"] = false;
+                    $tablesToMigrate["object_brick_query_".$definition->getKey()."_%s"] = false;
+                    $tablesToMigrate["object_brick_store_".$definition->getKey()."_%s"] = false;
                 }
             } elseif ($fd instanceof ClassDefinition\Data\Fieldcollections) {
                 foreach ($fd->getAllowedTypes() as $type) {
                     $definition = Fieldcollection\Definition::getByKey($type);
 
                     if ($definition instanceof Fieldcollection\Definition) {
-                        $tablesToMigrate["object_collection_" . $definition->getKey() . "_%s"] = false;
+                        $tablesToMigrate["object_collection_".$definition->getKey()."_%s"] = false;
 
                         foreach ($definition->getFieldDefinitions() as $fieldDef) {
                             if ($fieldDef instanceof ClassDefinition\Data\Localizedfields) {
-                                $tablesToMigrate["object_collection_" . $definition->getKey() . "_localized_%s"] = false;
+                                $tablesToMigrate["object_collection_".$definition->getKey()."_localized_%s"] = false;
                             }
                         }
                     }
@@ -178,7 +178,7 @@ final class Migrate
                 $validLanguages = Tool::getValidLanguages();
 
                 foreach ($validLanguages as $lang) {
-                    $tablesToMigrate["object_localized_query_%s_" . $lang] = false;
+                    $tablesToMigrate["object_localized_query_%s_".$lang] = false;
                 }
             } elseif ($fd instanceof ClassDefinition\Data\Classificationstore) {
                 $tablesToMigrate["object_classificationstore_data_%s"] = false;
@@ -200,7 +200,7 @@ final class Migrate
                 $column = $db->quoteIdentifier($column);
             }
 
-            $sql = "INSERT INTO $newSqlTable SELECT " . implode(",", $columns) . " FROM $oldSqlTable";
+            $sql = "INSERT INTO $newSqlTable SELECT ".implode(",", $columns)." FROM $oldSqlTable";
 
             $db->query($sql);
 

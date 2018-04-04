@@ -22,7 +22,7 @@ final class Db extends \Pimcore\Db
     {
         $db = static::get();
 
-        $data = $db->fetchAll("SHOW COLUMNS FROM " . $table);
+        $data = $db->fetchAll("SHOW COLUMNS FROM ".$table);
         $columns = [];
 
         foreach ($data as $d) {

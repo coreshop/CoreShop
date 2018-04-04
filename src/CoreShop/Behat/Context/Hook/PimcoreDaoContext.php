@@ -15,9 +15,9 @@ namespace CoreShop\Behat\Context\Hook;
 use Behat\Behat\Context\Context;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
-use Pimcore\Model\DataObject\Fieldcollection;
 
 final class PimcoreDaoContext implements Context
 {

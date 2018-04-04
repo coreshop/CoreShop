@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
@@ -20,7 +21,6 @@ use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
-use Pimcore\Model\DataObject;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
@@ -28,7 +28,7 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Workflow\StateMachine;
@@ -50,7 +50,7 @@ class OrderController extends AbstractSaleDetailController
         $folderPath = $this->getParameter('coreshop.folder.order');
         $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
 
-        $folder = DataObject::getByPath('/' . $folderPath);
+        $folder = DataObject::getByPath('/'.$folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();

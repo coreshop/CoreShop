@@ -2,6 +2,7 @@
 
 namespace CoreShop\Component\Order\Transformer;
 
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
@@ -10,7 +11,6 @@ use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 
 final class CartToOrderTransformerWorkflowApplier implements ProposalTransformerInterface
 {

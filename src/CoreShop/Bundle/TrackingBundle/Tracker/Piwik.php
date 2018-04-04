@@ -108,7 +108,7 @@ final class Piwik extends AbstractClientTracker
         $item->setQuantity($quantity);
 
         $this->render([
-            $action . 'ecommerceItem',
+            $action.'ecommerceItem',
             $item->getId(),
             $item->getName(),
             $item->getCategory(),

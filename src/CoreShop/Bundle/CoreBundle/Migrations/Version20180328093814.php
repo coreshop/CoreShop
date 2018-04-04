@@ -29,8 +29,7 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
                         'notnull' => false
                     ]
                 );
-            }
-            else {
+            } else {
                 $this->hadSalutationsColumn = true;
             }
         }

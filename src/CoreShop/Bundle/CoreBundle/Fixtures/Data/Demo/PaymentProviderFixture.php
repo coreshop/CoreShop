@@ -14,13 +14,11 @@ namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
-use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Lorem;
-use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

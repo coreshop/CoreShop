@@ -83,8 +83,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
 
         if ('total' === $applyOn) {
             $cartAmount = $cart->getTotal($withTax);
-        }
-        else {
+        } else {
             $cartAmount = $cart->getSubtotal($withTax);
         }
 
@@ -105,7 +104,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             }
         }
 
-        return (int)$this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
     }
 
     /**

@@ -46,7 +46,7 @@ class PriorityMap implements \Iterator, \Countable
         $key = $this->getScalarKey($key);
         $this->list[$key] = new \stdclass();
         $this->list[$key]->value = $value;
-        $this->list[$key]->priority = (int)$priority;
+        $this->list[$key]->priority = (int) $priority;
         $this->list[$key]->sequence = $this->lastSequence++;
 
         return $this->list[$key];
@@ -101,7 +101,7 @@ class PriorityMap implements \Iterator, \Countable
      */
     public function getKeys()
     {
-        uasort($this->list, [$this, $this->order . 'SortStrategy']);
+        uasort($this->list, [$this, $this->order.'SortStrategy']);
         return array_keys($this->list);
     }
 
@@ -178,7 +178,7 @@ class PriorityMap implements \Iterator, \Countable
      */
     public function rewind()
     {
-        uasort($this->list, [$this, $this->order . 'SortStrategy']);
+        uasort($this->list, [$this, $this->order.'SortStrategy']);
         reset($this->list);
     }
 

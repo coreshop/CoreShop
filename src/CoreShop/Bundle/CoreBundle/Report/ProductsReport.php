@@ -119,7 +119,7 @@ class ProductsReport implements ReportInterface
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackIds as $id) {
-                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
+                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_'.$id.'_'.$locale;
             }
 
             $union = join(' UNION ALL ', $unionData);
@@ -164,7 +164,7 @@ class ProductsReport implements ReportInterface
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
-                INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
+                INNER JOIN object_localized_query_".$orderItemClassId."_".$locale." AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
@@ -173,13 +173,13 @@ class ProductsReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
+            $sale['name'] = $sale['productName'].' (Id: '.$sale['productId'].')';
         }
 
         return array_values($productSales);

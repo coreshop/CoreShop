@@ -93,11 +93,11 @@ final class ResourceLoader implements LoaderInterface
         //$rootPath = sprintf('/%s/', isset($configuration['path']) ? $configuration['path'] : Urlizer::urlize($metadata->getPluralName()));
         //$identifier = sprintf('{%s}', $configuration['identifier']);
 
-        $rootPath = '/admin/' . $metadata->getApplicationName();
-        $rootPath .= '/' . $metadata->getPluralName() . '/';
+        $rootPath = '/admin/'.$metadata->getApplicationName();
+        $rootPath .= '/'.$metadata->getPluralName().'/';
 
         foreach ($routesToGenerate as $route) {
-            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods']);
+            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath.$route['path'], $route['action'], $route['methods']);
             $routes->add($this->getRouteName($metadata, $configuration, $route['action']), $indexRoute);
         }
 
@@ -140,7 +140,7 @@ final class ResourceLoader implements LoaderInterface
     private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods)
     {
         $defaults = [
-            '_controller' => $metadata->getServiceId('admin_controller') . sprintf(':%sAction', $actionName),
+            '_controller' => $metadata->getServiceId('admin_controller').sprintf(':%sAction', $actionName),
         ];
 
         return $this->routeFactory->createRoute($path, $defaults, [], [], '', [], $methods);
@@ -155,7 +155,7 @@ final class ResourceLoader implements LoaderInterface
      */
     private function getRouteName(MetadataInterface $metadata, array $configuration, $actionName)
     {
-        $sectionPrefix = isset($configuration['section']) ? $configuration['section'] . '_' : '';
+        $sectionPrefix = isset($configuration['section']) ? $configuration['section'].'_' : '';
 
         return sprintf('%s_%s%s_%s', $metadata->getApplicationName(), $sectionPrefix, $metadata->getName(), $actionName);
     }

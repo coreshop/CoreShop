@@ -70,7 +70,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     private function provideKey(StoreInterface $store)
     {
-        return '_currency_' . $store->getId();
+        return '_currency_'.$store->getId();
     }
 
     /**
@@ -96,7 +96,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
      */
     private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
-        return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
+        return in_array($currency->getIsoCode(), array_map(function(CurrencyInterface $currency) {
             return $currency->getIsoCode();
         }, $this->getCurrenciesForStore($store)));
     }

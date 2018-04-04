@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
@@ -24,7 +25,6 @@ use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -43,7 +43,7 @@ class OrderShipmentController extends PimcoreController
 
         if (!$order instanceof OrderInterface) {
 
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $itemsToReturn = [];
@@ -167,7 +167,7 @@ class OrderShipmentController extends PimcoreController
 
         $shipment->setValues($values);
 
-        VersionHelper::useVersioning(function () use ($shipment) {
+        VersionHelper::useVersioning(function() use ($shipment) {
             $shipment->save();
         }, false);
 
@@ -214,7 +214,7 @@ class OrderShipmentController extends PimcoreController
                 200,
                 [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
+                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
                 ]
             );
         }

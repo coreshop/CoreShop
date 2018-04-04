@@ -61,7 +61,7 @@ final class DataFixturesSorter
         $this->orderedFixtures = $this->fixtures;
         usort(
             $this->orderedFixtures,
-            function ($a, $b) {
+            function($a, $b) {
                 if ($a instanceof OrderedFixtureInterface && $b instanceof OrderedFixtureInterface) {
                     if ($a->getOrder() === $b->getOrder()) {
                         return 0;
@@ -100,7 +100,7 @@ final class DataFixturesSorter
         if ($usedPrioritySorting) {
             $this->orderedFixtures = array_filter(
                 $this->orderedFixtures,
-                function ($fixture) {
+                function($fixture) {
                     return $fixture instanceof OrderedFixtureInterface;
                 }
             );

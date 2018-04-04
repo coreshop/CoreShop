@@ -135,7 +135,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));
-                    $replaceFrom = '{{' . $replaceKey . '}}';
+                    $replaceFrom = '{{'.$replaceKey.'}}';
 
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }

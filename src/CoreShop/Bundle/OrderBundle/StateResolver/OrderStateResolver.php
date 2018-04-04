@@ -12,13 +12,13 @@
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Webmozart\Assert\Assert;
 
 final class OrderStateResolver implements StateResolverInterface

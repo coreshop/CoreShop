@@ -51,7 +51,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $this->registerResources('coreshop', $config['driver'], [], $container);
 

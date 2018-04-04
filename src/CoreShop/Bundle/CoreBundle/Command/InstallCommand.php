@@ -111,7 +111,7 @@ EOT
                     count($this->commands),
                     $command['message']
                 ));
-                $this->commandExecutor->runCommand('coreshop:install:' . $command['command'], [], $output);
+                $this->commandExecutor->runCommand('coreshop:install:'.$command['command'], [], $output);
             } catch (RuntimeException $exception) {
                 $errored = true;
             }

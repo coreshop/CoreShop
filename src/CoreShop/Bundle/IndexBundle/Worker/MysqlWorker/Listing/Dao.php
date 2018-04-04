@@ -57,42 +57,42 @@ class Dao
     public function load($condition, $orderBy = null, $limit = null, $offset = null)
     {
         if (is_string($condition)) {
-            $condition = 'WHERE ' . $condition;
+            $condition = 'WHERE '.$condition;
         }
 
         if (is_string($orderBy)) {
-            $orderBy = ' ORDER BY ' . $orderBy;
+            $orderBy = ' ORDER BY '.$orderBy;
         }
 
         if (is_integer($limit)) {
             if (is_integer($offset)) {
-                $limit = 'LIMIT ' . $offset . ', ' . $limit;
+                $limit = 'LIMIT '.$offset.', '.$limit;
             } else {
-                $limit = 'LIMIT ' . $limit;
+                $limit = 'LIMIT '.$limit;
             }
         }
 
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!is_null($orderBy)) {
                 $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualObjectId as o_id FROM '
-                    . $this->model->getQueryTableName() . ' a '
+                    . $this->model->getQueryTableName().' a '
                     . $this->model->getJoins()
-                    . $condition . ' GROUP BY o_virtualObjectId' . $orderBy . ' ' . $limit;
+                    . $condition.' GROUP BY o_virtualObjectId'.$orderBy.' '.$limit;
             } else {
                 $query = 'SELECT SQL_CALC_FOUND_ROWS DISTINCT o_virtualObjectId as o_id FROM '
-                    . $this->model->getQueryTableName() . ' a '
+                    . $this->model->getQueryTableName().' a '
                     . $this->model->getJoins()
-                    . $condition . ' ' . $limit;
+                    . $condition.' '.$limit;
             }
         } else {
             $query = 'SELECT SQL_CALC_FOUND_ROWS a.o_id FROM '
-                . $this->model->getQueryTableName() . ' a '
+                . $this->model->getQueryTableName().' a '
                 . $this->model->getJoins()
-                . $condition . $orderBy . ' ' . $limit;
+                . $condition.$orderBy.' '.$limit;
         }
 
         $result = $this->database->fetchAll($query);
-        $this->lastRecordCount = (int)$this->database->fetchOne('SELECT FOUND_ROWS()');
+        $this->lastRecordCount = (int) $this->database->fetchOne('SELECT FOUND_ROWS()');
 
         return $result;
     }
@@ -109,30 +109,30 @@ class Dao
     public function loadGroupByValues($fieldname, $condition, $countValues = false)
     {
         if ($condition) {
-            $condition = 'WHERE ' . $condition;
+            $condition = 'WHERE '.$condition;
         }
 
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(DISTINCT o_virtualObjectId) as `count` FROM "
-                    . $this->model->getQueryTableName() . ' a '
+                    . $this->model->getQueryTableName().' a '
                     . $this->model->getJoins()
-                    . $condition . ' GROUP BY TRIM(`' . $fieldname . '`) ORDER BY ' . $this->database->quoteIdentifier($fieldname);
+                    . $condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->database->quoteIdentifier($fieldname);
             } else {
                 $query = "SELECT TRIM(`$fieldname`) as `value`, count(*) as `count` FROM "
-                    . $this->model->getQueryTableName() . ' a '
+                    . $this->model->getQueryTableName().' a '
                     . $this->model->getJoins()
-                    . $condition . ' GROUP BY TRIM(`' . $fieldname . '`) ORDER BY ' . $this->database->quoteIdentifier($fieldname);
+                    . $condition.' GROUP BY TRIM(`'.$fieldname.'`) ORDER BY '.$this->database->quoteIdentifier($fieldname);
             }
 
             $result = $this->database->fetchAll($query);
 
             return $result;
         } else {
-            $query = 'SELECT ' . $this->database->quoteIdentifier($fieldname) . ' FROM '
-                . $this->model->getQueryTableName() . ' a '
+            $query = 'SELECT '.$this->database->quoteIdentifier($fieldname).' FROM '
+                . $this->model->getQueryTableName().' a '
                 . $this->model->getJoins()
-                . $condition . ' GROUP BY ' . $this->database->quoteIdentifier($fieldname) . ' ORDER BY ' . $this->database->quoteIdentifier($fieldname);
+                . $condition.' GROUP BY '.$this->database->quoteIdentifier($fieldname).' ORDER BY '.$this->database->quoteIdentifier($fieldname);
 
             $queryResult = $this->database->fetchAll($query);
             $result = [];
@@ -159,40 +159,40 @@ class Dao
     public function loadGroupByRelationValues($fieldname, $condition, $countValues = false)
     {
         if ($condition) {
-            $condition = 'WHERE ' . $condition;
+            $condition = 'WHERE '.$condition;
         }
 
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $query = 'SELECT dest as `value`, count(DISTINCT src_virtualObjectId) as `count` FROM '
-                    . $this->model->getRelationTablename() . ' a '
-                    . 'WHERE fieldname = ' . $this->quote($fieldname);
+                    . $this->model->getRelationTablename().' a '
+                    . 'WHERE fieldname = '.$this->quote($fieldname);
             } else {
                 $query = 'SELECT dest as `value`, count(*) as `count` FROM '
-                    . $this->model->getRelationTablename() . ' a '
-                    . 'WHERE fieldname = ' . $this->quote($fieldname);
+                    . $this->model->getRelationTablename().' a '
+                    . 'WHERE fieldname = '.$this->quote($fieldname);
             }
 
             $subquery = 'SELECT a.o_id FROM '
-                . $this->model->getQueryTableName() . ' a '
+                . $this->model->getQueryTableName().' a '
                 . $this->model->getJoins()
                 . $condition;
 
-            $query .= ' AND src IN (' . $subquery . ') GROUP BY dest';
+            $query .= ' AND src IN ('.$subquery.') GROUP BY dest';
 
             $result = $this->database->fetchAssoc($query);
 
             return $result;
         } else {
-            $query = 'SELECT dest FROM ' . $this->model->getRelationTablename() . ' a '
-                . 'WHERE fieldname = ' . $this->quote($fieldname);
+            $query = 'SELECT dest FROM '.$this->model->getRelationTablename().' a '
+                . 'WHERE fieldname = '.$this->quote($fieldname);
 
             $subquery = 'SELECT a.o_id FROM '
-                . $this->model->getQueryTableName() . ' a '
+                . $this->model->getQueryTableName().' a '
                 . $this->model->getJoins()
                 . $condition;
 
-            $query .= ' AND src IN (' . $subquery . ') GROUP BY dest';
+            $query .= ' AND src IN ('.$subquery.') GROUP BY dest';
 
             $result = $this->database->fetchCol($query);
 
@@ -213,31 +213,31 @@ class Dao
     public function getCount($condition, $orderBy = null, $limit = null, $offset = null)
     {
         if ($condition) {
-            $condition = 'WHERE ' . $condition;
+            $condition = 'WHERE '.$condition;
         }
 
         if ($orderBy) {
-            $orderBy = ' ORDER BY ' . $orderBy;
+            $orderBy = ' ORDER BY '.$orderBy;
         }
 
         if ($limit) {
             if ($offset) {
-                $limit = 'LIMIT ' . $offset . ', ' . $limit;
+                $limit = 'LIMIT '.$offset.', '.$limit;
             } else {
-                $limit = 'LIMIT ' . $limit;
+                $limit = 'LIMIT '.$limit;
             }
         }
 
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             $query = 'SELECT count(DISTINCT o_virtualObjectId) FROM '
-                . $this->model->getQueryTableName() . ' a '
+                . $this->model->getQueryTableName().' a '
                 . $this->model->getJoins()
-                . $condition . $orderBy . ' ' . $limit;
+                . $condition.$orderBy.' '.$limit;
         } else {
             $query = 'SELECT count(*) FROM '
-                . $this->model->getQueryTableName() . ' a '
+                . $this->model->getQueryTableName().' a '
                 . $this->model->getJoins()
-                . $condition . $orderBy . ' ' . $limit;
+                . $condition.$orderBy.' '.$limit;
         }
         $result = $this->database->fetchOne($query);
 
@@ -337,7 +337,7 @@ class Dao
             $columnNames[] = $this->database->quoteIdentifier($c);
         }
 
-        return 'MATCH (' . implode(',', $columnNames) . ') AGAINST (' . $this->database->quote($searchString) . ' IN BOOLEAN MODE)';
+        return 'MATCH ('.implode(',', $columnNames).') AGAINST ('.$this->database->quote($searchString).' IN BOOLEAN MODE)';
     }
 
     /**

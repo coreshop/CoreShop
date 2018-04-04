@@ -71,7 +71,7 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
         $store = $this->storeContext->getStore();
 
         if ($store instanceof StoreInterface) {
-            $this->session->remove('coreshop.cart.' . $store->getId());
+            $this->session->remove('coreshop.cart.'.$store->getId());
         }
 
         return new RedirectResponse($this->router->generate($this->routeName, ['_locale' => $request->getLocale()]));

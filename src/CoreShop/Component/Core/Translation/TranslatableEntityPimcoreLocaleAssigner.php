@@ -58,7 +58,7 @@ final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntit
         }
 
         if (Tool::isValidLanguage($locale)) {
-            return (string)$locale;
+            return (string) $locale;
         }
 
         return Tool::getDefaultLanguage();

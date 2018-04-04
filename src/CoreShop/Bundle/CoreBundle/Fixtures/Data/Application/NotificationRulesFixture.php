@@ -70,7 +70,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         foreach ($rule['actions'] as &$action) {
                             foreach ($action['configuration']['mails'] as &$mail) {
-                                $document = Document::getByPath('/' . $mail);
+                                $document = Document::getByPath('/'.$mail);
 
                                 if ($document instanceof Document\Email) {
                                     $mail = $document->getId();

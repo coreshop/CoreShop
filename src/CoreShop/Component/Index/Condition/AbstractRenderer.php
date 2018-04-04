@@ -27,7 +27,7 @@ abstract class AbstractRenderer implements RendererInterface
     {
         $type = ucfirst($condition->getType());
 
-        $functionName = 'render' . $type;
+        $functionName = 'render'.$type;
 
         if (method_exists($this, $functionName)) {
             return $this->$functionName($condition);

@@ -71,7 +71,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         }
 
         if (!empty($values)) {
-            $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
+            $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
 
             if (!empty($values)) {
                 $list->addRelationCondition(Condition::in('dest', $values), $fieldName);

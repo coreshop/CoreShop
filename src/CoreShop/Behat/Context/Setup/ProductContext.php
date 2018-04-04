@@ -19,12 +19,10 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 use Pimcore\Tool;
-use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {

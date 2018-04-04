@@ -95,7 +95,7 @@ final class CoreShopSetupContext implements Context
     {
         $this->notificationRuleListener->clear();
 
-        $function = function (GenericEvent $event) {
+        $function = function(GenericEvent $event) {
             $this->notificationRuleListener->applyNewFired($event->getSubject());
         };
 

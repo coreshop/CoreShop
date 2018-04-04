@@ -32,7 +32,7 @@ final class RegisterInstallersPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('coreshop.resource.installer') as $id => $attributes) {
             if (!isset($attributes[0]['type'], $attributes[0]['priority'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` and `priority` attributes.');
+                throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `type` and `priority` attributes.');
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];

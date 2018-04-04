@@ -81,7 +81,7 @@ class ArrayHelper
         $collection = [];
         foreach ($fieldDefintions as $fd) {
             $fieldName = $fd->getName();
-            $getter = 'get' . ucfirst($fieldName);
+            $getter = 'get'.ucfirst($fieldName);
             $value = $object->$getter();
 
             switch ($fd->getFieldtype()) {
