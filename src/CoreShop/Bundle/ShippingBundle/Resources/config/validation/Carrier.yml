@@ -6,5 +6,3 @@ CoreShop\Component\Shipping\Model\Carrier:
           - NotBlank: { groups: [coreshop] }
       isFree:
           - Type: { type: boolean }
-      rangeBehaviour:
-          - Type: { type: string }

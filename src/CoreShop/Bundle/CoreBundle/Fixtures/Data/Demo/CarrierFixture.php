@@ -73,7 +73,6 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
             $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
             $carrier->setName('Standard');
             $carrier->setLabel('Standard');
-            $carrier->setRangeBehaviour(\CoreShop\Component\Shipping\Model\CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
             $carrier->setTrackingUrl('https://coreshop.at/track/%s');
             $carrier->setIsFree(false);
             $carrier->setTaxRule($this->getReference('taxRule'));
