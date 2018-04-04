@@ -39,7 +39,7 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
     )
     {
         $this->carriersResolver = $carriersResolver;
-        $this->carrierPriceCalculator = $carriersResolver;
+        $this->carrierPriceCalculator = $carrierPriceCalculator;
     }
 
     /**
