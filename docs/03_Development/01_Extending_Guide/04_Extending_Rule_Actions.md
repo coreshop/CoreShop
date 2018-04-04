@@ -63,7 +63,7 @@ final class CustomActionType extends AbstractType
 With configuration, comes a Javascript file as well:
 
 ```javascript
-//web/bundles/app/pimcore/js/custom_action.js
+//AppBundle/Resources/public/pimcore/js/custom_action.js
 
 pimcore.registerNS('coreshop.product.pricerule.actions.custom');
 coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.abstract, {
@@ -96,6 +96,7 @@ coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.
 });
 
 ```
+Don't forget to run bin/console assets:install afterwards to deploy it.
 
 ## Registering the Custom Action to the Container and load the Javascript File
 We now need to create our Service Definition for our Custom Action:
