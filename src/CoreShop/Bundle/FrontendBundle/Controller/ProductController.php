@@ -47,6 +47,10 @@ class ProductController extends FrontendController
         if (!$product->isPublished() || $product->getActive() !== true) {
             throw new NotFoundHttpException('product not found');
         }
+        
+        if (!in_array($this->get('coreshop.context.store')->getStore()->getId(), $product->getStores())) {
+            throw new NotFoundHttpException('product not found');
+        }
 
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
 
