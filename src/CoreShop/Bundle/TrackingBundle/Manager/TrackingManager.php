@@ -40,7 +40,7 @@ class TrackingManager implements TrackingManagerInterface
      */
     public function trackPurchasableView(PurchasableInterface $product)
     {
-        $this->callMethod("trackPurchasableView", [$product]);
+        $this->callMethod('trackPurchasableView', [$product]);
     }
 
     /**
@@ -48,45 +48,37 @@ class TrackingManager implements TrackingManagerInterface
      */
     public function trackPurchasableImpression(PurchasableInterface $product)
     {
-        $this->callMethod("trackPurchasableImpression", [$product]);
-    }
-
-    /**
-     * @param PurchasableInterface $product
-     * @param int $quantity
-     */
-    public function trackPurchasableActionAdd(PurchasableInterface $product, $quantity = 1)
-    {
-        $this->callMethod("trackPurchasableActionAdd", [$product, $quantity]);
-    }
-
-    /**
-     * @param PurchasableInterface $product
-     * @param int $quantity
-     */
-    public function trackPurchasableActionRemove(PurchasableInterface $product, $quantity = 1)
-    {
-        $this->callMethod("trackPurchasableActionRemove", [$product, $quantity]);
+        $this->callMethod('trackPurchasableImpression', [$product]);
     }
 
     /**
      * @param CartInterface $cart
-     * @param null $stepNumber
-     * @param null $checkoutOption
+     * @param PurchasableInterface $product
+     * @param int $quantity
      */
-    public function trackCheckout(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
+    public function trackCartPurchasableActionAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        $this->callMethod("trackCheckout", [$cart, $stepNumber, $checkoutOption]);
+        $this->callMethod('trackCartPurchasableActionAdd', [$cart, $product, $quantity]);
     }
 
     /**
      * @param CartInterface $cart
-     * @param null $stepNumber
+     * @param PurchasableInterface $product
+     * @param int $quantity
+     */
+    public function trackCartPurchasableActionRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    {
+        $this->callMethod('trackCartPurchasableActionRemove', [$cart, $product, $quantity]);
+    }
+
+    /**
+     * @param CartInterface $cart
+     * @param null $stepIdentifier
      * @param null $checkoutOption
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
+    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $checkoutOption = null)
     {
-        $this->callMethod("trackCheckoutStep", [$cart, $stepNumber, $checkoutOption]);
+        $this->callMethod('trackCheckoutStep', [$cart, $stepIdentifier, $checkoutOption]);
     }
 
     /**
@@ -96,7 +88,7 @@ class TrackingManager implements TrackingManagerInterface
      */
     public function trackCheckoutAction(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
     {
-        $this->callMethod("trackCheckoutAction", [$cart, $stepNumber, $checkoutOption]);
+        $this->callMethod('trackCheckoutAction', [$cart, $stepNumber, $checkoutOption]);
     }
 
     /**
@@ -104,6 +96,6 @@ class TrackingManager implements TrackingManagerInterface
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
-        $this->callMethod("trackCheckoutComplete", [$order]);
+        $this->callMethod('trackCheckoutComplete', [$order]);
     }
 }

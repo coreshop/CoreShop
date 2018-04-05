@@ -2,7 +2,7 @@ services:
     coreshop.registry.tracking.tracker:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Bundle\TrackingBundle\Tracker\TrackerInterface
+            - CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface
             - 'tracker'
 
     coreshop.tracking.item_builder:
@@ -10,20 +10,34 @@ services:
         arguments:
             - '@coreshop.order.purchasable.price_calculator'
 
-    coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
-        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
+    coreshop.tracking.tracker.ecommerce_tracker:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker
+        abstract: true
         arguments:
             - '@templating.engine.delegating'
             - '@coreshop.tracking.item_builder'
+
+    coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
+        parent: coreshop.tracking.tracker.ecommerce_tracker
+        calls:
+            - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-enhanced-ecommerce }
 
+    coreshop.tracking.tracker.google.analytics.universal_ecommerce:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce
+        parent: coreshop.tracking.tracker.ecommerce_tracker
+        calls:
+            - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+        tags:
+            - { name: coreshop.tracking.tracker, type: google-analytics-universal-ecommerce }
+
     coreshop.tracking.tracker.piwik:
-        class: CoreShop\Bundle\TrackingBundle\Tracker\Piwik
-        arguments:
-            - '@templating.engine.delegating'
-            - '@Pimcore\Analytics\Piwik\Tracker'
-            - '@coreshop.tracking.item_builder'
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Piwik\Piwik
+        parent: coreshop.tracking.tracker.ecommerce_tracker
+        calls:
+            - [setTracker, ['@Pimcore\Analytics\Piwik\Tracker']]
         tags:
             - { name: coreshop.tracking.tracker, type: piwik }
 
