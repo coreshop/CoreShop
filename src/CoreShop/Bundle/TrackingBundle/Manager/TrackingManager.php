@@ -1,4 +1,14 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
 
 namespace CoreShop\Bundle\TrackingBundle\Manager;
 
@@ -40,7 +50,7 @@ class TrackingManager implements TrackingManagerInterface
      */
     public function trackPurchasableView(PurchasableInterface $product)
     {
-        $this->callMethod("trackPurchasableView", [$product]);
+        $this->callMethod('trackPurchasableView', [$product]);
     }
 
     /**
@@ -48,55 +58,38 @@ class TrackingManager implements TrackingManagerInterface
      */
     public function trackPurchasableImpression(PurchasableInterface $product)
     {
-        $this->callMethod("trackPurchasableImpression", [$product]);
+        $this->callMethod('trackPurchasableImpression', [$product]);
     }
 
     /**
+     * @param CartInterface $cart
      * @param PurchasableInterface $product
      * @param int $quantity
      */
-    public function trackPurchasableActionAdd(PurchasableInterface $product, $quantity = 1)
+    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        $this->callMethod("trackPurchasableActionAdd", [$product, $quantity]);
+        $this->callMethod('trackCartPurchasableAdd', [$cart, $product, $quantity]);
     }
 
     /**
+     * @param CartInterface $cart
      * @param PurchasableInterface $product
      * @param int $quantity
      */
-    public function trackPurchasableActionRemove(PurchasableInterface $product, $quantity = 1)
+    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        $this->callMethod("trackPurchasableActionRemove", [$product, $quantity]);
+        $this->callMethod('trackCartPurchasableRemove', [$cart, $product, $quantity]);
     }
 
     /**
      * @param CartInterface $cart
-     * @param null $stepNumber
+     * @param null $stepIdentifier
+     * @param boolean $isFirstStep
      * @param null $checkoutOption
      */
-    public function trackCheckout(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
+    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
-        $this->callMethod("trackCheckout", [$cart, $stepNumber, $checkoutOption]);
-    }
-
-    /**
-     * @param CartInterface $cart
-     * @param null $stepNumber
-     * @param null $checkoutOption
-     */
-    public function trackCheckoutStep(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
-    {
-        $this->callMethod("trackCheckoutStep", [$cart, $stepNumber, $checkoutOption]);
-    }
-
-    /**
-     * @param CartInterface $cart
-     * @param null $stepNumber
-     * @param null $checkoutOption
-     */
-    public function trackCheckoutAction(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
-    {
-        $this->callMethod("trackCheckoutAction", [$cart, $stepNumber, $checkoutOption]);
+        $this->callMethod('trackCheckoutStep', [$cart, $stepIdentifier, $isFirstStep, $checkoutOption]);
     }
 
     /**
@@ -104,6 +97,6 @@ class TrackingManager implements TrackingManagerInterface
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
-        $this->callMethod("trackCheckoutComplete", [$order]);
+        $this->callMethod('trackCheckoutComplete', [$order]);
     }
 }

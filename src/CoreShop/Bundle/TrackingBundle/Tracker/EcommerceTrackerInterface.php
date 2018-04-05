@@ -10,14 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\TrackingBundle\Manager;
+namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use Pimcore\Analytics\TrackerInterface;
 
-interface TrackingManagerInterface
+interface EcommerceTrackerInterface
 {
+    /**
+     * @param TrackerInterface $tracker
+     * @return mixed
+     */
+    public function setTracker(TrackerInterface $tracker);
 
     /**
      * @param PurchasableInterface $product
@@ -30,24 +36,24 @@ interface TrackingManagerInterface
     public function trackPurchasableImpression(PurchasableInterface $product);
 
     /**
-     * @param CartInterface        $cart
+     * @param CartInterface $cart
      * @param PurchasableInterface $product
-     * @param int                  $quantity
+     * @param int $quantity
      */
     public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1);
 
     /**
-     * @param CartInterface        $cart
+     * @param CartInterface $cart
      * @param PurchasableInterface $product
-     * @param int                  $quantity
+     * @param int $quantity
      */
     public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1);
 
     /**
      * @param CartInterface $cart
-     * @param null          $stepIdentifier
-     * @param boolean       $isFirstStep
-     * @param null          $checkoutOption
+     * @param null $stepIdentifier
+     * @param boolean $isFirstStep
+     * @param null $checkoutOption
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null);
 

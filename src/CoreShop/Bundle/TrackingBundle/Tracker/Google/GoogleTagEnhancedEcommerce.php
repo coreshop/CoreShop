@@ -15,7 +15,7 @@ use Pimcore\Analytics\Google\Tracker as GoogleTracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTrackerInterface
+class GoogleTagEnhancedEcommerce extends EcommerceTracker implements EcommerceTrackerInterface
 {
     /**
      * @var TrackerInterface
@@ -26,18 +26,6 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      * @var ConfigResolver
      */
     public $config;
-
-    /**
-     * Dependencies to include before any tracking actions
-     *
-     * @var array
-     */
-    protected $dependencies = ['ec'];
-
-    /**
-     * @var bool
-     */
-    protected $dependenciesIncluded = false;
 
     /**
      * @param TrackerInterface $tracker
@@ -63,7 +51,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/enhanced'
+            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/gtag'
         ]);
     }
 
@@ -72,18 +60,20 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      */
     public function trackPurchasableView(PurchasableInterface $product)
     {
-        if ($this->isGoogleTagMode() === true) {
+        if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $this->ensureDependencies();
-
         $item = $this->itemBuilder->buildPurchasableViewItem($product);
 
-        $parameters['productData'] = $this->transformProductAction($item);
+        $parameters = [];
+        $actionData = [
+            'items' => [$this->transformProductAction($item)]
+        ];
 
-        unset($parameters['productData']['price']);
-        unset($parameters['productData']['quantity']);
+        $parameters['actionData'] = $actionData;
+
+        unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_view', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -94,17 +84,20 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      */
     public function trackPurchasableImpression(PurchasableInterface $product)
     {
-        if ($this->isGoogleTagMode() === true) {
+        if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $this->ensureDependencies();
-
         $item = $this->itemBuilder->buildPurchasableImpressionItem($product);
 
-        $parameters = [
-            'productData' => $this->transformProductImpression($item)
+        $parameters = [];
+        $actionData = [
+            'items' => [$this->transformProductImpression($item)]
         ];
+
+        $parameters['actionData'] = $actionData;
+
+        unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -115,11 +108,10 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      */
     public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        if ($this->isGoogleTagMode() === true) {
+        if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $this->ensureDependencies();
         $this->trackPurchasableAction($product, 'add', $quantity);
     }
 
@@ -128,11 +120,10 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      */
     public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        if ($this->isGoogleTagMode() === true) {
+        if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $this->ensureDependencies();
         $this->trackPurchasableAction($product, 'remove', $quantity);
     }
 
@@ -141,26 +132,29 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
-        if ($this->isGoogleTagMode() === true) {
+        if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $this->ensureDependencies();
-
         $items = $this->itemBuilder->buildCheckoutItemsByCart($cart);
+        $cartCoupon = $this->itemBuilder->buildCouponByCart($cart);
 
         $parameters = [];
-        $parameters['items'] = $items;
-        $parameters['calls'] = [];
+        $actionData['items'] = $items;
 
         if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
-            $actionData = ['step' => $stepIdentifier];
+            $actionData['checkout_step'] = $stepIdentifier + 1;
             if (!is_null($checkoutOption)) {
-                $actionData['option'] = $checkoutOption;
+                $actionData['checkout_option'] = $checkoutOption;
             }
 
-            $parameters['actionData'] = $actionData;
+            if (!empty($cartCoupon)) {
+                $actionData['coupon'] = $cartCoupon;
+            }
         }
+
+        $parameters['actionData'] = $actionData;
+        $parameters['event'] = $isFirstStep === true ? 'begin_checkout' : 'checkout_progress';
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -172,25 +166,20 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
-        if ($this->isGoogleTagMode() === true) {
+        if ($this->isGoogleTagMode() === false) {
             return;
         }
-
-        $this->ensureDependencies();
 
         $orderData = $this->itemBuilder->buildOrderAction($order);
         $items = $this->itemBuilder->buildCheckoutItems($order);
 
-        $parameters = [];
-        $parameters['order'] = $orderData;
-        $parameters['items'] = $items;
+        $actionData = array_merge($this->transformOrder($orderData), ['items' => []]);
 
-        $calls = [];
         foreach ($items as $item) {
-            $calls[] = $this->transformProductAction($item);
+            $actionData['items'][] = $this->transformProductAction($item);
         }
 
-        $parameters['calls'] = $calls;
+        $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -202,18 +191,15 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      */
     protected function trackPurchasableAction(PurchasableInterface $product, $action, $quantity = 1)
     {
-        if ($this->isGoogleTagMode() === true) {
-            return;
-        }
-
-        $this->ensureDependencies();
-
         $item = $this->itemBuilder->buildPurchasableActionItem($product);
         $item->setQuantity($quantity);
 
         $parameters = [];
-        $parameters['productData'] = $this->transformProductAction($item);
-        $parameters['action'] = $action;
+        $actionData = [];
+        $actionData['items'][] = $this->transformProductAction($item);
+
+        $parameters['actionData'] = $actionData;
+        $parameters['event'] = $action === 'remove' ? 'remove_from_cart' : 'add_to_cart';
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -221,7 +207,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
     }
 
     /**
-     * Transform ActionData into classic analytics data array
+     * Transform ActionData into gtag data array
      *
      * @param ActionData $actionData
      * @return array
@@ -229,16 +215,17 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
     protected function transformOrder(ActionData $actionData)
     {
         return [
-            'id'         => $actionData->getId(),
-            'affilation' => $actionData->getAffiliation() ?: '',
-            'revenue'    => $actionData->getRevenue(),
-            'tax'        => $actionData->getTax(),
-            'shipping'   => $actionData->getShipping()
+            'transaction_id' => $actionData->getId(),
+            'affiliation'    => $actionData->getAffiliation() ?: '',
+            'value'          => $actionData->getRevenue(),
+            'currency'       => $actionData->getCurrency(),
+            'tax'            => $actionData->getTax(),
+            'shipping'       => $actionData->getShipping()
         ];
     }
 
     /**
-     * Transform product action into enhanced data object
+     * Transform product action into gtag data object
      *
      * @param ProductData $item
      * @return array
@@ -246,15 +233,14 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
     protected function transformProductAction(ProductData $item)
     {
         return $this->filterNullValues([
-            'id'       => $item->getId(),
-            'name'     => $item->getName(),
-            'category' => $item->getCategory(),
-            'brand'    => $item->getBrand(),
-            'variant'  => $item->getVariant(),
-            'price'    => round($item->getPrice(), 2),
-            'quantity' => $item->getQuantity() ?: 1,
-            'position' => $item->getPosition(),
-            'coupon'   => $item->getCoupon()
+            'id'            => $item->getId(),
+            'name'          => $item->getName(),
+            'category'      => $item->getCategory(),
+            'brand'         => $item->getBrand(),
+            'variant'       => $item->getVariant(),
+            'price'         => round($item->getPrice(), 2),
+            'quantity'      => $item->getQuantity() ?: 1,
+            'list_position' => $item->getPosition()
         ]);
     }
 
@@ -290,25 +276,6 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
         }
 
         return $calls;
-    }
-
-    /**
-     * Makes sure dependencies are included once before any call
-     */
-    protected function ensureDependencies()
-    {
-        if ($this->dependenciesIncluded || empty($this->dependencies)) {
-            return;
-        }
-
-        $result = $this->renderTemplate('dependencies', [
-            'dependencies' => $this->dependencies,
-            'currency'     => $this->getCurrentCurrency()
-        ]);
-
-        $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
-        $this->dependenciesIncluded = true;
     }
 
     /**

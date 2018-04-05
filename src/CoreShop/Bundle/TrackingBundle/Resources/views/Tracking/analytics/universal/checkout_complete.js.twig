@@ -1,0 +1,9 @@
+ga('require', 'ecommerce', 'ecommerce.js');
+
+{% for key, call in calls %}
+    {% for c in call %}
+        ga('{{ key }}', {{ c|json_encode()|raw }});
+    {% endfor %}
+{% endfor %}
+
+ga('ecommerce:send');

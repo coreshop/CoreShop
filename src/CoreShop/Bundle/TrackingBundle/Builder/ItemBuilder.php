@@ -1,4 +1,14 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
 
 namespace CoreShop\Bundle\TrackingBundle\Builder;
 
@@ -88,17 +98,23 @@ class ItemBuilder implements ItemBuilderInterface
         $item->setRevenue($order->getTotal() / 100);
         $item->setShipping($order->getShipping() / 100);
         $item->setTax($order->getTotalTax() / 100);
+        $item->setCurrency($order->getCurrency()->getIsoCode());
 
+        $coupons = [];
         if ($order->getPriceRuleItems() instanceof Fieldcollection) {
             if ($order->getPriceRuleItems()->getCount() > 0) {
                 foreach ($order->getPriceRuleItems() as $priceRule) {
                     if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
                         if ($priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
-                            $item->setCoupon($priceRule->getCartPriceRule()->getName());
+                            $coupons[] = $priceRule->getCartPriceRule()->getName();
                         }
                     }
                 }
             }
+        }
+
+        if(count($coupons) > 0) {
+            $item->setCoupon(implode(', ', $coupons));
         }
 
         return $item;
@@ -138,6 +154,30 @@ class ItemBuilder implements ItemBuilderInterface
         }
 
         return $items;
+    }
+
+    /**
+     * Build coupon for cart
+     *
+     * @param CartInterface $cart
+     * @return mixed
+     */
+    public function buildCouponByCart(CartInterface $cart)
+    {
+        $coupons = [];
+        if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
+            if ($cart->getPriceRuleItems()->getCount() > 0) {
+                foreach ($cart->getPriceRuleItems() as $priceRule) {
+                    if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
+                        if ($priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                            $coupons[] = $priceRule->getCartPriceRule()->getName();
+                        }
+                    }
+                }
+            }
+        }
+
+        return implode(', ', $coupons);
     }
 
     /**
