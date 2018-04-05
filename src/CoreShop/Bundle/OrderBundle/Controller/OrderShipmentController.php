@@ -42,19 +42,13 @@ class OrderShipmentController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $itemsToReturn = [];
 
-        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
-
-        if (count($payments) === 0) {
-            return $this->viewHandler->handle([
-                'success' => false,
-                'message' => 'Can\'t create Shipment without valid order payment'
-            ]);
+        if (!$this->getProcessableHelper()->isProcessable($order)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'The current order state does not allow to create shipments']);
         }
 
         try {
