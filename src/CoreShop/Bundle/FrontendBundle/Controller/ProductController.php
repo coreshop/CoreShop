@@ -48,7 +48,7 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
         
-        if(!in_array($this->get('coreshop.context.store')->getStore()->getId(),$product->getStores())){
+        if(!in_array($this->get('coreshop.context.store')->getStore()->getId(), $product->getStores())){
             throw new NotFoundHttpException('product not found');
         }
 
