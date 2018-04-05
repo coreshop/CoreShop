@@ -45,10 +45,8 @@ class OrderInvoiceController extends PimcoreController
 
         $itemsToReturn = [];
 
-        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
-
-        if (count($payments) === 0) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Can\'t create Invoice without valid order payment']);
+        if (!$this->getProcessableHelper()->isProcessable($order)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'The current order state does not allow to create invoices']);
         }
 
         try {
