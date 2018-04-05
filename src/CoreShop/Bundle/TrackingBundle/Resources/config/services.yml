@@ -10,6 +10,12 @@ services:
         arguments:
             - '@coreshop.order.purchasable.price_calculator'
 
+    coreshop.tracking.resolver.tracking_config:
+        class: CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver
+        arguments:
+            - '@Pimcore\Analytics\SiteId\SiteIdProvider'
+            - '@Pimcore\Analytics\Google\Config\ConfigProvider'
+
     coreshop.tracking.tracker.ecommerce_tracker:
         class: CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker
         abstract: true
@@ -22,6 +28,7 @@ services:
         parent: coreshop.tracking.tracker.ecommerce_tracker
         calls:
             - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+            - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-enhanced-ecommerce }
 
@@ -30,6 +37,7 @@ services:
         parent: coreshop.tracking.tracker.ecommerce_tracker
         calls:
             - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+            - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-universal-ecommerce }
 

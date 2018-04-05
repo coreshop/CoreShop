@@ -3,6 +3,7 @@
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker;
@@ -20,11 +21,24 @@ class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInt
     public $tracker;
 
     /**
+     * @var ConfigResolver
+     */
+    public $config;
+
+    /**
      * @param TrackerInterface $tracker
      */
     public function setTracker(TrackerInterface $tracker)
     {
         $this->tracker = $tracker;
+    }
+
+    /**
+     * @param ConfigResolver $config
+     */
+    public function setConfigResolver(ConfigResolver $config)
+    {
+        $this->config = $config;
     }
 
     /**
@@ -113,8 +127,32 @@ class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInt
 
         $parameters['calls'] = $calls;
 
-        $result = $this->renderTemplate('checkout_complete', $parameters);
+        $result = $this->renderGoogleTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, Tracker::BLOCK_AFTER_TRACK);
+    }
+
+    /**
+     * @param $view
+     * @param $parameters
+     * @return string
+     */
+    protected function renderGoogleTemplate($view, $parameters)
+    {
+        $parameters['isGoogleTagMode'] = $this->isGoogleTagMode();
+        return $this->renderTemplate($view, $parameters);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isGoogleTagMode()
+    {
+        $config = $this->config->getGoogleConfig();
+        if ($config === false) {
+            return false;
+        }
+
+        return $config->gtagcode;
     }
 
     /**

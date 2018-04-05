@@ -1,2 +1,3 @@
-ga('ec:addProduct', {{ productData|json_encode()|raw }});
-ga('ec:setAction', '{{ action }}');
+{% set method = isGoogleTagMode == true ? 'gtag' : 'ga' %}
+{{ method }}('ec:addProduct', {{ productData|json_encode()|raw }});
+{{ method }}('ec:setAction', '{{ action }}');

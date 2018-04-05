@@ -1,9 +1,12 @@
-ga('require', 'ecommerce', 'ecommerce.js');
+{% set method = isGoogleTagMode == true ? 'gtag' : 'ga' %}
+{% if isGoogleTagMode == false %}
+    {{ method }}('require', 'ecommerce', 'ecommerce.js');
+{% endif %}
 
 {% for key, call in calls %}
     {% for c in call %}
-     ga('{{ key }}', {{ c|json_encode()|raw }});
+        {{ method }}('{{ key }}', {{ c|json_encode()|raw }});
     {% endfor %}
 {% endfor %}
 
-ga('ecommerce:send');
+{{ method }}('ecommerce:send');

@@ -1,1 +1,2 @@
-ga('ec:addImpression', {{ productData|json_encode()|raw }});
+{% set method = isGoogleTagMode == true ? 'gtag' : 'ga' %}
+{{ method }}('ec:addImpression', {{ productData|json_encode()|raw }});

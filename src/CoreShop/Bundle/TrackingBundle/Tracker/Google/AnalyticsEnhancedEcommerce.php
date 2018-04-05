@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker;
 use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -20,6 +21,11 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
      * @var TrackerInterface
      */
     public $tracker;
+
+    /**
+     * @var ConfigResolver
+     */
+    public $config;
 
     /**
      * Dependencies to include before any tracking actions
@@ -39,6 +45,14 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
     public function setTracker(TrackerInterface $tracker)
     {
         $this->tracker = $tracker;
+    }
+
+    /**
+     * @param ConfigResolver $config
+     */
+    public function setConfigResolver(ConfigResolver $config)
+    {
+        $this->config = $config;
     }
 
     /**
@@ -67,7 +81,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
         unset($parameters['productData']['price']);
         unset($parameters['productData']['quantity']);
 
-        $result = $this->renderTemplate('product_view', $parameters);
+        $result = $this->renderGoogleTemplate('product_view', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
@@ -84,7 +98,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
             'productData' => $this->transformProductImpression($item)
         ];
 
-        $result = $this->renderTemplate('product_impression', $parameters);
+        $result = $this->renderGoogleTemplate('product_impression', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
@@ -120,7 +134,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
         $parameters['productData'] = $this->transformProductAction($item);
         $parameters['action'] = $action;
 
-        $result = $this->renderTemplate('product_action', $parameters);
+        $result = $this->renderGoogleTemplate('product_action', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
 
     }
@@ -147,7 +161,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
             $parameters['actionData'] = $actionData;
         }
 
-        $result = $this->renderTemplate('checkout', $parameters);
+        $result = $this->renderGoogleTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
 
     }
@@ -174,7 +188,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
             $parameters['actionData'] = $actionData;
         }
 
-        $result = $this->renderTemplate('checkout', $parameters);
+        $result = $this->renderGoogleTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
 
     }
@@ -200,7 +214,7 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
 
         $parameters['calls'] = $calls;
 
-        $result = $this->renderTemplate('checkout_complete', $parameters);
+        $result = $this->renderGoogleTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
 
     }
@@ -277,22 +291,49 @@ class AnalyticsEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
         return $calls;
     }
 
-
     /**
      * Makes sure dependencies are included once before any call
      */
     protected function ensureDependencies()
     {
+        if ($this->isGoogleTagMode()) {
+            return;
+        }
+
         if ($this->dependenciesIncluded || empty($this->dependencies)) {
             return;
         }
 
-        $result = $this->renderTemplate('dependencies', [
+        $result = $this->renderGoogleTemplate('dependencies', [
             'dependencies' => $this->dependencies
         ]);
 
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
 
         $this->dependenciesIncluded = true;
+    }
+
+    /**
+     * @param $view
+     * @param $parameters
+     * @return string
+     */
+    protected function renderGoogleTemplate($view, $parameters)
+    {
+        $parameters['isGoogleTagMode'] = $this->isGoogleTagMode();
+        return $this->renderTemplate($view, $parameters);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isGoogleTagMode()
+    {
+        $config = $this->config->getGoogleConfig();
+        if ($config === false) {
+            return false;
+        }
+
+        return $config->gtagcode;
     }
 }
