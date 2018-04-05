@@ -1,2 +1,1 @@
-ga('ec:addProduct', {{ productData|json_encode()|raw }});
-ga('ec:setAction', 'detail');
+gtag('event', 'view_item', {{ actionData|json_encode()|raw }});

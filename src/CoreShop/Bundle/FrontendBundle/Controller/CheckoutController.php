@@ -109,7 +109,8 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $stepIdentifier);
+        $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
+        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 

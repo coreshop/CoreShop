@@ -191,7 +191,7 @@ class CartController extends FrontendController
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('coreshop.tracking.manager')->trackCartPurchasableActionAdd($this->getCart(), $product, $quantity);
+        $this->get('coreshop.tracking.manager')->trackCartPurchasableAdd($this->getCart(), $product, $quantity);
 
         $this->addFlash('success', 'coreshop.ui.item_added');
 
@@ -220,7 +220,7 @@ class CartController extends FrontendController
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('coreshop.tracking.manager')->trackCartPurchasableActionRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
+        $this->get('coreshop.tracking.manager')->trackCartPurchasableRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }

@@ -98,17 +98,23 @@ class ItemBuilder implements ItemBuilderInterface
         $item->setRevenue($order->getTotal() / 100);
         $item->setShipping($order->getShipping() / 100);
         $item->setTax($order->getTotalTax() / 100);
+        $item->setCurrency($order->getCurrency()->getIsoCode());
 
+        $coupons = [];
         if ($order->getPriceRuleItems() instanceof Fieldcollection) {
             if ($order->getPriceRuleItems()->getCount() > 0) {
                 foreach ($order->getPriceRuleItems() as $priceRule) {
                     if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
                         if ($priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
-                            $item->setCoupon($priceRule->getCartPriceRule()->getName());
+                            $coupons[] = $priceRule->getCartPriceRule()->getName();
                         }
                     }
                 }
             }
+        }
+
+        if(count($coupons) > 0) {
+            $item->setCoupon(implode(', ', $coupons));
         }
 
         return $item;
@@ -148,6 +154,30 @@ class ItemBuilder implements ItemBuilderInterface
         }
 
         return $items;
+    }
+
+    /**
+     * Build coupon for cart
+     *
+     * @param CartInterface $cart
+     * @return mixed
+     */
+    public function buildCouponByCart(CartInterface $cart)
+    {
+        $coupons = [];
+        if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
+            if ($cart->getPriceRuleItems()->getCount() > 0) {
+                foreach ($cart->getPriceRuleItems() as $priceRule) {
+                    if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
+                        if ($priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                            $coupons[] = $priceRule->getCartPriceRule()->getName();
+                        }
+                    }
+                }
+            }
+        }
+
+        return implode(', ', $coupons);
     }
 
     /**

@@ -1,3 +1,2 @@
-{% set method = isGoogleTagMode == true ? 'gtag' : 'ga' %}
-{{ method }}('ec:setAction', 'checkout_option', {{ actionData|json_encode()|raw }});
-{{ method }}('send', 'event', 'Checkout', 'Option');
+ga('ec:setAction', 'checkout_option', {{ actionData|json_encode()|raw }});
+ga('send', 'event', 'Checkout', 'Option');

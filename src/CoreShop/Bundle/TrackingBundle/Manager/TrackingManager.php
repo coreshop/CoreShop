@@ -66,9 +66,9 @@ class TrackingManager implements TrackingManagerInterface
      * @param PurchasableInterface $product
      * @param int $quantity
      */
-    public function trackCartPurchasableActionAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        $this->callMethod('trackCartPurchasableActionAdd', [$cart, $product, $quantity]);
+        $this->callMethod('trackCartPurchasableAdd', [$cart, $product, $quantity]);
     }
 
     /**
@@ -76,29 +76,20 @@ class TrackingManager implements TrackingManagerInterface
      * @param PurchasableInterface $product
      * @param int $quantity
      */
-    public function trackCartPurchasableActionRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        $this->callMethod('trackCartPurchasableActionRemove', [$cart, $product, $quantity]);
+        $this->callMethod('trackCartPurchasableRemove', [$cart, $product, $quantity]);
     }
 
     /**
      * @param CartInterface $cart
      * @param null $stepIdentifier
+     * @param boolean $isFirstStep
      * @param null $checkoutOption
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $checkoutOption = null)
+    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
-        $this->callMethod('trackCheckoutStep', [$cart, $stepIdentifier, $checkoutOption]);
-    }
-
-    /**
-     * @param CartInterface $cart
-     * @param null $stepNumber
-     * @param null $checkoutOption
-     */
-    public function trackCheckoutAction(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
-    {
-        $this->callMethod('trackCheckoutAction', [$cart, $stepNumber, $checkoutOption]);
+        $this->callMethod('trackCheckoutStep', [$cart, $stepIdentifier, $isFirstStep, $checkoutOption]);
     }
 
     /**

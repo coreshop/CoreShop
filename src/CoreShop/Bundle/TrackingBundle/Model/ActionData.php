@@ -25,6 +25,11 @@ class ActionData extends AbstractData
     public $revenue;
 
     /**
+     * @var string
+     */
+    public $currency;
+
+    /**
      * @var float
      */
     public $tax;
@@ -84,6 +89,22 @@ class ActionData extends AbstractData
     public function setRevenue($revenue)
     {
         $this->revenue = $revenue;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param float $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 
     /**

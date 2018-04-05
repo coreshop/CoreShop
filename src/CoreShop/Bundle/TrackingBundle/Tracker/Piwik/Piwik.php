@@ -119,7 +119,7 @@ final class Piwik extends EcommerceTracker implements EcommerceTrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableActionAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
         if ($this->handleCartAdd) {
             $this->trackPurchasableAction($cart, 'add', $quantity);
@@ -129,7 +129,7 @@ final class Piwik extends EcommerceTracker implements EcommerceTrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableActionRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
         if ($this->handleCartRemove) {
             $this->trackPurchasableAction($cart, 'remove', $quantity);
@@ -157,29 +157,9 @@ final class Piwik extends EcommerceTracker implements EcommerceTrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $checkoutOption = null)
+    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
-        $items = $this->itemBuilder->buildCheckoutItemsByCart($cart);
-        $calls = $this->buildItemCalls($items);
-
-        $calls[] = [
-            'trackEcommerceCheckout',
-            $cart->getId(),
-            $cart->getTotal() / 100,
-            $cart->getSubtotal() / 100,
-            $cart->getTotalTax() / 100
-        ];
-
-        $result = $this->renderCalls($calls);
-        $this->tracker->addCodePart($result, PiwikTracker::BLOCK_BEFORE_TRACK);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutAction(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
-    {
-        // not implemented
+        // not implemented (not supported by piwik)
     }
 
     /**

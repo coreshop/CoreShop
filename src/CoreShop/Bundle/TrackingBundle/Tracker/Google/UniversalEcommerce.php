@@ -72,7 +72,7 @@ class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInt
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableActionAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
         // not implemented
     }
@@ -80,16 +80,7 @@ class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInt
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableActionRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
-    {
-        // not implemented
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $checkoutOption = null)
+    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
         // not implemented
     }
@@ -97,7 +88,7 @@ class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInt
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutAction(CartInterface $cart, $stepNumber = null, $checkoutOption = null)
+    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
         // not implemented
     }
@@ -107,6 +98,10 @@ class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInt
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
+        if ($this->isGoogleTagMode() === true) {
+            return;
+        }
+
         $orderData = $this->itemBuilder->buildOrderAction($order);
         $items = $this->itemBuilder->buildCheckoutItems($order);
 
@@ -127,19 +122,8 @@ class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInt
 
         $parameters['calls'] = $calls;
 
-        $result = $this->renderGoogleTemplate('checkout_complete', $parameters);
+        $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, Tracker::BLOCK_AFTER_TRACK);
-    }
-
-    /**
-     * @param $view
-     * @param $parameters
-     * @return string
-     */
-    protected function renderGoogleTemplate($view, $parameters)
-    {
-        $parameters['isGoogleTagMode'] = $this->isGoogleTagMode();
-        return $this->renderTemplate($view, $parameters);
     }
 
     /**

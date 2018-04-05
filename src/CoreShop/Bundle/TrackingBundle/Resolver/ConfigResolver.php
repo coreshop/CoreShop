@@ -46,7 +46,7 @@ class ConfigResolver
     }
 
     /**
-     * @return false| ConfigObject
+     * @return bool|ConfigObject
      */
     public function getGoogleConfig()
     {

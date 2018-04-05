@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
 use CoreShop\Bundle\TrackingBundle\Builder\ItemBuilderInterface;
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,6 +30,11 @@ abstract class EcommerceTracker
     protected $templatingEngine;
 
     /**
+     * @var CurrencyContextInterface
+     */
+    protected $currencyContext;
+
+    /**
      * @var string
      */
     protected $templatePrefix;
@@ -41,17 +47,20 @@ abstract class EcommerceTracker
     /**
      * EcommerceTracker constructor.
      *
-     * @param EngineInterface      $templatingEngine
-     * @param ItemBuilderInterface $itemBuilder
-     * @param array                $options
+     * @param EngineInterface          $templatingEngine
+     * @param ItemBuilderInterface     $itemBuilder
+     * @param CurrencyContextInterface $currencyContext
+     * @param array                    $options
      */
     public function __construct(
         EngineInterface $templatingEngine,
         ItemBuilderInterface $itemBuilder,
+        CurrencyContextInterface $currencyContext,
         array $options = []
     ) {
         $this->itemBuilder = $itemBuilder;
         $this->templatingEngine = $templatingEngine;
+        $this->currencyContext = $currencyContext;
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -100,12 +109,20 @@ abstract class EcommerceTracker
      * @param array  $parameters
      * @return string
      */
-    protected function renderTemplate(string $name, array $parameters): string
+    protected function renderTemplate(string $name, array $parameters)
     {
         return $this->templatingEngine->render(
             $this->getTemplatePath($name),
             $parameters
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCurrentCurrency()
+    {
+        return $this->currencyContext->getCurrency()->getIsoCode();
     }
 
     /**

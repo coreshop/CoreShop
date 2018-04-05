@@ -20,17 +20,17 @@ $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
 
 ###### Product Action Add from Cart
 ```php
-$this->get('coreshop.tracking.manager')->trackCartPurchasableActionAdd($cart, $product);
+$this->get('coreshop.tracking.manager')->trackCartPurchasableAdd($cart, $product);
 ```
 
 ###### Product Action Remove from Cart
 ```php
-$this->get('coreshop.tracking.manager')->trackCartPurchasableActionRemove($cart, $product);
+$this->get('coreshop.tracking.manager')->trackCartPurchasableRemove($cart, $product);
 ```
 
 ###### Checkout Step
 ```php
-$this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $stepIdentifier, $checkoutOption)
+$this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $stepIdentifier, $isFirstStep, $checkoutOption)
 ```
 
 ###### Checkout Complete

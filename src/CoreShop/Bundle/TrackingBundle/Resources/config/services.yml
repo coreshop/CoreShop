@@ -22,6 +22,7 @@ services:
         arguments:
             - '@templating.engine.delegating'
             - '@coreshop.tracking.item_builder'
+            - '@coreshop.context.currency'
 
     coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
@@ -40,6 +41,15 @@ services:
             - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-universal-ecommerce }
+
+    coreshop.tracking.tracker.google.analytics.gtag_enhanced_ecommerce:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\GoogleTagEnhancedEcommerce
+        parent: coreshop.tracking.tracker.ecommerce_tracker
+        calls:
+            - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
+            - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
+        tags:
+            - { name: coreshop.tracking.tracker, type: google-tag-enhanced-ecommerce }
 
     coreshop.tracking.tracker.piwik:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Piwik\Piwik

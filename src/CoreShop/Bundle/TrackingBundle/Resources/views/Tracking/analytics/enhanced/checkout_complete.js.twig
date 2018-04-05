@@ -1,6 +1,5 @@
-{% set method = isGoogleTagMode == true ? 'gtag' : 'ga' %}
 {% for call in calls %}
-    {{ method }}('ec:addProduct', {{ call|json_encode()|raw }});
+    ga('ec:addProduct', {{ call|json_encode()|raw }});
 {% endfor %}
 
-{{ method }}('ec:setAction', 'purchase', {{ order|json_encode()|raw }});
+ga('ec:setAction', 'purchase', {{ order|json_encode()|raw }});

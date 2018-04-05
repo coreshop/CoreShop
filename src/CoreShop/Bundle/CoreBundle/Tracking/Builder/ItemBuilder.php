@@ -113,6 +113,14 @@ final class ItemBuilder implements ItemBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function buildCouponByCart(CartInterface $cart)
+    {
+        return $this->decoratedItemBuilder->buildCouponByCart($cart);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildCheckoutItem(OrderInterface $order, OrderItemInterface $orderItem)
     {
         $item = $this->decoratedItemBuilder->buildCheckoutItem($order, $orderItem);

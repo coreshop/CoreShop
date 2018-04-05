@@ -72,6 +72,12 @@ interface ItemBuilderInterface
     public function buildCheckoutItemsByCart(CartInterface $cart);
 
     /**
+     * @param CartInterface $cart
+     * @return string
+     */
+    public function buildCouponByCart(CartInterface $cart);
+
+    /**
      * Build a checkout item object
      *
      * @param OrderInterface $order

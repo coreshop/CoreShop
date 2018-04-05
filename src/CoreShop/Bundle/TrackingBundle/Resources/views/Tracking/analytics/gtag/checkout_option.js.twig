@@ -1,2 +1,1 @@
-ga('ec:setAction', 'checkout_option', {{ actionData|json_encode()|raw }});
-ga('send', 'event', 'Checkout', 'Option');
+gtag('event', 'set_checkout_option', {{ actionData|json_encode()|raw }});
