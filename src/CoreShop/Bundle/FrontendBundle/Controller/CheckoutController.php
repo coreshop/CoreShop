@@ -174,8 +174,6 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps()));
-
         /**
          * If everything is valid, we continue with Order-Creation.
          */
