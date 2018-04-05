@@ -181,6 +181,9 @@ coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.sale.d
             if (tool && Ext.isFunction(tool.hide)) {
                 tool.hide();
             }
+            else {
+                tool.hidden = true;
+            }
         }
     }
 });
