@@ -89,7 +89,7 @@ app.tracking.tracker.my_tracker:
 If you have enabled the gtm in backend, CoreShop sends some data to a `dataLayer` object which submits the object to gtm.
 
 ### GTM Classic eCommerce
-If enable the classic mode only the order gets submitted if user has successfully reached the "thank-you" page.
+If you enable the classic mode only the order gets submitted if user has successfully reached the "thank-you" page.
 
 ### GTM Enhanced eCommerce
 There are six Impressions/Events for Google Tag Manager Enhanced eCommerce:
