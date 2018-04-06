@@ -6,8 +6,7 @@ use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
-use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker;
-use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface;
+use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -15,7 +14,7 @@ use Pimcore\Analytics\Google\Tracker as GoogleTracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GoogleTagEnhancedEcommerce extends EcommerceTracker implements EcommerceTrackerInterface
+class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
 {
     /**
      * @var TrackerInterface
@@ -28,7 +27,7 @@ class GoogleTagEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
     public $config;
 
     /**
-     * @param TrackerInterface $tracker
+     * {@inheritdoc}
      */
     public function setTracker(TrackerInterface $tracker)
     {
@@ -36,7 +35,7 @@ class GoogleTagEnhancedEcommerce extends EcommerceTracker implements EcommerceTr
     }
 
     /**
-     * @param ConfigResolver $config
+     * {@inheritdoc}
      */
     public function setConfigResolver(ConfigResolver $config)
     {

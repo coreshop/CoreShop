@@ -13,8 +13,7 @@
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Piwik;
 
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
-use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker;
-use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface;
+use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -22,7 +21,7 @@ use Pimcore\Analytics\TrackerInterface;
 use Pimcore\Analytics\Piwik\Tracker as PiwikTracker;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class Piwik extends EcommerceTracker implements EcommerceTrackerInterface
+final class Piwik extends AbstractEcommerceTracker
 {
     /**
      * @var TrackerInterface

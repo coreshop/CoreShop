@@ -4,16 +4,15 @@ namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
-use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker;
+use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\Google\Tracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UniversalEcommerce extends EcommerceTracker implements EcommerceTrackerInterface
+class UniversalEcommerce extends AbstractEcommerceTracker
 {
     /**
      * @var TrackerInterface

@@ -17,7 +17,7 @@ use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class EcommerceTracker
+abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
 {
     /**
      * @var ItemBuilderInterface
@@ -65,6 +65,22 @@ abstract class EcommerceTracker
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
         $this->processOptions($resolver->resolve($options));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
     }
 
     /**

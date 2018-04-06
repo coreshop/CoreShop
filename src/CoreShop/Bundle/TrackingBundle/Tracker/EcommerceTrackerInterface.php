@@ -20,6 +20,16 @@ use Pimcore\Analytics\TrackerInterface;
 interface EcommerceTrackerInterface
 {
     /**
+     * @return boolean
+     */
+    public function isEnabled();
+
+    /**
+     * @param boolean $enabled
+     */
+    public function setEnabled($enabled);
+
+    /**
      * @param TrackerInterface $tracker
      * @return mixed
      */
