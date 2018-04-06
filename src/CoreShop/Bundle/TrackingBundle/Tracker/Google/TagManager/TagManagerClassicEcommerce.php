@@ -151,7 +151,8 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
             'transactionAffiliation' => $actionData->getAffiliation() ?: '',
             'transactionTotal'       => $actionData->getRevenue(),
             'transactionTax'         => $actionData->getTax(),
-            'transactionShipping'    => $actionData->getShipping()
+            'transactionShipping'    => $actionData->getShipping(),
+            'transactionCurrency'    => $actionData->getCurrency()
         ];
     }
 

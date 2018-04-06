@@ -92,13 +92,76 @@ If you have enabled the gtm in backend, CoreShop sends some data to a `dataLayer
 If enable the classic mode only the order gets submitted if user has successfully reached the "thank-you" page.
 
 ### GTM Enhanced eCommerce
-There are three Events you need to implement in your Google Tag Manager:
+There are six Impressions/Events for Google Tag Manager Enhanced eCommerce:
+
+#### Product Impression
+**Tag Config Example**:
+<pre>
+Tag type : Universal Analytics
+Track type : Pageview
+Enable Enhanced Ecommerce Features: <b>true</b>
+Use Data Layer: <b>true</b>
+Trigger: event equals <b>gtm.dom</b>
+</pre>
+
+#### Product Detail View
+**Tag Config Example**:
+<pre>
+Tag type : Universal Analytics
+Track type : Pageview
+Enable Enhanced Ecommerce Features: <b>true</b>
+Use Data Layer: <b>true</b>
+Trigger: event equals <b>gtm.dom</b>
+</pre>
 
 #### Checkout Step:
-Event-Name: `csCheckout`
+> **Event-Name**: `csCheckout`
+
+**Tag Config Example**:
+<pre>
+Tag type : Universal Analytics
+Track type : Event
+Event Category: <b>Ecommerce</b>
+Event Action: <b>Checkout</b>
+Enable Enhanced Ecommerce Features: <b>true</b>
+Use Data Layer: <b>true</b>
+Trigger: event equals <b>csCheckout</b>
+</pre>
+
+#### Checkout Complete (Purchase):
+**Tag Config Example**:
+<pre>
+Tag type : Universal Analytics
+Track type : Pageview
+Enable Enhanced Ecommerce Features: <b>true</b>
+Use Data Layer: <b>true</b>
+Trigger: event equals <b>gtm.dom</b>
+</pre>
 
 #### Remove Item from Cart
-Event-Name: `csRemoveFromCart`
+> **Event-Name**: `csRemoveFromCart`
 
-#### Add Item from Cart
-Event-Name: `csAddToCart`
+**Tag Config Example**:
+<pre>
+Tag type : Universal Analytics
+Track type : Event
+Event Category: <b>Ecommerce</b>
+Event Action: <b>Remove from Cart</b>
+Enable Enhanced <b>Ecommerce Features: true</b>
+Use Data Layer: <b>true</b>
+Trigger: event equals <b>csRemoveFromCart</b>
+</pre>
+
+#### Add Item to Cart
+> **Event-Name**: `csAddToCart`
+
+**Tag Config Example**:
+<pre>
+Tag type : Universal Analytics
+Track type : Event
+Event Category: <b>Ecommerce</b>
+Event Action: <b>Add to Cart</b>
+Enable Enhanced <b>Ecommerce Features: true</b>
+Use Data Layer: <b>true</b>
+Trigger: event equals <b>csAddToCart</b>
+</pre>
