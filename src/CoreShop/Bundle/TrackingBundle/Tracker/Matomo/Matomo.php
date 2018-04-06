@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\TrackingBundle\Tracker\Piwik;
+namespace CoreShop\Bundle\TrackingBundle\Tracker\Matomo;
 
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
@@ -21,7 +21,7 @@ use Pimcore\Analytics\TrackerInterface;
 use Pimcore\Analytics\Piwik\Tracker as PiwikTracker;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class Piwik extends AbstractEcommerceTracker
+final class Matomo extends AbstractEcommerceTracker
 {
     /**
      * @var TrackerInterface
@@ -54,7 +54,7 @@ final class Piwik extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix'    => 'CoreShopTrackingBundle:Tracking/piwik',
+            'template_prefix'    => 'CoreShopTrackingBundle:Tracking/matomo',
 
             // by default, a cart add/remove delegates to cart update
             // if you manually trigger cart update on every change you can
@@ -158,7 +158,7 @@ final class Piwik extends AbstractEcommerceTracker
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
-        // not implemented (not supported by piwik)
+        // not implemented (not supported by Matomo)
     }
 
     /**

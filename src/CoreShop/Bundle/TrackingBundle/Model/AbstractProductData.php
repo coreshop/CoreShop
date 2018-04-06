@@ -17,6 +17,11 @@ class AbstractProductData extends AbstractData
     /**
      * @var string
      */
+    public $sku;
+
+    /**
+     * @var string
+     */
     public $name;
 
     /**
@@ -48,6 +53,22 @@ class AbstractProductData extends AbstractData
      * @var float
      */
     public $price;
+
+    /**
+     * @return string
+     */
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    /**
+     * @param string $sku
+     */
+    public function setSku($sku)
+    {
+        $this->sku = $sku;
+    }
 
     /**
      * @return string

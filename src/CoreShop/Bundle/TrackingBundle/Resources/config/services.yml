@@ -17,12 +17,27 @@ services:
             - '@Pimcore\Analytics\Google\Config\ConfigProvider'
 
     coreshop.tracking.tracker.ecommerce_tracker:
-        class: CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker
+        class: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         abstract: true
         arguments:
             - '@templating.engine.delegating'
             - '@coreshop.tracking.item_builder'
             - '@coreshop.context.currency'
+
+    coreshop.tracking.event.gtm_code_tracker:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker
+
+    coreshop.tracking.event.gtm_code_event:
+        class: CoreShop\Bundle\TrackingBundle\EventListener\GtmDataLayerBlockListener
+        arguments:
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
+            - '@Pimcore\Http\ResponseHelper'
+            - '@Pimcore\Analytics\SiteId\SiteIdProvider'
+            - '@event_dispatcher'
+            - '@templating.engine.delegating'
+            - '@coreshop.tracking.event.gtm_code_tracker'
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -100 }
 
     coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
@@ -43,21 +58,39 @@ services:
             - { name: coreshop.tracking.tracker, type: google-analytics-universal-ecommerce }
 
     coreshop.tracking.tracker.google.analytics.gtag_enhanced_ecommerce:
-        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\GoogleTagEnhancedEcommerce
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce
         parent: coreshop.tracking.tracker.ecommerce_tracker
         calls:
             - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
             - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
         tags:
-            - { name: coreshop.tracking.tracker, type: google-tag-enhanced-ecommerce }
+            - { name: coreshop.tracking.tracker, type: google-gtag-enhanced-ecommerce }
 
-    coreshop.tracking.tracker.piwik:
-        class: CoreShop\Bundle\TrackingBundle\Tracker\Piwik\Piwik
+    coreshop.tracking.tracker.google.analytics.gtm_classic_ecommerce:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce
+        parent: coreshop.tracking.tracker.ecommerce_tracker
+        calls:
+            - [setCodeTracker, ['@coreshop.tracking.event.gtm_code_tracker']]
+            - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
+        tags:
+            - { name: coreshop.tracking.tracker, type: google-gtm-classic-ecommerce }
+
+    coreshop.tracking.tracker.google.analytics.gtm_enhanced_ecommerce:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce
+        parent: coreshop.tracking.tracker.ecommerce_tracker
+        calls:
+            - [setCodeTracker, ['@coreshop.tracking.event.gtm_code_tracker']]
+            - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
+        tags:
+            - { name: coreshop.tracking.tracker, type: google-gtm-enhanced-ecommerce }
+
+    coreshop.tracking.tracker.matomo:
+        class: CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo
         parent: coreshop.tracking.tracker.ecommerce_tracker
         calls:
             - [setTracker, ['@Pimcore\Analytics\Piwik\Tracker']]
         tags:
-            - { name: coreshop.tracking.tracker, type: piwik }
+            - { name: coreshop.tracking.tracker, type: matomo }
 
     coreshop.tracking.manager:
         class: CoreShop\Bundle\TrackingBundle\Manager\TrackingManager

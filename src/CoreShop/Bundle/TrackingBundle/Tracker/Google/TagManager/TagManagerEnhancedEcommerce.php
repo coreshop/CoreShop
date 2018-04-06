@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
+namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
 use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
@@ -10,16 +10,15 @@ use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use Pimcore\Analytics\Google\Tracker as GoogleTracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
+class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 {
     /**
-     * @var TrackerInterface
+     * @var CodeTracker
      */
-    public $tracker;
+    public $codeTracker;
 
     /**
      * @var ConfigResolver
@@ -27,15 +26,28 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
     public $config;
 
     /**
-     * {@inheritdoc}
+     * @var bool
+     */
+    protected $dataLayerIncluded = false;
+
+    /**
+     * @param TrackerInterface $tracker
      */
     public function setTracker(TrackerInterface $tracker)
     {
-        $this->tracker = $tracker;
+        // not implemented in GTM. Use CodeTracker instead.
     }
 
     /**
-     * {@inheritdoc}
+     * @param CodeTracker $tracker
+     */
+    public function setCodeTracker(CodeTracker $tracker)
+    {
+        $this->codeTracker = $tracker;
+    }
+
+    /**
+     * @param ConfigResolver $config
      */
     public function setConfigResolver(ConfigResolver $config)
     {
@@ -50,7 +62,7 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/gtag'
+            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtm/enhanced'
         ]);
     }
 
@@ -59,23 +71,21 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackPurchasableView(PurchasableInterface $product)
     {
-        if ($this->isGoogleTagMode() === false) {
-            return;
-        }
+        $this->ensureDataLayer();
 
         $item = $this->itemBuilder->buildPurchasableViewItem($product);
 
         $parameters = [];
+        $actionField = [];
         $actionData = [
-            'items' => [$this->transformProductAction($item)]
+            'actionField' => $actionField,
+            'products'    => [$this->transformProductAction($item)]
         ];
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
-
         $result = $this->renderTemplate('product_view', $parameters);
-        $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
+        $this->codeTracker->addCodePart($result);
     }
 
     /**
@@ -83,15 +93,14 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackPurchasableImpression(PurchasableInterface $product)
     {
-        if ($this->isGoogleTagMode() === false) {
-            return;
-        }
+        $this->ensureDataLayer();
 
         $item = $this->itemBuilder->buildPurchasableImpressionItem($product);
 
         $parameters = [];
         $actionData = [
-            'items' => [$this->transformProductImpression($item)]
+            'impressions'  => [$this->transformProductImpression($item)],
+            'currencyCode' => $this->getCurrentCurrency()
         ];
 
         $parameters['actionData'] = $actionData;
@@ -99,7 +108,7 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
         unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
-        $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
+        $this->codeTracker->addCodePart($result);
     }
 
     /**
@@ -107,10 +116,7 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        if ($this->isGoogleTagMode() === false) {
-            return;
-        }
-
+        $this->ensureDataLayer();
         $this->trackPurchasableAction($product, 'add', $quantity);
     }
 
@@ -119,10 +125,7 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        if ($this->isGoogleTagMode() === false) {
-            return;
-        }
-
+        $this->ensureDataLayer();
         $this->trackPurchasableAction($product, 'remove', $quantity);
     }
 
@@ -131,32 +134,35 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
-        if ($this->isGoogleTagMode() === false) {
-            return;
-        }
+        $this->ensureDataLayer();
 
         $items = $this->itemBuilder->buildCheckoutItemsByCart($cart);
         $cartCoupon = $this->itemBuilder->buildCouponByCart($cart);
 
         $parameters = [];
-        $actionData['items'] = $items;
+        $actionData['products'] = $items;
+        $actionField = [];
 
         if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
-            $actionData['checkout_step'] = $stepIdentifier + 1;
+            $actionField['step'] = $stepIdentifier + 1;
             if (!is_null($checkoutOption)) {
-                $actionData['checkout_option'] = $checkoutOption;
+                $actionField['option'] = $checkoutOption;
             }
 
-            if (!empty($cartCoupon)) {
-                $actionData['coupon'] = $cartCoupon;
-            }
+        }
+
+        if (!empty($cartCoupon)) {
+            $actionData['coupon'] = $cartCoupon;
+        }
+
+        if (!empty($actionField)) {
+            $actionData['actionField'] = $actionField;
         }
 
         $parameters['actionData'] = $actionData;
-        $parameters['event'] = $isFirstStep === true ? 'begin_checkout' : 'checkout_progress';
 
         $result = $this->renderTemplate('checkout', $parameters);
-        $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
+        $this->codeTracker->addCodePart($result);
 
     }
 
@@ -165,23 +171,21 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
-        if ($this->isGoogleTagMode() === false) {
-            return;
-        }
+        $this->ensureDataLayer();
 
         $orderData = $this->itemBuilder->buildOrderAction($order);
         $items = $this->itemBuilder->buildCheckoutItems($order);
 
-        $actionData = array_merge($this->transformOrder($orderData), ['items' => []]);
+        $actionData = array_merge(['actionField' => $this->transformOrder($orderData)], ['products' => []]);
 
         foreach ($items as $item) {
-            $actionData['items'][] = $this->transformProductAction($item);
+            $actionData['products'][] = $this->transformProductAction($item);
         }
 
         $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
-        $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
+        $this->codeTracker->addCodePart($result);
 
     }
 
@@ -190,18 +194,25 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
      */
     protected function trackPurchasableAction(PurchasableInterface $product, $action, $quantity = 1)
     {
+        $this->ensureDataLayer();
+
         $item = $this->itemBuilder->buildPurchasableActionItem($product);
         $item->setQuantity($quantity);
 
         $parameters = [];
-        $actionData = [];
-        $actionData['items'][] = $this->transformProductAction($item);
+        $actionData = [$action => []];
+
+        if ($action === 'add') {
+            $actionData['currencyCode'] = $this->getCurrentCurrency();
+        }
+
+        $actionData[$action]['products'][] = $this->transformProductAction($item);
 
         $parameters['actionData'] = $actionData;
-        $parameters['event'] = $action === 'remove' ? 'remove_from_cart' : 'add_to_cart';
+        $parameters['event'] = $action === 'remove' ? 'csRemoveFromCart' : 'csAddToCart';
 
         $result = $this->renderTemplate('product_action', $parameters);
-        $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
+        $this->codeTracker->addCodePart($result);
 
     }
 
@@ -214,12 +225,12 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
     protected function transformOrder(ActionData $actionData)
     {
         return [
-            'transaction_id' => $actionData->getId(),
-            'affiliation'    => $actionData->getAffiliation() ?: '',
-            'value'          => $actionData->getRevenue(),
-            'currency'       => $actionData->getCurrency(),
-            'tax'            => $actionData->getTax(),
-            'shipping'       => $actionData->getShipping()
+            'id'           => $actionData->getId(),
+            'affiliation'  => $actionData->getAffiliation() ?: '',
+            'revenue'      => $actionData->getRevenue(),
+            'currencyCode' => $actionData->getCurrency(),
+            'tax'          => $actionData->getTax(),
+            'shipping'     => $actionData->getShipping()
         ];
     }
 
@@ -278,15 +289,16 @@ class GoogleTagEnhancedEcommerce extends AbstractEcommerceTracker
     }
 
     /**
-     * @return bool
+     * Makes sure data layer is included once before any call
      */
-    protected function isGoogleTagMode()
+    protected function ensureDataLayer()
     {
-        $config = $this->config->getGoogleConfig();
-        if ($config === false) {
-            return false;
+        if ($this->dataLayerIncluded) {
+            return;
         }
 
-        return $config->gtagcode;
+        $result = $this->renderTemplate('data_layer', []);
+        $this->codeTracker->addCodePart($result);
+        $this->dataLayerIncluded = true;
     }
 }

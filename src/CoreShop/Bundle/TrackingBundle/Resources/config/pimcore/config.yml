@@ -4,7 +4,11 @@ core_shop_tracking:
             enabled: false
         google-analytics-universal-ecommerce:
             enabled: false
-        google-tag-enhanced-ecommerce:
+        google-gtag-enhanced-ecommerce:
             enabled: false
-        piwik:
+        google-gtm-classic-ecommerce:
+            enabled: false
+        google-gtm-enhanced-ecommerce:
+            enabled: false
+        matomo:
             enabled: false

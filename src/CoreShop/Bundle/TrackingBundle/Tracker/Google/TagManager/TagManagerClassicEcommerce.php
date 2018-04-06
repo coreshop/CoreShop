@@ -10,24 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
+namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
+use CoreShop\Bundle\TrackingBundle\Model\ActionData;
 use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use Pimcore\Analytics\Google\Tracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UniversalEcommerce extends AbstractEcommerceTracker
+class TagManagerClassicEcommerce extends AbstractEcommerceTracker
 {
     /**
-     * @var TrackerInterface
+     * @var CodeTracker
      */
-    public $tracker;
+    public $codeTracker;
 
     /**
      * @var ConfigResolver
@@ -35,11 +35,24 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     public $config;
 
     /**
+     * @var bool
+     */
+    protected $dataLayerIncluded = false;
+
+    /**
      * @param TrackerInterface $tracker
      */
     public function setTracker(TrackerInterface $tracker)
     {
-        $this->tracker = $tracker;
+        // not implemented in GTM. Use CodeTracker instead.
+    }
+
+    /**
+     * @param CodeTracker $tracker
+     */
+    public function setCodeTracker(CodeTracker $tracker)
+    {
+        $this->codeTracker = $tracker;
     }
 
     /**
@@ -58,7 +71,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/universal'
+            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtm/classic'
         ]);
     }
 
@@ -107,62 +120,70 @@ class UniversalEcommerce extends AbstractEcommerceTracker
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
-            return;
-        }
+        $this->ensureDataLayer();
 
         $orderData = $this->itemBuilder->buildOrderAction($order);
         $items = $this->itemBuilder->buildCheckoutItems($order);
 
-        $parameters = [];
-        $parameters['order'] = $orderData;
-        $parameters['items'] = $items;
-
-        $calls = [
-            'ecommerce:addTransaction' => [
-                $orderData
-            ],
-            'ecommerce:addItem' => []
-        ];
+        $actionData = array_merge($this->transformOrder($orderData), ['transactionProducts' => []]);
 
         foreach ($items as $item) {
-            $calls['ecommerce:addItem'][] = $this->transformProductAction($item);
+            $actionData['transactionProducts'][] = $this->transformProductAction($item);
         }
 
-        $parameters['calls'] = $calls;
+        $parameters['actionData'] = $actionData;
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
-        $this->tracker->addCodePart($result, Tracker::BLOCK_AFTER_TRACK);
+        $this->codeTracker->addCodePart($result);
+
     }
 
     /**
-     * @return bool
+     * Transform ActionData into gtag data array
+     *
+     * @param ActionData $actionData
+     * @return array
      */
-    protected function isGlobalSiteTagMode()
+    protected function transformOrder(ActionData $actionData)
     {
-        $config = $this->config->getGoogleConfig();
-        if ($config === false) {
-            return false;
-        }
-
-        return $config->gtagcode;
+        return [
+            'transactionId'          => $actionData->getId(),
+            'transactionAffiliation' => $actionData->getAffiliation() ?: '',
+            'transactionTotal'       => $actionData->getRevenue(),
+            'transactionTax'         => $actionData->getTax(),
+            'transactionShipping'    => $actionData->getShipping()
+        ];
     }
 
     /**
-     * Transform product action into universal data object
+     * Transform product action into gtag data object
      *
      * @param ProductData $item
-     *
      * @return array
      */
     protected function transformProductAction(ProductData $item)
     {
         return $this->filterNullValues([
-            'sku'      => $item->getId(),
+            'id'       => $item->getId(),
+            'sku'      => $item->getSku(),
             'name'     => $item->getName(),
             'category' => $item->getCategory(),
             'price'    => round($item->getPrice(), 2),
-            'quantity' => $item->getQuantity() ?: 1,
+            'quantity' => $item->getQuantity() ?: 1
         ]);
+    }
+
+    /**
+     * Makes sure data layer is included once before any call
+     */
+    protected function ensureDataLayer()
+    {
+        if ($this->dataLayerIncluded) {
+            return;
+        }
+
+        $result = $this->renderTemplate('data_layer', []);
+        $this->codeTracker->addCodePart($result);
+        $this->dataLayerIncluded = true;
     }
 }

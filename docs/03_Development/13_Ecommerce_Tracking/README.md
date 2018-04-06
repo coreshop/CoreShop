@@ -1,70 +1,79 @@
 # CoreShop eCommerce Tracking
 
-CoreShop currently implements Tracking for Analytics and Google Tag Manager. Tracking is automatically enabled, as soon as you enable Tag Manager or Analytics in Pimcore.
+CoreShop currently implements Tracking for Analytics and Google Tag Manager.
+Tracking is automatically available (but not enabled), as soon as you enable Tag Manager or Analytics in Pimcore.
 
 Per default configuration, all the ecommerce trackers are disabled. You need to enable them manually.
 
-Available Trackers:
+## Available Trackers
 
- * google-analytics-enhanced-ecommerce:
- * google-analytics-universal-ecommerce:
- * google-tag-enhanced-ecommerce:
- * piwik:
+ * google-analytics-enhanced-ecommerce
+ * google-analytics-universal-ecommerce
+ * google-gtag-enhanced-ecommerce
+ * google-gtm-classic-ecommerce
+ * google-gtm-enhanced-ecommerce
+ * matomo (piwik)
 
-
-## Enabling Trackers:
+## Enabling Trackers
 
 ```yml
 core_shop_tracking:
     trackers:
         google-analytics-enhanced-ecommerce:
-            enabled: true
+            enabled: false
         google-analytics-universal-ecommerce:
-            enabled: true
-        google-tag-enhanced-ecommerce:
-            enabled: true
-        piwik:
+            enabled: false
+        google-gtag-enhanced-ecommerce:
+            enabled: false
+        google-gtm-classic-ecommerce:
+            enabled: false
+        google-gtm-enhanced-ecommerce:
+            enabled: false
+        matomo:
             enabled: true
 ```
 
-# Overview
-##### External
-[Google Documentation Enhanced E-Commerce](https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce)
+### External
+- [Google Enhanced E-Commerce](https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce)
+- [Google Enhanced E-Commerce with gtag.js](https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce)
+- [Google Tag Manager Enhanced E-Commerce](https://developers.google.com/tag-manager/enhanced-ecommerce)
+- [Google Tag Manager Classic E-Commerce](https://support.google.com/tagmanager/answer/6107169?hl=en)
+- [Matomo (Piwik) E-Commerce](https://matomo.org/docs/ecommerce-analytics/)
 
 #### Actions
 
-###### Product Impression
+##### Product Impression
 ```php
 $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
 ```
 
-###### Product View
+##### Product View
 ```php
 $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
 ```
 
-###### Product Action Add from Cart
+##### Product Action Add from Cart
 ```php
 $this->get('coreshop.tracking.manager')->trackCartPurchasableAdd($cart, $product);
 ```
 
-###### Product Action Remove from Cart
+##### Product Action Remove from Cart
 ```php
 $this->get('coreshop.tracking.manager')->trackCartPurchasableRemove($cart, $product);
 ```
 
-###### Checkout Step
+##### Checkout Step
 ```php
 $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $stepIdentifier, $isFirstStep, $checkoutOption)
 ```
 
-###### Checkout Complete
+##### Checkout Complete
 ```php
 $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order)
 ```
 
-# Add a new Tracker
-To add a new Tracker, extend from `CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker`, implement the `CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface` Interface and register your Tracker in the container:
+## Add a custom Tracker
+To add a custom tracker, extend your class from `CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker`, implement the `CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface` Interface and register your tracker in the container:
 
 ```yaml
 app.tracking.tracker.my_tracker:
@@ -75,3 +84,21 @@ app.tracking.tracker.my_tracker:
     tags:
         - { name: coreshop.tracking.tracker, type: app-custom-tracker }
 ```
+
+## Google Tag Manager
+If you have enabled the gtm in backend, CoreShop sends some data to a `dataLayer` object which submits the object to gtm.
+
+### GTM Classic eCommerce
+If enable the classic mode only the order gets submitted if user has successfully reached the "thank-you" page.
+
+### GTM Enhanced eCommerce
+There are three Events you need to implement in your Google Tag Manager:
+
+#### Checkout Step:
+Event-Name: `csCheckout`
+
+#### Remove Item from Cart
+Event-Name: `csRemoveFromCart`
+
+#### Add Item from Cart
+Event-Name: `csAddToCart`
