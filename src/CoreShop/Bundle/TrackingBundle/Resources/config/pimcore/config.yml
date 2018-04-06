@@ -1,0 +1,14 @@
+core_shop_tracking:
+    trackers:
+        google-analytics-enhanced-ecommerce:
+            enabled: false
+        google-analytics-universal-ecommerce:
+            enabled: false
+        google-gtag-enhanced-ecommerce:
+            enabled: false
+        google-gtm-classic-ecommerce:
+            enabled: false
+        google-gtm-enhanced-ecommerce:
+            enabled: false
+        matomo:
+            enabled: false

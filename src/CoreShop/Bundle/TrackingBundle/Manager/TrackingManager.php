@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Manager;
 
+use CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -39,6 +40,14 @@ class TrackingManager implements TrackingManagerInterface
     protected function callMethod($name, $params)
     {
         foreach ($this->tracker->all() as $tracker) {
+            if (!$tracker instanceof EcommerceTrackerInterface) {
+                continue;
+            }
+
+            if (!$tracker->isEnabled()) {
+                continue;
+            }
+
             if (method_exists($tracker, $name)) {
                 call_user_func_array([$tracker, $name], $params);
             }
@@ -46,7 +55,7 @@ class TrackingManager implements TrackingManagerInterface
     }
 
     /**
-     * @param PurchasableInterface $product
+     * {@inheritdoc}
      */
     public function trackPurchasableView(PurchasableInterface $product)
     {
@@ -54,7 +63,7 @@ class TrackingManager implements TrackingManagerInterface
     }
 
     /**
-     * @param PurchasableInterface $product
+     * {@inheritdoc}
      */
     public function trackPurchasableImpression(PurchasableInterface $product)
     {
@@ -62,9 +71,7 @@ class TrackingManager implements TrackingManagerInterface
     }
 
     /**
-     * @param CartInterface $cart
-     * @param PurchasableInterface $product
-     * @param int $quantity
+     * {@inheritdoc}
      */
     public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
@@ -72,9 +79,7 @@ class TrackingManager implements TrackingManagerInterface
     }
 
     /**
-     * @param CartInterface $cart
-     * @param PurchasableInterface $product
-     * @param int $quantity
+     * {@inheritdoc}
      */
     public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
@@ -82,10 +87,7 @@ class TrackingManager implements TrackingManagerInterface
     }
 
     /**
-     * @param CartInterface $cart
-     * @param null $stepIdentifier
-     * @param boolean $isFirstStep
-     * @param null $checkoutOption
+     * {@inheritdoc}
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
@@ -93,7 +95,7 @@ class TrackingManager implements TrackingManagerInterface
     }
 
     /**
-     * @param OrderInterface $order
+     * {@inheritdoc}
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {

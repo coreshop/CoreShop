@@ -40,10 +40,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a product view object
-     *
-     * @param PurchasableInterface $product
-     * @return ProductData
+     * {@inheritdoc}
      */
     public function buildPurchasableViewItem(PurchasableInterface $product)
     {
@@ -51,11 +48,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a product action item object
-     *
-     * @param PurchasableInterface $product
-     * @param int $quantity
-     * @return ProductData
+     * {@inheritdoc}
      */
     public function buildPurchasableActionItem(PurchasableInterface $product, $quantity = 1)
     {
@@ -70,10 +63,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a product impression object
-     *
-     * @param PurchasableInterface $product
-     * @return ImpressionData
+     * {@inheritdoc}
      */
     public function buildPurchasableImpressionItem(PurchasableInterface $product)
     {
@@ -86,10 +76,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a checkout transaction object
-     *
-     * @param OrderInterface $order
-     * @return ActionData
+     * {@inheritdoc}
      */
     public function buildOrderAction(OrderInterface $order)
     {
@@ -121,10 +108,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build checkout items
-     *
-     * @param OrderInterface $order
-     * @return ProductData[]
+     * {@inheritdoc}
      */
     public function buildCheckoutItems(OrderInterface $order)
     {
@@ -140,10 +124,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build checkout items by cart
-     *
-     * @param CartInterface $cart
-     * @return mixed
+     * {@inheritdoc}
      */
     public function buildCheckoutItemsByCart(CartInterface $cart)
     {
@@ -157,10 +138,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build coupon for cart
-     *
-     * @param CartInterface $cart
-     * @return mixed
+     * {@inheritdoc}
      */
     public function buildCouponByCart(CartInterface $cart)
     {
@@ -181,11 +159,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a checkout item object
-     *
-     * @param OrderInterface $order
-     * @param OrderItemInterface $orderItem
-     * @return ProductData
+     * {@inheritdoc}
      */
     public function buildCheckoutItem(OrderInterface $order, OrderItemInterface $orderItem)
     {
