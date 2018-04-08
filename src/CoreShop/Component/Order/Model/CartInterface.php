@@ -29,6 +29,16 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
     public function getOrder();
 
     /**
+     * @return string
+     */
+    public function getLocaleCode();
+
+    /**
+     * @param $localeCode
+     */
+    public function setLocaleCode($localeCode);
+
+    /**
      * @return array
      */
     public function getPriceRuleItems();

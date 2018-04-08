@@ -15,7 +15,6 @@ namespace CoreShop\Component\Order\Transformer;
 use Carbon\Carbon;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -60,11 +59,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $objectService;
 
     /**
-     * @var LocaleContextInterface
-     */
-    protected $localeContext;
-
-    /**
      * @var PimcoreFactoryInterface
      */
     protected $saleItemFactory;
@@ -95,7 +89,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param NumberGeneratorInterface $numberGenerator
      * @param string $orderFolderPath
      * @param ObjectServiceInterface $objectService
-     * @param LocaleContextInterface $localeContext
      * @param PimcoreFactoryInterface $saleItemFactory
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param CurrencyConverterInterface $currencyConverter
@@ -108,7 +101,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         NumberGeneratorInterface $numberGenerator,
         $orderFolderPath,
         ObjectServiceInterface $objectService,
-        LocaleContextInterface $localeContext,
         PimcoreFactoryInterface $saleItemFactory,
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter,
@@ -121,7 +113,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->numberGenerator = $numberGenerator;
         $this->orderFolderPath = $orderFolderPath;
         $this->objectService = $objectService;
-        $this->localeContext = $localeContext;
         $this->saleItemFactory = $saleItemFactory;
         $this->eventDispatcher = $eventDispatcher;
         $this->currencyConverter = $currencyConverter;
@@ -158,7 +149,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setPublished(true);
         $sale->setParent($orderFolder);
         $sale->setCustomer($cart->getCustomer());
-        $sale->setSaleLanguage($this->localeContext->getLocaleCode());
+        $sale->setSaleLanguage($cart->getLocaleCode());
         $sale->setSaleDate(Carbon::now());
         $sale->setStore($cart->getStore());
 
