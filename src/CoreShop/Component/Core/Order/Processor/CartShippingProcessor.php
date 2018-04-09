@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface as CoreCartInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
@@ -20,6 +21,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
 use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
+use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
@@ -27,6 +29,11 @@ final class CartShippingProcessor implements CartProcessorInterface
      * @var TaxedShippingCalculatorInterface
      */
     private $carrierPriceCalculator;
+
+    /**
+     * @var ShippableCarrierValidatorInterface
+     */
+    private $carrierValidator;
 
     /**
      * @var DefaultCarrierResolverInterface
@@ -40,16 +47,19 @@ final class CartShippingProcessor implements CartProcessorInterface
 
     /**
      * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
+     * @param ShippableCarrierValidatorInterface $carrierValidator
      * @param DefaultCarrierResolverInterface $defaultCarrierResolver
      * @param AddressProviderInterface $defaultAddressProvider
      */
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
+        ShippableCarrierValidatorInterface $carrierValidator,
         DefaultCarrierResolverInterface $defaultCarrierResolver,
         AddressProviderInterface $defaultAddressProvider
     )
     {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->carrierValidator = $carrierValidator;
         $this->defaultCarrierResolver = $defaultCarrierResolver;
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
@@ -67,6 +77,14 @@ final class CartShippingProcessor implements CartProcessorInterface
 
         if (null === $address) {
             return;
+        }
+
+        if ($cart->getCarrier() instanceof CarrierInterface) {
+            if (!$this->carrierValidator->isCarrierValid($cart->getCarrier(), $cart, $address)) {
+                $cart->setCarrier(null);
+                $cart->setShipping(0, true);
+                $cart->setShipping(0, false);
+            }
         }
 
         if (null === $cart->getCarrier()) {
