@@ -43,14 +43,14 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      *
      * @var string
      */
-    public $queryColumnType = 'text';
+    public $queryColumnType = null;
 
     /**
      * Type for the column
      *
      * @var string
      */
-    public $columnType = 'text';
+    public $columnType = null;
 
     /**
      * Type for the generated phpdoc
@@ -198,18 +198,12 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForResource($data, $object = null, $params = [])
-    {
-        return $data;
-    }
+
 
     /**
      * {@inheritdoc}
      */
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function load($object)
     {
         $prices = $this->getProductStorePriceRepository()->findForProduct($object);
         $data = [];
@@ -235,10 +229,9 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $storeRepo = $this->getStoreRepository();
 
         $data = $this->getDataFromObjectParam($object, $params);
-        $prices = $this->getDataForResource($data, $object, $params);
 
-        if (is_array($prices) && !empty($data)) {
-            foreach ($prices as $storeId => $price) {
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $storeId => $price) {
                 $store = $storeRepo->find($storeId);
 
                 if (!$store instanceof StoreInterface) {
@@ -263,22 +256,6 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         }
 
         $em->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForQueryResource($data, $object = null, $params = [])
-    {
-        $queryResource = [];
-
-        if (is_array($data)) {
-            foreach ($data as $storePrice) {
-                $queryResource[] = $storePrice;
-            }
-        }
-
-        return ',' . implode(',', $queryResource) . ',';
     }
 
     /**
