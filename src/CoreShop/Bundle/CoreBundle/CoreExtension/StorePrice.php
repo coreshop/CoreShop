@@ -150,6 +150,22 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     /**
      * {@inheritdoc}
      */
+    public function getQueryColumnType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGetterCode($class)
     {
         $key = $this->getName();
@@ -197,7 +213,6 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
 
         return $code;
     }
-
 
 
     /**
