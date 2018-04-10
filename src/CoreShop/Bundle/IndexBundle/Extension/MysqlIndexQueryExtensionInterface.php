@@ -13,10 +13,11 @@
 namespace CoreShop\Bundle\IndexBundle\Extension;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 
-interface MysqlIndexQueryExtensionInterface
+interface MysqlIndexQueryExtensionInterface extends IndexExtensionInterface
 {
     /**
      * @param IndexInterface $index
