@@ -32,10 +32,10 @@ class Version20180410063351 extends AbstractPimcoreMigration implements Containe
             $customer = $cart->getCustomer();
 
             if ($order instanceof OrderInterface) {
-                $cart->setLocaleCode($order->getOrderLanguage());
+                $cart->setLocaleCode($order->getLocaleCode());
             }
-            else if ($customer instanceof CustomerInterface && null !== $customer->getLocale()) {
-                $cart->setLocaleCode($customer->getLocale());
+            else if ($customer instanceof CustomerInterface && null !== $customer->getLocaleCode()) {
+                $cart->setLocaleCode($customer->getLocaleCode());
             } else {
                 $cart->setLocaleCode(Tool::getDefaultLanguage());
             }

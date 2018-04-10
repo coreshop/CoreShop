@@ -112,7 +112,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
-        $customer->setLocale($this->localeContext->getLocaleCode());
+        $customer->setLocaleCode($this->localeContext->getLocaleCode());
         $customer->save();
 
         $address->setPublished(true);

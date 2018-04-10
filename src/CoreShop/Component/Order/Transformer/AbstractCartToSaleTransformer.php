@@ -149,7 +149,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setPublished(true);
         $sale->setParent($orderFolder);
         $sale->setCustomer($cart->getCustomer());
-        $sale->setSaleLanguage($cart->getLocaleCode());
+        $sale->setLocaleCode($cart->getLocaleCode());
         $sale->setSaleDate(Carbon::now());
         $sale->setStore($cart->getStore());
 

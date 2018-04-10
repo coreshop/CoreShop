@@ -46,7 +46,7 @@ final class ResolveNextRouteAction implements ActionInterface
 
         if ($order instanceof OrderInterface) {
             $request->setRouteParameters([
-                '_locale' => $order->getOrderLanguage()
+                '_locale' => $order->getLocaleCode()
             ]);
 
             if (

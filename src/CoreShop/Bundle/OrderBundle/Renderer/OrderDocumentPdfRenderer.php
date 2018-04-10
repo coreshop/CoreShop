@@ -73,13 +73,13 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
                 'id' => $orderDocument->getId(),
                 'order' => $orderDocument->getOrder(),
                 'document' => $orderDocument,
-                'language' => (string) $orderDocument->getOrder()->getOrderLanguage(),
+                'language' => (string) $orderDocument->getOrder()->getLocaleCode(),
                 'type' => $orderDocument::getDocumentType(),
                 $orderDocument::getDocumentType() => $orderDocument,
             ];
 
             $request = new Request($params);
-            $request->setLocale($orderDocument->getOrder()->getOrderLanguage());
+            $request->setLocale($orderDocument->getOrder()->getLocaleCode());
 
             $printBundle = 'CoreShopOrderBundle';
             $printController = 'OrderDocumentPrint';

@@ -28,7 +28,8 @@
     "coreshop/payment": "^2.0",
     "coreshop/address": "^2.0",
     "coreshop/customer": "^2.0",
-    "coreshop/storage-list": "^2.0"
+    "coreshop/storage-list": "^2.0",
+    "coreshop/locale": "^2.0"
   },
   "config": {
     "bin-dir": "bin"
