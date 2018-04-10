@@ -515,17 +515,6 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
                 }
             );
 
-            orderMoreButtons.push(
-                {
-                    text: t('coreshop_send_message'),
-                    scale: 'medium',
-                    iconCls: 'coreshop_icon_messaging_thread',
-                    handler: function () {
-                        coreshop.order.order.message.showWindow(tab);
-                    }.bind(this, tab)
-                }
-            );
-
             orderMoreButtons.push({
                 text: t('open'),
                 scale: 'medium',
