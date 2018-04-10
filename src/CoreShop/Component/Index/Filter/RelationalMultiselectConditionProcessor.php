@@ -29,12 +29,11 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
     {
         $field = $condition->getConfiguration()['field'];
 
-        $rawValues = $list->getGroupByRelationValues($field, false);
+        $rawValues = $list->getGroupByRelationValues($field, true);
         $objects = [];
 
-        foreach ($rawValues as $id) {
-            $object = Concrete::getById($id);
-
+        foreach ($rawValues as $value) {
+            $object = Concrete::getById($value['value']);
             if ($object instanceof Concrete) {
                 $objects[] = $object;
             }
@@ -44,7 +43,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
             'type' => 'relational_multiselect',
             'label' => $condition->getLabel(),
             'currentValues' => $currentFilter[$field],
-            'values' => array_values($rawValues),
+            'values' => $rawValues,
             'objects' => $objects,
             'fieldName' => $field,
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),

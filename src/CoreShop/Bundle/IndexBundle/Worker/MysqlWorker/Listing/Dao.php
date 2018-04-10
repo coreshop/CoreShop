@@ -135,18 +135,19 @@ class Dao
 
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $queryBuilder->select('dest as `value`, count(DISTINCT src_virtualObjectId) as `count`');
-                $queryBuilder->where('fieldname = ' . $fieldName);
+                $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(DISTINCT src_virtualObjectId) AS ' . $this->quoteIdentifier('count'));
+                $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
             } else {
-                $queryBuilder->select('dest as `value`, count(*) as `count`');
-                $queryBuilder->where('fieldname = ' . $fieldName);
+                $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(*) AS ' . $this->quoteIdentifier('count'));
+                $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
             }
 
             $subQueryBuilder = new QueryBuilder($this->database);
-            $subQueryBuilder->select('o_id');
+            $subQueryBuilder->select($this->quoteIdentifier('o_id'));
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-            $queryBuilder->andWhere('src in (' . $subQueryBuilder->getSQL() . ') GROUP BY dest');
+            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+            $queryBuilder->groupBy('dest');
 
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
             $result = $stmt->fetchAll();
@@ -154,17 +155,25 @@ class Dao
             return $result;
 
         } else {
-            $queryBuilder->select('dest as `value`, count(DISTINCT src_virtualObjectId) as `count`');
-            $queryBuilder->where('fieldname = ' . $fieldName);
+            $queryBuilder->select($this->quoteIdentifier('dest'));
+            $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
 
             $subQueryBuilder = new QueryBuilder($this->database);
             $subQueryBuilder->select('o_id');
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-            $queryBuilder->andWhere('src in (' . $subQueryBuilder->getSQL() . ') GROUP BY dest');
+            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+            $queryBuilder->groupBy('dest');
 
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchColumn();
+            $queryResult = $stmt->fetchAll();
+
+            $result = [];
+            foreach ($queryResult as $row) {
+                if ($row['dest']) {
+                    $result[] = $row['dest'];
+                }
+            }
 
             return $result;
         }
