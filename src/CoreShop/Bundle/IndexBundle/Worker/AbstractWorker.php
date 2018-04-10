@@ -385,7 +385,7 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function renderCondition(ConditionInterface $condition);
+    abstract public function renderCondition(ConditionInterface $condition, $prefix = null);
 
     /**
      * {@inheritdoc}

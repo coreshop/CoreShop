@@ -90,8 +90,8 @@ class Dao
     public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        $queryBuilder->groupBy($this->quoteIdentifier($fieldName));
-        $queryBuilder->orderBy($this->quoteIdentifier($fieldName));
+        $queryBuilder->groupBy('q.' . $this->quoteIdentifier($fieldName));
+        $queryBuilder->orderBy('q.' . $this->quoteIdentifier($fieldName));
 
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {

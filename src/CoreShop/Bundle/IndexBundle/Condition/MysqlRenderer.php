@@ -33,10 +33,11 @@ class MysqlRenderer extends AbstractRenderer
 
     /**
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderIn(ConditionInterface $condition)
+    protected function renderIn(ConditionInterface $condition, $prefix = null)
     {
         $inValues = [];
 
@@ -47,7 +48,7 @@ class MysqlRenderer extends AbstractRenderer
         }
 
         if (count($inValues) > 0) {
-            return '' . $this->quoteIdentifier($condition->getFieldName()) . ' IN (' . implode(',', $inValues) . ')';
+            return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IN (' . implode(',', $inValues) . ')';
         }
 
         return '';
@@ -55,22 +56,24 @@ class MysqlRenderer extends AbstractRenderer
 
     /**
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderIs(ConditionInterface $condition)
+    protected function renderIs(ConditionInterface $condition, $prefix = null)
     {
         $value = $condition->getValues();
 
-        return '' . $this->quoteIdentifier($condition->getFieldName()) . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
     }
 
     /**
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderLike(ConditionInterface $condition)
+    protected function renderLike(ConditionInterface $condition, $prefix = null)
     {
         $values = $condition->getValues();
         $pattern = $values['pattern'];
@@ -90,33 +93,35 @@ class MysqlRenderer extends AbstractRenderer
                 break;
         }
 
-        return '' . $this->quoteIdentifier($condition->getFieldName()) . ' LIKE ' . $this->database->quote($patternValue);
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' LIKE ' . $this->database->quote($patternValue);
     }
 
     /**
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderRange(ConditionInterface $condition)
+    protected function renderRange(ConditionInterface $condition, $prefix = null)
     {
         $values = $condition->getValues();
 
-        return '' . $this->quoteIdentifier($condition->getFieldName()) . ' >= ' . $values['from'] . ' AND ' . $this->quoteIdentifier($condition->getFieldName()) . ' <= ' . $values['to'];
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' >= ' . $values['from'] . ' AND ' . $this->quoteIdentifier($condition->getFieldName(), $prefix) . ' <= ' . $values['to'];
     }
 
     /**
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderConcat(ConditionInterface $condition)
+    protected function renderConcat(ConditionInterface $condition, $prefix = null)
     {
         $values = $condition->getValues();
         $conditions = [];
 
         foreach ($values['conditions'] as $cond) {
-            $conditions[] = $this->render($cond);
+            $conditions[] = $this->render($cond, $prefix);
         }
 
         return '(' . implode(' ' . trim($values['operator']) . ' ', $conditions) . ')';
@@ -124,16 +129,17 @@ class MysqlRenderer extends AbstractRenderer
 
     /**
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderCompare(ConditionInterface $condition)
+    protected function renderCompare(ConditionInterface $condition, $prefix = null)
     {
         $values = $condition->getValues();
         $value = $values['value'];
         $operator = $values['operator'];
 
-        return '' . $this->quoteIdentifier($condition->getFieldName()) . ' ' . $operator . ' ' . $this->database->quote($value);
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' ' . $operator . ' ' . $this->database->quote($value);
     }
 
     /**
@@ -143,5 +149,28 @@ class MysqlRenderer extends AbstractRenderer
     protected function quoteIdentifier($identifier)
     {
         return $this->database->quoteIdentifier($identifier);
+    }
+
+    /**
+     * @param null $prefix
+     * @return string
+     */
+    protected function renderPrefix($prefix = null)
+    {
+        if (null === $prefix) {
+            return '';
+        }
+
+        return $prefix . '.';
+    }
+
+    /**
+     * @param $fieldName
+     * @param null $prefix
+     * @return string
+     */
+    protected function quoteFieldName($fieldName, $prefix = null)
+    {
+        return $this->renderPrefix($prefix) . $this->quoteIdentifier($fieldName);
     }
 }

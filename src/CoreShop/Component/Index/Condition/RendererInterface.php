@@ -18,8 +18,9 @@ interface RendererInterface
      * Renders the condition.
      *
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return mixed
      */
-    public function render(ConditionInterface $condition);
+    public function render(ConditionInterface $condition, $prefix = null);
 }
