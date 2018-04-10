@@ -112,7 +112,7 @@ class Dao
 
             foreach ($queryResult as $row) {
                 if ($row[$fieldName]) {
-                    $result[] = ['value' => $row[$fieldName]];
+                    $result[] = $row[$fieldName];
                 }
             }
 
