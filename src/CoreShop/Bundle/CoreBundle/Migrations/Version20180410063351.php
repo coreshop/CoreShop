@@ -42,7 +42,7 @@ class Version20180410063351 extends AbstractPimcoreMigration implements Containe
 
             $cart->save();
         }
-    }e
+    }
 
     /**
      * @param Schema $schema
