@@ -12,7 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
+use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStorePriceRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Core\Model\ProductStorePrice;
+use CoreShop\Component\Core\Model\ProductStorePriceInterface;
+use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -35,10 +39,42 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('after_logout_redirect_route')->defaultValue('coreshop_index')->cannotBeEmpty()->end()
             ->end()
         ;
+        $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCheckoutConfigurationSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addModelsSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('resources')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('product_store_price')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(ProductStorePrice::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ProductStorePriceInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ProductStorePriceRepository::class)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
     }
 
     /**

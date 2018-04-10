@@ -1,0 +1,23 @@
+CoreShop\Component\Core\Model\ProductStorePrice:
+    type: mappedSuperclass
+    table: coreshop_product_store_price
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        product:
+            column: productId
+            type: pimcoreObject
+        price:
+            column: price
+            type: integer
+    manyToOne:
+        store:
+            targetEntity: CoreShop\Component\Store\Model\Store
+            joinColumn:
+                name: storeId
+                referencedColumnName: id
+                onDelete: 'SET NULL'
