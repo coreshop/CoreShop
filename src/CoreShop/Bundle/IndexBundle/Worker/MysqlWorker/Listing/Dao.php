@@ -90,27 +90,32 @@ class Dao
     public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        $queryBuilder->groupBy($fieldName);
-        $queryBuilder->orderBy($fieldName);
+        $queryBuilder->groupBy($this->quoteIdentifier($fieldName));
+        $queryBuilder->orderBy($this->quoteIdentifier($fieldName));
+
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $queryBuilder->select($fieldName . ' as value, count(DISTINCT o_virtualObjectId) as count');
+                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(DISTINCT o_virtualObjectId) AS count');
             } else {
-                $queryBuilder->select($fieldName . ' as value, count(*) as count');
+                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
+
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
             $result = $stmt->fetchAll();
+
             return $result;
         } else {
-            $queryBuilder->select($fieldName);
+            $queryBuilder->select($this->quoteIdentifier($fieldName));
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
             $queryResult = $stmt->fetchAll();
             $result = [];
+
             foreach ($queryResult as $row) {
                 if ($row[$fieldName]) {
-                    $result[] = $row[$fieldName];
+                    $result[] = ['value' => $row[$fieldName]];
                 }
             }
+
             return $result;
         }
     }
@@ -127,6 +132,7 @@ class Dao
     public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
         $queryBuilder->from($this->model->getRelationTablename(), 'q');
+
         if ($countValues) {
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $queryBuilder->select('dest as `value`, count(DISTINCT src_virtualObjectId) as `count`');
@@ -135,24 +141,31 @@ class Dao
                 $queryBuilder->select('dest as `value`, count(*) as `count`');
                 $queryBuilder->where('fieldname = ' . $fieldName);
             }
+
             $subQueryBuilder = new QueryBuilder($this->database);
             $subQueryBuilder->select('o_id');
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-            $queryBuilder->andWhere('src in ('.$subQueryBuilder->getSQL().') GROUP BY dest');
+            $queryBuilder->andWhere('src in (' . $subQueryBuilder->getSQL() . ') GROUP BY dest');
+
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
             $result = $stmt->fetchAll();
+
             return $result;
+
         } else {
             $queryBuilder->select('dest as `value`, count(DISTINCT src_virtualObjectId) as `count`');
             $queryBuilder->where('fieldname = ' . $fieldName);
+
             $subQueryBuilder = new QueryBuilder($this->database);
             $subQueryBuilder->select('o_id');
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-            $queryBuilder->andWhere('src in ('.$subQueryBuilder->getSQL().') GROUP BY dest');
+            $queryBuilder->andWhere('src in (' . $subQueryBuilder->getSQL() . ') GROUP BY dest');
+
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
             $result = $stmt->fetchColumn();
+
             return $result;
         }
     }
@@ -177,7 +190,7 @@ class Dao
     }
 
     /**
-     * quoute value.
+     * quote value.
      *
      * @param $value
      *
@@ -186,6 +199,18 @@ class Dao
     public function quote($value)
     {
         return $this->database->quote($value);
+    }
+
+    /**
+     * quote identifier.
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function quoteIdentifier($value)
+    {
+        return $this->database->quoteIdentifier($value);
     }
 
     /**
@@ -266,10 +291,10 @@ class Dao
         $columnNames = [];
 
         foreach ($fields as $c) {
-            $columnNames[] = $this->database->quoteIdentifier($c);
+            $columnNames[] = $this->quoteIdentifier($c);
         }
 
-        return 'MATCH (' . implode(',', $columnNames) . ') AGAINST (' . $this->database->quote($searchString) . ' IN BOOLEAN MODE)';
+        return 'MATCH (' . implode(',', $columnNames) . ') AGAINST (' . $this->quote($searchString) . ' IN BOOLEAN MODE)';
     }
 
     /**

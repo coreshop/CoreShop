@@ -535,12 +535,12 @@ class Listing extends AbstractListing
                 $direction = $keyDirection[1];
                 if ($this->getVariantMode() == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                     if (strtoupper($this->order) == 'DESC') {
-                        $queryBuilder->addOrderBy('max(' . $key . ')', $direction);
+                        $queryBuilder->addOrderBy('max(' . $this->dao->quoteIdentifier($key) . ')', $direction);
                     } else {
-                        $queryBuilder->addOrderBy('min(' . $key . ')', $direction);
+                        $queryBuilder->addOrderBy('min(' . $this->dao->quoteIdentifier($key) . ')', $direction);
                     }
                 } else {
-                    $queryBuilder->addOrderBy($key, $direction);
+                    $queryBuilder->addOrderBy($this->dao->quoteIdentifier($key), $direction);
                 }
             }
         }
