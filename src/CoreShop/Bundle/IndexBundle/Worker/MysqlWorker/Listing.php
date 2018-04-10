@@ -499,7 +499,7 @@ class Listing extends AbstractListing
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
                     $cond = $this->worker->renderCondition($cond);
-                    $queryBuilder->andWhere('a.o_id IN (SELECT DISTINCT src FROM ' . $relationalTableName . ' WHERE ' . $cond . ')');
+                    $queryBuilder->andWhere('q.o_id IN (SELECT DISTINCT src FROM ' . $relationalTableName . ' WHERE ' . $cond . ')');
                 }
             }
         }
@@ -575,7 +575,7 @@ class Listing extends AbstractListing
                     break;
             }
             //innerJoin($fromAlias, $join, $alias, $condition = null)
-            $queryBuilder->$function($joinName, $table, $joinName, $objectKeyField . ' = a.o_id');
+            $queryBuilder->$function($joinName, $table, $joinName, $objectKeyField . ' = q.o_id');
         }
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
