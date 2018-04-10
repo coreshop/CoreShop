@@ -28,6 +28,7 @@ services:
         class: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
         arguments:
             - '@coreshop.carrier.price_calculator.taxed'
+            - '@coreshop.shipping.carrier.validator'
             - '@coreshop.carrier.default_resolver'
             - '@coreshop.provider.store_based_default_address_provider'
         tags:

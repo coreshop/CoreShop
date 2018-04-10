@@ -23,10 +23,6 @@ CoreShop\Component\Shipping\Model\Carrier:
             expose: true
             type: boolean
             groups: [Detailed]
-        rangeBehaviour:
-            expose: true
-            type: string
-            groups: [Detailed]
         shippingRules:
             expose: true
             type: array

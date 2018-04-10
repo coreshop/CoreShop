@@ -187,6 +187,9 @@ coreshop.order.order.detail.blocks.invoice = Class.create(coreshop.order.sale.de
             if (tool && Ext.isFunction(tool.hide)) {
                 tool.hide();
             }
+            else {
+                tool.hidden = true;
+            }
         }
     }
 });

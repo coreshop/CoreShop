@@ -109,7 +109,8 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $step);
+        $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
+        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -172,8 +173,6 @@ class CheckoutController extends FrontendController
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
-
-        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps()));
 
         /**
          * If everything is valid, we continue with Order-Creation.

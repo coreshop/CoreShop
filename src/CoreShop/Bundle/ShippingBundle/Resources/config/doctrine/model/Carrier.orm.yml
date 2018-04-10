@@ -22,9 +22,6 @@ CoreShop\Component\Shipping\Model\Carrier:
         isFree:
             column: isFree
             type: boolean
-        rangeBehaviour:
-            column: rangeBehaviour
-            type: string
         creationDate:
             type: datetime
             gedmo:
