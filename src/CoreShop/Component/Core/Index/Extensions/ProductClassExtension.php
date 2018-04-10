@@ -1,15 +1,34 @@
 <?php
 
-namespace CoreShop\Component\Core\Index;
+namespace CoreShop\Component\Core\Index\Extensions;
 
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 
-class ProductClassHelper implements ClassHelperInterface
+final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
+    protected $productClassName;
+
+    /**
+     * @param $productClassName
+     */
+    public function __construct($productClassName)
+    {
+        $this->productClassName = $productClassName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(IndexInterface $index)
+    {
+        return $this->productClassName === $index->getClass();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -18,9 +37,7 @@ class ProductClassHelper implements ClassHelperInterface
         return [
             'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
             'parentCategoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'stores' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'minPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
-            'maxPrice' => IndexColumnInterface::FIELD_TYPE_DOUBLE,
+            'stores' => IndexColumnInterface::FIELD_TYPE_STRING
         ];
     }
 

@@ -16,27 +16,21 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class RegisterClassHelperPass implements CompilerPassInterface
+final class RegisterExtensionsPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('coreshop.registry.index.class_helpers')) {
+        if (!$container->has('coreshop.registry.index.extensions')) {
             return;
         }
 
-        $registry = $container->getDefinition('coreshop.registry.index.class_helpers');
+        $registry = $container->getDefinition('coreshop.registry.index.extensions');
 
-        foreach ($container->findTaggedServiceIds('coreshop.index.class_helper') as $id => $attributes) {
-            if (!isset($attributes[0]['class'])) {
-                throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `class` attributes.');
-            }
-
-            $class = $attributes[0]['class'];
-
-            $registry->addMethodCall('register', [$class, new Reference($id)]);
+        foreach ($container->findTaggedServiceIds('coreshop.index.extension') as $id => $attributes) {
+            $registry->addMethodCall('register', [$id, new Reference($id)]);
         }
     }
 }

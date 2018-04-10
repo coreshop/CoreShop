@@ -10,25 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Index\ClassHelper;
+namespace CoreShop\Component\Index\Extension;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 
-interface ClassHelperInterface
+interface IndexExtensionInterface
 {
     /**
-     * @return array
+     * @param IndexInterface $index
+     * @return boolean
      */
-    public function getSystemColumns();
-
-    /**
-     * @return array
-     */
-    public function getLocalizedSystemColumns();
-
-    /**
-     * @param IndexableInterface $indexable
-     * @return array
-     */
-    public function getIndexColumns(IndexableInterface $indexable);
+    public function supports(IndexInterface $index);
 }

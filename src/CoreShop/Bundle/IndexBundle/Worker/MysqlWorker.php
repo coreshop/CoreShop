@@ -13,8 +13,9 @@
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
-use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
+use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -34,19 +35,19 @@ class MysqlWorker extends AbstractWorker
     protected $database;
 
     /**
-     * @param ServiceRegistryInterface $classHelperRegistry
+     * @param ServiceRegistryInterface $extensionsRegistry
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
-        ServiceRegistryInterface $classHelperRegistry,
+        ServiceRegistryInterface $extensionsRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper
     )
     {
-        parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
+        parent::__construct($extensionsRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
 
         $this->database = Db::get();
     }
@@ -69,7 +70,10 @@ class MysqlWorker extends AbstractWorker
      */
     protected function processTable(IndexInterface $index)
     {
-        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+        /**
+         * @var $extensions IndexExtensionInterface[]
+         */
+        $extensions = $this->getExtensions($index);
 
         $columns = $this->getTableColumns($this->getTablename($index));
         $columnsToDelete = $columns;
@@ -92,14 +96,16 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
-        if ($classHelper instanceof ClassHelperInterface) {
-            foreach ($classHelper->getSystemColumns() as $name => $type) {
-                if (!array_key_exists($name, $columns)) {
-                    $columnTypeForIndex = $this->renderFieldType($type);
-                    $columnsToAdd[$name] = $columnTypeForIndex;
-                }
+        foreach ($extensions as $extension) {
+            if ($extension instanceof IndexColumnsExtensionInterface) {
+                foreach ($extension->getSystemColumns() as $name => $type) {
+                    if (!array_key_exists($name, $columns)) {
+                        $columnTypeForIndex = $this->renderFieldType($type);
+                        $columnsToAdd[$name] = $columnTypeForIndex;
+                    }
 
-                unset($columnsToDelete[$name]);
+                    unset($columnsToDelete[$name]);
+                }
             }
         }
 
@@ -114,7 +120,10 @@ class MysqlWorker extends AbstractWorker
      */
     protected function processLocalizedTable(IndexInterface $index)
     {
-        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+        /**
+         * @var $extensions IndexExtensionInterface[]
+         */
+        $extensions = $this->getExtensions($index);
 
         $localizedColumns = $this->getTableColumns($this->getLocalizedTablename($index));
         $localizedColumnsToAdd = [];
@@ -135,14 +144,16 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
-        if ($classHelper instanceof ClassHelperInterface) {
-            foreach ($classHelper->getLocalizedSystemColumns() as $name => $type) {
-                if (!array_key_exists($name, $localizedColumns)) {
-                    $columnTypeForIndex = $this->renderFieldType($type);
-                    $localizedColumnsToAdd[$name] = $columnTypeForIndex;
-                }
+        foreach ($extensions as $extension) {
+            if ($extension instanceof IndexColumnsExtensionInterface) {
+                foreach ($extension->getLocalizedSystemColumns() as $name => $type) {
+                    if (!array_key_exists($name, $localizedColumns)) {
+                        $columnTypeForIndex = $this->renderFieldType($type);
+                        $localizedColumnsToAdd[$name] = $columnTypeForIndex;
+                    }
 
-                unset($localizedColumnsToDelete[$name]);
+                    unset($localizedColumnsToDelete[$name]);
+                }
             }
         }
 

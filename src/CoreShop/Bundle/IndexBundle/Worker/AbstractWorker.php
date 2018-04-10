@@ -12,8 +12,9 @@
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
-use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
+use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
@@ -38,7 +39,7 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @var ServiceRegistryInterface
      */
-    protected $classHelperRegistry;
+    protected $extensions;
 
     /**
      * @var ServiceRegistryInterface
@@ -56,22 +57,39 @@ abstract class AbstractWorker implements WorkerInterface
     protected $filterGroupHelper;
 
     /**
-     * @param ServiceRegistryInterface $classHelperRegistry
+     * @param ServiceRegistryInterface $extensions
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
-        ServiceRegistryInterface $classHelperRegistry,
+        ServiceRegistryInterface $extensions,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper
     )
     {
-        $this->classHelperRegistry = $classHelperRegistry;
+        $this->extensions = $extensions;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
         $this->filterGroupHelper = $filterGroupHelper;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtensions(IndexInterface $index)
+    {
+        $extensions = $this->extensions->all();
+        $eligibleExtensions = [];
+
+        foreach ($extensions as $extension) {
+            if ($extension instanceof IndexExtensionInterface && $extension->supports($index)) {
+                $eligibleExtensions[] = $extension;
+            }
+        }
+
+        return $eligibleExtensions;
     }
 
     /**
@@ -84,8 +102,9 @@ abstract class AbstractWorker implements WorkerInterface
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
         AbstractObject::setHideUnpublished(false);
 
-        $result = InheritanceHelper::useInheritedValues(function() use ($index, $object) {
-            $classHelper = $this->classHelperRegistry->has($object->getClassName()) ? $this->classHelperRegistry->get($object->getClassName()) : null;
+
+        $result = InheritanceHelper::useInheritedValues(function () use ($index, $object) {
+            $extensions = $this->getExtensions($index);
 
             $virtualObjectId = $object->getId();
             $virtualObjectActive = $object->getEnabled();
@@ -113,8 +132,10 @@ abstract class AbstractWorker implements WorkerInterface
                 'o_type' => $object->getType()
             ];
 
-            if ($classHelper instanceof ClassHelperInterface) {
-                $data = array_merge($data, $classHelper->getIndexColumns($object));
+            foreach ($extensions as $extension) {
+                if ($extension instanceof IndexColumnsExtensionInterface) {
+                    $data = array_merge($data, $extension->getIndexColumns($object));
+                }
             }
 
             $data['active'] = $object->getEnabled();

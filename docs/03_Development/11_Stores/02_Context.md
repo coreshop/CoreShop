@@ -54,35 +54,26 @@ use Symfony\Component\HttpFoundation\Request;
 final class DocumentBasedRequestRequestResolver implements RequestResolverInterface
 {
     /**
-     * @var DocumentResolver
-     */
-    private $pimcoreDocumentResolver;
-
-    /**
      * @var StoreRepositoryInterface
      */
     private $storeRepository;
 
     /**
-     * @param DocumentResolver $pimcoreDocumentResolver
      * @param StoreRepositoryInterface $storeRepository
      */
-    public function __construct(DocumentResolver $pimcoreDocumentResolver, StoreRepositoryInterface $storeRepository)
+    public function __construct(StoreRepositoryInterface $storeRepository)
     {
-        $this->pimcoreDocumentResolver = $pimcoreDocumentResolver;
         $this->storeRepository = $storeRepository;
     }
 
     public function findStore(Request $request)
     {
-        $doc = $this->pimcoreDocumentResolver->getDocument($request);
-
-        if (substr($doc->getFullPath(), 0, 3) === '/en') {
-            return $this->storeRepository->findById(1);
+        if (substr($request->getPathInfo(), 0, 3) === '/en') {
+            return $this->storeRepository->find(1);
         }
 
-        if (substr($doc->getFullPath(), 0, 3) === '/de') {
-            return $this->storeRepository->findById(2);
+        if (substr($request->getPathInfo(), 0, 3) === '/de') {
+            return $this->storeRepository->find(2);
         }
 
         return null;
@@ -97,10 +88,9 @@ services:
   app.coreshop.store.context.request.document_based:
     class: AppBundle\CoreShop\Store\Context\DocumentBasedRequestRequestResolver
     arguments:
-      - '@Pimcore\Http\Request\Resolver\DocumentResolver'
       - '@coreshop.repository.store'
     tags:
-      - { name: coreshop.context.store.request_based.resolver }
+      - { name: coreshop.context.store.request_based.resolver, priority: 300 }
 
 ```
 

@@ -17,7 +17,7 @@ use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPaymentSettingsFormsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
-use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
@@ -64,7 +64,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         parent::build($container);
 
         $container->addCompilerPass(new TranslatableEntityLocalePass());
-        $container->addCompilerPass(new RegisterProductHelperPass());
+        $container->addCompilerPass(new RegisterIndexProductExtensionPass());
         $container->addCompilerPass(new RegisterReportsPass());
         $container->addCompilerPass(new RegisterPortletsPass());
         $container->addCompilerPass(new RegisterPaymentSettingsFormsPass());

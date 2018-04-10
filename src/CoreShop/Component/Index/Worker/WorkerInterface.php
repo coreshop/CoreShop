@@ -13,8 +13,9 @@
 namespace CoreShop\Component\Index\Worker;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 use Pimcore\Model\Listing\AbstractListing;
 
 interface WorkerInterface
@@ -50,6 +51,12 @@ interface WorkerInterface
      * @param IndexableInterface $object
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object);
+
+    /**
+     * @param IndexInterface $index
+     * @return IndexExtensionInterface[]
+     */
+    public function getExtensions(IndexInterface $index);
 
     /**
      * returns product list implementation valid and configured for this worker/tenant.
