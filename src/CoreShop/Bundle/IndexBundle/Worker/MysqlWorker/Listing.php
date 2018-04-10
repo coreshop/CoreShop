@@ -368,7 +368,10 @@ class Listing extends AbstractListing
             $excludedFieldName = null;
         }
 
-        return $this->dao->loadGroupByValues($fieldName, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+
+        return $this->dao->loadGroupByValues($queryBuilder, $fieldName, $countValues);
     }
 
     /**
@@ -381,7 +384,10 @@ class Listing extends AbstractListing
             $excludedFieldName = null;
         }
 
-        return $this->dao->loadGroupByRelationValues($fieldName, $this->buildQueryFromConditions(false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE), $countValues);
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+
+        return $this->dao->loadGroupByRelationValues($queryBuilder, $fieldName, $countValues);
     }
 
     /**
@@ -391,135 +397,6 @@ class Listing extends AbstractListing
     {
         // not supported with mysql tables
         return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function buildQueryFromConditions($excludeConditions = false, $excludedFieldName = null, $variantMode = null)
-    {
-        if ($variantMode == null) {
-            $variantMode = $this->getVariantMode();
-        }
-
-        $preConditions = [];
-
-        if ($this->getCategory()) {
-            $preConditions[] = "parentCategoryIds LIKE '%,".$this->getCategory()->getId().",%'";
-        }
-
-        if (!is_null($this->getEnabled())) {
-            $preConditions[] = 'active = '.($this->getEnabled() ? 1 : 0);
-        }
-
-        $condition = implode(' AND ', $preConditions);
-
-        //variant handling and userspecific conditions
-
-        if ($variantMode == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-            if (!$excludeConditions) {
-                $userSpecific = $this->buildUserSpecificConditions($excludedFieldName);
-                if ($userSpecific) {
-                    $condition .= ' AND '.$userSpecific;
-                }
-            }
-        } else {
-            if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
-                $condition .= " AND o_type != 'variant'";
-            }
-
-            if (!$excludeConditions) {
-                $userSpecific = $this->buildUserSpecificConditions($excludedFieldName);
-                if ($userSpecific) {
-                    $condition .= ' AND '.$userSpecific;
-                }
-            }
-        }
-
-        if (is_array($this->queryConditions)) {
-            $searchString = '';
-
-            foreach ($this->queryConditions as $condition) {
-                if ($condition instanceof ConditionInterface) {
-                    $searchString .= '+'.$condition->getValues().'+ ';
-                }
-            }
-
-            //$condition .= ' AND '.$this->dao->buildFulltextSearchWhere(["name"], $searchString); //TODO: Load array("name") from any configuration (cause its also used by indexservice)
-        }
-
-        return $condition;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function buildUserSpecificConditions($excludedFieldName = null)
-    {
-        $renderedConditions = [];
-        $relationalTableName = $this->worker->getRelationTablename($this->index);
-
-        foreach ($this->relationConditions as $fieldName => $condArray) {
-            if ($fieldName !== $excludedFieldName && is_array($condArray)) {
-                foreach ($condArray as $cond) {
-                    $cond = $this->worker->renderCondition($cond);
-
-                    $renderedConditions[] = 'a.o_id IN (SELECT DISTINCT src FROM '.$relationalTableName.' WHERE '.$cond.')';
-                }
-            }
-        }
-
-        foreach ($this->conditions as $fieldName => $condArray) {
-            if ($fieldName !== $excludedFieldName && is_array($condArray)) {
-                foreach ($condArray as $cond) {
-                    $renderedConditions[] = $this->worker->renderCondition($cond);
-                }
-            }
-        }
-
-        return implode(' AND ', $renderedConditions);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function buildOrderBy()
-    {
-        if (!empty($this->orderKey) && $this->orderKey !== AbstractListing::ORDERKEY_PRICE) {
-            $orderKeys = $this->orderKey;
-            if (!is_array($orderKeys)) {
-                $orderKeys = [$orderKeys];
-            }
-
-            $directionOrderKeys = [];
-            foreach ($orderKeys as $key) {
-                if (is_array($key)) {
-                    $directionOrderKeys[] = $key;
-                } else {
-                    $directionOrderKeys[] = [$key, $this->order];
-                }
-            }
-
-            $orderByStringArray = [];
-            foreach ($directionOrderKeys as $keyDirection) {
-                $key = $keyDirection[0];
-                $direction = $keyDirection[1];
-
-                if ($this->getVariantMode() == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                    if (strtoupper($this->order) == 'DESC') {
-                        $orderByStringArray[] = 'max('.$key.') '.$direction;
-                    } else {
-                        $orderByStringArray[] = 'min('.$key.') '.$direction;
-                    }
-                } else {
-                    $orderByStringArray[] = $key.' '.$direction;
-                }
-            }
-
-            return implode(',', $orderByStringArray);
-        }
-
-        return null;
     }
 
     /**
