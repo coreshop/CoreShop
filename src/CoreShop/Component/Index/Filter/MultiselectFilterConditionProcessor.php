@@ -61,7 +61,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
             $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
 
             if (!empty($values)) {
-                $list->addCondition(Condition::in($fieldName, $values), $fieldName);
+                $list->addCondition(Condition::in($field, $values), $fieldName);
             }
         }
 
