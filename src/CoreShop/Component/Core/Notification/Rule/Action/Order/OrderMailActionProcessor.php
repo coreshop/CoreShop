@@ -47,7 +47,7 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
         }
 
         if ($order instanceof OrderInterface) {
-            $language = $order->getOrderLanguage();
+            $language = $order->getLocaleCode();
 
             if (is_null($language)) {
                 throw new \Exception('OrderMailActionProcessor: Language is not set.');

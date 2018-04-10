@@ -59,11 +59,15 @@ interface OrderInterface extends SaleInterface
 
     /**
      * @return string
+     *
+     * @deprecated use getLocaleCode
      */
     public function getOrderLanguage();
 
     /**
      * @param $orderLanguage
+     *
+     * @deprecated use setLocaleCode
      */
     public function setOrderLanguage($orderLanguage);
 

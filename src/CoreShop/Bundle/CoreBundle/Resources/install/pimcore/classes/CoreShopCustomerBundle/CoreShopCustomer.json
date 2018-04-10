@@ -324,7 +324,7 @@
                                 "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
-                                "name": "locale",
+                                "name": "localeCode",
                                 "title": "Locale",
                                 "tooltip": "",
                                 "mandatory": false,

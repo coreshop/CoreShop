@@ -139,7 +139,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
+    public function getLocaleCode()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -147,7 +147,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocaleCode($locale)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -241,5 +241,25 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     public function isEqualTo(UserInterface $user)
     {
         return $user instanceof self && $user->getId() === $this->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocale()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us getLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->getLocaleCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us setLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
+
+        $this->setLocaleCode($locale);
     }
 }

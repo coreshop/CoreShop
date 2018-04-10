@@ -55,7 +55,7 @@ final class OrderCommentsListener extends AbstractNotificationRuleListener
             'type' => 'create',
             'submitAsEmail' => $event->getArgument('submitAsEmail'),
             'comment' => $event->getSubject(),
-            '_locale' => $order->getOrderLanguage(),
+            '_locale' => $order->getLocaleCode(),
             'recipient' => $customer->getEmail(),
             'firstname' => $customer->getFirstname(),
             'lastname' => $customer->getLastname(),

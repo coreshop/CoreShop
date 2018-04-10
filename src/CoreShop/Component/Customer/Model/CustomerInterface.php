@@ -12,12 +12,13 @@
 
 namespace CoreShop\Component\Customer\Model;
 
+use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, UserInterface, EquatableInterface
+interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, UserInterface, EquatableInterface, LocaleAwareInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
@@ -102,11 +103,15 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
 
     /**
      * @return string
+     *
+     * @deprecated use getLocaleCode
      */
     public function getLocale();
 
     /**
      * @param string $locale
+     *
+     * @deprecated use setLocaleCode
      */
     public function setLocale($locale);
 
