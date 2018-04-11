@@ -65,10 +65,10 @@ class Dao
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
         if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
             if (!is_null($queryBuilder->getQueryPart('orderBy'))) {
-                $queryBuilder->select('DISTINCT o_virtualObjectId as o_id');
-                $queryBuilder->addGroupBy('o_virtualObjectId');
+                $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
+                $queryBuilder->addGroupBy('q.o_virtualObjectId');
             } else {
-                $queryBuilder->select('DISTINCT o_virtualObjectId as o_id');
+                $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
             }
         } else {
             $queryBuilder->select('DISTINCT q.o_id');
