@@ -71,7 +71,7 @@ class Dao
                 $queryBuilder->select('DISTINCT o_virtualObjectId as o_id');
             }
         } else {
-            $queryBuilder->select('DISTINCT o_id');
+            $queryBuilder->select('DISTINCT q.o_id');
         }
         $result = $this->database->executeQuery($queryBuilder->getSQL());
         $this->lastRecordCount = $result->rowCount();
