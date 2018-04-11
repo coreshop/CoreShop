@@ -96,7 +96,7 @@ final class Configuration implements ConfigurationInterface
                             ->arrayNode('order')
                             ->addDefaultsIfNotSet()
                             ->children()
-                                ->integerNode('days')->defaultValue(5)->end()
+                                ->integerNode('days')->defaultValue(20)->end()
                             ->end()
                         ->end()
                     ->end()
