@@ -106,6 +106,7 @@ coreshop.index.fields = Class.create({
             }
 
             this.selectionPanel = new Ext.tree.TreePanel({
+                ensureVisible: true,
                 root: {
                     id: '0',
                     root: true,
