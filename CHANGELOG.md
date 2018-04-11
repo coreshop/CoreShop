@@ -1,5 +1,8 @@
 # Within V2
 
+## 2.0.0-beta.1 to 2.0.0-beta.2
+ - Nothing Yet
+
 ## 2.0.0-alpha.4 to 2.0.0-beta.1
  - **BC break** Signature of following interfaces changed:
     - ```CoreShop\Component\Index\Interpreter\InterpreterInterface```: public function interpret($value, IndexableInterface $object, IndexColumnInterface $config);
