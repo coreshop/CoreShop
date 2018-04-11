@@ -16,7 +16,7 @@ CoreShop\Component\Core\Model\ProductStorePrice:
             type: integer
     manyToOne:
         store:
-            targetEntity: CoreShop\Component\Store\Model\Store
+            targetEntity: CoreShop\Component\Store\Model\StoreInterface
             joinColumn:
                 name: storeId
                 referencedColumnName: id
