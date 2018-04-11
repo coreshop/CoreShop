@@ -1,5 +1,8 @@
 # Within V2
 
+## 2.0.0-beta.1 to 2.0.0-beta.2
+ - Nothing Yet
+
 ## 2.0.0-alpha.4 to 2.0.0-beta.1
  - **BC break** CoreShop now takes advantage of the dependent bundle feature introduced in Pimcore 5.1.2. Therefore,
  all bundles are now automatically loaded. This is a BC break, as when updating, you might run into issues.
