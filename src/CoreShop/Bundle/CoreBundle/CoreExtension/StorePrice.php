@@ -178,7 +178,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
-        $code .= "\t" . 'if (array_key_exists($store->getId(), $data) && is_numeric($data[$store->getId()])) {' . "\n";
+        $code .= "\t" . 'if (is_array($data) && array_key_exists($store->getId(), $data) && is_numeric($data[$store->getId()])) {' . "\n";
         $code .= "\t\t" . 'return intval($data[$store->getId()]);' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t return null;" . "\n";
