@@ -95,6 +95,11 @@ class Listing extends AbstractListing
     protected $relationConditions = [];
 
     /**
+     * @var string[]
+     */
+    protected $andWhereConditions = [];
+
+    /**
      * @var string[][]
      */
     protected $queryConditions = [];
@@ -175,6 +180,7 @@ class Listing extends AbstractListing
         $this->relationConditions = [];
         $this->queryConditions = [];
         $this->queryJoins = [];
+        $this->andWhereConditions = [];
 
         $this->objects = null;
     }
@@ -195,6 +201,24 @@ class Listing extends AbstractListing
     {
         $this->objects = null;
         unset($this->queryConditions[$fieldName]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAndWhereCondition($condition, $key)
+    {
+        $this->objects = null;
+        $this->andWhereConditions[$key][] = $condition;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function resetAndWhereCondition($key)
+    {
+        $this->objects = null;
+        unset($this->andWhereConditions[$key]);
     }
 
     /**
@@ -509,6 +533,12 @@ class Listing extends AbstractListing
                 foreach ($condArray as $cond) {
                     $queryBuilder->andWhere($this->worker->renderCondition($cond, 'q'));
                 }
+            }
+        }
+
+        foreach ($this->andWhereConditions as $key => $condArray) {
+            foreach ($condArray as $cond) {
+                $queryBuilder->andWhere($cond);
             }
         }
     }
