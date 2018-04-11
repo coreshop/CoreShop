@@ -71,10 +71,11 @@ interface WorkerInterface
      * Renders the condition to fit the service.
      *
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return mixed
      */
-    public function renderCondition(ConditionInterface $condition);
+    public function renderCondition(ConditionInterface $condition, $prefix = null);
 
     /**
      * Renders field type for the service.

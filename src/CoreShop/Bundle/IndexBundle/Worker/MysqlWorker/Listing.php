@@ -16,6 +16,7 @@ use CoreShop\Bundle\IndexBundle\Extension\MysqlIndexQueryExtensionInterface;
 use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
+use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -448,10 +449,10 @@ class Listing extends AbstractListing
             $variantMode = $this->getVariantMode();
         }
 
-        $queryBuilder->where('active = 1');
+        $queryBuilder->where($this->worker->renderCondition(Condition::compare('active', 1, '='), 'q'));
 
         if ($this->getCategory()) {
-            $queryBuilder->andWhere('parentCategoryIds LIKE \'%,' . $this->getCategory()->getId() . ',%\'');
+            $queryBuilder->andWhere($this->worker->renderCondition(Condition::like('parentCategoryIds', $this->getCategory()->getId(), 'both'), 'q'));
         }
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
@@ -459,7 +460,7 @@ class Listing extends AbstractListing
             if ($extension instanceof MysqlIndexQueryExtensionInterface) {
                 $conditions = $extension->preConditionQuery($this->getIndex());
                 foreach ($conditions as $cond) {
-                    $queryBuilder->andWhere($this->worker->renderCondition($cond));
+                    $queryBuilder->andWhere($this->worker->renderCondition($cond, 'q'));
                 }
             }
         }
@@ -471,7 +472,7 @@ class Listing extends AbstractListing
             }
         } else {
             if ($variantMode == AbstractListing::VARIANT_MODE_HIDE) {
-                $queryBuilder->andWhere('o_type != \'variant\'');
+                $queryBuilder->andWhere('q.o_type != \'variant\'');
             }
             if (!$excludeConditions) {
                 $this->addUserSpecificConditions($queryBuilder, $excludedFieldName);
@@ -498,7 +499,7 @@ class Listing extends AbstractListing
         foreach ($this->relationConditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $cond = $this->worker->renderCondition($cond);
+                    $cond = $this->worker->renderCondition($cond, 'q');
                     $queryBuilder->andWhere('q.o_id IN (SELECT DISTINCT src FROM ' . $relationalTableName . ' WHERE ' . $cond . ')');
                 }
             }
@@ -506,7 +507,7 @@ class Listing extends AbstractListing
         foreach ($this->conditions as $fieldName => $condArray) {
             if ($fieldName !== $excludedFieldName && is_array($condArray)) {
                 foreach ($condArray as $cond) {
-                    $queryBuilder->andWhere($this->worker->renderCondition($cond));
+                    $queryBuilder->andWhere($this->worker->renderCondition($cond, 'q'));
                 }
             }
         }

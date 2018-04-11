@@ -439,11 +439,11 @@ QUERY;
     /**
      * {@inheritdoc}
      */
-    public function renderCondition(ConditionInterface $condition)
+    public function renderCondition(ConditionInterface $condition, $prefix = null)
     {
         $renderer = new MysqlRenderer();
 
-        return $renderer->render($condition);
+        return $renderer->render($condition, $prefix);
     }
 
     /**
