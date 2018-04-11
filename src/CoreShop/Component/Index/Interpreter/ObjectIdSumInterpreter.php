@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Pimcore\Model\Element\ElementInterface;
 
@@ -20,7 +21,7 @@ class ObjectIdSumInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexColumnInterface $config = null)
+    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config)
     {
         $sum = 0;
         if (is_array($value)) {

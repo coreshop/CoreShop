@@ -222,10 +222,10 @@ abstract class AbstractWorker implements WorkerInterface
                 $interpreterClass = $this->getInterpreterObject($column);
 
                 if ($interpreterClass instanceof InterpreterInterface) {
-                    $value = $interpreterClass->interpret($value, $column);
+                    $value = $interpreterClass->interpret($value, $object, $column);
 
                     if ($interpreterClass instanceof RelationInterpreterInterface) {
-                        $relationalValue = $interpreterClass->interpretRelational($value, $column);
+                        $relationalValue = $interpreterClass->interpretRelational($value, $object, $column);
 
                         $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
                     }
@@ -304,15 +304,15 @@ abstract class AbstractWorker implements WorkerInterface
         if ($interpreterClass instanceof LocalizedInterpreterInterface) {
             $validLanguages = Tool::getValidLanguages();
             foreach ($validLanguages as $language) {
-                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
+                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column);
             }
             //reset value here, we only populate localized values here
             $value = null;
         } elseif ($interpreterClass instanceof InterpreterInterface) {
-            $value = $interpreterClass->interpret($originalValue, $column);
+            $value = $interpreterClass->interpret($originalValue, $object, $column);
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
-                $relationalValue = $interpreterClass->interpretRelational($originalValue, $column);
+                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column);
 
                 $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
             }
