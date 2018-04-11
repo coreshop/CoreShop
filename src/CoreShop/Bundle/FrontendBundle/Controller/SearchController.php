@@ -42,13 +42,15 @@ class SearchController extends FrontendController
                 'name LIKE ?',
                 'description LIKE ?',
                 'shortDescription LIKE ?',
-                'sku LIKE ?'
+                'sku LIKE ?',
+                'condition' => 'stores LIKE ?'
             ];
             $queryParams = [
                 '%'.$text.'%',
                 '%'.$text.'%',
                 '%'.$text.'%',
-                '%'.$text.'%'
+                '%'.$text.'%',
+                '%'.$this->container->get('coreshop.context.store')->getStore()->getId().'%'
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
