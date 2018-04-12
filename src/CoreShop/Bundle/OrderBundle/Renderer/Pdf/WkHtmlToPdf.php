@@ -49,11 +49,15 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $config['options'] = [];
         }
 
-        $config['options']['--header-html'] = $headerHtml;
-        $config['options']['--footer-html'] = $footerHtml;
+        if ($headerHtml) {
+            $config['options']['--header-html'] = $headerHtml;
+        }
+
+        if ($footerHtml) {
+            $config['options']['--footer-html'] = $footerHtml;
+        }
 
         $pdfContent = $this->convert($bodyHtml, $config);
-
 
         $this->unlinkFile($bodyHtml);
         $this->unlinkFile($headerHtml);
@@ -71,11 +75,15 @@ final class WkHtmlToPdf implements PdfRendererInterface
      */
     private function createHtmlFile($string)
     {
-        $tmpHtmlFile = $this->kernelCacheDir.'/'.uniqid().'.htm';
+        if ($string) {
+            $tmpHtmlFile = $this->kernelCacheDir . '/' . uniqid() . '.htm';
 
-        file_put_contents($tmpHtmlFile, $this->replaceUrls($string));
+            file_put_contents($tmpHtmlFile, $this->replaceUrls($string));
 
-        return $tmpHtmlFile;
+            return $tmpHtmlFile;
+        }
+
+        return null;
     }
 
     private function replaceUrls($string)
