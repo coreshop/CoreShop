@@ -19,4 +19,4 @@ Feature: Adding a object index
     | ean   | ean             | object          |                 |               | STRING       |
     | name  | internalName    | localizedfields | localizedfield  | localeMapping | STRING       |
     Then the index should have columns "ean, sku"
-    And the index should have localized columns "internalName"
+    And the index should have localized columns "internalName"a

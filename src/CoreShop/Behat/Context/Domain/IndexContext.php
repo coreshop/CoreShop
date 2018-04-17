@@ -113,6 +113,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
      * @Then /^the (index) column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
+     * @Then /^the (index) column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
     public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
     {
@@ -122,6 +123,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) localized column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
      * @Then /^the (index) localized column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
+     * @Then /^the (index) localized column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
     public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
     {

@@ -18,6 +18,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Pimcore\ClassLoader;
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection\Definition;
 use Webmozart\Assert\Assert;
 
@@ -90,6 +91,14 @@ final class PimcoreClassContext implements Context
     public function objectInstance()
     {
         return $this->sharedStorage->get('object-instance');
+    }
+
+    /**
+     * @Transform /^object-instance "([^"]+)"$/
+     */
+    public function objectInstanceWithKey($key)
+    {
+        return Concrete::getByPath('/' . $key);
     }
 
     /**

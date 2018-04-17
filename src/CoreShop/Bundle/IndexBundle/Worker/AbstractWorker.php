@@ -176,7 +176,7 @@ abstract class AbstractWorker implements WorkerInterface
                     $relationData = array_merge_recursive($relationData, $columnRelationData);
                     $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
 
-                    if ($value) {
+                    if (null !== $value) {
                         if (is_array($value)) {
                             $value = ','.implode($value, ',').',';
                         }
