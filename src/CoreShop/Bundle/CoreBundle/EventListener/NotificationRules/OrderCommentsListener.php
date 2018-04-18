@@ -60,6 +60,8 @@ final class OrderCommentsListener extends AbstractNotificationRuleListener
             'firstname' => $customer->getFirstname(),
             'lastname' => $customer->getLastname(),
             'orderNumber' => $order->getOrderNumber(),
+            'customer' => $customer,
+            'order' => $order
         ]);
     }
 }
