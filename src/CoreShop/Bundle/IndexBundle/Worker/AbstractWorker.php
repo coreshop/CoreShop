@@ -19,9 +19,9 @@ use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Pimcore\InheritanceHelper;
@@ -164,28 +164,31 @@ abstract class AbstractWorker implements WorkerInterface
                     if ($column->hasGetter()) {
                         $value = $this->processGetter($column, $object);
                     } else {
-                        $getter = 'get'.ucfirst($column->getObjectKey());
+                        $getter = 'get' . ucfirst($column->getObjectKey());
 
                         if (method_exists($object, $getter)) {
                             $value = $object->$getter();
                         }
                     }
 
-                    list ($columnLocalizedData, $columnRelationData, $value) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+                    list ($columnLocalizedData, $columnRelationData, $value, $isLocalizedValue) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
 
                     $relationData = array_merge_recursive($relationData, $columnRelationData);
                     $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
 
-                    if (null !== $value) {
+
+                    if (!$isLocalizedValue) {
                         if (is_array($value)) {
-                            $value = ','.implode($value, ',').',';
+                            $value = ',' . implode($value, ',') . ',';
                         }
+
+                        $value = $this->typeCastValues($column, $value);
 
                         $data[$column->getName()] = $value;
                     }
 
                 } catch (\Exception $e) {
-                    $this->logger->error('Exception in CoreShopIndexService: '.$e->getMessage(), [$e]);
+                    $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
                     throw $e;
                 }
             }
@@ -208,7 +211,7 @@ abstract class AbstractWorker implements WorkerInterface
 
     protected function prepareLocalizedFields(IndexColumnInterface $column, IndexableInterface $object, $virtualObjectId)
     {
-        $getter = 'get'.ucfirst($column->getObjectKey());
+        $getter = 'get' . ucfirst($column->getObjectKey());
 
         $validLanguages = Tool::getValidLanguages();
 
@@ -232,8 +235,10 @@ abstract class AbstractWorker implements WorkerInterface
                 }
 
                 if (is_array($value)) {
-                    $value = ','.implode($value, ',').',';
+                    $value = ',' . implode($value, ',') . ',';
                 }
+
+                $value = $this->typeCastValues($column, $value);
 
                 $localizedData['values'][$language][$column->getName()] = $value;
             }
@@ -242,6 +247,52 @@ abstract class AbstractWorker implements WorkerInterface
         return [
             $localizedData, $relationData
         ];
+    }
+
+    /**
+     * @param IndexColumnInterface $column
+     * @param $value
+     * @return mixed
+     */
+    protected function typeCastValues(IndexColumnInterface $column, $value)
+    {
+        switch ($column->getColumnType()) {
+            case IndexColumnInterface::FIELD_TYPE_INTEGER:
+                return intval($value);
+
+            case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
+                return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+
+            case IndexColumnInterface::FIELD_TYPE_DATE:
+                if ($value instanceof \DateTime) {
+                    return $value->format('Y-m-d H:i:s');
+                }
+
+                return null;
+
+            case IndexColumnInterface::FIELD_TYPE_DOUBLE:
+                return doubleval($value);
+
+            case IndexColumnInterface::FIELD_TYPE_STRING:
+                return strval($value);
+
+            case IndexColumnInterface::FIELD_TYPE_TEXT:
+                return strval($value);
+        }
+
+
+        throw new \InvalidArgumentException(sprintf(
+            'Unknown type %s given, valid types are %s',
+            $column->getColumnType(),
+            implode(', ', [
+                IndexColumnInterface::FIELD_TYPE_STRING,
+                IndexColumnInterface::FIELD_TYPE_DOUBLE,
+                IndexColumnInterface::FIELD_TYPE_INTEGER,
+                IndexColumnInterface::FIELD_TYPE_BOOLEAN,
+                IndexColumnInterface::FIELD_TYPE_DATE,
+                IndexColumnInterface::FIELD_TYPE_TEXT
+            ])
+        ));
     }
 
     /**
@@ -298,6 +349,7 @@ abstract class AbstractWorker implements WorkerInterface
         $value = $originalValue;
         $relationData = [];
         $localizedData = [];
+        $isLocalizedValue = false;
 
         $interpreterClass = $this->getInterpreterObject($column);
 
@@ -308,6 +360,7 @@ abstract class AbstractWorker implements WorkerInterface
             }
             //reset value here, we only populate localized values here
             $value = null;
+            $isLocalizedValue = true;
         } elseif ($interpreterClass instanceof InterpreterInterface) {
             $value = $interpreterClass->interpret($originalValue, $object, $column);
 
@@ -319,7 +372,7 @@ abstract class AbstractWorker implements WorkerInterface
         }
 
         return [
-            $localizedData, $relationData, $value
+            $localizedData, $relationData, $value, $isLocalizedValue
         ];
     }
 

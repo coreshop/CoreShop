@@ -7,6 +7,7 @@ Feature: Adding a object index
     Given there is a pimcore class "BooleanTest"
     And the definition has a checkbox field "enabled"
     And the definition has a checkbox field "booleanTest"
+    And the definition has a localized input field "name"
     And the definitions parent class is set to "\CoreShop\Behat\Model\Index\TestIndex"
 
   Scenario: Create a new index and add fields
