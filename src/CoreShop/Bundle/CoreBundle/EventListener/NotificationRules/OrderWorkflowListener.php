@@ -43,7 +43,9 @@ final class OrderWorkflowListener extends AbstractNotificationRuleListener
             'firstname' => $customer->getFirstname(),
             'lastname' => $customer->getLastname(),
             'orderNumber' => $order->getOrderNumber(),
-            'transition' => $event->getTransition()->getName()
+            'transition' => $event->getTransition()->getName(),
+            'customer' => $customer,
+            'order' => $order
         ]);
     }
 }

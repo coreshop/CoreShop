@@ -28,11 +28,17 @@ final class CustomerListener extends AbstractNotificationRuleListener
      */
     public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event)
     {
-        $this->rulesProcessor->applyRules('user', $event->getCustomer(), [
+        /**
+         * @var $user CustomerInterface
+         */
+        $user = $event->getCustomer();
+
+        $this->rulesProcessor->applyRules('user', $user, [
             'type' => UserTypeChecker::TYPE_PASSWORD_RESET,
             'recipient' => $event->getCustomer()->getEmail(),
             'resetLink' => $event->getResetLink(),
-            '_locale' => $this->shopperContext->getLocaleCode()
+            '_locale' => $this->shopperContext->getLocaleCode(),
+            'object' => $user
         ]);
     }
 
@@ -55,7 +61,8 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $user, [
             'type' => UserTypeChecker::TYPE_REGISTER,
             'recipient' => $user->getEmail(),
-            '_locale' => $this->shopperContext->getLocaleCode()
+            '_locale' => $this->shopperContext->getLocaleCode(),
+            'object' => $user
         ]);
     }
 
@@ -121,7 +128,8 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $user, [
             'type' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
             'recipient' => $user->getEmail(),
-            '_locale' => $this->shopperContext->getLocaleCode()
+            '_locale' => $this->shopperContext->getLocaleCode(),
+            'object' => $user
         ]);
     }
 }
