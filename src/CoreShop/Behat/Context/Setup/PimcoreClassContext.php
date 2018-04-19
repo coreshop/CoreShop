@@ -630,7 +630,7 @@ final class PimcoreClassContext implements Context
         foreach ($hash as $row) {
             switch ($row['type']) {
                 case 'checkbox':
-                    $object->setValue($row['key'], boolval($row['value']));
+                    $object->setValue($row['key'], filter_var($row['value'], FILTER_VALIDATE_BOOLEAN));
                     break;
 
                 case 'input':
