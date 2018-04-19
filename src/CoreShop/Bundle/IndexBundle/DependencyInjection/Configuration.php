@@ -160,6 +160,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('index_getter_fieldcollection')->defaultValue('/bundles/coreshopindex/pimcore/js/index/getters/fieldcollection.js')->end()
                             ->scalarNode('index_interpreter_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/abstract.js')->end()
                             ->scalarNode('index_interpreter_objectproperty')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/objectproperty.js')->end()
+                            ->scalarNode('index_interpreter_expression')->defaultValue('/bundles/coreshopindex/pimcore/js/index/interpreters/expression.js')->end()
                             ->scalarNode('index_interpreter_objecttype')->defaultValue('/bundles/coreshopindex/pimcore/js/index/objecttype/abstract.js')->end()
                             ->scalarNode('index_type_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/index/type/abstract.js')->end()
                             ->scalarNode('index_type_elasticsearch')->defaultValue('/bundles/coreshopindex/pimcore/js/index/type/elasticsearch.js')->end()

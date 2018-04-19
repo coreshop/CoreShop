@@ -161,6 +161,13 @@ services:
         tags:
           - { name: coreshop.index.interpreter, type: timestamp, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
 
+    coreshop.index.interpreter.expression:
+        class: CoreShop\Component\Index\Interpreter\ExpressionInterpreter
+        arguments:
+            - '@service_container'
+        tags:
+          - { name: coreshop.index.interpreter, type: expression, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ExpressionInterpreterFormType}
+
     # Index Column Types
     coreshop.index.column_type.classification_store:
         class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType
