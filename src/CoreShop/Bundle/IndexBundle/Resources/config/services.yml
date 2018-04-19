@@ -156,6 +156,11 @@ services:
         tags:
           - { name: coreshop.index.interpreter, type: localeMapping, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
+    coreshop.index.interpreter.timestamp:
+        class: CoreShop\Component\Index\Interpreter\TimestampInterpreter
+        tags:
+          - { name: coreshop.index.interpreter, type: timestamp, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
+
     # Index Column Types
     coreshop.index.column_type.classification_store:
         class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType
@@ -181,6 +186,11 @@ services:
         class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType
         tags:
             - { name: coreshop.index.column_type, type: object, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType }
+
+    coreshop.index.column_type.system:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType
+        tags:
+            - { name: coreshop.index.column_type, type: system, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType }
 
     # Filter Condition Types
     coreshop.filter.condition_type.select:
