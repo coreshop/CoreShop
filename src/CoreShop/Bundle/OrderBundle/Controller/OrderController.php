@@ -206,7 +206,11 @@ class OrderController extends AbstractSaleDetailController
                     if (empty($detailValue) && $detailValue != 0) {
                         continue;
                     }
-                    $details[] = [$detailName, $detailValue];
+                    if (is_array($detailValue)) {
+                        $detailValue = join(', ', $detailValue);
+                    }
+
+                    $details[] = [$detailName, htmlentities($detailValue)];
                 }
             }
 
