@@ -165,14 +165,13 @@ class OrderController extends AbstractSaleDetailController
         $manager = $this->getWorkflowStateManager();
         $history = $manager->getStateHistory($order);
 
-        $date = Carbon::now();
         $statesHistory = [];
 
         if (is_array($history)) {
             foreach ($history as $note) {
                 $user = User::getById($note->getUser());
                 $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
-
+                $date = Carbon::createFromTimestamp($note->getDate());
                 $statesHistory[] = [
                     'icon' => 'coreshop_icon_orderstates',
                     'type' => $note->getType(),
@@ -206,7 +205,7 @@ class OrderController extends AbstractSaleDetailController
                     if (empty($detailValue) && $detailValue != 0) {
                         continue;
                     }
-                    if (is_array($detailValue)) {
+                    if(is_array($detailValue)) {
                         $detailValue = join(', ', $detailValue);
                     }
 
