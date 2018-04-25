@@ -187,7 +187,12 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $command = $wkHtmlTopPfBinary . $options;
         }
 
-        Console::exec($command.' '.$httpSource.' '.$tmpPdfFile);
+        $execCommand = $command.' '.$httpSource.' '.$tmpPdfFile;
+        Console::exec($execCommand);
+
+        if (!file_exists($tmpPdfFile)) {
+            throw new \Exception(sprintf('wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"', $execCommand));
+        }
 
         $pdfContent = file_get_contents($tmpPdfFile);
 
