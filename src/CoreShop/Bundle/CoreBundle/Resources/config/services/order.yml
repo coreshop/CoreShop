@@ -98,6 +98,7 @@ services:
     coreshop.mail.processor.order:
         class: CoreShop\Component\Core\Order\OrderMailProcessor
         arguments:
+           - '@monolog.logger.pimcore'
            - '@coreshop.money_formatter'
            - '@coreshop.repository.order_invoice'
            - '@coreshop.repository.order_shipment'

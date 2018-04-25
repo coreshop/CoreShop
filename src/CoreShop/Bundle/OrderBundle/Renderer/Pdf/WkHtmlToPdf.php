@@ -57,7 +57,15 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $config['options']['--footer-html'] = $footerHtml;
         }
 
-        $pdfContent = $this->convert($bodyHtml, $config);
+        $pdfContent = null;
+        try {
+            $pdfContent = $this->convert($bodyHtml, $config);
+        } catch (\Exception $e) {
+            $this->unlinkFile($bodyHtml);
+            $this->unlinkFile($headerHtml);
+            $this->unlinkFile($footerHtml);
+            throw new \Exception('error while converting pdf. message was: ' . $e->getMessage(), 0, $e);
+        }
 
         $this->unlinkFile($bodyHtml);
         $this->unlinkFile($headerHtml);
@@ -76,16 +84,18 @@ final class WkHtmlToPdf implements PdfRendererInterface
     private function createHtmlFile($string)
     {
         if ($string) {
-            $tmpHtmlFile = $this->kernelCacheDir . '/' . uniqid() . '.htm';
-
+            $tmpHtmlFile = $this->kernelCacheDir.'/'.uniqid().'.htm';
             file_put_contents($tmpHtmlFile, $this->replaceUrls($string));
-
             return $tmpHtmlFile;
         }
 
         return null;
     }
 
+    /**
+     * @param $string
+     * @return mixed|null|string|string[]
+     */
     private function replaceUrls($string)
     {
         $hostUrl = $this->kernelRootDir.'/web';
@@ -160,24 +170,32 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $options .= implode(' ', $optionConfig);
         }
 
-        $wkhtmltopdfBinary = $this->getWkhtmltodfBinary();
-
         if (isset($config['bin'])) {
-            $wkhtmltopdfBinary = $config['bin'];
+            $wkHtmlTopPfBinary = $config['bin'];
+        } else {
+            $wkHtmlTopPfBinary = $this->getWkHtmlToPdfBinary();
         }
 
-        if ($wkhtmltopdfBinary) {
-            Console::exec($wkhtmltopdfBinary.$options.' '.$httpSource.' '.$tmpPdfFile);
-
-            $pdfContent = file_get_contents($tmpPdfFile);
-
-            // remove temps
-            $this->unlinkFile($tmpPdfFile);
-
-            return $pdfContent;
+        if (!$wkHtmlTopPfBinary) {
+            throw new \Exception('wkhtmltopdf binary not found. please check your server configuration');
         }
 
-        throw new \Exception('wkhtmltopdf not found');
+        // use xvfb if possible
+        if ($xvfb = self::getXvfbBinary()) {
+            $command = $xvfb.' --auto-servernum --server-args="-screen 0, 1280x1024x24" '.$wkHtmlTopPfBinary.' --use-xserver '.$options;
+        } else {
+            $command = $wkHtmlTopPfBinary . $options;
+        }
+
+        Console::exec($command.' '.$httpSource.' '.$tmpPdfFile);
+
+        $pdfContent = file_get_contents($tmpPdfFile);
+
+        // remove temp pdf file
+        $this->unlinkFile($tmpPdfFile);
+
+        return $pdfContent;
+
     }
 
     /**
@@ -189,12 +207,20 @@ final class WkHtmlToPdf implements PdfRendererInterface
     }
 
     /**
-     * Find the wkhtmltopdf library.
+     * Find the wkHtmlToPdf library.
      *
      * @return bool|string
      */
-    private function getWkhtmltodfBinary()
+    private function getWkHtmlToPdfBinary()
     {
         return Console::getExecutable('wkhtmltopdf');
+    }
+
+    /**
+     * @return bool
+     */
+    private function getXvfbBinary()
+    {
+        return Console::getExecutable('xvfb-run');
     }
 }

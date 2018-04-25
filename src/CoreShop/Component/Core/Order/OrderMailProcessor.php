@@ -24,11 +24,17 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
+use Monolog\Logger;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
 {
+    /**
+     * @var Logger
+     */
+    private $logger;
+
     /**
      * @var MoneyFormatterInterface
      */
@@ -60,6 +66,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $themeHelper;
 
     /**
+     * @param Logger $logger
      * @param MoneyFormatterInterface $priceFormatter
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
@@ -68,6 +75,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
      * @param ThemeHelperInterface $themeHelper
      */
     public function __construct(
+        Logger $logger,
         MoneyFormatterInterface $priceFormatter,
         OrderInvoiceRepositoryInterface $invoiceRepository,
         OrderShipmentRepositoryInterface $shipmentRepository,
@@ -76,6 +84,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         ThemeHelperInterface $themeHelper
     )
     {
+        $this->logger = $logger;
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
         $this->shipmentRepository = $shipmentRepository;
@@ -119,24 +128,28 @@ class OrderMailProcessor implements OrderMailProcessorInterface
 
         if ($sendInvoices) {
             $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
-
             foreach ($invoices as $invoice) {
                 if ($invoice instanceof OrderInvoiceInterface) {
-                    $data = $this->orderDocumentRenderer->renderDocumentPdf($invoice);
-
-                    $mail->attach(\Swift_Attachment::newInstance($data, 'invoice.pdf', 'application/pdf'));
+                    try {
+                        $data = $this->orderDocumentRenderer->renderDocumentPdf($invoice);
+                        $mail->attach(\Swift_Attachment::newInstance($data, 'invoice.pdf', 'application/pdf'));
+                    } catch (\Exception $e) {
+                        $this->logger->error('Error while attaching invoice to order mail. Messages was: ' . $e->getMessage(), [$e]);
+                    }
                 }
             }
         }
 
         if ($sendShipments) {
             $shipments = $this->shipmentRepository->getDocumentsNotInState($order, OrderShipmentStates::STATE_CANCELLED);
-
             foreach ($shipments as $shipment) {
                 if ($shipment instanceof OrderShipmentInterface) {
-                    $data = $this->orderDocumentRenderer->renderDocumentPdf($shipment);
-
-                    $mail->attach(\Swift_Attachment::newInstance($data, 'shipment.pdf', 'application/pdf'));
+                    try {
+                        $data = $this->orderDocumentRenderer->renderDocumentPdf($shipment);
+                        $mail->attach(\Swift_Attachment::newInstance($data, 'shipment.pdf', 'application/pdf'));
+                    } catch (\Exception $e) {
+                        $this->logger->error('Error while attaching packing slip to order mail. Messages was: ' . $e->getMessage(), [$e]);
+                    }
                 }
             }
         }
