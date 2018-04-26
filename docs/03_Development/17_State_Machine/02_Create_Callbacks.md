@@ -44,7 +44,7 @@ final class SpecialListener
         $customer = $order->getCustomer();
 
         /** @var string $locale */
-        $locale = $order->getOrderLanguage();
+        $locale = $order->getLocaleCode();
 
         // your very special code.
     }

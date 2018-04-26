@@ -10,7 +10,7 @@ In our case, we trigger an Order event.
 $this->rulesProcessor->applyRules('order', $event->getProposal(), [
     'fromState' => $event->getMarking()->getPlaces(),
     'toState' => $event->getTransition()->getTos(),
-    '_locale' => $order->getOrderLanguage(),
+    '_locale' => $order->getLocaleCode(),
     'recipient' => $customer->getEmail(),
     'firstname' => $customer->getFirstname(),
     'lastname' => $customer->getLastname(),

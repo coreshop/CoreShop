@@ -31,10 +31,10 @@
                             {% endif %}
                         </td>
                         <td class="text-right">
-                            {{ item.getTotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            {{ item.getTotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                         <td class="text-right">
-                            {{ item.getTotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            {{ item.getTotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                     </tr>
                 {% endfor %}
@@ -66,7 +66,7 @@
                         <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-sub-total">
-                        {{ invoice.getSubtotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        {{ invoice.getSubtotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                     </td>
                 </tr>
                 <tr>
@@ -74,7 +74,7 @@
                         <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-discount">
-                        {{ invoice.getSubtotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        {{ invoice.getSubtotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                     </td>
                 </tr>
                 {% if discount > 0 %}
@@ -83,7 +83,7 @@
                             <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-discount">
-                            -{{ discountIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            -{{ discountIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                     </tr>
                     <tr>
@@ -91,7 +91,7 @@
                             <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-discount">
-                            -{{ discount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            -{{ discount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                     </tr>
                 {% endif %}
@@ -101,7 +101,7 @@
                             <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-shipping">
-                            {{ shippingIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            {{ shippingIt|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                     </tr>
                     <tr>
@@ -109,7 +109,7 @@
                             <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
                         </td>
                         <td class="text-right cart-shipping">
-                            {{ shipping|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            {{ shipping|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                     </tr>
                 {% endif %}
@@ -119,7 +119,7 @@
                             <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
                         </td>
                         <td class="text-right cart-tax-detail">
-                            {{ taxItem.amount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            {{ taxItem.amount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                     </tr>
                 {% endfor %}
@@ -128,7 +128,7 @@
                         <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-tax">
-                        {{ invoice.getTotalTax|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        {{ invoice.getTotalTax|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                     </td>
                 </tr>
                 <tr>
@@ -136,7 +136,7 @@
                         <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
                     </td>
                     <td class="text-right cart-total-price">
-                        {{ invoice.getTotal|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                        {{ invoice.getTotal|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                     </td>
                 </tr>
             </table>
