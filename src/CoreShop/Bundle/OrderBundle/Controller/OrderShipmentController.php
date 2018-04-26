@@ -199,21 +199,24 @@ class OrderShipmentController extends PimcoreController
      */
     public function renderAction(Request $request)
     {
-        $invoiceId = $request->get('id');
-        $invoice = $this->getOrderShipmentRepository()->find($invoiceId);
+        $shipmentId = $request->get('id');
+        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
 
-        if ($invoice instanceof OrderShipmentInterface) {
-            return new Response(
-                $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
-                200,
-                [
+        if ($shipment instanceof OrderShipmentInterface) {
+            try {
+                $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($shipment);
+                $header = [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
-                ]
-            );
+                    'Content-Disposition' => 'inline; filename="shipment-'.$shipment->getId().'.pdf"',
+                ];
+            } catch (\Exception $e) {
+                $responseData = '<strong>'.$e->getMessage().'</strong><br>trace: '.$e->getTraceAsString();
+                $header = ['Content-Type' => 'text/html'];
+            }
+            return new Response($responseData, 200, $header);
         }
 
-        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));
+        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $shipmentId));
     }
 
     /**

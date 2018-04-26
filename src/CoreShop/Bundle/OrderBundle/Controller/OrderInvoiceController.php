@@ -139,14 +139,20 @@ class OrderInvoiceController extends PimcoreController
         $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
 
         if ($invoice instanceof OrderInvoiceInterface) {
-            return new Response(
-                $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
-                200,
-                [
-                    'Content-Type' => 'application/pdf',
+
+            try {
+                $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice);
+                $header = [
+                    'Content-Type'        => 'application/pdf',
                     'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
-                ]
-            );
+                ];
+            } catch (\Exception $e) {
+                $responseData = '<strong>'.$e->getMessage().'</strong><br>trace: '.$e->getTraceAsString();
+                $header = ['Content-Type' => 'text/html'];
+            }
+
+            return new Response($responseData, 200, $header);
+
         }
 
         throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));
