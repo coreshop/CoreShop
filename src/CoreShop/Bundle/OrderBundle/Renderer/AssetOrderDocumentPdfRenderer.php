@@ -39,7 +39,10 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
-            return $orderDocument->getRenderedAsset()->getData();
+            //check if asset is outdated.
+            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate()) {
+                return $orderDocument->getRenderedAsset()->getData();
+            }
         }
 
         $pdfContent = $this->decoratedService->renderDocumentPdf($orderDocument);
