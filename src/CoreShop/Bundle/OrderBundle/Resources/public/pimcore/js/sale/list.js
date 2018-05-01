@@ -262,6 +262,8 @@ coreshop.order.sale.list = Class.create({
         var searchLayout = this.search.getLayout();
         if (searchLayout) {
             searchLayout.on('afterLayout', function (layout) {
+                layout.setTitle(t('coreshop_' + this.type + '_manage'));
+                layout.setIconCls('coreshop_icon_' + this.type);
                 var gridPanels = layout.query('gridpanel');
                 if (gridPanels.length > 0) {
                     var grid = gridPanels[0];
