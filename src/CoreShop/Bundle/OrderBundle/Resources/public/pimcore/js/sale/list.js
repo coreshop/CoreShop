@@ -78,7 +78,7 @@ coreshop.order.sale.list = Class.create({
         });
     },
 
-    prepareLayout: function(data) {
+    prepareLayout: function (data) {
 
         var folderClass = [];
 
@@ -158,7 +158,8 @@ coreshop.order.sale.list = Class.create({
                             handler: function () {
                                 new coreshop.order[this.type].create.panel();
                             }.bind(this)
-                        }
+                        },
+                        this.getQuickOrder()
                     ]
                 }]
             });
@@ -182,6 +183,64 @@ coreshop.order.sale.list = Class.create({
 
     getItems: function () {
         return [this.getGrid()];
+    },
+
+    getQuickOrder: function () {
+
+        var fieldSettings = {
+            enableKeyEvents: false,
+            fieldCls: 'input_drop_target',
+            style: 'background-color:white;',
+            readOnly: true,
+            emptyText: t('coreshop_' + this.type + '_quick_open'),
+            width: 300
+        }, drag = new Ext.form.TextField(fieldSettings);
+
+        drag.on('render', function (el) {
+
+            new Ext.dd.DropZone(el.getEl(), {
+                reference: drag,
+                ddGroup: 'element',
+                getTargetFromEvent: function (e) {
+                    return this.reference.getEl();
+                },
+
+                onNodeOver: function (target, dd, e, data) {
+
+                    var record = data.records[0],
+                        data = record.data;
+
+                    if (data.className == coreshop.class_map.coreshop[this.type]) {
+                        return Ext.dd.DropZone.prototype.dropAllowed;
+                    } else {
+                        return Ext.dd.DropZone.prototype.dropNotAllowed;
+                    }
+
+                }.bind(this),
+
+                onNodeDrop: function (target, dd, e, data) {
+                    var record = data.records[0],
+                        data = record.data,
+                        view = this.search.getLayout();
+
+                    if (data.className == coreshop.class_map.coreshop[this.type]) {
+                        drag.setDisabled(true);
+                        view.setLoading(t('loading'));
+                        this.open(data.id, function () {
+                            view.setLoading(false);
+                            drag.setDisabled(false);
+                        });
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }.bind(this)
+            });
+
+        }.bind(this));
+
+        return drag;
+
     },
 
     getGrid: function () {
