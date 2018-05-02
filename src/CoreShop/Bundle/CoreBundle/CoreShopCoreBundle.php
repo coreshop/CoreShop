@@ -34,6 +34,7 @@ use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\SEOBundle\CoreShopSEOBundle;
 use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
 use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
@@ -77,6 +78,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     {
         parent::registerDependentBundles($collection);
 
+        $collection->addBundle(new CoreShopSEOBundle(), 3800);
         $collection->addBundle(new CoreShopFixtureBundle(), 3700);
         $collection->addBundle(new CoreShopMoneyBundle(), 3600);
         $collection->addBundle(new CoreShopConfigurationBundle(), 3300);

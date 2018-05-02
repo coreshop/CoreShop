@@ -1,0 +1,12 @@
+services:
+    coreshop.seo.head_meta_generator:
+        class: CoreShop\Component\SEO\Generator\HeadMetaGenerator
+
+    coreshop.seo.head_meta_listener:
+        class: CoreShop\Bundle\SEOBundle\EventListener\MetaDataListener
+        arguments:
+            - '@Pimcore\Templating\Helper\HeadMeta'
+            - '@Pimcore\Templating\Helper\HeadTitle'
+            - '@coreshop.seo.head_meta_generator'
+        tags:
+            - { name: kernel.event_subscriber }

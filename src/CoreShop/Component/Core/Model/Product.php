@@ -26,6 +26,46 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getMetaTitle($language = null)
+    {
+        return $this->getInventoryName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetaDescription($language = null)
+    {
+        return $this->getShortDescription($language);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOGTitle($language = null)
+    {
+        return $this->getMetaTitle($language);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOGDescription($language = null)
+    {
+        return $this->getMetaDescription($language);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOGType()
+    {
+        return 'product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOnHold()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
