@@ -215,11 +215,12 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
         $roles = $this->roles;
 
         /** @var CustomerGroupInterface $group */
-        foreach ($this->getCustomerGroups() as $group) {
-            $groupRoles = $group->getRoles();
-            $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);
+        if (is_array($this->getCustomerGroups())) {
+            foreach ($this->getCustomerGroups() as $group) {
+                $groupRoles = $group->getRoles();
+                $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);
+            }
         }
-
 
         // we need to make sure to have at least one role
         $roles[] = static::ROLE_DEFAULT;
