@@ -1,12 +1,16 @@
-services:
-    coreshop.seo.head_meta_generator:
-        class: CoreShop\Component\SEO\Generator\HeadMetaGenerator
+imports:
+    - { resource: "services/extractor.yml" }
 
-    coreshop.seo.head_meta_listener:
-        class: CoreShop\Bundle\SEOBundle\EventListener\MetaDataListener
+services:
+    coreshop.registry.seo.extractor:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - 'CoreShop\Component\SEO\Extractor\ExtractorInterface'
+            - 'seo metadata extractor'
+
+    coreshop.seo.presentation:
+        class: CoreShop\Component\SEO\SEOPresentation
         arguments:
             - '@Pimcore\Templating\Helper\HeadMeta'
             - '@Pimcore\Templating\Helper\HeadTitle'
-            - '@coreshop.seo.head_meta_generator'
-        tags:
-            - { name: kernel.event_subscriber }
+            - '@coreshop.registry.seo.extractor'

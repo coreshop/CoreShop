@@ -4,14 +4,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{% block title %}{% endblock %} CoreShop</title>
+    {%- spaceless -%}
+        {% do pimcore_head_link().appendStylesheet(asset('bundles/coreshopfrontend/static/css/shop.css')) %}
+        {% do pimcore_head_link().appendStylesheet(asset('bundles/coreshopfrontend/static/css/owl.carousel.css')) %}
 
-    {% block metatags %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/jquery-1.11.1.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/popper.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/bootstrap.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/owl.carousel.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/handle-prototypes.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/custom.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/shop.js')) %}
+
+        {% do pimcore_head_title().setSeparator(' | ') %}
+    {%- endspaceless -%}
+
+    {% block layout_head_meta deferred %}
+        {{ pimcore_head_title('CoreShop') }}
+        {{ pimcore_head_meta() }}
     {% endblock %}
 
-    {% block stylesheets %}
-        {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': '/bundles/coreshopfrontend/static/css/shop.css'} %}
-        {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': '/bundles/coreshopfrontend/static/css/owl.carousel.css'} %}
+    {% block head_stylesheets deferred %}
+        {{ pimcore_head_link() }}
     {% endblock %}
 </head>
 
@@ -33,14 +47,8 @@
     {% include '@CoreShopFrontend/_footer.html.twig' %}
 {% endblock %}
 
-{% block javascripts %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/jquery-1.11.1.min.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/popper.min.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/bootstrap.min.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/owl.carousel.min.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/handle-prototypes.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/custom.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/shop.js'} %}
+{% block scripts deferred %}
+    {{ pimcore_head_script() }}
 {% endblock %}
 </body>
 </html>

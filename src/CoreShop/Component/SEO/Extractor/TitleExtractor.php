@@ -10,21 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\SEOBundle;
+namespace CoreShop\Component\SEO\Extractor;
 
-use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\ExtractorRegistryServicePass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use CoreShop\Component\SEO\Model\SEOAwareInterface;
+use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 
-final class CoreShopSEOBundle extends Bundle
+final class TitleExtractor implements ExtractorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function supports($content)
     {
-        parent::build($container);
+        return $content instanceof SEOAwareInterface;
+    }
 
-        $container->addCompilerPass(new ExtractorRegistryServicePass());
+    /**
+     * {@inheritdoc}
+     */
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
+    {
+        $seoMetadata->setTitle($object->getMetaTitle());
     }
 }

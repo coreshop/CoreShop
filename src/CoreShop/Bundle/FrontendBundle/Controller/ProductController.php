@@ -52,8 +52,7 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        $request->attributes->set('seo_object', $product);
-        
+        $this->get('coreshop.seo.presentation')->updateSeoMetadata($product);
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
