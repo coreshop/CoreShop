@@ -29,7 +29,6 @@ class CarrierType extends AbstractResourceType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('label', TextType::class)
             ->add('trackingUrl', TextType::class)
             ->add('isFree', CheckboxType::class)
             ->add('shippingRules', ShippingRuleGroupCollectionType::class)

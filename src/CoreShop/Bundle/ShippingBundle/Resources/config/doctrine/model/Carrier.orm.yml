@@ -11,9 +11,6 @@ CoreShop\Component\Shipping\Model\Carrier:
         name:
             column: name
             type: string
-        label:
-            column: label
-            type: string
             nullable: true
         trackingUrl:
             column: trackingUrl

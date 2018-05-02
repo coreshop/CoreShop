@@ -98,8 +98,8 @@ final class CarrierType extends AbstractResourceType
                         $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
                         $amount = $this->currencyConverter->convert($carrierPrice, $this->shopperContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
                         $formattedAmount = $this->moneyFormatter->format($amount, $this->shopperContext->getCurrency()->getIsoCode(), $this->shopperContext->getLocaleCode());
-                        $label = 'coreshop.ui.carrier.'.strtolower(str_replace(' ', '_', $carrier->getLabel()));
-                        return sprintf('%s %s', $this->translator->trans($label), $formattedAmount);
+
+                        return sprintf('%s %s', $carrier->getLabel(), $formattedAmount);
                     }
 
 

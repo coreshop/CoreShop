@@ -105,17 +105,17 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel($language = null)
     {
-        return $this->label;
+        return $this->getTranslation($language)->getLabel();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel($label, $language = null)
     {
-        $this->label = $label;
+        $this->getTranslation($language)->setLabel($label);
     }
 
     /**
