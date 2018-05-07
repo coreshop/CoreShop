@@ -8,7 +8,7 @@ use CoreShop\Component\SEO\Model\SEOMetadata;
 use Pimcore\Templating\Helper\HeadMeta;
 use Pimcore\Templating\Helper\HeadTitle;
 
-class SEOPresentation
+class SEOPresentation implements SEOPresentationInterface
 {
     /**
      * @var HeadMeta
@@ -38,7 +38,7 @@ class SEOPresentation
     }
 
     /**
-     * @param $object
+     * {@inheritdoc}
      */
     public function updateSeoMetadata($object)
     {
