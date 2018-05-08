@@ -140,3 +140,13 @@ services:
             - '@coreshop.behat.notification_rule_listener'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.seo:
+        class: CoreShop\Behat\Context\Domain\SEOContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.seo.presentation'
+            - '@__symfony__.Pimcore\Templating\Helper\HeadTitle'
+            - '@__symfony__.Pimcore\Templating\Helper\HeadMeta'
+        tags:
+            - { name: fob.context_service }

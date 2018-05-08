@@ -59,6 +59,38 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the site has a product "([^"]+)"$/
+     */
+    public function theSiteHasAProduct(string $productName)
+    {
+        $product = $this->createSimpleProduct($productName);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has a meta title "([^"]+)"$/
+     * @Given /^the (products) meta title is "([^"]+)"$/
+     */
+    public function theProductHasAMetaTitle(ProductInterface $product, $metaTitle)
+    {
+        $product->setPimcoreMetaTitle($metaTitle);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has a meta description "([^"]+)"$/
+     * @Given /^the (products) meta description is "([^"]+)"$/
+     */
+    public function theProductHasAMetaDescription(ProductInterface $product, $metaDescription)
+    {
+        $product->setPimcoreMetaDescription($metaDescription);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the site has a product "([^"]+)" priced at ([^"]+)$/
      */
     public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
@@ -86,6 +118,17 @@ final class ProductContext implements Context
     public function theProductHasTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup)
     {
         $product->setTaxRule($taxRuleGroup);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") host description is "([^"]+)"$/
+     * @Given /^the (products) short description is "([^"]+)"$/
+     */
+    public function theProductHasAShortDescription(ProductInterface $product, $description)
+    {
+        $product->setShortDescription($description);
 
         $this->saveProduct($product);
     }
@@ -138,17 +181,11 @@ final class ProductContext implements Context
 
     /**
      * @param string $productName
-     * @param int $price
-     * @param StoreInterface|null $store
      *
      * @return ProductInterface
      */
-    private function createProduct(string $productName, int $price = 100, StoreInterface $store = null)
+    private function createSimpleProduct(string $productName)
     {
-        if (null === $store && $this->sharedStorage->has('store')) {
-            $store = $this->sharedStorage->get('store');
-        }
-
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
@@ -157,6 +194,25 @@ final class ProductContext implements Context
 
         foreach (Tool::getValidLanguages() as $lang) {
             $product->setName($productName, $lang);
+        }
+
+        return $product;
+    }
+
+    /**
+     * @param string $productName
+     * @param int $price
+     * @param StoreInterface|null $store
+     *
+     * @return ProductInterface
+     */
+    private function createProduct(string $productName, int $price = 100, StoreInterface $store = null)
+    {
+        /** @var ProductInterface $product */
+        $product = $this->createSimpleProduct($productName);
+
+        if (null === $store && $this->sharedStorage->has('store')) {
+            $store = $this->sharedStorage->get('store');
         }
 
         if (null !== $store) {
