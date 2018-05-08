@@ -23,7 +23,7 @@ public function registerBundlesToCollection(BundleCollection $collection)
 
 ## Usage
 
-SEO Bundle provide you with some services to make SEO more manageable. It depends on Pimcore's HeadLink and HeadMeta Helper.
+The SEO Bundle provides you with services to make SEO more manageable. It depends on Pimcore's HeadLink and HeadMeta Helper.
 
 There are multiple ways of making use of this bundle:
 
