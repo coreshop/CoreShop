@@ -68,7 +68,7 @@ final class ProductVideoExtractor implements ExtractorInterface
      */
     public function supports($object)
     {
-        return $object instanceof Product and $object->getVideoUrl();
+        return $object instanceof Product && $object->getVideoUrl();
     }
 
     /**
