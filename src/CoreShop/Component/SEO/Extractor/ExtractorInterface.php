@@ -23,7 +23,7 @@ interface ExtractorInterface
      * an interface or being instance of a specific class,
      * or introspection to see if a certain method exists.
      *
-     * @param object $content
+     * @param object $object
      *
      * @return bool
      */

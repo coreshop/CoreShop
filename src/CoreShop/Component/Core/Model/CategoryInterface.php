@@ -14,9 +14,13 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface as BaseCategoryInterface;
+use CoreShop\Component\SEO\Model\SEOAwareInterface;
+use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 
-
-interface CategoryInterface extends BaseCategoryInterface
+interface CategoryInterface extends
+    BaseCategoryInterface,
+    SEOAwareInterface,
+    SEOOpenGraphAwareInterface
 {
     /**
      * @return FilterInterface

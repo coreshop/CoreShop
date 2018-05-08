@@ -33,6 +33,9 @@ final class ImageExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        /**
+         * @var $object SEOImageAwareInterface
+         */
         $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('seo');
         $seoMetadata->addExtraProperty('og:image', $ogImage);
     }

@@ -20,6 +20,46 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
+    public function getMetaTitle($language = null)
+    {
+        return $this->getName($language);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetaDescription($language = null)
+    {
+        return $this->getDescription($language);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOGTitle($language = null)
+    {
+        return $this->getMetaTitle($language);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOGDescription($language = null)
+    {
+        return $this->getMetaDescription($language);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOGType()
+    {
+        return 'product.group';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFilter()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

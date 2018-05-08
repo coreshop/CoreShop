@@ -22,7 +22,7 @@ final class DescriptionExtractor implements ExtractorInterface
      */
     public function supports($object)
     {
-        return $object instanceof SEOAwareInterface;
+        return $object instanceof SEOAwareInterface || method_exists($object, 'getMetaDescription');
     }
 
     /**
@@ -30,6 +30,11 @@ final class DescriptionExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
-        $seoMetadata->setMetaDescription($object->getMetaDescription());
+        /**
+         * @var $object SEOAwareInterface
+         */
+        if ($object->getMetaDescription()) {
+            $seoMetadata->setMetaDescription($object->getMetaDescription());
+        }
     }
 }

@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\SEO\Extractor;
 
-use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 
@@ -31,8 +30,19 @@ final class OGExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
-        $seoMetadata->addExtraProperty('og:title', $object->getOGTitle());
-        $seoMetadata->addExtraProperty('og:description', $object->getOGDescription());
-        $seoMetadata->addExtraProperty('og:type', $object->getOGType());
+        /**
+         * @var $object SEOOpenGraphAwareInterface
+         */
+        if ($object->getOGTitle()) {
+            $seoMetadata->addExtraProperty('og:title', $object->getOGTitle());
+        }
+
+        if ($object->getOGDescription()) {
+            $seoMetadata->addExtraProperty('og:description', $object->getOGDescription());
+        }
+
+        if ($object->getOGType()) {
+            $seoMetadata->addExtraProperty('og:type', $object->getOGType());
+        }
     }
 }

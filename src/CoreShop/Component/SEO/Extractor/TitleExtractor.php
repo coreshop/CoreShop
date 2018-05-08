@@ -20,9 +20,9 @@ final class TitleExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($content)
+    public function supports($object)
     {
-        return $content instanceof SEOAwareInterface;
+        return $object instanceof SEOAwareInterface || method_exists($object, 'getMetaTitle');
     }
 
     /**
@@ -30,6 +30,9 @@ final class TitleExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        /**
+         * @var $object SEOAwareInterface
+         */
         $seoMetadata->setTitle($object->getMetaTitle());
     }
 }
