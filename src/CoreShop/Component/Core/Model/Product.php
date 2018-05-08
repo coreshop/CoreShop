@@ -28,7 +28,7 @@ class Product extends BaseProduct implements ProductInterface
      */
     public function getMetaTitle($language = null)
     {
-        return $this->getInventoryName();
+        return $this->getPimcoreMetaTitle($language) ?: $this->getName($language);
     }
 
     /**
@@ -36,7 +36,7 @@ class Product extends BaseProduct implements ProductInterface
      */
     public function getMetaDescription($language = null)
     {
-        return $this->getShortDescription($language);
+        return $this->getPimcoreMetaDescription($language) ?: $this->getShortDescription($language);
     }
 
     /**
@@ -61,6 +61,38 @@ class Product extends BaseProduct implements ProductInterface
     public function getOGType()
     {
         return 'product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPimcoreMetaTitle($language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPimcoreMetaTitle($pimcoreMetaTitle, $language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPimcoreMetaDescription($language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPimcoreMetaDescription($pimcoreMetaDescription, $language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

@@ -40,15 +40,103 @@ class Version20180508095520 extends AbstractPimcoreMigration implements Containe
             "visibleSearch" => false
         ];
 
+        $localizedSeoFields = [
+            "fieldtype" => "localizedfields",
+            "phpdocType" => "\\Pimcore\\Model\\DataObject\\Localizedfield",
+            "childs" => [
+                [
+                    "fieldtype" => "input",
+                    "width" => null,
+                    "queryColumnType" => "varchar",
+                    "columnType" => "varchar",
+                    "columnLength" => 190,
+                    "phpdocType" => "string",
+                    "regex" => "",
+                    "unique" => false,
+                    "name" => "pimcoreMetaTitle",
+                    "title" => "Meta Title",
+                    "tooltip" => "",
+                    "mandatory" => false,
+                    "noteditable" => false,
+                    "index" => false,
+                    "locked" => false,
+                    "style" => "",
+                    "permissions" => null,
+                    "datatype" => "data",
+                    "relationType" => false,
+                    "invisible" => false,
+                    "visibleGridView" => true,
+                    "visibleSearch" => true
+                ],
+                [
+                    "fieldtype" => "textarea",
+                    "width" => "",
+                    "height" => "",
+                    "queryColumnType" => "longtext",
+                    "columnType" => "longtext",
+                    "phpdocType" => "string",
+                    "name" => "pimcoreMetaDescription",
+                    "title" => "Meta Description",
+                    "tooltip" => "",
+                    "mandatory" => false,
+                    "noteditable" => false,
+                    "index" => false,
+                    "locked" => false,
+                    "style" => "",
+                    "permissions" => null,
+                    "datatype" => "data",
+                    "relationType" => false,
+                    "invisible" => false,
+                    "visibleGridView" => false,
+                    "visibleSearch" => false
+                ]
+            ],
+            "name" => "localizedfields",
+            "region" => null,
+            "layout" => null,
+            "title" => "",
+            "width" => "",
+            "height" => "",
+            "maxTabs" => null,
+            "labelWidth" => null,
+            "hideLabelsWhenTabsReached" => null,
+            "fieldDefinitionsCache" => null,
+            "tooltip" => "",
+            "mandatory" => false,
+            "noteditable" => false,
+            "index" => null,
+            "locked" => false,
+            "style" => "",
+            "permissions" => null,
+            "datatype" => "data",
+            "columnType" => null,
+            "queryColumnType" => null,
+            "relationType" => false,
+            "invisible" => false,
+            "visibleGridView" => true,
+            "visibleSearch" => true
+        ];
+
         $categoryClass = $this->container->getParameter('coreshop.model.category.pimcore_class_name');
+        $productClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
 
-        $classUpdater = new ClassUpdate($categoryClass);
+        $categoryClassUpdater = new ClassUpdate($categoryClass);
+        $productClassUpdater = new ClassUpdate($productClass);
 
-        if (!$classUpdater->hasField('description')) {
-            $classUpdater->insertFieldAfter('name', $field);
+        if (!$categoryClassUpdater->hasField('description')) {
+            $categoryClassUpdater->insertFieldAfter('name', $field);
         }
 
-        $classUpdater->save();
+        if (!$categoryClassUpdater->hasField('pimcoreMetaDescription')) {
+            $categoryClassUpdater->insertFieldAfter('parentCategory', $localizedSeoFields);
+        }
+
+        if (!$productClassUpdater->hasField('pimcoreMetaDescription')) {
+            $productClassUpdater->insertFieldAfter('bricks', $localizedSeoFields);
+        }
+
+        $categoryClassUpdater->save();
+        $productClassUpdater->save();
     }
 
     /**

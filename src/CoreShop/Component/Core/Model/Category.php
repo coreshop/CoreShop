@@ -22,7 +22,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getMetaTitle($language = null)
     {
-        return $this->getName($language);
+        return $this->getPimcoreMetaTitle($language) ?: $this->getName($language);
     }
 
     /**
@@ -30,7 +30,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getMetaDescription($language = null)
     {
-        return $this->getDescription($language);
+        return $this->getPimcoreMetaDescription($language) ?: $this->getDescription($language);
     }
 
     /**
@@ -55,6 +55,38 @@ class Category extends BaseCategory implements CategoryInterface
     public function getOGType()
     {
         return 'product.group';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPimcoreMetaTitle($language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPimcoreMetaTitle($pimcoreMetaTitle, $language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPimcoreMetaDescription($language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPimcoreMetaDescription($pimcoreMetaDescription, $language = null)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
