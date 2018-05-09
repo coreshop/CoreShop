@@ -1,4 +1,3 @@
-
 services:
     coreshop.behat.context.hook.doctrine_orm:
         class: CoreShop\Behat\Context\Hook\DoctrineORMContext

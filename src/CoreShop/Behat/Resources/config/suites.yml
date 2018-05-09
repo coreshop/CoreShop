@@ -9,3 +9,4 @@ imports:
     - suites/domain/index.yml
     - suites/domain/pimcore.yml
     - suites/domain/order.yml
+    - suites/domain/seo.yml

@@ -202,6 +202,8 @@ class CategoryController extends FrontendController
             $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
         }
 
+        $this->get('coreshop.seo.presentation')->updateSeoMetadata($category);
+
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 

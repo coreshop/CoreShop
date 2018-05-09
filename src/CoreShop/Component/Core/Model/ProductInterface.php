@@ -6,8 +6,19 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductInterface as BaseProductInterface;
+use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
+use CoreShop\Component\SEO\Model\SEOAwareInterface;
+use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
+use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 
-interface ProductInterface extends BaseProductInterface, IndexableInterface, PurchasableInterface, StockableInterface
+interface ProductInterface extends
+    BaseProductInterface,
+    IndexableInterface,
+    PurchasableInterface,
+    StockableInterface,
+    PimcoreSEOAwareInterface,
+    SEOImageAwareInterface,
+    SEOOpenGraphAwareInterface
 {
     /**
      * @return StoreInterface[]
