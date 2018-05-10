@@ -10,30 +10,47 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Product\Rule\Condition;
+namespace CoreShop\Component\Core\Product\Rule\Condition;
 
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use Webmozart\Assert\Assert;
 
-class CategoriesConditionChecker implements ConditionCheckerInterface
+final class CategoriesConditionChecker implements ConditionCheckerInterface
 {
+    use CategoriesConditionCheckerTrait {
+        CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
+    }
+
+    /**
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param StoreContextInterface $storeContext
+     */
+    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    {
+        $this->__traitConstruct($categoryRepository, $storeContext);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
+        /**
+         * @var $subject ProductInterface
+         */
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        if (!$subject instanceof ProductInterface) {
-            return false;
-        }
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
 
         foreach ($subject->getCategories() as $category) {
             if ($category instanceof ResourceInterface) {
-                if (in_array($category->getId(), $configuration['categories'])) {
+                if (in_array($category->getId(), $categoryIdsToCheck)) {
                     return true;
                 }
             }

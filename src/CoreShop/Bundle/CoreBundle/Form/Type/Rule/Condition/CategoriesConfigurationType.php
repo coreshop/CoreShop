@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -27,7 +28,9 @@ final class CategoriesConfigurationType extends AbstractType
             ->add('categories', CollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
-            ]);
+            ])
+            ->add('recursive', CheckboxType::class)
+        ;
     }
 
     /**

@@ -9,7 +9,6 @@ imports:
     - { resource: "services/rules.yml" }
     - { resource: "services/installer.yml" }
     - { resource: "services/notification.yml" }
-    - { resource: "services/cart-price-rules.yml" }
     - { resource: "services/profiler.yml" }
     - { resource: "services/order.yml" }
     - { resource: "services/tracking.yml" }

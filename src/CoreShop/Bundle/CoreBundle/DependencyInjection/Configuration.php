@@ -131,6 +131,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('product_price_rule_condition_quantity')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/quantity.js')->end()
                             ->scalarNode('product_price_rule_condition_stores')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/stores.js')->end()
                             ->scalarNode('product_price_rule_condition_zones')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/zones.js')->end()
+                            ->scalarNode('product_price_rule_condition_categories')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/categories.js')->end()
                             ->scalarNode('product_specific_price_rule_condition_countries')->defaultValue('/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/countries.js')->end()
                             ->scalarNode('product_specific_price_rule_condition_currencies')->defaultValue('/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/currencies.js')->end()
                             ->scalarNode('product_specific_price_rule_condition_customer_groups')->defaultValue('/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/customerGroups.js')->end()

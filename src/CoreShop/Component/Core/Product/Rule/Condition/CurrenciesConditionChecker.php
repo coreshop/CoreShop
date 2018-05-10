@@ -18,7 +18,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-class CurrenciesConditionChecker implements ConditionCheckerInterface
+final class CurrenciesConditionChecker implements ConditionCheckerInterface
 {
     /**
      * @var CurrencyContextInterface
