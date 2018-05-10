@@ -174,7 +174,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule_condition_user_user_type')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/user/userType.js')->end()
                             ->scalarNode('settings')->defaultValue('/bundles/coreshopcore/pimcore/js/settings.js')->end()
                             ->scalarNode('helpers')->defaultValue('/bundles/coreshopcore/pimcore/js/helpers.js')->end()
-                            ->scalarNode('coreshop')->defaultValue('/bundles/coreshopcore/pimcore/js/coreshop.js')->end()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopcore/pimcore/js/resource.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')

@@ -22,11 +22,11 @@ coreshop.broker = {
 
     fireEvent: function () {
         var name = arguments[0];
-        if (this._listeners[name] === undefined) {
+        if (coreshop.broker._listeners[name] === undefined) {
             return;
         }
 
-        var list = this._listeners[name];
+        var list = coreshop.broker._listeners[name];
 
         //copy arguments
         var args = [];
@@ -40,11 +40,11 @@ coreshop.broker = {
     },
 
     removeListener: function (name, func) {
-        if (this._listeners[name] === undefined) {
+        if (coreshop.broker._listeners[name] === undefined) {
             return;
         }
 
-        var list = this._listeners[name];
+        var list = coreshop.broker._listeners[name];
         for (var i = 0; i < list.length; i++) {
             if (list[i].func === func) {
                 list.splice(i, 1);
@@ -52,16 +52,16 @@ coreshop.broker = {
         }
 
         if (list.length === 0) {
-            delete this._listeners[name];
+            delete coreshop.broker._listeners[name];
         }
     },
 
     addListener: function (name, func, scope) {
-        if (this._listeners[name] === undefined) {
-            this._listeners[name] = [];
+        if (coreshop.broker._listeners[name] === undefined) {
+            coreshop.broker._listeners[name] = [];
         }
 
-        this._listeners[name].push({
+        coreshop.broker._listeners[name].push({
             func: func,
             scope: scope
         });

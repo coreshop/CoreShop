@@ -9,21 +9,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
-
-pimcore.registerNS('coreshop.plugin');
-coreshop.plugin = Class.create(pimcore.plugin.admin, {
-    settings: {},
-
-    getClassName: function () {
-        return 'pimcore.plugin.coreshop';
-    },
-
+pimcore.registerNS('coreshop.core');
+pimcore.registerNS('coreshop.core.resource');
+coreshop.core.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        pimcore.plugin.broker.registerPlugin(this);
-    },
-
-    uninstall: function () {
-        //Nothing to do here, reload pimcore
+        coreshop.broker.addListener('pimcore.ready', this.pimcoreReady, this);
+        coreshop.broker.addListener('pimcore.postOpenObject', this.postOpenObject, this);
     },
 
     pimcoreReady: function (params, broker) {
@@ -356,7 +347,6 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
             });
         }
 
-
         coreShopMenuItems.push({
             text: 'ABOUT CoreShop &reg;',
             iconCls: 'coreshop_icon_logo',
@@ -483,23 +473,7 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     },
 
     postOpenObject: function (tab, type) {
-        if (tab.data.general.o_className === coreshop.class_map.coreshop.cart) {
-            tab.toolbar.insert(tab.toolbar.items.length,
-                '-'
-            );
-            /*tab.toolbar.insert(tab.toolbar.items.length,
-                {
-                    text: t('coreshop_cart_create_order'),
-                    scale: 'medium',
-                    iconCls: 'coreshop_icon_create_order',
-                    handler: function () {
-                        alert('Create Order from Cart');
-                    }
-                }
-            );*/
-        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.product) {
-            
-        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.order) {
+         if (tab.data.general.o_className === coreshop.class_map.coreshop.order) {
             var orderMoreButtons = [];
 
             orderMoreButtons.push(
@@ -689,4 +663,4 @@ coreshop.plugin = Class.create(pimcore.plugin.admin, {
     }
 });
 
-var plugin = new coreshop.plugin();
+new coreshop.core.resource();
