@@ -4,6 +4,7 @@ imports:
     - { resource: "services/installer.yml" }
     - { resource: "services/commands.yml" }
     - { resource: "services/validators.yml" }
+    - { resource: "services/twig.yml" }
 
 parameters:
     coreshop.admin.route.base: /admin/coreshop

@@ -1,0 +1,15 @@
+services:
+    coreshop.twig.extension.pimcore_asset:
+        class: CoreShop\Component\Pimcore\Twig\Extension\AssetHelperExtensions
+        tags:
+            - { name: twig.extension }
+
+    coreshop.twig.extension.pimcore_document:
+        class: CoreShop\Component\Pimcore\Twig\Extension\DocumentHelperExtensions
+        tags:
+            - { name: twig.extension }
+
+    coreshop.twig.extension.pimcore_object:
+        class: CoreShop\Component\Pimcore\Twig\Extension\ObjectHelperExtensions
+        tags:
+            - { name: twig.extension }
