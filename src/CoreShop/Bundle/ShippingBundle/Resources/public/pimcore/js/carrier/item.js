@@ -68,6 +68,12 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout: 'form',
                 items: [{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.label',
+                    fieldLabel: t('coreshop_carrier_label'),
+                    value: data.translations && data.translations[lang] ? data.translations[lang].label : '',
+                    required: true
+                }, {
                     xtype: 'textarea',
                     name: 'translations.' + lang + '.description',
                     fieldLabel: t('description'),
@@ -93,12 +99,6 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 defaults: {width: '100%'},
                 items: [
                     {
-                        xtype: 'textfield',
-                        name: 'name',
-                        fieldLabel: t('name'),
-                        value: data.name,
-                        required: true
-                    }, {
                         xtype: 'tabpanel',
                         activeTab: 0,
                         defaults: {
@@ -108,9 +108,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         items: langTabs
                     }, {
                         xtype: 'textfield',
-                        name: 'label',
-                        fieldLabel: t('coreshop_carrier_label'),
-                        value: data.label,
+                        name: 'name',
+                        fieldLabel: t('name'),
+                        value: data.name,
                         required: true
                     }, {
                         xtype: 'textfield',

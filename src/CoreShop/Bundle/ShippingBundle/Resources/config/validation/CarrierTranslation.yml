@@ -1,0 +1,4 @@
+CoreShop\Component\Shipping\Model\CarrierTranslation:
+    properties:
+      label:
+          - NotBlank: { groups: [coreshop] }
