@@ -37,6 +37,9 @@ final class DocumentHelperExtensions extends \Twig_Extension
             new \Twig_Test('document_page', function ($object) {
                 return is_object($object) && $object instanceof Document\Page;
             }),
+            new \Twig_Test('document_link', function ($object) {
+                return is_object($object) && $object instanceof Document\Link;
+            }),
             new \Twig_Test('document_page_snippet', function ($object) {
                 return is_object($object) && $object instanceof Document\PageSnippet;
             }),
