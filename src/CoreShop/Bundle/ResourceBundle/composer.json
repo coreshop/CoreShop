@@ -24,7 +24,7 @@
     "friendsofsymfony/rest-bundle": "^2.1",
     "jms/serializer-bundle": "^1.1",
     "stof/doctrine-extensions-bundle": "^1.2",
-    "coreshop/pimcore": "^2.0",
+    "coreshop/pimcore-bundle": "^2.0",
     "coreshop/registry": "^2.0",
     "coreshop/resource": "^2.0",
     "symfony/config": "^3.3",

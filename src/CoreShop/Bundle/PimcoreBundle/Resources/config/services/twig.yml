@@ -13,3 +13,8 @@ services:
         class: CoreShop\Component\Pimcore\Twig\Extension\ObjectHelperExtensions
         tags:
             - { name: twig.extension }
+
+    coreshop.twig.extension.pimcore_object_link_generator:
+        class: CoreShop\Component\Pimcore\Twig\Extension\ObjectLinkGeneratorExtension
+        tags:
+            - { name: twig.extension }

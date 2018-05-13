@@ -1,0 +1,9 @@
+imports:
+    - { resource: "services/twig.yml" }
+
+services:
+    coreshop.class_installer:
+        class: CoreShop\Component\Pimcore\ClassInstaller
+
+    coreshop.grid_config_installer:
+        class: CoreShop\Component\Pimcore\GridConfigInstaller
