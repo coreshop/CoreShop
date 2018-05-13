@@ -12,22 +12,29 @@
 
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
+use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
 use Pimcore\Model\DataObject\Concrete;
 
 final class ObjectLinkGeneratorExtension extends \Twig_Extension
 {
+    /**
+     * @var LinkGeneratorInterface
+     */
+    private $objectLinkGenerator;
+
+    /**
+     * @param LinkGeneratorInterface $objectLinkGenerator
+     */
+    public function __construct(LinkGeneratorInterface $objectLinkGenerator)
+    {
+        $this->objectLinkGenerator = $objectLinkGenerator;
+    }
+
     public function getFunctions()
     {
         return [
             new \Twig_Function('object_link', function (Concrete $object, array $params = []) {
-                if ($linkGenerator = $object->getClass()->getLinkGenerator()) {
-                    return $linkGenerator->generate(
-                        $object,
-                        $params
-                    );
-                }
-
-                throw new \InvalidArgumentException(sprintf('Object %s with class %s has no Link Generator configured', $object->getId(), $object->getClassName()));
+                return $this->objectLinkGenerator->generate($object);
             }),
         ];
     }

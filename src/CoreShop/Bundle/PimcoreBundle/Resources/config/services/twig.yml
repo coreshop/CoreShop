@@ -16,5 +16,7 @@ services:
 
     coreshop.twig.extension.pimcore_object_link_generator:
         class: CoreShop\Component\Pimcore\Twig\Extension\ObjectLinkGeneratorExtension
+        arguments:
+            - '@coreshop.pimcore.object_link_generator'
         tags:
             - { name: twig.extension }
