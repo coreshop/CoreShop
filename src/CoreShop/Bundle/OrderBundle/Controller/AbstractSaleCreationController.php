@@ -122,6 +122,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
     {
         $this->isGrantedOr403();
 
+        $language = $request->get('language');
         $productIds = $request->get('products');
         $customerId = $request->get('customer');
         $shippingAddressId = $request->get('shippingAddress');
@@ -159,7 +160,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
         $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
 
-        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
+        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
         try {
             $this->prepareCart($request, $cart);
