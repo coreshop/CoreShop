@@ -14,3 +14,6 @@ services:
             - '@Pimcore\Templating\Helper\HeadMeta'
             - '@Pimcore\Templating\Helper\HeadTitle'
             - '@coreshop.registry.seo.extractor'
+
+    CoreShop\Component\SEO\SEOPresentationInterface:
+        alias: coreshop.seo.presentation

@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\TrackingBundle\Manager\TrackingManagerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -34,9 +36,11 @@ class ProductController extends FrontendController
 
     /**
      * @param Request $request
+     * @param SEOPresentationInterface $seoPresentation
+     * @param TrackingManagerInterface $trackingManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function detailAction(Request $request)
+    public function detailAction(Request $request, SEOPresentationInterface $seoPresentation, TrackingManagerInterface $trackingManager)
     {
         $product = $this->getProductByRequest($request);
 
@@ -52,8 +56,8 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        $this->get('coreshop.seo.presentation')->updateSeoMetadata($product);
-        $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
+        $seoPresentation->updateSeoMetadata($product);
+        $trackingManager->trackPurchasableView($product);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,

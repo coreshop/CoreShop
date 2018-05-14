@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\TrackingBundle\Manager\TrackingManagerInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
@@ -20,6 +21,7 @@ use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
+use CoreShop\Component\SEO\SEOPresentationInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Paginator\Paginator;
@@ -88,9 +90,11 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param SEOPresentationInterface $presentation
+     * @param TrackingManagerInterface $trackingManager
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, SEOPresentationInterface $seoPresentation, TrackingManagerInterface $trackingManager)
     {
         $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
         $gridPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.grid.per_page');
@@ -199,10 +203,10 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
+            $trackingManager->trackPurchasableImpression($product);
         }
 
-        $this->get('coreshop.seo.presentation')->updateSeoMetadata($category);
+        $seoPresentation->updateSeoMetadata($category);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }

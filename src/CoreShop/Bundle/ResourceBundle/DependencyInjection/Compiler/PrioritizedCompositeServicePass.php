@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -80,15 +81,20 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder $containercoreshop.context.shopper"
      */
     private function addAliasForCompositeIfServiceDoesNotExist(ContainerBuilder $container)
     {
         if ($container->has($this->serviceId)) {
             return;
         }
+        else {
+            if ($container->hasDefinition($this->serviceId)) {
+                $container->getDefinition($this->serviceId)->setPublic(true);
+            }
+        }
 
-        $container->setAlias($this->serviceId, $this->compositeId);
+        $container->setAlias($this->serviceId, new Alias($this->compositeId, true));
     }
 
     /**
