@@ -4,7 +4,6 @@ imports:
     - { resource: "services/installer.yml" }
     - { resource: "services/commands.yml" }
     - { resource: "services/validators.yml" }
-    - { resource: "services/twig.yml" }
 
 parameters:
     coreshop.admin.route.base: /admin/coreshop
@@ -21,13 +20,6 @@ services:
 
     coreshop.resource_registry:
         class: CoreShop\Component\Resource\Metadata\Registry
-
-    coreshop.class_installer:
-        class: CoreShop\Component\Pimcore\ClassInstaller
-
-
-    coreshop.grid_config_installer:
-        class: CoreShop\Component\Pimcore\GridConfigInstaller
 
     coreshop.jms_serializer.handler.relation:
         class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler

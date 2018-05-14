@@ -1,0 +1,12 @@
+imports:
+    - { resource: "services/twig.yml" }
+
+services:
+    coreshop.class_installer:
+        class: CoreShop\Component\Pimcore\ClassInstaller
+
+    coreshop.pimcore.object_link_generator:
+        class: CoreShop\Component\Pimcore\ObjectLinkGenerator
+
+    coreshop.grid_config_installer:
+        class: CoreShop\Component\Pimcore\GridConfigInstaller

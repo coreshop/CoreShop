@@ -61,6 +61,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $collection->addBundle(new \FOS\RestBundle\FOSRestBundle(), 1500);
         $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
+        $collection->addBundle(new \CoreShop\Bundle\PimcoreBundle\CoreShopPimcoreBundle(), 1000);
 
     }
 
