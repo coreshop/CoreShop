@@ -90,9 +90,9 @@ class MysqlWorker extends AbstractWorker
                     if (!array_key_exists($column->getName(), $columns)) {
                         $columnsToAdd[$column->getName()] = $columnTypeForIndex;
                     }
-                }
 
-                unset($columnsToDelete[$column->getName()]);
+                    unset($columnsToDelete[$column->getName()]);
+                }
             }
         }
 
