@@ -42,7 +42,7 @@ class LikeCondition implements ConditionInterface
         $this->pattern = $pattern;
         $this->value = $value;
 
-        if (in_array($pattern, $this->allowedPatterns)) {
+        if (!in_array($pattern, $this->allowedPatterns)) {
             throw new \InvalidArgumentException(sprintf('Pattern %s not allowed, allowed are %s', $pattern, implode(', ', $this->allowedPatterns)));
         }
     }

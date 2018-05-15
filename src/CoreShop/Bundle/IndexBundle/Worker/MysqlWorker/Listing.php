@@ -454,7 +454,7 @@ class Listing extends AbstractListing
 
         if ($this->getCategory()) {
             $categoryCondition = "," . $this->getCategory()->getId() . ",";
-            $queryBuilder->andWhere($this->worker->renderCondition(new LikeCondition('parentCategoryIds', $categoryCondition, 'both'), 'q'));
+            $queryBuilder->andWhere($this->worker->renderCondition(new LikeCondition('parentCategoryIds', 'both', $categoryCondition), 'q'));
         }
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
