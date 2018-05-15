@@ -16,8 +16,9 @@ use CoreShop\Bundle\IndexBundle\Extension\MysqlIndexQueryExtensionInterface;
 use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
-use CoreShop\Component\Index\Condition\Condition;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Condition\LikeCondition;
+use CoreShop\Component\Index\Condition\MatchCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
@@ -449,11 +450,11 @@ class Listing extends AbstractListing
             $variantMode = $this->getVariantMode();
         }
 
-        $queryBuilder->where($this->worker->renderCondition(Condition::compare('active', 1, '='), 'q'));
+        $queryBuilder->where($this->worker->renderCondition(new MatchCondition('active', 1), 'q'));
 
         if ($this->getCategory()) {
             $categoryCondition = "," . $this->getCategory()->getId() . ",";
-            $queryBuilder->andWhere($this->worker->renderCondition(Condition::like('parentCategoryIds', $categoryCondition, 'both'), 'q'));
+            $queryBuilder->andWhere($this->worker->renderCondition(new LikeCondition('parentCategoryIds', $categoryCondition, 'both'), 'q'));
         }
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
 
