@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\Condition;
+use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -73,7 +73,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
             $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
 
             if (!empty($values)) {
-                $list->addRelationCondition(Condition::in('dest', $values), $fieldName);
+                $list->addRelationCondition(new InCondition('dest', $values), $fieldName);
             }
         }
 

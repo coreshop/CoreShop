@@ -12,16 +12,14 @@
 
 namespace CoreShop\Component\Index\Condition;
 
-/**
- * @deprecated not supported anymore, will be removed in 2.0.
- */
-abstract class AbstractRenderer implements RendererInterface
+class MatchCondition extends CompareCondition
 {
     /**
-     * {@inheritdoc}
+     * @param $fieldName
+     * @param $value
      */
-    public function render(ConditionInterface $condition, $prefix = null)
+    public function __construct($fieldName, $value)
     {
-        throw new \InvalidArgumentException('AbstractRenderer is not supported anymore and will be removed in 2.0. Please directly implement RendererInterface instead');
+        parent::__construct($fieldName, '=', $value);
     }
 }
