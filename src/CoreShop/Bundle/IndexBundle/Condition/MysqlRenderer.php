@@ -18,6 +18,8 @@ use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Condition\IsCondition;
 use CoreShop\Component\Index\Condition\LikeCondition;
+use CoreShop\Component\Index\Condition\MatchCondition;
+use CoreShop\Component\Index\Condition\NotMatchCondition;
 use CoreShop\Component\Index\Condition\RangeCondition;
 use CoreShop\Component\Index\Condition\RendererInterface;
 use Pimcore\Db;
@@ -37,22 +39,28 @@ class MysqlRenderer implements RendererInterface
         $this->database = Db::get();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function render(ConditionInterface $condition, $prefix = null)
     {
-        switch (get_class($condition)) {
-            case IsCondition::class:
-                return $this->renderIs($condition, $prefix);
-            case InCondition::class:
-                return $this->renderIn($condition, $prefix);
-            case LikeCondition::class:
-                return $this->renderLike($condition, $prefix);
-            case RangeCondition::class:
-                return $this->renderRange($condition, $prefix);
-            case ConcatCondition::class:
-                return $this->renderConcat($condition, $prefix);
-            case CompareCondition::class:
-                return $this->renderCompare($condition, $prefix);
-
+        if ($condition instanceof IsCondition) {
+            return $this->renderIs($condition, $prefix);
+        }
+        elseif ($condition instanceof InCondition) {
+            return $this->renderIn($condition, $prefix);
+        }
+        elseif ($condition instanceof LikeCondition) {
+            return $this->renderLike($condition, $prefix);
+        }
+        elseif ($condition instanceof RangeCondition) {
+            return $this->renderRange($condition, $prefix);
+        }
+        elseif ($condition instanceof ConcatCondition) {
+            return $this->renderConcat($condition, $prefix);
+        }
+        elseif ($condition instanceof CompareCondition) {
+            return $this->renderCompare($condition, $prefix);
         }
 
         throw new \InvalidArgumentException(sprintf('Class %s is not implemented in Mysql Condition Renderer', get_class($condition)));
