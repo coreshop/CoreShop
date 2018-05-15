@@ -16,6 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\TaxationBundle\Controller\TaxRuleGroupController;
 use CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRateRepository;
+use CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRuleRepository;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateTranslationType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType;
@@ -129,7 +130,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(TaxRule::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(TaxRuleInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(TaxRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(TaxRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
