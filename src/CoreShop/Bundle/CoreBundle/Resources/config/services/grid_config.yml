@@ -1,0 +1,8 @@
+services:
+    coreshop.data_object.grid_column_config.operator.factory.store_price:
+        class: CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator\Factory\StorePriceFactory
+        arguments:
+            - '@coreshop.repository.store'
+            - '@coreshop.money_formatter'
+        tags:
+            - { name: pimcore.data_object.grid_column_config.operator_factory, id: StorePrice }
