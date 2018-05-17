@@ -3,10 +3,6 @@ Feature: Adding a object index
   In order to make my catalog fast searchable
   I want to create a new index with indexes
 
-  Background:
-    Given the site operates on a store in "Austria"
-    And the site has a product "Shoe" priced at 100
-
   Scenario: Create a new index and add a index to the table
     Given the site has a index "myindex" for class "CoreShopProduct" with type "mysql"
     And  the index has following fields:
