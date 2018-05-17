@@ -13,8 +13,10 @@
 pimcore.registerNS('coreshop.index.objecttype.abstract');
 
 coreshop.index.objecttype.abstract = Class.create({
-    initialize: function () {
+    parent: null,
 
+    initialize: function (parent) {
+        this.parent = parent;
     },
 
     getObjectTypeItems: function (record) {
@@ -176,6 +178,7 @@ coreshop.index.objecttype.abstract = Class.create({
                 this.record.set('text', this.record.data.name);
             }
 
+            this.parent.selectionPanel.fireEvent('record_changed');
             this.window.close();
         }
     },

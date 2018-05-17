@@ -190,7 +190,7 @@ coreshop.index.fields = Class.create({
     },
 
     getConfigElement: function (record) {
-        return new coreshop.index.objecttype.abstract();
+        return new coreshop.index.objecttype.abstract(this);
     },
 
     /*

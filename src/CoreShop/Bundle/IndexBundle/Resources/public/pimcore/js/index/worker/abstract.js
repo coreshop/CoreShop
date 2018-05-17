@@ -10,11 +10,23 @@
  *
  */
 
-pimcore.registerNS('coreshop.index.type');
-pimcore.registerNS('coreshop.index.type.abstract');
+pimcore.registerNS('coreshop.index.worker');
+pimcore.registerNS('coreshop.index.worker.abstract');
 
-coreshop.index.type.abstract = Class.create({
-    getFields: function () {
+coreshop.index.worker.abstract = Class.create({
+    parent: null,
+
+    initialize: function (parent) {
+        this.parent = parent;
+    },
+
+    getForm: function (configuration) {
+        return Ext.form.Panel({
+            items: this.getFields(configuration)
+        });
+    },
+
+    getFields: function (configuration) {
         return [];
     }
 });
