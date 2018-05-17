@@ -29,7 +29,6 @@ final class MysqlWorkerTableIndexType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'choices' => [
-                    TableIndex::TABLE_INDEX_TYPE_FULLTEXT,
                     TableIndex::TABLE_INDEX_TYPE_INDEX,
                     TableIndex::TABLE_INDEX_TYPE_UNIQUE
                 ]

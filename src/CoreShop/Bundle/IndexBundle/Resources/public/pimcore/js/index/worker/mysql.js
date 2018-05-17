@@ -15,6 +15,20 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
     getFields: function (config) {
         var me = this;
 
+        me.indexesGrid = me.getIndexGrid(false, config);
+        me.localizedIndexesGrid = me.getIndexGrid(true, config);
+
+        return {
+            xtype: 'panel',
+            items: [
+                me.indexesGrid,
+                me.localizedIndexesGrid
+            ]
+        };
+    },
+
+    getIndexGrid: function (localized, config) {
+        var me = this;
         var modelName = 'coreshop.model.index.mysql';
 
         if (!Ext.ClassManager.get(modelName)) {
@@ -25,14 +39,14 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
             );
         }
 
-        me.store = Ext.create('Ext.data.Store', {
+        var store = Ext.create('Ext.data.Store', {
             // destroy the store if the grid is destroyed
             autoDestroy: true,
             proxy: {
                 type: 'memory'
             },
             model: modelName,
-            data: Object.values(config.indexes)
+            data: Object.values(config[localized ? 'localizedIndexes' : 'indexes'])
         });
 
         var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
@@ -44,7 +58,7 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
                         context.column.setEditor({
                             xtype: 'combo',
                             store: {
-                                data: Ext.Object.getValues(me.parent.fieldsPanel.getData())
+                                data: me.getColumns(localized)
                             },
                             mode: 'local',
                             displayField: 'name',
@@ -63,7 +77,9 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
 
         var grid = Ext.create({
             xtype: 'grid',
-            store: me.store,
+            store: store,
+            minHeight: 200,
+            title: t(('coreshop_index_mysql_index' + (localized ? '_localized' : ''))),
             columns: [{
                 header: t('type'),
                 dataIndex: 'type',
@@ -72,14 +88,26 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
                     xtype: 'combo',
                     store: [
                         ['INDEX', 'INDEX'],
-                        ['UNIQUE', 'UNIQUE'],
-                        ['FULLTEXT', 'FULLTEXT'],
+                        ['UNIQUE', 'UNIQUE']
                     ]
                 }
             }, {
                 header: t('columns'),
                 dataIndex: 'columns',
-                flex: 1
+                flex: 1,
+                editor: {
+                    xtype: 'combo',
+                    store: {
+                        data: me.getColumns(localized)
+                    },
+                    mode: 'local',
+                    displayField: 'name',
+                    valueField: 'name',
+                    forceSelection: true,
+                    triggerAction: 'all',
+                    allowBlank: false,
+                    multiSelect: true
+                }
             }],
             tbar: [{
                 text: t('add'),
@@ -93,7 +121,7 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
                         columns: ''
                     });
 
-                    me.store.insert(0, r);
+                    store.insert(0, r);
                     rowEditing.startEdit(r, 0);
                 }
             }, {
@@ -103,8 +131,8 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
                 handler: function () {
                     var sm = grid.getSelectionModel();
                     rowEditing.cancelEdit();
-                    me.store.remove(sm.getSelection());
-                    if (me.store.getCount() > 0) {
+                    store.remove(sm.getSelection());
+                    if (store.getCount() > 0) {
                         sm.select(0);
                     }
                 },
@@ -118,27 +146,47 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
             }
         });
 
-        return {
-            xtype: 'panel',
-            title: t('coreshop_index_mysql'),
-            items: [
-                grid
-            ]
-        };
+        return grid;
     },
 
-    getData: function () {
-        var availableFields = Ext.Object.getKeys(this.parent.fieldsPanel.getData());
-        var indexes = this.store.getRange().map(function (rec) {
-            return {
-                type: rec.data.type,
-                columns: rec.data.columns
-            };
+    getColumns: function (localized) {
+        var interpreters = this.parent.parentPanel.interpreterStore.getRange().filter(function (rec) {
+            return rec.data.localized === true;
+        }).map(function (rec) {
+            return rec.getId();
         });
-        var indexesForServer = {};
+        var fields = Ext.Object.getValues(this.parent.fieldsPanel.getData());
+
+        return fields.filter(function (field) {
+            var result = false;
+
+            if (field.objectType === 'localizedfield') {
+                result = true;
+            }
+            else if (field.hasOwnProperty('interpreter') && interpreters.indexOf(field.interpreter) >= 0) {
+                result = true;
+            }
+
+            return localized ? result : !result;
+        });
+    },
+
+    getIndexData: function (localized) {
+        var me = this,
+            grid = localized ? me.localizedIndexesGrid : me.indexesGrid,
+            availableFields = me.getColumns(localized).map(function(col) {
+                return col.name;
+            }),
+            indexes = grid.getStore().getRange().map(function (rec) {
+                return {
+                    type: rec.data.type,
+                    columns: rec.data.columns
+                };
+            }),
+            indexesForServer = {};
 
         indexes.forEach(function (index) {
-            index.columns = index.columns.filter(function(col) {
+            index.columns = index.columns.filter(function (col) {
                 return availableFields.indexOf(col) >= 0;
             });
             var cols = index.columns.join('');
@@ -146,8 +194,13 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
             indexesForServer[cols] = index;
         });
 
+        return indexesForServer;
+    },
+
+    getData: function () {
         return {
-            indexes: indexesForServer
+            indexes: this.getIndexData(false),
+            localizedIndexes: this.getIndexData(true)
         };
     }
 });

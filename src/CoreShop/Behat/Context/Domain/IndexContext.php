@@ -131,6 +131,28 @@ final class IndexContext implements Context
     }
 
     /**
+     * @Then /^the (index) should have an index for "([^"]+)"$/
+     */
+    public function theIndexShouldHaveAnIndexFor(IndexInterface $index, $columns)
+    {
+        $columns = explode(', ', $columns);
+        $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
+
+        $this->indexShouldHaveIndexInTable($tableName, $columns);
+    }
+
+    /**
+     * @Then /^the (index) should have an localized index for "([^"]+)"$/
+     */
+    public function theIndexShouldHaveAnLocalizedIndexFor(IndexInterface $index, $columns)
+    {
+        $columns = explode(', ', $columns);
+        $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
+
+        $this->indexShouldHaveIndexInTable($tableName, $columns);
+    }
+
+    /**
      * @param IndexInterface $index
      * @param Concrete $object
      * @param $column
@@ -205,5 +227,36 @@ final class IndexContext implements Context
 
             Assert::true($found, sprintf('Table column %s not found', $col));
         }
+    }
+
+    /**
+     * @param string $tableName
+     * @param array $columns
+     */
+    protected function indexShouldHaveIndexInTable(string $tableName, array $columns)
+    {
+        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+
+        Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
+
+        $table = $schemaManager->listTableDetails($tableName);
+        $found = false;
+
+        foreach ($table->getIndexes() as $index) {
+            $found = true;
+
+            foreach ($columns as $column) {
+                if (!in_array($column, $index->getColumns())) {
+                    $found = false;
+                    break;
+                }
+            }
+
+            if ($found) {
+                break;
+            }
+        }
+
+        Assert::true($found, sprintf('Index for columns %s not found', implode(', ', $columns)));
     }
 }

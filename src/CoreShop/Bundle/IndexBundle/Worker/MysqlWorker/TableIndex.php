@@ -18,8 +18,6 @@ final class TableIndex
 
     const TABLE_INDEX_TYPE_INDEX = 'INDEX';
 
-    const TABLE_INDEX_TYPE_FULLTEXT = 'FULLTEXT';
-
     /**
      * @var array
      */
