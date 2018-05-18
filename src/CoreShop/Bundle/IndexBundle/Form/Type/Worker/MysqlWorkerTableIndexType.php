@@ -12,11 +12,14 @@
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Worker;
 
+use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class MysqlWorkerType extends AbstractType
+final class MysqlWorkerTableIndexType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -24,19 +27,23 @@ final class MysqlWorkerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('indexes', CollectionType::class, [
-                'entry_type' => MysqlWorkerTableIndexType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    TableIndex::TABLE_INDEX_TYPE_INDEX,
+                    TableIndex::TABLE_INDEX_TYPE_UNIQUE
+                ]
             ])
-            ->add('localizedIndexes', CollectionType::class, [
-                'entry_type' => MysqlWorkerTableIndexType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-        ;
+            ->add('columns', TextType::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('data_class', TableIndex::class);
+
+        parent::configureOptions($resolver);
     }
 
     /**
