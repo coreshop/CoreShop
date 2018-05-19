@@ -3,7 +3,7 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
-use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Product\Model\ProductInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
@@ -20,7 +20,7 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionFieldNotFoundException
+     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
      * @throws \Exception
      */
     public function up(Schema $schema)

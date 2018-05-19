@@ -20,7 +20,7 @@ use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;

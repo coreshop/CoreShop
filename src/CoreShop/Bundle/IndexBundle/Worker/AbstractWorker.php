@@ -24,7 +24,7 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
-use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;

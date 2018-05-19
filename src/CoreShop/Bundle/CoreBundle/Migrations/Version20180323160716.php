@@ -3,7 +3,7 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
