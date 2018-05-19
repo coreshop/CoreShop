@@ -23,7 +23,7 @@ use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
-use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Monolog\Logger;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
@@ -56,7 +56,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $orderDocumentRenderer;
 
     /**
-     * @var DataObjectNoteService
+     * @var NoteServiceInterface
      */
     private $noteService;
 
@@ -71,7 +71,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
      * @param OrderDocumentRendererInterface $orderDocumentRenderer
-     * @param DataObjectNoteService $noteService
+     * @param NoteServiceInterface $noteService
      * @param ThemeHelperInterface $themeHelper
      */
     public function __construct(
@@ -80,7 +80,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderInvoiceRepositoryInterface $invoiceRepository,
         OrderShipmentRepositoryInterface $shipmentRepository,
         OrderDocumentRendererInterface $orderDocumentRenderer,
-        DataObjectNoteService $noteService,
+        NoteServiceInterface $noteService,
         ThemeHelperInterface $themeHelper
     )
     {

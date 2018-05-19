@@ -1,12 +1,37 @@
 imports:
     - { resource: "services/twig.yml" }
 
+parameters:
+    coreshop.admin.route.base: /admin/coreshop
+
 services:
     coreshop.class_installer:
         class: CoreShop\Component\Pimcore\ClassInstaller
 
-    coreshop.pimcore.object_link_generator:
+    coreshop.object_link_generator:
         class: CoreShop\Component\Pimcore\ObjectLinkGenerator
+
+    coreshop.pimcore.object_link_generator:
+        alias: coreshop.object_link_generator
+        deprecated: 'use @coreshop.object_link_generator instead'
 
     coreshop.grid_config_installer:
         class: CoreShop\Component\Pimcore\GridConfigInstaller
+
+    coreshop.resource_loader:
+        class: CoreShop\Component\Pimcore\ResourceLoader
+
+    coreshop.object_service:
+        class: CoreShop\Component\Pimcore\DataObject\ObjectService
+
+    coreshop.object_note_service:
+        class: CoreShop\Component\Pimcore\DataObject\NoteService
+        arguments:
+            - '@event_dispatcher'
+
+    coreshop.object_cloner:
+        class: CoreShop\Component\Pimcore\DataObject\ObjectCloner
+
+    coreshop.resource.object_cloner:
+        alias: coreshop.object_cloner
+        deprecated: 'use @coreshop.object_cloner instead'

@@ -12,139 +12,15 @@
 
 namespace CoreShop\Component\Resource\Pimcore;
 
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Pimcore\Model\Document;
-use Pimcore\Model\Element\Note;
-use Pimcore\Model\Tool\Email\Log;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
-class DataObjectNoteService
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\NoteService::class)) {
+    @trigger_error('Class CoreShop\Component\Resource\Pimcore\DataObjectNoteService is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\NoteService class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var EventDispatcherInterface
+     * @deprecated Class CoreShop\Component\Resource\Pimcore\DataObjectNoteService is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\NoteService class instead.
      */
-    private $eventDispatcher;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    class DataObjectNoteService
     {
-        $this->eventDispatcher = $eventDispatcher;
-    }
 
-    /**
-     * @param $id
-     * @return Note
-     */
-    public function getNoteById($id)
-    {
-        return Note::getById($id);
-    }
-
-    /**
-     * @param PimcoreModelInterface $object
-     * @param string $noteType
-     * @return Note
-     */
-    public function createPimcoreNoteInstance(PimcoreModelInterface $object, $noteType)
-    {
-        $note = new Note();
-        $note->setElement($object);
-        $note->setDate(time());
-        $note->setType($noteType);
-
-        return $note;
-    }
-
-    /**
-     * @param string $noteType
-     * @return Note
-     */
-    public function createAnonymousNoteInstance($noteType)
-    {
-        $note = new Note();
-        $note->setDate(time());
-        $note->setType($noteType);
-
-        return $note;
-    }
-
-    /**
-     * @param PimcoreModelInterface $object
-     * @param string $noteType
-     * @return mixed
-     */
-    public function getObjectNotes(PimcoreModelInterface $object, $noteType)
-    {
-        $noteList = new Note\Listing();
-        $noteList->addConditionParam('type = ?', $noteType);
-        $noteList->addConditionParam('cid = ?', $object->getId());
-        $noteList->setOrderKey('date');
-        $noteList->setOrder('desc');
-
-        return $noteList->load();
-    }
-
-    /**
-     * @param  Note $note
-     * @param  Document\Email $emailDocument
-     * @return Note
-     */
-    public function storeNoteForEmail(Note $note, Document\Email $emailDocument)
-    {
-        //Because logger does not return any id, we need to fetch the last one!
-        $listing = new Log\Listing();
-        $listing->addConditionParam('documentId = ?', $emailDocument->getId());
-        $listing->setOrderKey('sentDate');
-        $listing->setOrder('desc');
-        $listing->setLimit(1);
-        $logData = $listing->load();
-
-        if (isset($logData[0]) && $logData[0] instanceof Log) {
-            $note->addData('email-log', 'text', $logData[0]->getId());
-        }
-
-        return $this->storeNote($note);
-    }
-
-    /**
-     * @param $note
-     * @param $eventParams
-     * @return Note
-     */
-    public function storeNote(Note $note, $eventParams = [])
-    {
-        $note->save();
-
-        $this->eventDispatcher->dispatch(
-            sprintf('coreshop.note.%s.post_add', $note->getType()),
-            new GenericEvent($note, $eventParams)
-        );
-
-        return $note;
-    }
-
-    /**
-     * @param $noteId
-     * @param $eventParams
-     * @return void
-     */
-    public function deleteNote($noteId, $eventParams = [])
-    {
-        $note = $this->getNoteById($noteId);
-
-        if (!$note instanceof Note) {
-            return;
-        }
-
-        $noteType = $note->getType();
-        $note->delete();
-
-        $this->eventDispatcher->dispatch(
-            sprintf('coreshop.note.%s.pot_delete', $noteType),
-            new GenericEvent($note, $eventParams)
-        );
     }
 }

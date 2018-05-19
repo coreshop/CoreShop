@@ -14,8 +14,8 @@ namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
 
@@ -32,7 +32,7 @@ final class OrderStateHistoryLogger
     private $stateMachineManager;
 
     /**
-     * @var DataObjectNoteService
+     * @var NoteServiceInterface
      */
     private $noteService;
 
@@ -49,14 +49,14 @@ final class OrderStateHistoryLogger
     /**
      * @param OrderRepositoryInterface $orderRepository
      * @param StateMachineManager $stateMachineManager
-     * @param DataObjectNoteService $noteService
+     * @param NoteServiceInterface $noteService
      * @param TranslatorInterface $translator
      * @param string $noteIdentifier
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         StateMachineManager $stateMachineManager,
-        DataObjectNoteService $noteService,
+        NoteServiceInterface $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
     )
