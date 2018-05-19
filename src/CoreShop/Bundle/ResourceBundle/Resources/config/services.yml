@@ -6,18 +6,9 @@ imports:
     - { resource: "services/validators.yml" }
 
 parameters:
-    coreshop.admin.route.base: /admin/coreshop
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
 services:
-    coreshop.object_service:
-        class: CoreShop\Component\Resource\Pimcore\ObjectService
-
-    coreshop.object_note_service:
-        class: CoreShop\Component\Resource\Pimcore\DataObjectNoteService
-        arguments:
-            - '@event_dispatcher'
-
     coreshop.resource_registry:
         class: CoreShop\Component\Resource\Metadata\Registry
 
@@ -47,12 +38,6 @@ services:
           - '@coreshop.resource_controller.view_handler'
         calls:
           - [setContainer, ['@service_container']]
-
-    coreshop.resource_loader:
-        class: CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader
-
-    coreshop.resource.object_cloner:
-        class: CoreShop\Component\Resource\Pimcore\ObjectCloner
 
     coreshop.resource.helper.form_error_serializer:
         class: CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer

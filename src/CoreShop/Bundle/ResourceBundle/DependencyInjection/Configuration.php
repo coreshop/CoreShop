@@ -129,7 +129,6 @@ final class Configuration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->ignoreExtraKeys(false)
                         ->children()
-                            ->scalarNode('broker')->defaultValue('/bundles/coreshopresource/pimcore/js/broker.js')->end()
                             ->scalarNode('global')->defaultValue('/bundles/coreshopresource/pimcore/js/global.js')->end()
                             ->scalarNode('plugin')->defaultValue('/bundles/coreshopresource/pimcore/js/plugin.js')->end()
                             ->scalarNode('event_manager')->defaultValue('/bundles/coreshopresource/pimcore/js/eventManager.js')->end()

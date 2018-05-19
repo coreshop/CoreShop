@@ -36,6 +36,10 @@ coreshop.broker = {
 
         for (var i = 0; i < list.length; i++) {
             list[i].func.apply(list[i].scope, args);
+
+            if (list[i].once) {
+                list.splice(i, 1);
+            }
         }
     },
 
@@ -56,14 +60,19 @@ coreshop.broker = {
         }
     },
 
-    addListener: function (name, func, scope) {
+    addListener: function (name, func, scope, once) {
         if (coreshop.broker._listeners[name] === undefined) {
             coreshop.broker._listeners[name] = [];
         }
 
         coreshop.broker._listeners[name].push({
             func: func,
-            scope: scope
+            scope: scope,
+            once: Ext.isDefined(once) ? once : false
         });
+    },
+
+    addListenerOnce: function (name, func, scope) {
+        coreshop.broker.addListener(name, func, scope, true);
     }
 };

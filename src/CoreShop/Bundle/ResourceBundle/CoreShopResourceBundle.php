@@ -58,11 +58,10 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     public static function registerDependentBundles(BundleCollection $collection)
     {
         $collection->addBundle(new JMSSerializerBundle(), 3900);
+        $collection->addBundle(new \CoreShop\Bundle\PimcoreBundle\CoreShopPimcoreBundle(), 3850);
         $collection->addBundle(new \FOS\RestBundle\FOSRestBundle(), 1500);
         $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
-        $collection->addBundle(new \CoreShop\Bundle\PimcoreBundle\CoreShopPimcoreBundle(), 1000);
-
     }
 
     /**
@@ -91,34 +90,6 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         }
 
         return 'coreshop/core-shop';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsPaths()
-    {
-        $jsFiles = [];
-
-        if ($this->container->hasParameter('coreshop.all.pimcore.admin.js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.js'), true);
-        }
-
-        return $jsFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssPaths()
-    {
-        $cssFiles = [];
-
-        if ($this->container->hasParameter('coreshop.all.pimcore.admin.css')) {
-            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.css'));
-        }
-
-        return $cssFiles;
     }
 
     /**

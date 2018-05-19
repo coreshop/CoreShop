@@ -12,19 +12,23 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopPimcoreExtension extends AbstractModelExtension
+final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
 {
     /**
      * {@inheritdoc}
      */
     public function load(array $config, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
     }
 }

@@ -22,10 +22,10 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectCloner;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -74,7 +74,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $currencyConverter;
 
     /**
-     * @var ObjectCloner
+     * @var ObjectClonerInterface
      */
     protected $objectCloner;
 
@@ -92,7 +92,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param PimcoreFactoryInterface $saleItemFactory
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param CurrencyConverterInterface $currencyConverter
-     * @param ObjectCloner $objectCloner
+     * @param ObjectClonerInterface $objectCloner
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */
     public function __construct(
@@ -104,7 +104,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         PimcoreFactoryInterface $saleItemFactory,
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter,
-        ObjectCloner $objectCloner,
+        ObjectClonerInterface $objectCloner,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
     )
     {
