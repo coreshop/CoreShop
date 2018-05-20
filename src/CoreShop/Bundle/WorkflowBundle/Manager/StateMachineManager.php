@@ -16,7 +16,7 @@ use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\Workflow;
 
-final class StateMachineManager
+final class StateMachineManager implements StateMachineManagerInterface
 {
     /**
      * @var Registry
@@ -32,9 +32,7 @@ final class StateMachineManager
     }
 
     /**
-     * @param      $subject
-     * @param null $workflowName
-     * @return Workflow
+     * {@inheritdoc}
      */
     public function get($subject, $workflowName = null)
     {

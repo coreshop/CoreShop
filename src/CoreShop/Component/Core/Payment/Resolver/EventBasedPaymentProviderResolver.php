@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Core\Payment\Resolver;
 
-use CoreShop\Bundle\CoreBundle\CoreEvents;
-use CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent;
+use CoreShop\Component\Core\Event\PaymentProviderSupportsEvent;
+use CoreShop\Component\Core\Events;
 use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,7 +51,7 @@ class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterf
         foreach ($this->inner->resolvePaymentProviders($subject) as $paymentProvider) {
             $event = new PaymentProviderSupportsEvent($paymentProvider, $subject);
 
-            $this->eventDispatcher->dispatch(CoreEvents::SUPPORTS_PAYMENT_PROVIDER, $event);
+            $this->eventDispatcher->dispatch(Events::SUPPORTS_PAYMENT_PROVIDER, $event);
 
             if ($event->isSupported()) {
                 $allowedPaymentProviders[] = $paymentProvider;
