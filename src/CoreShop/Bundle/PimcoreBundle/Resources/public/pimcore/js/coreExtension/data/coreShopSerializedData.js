@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.object.classes.data.coreShopSerializedData');
-pimcore.object.classes.data.coreShopSerializedData = Class.create(coreshop.object.classes.data.data, {
+pimcore.object.classes.data.coreShopSerializedData = Class.create(pimcore.object.classes.data.data, {
     type: 'coreShopSerializedData',
 
     getTypeName: function () {
@@ -24,5 +24,29 @@ pimcore.object.classes.data.coreShopSerializedData = Class.create(coreshop.objec
 
     getIconClass: function () {
         return 'coreshop_icon_serialized';
+    },
+
+    /**
+     * define where this datatype is allowed
+     */
+    allowIn: {
+        object: true,
+        objectbrick: true,
+        fieldcollection: true,
+        localizedfield: true
+    },
+
+    initialize: function (treeNode, initData) {
+        this.initData(initData);
+
+        this.treeNode = treeNode;
+    },
+
+    getLayout: function ($super) {
+        $super();
+
+        this.specificPanel.removeAll();
+
+        return this.layout;
     }
 });
