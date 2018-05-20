@@ -12,100 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-interface ClassUpdateInterface
-{
+if (interface_exists(\CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface::class)) {
+    @trigger_error('Interface CoreShop\Component\Pimcore\ClassUpdateInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param $className
+     * @deprecated Interface CoreShop\Component\Pimcore\ClassUpdateInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface instead.
      */
-    public function __construct($className);
+    interface ClassUpdateInterface
+    {
 
-    /**
-     * Save Field Definition
-     *
-     * @return bool
-     */
-    public function save();
-
-    /**
-     * get a property from the class
-     *
-     * @param $property
-     * @return mixed
-     */
-    public function getProperty($property);
-
-    /**
-     * set a property for the class
-     *
-     * @param $property
-     * @param $value
-     * @return mixed
-     */
-    public function setProperty($property, $value);
-
-    /**
-     * Check if Class has field
-     *
-     * @param $fieldName
-     * @return bool
-     */
-    public function hasField($fieldName);
-
-    /**
-     * Insert Field at the end
-     *
-     * @param $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function insertField($jsonFieldDefinition);
-
-    /**
-     * Insert Field before another field
-     *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition);
-
-    /**
-     * Insert Field after another field
-     *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition);
-
-    /**
-     * Replace existing Field with a new Definition
-     *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function replaceField($fieldName, $jsonFieldDefinition);
-
-    /**
-     * Replace Properties from any field
-     *
-     * @param $fieldName
-     * @param array $keyValues
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function replaceFieldProperties($fieldName, array $keyValues);
-
-    /**
-     * Remove existing Field
-     *
-     * @param $fieldName
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function removeField($fieldName);
+    }
 }

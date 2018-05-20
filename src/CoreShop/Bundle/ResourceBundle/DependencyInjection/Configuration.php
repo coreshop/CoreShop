@@ -143,8 +143,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_data_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/select.js')->end()
                             ->scalarNode('core_extension_tag_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/select.js')->end()
                             ->scalarNode('core_extension_tag_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js')->end()
-                            ->scalarNode('core_extension_tag_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/coreShopSerializedData.js')->end()
-                            ->scalarNode('core_extension_data_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/coreShopSerializedData.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')

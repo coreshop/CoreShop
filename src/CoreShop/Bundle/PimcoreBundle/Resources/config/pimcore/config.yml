@@ -1,0 +1,7 @@
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopSerializedData: CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData
+

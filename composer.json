@@ -67,7 +67,8 @@
     "coreshop/inventory-bundle": "self.version",
     "coreshop/workflow-bundle": "self.version",
     "coreshop/seo": "self.version",
-    "coreshop/seo-bundle": "self.version"
+    "coreshop/seo-bundle": "self.version",
+    "coreshop/pimcore-bundle": "self.version"
   },
   "require": {
     "doctrine/orm": "^2.5",

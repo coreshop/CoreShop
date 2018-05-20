@@ -16,7 +16,7 @@ use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;

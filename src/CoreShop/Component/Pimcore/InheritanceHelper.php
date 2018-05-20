@@ -12,28 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject;
-
-class InheritanceHelper
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\InheritanceHelper::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\InheritanceHelper is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\InheritanceHelper class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * This function enables usage of inherited values in Pimcore and resets the state of inheritance automatically
-     * after your functions is finished.
-     *
-     * @param \Closure $function
-     * @param bool $inheritValues
-     *
-     * @return mixed
+     * @deprecated Class CoreShop\Component\Pimcore\InheritanceHelper is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\InheritanceHelper class instead.
      */
-    public static function useInheritedValues(\Closure $function, $inheritValues = true)
+    class InheritanceHelper
     {
-        $backup = DataObject\AbstractObject::getGetInheritedValues();
-        DataObject\AbstractObject::setGetInheritedValues($inheritValues);
 
-        $result = $function();
-
-        DataObject\AbstractObject::setGetInheritedValues($backup);
-
-        return $result;
     }
 }
