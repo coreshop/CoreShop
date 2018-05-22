@@ -96,7 +96,7 @@ services:
             - 'system.shipment.suffix'
 
     coreshop.mail.processor.order:
-        class: CoreShop\Component\Core\Order\OrderMailProcessor
+        class: CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor
         arguments:
            - '@monolog.logger.pimcore'
            - '@coreshop.money_formatter'

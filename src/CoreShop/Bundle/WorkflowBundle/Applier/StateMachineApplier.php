@@ -12,19 +12,19 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\Applier;
 
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 
-final class StateMachineApplier
+final class StateMachineApplier implements StateMachineApplierInterface
 {
     /**
-     * @var StateMachineManager
+     * @var StateMachineManagerInterface
      */
     protected $stateMachineManager;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManagerInterface $stateMachineManager
      */
-    public function __construct(StateMachineManager $stateMachineManager)
+    public function __construct(StateMachineManagerInterface $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }
