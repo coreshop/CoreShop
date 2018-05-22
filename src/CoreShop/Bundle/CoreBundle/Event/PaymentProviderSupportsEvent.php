@@ -12,13 +12,67 @@
 
 namespace CoreShop\Bundle\CoreBundle\Event;
 
-if (class_exists(\CoreShop\Component\Core\Event\PaymentProviderSupportsEvent::class)) {
-    @trigger_error('Class CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Core\Event\PaymentProviderSupportsEvent class instead.', E_USER_DEPRECATED);
-} else {
+
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use Symfony\Component\EventDispatcher\Event;
+
+class PaymentProviderSupportsEvent extends Event
+{
     /**
-     * @deprecated Class CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Core\Event\PaymentProviderSupportsEvent class instead.
+     * @var PaymentProviderInterface
      */
-    class PaymentProviderSupportsEvent
+    private $paymentProvider;
+
+    /**
+     * @var ResourceInterface
+     */
+    private $subject;
+
+    /**
+     * @var bool
+     */
+    private $supported = true;
+
+    /**
+     * @param PaymentProviderInterface $paymentProvider
+     * @param ResourceInterface $subject
+     */
+    public function __construct(PaymentProviderInterface $paymentProvider, ResourceInterface $subject = null)
     {
+        $this->paymentProvider = $paymentProvider;
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return PaymentProviderInterface
+     */
+    public function getPaymentProvider()
+    {
+        return $this->paymentProvider;
+    }
+
+    /**
+     * @return ResourceInterface
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSupported()
+    {
+        return $this->supported;
+    }
+
+    /**
+     * @param bool $supported
+     */
+    public function setSupported(bool $supported)
+    {
+        $this->supported = $supported;
     }
 }

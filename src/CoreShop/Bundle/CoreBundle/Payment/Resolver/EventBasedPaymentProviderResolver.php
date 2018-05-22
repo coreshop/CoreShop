@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Payment\Resolver;
+namespace CoreShop\Bundle\CoreBundle\Payment\Resolver;
 
-use CoreShop\Component\Core\Event\PaymentProviderSupportsEvent;
+use CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent;
 use CoreShop\Component\Core\Events;
 use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
