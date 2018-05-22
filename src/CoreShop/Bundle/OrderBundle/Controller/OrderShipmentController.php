@@ -22,7 +22,7 @@ use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
