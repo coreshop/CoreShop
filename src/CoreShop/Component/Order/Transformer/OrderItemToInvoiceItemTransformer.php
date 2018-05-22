@@ -18,7 +18,7 @@ use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;

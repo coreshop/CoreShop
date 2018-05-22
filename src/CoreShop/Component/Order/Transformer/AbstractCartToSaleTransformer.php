@@ -24,7 +24,7 @@ use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;

@@ -12,20 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
-use Pimcore\Model\DataObject\Concrete;
-
-class ObjectLinkGenerator implements LinkGeneratorInterface
-{
-    public function generate(Concrete $object, array $params = []): string
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\LinkGenerator::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\ObjectLinkGenerator is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\LinkGenerator class instead.', E_USER_DEPRECATED);
+} else {
+    /**
+     * @deprecated Class CoreShop\Component\Pimcore\ObjectLinkGenerator is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\LinkGenerator class instead.
+     */
+    class ObjectLinkGenerator
     {
-        if ($linkGenerator = $object->getClass()->getLinkGenerator()) {
-            return $linkGenerator->generate(
-                $object,
-                $params
-            );
-        }
 
-        throw new \InvalidArgumentException(sprintf('Object %s with class %s has no Link Generator configured', $object->getId(), $object->getClassName()));
     }
 }

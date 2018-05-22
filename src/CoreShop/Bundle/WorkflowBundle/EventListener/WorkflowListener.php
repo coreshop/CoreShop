@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\EventListener;
 
-use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

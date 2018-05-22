@@ -12,42 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject;
-
-class ClassUpdate extends AbstractDefinitionUpdate
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\ClassUpdate::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\ClassUpdate is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassUpdate class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var string
+     * @deprecated Class CoreShop\Component\Pimcore\ClassUpdate is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassUpdate class instead.
      */
-    private $className;
-
-    /**
-     * @var DataObject\ClassDefinition
-     */
-    private $classDefinition;
-
-    /**
-     * @param $className
-     * @throws ClassDefinitionNotFoundException
-     */
-    public function __construct($className)
+    class ClassUpdate
     {
-        $this->className = $className;
-        $this->classDefinition = DataObject\ClassDefinition::getByName($className);
 
-        if (is_null($this->classDefinition)) {
-            throw new ClassDefinitionNotFoundException(sprintf('ClassDefinition %s not found', $className));
-        }
-
-        $this->fieldDefinitions = $this->classDefinition->getFieldDefinitions();
-        $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition), true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save()
-    {
-        return DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
     }
 }
