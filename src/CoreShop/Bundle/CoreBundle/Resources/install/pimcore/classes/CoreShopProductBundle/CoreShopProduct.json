@@ -5,6 +5,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "linkGeneratorReference": "@coreshop.object.link_generator.product",
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
