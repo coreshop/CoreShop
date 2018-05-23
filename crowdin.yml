@@ -1,0 +1,3 @@
+files:
+  - source: src/CoreShop/**/translations/admin*.yml
+    translation: '%original_path%/admin.%two_letters_code%.yml'
