@@ -64,6 +64,10 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
             $routeParams['_locale'] = $locale;
         }
 
-        return $this->urlGenerator->generate($params['route'] ?: $this->routeName, $routeParams);
+        if (!isset($params['referenceType'])) {
+            $params['referenceType'] = UrlGeneratorInterface::ABSOLUTE_PATH;
+        }
+
+        return $this->urlGenerator->generate($params['route'] ?: $this->routeName, $routeParams, $params['referenceType']);
     }
 }
