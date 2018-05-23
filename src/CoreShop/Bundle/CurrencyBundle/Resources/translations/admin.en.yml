@@ -1,11 +1,1 @@
-coreshop_currency: 'Currency'
-coreshop_currency_isoCode: 'ISO Code'
-coreshop_currency_numericIsoCode: 'Numeric ISO Code'
-coreshop_currency_symbol: 'Symbol'
-coreshop_currency_multiselect: 'Currency Multiselect'
-coreshop_from_currency: 'From Currency'
-coreshop_to_currency: 'To Currency'
-coreshop_exchange_rate: 'Exchange Rate'
-coreshop_exchange_rates: 'Exchange Rates'
-coreshop_permission_currency: 'Currency'
-coreshop_permission_exchange_rate: 'Exchange Rate'
+---
