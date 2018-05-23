@@ -52,7 +52,6 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
          * @var $object Concrete
          */
         Assert::isInstanceOf($object, Concrete::class);
-        Assert::keyExists($params, 'route');
 
         $locale = isset($params['_locale']) ? $params['_locale'] : null;
 
