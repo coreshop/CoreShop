@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator;
 
 use CoreShop\Component\Pimcore\DataObject\AbstractSluggableLinkGenerator;
-use CoreShop\Component\Product\Model\CategoryInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Webmozart\Assert\Assert;

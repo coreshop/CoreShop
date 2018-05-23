@@ -71,7 +71,7 @@ class SearchController extends FrontendController
     protected function createSearchForm()
     {
         return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
-            'action' => $this->generateUrl('coreshop_search'),
+            'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
             'method' => 'GET'
         ]);
     }
