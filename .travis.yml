@@ -21,119 +21,116 @@ matrix:
     include:
         - os: linux
           sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.3"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.3"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.3"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="master"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="master"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="master"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
           php: 7.1
           env:
             - PIMCORE_BRANCH="master"
             - CORESHOP_SKIP_BEHAT=0
             - CORESHOP_CODE_COVERAGE=1
 
-    allow_failures:
-        - env: CORESHOP_CODE_COVERAGE=1
+        - os: linux
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=1
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=1
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+            - CORESHOP_SKIP_BEHAT=1
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=1
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=1
+
+        - os: linux
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=0
+
+        - os: linux
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_SKIP_BEHAT=0
 env:
     global:
         - PIMCORE_ENVIRONMENT=test

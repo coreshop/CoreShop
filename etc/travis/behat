@@ -6,7 +6,7 @@ rm -rf var/cache
 # PIMCORE_TEST_DB_DSN=mysql://coreshop2:coreshop2@localhost/coreshop2___behat
 
 if [ $CORESHOP_CODE_COVERAGE == 1 ]; then
-    phpdbg -qrr vendor/bin/behat --config lib/CoreShop/behat.yml.dist -vvv
+    vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.coverage.yml.dist
 fi
 
 if [ $CORESHOP_CODE_COVERAGE == 0 ]; then
