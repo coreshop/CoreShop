@@ -20,7 +20,7 @@ matrix:
     include:
         - os: linux
           sudo: required
-          php: 7
+          php: 7.1
           env:
             - CORESHOP_RUN_ECS=1
             - TRAVIS_ALLOW_FAIL=1
