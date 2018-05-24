@@ -2,7 +2,7 @@
 set -e
 
 echo "Bumping open file ulimit from `ulimit -n`..."
-ulimit -n 8192 # This is probably higher than needed, 1024 limits on linux seem to work fine.
+ulimit -n 65535 # This is probably higher than needed, 1024 limits on linux seem to work fine.
 echo "...to `ulimit -n`"
 
 mysql --version
