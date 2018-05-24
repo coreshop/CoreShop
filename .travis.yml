@@ -22,7 +22,7 @@ matrix:
     include:
         - 
           sudo: required
-          php: 7.1.10
+          php: 7.1
           env:
             - CORESHOP_RUN_ECS=1
 
