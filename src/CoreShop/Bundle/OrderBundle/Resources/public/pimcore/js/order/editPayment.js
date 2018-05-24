@@ -102,13 +102,27 @@ coreshop.order.order.editPayment = {
                     {
                         xtype: 'gridpanel',
                         title: t('details'),
+                        viewConfig: {
+                        enableTextSelection: true
+                        },
                         store: new Ext.data.ArrayStore({
                             data: payment.get('details'),
                             fields: ['name', 'value']
                         }),
                         columns: [
-                            {text: 'Name', dataIndex: 'name', flex: 1 },
-                            {text: 'Value', dataIndex: 'value', flex: 2 }
+                            {
+                                text: 'Name',
+                                dataIndex: 'name',
+                                flex: 1
+                            },
+                            {
+                                text: 'Value',
+                                dataIndex: 'value',
+                                flex: 2,
+                                renderer: function arg(val, test, test2){
+                                    return '<div style="white-space: normal;">' + val + '</div>';
+                                }
+                            }
                         ]
                     }
                 ]

@@ -158,7 +158,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
 
                 $manager->persist($rule);
 
-                $this->setReference('shippingRule' . $index, $rule);
+                $this->setReference('shippingRule'.$index, $rule);
             }
 
             $manager->flush();

@@ -16,10 +16,10 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Pimcore\BrickDefinitionUpdate;
-use CoreShop\Component\Pimcore\ClassUpdate;
-use CoreShop\Component\Pimcore\ClassUpdateInterface;
-use CoreShop\Component\Pimcore\FieldCollectionDefinitionUpdate;
+use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface;
+use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
@@ -143,7 +143,7 @@ final class PimcoreClassContext implements Context
      */
     public function createBrickNamed($brickName)
     {
-      $name = $this->classStorage->set($brickName);
+        $name = $this->classStorage->set($brickName);
 
         $brickDefinition = new Objectbrick\Definition();
         $brickDefinition->setKey($name);
@@ -630,7 +630,7 @@ final class PimcoreClassContext implements Context
         foreach ($hash as $row) {
             switch ($row['type']) {
                 case 'checkbox':
-                    $object->setValue($row['key'], boolval($row['value']));
+                    $object->setValue($row['key'], filter_var($row['value'], FILTER_VALIDATE_BOOLEAN));
                     break;
 
                 case 'input':
@@ -642,7 +642,7 @@ final class PimcoreClassContext implements Context
                     break;
 
                 case 'localized':
-                    $setter = 'set' . ucfirst($row['key']);
+                    $setter = 'set'.ucfirst($row['key']);
 
                     foreach (Tool::getValidLanguages() as $lang) {
                         $object->$setter($row['value'], $lang);
@@ -661,7 +661,7 @@ final class PimcoreClassContext implements Context
                     }
 
 
-                    $object->{'get' . ucfirst($row['key'])}()->{'set' . ucfirst($type)}($brickInstance);
+                    $object->{'get'.ucfirst($row['key'])}()->{'set'.ucfirst($type)}($brickInstance);
                     break;
 
                 case 'collection':
@@ -681,7 +681,7 @@ final class PimcoreClassContext implements Context
                         $items->add($collectionInstance);
                     }
 
-                    $object->{'set' . ucfirst($row['key'])}($items);
+                    $object->{'set'.ucfirst($row['key'])}($items);
                     break;
 
                 default:

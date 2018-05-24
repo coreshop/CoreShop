@@ -51,11 +51,6 @@ class Carrier extends AbstractResource implements CarrierInterface
     private $isFree = false;
 
     /**
-     * @var int
-     */
-    private $rangeBehaviour = self::RANGE_BEHAVIOUR_DEACTIVATE;
-
-    /**
      * @var Collection|ShippingRuleGroupInterface[]
      */
     protected $shippingRules;
@@ -110,17 +105,17 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel($language = null)
     {
-        return $this->label;
+        return $this->getTranslation($language)->getLabel();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel($label, $language = null)
     {
-        $this->label = $label;
+        $this->getTranslation($language)->setLabel($label);
     }
 
     /**
@@ -153,22 +148,6 @@ class Carrier extends AbstractResource implements CarrierInterface
     public function setIsFree($isFree)
     {
         $this->isFree = $isFree;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRangeBehaviour()
-    {
-        return $this->rangeBehaviour;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRangeBehaviour($rangeBehaviour)
-    {
-        $this->rangeBehaviour = $rangeBehaviour;
     }
 
     /**

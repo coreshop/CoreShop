@@ -10,7 +10,7 @@ final class PimcoreResourceClassGenerator extends Generator
     public function generateResourceClass(BundleInterface $bundle, $modelName, $inheritFrom)
     {
         $dir = $bundle->getPath();
-        $modelFile = $dir . '/Model/' . $modelName . '.php';
+        $modelFile = $dir.'/Model/'.$modelName.'.php';
 
         if (file_exists($modelFile)) {
             throw new \RuntimeException(sprintf('Model "%s" already exists', $modelName));

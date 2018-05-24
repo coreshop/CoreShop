@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 class LocaleMappingInterpreter implements LocalizedInterpreterInterface
@@ -19,7 +20,7 @@ class LocaleMappingInterpreter implements LocalizedInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexColumnInterface $config = null)
+    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config)
     {
         throw new \Exception('method "interpret" in Localized Interpreter not allowed. Please use "interpretForLanguage" instead.');
     }
@@ -27,7 +28,7 @@ class LocaleMappingInterpreter implements LocalizedInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpretForLanguage($language, $value, $config = null)
+    public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config)
     {
         if (!is_array($value)) {
             return $value;

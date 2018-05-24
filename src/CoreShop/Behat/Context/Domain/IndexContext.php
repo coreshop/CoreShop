@@ -113,6 +113,7 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
      * @Then /^the (index) column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
+     * @Then /^the (index) column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
     public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
     {
@@ -122,10 +123,33 @@ final class IndexContext implements Context
     /**
      * @Then /^the (index) localized column "([^"]+)" for (product "[^"]+") should have value "([^"]+)"$/
      * @Then /^the (index) localized column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
+     * @Then /^the (index) localized column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
     public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
     {
         $this->indexEntryShouldHaveValue($index, $object, $column, $value, true);
+    }
+
+    /**
+     * @Then /^the (index) should have an index for "([^"]+)"$/
+     */
+    public function theIndexShouldHaveAnIndexFor(IndexInterface $index, $columns)
+    {
+        $columns = explode(', ', $columns);
+        $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
+
+        $this->indexShouldHaveIndexInTable($tableName, $columns);
+    }
+
+    /**
+     * @Then /^the (index) should have an localized index for "([^"]+)"$/
+     */
+    public function theIndexShouldHaveAnLocalizedIndexFor(IndexInterface $index, $columns)
+    {
+        $columns = explode(', ', $columns);
+        $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
+
+        $this->indexShouldHaveIndexInTable($tableName, $columns);
     }
 
     /**
@@ -203,5 +227,36 @@ final class IndexContext implements Context
 
             Assert::true($found, sprintf('Table column %s not found', $col));
         }
+    }
+
+    /**
+     * @param string $tableName
+     * @param array $columns
+     */
+    protected function indexShouldHaveIndexInTable(string $tableName, array $columns)
+    {
+        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+
+        Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
+
+        $table = $schemaManager->listTableDetails($tableName);
+        $found = false;
+
+        foreach ($table->getIndexes() as $index) {
+            $found = true;
+
+            foreach ($columns as $column) {
+                if (!in_array($column, $index->getColumns())) {
+                    $found = false;
+                    break;
+                }
+            }
+
+            if ($found) {
+                break;
+            }
+        }
+
+        Assert::true($found, sprintf('Index for columns %s not found', implode(', ', $columns)));
     }
 }

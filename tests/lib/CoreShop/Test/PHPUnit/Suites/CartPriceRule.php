@@ -58,7 +58,23 @@ class CartPriceRule extends RuleTest
         $this->cart->setCustomer(Data::$customer1);
         $this->cart->setShippingAddress(Data::$customer1->getAddresses()[0]);
         $this->cart->setInvoiceAddress(Data::$customer1->getAddresses()[0]);
+
+        Data::$carrier1->removeStore(Data::$store);
+
+        $this->getEntityManager()->persist(Data::$carrier1);
+        $this->getEntityManager()->flush();
     }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        Data::$carrier1->addStore(Data::$store);
+
+        $this->getEntityManager()->persist(Data::$carrier1);
+        $this->getEntityManager()->flush();
+    }
+
 
     /**
      * {@inheritdoc}

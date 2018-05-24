@@ -14,8 +14,8 @@ namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
 
@@ -32,7 +32,7 @@ final class OrderStateHistoryLogger
     private $stateMachineManager;
 
     /**
-     * @var DataObjectNoteService
+     * @var NoteServiceInterface
      */
     private $noteService;
 
@@ -49,14 +49,14 @@ final class OrderStateHistoryLogger
     /**
      * @param OrderRepositoryInterface $orderRepository
      * @param StateMachineManager $stateMachineManager
-     * @param DataObjectNoteService $noteService
+     * @param NoteServiceInterface $noteService
      * @param TranslatorInterface $translator
      * @param string $noteIdentifier
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         StateMachineManager $stateMachineManager,
-        DataObjectNoteService $noteService,
+        NoteServiceInterface $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
     )
@@ -85,19 +85,19 @@ final class OrderStateHistoryLogger
         $from = $this->getFrom($transition->getFroms());
         $to = $this->getTo($transition->getTos());
 
-        $fromValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $from;
-        $toValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $to;
+        $fromValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$from;
+        $toValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$to;
 
         $objectIdInfo = '';
         // add id if it's not an order (since payment/shipping/invoice could be more than one)
         if (!$subject instanceof OrderInterface) {
-            $objectIdInfo = ' (Id ' . $subject->getId() . ')';
+            $objectIdInfo = ' (Id '.$subject->getId().')';
         }
 
         $note = $this->noteService->createPimcoreNoteInstance($order, $this->noteIdentifier);
         $note->setTitle(
             sprintf('%s%s: %s %s %s %s',
-                $this->translator->trans('coreshop_workflow_name_' . $event->getWorkflowName(), [], 'admin'),
+                $this->translator->trans('coreshop_workflow_name_'.$event->getWorkflowName(), [], 'admin'),
                 $objectIdInfo,
                 $this->translator->trans('coreshop_workflow_state_changed_from', [], 'admin'),
                 $this->translator->trans($fromValue, [], 'admin'),

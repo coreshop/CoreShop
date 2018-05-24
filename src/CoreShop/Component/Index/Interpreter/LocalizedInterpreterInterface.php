@@ -12,14 +12,18 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexColumnInterface;
+
 interface LocalizedInterpreterInterface extends InterpreterInterface
 {
     /**
      * @param $language
      * @param $value
-     * @param null $config
+     * @param IndexableInterface   $object
+     * @param IndexColumnInterface $config
      *
      * @return mixed
      */
-    public function interpretForLanguage($language, $value, $config = null);
+    public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config);
 }

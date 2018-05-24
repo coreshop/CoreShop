@@ -222,4 +222,21 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocaleCode()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocaleCode($localeCode)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

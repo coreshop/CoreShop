@@ -30,6 +30,7 @@
     "coreshop/store-bundle": "^2.0",
     "coreshop/index-bundle": "^2.0",
     "coreshop/payment-bundle": "^2.0",
+    "coreshop/seo-bundle": "^2.0",
     "coreshop/sequence-bundle": "^2.0",
     "coreshop/payum-bundle": "^2.0",
     "coreshop/configuration-bundle": "^2.0",

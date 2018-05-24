@@ -61,15 +61,15 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $customer = $this->get('coreshop.repository.customer')->find($request->get('customer'));
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '" . $request->get('customer') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '".$request->get('customer')."' not found"]);
         }
 
         if (!$store instanceof StoreInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '" . $request->get('store') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '".$request->get('store')."' not found"]);
         }
 
         if (!$currency instanceof CurrencyInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '" . $request->get('currency') . "' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '".$request->get('currency')."' not found"]);
         }
 
         $this->get('coreshop.context.store.fixed')->setStore($store);
@@ -122,6 +122,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
     {
         $this->isGrantedOr403();
 
+        $language = $request->get('language');
         $productIds = $request->get('products');
         $customerId = $request->get('customer');
         $shippingAddressId = $request->get('shippingAddress');
@@ -159,7 +160,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
         $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
 
-        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
+        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
         try {
             $this->prepareCart($request, $cart);
@@ -231,9 +232,8 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $this->get('coreshop.context.currency.fixed')->setCurrency($currency);
         $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
         $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
-        $this->get('coreshop.context.locale.fixed')->setLocale($language);
 
-        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
+        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
         try {
             $this->prepareCart($request, $cart);
@@ -300,7 +300,14 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         ];
     }
 
-    protected function createTempCart(CustomerInterface $customer, AddressInterface $shippingAddress, AddressInterface $invoiceAddress, CurrencyInterface $currency, array $productIds)
+    protected function createTempCart(
+        CustomerInterface $customer,
+        AddressInterface $shippingAddress,
+        AddressInterface $invoiceAddress,
+        CurrencyInterface $currency,
+        $localeCode,
+        array $productIds
+    )
     {
         /**
          * @var $cart CartInterface
@@ -313,6 +320,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $cart->setCurrency($currency);
         $cart->setCustomer($customer);
         $cart->setCurrency($currency);
+        $cart->setLocaleCode($localeCode);
 
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];

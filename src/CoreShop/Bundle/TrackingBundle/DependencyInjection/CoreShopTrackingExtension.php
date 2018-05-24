@@ -24,8 +24,32 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+
+        $this->configureTrackers($config, $container);
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    protected function configureTrackers(array $config, ContainerBuilder $container)
+    {
+        foreach ($container->findTaggedServiceIds('coreshop.tracking.tracker') as $id => $attributes) {
+            if (!isset($attributes[0]['type'])) {
+                continue;
+            }
+
+            $type = $attributes[0]['type'];
+
+            if (!array_key_exists($type, $config['trackers'])) {
+                $container->getDefinition($id)->addMethodCall('setEnabled', [false]);
+            } else {
+                $container->getDefinition($id)->addMethodCall('setEnabled', [$config['trackers'][$type]['enabled']]);
+            }
+        }
     }
 }

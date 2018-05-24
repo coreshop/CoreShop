@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
@@ -20,7 +21,6 @@ use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
-use Pimcore\Model\DataObject;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
@@ -28,7 +28,7 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Workflow\StateMachine;
@@ -50,7 +50,7 @@ class OrderController extends AbstractSaleDetailController
         $folderPath = $this->getParameter('coreshop.folder.order');
         $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
 
-        $folder = DataObject::getByPath('/' . $folderPath);
+        $folder = DataObject::getByPath('/'.$folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
@@ -165,14 +165,13 @@ class OrderController extends AbstractSaleDetailController
         $manager = $this->getWorkflowStateManager();
         $history = $manager->getStateHistory($order);
 
-        $date = Carbon::now();
         $statesHistory = [];
 
         if (is_array($history)) {
             foreach ($history as $note) {
                 $user = User::getById($note->getUser());
                 $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
-
+                $date = Carbon::createFromTimestamp($note->getDate());
                 $statesHistory[] = [
                     'icon' => 'coreshop_icon_orderstates',
                     'type' => $note->getType(),
@@ -206,7 +205,11 @@ class OrderController extends AbstractSaleDetailController
                     if (empty($detailValue) && $detailValue != 0) {
                         continue;
                     }
-                    $details[] = [$detailName, $detailValue];
+                    if(is_array($detailValue)) {
+                        $detailValue = join(', ', $detailValue);
+                    }
+
+                    $details[] = [$detailName, htmlentities($detailValue)];
                 }
             }
 
@@ -258,8 +261,8 @@ class OrderController extends AbstractSaleDetailController
             $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
             $order['invoices'] = $this->getInvoices($sale);
             $order['shipments'] = $this->getShipments($sale);
-            $order['invoiceCreationAllowed'] = !$this->getInvoiceProcessableHelper()->isFullyProcessed($sale) && $sale->getPaymentState() === OrderPaymentStates::STATE_PAID;
-            $order['shipmentCreationAllowed'] = !$this->getShipmentProcessableHelper()->isFullyProcessed($sale) && $sale->getPaymentState() === OrderPaymentStates::STATE_PAID;
+            $order['invoiceCreationAllowed'] = $this->getInvoiceProcessableHelper()->isProcessable($sale);
+            $order['shipmentCreationAllowed'] = $this->getShipmentProcessableHelper()->isProcessable($sale);
         }
 
         return $order;

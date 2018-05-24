@@ -42,17 +42,19 @@ class SearchController extends FrontendController
                 'name LIKE ?',
                 'description LIKE ?',
                 'shortDescription LIKE ?',
-                'sku LIKE ?'
+                'sku LIKE ?',
+                'condition' => 'stores LIKE ?'
             ];
             $queryParams = [
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%'
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$this->container->get('coreshop.context.store')->getStore()->getId().'%'
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
-            $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ')', $queryParams);
+            $list->setCondition('active = 1 AND ('.implode(' OR ', $query).')', $queryParams);
 
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);

@@ -69,11 +69,6 @@ class Data
     public static $carrier1;
 
     /**
-     * @var CarrierInterface
-     */
-    public static $carrier2;
-
-    /**
      * @var TaxRuleGroupInterface
      */
     public static $taxRuleGroup;
@@ -221,8 +216,7 @@ class Data
              */
             $carrier = $carrierFactory->createNew();
             $carrier->setName('Test-Carrier-Weight');
-            $carrier->setLabel('Test-Carrier-Weight');
-            $carrier->setRangeBehaviour(CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
+            $carrier->setLabel('Test-Carrier-Weight', 'en');
             $carrier->setTaxRule(self::$taxRuleGroup);
             $carrier->setIsFree(false);
             $carrier->setDescription('TEST', 'en');

@@ -20,8 +20,8 @@ use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -112,7 +112,7 @@ class PaymentController extends Controller
          */
         $tokenGenerator = new UniqueTokenGenerator(true);
         $uniqueId = $tokenGenerator->generate(15);
-        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())).'_'.$uniqueId;
 
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);

@@ -1,6 +1,0 @@
-jms_serializer:
-    metadata:
-        directories:
-            coreshop-shipping:
-                namespace_prefix: "CoreShop\\Component\\Shipping"
-                path: "@CoreShopShippingBundle/Resources/config/serializer"

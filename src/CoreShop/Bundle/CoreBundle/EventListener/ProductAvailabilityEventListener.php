@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\Version;
 
@@ -68,7 +68,7 @@ final class ProductAvailabilityEventListener
          * return if new state is published
          *
          * @var \Pimcore\Model\Version $currentVersion
-        **/
+         **/
         $currentVersion = $versions[0];
         if (!$currentVersion->getData() instanceof PurchasableInterface || $currentVersion->getData()->isPublished() === true) {
             return;
@@ -133,7 +133,7 @@ final class ProductAvailabilityEventListener
 
             $cart->removeItem($cartItem);
 
-            VersionHelper::useVersioning(function () use ($cart) {
+            VersionHelper::useVersioning(function() use ($cart) {
                 $cart->setNeedsRecalculation(true);
                 $cart->save();
             }, false);

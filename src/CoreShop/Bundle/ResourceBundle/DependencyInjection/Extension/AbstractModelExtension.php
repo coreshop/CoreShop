@@ -12,12 +12,12 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 
-abstract class AbstractModelExtension extends Extension
+abstract class AbstractModelExtension extends AbstractPimcoreExtension
 {
     /**
      * @param string $applicationName
@@ -85,34 +85,37 @@ abstract class AbstractModelExtension extends Extension
 
     /**
      * @param $applicationName
-     * @param $bundleResources
+     * @param $stack
      * @param ContainerBuilder $container
+     */
+    public function registerStack($applicationName, $stack, ContainerBuilder $container)
+    {
+        $appParameterName = sprintf('%s.stack', $applicationName);
+        $globalParameterName = 'coreshop.all.stack';
+
+        foreach ([$appParameterName, $globalParameterName] as $parameterName) {
+            $stackConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
+
+            foreach ($stack as $key => $interface) {
+                $key = sprintf('%s.%s', $applicationName, $key);
+
+                if (array_key_exists($key, $stackConfig)) {
+                    throw new \RuntimeException(sprintf('Stack Key %s found twice', $key));
+                }
+
+                $stackConfig[$key] = $interface;
+            }
+
+            $container->setParameter($parameterName, $stackConfig);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
     {
-        $resourceTypes = ['js', 'css'];
-
-        foreach ($resourceTypes as $resourceType) {
-            if (array_key_exists($resourceType, $bundleResources)) {
-                $applicationParameter = sprintf('%s.pimcore.admin.%s', $applicationName, $resourceType);
-                //$aliasParameter = sprintf('%s.pimcore.admin.%s', $this->getAlias(), $resourceType);
-                $globalParameter = sprintf('coreshop.all.pimcore.admin.%s', $resourceType);
-
-                $parameters = [
-                    $applicationParameter, $globalParameter
-                ];
-
-                foreach ($parameters as $containerParameter) {
-                    $resources = [];
-
-                    if ($container->hasParameter($containerParameter)) {
-                        $resources = $container->getParameter($containerParameter);
-                    }
-
-                    $container->setParameter($containerParameter, array_merge($resources, array_values($bundleResources[$resourceType])));
-                }
-            }
-        }
+        parent::registerPimcoreResources($applicationName, $bundleResources, $container);
 
         if (array_key_exists('install', $bundleResources)) {
             foreach ($bundleResources['install'] as $type => $value) {
@@ -157,33 +160,6 @@ abstract class AbstractModelExtension extends Extension
 
             $container->setParameter($globalParameter, array_merge($applicationPermissions, $permissions));
             $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
-        }
-    }
-
-    /**
-     * @param $applicationName
-     * @param $stack
-     * @param ContainerBuilder $container
-     */
-    public function registerStack($applicationName, $stack, ContainerBuilder $container)
-    {
-        $appParameterName = sprintf('%s.stack', $applicationName);
-        $globalParameterName = 'coreshop.all.stack';
-
-        foreach ([$appParameterName, $globalParameterName] as $parameterName) {
-            $stackConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
-
-            foreach ($stack as $key => $interface) {
-                $key = sprintf('%s.%s', $applicationName, $key);
-
-                if (array_key_exists($key, $stackConfig)) {
-                    throw new \RuntimeException(sprintf('Stack Key %s found twice', $key));
-                }
-
-                $stackConfig[$key] = $interface;
-            }
-
-            $container->setParameter($parameterName, $stackConfig);
         }
     }
 }

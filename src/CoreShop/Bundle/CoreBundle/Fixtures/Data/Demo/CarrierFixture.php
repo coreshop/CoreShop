@@ -72,8 +72,6 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
              */
             $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
             $carrier->setName('Standard');
-            $carrier->setLabel('Standard');
-            $carrier->setRangeBehaviour(\CoreShop\Component\Shipping\Model\CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
             $carrier->setTrackingUrl('https://coreshop.at/track/%s');
             $carrier->setIsFree(false);
             $carrier->setTaxRule($this->getReference('taxRule'));
@@ -81,6 +79,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
 
             foreach (Tool::getValidLanguages() as $lang) {
                 $carrier->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
+                $carrier->setLabel('Standard - ' . strtoupper($lang), $lang);
             }
 
             $manager->persist($carrier);

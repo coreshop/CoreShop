@@ -10,5 +10,6 @@ if [ $CORESHOP_CODE_COVERAGE == 1 ]; then
 fi
 
 if [ $CORESHOP_CODE_COVERAGE == 0 ]; then
-    vendor/bin/behat --config lib/CoreShop/behat.yml.dist -vvv
+    vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.yml.dist
 fi
+

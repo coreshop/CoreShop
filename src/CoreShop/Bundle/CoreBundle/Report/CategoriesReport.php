@@ -19,7 +19,7 @@ use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
@@ -123,7 +123,7 @@ class CategoriesReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $catSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
+        $catSales = InheritanceHelper::useInheritedValues(function() use ($productSales) {
 
             $catSales = [];
             foreach ($productSales as $productSale) {
@@ -151,7 +151,7 @@ class CategoriesReport implements ReportInterface
 
         });
 
-        usort($catSales, function ($a, $b) {
+        usort($catSales, function($a, $b) {
             return $b['orderCount'] <=> $a['orderCount'];
         });
 

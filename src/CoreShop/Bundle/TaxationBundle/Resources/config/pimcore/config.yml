@@ -4,3 +4,10 @@ pimcore:
             data:
                 map:
                     coreShopTaxRuleGroup: CoreShop\Bundle\TaxationBundle\CoreExtension\TaxRuleGroup
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-taxation:
+                namespace_prefix: "CoreShop\\Component\\Taxation"
+                path: "@CoreShopTaxationBundle/Resources/config/serializer"

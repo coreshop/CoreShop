@@ -27,6 +27,11 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
     /**
      * @var string
      */
+    protected $label = '';
+
+    /**
+     * @var string
+     */
     protected $description = '';
 
 
@@ -44,6 +49,22 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
     }
 
     /**

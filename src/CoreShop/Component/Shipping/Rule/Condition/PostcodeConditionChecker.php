@@ -68,7 +68,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
                         $postcodes = [];
 
                         for ($i = $fromNumber; $i <= $toNumber; ++$i) {
-                            $postcodes[] = $fromText . $i;
+                            $postcodes[] = $fromText.$i;
                         }
                     }
                 }

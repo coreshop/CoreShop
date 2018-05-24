@@ -16,7 +16,7 @@ use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Index\Condition\Condition;
+use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
@@ -130,13 +130,13 @@ class CategoryController extends FrontendController
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
-            $filteredList->addCondition(Condition::like('stores', $this->getContext()->getStore()->getId(), 'both'), 'stores');
+            $filteredList->addCondition(new LikeCondition('stores', 'both', $this->getContext()->getStore()->getId()), 'stores');
             $filteredList->setCategory($category);
 
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
+            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)).'_'.(empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
             $sort = $request->get('sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
@@ -159,7 +159,7 @@ class CategoryController extends FrontendController
 
         } else {
             //Classic Listing Mode
-            $sort = $request->get('sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
+            $sort = $request->get('sort', $this->defaultSortName.'_'.$this->defaultSortDirection);
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
@@ -201,6 +201,8 @@ class CategoryController extends FrontendController
         foreach ($paginator as $product) {
             $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
         }
+
+        $this->get('coreshop.seo.presentation')->updateSeoMetadata($category);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }

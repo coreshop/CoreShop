@@ -61,7 +61,7 @@ coreshop.filter.abstract = Class.create({
         });
     },
 
-    getData: function() {
+    getData: function () {
         var data = this.form.getForm().getFieldValues();
 
         data['configuration'] = this.configurationForm.getForm().getFieldValues();
@@ -102,10 +102,10 @@ coreshop.filter.abstract = Class.create({
                     }.bind(this)
                 }
             });
+        }
 
-            if (this.data.field) {
-                this.onFieldChange(this.fieldsCombo, this.data.field);
-            }
+        if (this.data.configuration.hasOwnProperty('field') && this.data.configuration.field) {
+            this.onFieldChange(this.fieldsCombo, this.data.configuration.field);
         }
 
         return this.fieldsCombo;

@@ -34,7 +34,7 @@ class PimcoreLocaleContext implements LocaleContextInterface
      */
     public function getLocaleCode()
     {
-        $pimcoreLocale = $this->pimcoreLocaleService->getLocale();
+        $pimcoreLocale = $this->pimcoreLocaleService->findLocale();
 
         if (null === $pimcoreLocale) {
             throw new LocaleNotFoundException();

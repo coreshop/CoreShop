@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\PaymentBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 
 class PaymentRepository extends EntityRepository implements PaymentRepositoryInterface
@@ -21,11 +21,19 @@ class PaymentRepository extends EntityRepository implements PaymentRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findForOrder(OrderInterface $order)
+    public function findForOrder(PayableInterface $payable)
+    {
+        return $this->findForPayable($payable);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findForPayable(PayableInterface $payable)
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.orderId = :orderId')
-            ->setParameter('orderId', $order->getId())
+            ->setParameter('orderId', $payable->getId())
             ->orderBy('o.id', 'DESC')
             ->getQuery()
             ->getResult();

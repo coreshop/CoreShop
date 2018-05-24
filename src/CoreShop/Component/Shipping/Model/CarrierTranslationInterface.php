@@ -20,6 +20,16 @@ interface CarrierTranslationInterface extends ResourceInterface, TimestampableIn
     /**
      * @return string
      */
+    public function getLabel();
+
+    /**
+     * @param string $label
+     */
+    public function setLabel($label);
+
+    /**
+     * @return string
+     */
     public function getDescription();
 
     /**

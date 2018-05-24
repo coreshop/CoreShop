@@ -26,6 +26,7 @@ pimcore.object.tags.coreShopStorePrice = Class.create(pimcore.object.tags.abstra
 
         this.data = data;
         this.fieldConfig = fieldConfig;
+        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
     },
 
     getGridColumnEditor: function (field) {
@@ -34,6 +35,16 @@ pimcore.object.tags.coreShopStorePrice = Class.create(pimcore.object.tags.abstra
 
     getGridColumnFilter: function (field) {
         return false;
+    },
+
+    postSaveObject: function(object, task)
+    {
+        if (object.id === this.object.id && task === "publish")
+        {
+            Ext.Object.each(this.storeFields, function(key, value) {
+                value.resetOriginalValue();
+            });
+        }
     },
 
     getLayoutEdit: function () {
@@ -148,6 +159,10 @@ pimcore.object.tags.coreShopStorePrice = Class.create(pimcore.object.tags.abstra
         this.component = new Ext.Panel(wrapperConfig);
         this.component.updateLayout();
 
+        this.component.on("destroy", function() {
+            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+        }.bind(this));
+
         return this.component;
     },
 
@@ -158,7 +173,7 @@ pimcore.object.tags.coreShopStorePrice = Class.create(pimcore.object.tags.abstra
     },
 
     getValue: function () {
-        var values = [];
+        var values = {};
 
         Ext.Object.each(this.storeFields, function (key, input) {
             values[key] = input.getValue();

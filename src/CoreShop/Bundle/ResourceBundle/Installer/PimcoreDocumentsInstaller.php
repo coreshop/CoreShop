@@ -78,7 +78,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 $progress->setMessage(sprintf('<error>Install Document %s/%s</error>', $docData['path'], $docData['key']));
 
                 foreach ($validLanguages as $language) {
-                    $languageDocument = Document::getByPath("/" . $language);
+                    $languageDocument = Document::getByPath("/".$language);
 
                     if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
@@ -93,7 +93,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                     if ($doc instanceof Document) {
                         //Link translations
                         foreach ($languagesDone as $doneLanguage) {
-                            $translatedDocument = Document::getByPath("/" . $doneLanguage . "/" . $docData['path'] . "/" . $docData['key']);
+                            $translatedDocument = Document::getByPath("/".$doneLanguage."/".$docData['path']."/".$docData['key']);
 
                             if ($translatedDocument) {
                                 $service = new Document\Service();

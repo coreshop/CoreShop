@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 final class OrderHistoryLogger
@@ -25,7 +25,7 @@ final class OrderHistoryLogger
     private $orderRepository;
 
     /**
-     * @var DataObjectNoteService
+     * @var NoteServiceInterface
      */
     private $noteService;
 
@@ -41,13 +41,13 @@ final class OrderHistoryLogger
 
     /**
      * @param OrderRepositoryInterface $orderRepository
-     * @param DataObjectNoteService    $noteService
+     * @param NoteService    $noteService
      * @param TranslatorInterface      $translator
      * @param string                   $noteIdentifier
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
-        DataObjectNoteService $noteService,
+        NoteServiceInterface $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
     ) {
@@ -78,7 +78,7 @@ final class OrderHistoryLogger
             $message = $this->translator->trans($message, [], 'admin');
         }
 
-        $note->setTitle($this->translator->trans('coreshop_workflow_order_history_logger_prefix', [], 'admin') . ': ' . $message);
+        $note->setTitle($this->translator->trans('coreshop_workflow_order_history_logger_prefix', [], 'admin').': '.$message);
 
         if (!is_null($description)) {
             $note->setDescription($description);

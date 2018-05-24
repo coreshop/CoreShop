@@ -13,7 +13,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
+use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Repository\ProductStorePriceRepositoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Model;
 
@@ -41,14 +43,14 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      *
      * @var string
      */
-    public $queryColumnType = 'text';
+    public $queryColumnType = null;
 
     /**
      * Type for the column
      *
      * @var string
      */
-    public $columnType = 'text';
+    public $columnType = null;
 
     /**
      * Type for the generated phpdoc
@@ -148,6 +150,22 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     /**
      * {@inheritdoc}
      */
+    public function getQueryColumnType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGetterCode($class)
     {
         $key = $this->getName();
@@ -160,7 +178,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
-        $code .= "\t" . 'if (array_key_exists($store->getId(), $data) && is_numeric($data[$store->getId()])) {' . "\n";
+        $code .= "\t" . 'if (is_array($data) && array_key_exists($store->getId(), $data) && is_numeric($data[$store->getId()])) {' . "\n";
         $code .= "\t\t" . 'return intval($data[$store->getId()]);' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t return null;" . "\n";
@@ -181,6 +199,9 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= "\t\t" . '$' . $key . ' = [];' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . "\n";
+        $code .= "\t" . 'if (!is_int($' . $key . ') && !is_array($' . $key . ')) {' . "\n";
+        $code .= "\t\t" . 'throw new \InvalidArgumentException(sprintf(\'Expected value to either be an array or an int, "%s" given\', gettype($storePrice)));' . "\n";
+        $code .= "\t" . '}' . "\n";
         $code .= "\t" . 'if (is_array($' . $key . ')) {' . "\n";
         $code .= "\t\t" . '$this->' . $key . ' = $' . $key . ';' . "\n";
         $code .= "\t" . '}' . "\n";
@@ -193,23 +214,20 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForResource($data, $object = null, $params = [])
-    {
-        return serialize($data);
-    }
 
     /**
      * {@inheritdoc}
      */
-    public function getDataFromResource($data, $object = null, $params = [])
+    public function load($object)
     {
-        if (is_null($data)) {
-            $data = [];
-        } else {
-            $data = unserialize($data);
+        $prices = $this->getProductStorePriceRepository()->findForProduct($object);
+        $data = [];
+
+        /**
+         * @var $price ProductStorePriceInterface
+         */
+        foreach ($prices as $price) {
+            $data[$price->getStore()->getId()] = $price->getPrice();
         }
 
         return $data;
@@ -218,17 +236,41 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     /**
      * {@inheritdoc}
      */
-    public function getDataForQueryResource($data, $object = null, $params = [])
+    public function save($object, $params = [])
     {
-        $queryResource = [];
+        $em = \Pimcore::getContainer()->get('coreshop.manager.product_store_price');
+        $factory = \Pimcore::getContainer()->get('coreshop.factory.product_store_price');
+        $repo = $this->getProductStorePriceRepository();
+        $storeRepo = $this->getStoreRepository();
 
-        if (is_array($data)) {
-            foreach ($data as $storePrice) {
-                $queryResource[] = $storePrice;
+        $data = $this->getDataFromObjectParam($object, $params);
+
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $storeId => $price) {
+                $store = $storeRepo->find($storeId);
+
+                if (!$store instanceof StoreInterface) {
+                    throw new \InvalidArgumentException(sprintf('Store with ID %s not found', $storeId));
+                }
+
+                /**
+                 * @var $storePrice ProductStorePriceInterface
+                 */
+                $storePrice = $repo->findForProductAndStore($object, $store);
+
+                if (null === $storePrice) {
+                    $storePrice = $factory->createNew();
+                }
+
+                $storePrice->setProduct($object);
+                $storePrice->setPrice($price);
+                $storePrice->setStore($store);
+
+                $em->persist($storePrice);
             }
         }
 
-        return ',' . implode(',', $queryResource) . ',';
+        $em->flush();
     }
 
     /**
@@ -237,19 +279,36 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $stores = $this->getStoreRepository()->findAll();
+        $prices = $this->getProductStorePriceRepository()->findForProduct($object);
         $storeData = [];
 
+        /**
+         * @var $price ProductStorePriceInterface
+         */
+        foreach ($prices as $price) {
+            $priceValue = $price->getPrice();
+            $priceValue = doubleval(sprintf('%0.2f', $priceValue / 100));
+
+            $storeData[$price->getStore()->getId()] = [
+                'name' => $price->getStore()->getName(),
+                'currencySymbol' => $price->getStore()->getCurrency()->getSymbol(),
+                'price' => $priceValue
+            ];
+        }
+
+        //Fill missing stores with null values
         /**
          * @var $store StoreInterface
          */
         foreach ($stores as $store) {
-            $price = (is_array($data) && array_key_exists($store->getId(), $data) ? $data[$store->getId()] : 0);
-            $price = doubleval(sprintf('%0.2f', $price / 100));
+            if (array_key_exists($store->getId(), $storeData)) {
+                continue;
+            }
 
             $storeData[$store->getId()] = [
                 'name' => $store->getName(),
                 'currencySymbol' => $store->getCurrency()->getSymbol(),
-                'price' => $price
+                'price' => 0
             ];
         }
 
@@ -373,5 +432,13 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     protected function getStoreRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.store');
+    }
+
+    /**
+     * @return ProductStorePriceRepositoryInterface
+     */
+    protected function getProductStorePriceRepository()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.product_store_price');
     }
 }

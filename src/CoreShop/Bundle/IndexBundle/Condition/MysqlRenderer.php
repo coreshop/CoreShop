@@ -12,11 +12,19 @@
 
 namespace CoreShop\Bundle\IndexBundle\Condition;
 
-use CoreShop\Component\Index\Condition\AbstractRenderer;
+use CoreShop\Component\Index\Condition\CompareCondition;
+use CoreShop\Component\Index\Condition\ConcatCondition;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Condition\InCondition;
+use CoreShop\Component\Index\Condition\IsCondition;
+use CoreShop\Component\Index\Condition\LikeCondition;
+use CoreShop\Component\Index\Condition\MatchCondition;
+use CoreShop\Component\Index\Condition\NotMatchCondition;
+use CoreShop\Component\Index\Condition\RangeCondition;
+use CoreShop\Component\Index\Condition\RendererInterface;
 use Pimcore\Db;
 
-class MysqlRenderer extends AbstractRenderer
+class MysqlRenderer implements RendererInterface
 {
     /**
      * @var \Pimcore\Db\Connection
@@ -32,11 +40,39 @@ class MysqlRenderer extends AbstractRenderer
     }
 
     /**
-     * @param ConditionInterface $condition
+     * {@inheritdoc}
+     */
+    public function render(ConditionInterface $condition, $prefix = null)
+    {
+        if ($condition instanceof IsCondition) {
+            return $this->renderIs($condition, $prefix);
+        }
+        elseif ($condition instanceof InCondition) {
+            return $this->renderIn($condition, $prefix);
+        }
+        elseif ($condition instanceof LikeCondition) {
+            return $this->renderLike($condition, $prefix);
+        }
+        elseif ($condition instanceof RangeCondition) {
+            return $this->renderRange($condition, $prefix);
+        }
+        elseif ($condition instanceof ConcatCondition) {
+            return $this->renderConcat($condition, $prefix);
+        }
+        elseif ($condition instanceof CompareCondition) {
+            return $this->renderCompare($condition, $prefix);
+        }
+
+        throw new \InvalidArgumentException(sprintf('Class %s is not implemented in Mysql Condition Renderer', get_class($condition)));
+    }
+
+    /**
+     * @param InCondition $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderIn(ConditionInterface $condition)
+    protected function renderIn(InCondition $condition, $prefix = null)
     {
         $inValues = [];
 
@@ -47,35 +83,36 @@ class MysqlRenderer extends AbstractRenderer
         }
 
         if (count($inValues) > 0) {
-            return '' . $condition->getFieldName() . ' IN (' . implode(',', $inValues) . ')';
+            return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IN (' . implode(',', $inValues) . ')';
         }
 
         return '';
     }
 
     /**
-     * @param ConditionInterface $condition
+     * @param IsCondition $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderIs(ConditionInterface $condition)
+    protected function renderIs(IsCondition $condition, $prefix = null)
     {
-        $value = $condition->getValues();
+        $value = $condition->getValue();
 
-        return '' . $condition->getFieldName() . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
     }
 
     /**
-     * @param ConditionInterface $condition
+     * @param LikeCondition $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderLike(ConditionInterface $condition)
+    protected function renderLike(LikeCondition $condition, $prefix = null)
     {
-        $values = $condition->getValues();
-        $pattern = $values['pattern'];
+        $value = $condition->getValue();
+        $pattern = $condition->getPattern();
 
-        $value = $values['value'];
         $patternValue = '';
 
         switch ($pattern) {
@@ -90,49 +127,81 @@ class MysqlRenderer extends AbstractRenderer
                 break;
         }
 
-        return '' . $condition->getFieldName() . ' LIKE ' . $this->database->quote($patternValue);
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' LIKE ' . $this->database->quote($patternValue);
     }
 
     /**
-     * @param ConditionInterface $condition
+     * @param RangeCondition $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderRange(ConditionInterface $condition)
+    protected function renderRange(RangeCondition $condition, $prefix = null)
     {
-        $values = $condition->getValues();
+        $from = $condition->getFrom();
+        $to = $condition->getTo();
 
-        return '' . $condition->getFieldName() . ' >= ' . $values['from'] . ' AND ' . $condition->getFieldName() . ' <= ' . $values['to'];
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' >= ' . $from . ' AND ' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' <= ' . $to;
     }
 
     /**
-     * @param ConditionInterface $condition
+     * @param ConcatCondition $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderConcat(ConditionInterface $condition)
+    protected function renderConcat(ConcatCondition $condition, $prefix = null)
     {
-        $values = $condition->getValues();
-        $conditions = [];
-
-        foreach ($values['conditions'] as $cond) {
-            $conditions[] = $this->render($cond);
+        foreach ($condition->getConditions() as $cond) {
+            $conditions[] = $this->render($cond, $prefix);
         }
 
-        return '(' . implode(' ' . trim($values['operator']) . ' ', $conditions) . ')';
+        return '(' . implode(' ' . trim($condition->getOperator()) . ' ', $conditions) . ')';
     }
 
     /**
-     * @param ConditionInterface $condition
+     * @param CompareCondition $condition
+     * @param string $prefix
      *
      * @return string
      */
-    protected function renderCompare(ConditionInterface $condition)
+    protected function renderCompare(CompareCondition $condition, $prefix = null)
     {
-        $values = $condition->getValues();
-        $value = $values['value'];
-        $operator = $values['operator'];
+        $value = $condition->getValue();
+        $operator = $condition->getOperator();
 
-        return '' . $condition->getFieldName() . ' ' . $operator . ' ' . $this->database->quote($value);
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' ' . $operator . ' ' . $this->database->quote($value);
+    }
+
+    /**
+     * @param $identifier
+     * @return string
+     */
+    protected function quoteIdentifier($identifier)
+    {
+        return $this->database->quoteIdentifier($identifier);
+    }
+
+    /**
+     * @param null $prefix
+     * @return string
+     */
+    protected function renderPrefix($prefix = null)
+    {
+        if (null === $prefix) {
+            return '';
+        }
+
+        return $prefix . '.';
+    }
+
+    /**
+     * @param $fieldName
+     * @param null $prefix
+     * @return string
+     */
+    protected function quoteFieldName($fieldName, $prefix = null)
+    {
+        return $this->renderPrefix($prefix) . $this->quoteIdentifier($fieldName);
     }
 }

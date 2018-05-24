@@ -136,7 +136,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'o_id' => $sale->getId(),
             'saleDate' => $date,
             'saleNumber' => $sale->getSaleNumber(),
-            'lang' => $sale->getSaleLanguage(),
+            'lang' => $sale->getLocaleCode(),
             'discount' => $sale->getDiscount(),
             'subtotal' => $sale->getSubtotal(),
             'shipping' => $sale->getShipping(),
@@ -144,7 +144,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'total' => $sale->getTotal(),
             'currency' => $this->getCurrency($sale->getCurrency() ? $sale->getCurrency() : $this->get('coreshop.context.currency')->getCurrency()),
             'currencyName' => $sale->getCurrency() instanceof CurrencyInterface ? $sale->getCurrency()->getName() : '',
-            'customerName' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getFirstname() . ' ' . $sale->getCustomer()->getLastname() : '',
+            'customerName' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getFirstname().' '.$sale->getCustomer()->getLastname() : '',
             'customerEmail' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getEmail() : '',
             'store' => $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null
         ];
@@ -162,7 +162,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function prepareAddress($address, $type)
     {
-        $prefix = 'address' . ucfirst($type);
+        $prefix = 'address'.ucfirst($type);
         $values = [];
         $fullAddress = [];
         $classDefinition = DataObject\ClassDefinition::getById($this->getParameter('coreshop.model.address.pimcore_class_id'));
@@ -171,7 +171,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $value = '';
 
             if ($address instanceof AddressInterface && $address instanceof DataObject\Concrete) {
-                $getter = "get" . ucfirst($fieldDefinition->getName());
+                $getter = "get".ucfirst($fieldDefinition->getName());
 
                 if (method_exists($address, $getter)) {
                     $value = $address->$getter();
@@ -184,11 +184,11 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 }
             }
 
-            $values[$prefix . ucfirst($fieldDefinition->getName())] = $value;
+            $values[$prefix.ucfirst($fieldDefinition->getName())] = $value;
         }
 
         if ($address instanceof AddressInterface && $address->getCountry() instanceof CountryInterface) {
-            $values[$prefix . 'All'] = $this->getAddressFormatter()->formatAddress($address, false);
+            $values[$prefix.'All'] = $this->getAddressFormatter()->formatAddress($address, false);
         }
 
         return $values;
@@ -319,7 +319,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             foreach ($taxes as $tax) {
                 if ($tax instanceof TaxItemInterface) {
                     $summary[] = [
-                        'key' => 'tax_' . $tax->getName(),
+                        'key' => 'tax_'.$tax->getName(),
                         'text' => sprintf('Tax (%s - %s)', $tax->getName(), $tax->getRate()),
                         'value' => $tax->getAmount()
                     ];

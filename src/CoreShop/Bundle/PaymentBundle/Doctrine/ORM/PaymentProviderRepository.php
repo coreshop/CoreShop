@@ -28,6 +28,7 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
             ->andWhere('translation.locale = :locale')
             ->setParameter('name', $name)
             ->setParameter('locale', $locale)
+            ->addOrderBy('o.position')
             ->getQuery()
             ->useQueryCache(true)
             ->useResultCache(true)
@@ -41,6 +42,7 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = true')
+            ->addOrderBy('o.position')
             ->getQuery()
             ->getResult();
     }

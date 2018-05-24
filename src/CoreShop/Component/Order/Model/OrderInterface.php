@@ -13,10 +13,10 @@
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
-interface OrderInterface extends SaleInterface
+interface OrderInterface extends SaleInterface, PayableInterface
 {
     /**
      * @return string
@@ -60,11 +60,15 @@ interface OrderInterface extends SaleInterface
 
     /**
      * @return string
+     *
+     * @deprecated use getLocaleCode
      */
     public function getOrderLanguage();
 
     /**
      * @param $orderLanguage
+     *
+     * @deprecated use setLocaleCode
      */
     public function setOrderLanguage($orderLanguage);
 

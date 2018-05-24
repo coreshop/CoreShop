@@ -16,7 +16,7 @@ use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
@@ -79,14 +79,14 @@ final class CustomerListener extends AbstractNotificationRuleListener
             return;
         }
 
-        $user->setNewsletterToken(hash('md5', $user->getId() . $user->getEmail() . mt_rand() . time()));
+        $user->setNewsletterToken(hash('md5', $user->getId().$user->getEmail().mt_rand().time()));
 
-        VersionHelper::useVersioning(function () use ($user) {
+        VersionHelper::useVersioning(function() use ($user) {
             $user->save();
         }, false);
 
         $confirmLink = $event->getConfirmLink();
-        $confirmLink = $confirmLink . (parse_url($confirmLink, PHP_URL_QUERY) ? '&' : '?') . 'token=' . $user->getNewsletterToken();
+        $confirmLink = $confirmLink.(parse_url($confirmLink, PHP_URL_QUERY) ? '&' : '?').'token='.$user->getNewsletterToken();
 
         $this->rulesProcessor->applyRules('user', $user, [
             'type' => UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,

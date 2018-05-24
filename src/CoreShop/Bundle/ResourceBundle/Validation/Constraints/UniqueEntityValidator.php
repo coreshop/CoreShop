@@ -30,14 +30,14 @@ final class UniqueEntityValidator extends ConstraintValidator
         Assert::isInstanceOf($entity, Concrete::class);
 
         if (!$constraint instanceof UniqueEntity) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\UniqueEntity');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\UniqueEntity');
         }
 
         if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
             throw new UnexpectedTypeException($constraint->fields, 'array');
         }
 
-        $fields = (array)$constraint->fields;
+        $fields = (array) $constraint->fields;
 
         if (0 === count($fields)) {
             throw new ConstraintDefinitionException('At least one field has to be specified.');
@@ -50,14 +50,14 @@ final class UniqueEntityValidator extends ConstraintValidator
         $errorPath = $fields[0];
         $criteria = [];
         foreach ($fields as $fieldName) {
-            $getter = 'get' . ucfirst($fieldName);
+            $getter = 'get'.ucfirst($fieldName);
             if (!method_exists($entity, $getter)) {
                 throw new ConstraintDefinitionException(sprintf('The field "%s" is not mapped by Concrete, so it cannot be validated for uniqueness.', $fieldName));
             }
             $criteria[$fieldName] = $entity->$getter();
         }
 
-        $values = (array)$constraint->values;
+        $values = (array) $constraint->values;
 
         foreach ($values as $field => $value) {
             $criteria[$field] = $value;
@@ -71,18 +71,18 @@ final class UniqueEntityValidator extends ConstraintValidator
 
                 foreach ($criteriaValue as $criteriaSubValue) {
                     if (is_null($criteriaSubValue)) {
-                        $subConditions[] = $criteriaName . ' IS NULL';
+                        $subConditions[] = $criteriaName.' IS NULL';
                     }
                     else {
-                        $subConditions[] = $criteriaName . ' = ?';
+                        $subConditions[] = $criteriaName.' = ?';
                         $values[] = $criteriaSubValue;
                     }
                 }
 
-                $condition[] = '(' . implode(' OR ', $subConditions) . ')';
+                $condition[] = '('.implode(' OR ', $subConditions).')';
             }
             else {
-                $condition[] = $criteriaName . ' = ?';
+                $condition[] = $criteriaName.' = ?';
                 $values[] = $criteriaValue;
             }
         }

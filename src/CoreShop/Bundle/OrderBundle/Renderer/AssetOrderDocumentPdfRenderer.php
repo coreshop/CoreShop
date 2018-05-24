@@ -38,8 +38,16 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
+        // if in dev mode, do not store document
+        if (\Pimcore::getKernel()->getEnvironment() === 'dev') {
+            return $this->decoratedService->renderDocumentPdf($orderDocument);
+        }
+
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
-            return $orderDocument->getRenderedAsset()->getData();
+            // check if asset is outdated.
+            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate()) {
+                return $orderDocument->getRenderedAsset()->getData();
+            }
         }
 
         $pdfContent = $this->decoratedService->renderDocumentPdf($orderDocument);
@@ -47,7 +55,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $assetPath = $orderDocument->getFullPath();
         $assetName = sprintf('%s.pdf', $orderDocument::getDocumentType());
 
-        $document = Asset\Document::getByPath($assetPath . '/' . $assetName);
+        $document = Asset\Document::getByPath($assetPath.'/'.$assetName);
 
         if ($document instanceof Asset\Document) {
             $document->delete();

@@ -12,8 +12,6 @@
 
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
-use CoreShop\Bundle\AddressBundle\Form\Type\SalutationChoiceType;
-use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -57,9 +55,6 @@ class CustomerType extends AbstractResourceType
                     'coreshop.form.customer.gender.female' => 'female'
                 ),
             ])
-            ->add('salutation', SalutationChoiceType::class, [
-                'label' => 'coreshop.form.customer.salutation'
-            ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.customer.firstname'
             ])
@@ -83,12 +78,6 @@ class CustomerType extends AbstractResourceType
                 ]);
         }
 
-        if ($options['allow_default_address'] && $options['customer']) {
-            $builder->add('defaultAddress', AddressChoiceType::class, [
-                'customer' => $options['customer'],
-                'label' => 'coreshop.form.customer.default_address',
-            ]);
-        }
 
         if (!$options['guest']) {
             $builder
@@ -107,7 +96,6 @@ class CustomerType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefault('guest', false);
-        $resolver->setDefault('allow_default_address', false);
         $resolver->setDefault('allow_password_field', false);
         $resolver->setDefault('customer', false);
         $resolver->setDefaults(array(

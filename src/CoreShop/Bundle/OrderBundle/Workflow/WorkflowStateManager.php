@@ -78,7 +78,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     public function getStateInfo($workflowName, $value, $forFrontend = true)
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
-        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
+        $transValue = $transPrefix.$workflowName.($forFrontend ? '.' : '_').$value;
 
         $color = isset($this->stateColors[$workflowName]['place_colors'][$value]) ? $this->stateColors[$workflowName]['place_colors'][$value] : '#f6f1de';
 
@@ -100,7 +100,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
-        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
+        $transValue = $transPrefix.$workflowName.($forFrontend ? '.' : '_').$transition;
         $color = isset($this->stateColors[$workflowName]['transition_colors'][$transition]) ? $this->stateColors[$workflowName]['transition_colors'][$transition] : '#999999';
 
         $data = [

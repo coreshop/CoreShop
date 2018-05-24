@@ -20,22 +20,13 @@ use Doctrine\Common\Collections\Collection;
 interface CarrierInterface extends ResourceInterface, TimestampableInterface, TranslatableInterface
 {
     /**
-     * Range Behaviour Deactivate.
-     */
-    const RANGE_BEHAVIOUR_DEACTIVATE = 'deactivate';
-
-    /**
-     * Range Behaviour Largest.
-     */
-    const RANGE_BEHAVIOUR_LARGEST = 'largest';
-
-    /**
      * @return string
      */
     public function getName();
 
     /**
      * @param string $name
+     * @param null $language
      */
     public function setName($name);
 
@@ -53,14 +44,17 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
     public function setDescription($description, $language = null);
 
     /**
+     * @param null $language
+     *
      * @return string
      */
-    public function getLabel();
+    public function getLabel($language = null);
 
     /**
      * @param string $label
+     * @param null $language
      */
-    public function setLabel($label);
+    public function setLabel($label, $language = null);
 
     /**
      * @return string
@@ -81,16 +75,6 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
      * @param bool $isFree
      */
     public function setIsFree($isFree);
-
-    /**
-     * @return int
-     */
-    public function getRangeBehaviour();
-
-    /**
-     * @param int $rangeBehaviour
-     */
-    public function setRangeBehaviour($rangeBehaviour);
 
     /**
      * @return Collection|ShippingRuleGroupInterface[]

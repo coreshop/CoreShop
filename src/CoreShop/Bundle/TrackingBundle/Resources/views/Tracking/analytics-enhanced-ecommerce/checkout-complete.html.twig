@@ -1,8 +1,0 @@
-{% if products %}
-    {% if products %}
-        {% for prData in products %}
-            ga('ec:addProduct', {{ prData|json_encode|raw }}
-        {% endfor %}
-    {% endif %}
-{% endif %}
-ga('ec:setAction', 'purchase', {{ order|json_encode|raw }});

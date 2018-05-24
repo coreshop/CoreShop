@@ -29,15 +29,8 @@ class CarrierType extends AbstractResourceType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('label', TextType::class)
             ->add('trackingUrl', TextType::class)
             ->add('isFree', CheckboxType::class)
-            ->add('rangeBehaviour', ChoiceType::class, [
-                'choices' => [
-                    'deactivate' => CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE,
-                    'largest' => CarrierInterface::RANGE_BEHAVIOUR_LARGEST,
-                ],
-            ])
             ->add('shippingRules', ShippingRuleGroupCollectionType::class)
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => CarrierTranslationType::class,

@@ -67,6 +67,10 @@
     background: url(../img/icons/currencies.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_operator_store_price {
+    background: url(../img/icons/currencies.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_action_giftProduct {
     background: url(../img/icons/gift.svg) center center no-repeat !important;
 }

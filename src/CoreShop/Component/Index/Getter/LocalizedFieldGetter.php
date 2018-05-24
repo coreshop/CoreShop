@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Index\Getter;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use Pimcore\Model\DataObject;
 
@@ -37,7 +37,7 @@ class LocalizedFieldGetter implements GetterInterface
      */
     public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
-        $getter = 'get' . ucfirst($config->getObjectKey());
+        $getter = 'get'.ucfirst($config->getObjectKey());
 
         $fallbackMemory = DataObject\Localizedfield::getGetFallbackValues();
         DataObject\Localizedfield::setGetFallbackValues(true);

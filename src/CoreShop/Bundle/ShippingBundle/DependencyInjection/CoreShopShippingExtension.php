@@ -25,13 +25,15 @@ final class CoreShopShippingExtension extends AbstractModelExtension
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
+
+        $container->setAlias('coreshop.carrier.default_resolver', $config['default_resolver']);
 
         $loader->load('services.yml');
     }

@@ -107,7 +107,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.sale.d
         var me = this,
             noteLabel = new Ext.form.Label({
                 flex: 1,
-                text: t('coreshop_order_comment_customer_locale_note') + ' ' + me.sale.orderLanguage,
+                text: t('coreshop_order_comment_customer_locale_note') + ' ' + me.sale.localeCode,
                 style: 'color: gray; font-style: italic; text-align: right; padding: 0px 2px 0px 0px;',
                 hidden: true
             }),

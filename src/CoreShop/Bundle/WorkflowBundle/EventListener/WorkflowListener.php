@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\EventListener;
 
-use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -76,7 +76,7 @@ class WorkflowListener implements EventSubscriberInterface
                 continue;
             }
 
-            InheritanceHelper::useInheritedValues(function () use ($event, $callback) {
+            InheritanceHelper::useInheritedValues(function() use ($event, $callback) {
                 $this->call($event, $callback['do'], $callback['args']);
             });
         }
@@ -104,7 +104,7 @@ class WorkflowListener implements EventSubscriberInterface
         } else {
             $expr = new ExpressionLanguage();
             $args = array_map(
-                function ($arg) use ($expr, $event) {
+                function($arg) use ($expr, $event) {
                     if (!is_string($arg)) {
                         return $arg;
                     }
@@ -127,7 +127,7 @@ class WorkflowListener implements EventSubscriberInterface
      */
     protected function setCallbacksPriority(array $callbacks)
     {
-        uasort($callbacks, function ($a, $b) {
+        uasort($callbacks, function($a, $b) {
             if ($a['priority'] === $b['priority']) {
                 return 0;
             }

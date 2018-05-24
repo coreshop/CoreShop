@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
@@ -21,10 +22,9 @@ use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -42,19 +42,13 @@ class OrderShipmentController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $itemsToReturn = [];
 
-        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
-
-        if (count($payments) === 0) {
-            return $this->viewHandler->handle([
-                'success' => false,
-                'message' => 'Can\'t create Shipment without valid order payment'
-            ]);
+        if (!$this->getProcessableHelper()->isProcessable($order)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'The current order state does not allow to create shipments']);
         }
 
         try {
@@ -167,7 +161,7 @@ class OrderShipmentController extends PimcoreController
 
         $shipment->setValues($values);
 
-        VersionHelper::useVersioning(function () use ($shipment) {
+        VersionHelper::useVersioning(function() use ($shipment) {
             $shipment->save();
         }, false);
 
@@ -205,21 +199,24 @@ class OrderShipmentController extends PimcoreController
      */
     public function renderAction(Request $request)
     {
-        $invoiceId = $request->get('id');
-        $invoice = $this->getOrderShipmentRepository()->find($invoiceId);
+        $shipmentId = $request->get('id');
+        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
 
-        if ($invoice instanceof OrderShipmentInterface) {
-            return new Response(
-                $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
-                200,
-                [
+        if ($shipment instanceof OrderShipmentInterface) {
+            try {
+                $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($shipment);
+                $header = [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
-                ]
-            );
+                    'Content-Disposition' => 'inline; filename="shipment-'.$shipment->getId().'.pdf"',
+                ];
+            } catch (\Exception $e) {
+                $responseData = '<strong>'.$e->getMessage().'</strong><br>trace: '.$e->getTraceAsString();
+                $header = ['Content-Type' => 'text/html'];
+            }
+            return new Response($responseData, 200, $header);
         }
 
-        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));
+        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $shipmentId));
     }
 
     /**

@@ -22,6 +22,6 @@ class ObjectUnsupportedException extends \Exception
      */
     public function __construct($function, $class)
     {
-        parent::__construct(__FUNCTION__ . ' is not supported for ' . $class . '. This Method needs to implemented by Pimcore Object Class. ' . (get_called_class()));
+        parent::__construct(__FUNCTION__.' is not supported for '.$class.'. This Method needs to implemented by Pimcore Object Class. '.(get_called_class()));
     }
 }

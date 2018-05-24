@@ -26,7 +26,7 @@ final class CoreShopInventoryExtension extends AbstractModelExtension
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
         $container->setAlias('coreshop.inventory.availability_checker', $config['checker']);

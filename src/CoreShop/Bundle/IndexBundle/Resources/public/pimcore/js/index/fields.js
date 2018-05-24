@@ -106,6 +106,7 @@ coreshop.index.fields = Class.create({
             }
 
             this.selectionPanel = new Ext.tree.TreePanel({
+                bufferedRenderer: false,
                 root: {
                     id: '0',
                     root: true,
@@ -189,7 +190,7 @@ coreshop.index.fields = Class.create({
     },
 
     getConfigElement: function (record) {
-        return new coreshop.index.objecttype.abstract();
+        return new coreshop.index.objecttype.abstract(this);
     },
 
     /*

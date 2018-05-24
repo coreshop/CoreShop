@@ -3,10 +3,9 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Db;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -26,28 +25,28 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
         $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
 
         $fieldDefinition = [
-            'fieldtype'       => 'input',
-            'width'           => null,
+            'fieldtype' => 'input',
+            'width' => null,
             'queryColumnType' => 'varchar',
-            'columnType'      => 'varchar',
-            'columnLength'    => 190,
-            'phpdocType'      => 'string',
-            'regex'           => '',
-            'unique'          => false,
-            'name'            => 'salutation',
-            'title'           => 'Salutation',
-            'tooltip'         => '',
-            'mandatory'       => false,
-            'noteditable'     => false,
-            'index'           => false,
-            'locked'          => null,
-            'style'           => '',
-            'permissions'     => null,
-            'datatype'        => 'data',
-            'relationType'    => false,
-            'invisible'       => false,
+            'columnType' => 'varchar',
+            'columnLength' => 190,
+            'phpdocType' => 'string',
+            'regex' => '',
+            'unique' => false,
+            'name' => 'salutation',
+            'title' => 'Salutation',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => false,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch'   => false,
+            'visibleSearch' => false,
         ];
 
         $addressClass = $this->container->getParameter('coreshop.model.address.pimcore_class_name');
@@ -69,10 +68,21 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
         //add country salutation prefix
         if ($schema->hasTable('coreshop_country')) {
             if (!$schema->getTable('coreshop_country')->hasColumn('salutations')) {
-                Db::get()->executeQuery('ALTER TABLE coreshop_country ADD salutations LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\';');
+                $schema->getTable('coreshop_country')->addColumn(
+                    'salutations',
+                    'simple_array',
+                    [
+                        'notnull' => false
+                    ]
+                );
             }
         }
 
+        $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
+    }
+
+    public function postUp(Schema $schema)
+    {
         //add default salutation prefixes
         /** @var RepositoryInterface $countryRepository */
         $countryRepository = $this->container->get('coreshop.repository.country');
@@ -98,8 +108,6 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
         }
 
         $manager->flush();
-
-        $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
     }
 
     /**

@@ -17,7 +17,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -112,7 +112,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
-        $customer->setLocale($this->localeContext->getLocaleCode());
+        $customer->setLocaleCode($this->localeContext->getLocaleCode());
         $customer->save();
 
         $address->setPublished(true);

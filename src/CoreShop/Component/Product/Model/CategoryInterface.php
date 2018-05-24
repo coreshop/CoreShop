@@ -32,6 +32,21 @@ interface CategoryInterface extends PimcoreModelInterface
     public function setName($name, $language = null);
 
     /**
+     * @param null $language
+     *
+     * @return mixed
+     */
+    public function getDescription($language = null);
+
+    /**
+     * @param $description
+     * @param null $language
+     *
+     * @return mixed
+     */
+    public function setDescription($description, $language = null);
+
+    /**
      * @return CategoryInterface
      */
     public function getParentCategory();

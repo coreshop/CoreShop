@@ -24,6 +24,11 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\CountryType }
 
+    coreshop.form.extension.type.customer:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\CustomerTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType }
+
     coreshop.form.extension.type.payment_provider:
         class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension
         tags:

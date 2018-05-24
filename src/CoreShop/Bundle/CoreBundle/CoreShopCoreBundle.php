@@ -17,7 +17,7 @@ use CoreShop\Bundle\ConfigurationBundle\CoreShopConfigurationBundle;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPaymentSettingsFormsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
-use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterProductHelperPass;
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterIndexProductExtensionPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\TranslatableEntityLocalePass;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
@@ -34,6 +34,7 @@ use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\SEOBundle\CoreShopSEOBundle;
 use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
 use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
@@ -64,7 +65,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         parent::build($container);
 
         $container->addCompilerPass(new TranslatableEntityLocalePass());
-        $container->addCompilerPass(new RegisterProductHelperPass());
+        $container->addCompilerPass(new RegisterIndexProductExtensionPass());
         $container->addCompilerPass(new RegisterReportsPass());
         $container->addCompilerPass(new RegisterPortletsPass());
         $container->addCompilerPass(new RegisterPaymentSettingsFormsPass());
@@ -77,6 +78,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     {
         parent::registerDependentBundles($collection);
 
+        $collection->addBundle(new CoreShopSEOBundle(), 3800);
         $collection->addBundle(new CoreShopFixtureBundle(), 3700);
         $collection->addBundle(new CoreShopMoneyBundle(), 3600);
         $collection->addBundle(new CoreShopConfigurationBundle(), 3300);
@@ -127,7 +129,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
      */
     public function getVersion()
     {
-        return Version::getVersion() . " (" . $this->getComposerVersion() . ")";
+        return Version::getVersion()." (".$this->getComposerVersion().")";
     }
 
     /**

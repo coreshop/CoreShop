@@ -97,7 +97,7 @@ class RegisterController extends FrontendController
                     return $this->redirectToRoute('coreshop_index');
                 }
 
-                $customer->setPasswordResetHash(hash('md5', $customer->getId() . $customer->getEmail() . mt_rand() . time()));
+                $customer->setPasswordResetHash(hash('md5', $customer->getId().$customer->getEmail().mt_rand().time()));
                 $customer->save();
 
                 $resetLink = $this->generateUrl('coreshop_customer_password_reset', ['token' => $customer->getPasswordResetHash()], UrlGeneratorInterface::ABSOLUTE_URL);

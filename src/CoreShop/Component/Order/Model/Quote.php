@@ -19,22 +19,6 @@ class Quote extends Sale implements QuoteInterface
     /**
      * {@inheritdoc}
      */
-    public function getSaleLanguage()
-    {
-        return $this->getQuoteLanguage();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSaleLanguage($saleLanguage)
-    {
-        return $this->setQuoteLanguage($saleLanguage);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSaleDate()
     {
         return $this->getQuoteDate();
@@ -67,22 +51,6 @@ class Quote extends Sale implements QuoteInterface
     /**
      * {@inheritdoc}
      */
-    public function getQuoteLanguage()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQuoteLanguage($quoteLanguage)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getQuoteDate()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -110,5 +78,46 @@ class Quote extends Sale implements QuoteInterface
     public function setQuoteNumber($quoteNumber)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSaleLanguage()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us getLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->getLocaleCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSaleLanguage($saleLanguage)
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us setLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->setLocaleCode($saleLanguage);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQuoteLanguage()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us getLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->getLocaleCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQuoteLanguage($quoteLanguage)
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us setLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->setLocaleCode($quoteLanguage);
     }
 }

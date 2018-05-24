@@ -17,24 +17,70 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
     show: function ($super, shipAbleItems) {
         pimcore.globalmanager.get('coreshop_carriers').load();
 
-        var window = $super(shipAbleItems);
+        var window = $super(shipAbleItems),
+            store = pimcore.globalmanager.get('coreshop_carriers'),
+            hasCarrier = this.order.shippingPayment.carrier !== null,
+            orderCarrierId = parseInt(this.order.carrier),
+            orderCarrierName = this.order.shippingPayment.carrier,
+            showToolTip = true;
 
         var carrier = Ext.create('Ext.form.ComboBox', {
             xtype: 'combo',
             fieldLabel: t('coreshop_carrier'),
             mode: 'local',
-            store: pimcore.globalmanager.get('coreshop_carriers'),
+            store: store,
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
             triggerAction: 'all',
             name: 'carrier',
-            value: parseInt(this.order.carrier),
+            value: orderCarrierId,
             afterLabelTextTpl: [
                 '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
             ],
             allowBlank: false,
-            required: true
+            required: true,
+            listeners: {
+                render: function (c) {
+                    if (hasCarrier === true) {
+                        new Ext.ToolTip({
+                            target: c.getEl(),
+                            html: t('coreshop_carrier_based_on_order').format(orderCarrierName),
+                            listeners: {
+                                beforeshow: {
+                                    fn: function (el) {
+                                        if (showToolTip === false) {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+                change: function() {
+                    showToolTip = false;
+                },
+                afterrender: function () {
+                    if (hasCarrier === true) {
+                        var orderCarrierIndex;
+                        if (store.isLoaded()) {
+                            orderCarrierIndex = store.findExact('id', orderCarrierId);
+                            if (orderCarrierIndex !== -1) {
+                                this.setValue(store.getAt(orderCarrierIndex));
+                            }
+                        } else {
+                            store.load();
+                            store.on('load', function (store, records, options) {
+                                orderCarrierIndex = store.findExact('id', orderCarrierId);
+                                if (orderCarrierIndex !== -1) {
+                                    this.setValue(store.getAt(orderCarrierIndex));
+                                }
+                            }.bind(this));
+                        }
+                    }
+                }
+            }
         });
 
         window.down('form').insert(0, carrier);

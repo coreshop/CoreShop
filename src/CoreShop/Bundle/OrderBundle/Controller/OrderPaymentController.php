@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
@@ -21,9 +22,7 @@ use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -116,10 +115,10 @@ class OrderPaymentController extends PimcoreController
         $paymentProviderId = $request->get('paymentProvider');
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
-        $payments = $this->getPaymentRepository()->findForOrder($order);
+        $payments = $this->getPaymentRepository()->findForPayable($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
         $totalPayed = array_sum(array_map(function(PaymentInterface $payment) {
             if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
@@ -141,7 +140,7 @@ class OrderPaymentController extends PimcoreController
                  */
                 $tokenGenerator = new UniqueTokenGenerator(true);
                 $uniqueId = $tokenGenerator->generate(15);
-                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())).'_'.$uniqueId;
 
                 $payment = $this->getPaymentFactory()->createNew();
                 $payment->setNumber($orderNumber);

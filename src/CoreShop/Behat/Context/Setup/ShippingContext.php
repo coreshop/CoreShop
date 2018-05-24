@@ -46,7 +46,6 @@ use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
-use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
@@ -139,6 +138,7 @@ final class ShippingContext implements Context
 
     /**
      * @Given /^the site has a carrier "([^"]+)"$/
+     * @Given /^the site has another carrier "([^"]+)"$/
      */
     public function theSiteHasACarrier($name)
     {
@@ -273,7 +273,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
-            'categories' => array_map(function($category) {return $category->getId();}, $categories)
+            'categories' => array_map(function($category) {return $category->getId(); }, $categories)
         ]));
     }
 
@@ -299,7 +299,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
         $this->addCondition($rule, $this->createConditionWithForm('products', [
-            'products' => array_map(function($product) {return $product->getId();}, $products)
+            'products' => array_map(function($product) {return $product->getId(); }, $products)
         ]));
     }
 
@@ -459,6 +459,10 @@ final class ShippingContext implements Context
          */
         $carrier = $this->carrierFactory->createNew();
         $carrier->setName($name);
+
+        if ($this->sharedStorage->has('store')) {
+            $carrier->addStore($this->sharedStorage->get('store'));
+        }
 
         $this->saveCarrier($carrier);
     }

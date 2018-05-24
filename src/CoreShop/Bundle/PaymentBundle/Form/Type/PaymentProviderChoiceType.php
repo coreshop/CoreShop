@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
-use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,24 +42,16 @@ final class PaymentProviderChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => function(Options $options) {
                     $paymentProvider = $this->paymentProviderResolver->resolvePaymentProviders($options['subject']);
-
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($paymentProvider, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
-                    });
 
                     return $paymentProvider;
                 },
                 'choice_value' => 'id',
-                'choice_label' => function ($paymentProvider) {
+                'choice_label' => function($paymentProvider) {
                     return $paymentProvider->getName();
                 },
-                'choice_attr' => function ($val, $key, $index) {
+                'choice_attr' => function($val, $key, $index) {
                     // adds a class like attending_yes, attending_no, etc
                     return ['data-factory' => $val->getGatewayConfig()->getFactoryName()];
                 },

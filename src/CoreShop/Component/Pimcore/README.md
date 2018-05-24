@@ -5,6 +5,10 @@ CoreShop Pimcore Component
 This Component is part of the CoreShop Project (https://www.github.com/coreshop/CoreShop). But it's designed to be used
 without as well.
 
+# Integration into Pimcore without CoreShop
+
+There is a separate Pimcore Bundle where part of this Component get glued to Symfony: (https://www.github.com/coreshop/PimcoreBundle)
+
 # Features
 ## Class Converter and Data Migrate
 Class converter is a small utility, which lets you migrate all Data from one class to another. Usage:

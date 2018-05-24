@@ -19,8 +19,8 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -94,7 +94,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $this->eventDispatcher->dispatchPreEvent($type, $cartItem, ['sale' => $sale, 'cart' => $cartItem->getCart(), 'item' => $saleItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath().'/'.$this->pathForItems);
 
         $this->objectService->copyObject($cartItem, $saleItem);
 
@@ -149,7 +149,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
             $saleItem->setName($cartItem->getProduct()->getName($locale), $locale);
         }
 
-        VersionHelper::useVersioning(function () use ($saleItem) {
+        VersionHelper::useVersioning(function() use ($saleItem) {
             $saleItem->save();
         }, false);
 

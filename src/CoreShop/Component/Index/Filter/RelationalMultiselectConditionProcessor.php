@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\Condition;
+use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -29,12 +29,11 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
     {
         $field = $condition->getConfiguration()['field'];
 
-        $rawValues = $list->getGroupByRelationValues($field, false);
+        $rawValues = $list->getGroupByRelationValues($field, true);
         $objects = [];
 
-        foreach ($rawValues as $id) {
-            $object = Concrete::getById($id);
-
+        foreach ($rawValues as $value) {
+            $object = Concrete::getById($value['value']);
             if ($object instanceof Concrete) {
                 $objects[] = $object;
             }
@@ -44,7 +43,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
             'type' => 'relational_multiselect',
             'label' => $condition->getLabel(),
             'currentValues' => $currentFilter[$field],
-            'values' => array_values($rawValues),
+            'values' => $rawValues,
             'objects' => $objects,
             'fieldName' => $field,
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
@@ -71,10 +70,10 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         }
 
         if (!empty($values)) {
-            $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
+            $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
 
             if (!empty($values)) {
-                $list->addRelationCondition(Condition::in('dest', $values), $fieldName);
+                $list->addRelationCondition(new InCondition('dest', $values), $fieldName);
             }
         }
 

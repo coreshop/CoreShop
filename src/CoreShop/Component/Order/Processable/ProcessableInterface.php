@@ -36,4 +36,11 @@ interface ProcessableInterface
      * @return bool
      */
     public function isFullyProcessed(OrderInterface $order);
+
+    /**
+     * @param OrderInterface $order
+     *
+     * @return bool
+     */
+    public function isProcessable(OrderInterface $order);
 }

@@ -12,43 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject;
-
-class BrickDefinitionUpdate extends AbstractDefinitionUpdate
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\BrickDefinitionUpdate is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var string
+     * @deprecated Class CoreShop\Component\Pimcore\BrickDefinitionUpdate is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate class instead.
      */
-    private $brickKey;
-
-    /**
-     * @var DataObject\Objectbrick\Definition
-     */
-    private $brickDefinition;
-
-
-    /**
-     * @param $brickKey
-     * @throws ClassDefinitionNotFoundException
-     */
-    public function __construct($brickKey)
+    class BrickDefinitionUpdate
     {
-        $this->brickKey = $brickKey;
-        $this->brickDefinition = DataObject\Objectbrick\Definition::getByKey($brickKey);
 
-        if (is_null($this->brickDefinition)) {
-            throw new ClassDefinitionNotFoundException(sprintf('Brick Definition %s not found', $brickKey));
-        }
-
-        $this->fieldDefinitions = $this->brickDefinition->getFieldDefinitions();
-        $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->brickDefinition), true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save()
-    {
-        return DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);
     }
 }

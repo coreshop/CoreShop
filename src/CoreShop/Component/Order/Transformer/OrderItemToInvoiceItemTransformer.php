@@ -17,9 +17,9 @@ use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
@@ -91,7 +91,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
 
         $this->eventDispatcher->dispatchPreEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath().'/'.$this->pathForItems);
 
         $invoiceItem->setKey($orderItem->getKey());
         $invoiceItem->setParent($itemFolder);
@@ -111,7 +111,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), false);
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), true);
 
-        VersionHelper::useVersioning(function () use ($invoiceItem) {
+        VersionHelper::useVersioning(function() use ($invoiceItem) {
             $invoiceItem->save();
         }, false);
 

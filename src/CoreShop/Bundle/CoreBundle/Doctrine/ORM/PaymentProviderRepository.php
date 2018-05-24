@@ -27,6 +27,7 @@ class PaymentProviderRepository extends BasePaymentProviderRepository implements
             ->innerJoin('o.stores', 's')
             ->andWhere('o.active = true')
             ->andWhere('s.id = :storeId')
+            ->addOrderBy('o.position')
             ->setParameter('storeId', $store->getId())
             ->getQuery()
             ->getResult();

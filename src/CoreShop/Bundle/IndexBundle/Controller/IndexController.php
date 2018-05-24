@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
+use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -61,9 +63,15 @@ class IndexController extends ResourceController
         }
 
         foreach ($interpreters as $interpreter) {
+            $class = $this->get('coreshop.registry.index.interpreter')->get($interpreter);
+            $localized = in_array(LocalizedInterpreterInterface::class, class_implements($class), true);
+            $relation = in_array(RelationInterpreterInterface::class, class_implements($class), true);
+
             $interpretersResult[] = [
                 'type' => $interpreter,
                 'name' => $interpreter,
+                'localized' => $localized,
+                'relation' => $relation
             ];
         }
 
@@ -90,7 +98,7 @@ class IndexController extends ResourceController
 
         foreach ($classes as $class) {
             if ($class instanceof DataObject\ClassDefinition) {
-                $pimcoreClass = 'Pimcore\Model\DataObject\\' . ucfirst($class->getName());
+                $pimcoreClass = 'Pimcore\Model\DataObject\\'.ucfirst($class->getName());
 
                 if (in_array(IndexableInterface::class, class_implements($pimcoreClass), true)) {
                     $availableClasses[] = [
@@ -317,7 +325,7 @@ class IndexController extends ResourceController
         $allowedGroupIds = $field->getAllowedGroupIds();
 
         if ($allowedGroupIds) {
-            $list->setCondition('ID in (' . implode(',', $allowedGroupIds) . ')');
+            $list->setCondition('ID in ('.implode(',', $allowedGroupIds).')');
         }
 
         $groupConfigList = $list->getList();
@@ -326,7 +334,7 @@ class IndexController extends ResourceController
          * @var $config DataObject\Classificationstore\GroupConfig
          */
         foreach ($groupConfigList as $config) {
-            $key = $config->getId() . ($config->getName() ? $config->getName() : 'EMPTY');
+            $key = $config->getId().($config->getName() ? $config->getName() : 'EMPTY');
 
             $result[$key] = $this->getClassificationStoreGroupConfiguration($config);
         }

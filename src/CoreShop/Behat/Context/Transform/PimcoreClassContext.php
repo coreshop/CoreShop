@@ -15,10 +15,10 @@ namespace CoreShop\Behat\Context\Transform;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Pimcore\ClassLoader;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Pimcore\DataObject\ClassLoader;
 use Pimcore\Cache\Runtime;
 use Pimcore\Model\DataObject\ClassDefinition;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection\Definition;
 use Webmozart\Assert\Assert;
 
@@ -91,6 +91,14 @@ final class PimcoreClassContext implements Context
     public function objectInstance()
     {
         return $this->sharedStorage->get('object-instance');
+    }
+
+    /**
+     * @Transform /^object-instance "([^"]+)"$/
+     */
+    public function objectInstanceWithKey($key)
+    {
+        return Concrete::getByPath('/' . $key);
     }
 
     /**

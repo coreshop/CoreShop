@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\Condition;
+use CoreShop\Component\Index\Condition\MatchCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -60,10 +60,10 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
             $fieldName = $field;
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_' . $fieldName;
+                $fieldName = 'PRECONDITION_'.$fieldName;
             }
 
-            $list->addCondition(Condition::match($field, $value), $fieldName);
+            $list->addCondition(new MatchCondition($field, $value), $fieldName);
         }
 
         return $currentFilter;

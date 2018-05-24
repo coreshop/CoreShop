@@ -79,7 +79,6 @@ class ShippingRule extends RuleTest
         $carrier = $this->getFactory('carrier')->createNew();
         $carrier->setName('test');
         $carrier->setTaxRule(Data::$taxRuleGroup);
-        $carrier->setRangeBehaviour(CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
 
         $this->getEntityManager()->persist($carrier);
         $this->getEntityManager()->flush();

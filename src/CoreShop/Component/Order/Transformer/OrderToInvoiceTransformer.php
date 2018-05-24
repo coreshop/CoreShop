@@ -22,10 +22,10 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
@@ -136,6 +136,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
 
+        $invoice->setOrder($order);
+
         $invoiceNumber = $this->numberGenerator->generate($invoice);
 
         /**
@@ -147,12 +149,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoice->setParent($invoiceFolder);
         $invoice->setPublished(true);
         $invoice->setInvoiceDate(Carbon::now());
-        $invoice->setOrder($order);
 
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -173,7 +174,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoice->setItems($items);
 
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -198,7 +199,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->calculateTotal($invoice, true);
         $this->calculateTotal($invoice, false);
 
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
     }

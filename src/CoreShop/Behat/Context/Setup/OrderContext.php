@@ -23,6 +23,7 @@ use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class OrderContext implements Context
 {
@@ -30,6 +31,11 @@ final class OrderContext implements Context
      * @var SharedStorageInterface
      */
     private $sharedStorage;
+
+    /**
+     * @var StoreContextInterface
+     */
+    private $storeContext;
 
     /**
      * @var ProposalTransformerInterface
@@ -53,6 +59,7 @@ final class OrderContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
+     * @param StoreContextInterface $storeContext
      * @param ProposalTransformerInterface $orderTransformer
      * @param FactoryInterface $orderFactory
      * @param PaymentRepositoryInterface $paymentRepository
@@ -60,6 +67,7 @@ final class OrderContext implements Context
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
+        StoreContextInterface $storeContext,
         ProposalTransformerInterface $orderTransformer,
         FactoryInterface $orderFactory,
         PaymentRepositoryInterface $paymentRepository,
@@ -67,6 +75,7 @@ final class OrderContext implements Context
     )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->storeContext = $storeContext;
         $this->orderTransformer = $orderTransformer;
         $this->orderFactory = $orderFactory;
         $this->paymentRepository = $paymentRepository;
@@ -78,6 +87,8 @@ final class OrderContext implements Context
      */
     public function transformCartToOrder(CartInterface $cart)
     {
+        $cart->setStore($this->storeContext->getStore());
+
         $order = $this->orderFactory->createNew();
 
         $order = $this->orderTransformer->transform($cart, $order);

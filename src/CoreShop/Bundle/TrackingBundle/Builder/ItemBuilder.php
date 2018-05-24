@@ -1,4 +1,14 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
 
 namespace CoreShop\Bundle\TrackingBundle\Builder;
 
@@ -30,10 +40,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a product view object
-     *
-     * @param PurchasableInterface $product
-     * @return ProductData
+     * {@inheritdoc}
      */
     public function buildPurchasableViewItem(PurchasableInterface $product)
     {
@@ -41,11 +48,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a product action item object
-     *
-     * @param PurchasableInterface $product
-     * @param int $quantity
-     * @return ProductData
+     * {@inheritdoc}
      */
     public function buildPurchasableActionItem(PurchasableInterface $product, $quantity = 1)
     {
@@ -60,10 +63,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a product impression object
-     *
-     * @param PurchasableInterface $product
-     * @return ImpressionData
+     * {@inheritdoc}
      */
     public function buildPurchasableImpressionItem(PurchasableInterface $product)
     {
@@ -76,10 +76,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a checkout transaction object
-     *
-     * @param OrderInterface $order
-     * @return ActionData
+     * {@inheritdoc}
      */
     public function buildOrderAction(OrderInterface $order)
     {
@@ -88,27 +85,30 @@ class ItemBuilder implements ItemBuilderInterface
         $item->setRevenue($order->getTotal() / 100);
         $item->setShipping($order->getShipping() / 100);
         $item->setTax($order->getTotalTax() / 100);
+        $item->setCurrency($order->getCurrency()->getIsoCode());
 
+        $coupons = [];
         if ($order->getPriceRuleItems() instanceof Fieldcollection) {
             if ($order->getPriceRuleItems()->getCount() > 0) {
                 foreach ($order->getPriceRuleItems() as $priceRule) {
                     if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
                         if ($priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
-                            $item->setCoupon($priceRule->getCartPriceRule()->getName());
+                            $coupons[] = $priceRule->getCartPriceRule()->getName();
                         }
                     }
                 }
             }
         }
 
+        if(count($coupons) > 0) {
+            $item->setCoupon(implode(', ', $coupons));
+        }
+
         return $item;
     }
 
     /**
-     * Build checkout items
-     *
-     * @param OrderInterface $order
-     * @return ProductData[]
+     * {@inheritdoc}
      */
     public function buildCheckoutItems(OrderInterface $order)
     {
@@ -124,10 +124,7 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build checkout items by cart
-     *
-     * @param CartInterface $cart
-     * @return mixed
+     * {@inheritdoc}
      */
     public function buildCheckoutItemsByCart(CartInterface $cart)
     {
@@ -141,11 +138,28 @@ class ItemBuilder implements ItemBuilderInterface
     }
 
     /**
-     * Build a checkout item object
-     *
-     * @param OrderInterface $order
-     * @param OrderItemInterface $orderItem
-     * @return ProductData
+     * {@inheritdoc}
+     */
+    public function buildCouponByCart(CartInterface $cart)
+    {
+        $coupons = [];
+        if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
+            if ($cart->getPriceRuleItems()->getCount() > 0) {
+                foreach ($cart->getPriceRuleItems() as $priceRule) {
+                    if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {
+                        if ($priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                            $coupons[] = $priceRule->getCartPriceRule()->getName();
+                        }
+                    }
+                }
+            }
+        }
+
+        return implode(', ', $coupons);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function buildCheckoutItem(OrderInterface $order, OrderItemInterface $orderItem)
     {
