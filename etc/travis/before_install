@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+if [ $CORESHOP_RUN_ECS == 0 ]; then
+    $TRAVIS_BUILD_DIR/etc/travis/setup/tests/before_install
+else
+    $TRAVIS_BUILD_DIR/etc/travis/setup/ecs/before_install
+fi

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -e
+
+if [ $CORESHOP_RUN_ECS == 0 ]; then
+    # add config templates
+    mkdir -p var/config
+    cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/system.template.php var/config/system.php
+    cp app/config/parameters.example.yml app/config/parameters.yml
+
+    # Remove vrana/jush as its only causing problems
+    composer remove vrana/jush --no-scripts
+    composer install --no-dev --no-scripts
+    composer remove codeception/codeception --dev --no-scripts
+
+    if [ $PIMCORE_BRANCH == "tags/v5.1.0" ]; then composer require symfony/symfony:3.4.3 --no-scripts; fi
+    if [ $PIMCORE_BRANCH == "tags/v5.1.1" ]; then composer require symfony/symfony:3.4.3 --no-scripts; fi
+
+    composer install --no-dev
+
+    # Add path to CoreShop
+    composer config repositories.coreshop path $TRAVIS_BUILD_DIR/lib/CoreShop
+    composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 coreshop/core-shop:dev-$TRAVIS_BRANCH#$TRAVIS_COMMIT
+
+    if [ $CORESHOP_SKIP_BEHAT == 0 ]; then
+        composer require behat/behat:^3.3 friends-of-behat/context-service-extension:^1.1 friends-of-behat/cross-container-extension:^1.1 friends-of-behat/service-container-extension:^1.0 friends-of-behat/symfony-extension:^1.2 friends-of-behat/variadic-extension:^1.1 symplify/easy-coding-standard:^4.3.0 --no-scripts
+    fi
+
+    rm -rf var/cache
+
+    cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/travis/config/config.yml app/config/config.yml
+fi

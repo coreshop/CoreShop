@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+vendor/bin/ecs -c lib/CoreShop/easy-coding-standard.yml lib/CoreShop/src -n --show-performance --no-progress-bar

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+if [ $CORESHOP_RUN_BEHAT == 1 ]; then
+    $TRAVIS_BUILD_DIR/etc/travis/scripts/tests/behat
+fi
+
+$TRAVIS_BUILD_DIR/etc/travis/scripts/tests/phpunit
