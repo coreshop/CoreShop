@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+echo "Bumping open file ulimit from `ulimit -n`..."
+ulimit -n 8192 # This is probably higher than needed, 1024 limits on linux seem to work fine.
+echo "...to `ulimit -n`"
+
 mysql --version
 mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
 mysql -e "SET GLOBAL innodb_large_prefix=1;"
