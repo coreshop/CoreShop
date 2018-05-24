@@ -76,3 +76,4 @@ filter:
     - "docs/"
     - "pimcore/"
     - "src/CoreShop/Behat"
+    - "src/CoreShop/Bundle/CoreBundle/Migrations"
