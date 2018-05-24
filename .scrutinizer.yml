@@ -1,4 +1,22 @@
 inherit: true
+build:
+    nodes:
+        analysis:
+            dependencies:
+                after:
+                    - git clone https://github.com/pimcore/pimcore
+                    - cd ./pimcore
+                    - git reset --hard b132bb1b89d2b0318a188769aba0bc4e509dfa2f
+                    - composer install
+                    - cd ../
+                    - composer install
+
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - php-scrutinizer-run
 tools:
   php_mess_detector:
     config:
@@ -50,9 +68,10 @@ tools:
   php_pdepend: true
   php_sim: true
   php_changetracking: true
+checks:
+    php: true
 filter:
   excluded_paths:
     - "tests/"
-    - "update/"
-    - "static/"
     - "docs/"
+    - "pimcore/"
