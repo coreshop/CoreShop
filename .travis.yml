@@ -16,7 +16,16 @@ addons:
 matrix:
     fast_finish: true
     allow_failures:
-        - env: TRAVIS_ALLOW_FAIL=1
+        - php: 7.1
+          env: PIMCORE_ENVIRONMENT=test
+          env: CORESHOP_TEST=1
+          env: CORESHOP_MYSQL_HOST=127.0.0.1
+          env: CORESHOP_MYSQL_DB=coreshop_phpunit
+          env: CORESHOP_MYSQL_USER=root
+          env: PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
+          env: CORESHOP_RUN_BEHAT=1
+          env: CORESHOP_RUN_ECS=1
+          env: TRAVIS_ALLOW_FAIL=1
     include:
         - os: linux
           sudo: required
