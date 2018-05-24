@@ -16,14 +16,13 @@ addons:
 matrix:
     fast_finish: true
     allow_failures:
-        - env: PIMCORE_ENVIRONMENT=test CORESHOP_TEST=1 CORESHOP_MYSQL_HOST=127.0.0.1 CORESHOP_MYSQL_DB=coreshop_phpunit CORESHOP_MYSQL_USER=root PIMCORE_TEST_DB_DSN=\"mysql://root@localhost/coreshop_test\" CORESHOP_RUN_BEHAT=1 CORESHOP_RUN_ECS=1 TRAVIS_ALLOW_FAIL=1
+        php: hhvm
     include:
         - os: linux
           sudo: required
-          php: 7.1
+          php: hhvm
           env:
             - CORESHOP_RUN_ECS=1
-            - TRAVIS_ALLOW_FAIL=1
 
         - os: linux
           sudo: required
@@ -130,7 +129,6 @@ env:
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
         - CORESHOP_RUN_BEHAT=1
         - CORESHOP_RUN_ECS=0
-        - TRAVIS_ALLOW_FAIL=0
 
 cache:
     directories:
