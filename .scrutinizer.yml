@@ -75,3 +75,4 @@ filter:
     - "tests/"
     - "docs/"
     - "pimcore/"
+    - "src/CoreShop/Behat"
