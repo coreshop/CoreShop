@@ -16,11 +16,11 @@ addons:
 matrix:
     fast_finish: true
     allow_failures:
-        php: hhvm
+        php: 7.1.10
     include:
         - os: linux
           sudo: required
-          php: hhvm
+          php: 7.1.10
           env:
             - CORESHOP_RUN_ECS=1
 
