@@ -2,7 +2,7 @@
 set -e
 
 if [ $CORESHOP_RUN_ECS == 0 ]; then
-    $TRAVIS_BUILD_DIR/etc/travis/scripts/tests/run
+    $TRAVIS_BUILD_DIR/etc/travis/scripts/tests/script
 else
-    $TRAVIS_BUILD_DIR/etc/travis/scripts/ecs/run
+    $TRAVIS_BUILD_DIR/etc/travis/scripts/ecs/script
 fi

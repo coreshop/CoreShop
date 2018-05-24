@@ -22,4 +22,4 @@ mv $TRAVIS_BUILD_DIR/../lib/CoreShop $TRAVIS_BUILD_DIR/lib/CoreShop
 cp -r $TRAVIS_BUILD_DIR/lib/CoreShop/etc $TRAVIS_BUILD_DIR/etc
 chmod -R +x lib/CoreShop/etc/travis
 
-phpenv config-add $TRAVIS_BUILD_DIR/lib/CoreShop/.gitlab-ci/php.ini
+phpenv config-add $TRAVIS_BUILD_DIR/etc/travis/config/php.ini
