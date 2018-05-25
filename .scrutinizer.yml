@@ -15,9 +15,6 @@ build:
                     - vendor/
                     - ~/.npm
             dependencies:
-                before:
-                    override:
-                        -
                 after:
                     - ~/etc/scrutinizer/install
             tests:
