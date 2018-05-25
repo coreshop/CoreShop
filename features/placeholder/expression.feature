@@ -19,3 +19,8 @@ Feature: In order to extend Pimcore's placeholder
 
   Scenario: Test a coreshop expression language provider for document
     Then the placeholder value for expression "%Expression(expression, {'expression' : 'document(1)'});" should be "/"
+
+  Scenario: Test a Pimcore object with expression language placeholder
+    Given the site operates on a store in "Austria"
+    And the site has a product "Shoe" priced at 100
+    Then the placeholder value for expression "%Expression(object, {'expression': 'value.getName()'});" for object should be "Shoe"

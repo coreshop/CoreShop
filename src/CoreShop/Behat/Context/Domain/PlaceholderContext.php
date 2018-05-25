@@ -60,7 +60,9 @@ final class PlaceholderContext implements Context
     public function placeHolderValueForObjectShouldBe($expression, $object, $value)
     {
         $placeholderHelper = new \Pimcore\Placeholder();
-        $data = [];
+        $data = [
+            'object' => $object
+        ];
         $executedValue = $placeholderHelper->replacePlaceholders($expression, $data);
 
         Assert::same(
