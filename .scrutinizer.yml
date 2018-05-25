@@ -20,7 +20,11 @@ build:
                     - ~/build/etc/scrutinizer/install
             tests:
                 override:
-                    - ~/build/etc/_scripts/behat_coverage
+                    -
+                      command: 'vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.coverage.yml.dist'
+                      coverage:
+                          file: 'lib/CoreShop/build/coverage.clover'
+                          format: 'clover'
             tools:
                 php_code_coverage: true
         analysis:
