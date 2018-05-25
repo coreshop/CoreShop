@@ -11,111 +11,108 @@ env:
     global:
         - PIMCORE_ENVIRONMENT=test
         - CORESHOP_TEST=1
-        - CORESHOP_MYSQL_HOST=127.0.0.1
-        - CORESHOP_MYSQL_DB=coreshop_phpunit
-        - CORESHOP_MYSQL_USER=root
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
         - CORESHOP_RUN_BEHAT=1
         - CORESHOP_RUN_ECS=0
 
 matrix:
     include:
-        - 
+        -
           sudo: required
           php: 7.1
           env:
             - CORESHOP_RUN_ECS=1
 
-        - 
+        -
           sudo: required
           php: 7
           env:
             - PIMCORE_BRANCH="tags/v5.1.2"
             - CORESHOP_RUN_BEHAT=0
 
-        - 
+        -
           sudo: required
           php: 7.1
           env:
             - PIMCORE_BRANCH="tags/v5.1.2"
 
-        - 
+        -
           sudo: required
           php: 7.2
           env:
             - PIMCORE_BRANCH="tags/v5.1.2"
 
-        - 
+        -
           sudo: required
           php: 7
           env:
             - PIMCORE_BRANCH="tags/v5.1.3"
             - CORESHOP_RUN_BEHAT=0
 
-        - 
+        -
           sudo: required
           php: 7.1
           env:
             - PIMCORE_BRANCH="tags/v5.1.3"
 
-        - 
+        -
           sudo: required
           php: 7.2
           env:
             - PIMCORE_BRANCH="tags/v5.1.3"
 
-        - 
+        -
           sudo: required
           php: 7
           env:
             - PIMCORE_BRANCH="tags/v5.2.0"
             - CORESHOP_RUN_BEHAT=0
 
-        - 
+        -
           sudo: required
           php: 7.1
           env:
             - PIMCORE_BRANCH="tags/v5.2.0"
 
-        - 
+        -
           sudo: required
           php: 7.2
           env:
             - PIMCORE_BRANCH="tags/v5.2.0"
 
-        - 
+        -
           sudo: required
           php: 7
           env:
             - PIMCORE_BRANCH="tags/v5.2.1"
             - CORESHOP_RUN_BEHAT=0
 
-        - 
+        -
           sudo: required
           php: 7.1
           env:
             - PIMCORE_BRANCH="tags/v5.2.1"
 
-        - 
+        -
           sudo: required
           php: 7.2
           env:
             - PIMCORE_BRANCH="tags/v5.2.1"
 
-        - 
+        -
           sudo: required
           php: 7
           env:
             - PIMCORE_BRANCH="master"
             - CORESHOP_RUN_BEHAT=0
 
-        - 
+        -
           sudo: required
           php: 7.1
           env:
             - PIMCORE_BRANCH="master"
 
-        - 
+        -
           sudo: required
           php: 7.2
           env:

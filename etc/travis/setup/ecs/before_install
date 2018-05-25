@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-phpenv config-add $TRAVIS_BUILD_DIR/etc/travis/config/php.ini
+phpenv config-add $TRAVIS_BUILD_DIR/etc/_config/php.ini

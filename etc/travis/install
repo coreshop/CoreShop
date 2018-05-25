@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+export CS_COMMIT=$TRAVIS_COMMIT
+export CS_BRANCH=$TRAVIS_BRANCH
+
 if [ $CORESHOP_RUN_ECS == 0 ]; then
     $TRAVIS_BUILD_DIR/etc/travis/setup/tests/install
 else

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+export CS_COMMIT=$SCRUTINIZER_SHA1
+export CS_BRANCH=$SCRUTINIZER_BRANCH
+
+~/etc/_setup/install
+~/etc/_setup/composer
