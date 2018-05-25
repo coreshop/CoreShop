@@ -127,9 +127,6 @@ cache:
         - ~/.composer/cache/files
         - vendor
 
-before_install:
-    - etc/travis/before_install
-
 install:
     - etc/travis/install
 

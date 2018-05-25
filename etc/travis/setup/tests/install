@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-$CS_HOME/etc/_setup/composer
+phpenv config-add $CS_HOME/etc/_config/php.ini
 
-cp $CS_HOME/lib/CoreShop/etc/_config/config.yml app/config/config.yml
+$CS_HOME/etc/_setup/install

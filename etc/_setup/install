@@ -1,23 +1,90 @@
 #!/usr/bin/env bash
 set -e
 
+
+##########################################################################################
+#########
+######### Setup Mysql
+#########
+##########################################################################################
+
 mysql --version
 mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
 mysql -e "SET GLOBAL innodb_large_prefix=1;"
 mysql -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
-# Move CoreShop in Order to install Pimcore
+##########################################################################################
+#########
+######### Move CoreShop in Order to install Pimcore
+#########
+##########################################################################################
 mkdir $CS_HOME/../lib
 mkdir $CS_HOME/../lib/CoreShop
 mv $CS_HOME/{.[!.],}* $CS_HOME/../lib/CoreShop
 rm -rf $CS_HOME/{.[!.],}*
 
+##########################################################################################
+#########
+######### Clone Pimcore
+#########
+##########################################################################################
 git clone https://github.com/pimcore/pimcore.git $CS_HOME
 git checkout ${PIMCORE_BRANCH} $CS_HOME
 
-# Move CoreShop into lib/CoreShop
+##########################################################################################
+#########
+#########  Move CoreShop into lib/CoreShop
+#########
+##########################################################################################
 mkdir $CS_HOME/lib
 mv $CS_HOME/../lib/CoreShop $CS_HOME/lib/CoreShop
 
-cp -r $CS_HOME/lib/CoreShop/etc $CS_HOME/etc
-chmod -R +x lib/CoreShop/etc
+##########################################################################################
+#########
+#########  add config templates
+#########
+##########################################################################################
+mkdir -p $CS_HOME/var/config
+cp $CS_HOME/lib/CoreShop/etc/_config/system.template.php var/config/system.php
+cp app/config/parameters.example.yml app/config/parameters.yml
+
+##########################################################################################
+#########
+#########  Install composer dependencies
+#########
+##########################################################################################
+composer install --no-dev --no-scripts
+composer remove codeception/codeception --dev --no-scripts
+
+##########################################################################################
+#########
+#########  Add path to CoreShop
+#########
+##########################################################################################
+composer config repositories.coreshop path $CS_HOME/lib/CoreShop
+
+##########################################################################################
+#########
+#########  Install CoreShop dependencies
+#########
+##########################################################################################
+composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 coreshop/core-shop:dev-$CS_BRANCH#$CS_COMMIT
+
+
+##########################################################################################
+#########
+#########  Install BEHAT Dependencies
+#########
+##########################################################################################
+if [ $CORESHOP_RUN_BEHAT == 1 ]; then
+    composer require behat/behat:^3.3 friends-of-behat/context-service-extension:^1.1 friends-of-behat/cross-container-extension:^1.1 friends-of-behat/service-container-extension:^1.0 friends-of-behat/symfony-extension:^1.2 friends-of-behat/variadic-extension:^1.1 --no-scripts
+fi
+
+##########################################################################################
+#########
+#########  Clear Cache and install CoreShop Test config
+#########
+##########################################################################################
+rm -rf var/cache
+
+cp $CS_HOME/lib/CoreShop/etc/_config/config.yml app/config/config.yml
