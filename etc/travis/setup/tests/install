@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-~/etc/_setup/composer
+$CS_HOME/etc/_setup/composer
 
-cp $TRAVIS_BUILD_DIR/lib/CoreShop/etc/_config/config.yml app/config/config.yml
+cp $CS_HOME/lib/CoreShop/etc/_config/config.yml app/config/config.yml

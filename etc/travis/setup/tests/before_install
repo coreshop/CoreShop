@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-~/etc/_setup/install
+$CS_HOME/etc/_setup/install
 
-phpenv config-add $TRAVIS_BUILD_DIR/etc/_config/php.ini
+phpenv config-add $CS_HOME/etc/_config/php.ini
