@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-export CS_HOME=$TRAVIS_HOME
-
 if [ $CORESHOP_RUN_ECS == 0 ]; then
     ~/etc/travis/tests
 else

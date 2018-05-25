@@ -16,10 +16,10 @@ build:
                     - ~/.npm
             dependencies:
                 after:
-                    - ~/build/etc/scrutinizer/install
+                    - ~/etc/scrutinizer/install
             tests:
                 override:
-                    - ~/build/etc/_scripts/behat_coverage
+                    - ~/etc/_scripts/behat_coverage
         analysis:
             dependencies:
                 after:

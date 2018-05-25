@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-export CS_HOME=$TRAVIS_HOME
 export CS_COMMIT=$TRAVIS_COMMIT
 export CS_BRANCH=$TRAVIS_BRANCH
 
