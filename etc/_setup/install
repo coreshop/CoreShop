@@ -7,17 +7,17 @@ mysql -e "SET GLOBAL innodb_large_prefix=1;"
 mysql -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
 # Move CoreShop in Order to install Pimcore
-mkdir ~/../lib
-mkdir ~/../lib/CoreShop
-mv ~/{.[!.],}* ~/../lib/CoreShop
-rm -rf ~/{.[!.],}*
+mkdir $CS_HOME/../lib
+mkdir $CS_HOME/../lib/CoreShop
+mv $CS_HOME/{.[!.],}* $CS_HOME/../lib/CoreShop
+rm -rf $CS_HOME/{.[!.],}*
 
-git clone https://github.com/pimcore/pimcore.git ~
-git checkout ${PIMCORE_BRANCH} ~
+git clone https://github.com/pimcore/pimcore.git $CS_HOME
+git checkout ${PIMCORE_BRANCH} $CS_HOME
 
 # Move CoreShop into lib/CoreShop
-mkdir ~/lib
-mv ~/../lib/CoreShop ~/lib/CoreShop
+mkdir $CS_HOME/lib
+mv $CS_HOME/../lib/CoreShop $CS_HOME/lib/CoreShop
 
-cp -r ~/lib/CoreShop/etc ~/etc
+cp -r $CS_HOME/lib/CoreShop/etc $CS_HOME/etc
 chmod -R +x lib/CoreShop/etc
