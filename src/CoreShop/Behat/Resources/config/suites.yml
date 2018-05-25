@@ -10,3 +10,4 @@ imports:
     - suites/domain/pimcore.yml
     - suites/domain/order.yml
     - suites/domain/seo.yml
+    - suites/domain/placeholder.yml
