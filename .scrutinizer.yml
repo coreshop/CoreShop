@@ -21,6 +21,8 @@ build:
             tests:
                 override:
                     - ~/build/etc/_scripts/behat_coverage
+            tools:
+                php_code_coverage: true
         analysis:
             dependencies:
                 after:
