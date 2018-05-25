@@ -5,5 +5,5 @@ export CS_HOME=/home/scrutinizer/build
 export CS_COMMIT=$SCRUTINIZER_SHA1
 export CS_BRANCH=$SCRUTINIZER_BRANCH
 
-~/etc/_setup/install
-~/etc/_setup/composer
+$CS_HOME/etc/_setup/install
+$CS_HOME/etc/_setup/composer
