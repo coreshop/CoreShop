@@ -4,7 +4,7 @@ set -e
 export CS_HOME=$TRAVIS_BUILD_DIR
 
 if [ $CORESHOP_RUN_ECS == 0 ]; then
-    ~/etc/travis/tests
+    $CS_HOME/etc/travis/tests
 else
-    ~/etc/_scripts/ecs
+    $CS_HOME/etc/_scripts/ecs
 fi
