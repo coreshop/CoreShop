@@ -23,7 +23,7 @@ build:
                     -
                       command: 'vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.coverage.yml.dist'
                       coverage:
-                          file: 'lib/CoreShop/build/coverage.clover'
+                          file: 'build/lib/CoreShop/build/coverage.clover'
                           format: 'clover'
         analysis:
             dependencies:

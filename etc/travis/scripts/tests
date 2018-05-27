@@ -2,7 +2,7 @@
 set -e
 
 if [ $CORESHOP_RUN_BEHAT == 1 ]; then
-    ~/etc/_scripts/behat
+    $CS_HOME/etc/_scripts/behat
 fi
 
-~/etc/_scripts/phpunit
+$CS_HOME/etc/_scripts/phpunit
