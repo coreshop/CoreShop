@@ -220,7 +220,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     public function load($object)
     {
-        $prices = $this->getProductStorePriceRepository()->findForProduct($object);
+        $prices = $this->getProductStorePriceRepository()->findForProductAndProperty($object, $this->getName());
         $data = [];
 
         /**
@@ -256,12 +256,13 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 /**
                  * @var $storePrice ProductStorePriceInterface
                  */
-                $storePrice = $repo->findForProductAndStore($object, $store);
+                $storePrice = $repo->findForProductAndStoreAndProperty($object, $store, $this->getName());
 
                 if (null === $storePrice) {
                     $storePrice = $factory->createNew();
                 }
 
+                $storePrice->setProperty($this->getName());
                 $storePrice->setProduct($object);
                 $storePrice->setPrice($price);
                 $storePrice->setStore($store);
@@ -279,7 +280,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $stores = $this->getStoreRepository()->findAll();
-        $prices = $this->getProductStorePriceRepository()->findForProduct($object);
+        $prices = $this->getProductStorePriceRepository()->findForProductAndProperty($object, $this->getName());
         $storeData = [];
 
         /**
