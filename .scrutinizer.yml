@@ -94,6 +94,8 @@ tools:
   php_changetracking: true
 checks:
     php: true
+dependency_paths:
+    - "pimcore/"
 filter:
   excluded_paths:
     - "tests/"
