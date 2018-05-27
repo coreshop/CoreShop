@@ -156,5 +156,10 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.link_generator'
+
+    coreshop.behat.context.domain.placeholder:
+        class: CoreShop\Behat\Context\Domain\PlaceholderContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
