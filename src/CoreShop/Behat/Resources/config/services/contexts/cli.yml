@@ -1,0 +1,7 @@
+services:
+    coreshop.behat.context.cli.installer:
+        class: CoreShop\Behat\Context\Cli\InstallerContext
+        arguments:
+            - '@__symfony__.kernel'
+        tags:
+            - { name: fob.context_service }

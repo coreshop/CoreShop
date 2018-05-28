@@ -3,3 +3,4 @@ imports:
     - { resource: "contexts/setup.yml" }
     - { resource: "contexts/transform.yml" }
     - { resource: "contexts/domain.yml" }
+    - { resource: "contexts/cli.yml" }
