@@ -11,6 +11,9 @@ CoreShop\Component\Core\Model\ProductStorePrice:
         product:
             column: productId
             type: pimcoreObject
+        property:
+            column: property
+            type: string
         price:
             column: price
             type: integer

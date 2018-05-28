@@ -30,6 +30,11 @@ class ProductStorePrice extends AbstractResource implements ProductStorePriceInt
     protected $price;
 
     /**
+     * @var string
+     */
+    protected $property;
+
+    /**
      * @var ProductInterface
      */
     protected $product;
@@ -64,6 +69,22 @@ class ProductStorePrice extends AbstractResource implements ProductStorePriceInt
     public function setPrice(int $price)
     {
         $this->price = $price;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProperty(string $property)
+    {
+        $this->property = $property;
     }
 
     /**

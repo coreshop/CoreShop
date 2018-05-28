@@ -28,6 +28,16 @@ interface ProductStorePriceInterface extends ResourceInterface, StoreAwareInterf
     public function setPrice(int $price);
 
     /**
+     * @return string
+     */
+    public function getProperty();
+
+    /**
+     * @param string $property
+     */
+    public function setProperty(string $property);
+
+    /**
      * @return ProductInterface
      */
     public function getProduct();
