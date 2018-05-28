@@ -1,14 +1,5 @@
-# This file is basically a copy of Pimcore's .travis.yml
-# Actually, very dangerous, cause it depends on Pimcore's travis configuration files
-# Which could be removed at any time from them
-
-notifications:
-    email:
-        - travis-ci@coreshop.org
-
 sudo: false
 language: php
-
 services:
     - redis
 
@@ -16,133 +7,132 @@ addons:
     mariadb: '10.1'
     hosts:
         - pimcore-test.dev
-
-matrix:
-    include:
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.3"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.3"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.3"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="master"
-            - CORESHOP_SKIP_BEHAT=1
-
-        - os: linux
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="master"
-            - CORESHOP_SKIP_BEHAT=0
-
-        - os: linux
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="master"
-            - CORESHOP_SKIP_BEHAT=0
-
 env:
     global:
         - PIMCORE_ENVIRONMENT=test
         - CORESHOP_TEST=1
-        - CORESHOP_MYSQL_HOST=127.0.0.1
-        - CORESHOP_MYSQL_DB=coreshop_phpunit
-        - CORESHOP_MYSQL_USER=root
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
+        - CORESHOP_RUN_BEHAT=1
+        - CORESHOP_RUN_ECS=0
+
+matrix:
+    include:
+        -
+          sudo: required
+          php: 7.1
+          env:
+            - CORESHOP_RUN_ECS=1
+
+        -
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+            - CORESHOP_RUN_BEHAT=0
+
+        -
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+
+        -
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.2"
+
+        -
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+            - CORESHOP_RUN_BEHAT=0
+
+        -
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+
+        -
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.1.3"
+
+        -
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+            - CORESHOP_RUN_BEHAT=0
+
+        -
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+
+        -
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.0"
+
+        -
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+            - CORESHOP_RUN_BEHAT=0
+
+        -
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+
+        -
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.2.1"
+
+        -
+          sudo: required
+          php: 7
+          env:
+            - PIMCORE_BRANCH="master"
+            - CORESHOP_RUN_BEHAT=0
+
+        -
+          sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_BRANCH="master"
+
+        -
+          sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="master"
+    allow_failures:
+        - env:
+            - CORESHOP_RUN_ECS=1
+    fast_finish: true
 
 cache:
     directories:
         - ~/.composer/cache/files
         - vendor
 
-before_install:
-    - etc/travis/setup/before_install
-
 install:
-    - etc/travis/setup/install
+    - etc/travis/install
 
 script:
-    - etc/travis/scripts
+    - etc/travis/script
+
+notifications:
+    email:
+        - travis-ci@coreshop.org
