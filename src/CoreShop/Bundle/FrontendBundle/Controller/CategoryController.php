@@ -164,7 +164,7 @@ class CategoryController extends FrontendController
 
             $categories = [$category];
             if ($displaySubCategories === true) {
-                foreach ($this->getRepository()->findRecuriveChildCategoriesForStore($category, $this->getContext()->getStore()) as $subCategory) {
+                foreach ($this->getRepository()->findRecursiveChildCategoriesForStore($category, $this->getContext()->getStore()) as $subCategory) {
                     $categories[] = $subCategory;
                 }
             }

@@ -44,5 +44,15 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      *
      * @return CategoryInterface[]
      */
+    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
+
+    /**
+     * @param CategoryInterface $category
+     * @param StoreInterface $store
+     *
+     * @return CategoryInterface[]
+     *
+     * @deprecated Don't use anymore, use findRecursiveChildCategoriesForStore instead
+     */
     public function findRecuriveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
 }

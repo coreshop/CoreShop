@@ -46,6 +46,20 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $list = $this->getList();
         $list->setCondition('parentCategory__id = ? AND stores LIKE "%,'.$store->getId().',%"', [$category->getId()]);
 
+        //TODO: fix as soon as CoreShop requires pimcore/core-version:~5.2.2 as minimum
+        if (method_exists($category, 'getChildrenSortBy')) {
+            $list->setOrderKey(
+                sprintf('o_%s ASC', $category->getChildrenSortBy()),
+                false
+            );
+        }
+        else {
+            $list->setOrderKey(
+                'o_key ASC',
+                false
+            );
+        }
+
         return $list->getObjects();
     }
 
@@ -53,6 +67,16 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
      * {@inheritdoc}
      */
     public function findRecuriveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
+    {
+        @trigger_error('Method findRecuriveChildCategoriesForStore is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use method findRecursiveChildCategoriesForStore instead.', E_USER_DEPRECATED);
+
+        return $this->findRecuriveChildCategoriesForStore($category, $store);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
 
@@ -83,6 +107,20 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $list = $this->getList();
         $list->setCondition('oo_id IN ('.implode(',', $childIds).')');
+
+        //TODO: fix as soon as CoreShop requires pimcore/core-version:~5.2.2 as minimum
+        if (method_exists($category, 'getChildrenSortBy')) {
+            $list->setOrderKey(
+                sprintf('o_%s ASC', $category->getChildrenSortBy()),
+                false
+            );
+        }
+        else {
+            $list->setOrderKey(
+                'o_key ASC',
+                false
+            );
+        }
 
         return $list->getObjects();
     }
