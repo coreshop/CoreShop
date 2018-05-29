@@ -2,7 +2,6 @@
 
 namespace CoreShop\Component\Order\Transformer;
 
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
@@ -11,6 +10,7 @@ use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 
 final class CartToOrderTransformerWorkflowApplier implements ProposalTransformerInterface
 {
@@ -20,17 +20,17 @@ final class CartToOrderTransformerWorkflowApplier implements ProposalTransformer
     protected $innerCartToOrderTransformer;
 
     /**
-     * @var StateMachineApplier
+     * @var StateMachineApplierInterface
      */
     protected $stateMachineApplier;
 
     /**
      * @param ProposalTransformerInterface $innerCartToOrderTransformer
-     * @param StateMachineApplier $stateMachineApplier
+     * @param StateMachineApplierInterface $stateMachineApplier
      */
     public function __construct(
         ProposalTransformerInterface $innerCartToOrderTransformer,
-        StateMachineApplier $stateMachineApplier
+        StateMachineApplierInterface $stateMachineApplier
     )
     {
         $this->innerCartToOrderTransformer = $innerCartToOrderTransformer;

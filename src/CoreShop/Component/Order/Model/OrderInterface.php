@@ -13,9 +13,10 @@
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
-interface OrderInterface extends SaleInterface
+interface OrderInterface extends SaleInterface, PayableInterface
 {
     /**
      * @return string

@@ -118,7 +118,7 @@ class OrderPaymentController extends PimcoreController
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
-        $payments = $this->getPaymentRepository()->findForOrder($order);
+        $payments = $this->getPaymentRepository()->findForPayable($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
         $totalPayed = array_sum(array_map(function(PaymentInterface $payment) {
             if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||

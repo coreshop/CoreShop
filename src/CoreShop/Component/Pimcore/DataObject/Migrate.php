@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
+use CoreShop\Component\Pimcore\Db\Db;
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionAlreadyExistsException;
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Pimcore\Cache;

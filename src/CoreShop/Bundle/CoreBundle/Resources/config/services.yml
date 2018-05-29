@@ -47,7 +47,7 @@ services:
             - '@coreshop.taxation.factory.cached_tax_calculator.inner'
 
     coreshop.security.customer.user_provider:
-        class: CoreShop\Bundle\CoreBundle\ObjectUserProvider
+        class: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
         arguments:
             - '%coreshop.model.customer.class%'
             - 'email'

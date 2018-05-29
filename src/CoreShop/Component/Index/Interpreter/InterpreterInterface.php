@@ -19,7 +19,7 @@ interface InterpreterInterface
 {
     /**
      * @param $value
-     * @param IndexableInterface $object
+     * @param IndexableInterface        $object
      * @param IndexColumnInterface|null $config
      *
      * @return mixed

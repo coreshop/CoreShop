@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+export CS_HOME=/home/scrutinizer/build
+export CS_COMMIT=$SCRUTINIZER_SHA1
+export CS_BRANCH=$SCRUTINIZER_BRANCH
+
+$CS_HOME/etc/_setup/install
