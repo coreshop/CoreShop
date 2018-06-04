@@ -62,7 +62,7 @@ pimcore.object.classes.data.coreShopEmbeddedClass = Class.create(pimcore.object.
                 disabled: this.isInCustomLayoutEditor(),
                 minValue: 0
             },
-            {
+            /*{
                 xtype: "checkbox",
                 fieldLabel: t("lazy_loading"),
                 name: "lazyLoading",
@@ -82,7 +82,7 @@ pimcore.object.classes.data.coreShopEmbeddedClass = Class.create(pimcore.object.
                 value: t('lazy_loading_warning'),
                 cls: "pimcore_extra_label_bottom",
                 style: "color:red; font-weight: bold;"
-            }
+            }*/
         ]);
 
         this.specificPanel.add([

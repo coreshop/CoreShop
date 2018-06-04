@@ -17,7 +17,7 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
     initialize: function (data, fieldConfig) {
         this.data = data;
         this.fieldConfig = fieldConfig;
-        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(null, this);
 
         this.objects = data ? data : [];
 
@@ -39,10 +39,18 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
     },
 
     postSaveObject: function (object, task) {
-        if (object.id === this.object.id && task === "publish") {
-            new Ext.util.DelayedTask(function () {
-                object.reload();
-            }).delay(500);
+        var objectIdToCheck = this.object.id;
+
+        if (this.context.hasOwnProperty('coreShopEmbeddedClassObjectId')) {
+            objectIdToCheck = this.context.coreShopEmbeddedClassObjectId;
+        }
+
+        if (object.id === objectIdToCheck && task === "publish") {
+            var items = this.container.getItems();
+
+            for (var itemIndex = 0; itemIndex < items.length; itemIndex++) {
+                items[itemIndex].setIndex(itemIndex);
+            }
         }
     },
 
@@ -143,9 +151,11 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
     addEmbeddedClass: function (object, general, noteditable) {
         var me = this,
             container = me.container,
-            pimcoreObjectEdit;
+            pimcoreObjectEdit,
+            objectId = me.context.hasOwnProperty('coreShopEmbeddedClassObjectId') ? me.context.coreShopEmbeddedClassObjectId : me.object.id;
 
         pimcoreObjectEdit = new pimcore.object.edit({
+            id: object.id,
             data: object,
             ignoreMandatoryFields: false
         });
@@ -153,7 +163,7 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
             if (this.layout == null) {
                 var items = [];
                 if (conf) {
-                    items = this.getRecursiveLayout(conf, noteditable).items;
+                    items = this.getRecursiveLayout(conf, noteditable, {coreShopEmbeddedClassObjectId: objectId}).items;
                 }
 
                 this.layout = Ext.create('Ext.panel.Panel', {
@@ -182,17 +192,29 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
             throw 'edit not available';
         }
 
-        var values = [],
+        var items = this.container.getItems(),
+            values = [],
+            object,
             objectValues;
 
-        Ext.each(this.container.getLayouts(), function (object) {
-            objectValues = object.getValues();
+        Ext.each(items, function (item) {
+            object = item.objectEdit;
 
-            if (object.object.data.hasOwnProperty('id')) {
-                objectValues['id'] = object.object.data.id;
+            if (!item.isRemoved()) {
+                objectValues = object.getValues();
+
+                if (object.object.data.hasOwnProperty('id')) {
+                    objectValues['id'] = object.object.data.id;
+                }
+
+                objectValues['currentIndex'] = item.getCurrentIndex();
+
+                if (item.getIndex()) {
+                    objectValues['originalIndex'] = item.getIndex();
+                }
+
+                values.push(objectValues);
             }
-
-            values.push(objectValues);
         });
 
         return values;
@@ -241,19 +263,16 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
 
     isDirty: function () {
         var me = this,
+            items = me.container.getItems(),
             objects = me.container.getLayouts(),
-            existingObjects = objects.filter(function (object) {
-                return object.object.data.hasOwnProperty('id');
-            }).map(function (object) {
-                return object.object.data.id;
-            }),
             object = null,
             dataKeys = null,
             currentField = null,
-            i = 0;
+            i,
+            j;
 
-        for (i = 0; i < me.objects.length; i++) {
-            if (existingObjects.indexOf(me.objects[i].id) < 0) {
+        for (i = 0; i < items.length; i++) {
+            if (items[i].isDirty()) {
                 return true;
             }
         }
@@ -266,7 +285,7 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
                 return true;
             }
 
-            for (var j = 0; j < dataKeys.length; j++) {
+            for (j = 0; j < dataKeys.length; j++) {
                 if (object.dataFields[dataKeys[j]] && typeof object.dataFields[dataKeys[j]] === 'object') {
                     currentField = object.dataFields[dataKeys[j]];
 

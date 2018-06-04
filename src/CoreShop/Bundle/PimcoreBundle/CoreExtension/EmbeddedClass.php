@@ -17,9 +17,7 @@ use CoreShop\Component\Pimcore\DataObject\EditmodeHelper;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Bundle\AdminBundle\Security\User\User as UserProxy;
 use Pimcore\Logger;
-use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\Document;
 use Pimcore\Model\Element;
 use Pimcore\Model\User;
 use Pimcore\Tool;
@@ -40,18 +38,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
      * @var string
      */
     public $embeddedClassLayout;
-
-    /**
-     * @var string
-     */
-    public $embeddedObjectFolder;
-
-    /**
-     * @var string
-     */
-    public $embeddedObjectKey;
-
-    private $valueBackupBeforeSave = null;
 
     /**
      * {@inheritdoc}
@@ -79,7 +65,9 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             list("objectData" => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
 
             $objectData['id'] = $embeddedObject->getId();
-            $objectData['general'] = [];
+            $objectData['general'] = [
+                'index' => $embeddedObject->getKey(),
+            ];
 
             $allowedKeys = ['o_published', 'o_key', 'o_id', 'o_modificationDate', 'o_creationDate', 'o_classId', 'o_className', 'o_locked', 'o_type', 'o_parentId', 'o_userOwner', 'o_userModification'];
 
@@ -100,8 +88,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        $this->valueBackupBeforeSave = $this->getDataFromObjectParam($object, $params);
-
         if (!is_array($data)) {
             return [];
         }
@@ -113,15 +99,17 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
             if (array_key_exists('id', $objectData)) {
                 $embeddedObject = $this->findInstance($objectData['id']);
+            } else if (array_key_exists('originalIndex', $objectData)) {
+                $embeddedObject = $this->findInstanceByIndex($object, $objectData['originalIndex']);
             }
 
             if (!$embeddedObject instanceof DataObject\Concrete) {
                 $embeddedObject = $this->createNewInstance();
-                $embeddedObject->setKey(uniqid());
+                $embeddedObject->setKey($objectData['currentIndex']);
             }
 
             foreach ($objectData as $key => $value) {
-                if ($key === 'id') {
+                if (in_array($key, ['id', 'originalIndex', 'currentIndex'])) {
                     continue;
                 }
 
@@ -163,31 +151,68 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
         return $embeddedObjects;
     }
 
+    public function preSetData($object, $data, $params = [])
+    {
+        $data = parent::preSetData($object, $data, $params);
+
+        foreach ($data as $index => $d) {
+            if ($d instanceof DataObject\Concrete) {
+                $d->setKey($index);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preGetData($object, $params = [])
+    {
+        $data = $object->{$this->getName()};
+
+        if (!is_array($data)) {
+            $data = $this->load($object, ['force' => true]);
+            $setter = 'set' . ucfirst($this->getName());
+
+            if (method_exists($object, $setter)) {
+                $object->$setter($data);
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function save($object, $params = [])
     {
-        $data = $this->getDataFromObjectParam($object, $params);
+        if (!$object instanceof DataObject\Concrete) {
+            return;
+        }
 
-        $params['force'] = true;
+        $data = $this->getDataFromObjectParam($object, $params);
 
         $storedIds = [];
 
         foreach ($data as $embeddedObject) {
             $embeddedObject->setPublished($object->getPublished());
             $embeddedObject->setParent($object);
-            $embeddedObject->save();
 
             $storedIds[] = $embeddedObject->getId();
         }
 
-        if (is_array($this->valueBackupBeforeSave)) {
-            foreach ($this->valueBackupBeforeSave as $embeddedObject) {
-                if (!in_array($embeddedObject->getId(), $storedIds)) {
-                    $embeddedObject->delete();
-                }
+        $originalData = $object->getChildren();
+
+        foreach ($originalData as $embeddedObject) {
+            if (!in_array($embeddedObject->getId(), $storedIds)) {
+                $embeddedObject->delete();
             }
+        }
+
+        foreach ($data as $index => $embeddedObject) {
+            $embeddedObject->save();
         }
 
         parent::save($object, $params);
@@ -357,6 +382,25 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
+     * @param DataObject\Concrete $object
+     * @param $index
+     * @return mixed
+     */
+    private function findInstanceByIndex(DataObject\Concrete $object, $index)
+    {
+        $list = new DataObject\Listing();
+        $list->setUnpublished(true);
+        $list->setCondition('o_parentId = ? AND o_key = ?', [$object->getId(), $index]);
+        $list->load();
+
+        if ($list->count() >= 1) {
+            return $list->getObjects()[0];
+        }
+
+        return null;
+    }
+
+    /**
      * @return int
      */
     public function getMaxItems()
@@ -370,6 +414,14 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     public function setMaxItems($maxItems)
     {
         $this->maxItems = $maxItems;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLazyLoading()
+    {
+        return false;
     }
 
     /**
@@ -402,37 +454,5 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     public function setEmbeddedClassLayout($embeddedClassLayout)
     {
         $this->embeddedClassLayout = $embeddedClassLayout;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmbeddedObjectFolder()
-    {
-        return $this->embeddedObjectFolder;
-    }
-
-    /**
-     * @param string $embeddedObjectFolder
-     */
-    public function setEmbeddedObjectFolder($embeddedObjectFolder)
-    {
-        $this->embeddedObjectFolder = $embeddedObjectFolder;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmbeddedObjectKey()
-    {
-        return $this->embeddedObjectKey;
-    }
-
-    /**
-     * @param string $embeddedObjectKey
-     */
-    public function setEmbeddedObjectKey($embeddedObjectKey)
-    {
-        $this->embeddedObjectKey = $embeddedObjectKey;
     }
 }

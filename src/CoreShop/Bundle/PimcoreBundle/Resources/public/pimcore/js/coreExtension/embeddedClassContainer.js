@@ -14,9 +14,12 @@ pimcore.registerNS('coreshop.pimcore.coreExtension.embeddedClassContainer');
 
 coreshop.pimcore.coreExtension.embeddedClassContainer = Class.create({
 
+    itemContainers: [],
+
     initialize: function (tag, noteditable) {
         this.tag = tag;
         this.noteditable = noteditable;
+        this.itemContainers = [];
     },
 
     getLayout: function () {
@@ -63,8 +66,13 @@ coreshop.pimcore.coreExtension.embeddedClassContainer = Class.create({
     add: function (objectEdit, layout, general, icon) {
         var itemContainer = new coreshop.pimcore.coreExtension.embeddedClassItemContainer(this, objectEdit, this.noteditable, layout, general, icon);
 
+        this.itemContainers.push(itemContainer);
+
         this.container.add(itemContainer.getLayout());
-        this.container.updateLayout();
+    },
+
+    getItems: function() {
+        return this.itemContainers;
     },
 
     getLayouts: function () {

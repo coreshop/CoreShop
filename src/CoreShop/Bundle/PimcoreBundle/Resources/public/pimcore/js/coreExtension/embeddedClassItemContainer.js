@@ -15,10 +15,13 @@ pimcore.registerNS('coreshop.pimcore.coreExtension.embeddedClassItemContainer');
 coreshop.pimcore.coreExtension.embeddedClassItemContainer = Class.create({
     panel: null,
     icon: 'pimcore_icon_object',
+    dirty: false,
+    removed: false,
 
     initialize: function (parentPanel, objectEdit, noteditable, layout, objectMetaData, icon) {
         this.parentPanel = parentPanel;
         this.noteditable = noteditable;
+        this.index = objectMetaData.hasOwnProperty('index') ? objectMetaData.index : false;
         this.objectEdit = objectEdit;
         this.layout = layout;
         this.objectMetaData = objectMetaData;
@@ -26,17 +29,16 @@ coreshop.pimcore.coreExtension.embeddedClassItemContainer = Class.create({
     },
 
     getLayout: function () {
-        var myId = Ext.id(),
-            itemLayout = this.objectEdit.getLayout(this.layout);
+        var itemLayout = this.objectEdit.getLayout(this.layout);
 
         this.layout = new Ext.panel.Panel({
+            blockClass: this,
             objectEdit: this.objectEdit,
-            id: myId,
             style: 'margin: 10px 0 0 0',
             border: true,
             scrollable: true,
             bodyPadding: 10,
-            tbar: this.getTopBar(this.objectMetaData['o_className'] + ': ' + this.objectMetaData['o_key'], myId, this.parentPanel, this.icon),
+            tbar: this.getTopBar(this.objectMetaData['o_className'] + ': ' + this.objectMetaData['o_key'], this.icon),
             items: [
                 itemLayout
             ]
@@ -45,101 +47,106 @@ coreshop.pimcore.coreExtension.embeddedClassItemContainer = Class.create({
         return this.layout;
     },
 
+    isRemoved: function() {
+        return this.removed;
+    },
+
+    isDirty: function () {
+        return this.dirty;
+    },
+
     getForm: function () {
         return {};
     },
 
-    getIndex: function (blockElement, container) {
-        // detect index
-        var index;
+    getIndex: function() {
+        return this.index;
+    },
 
-        for (var s = 0; s < container.items.items.length; s++) {
+    setIndex: function(index) {
+        this.index = index;
+
+        this.updateIndex();
+    },
+
+    getCurrentIndex: function () {
+        // detect index
+        var me = this,
+            container = me.parentPanel.container,
+            blockElement = me.layout,
+            s;
+
+        for (s = 0; s < container.items.items.length; s++) {
             if (container.items.items[s].getId() === blockElement.getId()) {
-                index = s;
-                break;
+                return s;
             }
         }
 
-        return index;
+        return null;
     },
 
+    updateIndex: function() {
+        this.layout.getDockedItems('toolbar[dock="top"]')[0].down('tbtext').setText(
+            this.objectMetaData['o_className'] + ': ' + this.getIndex()
+        );
+    },
 
-    getTopBar: function (name, index, parent, iconCls) {
+    getTopBar: function (name, iconCls) {
         var me = this,
-            container = parent.container;
-
-        var items = [
-            {
-                iconCls: iconCls,
-                disabled: true,
-                xtype: 'button'
-            },
-            {
-                xtype: 'tbtext',
-                text: '<b>' + name + '</b>'
-            },
-            '-'
-        ];
+            items = [
+                {
+                    iconCls: iconCls,
+                    disabled: true,
+                    xtype: 'button'
+                },
+                {
+                    xtype: 'tbtext',
+                    text: '<b>' + name + '</b>'
+                },
+                '-'
+            ];
 
         if (!this.noteditable) {
             items.push({
                 iconCls: 'pimcore_icon_up',
                 handler: function (blockId, parent, container) {
-                    var blockElement = Ext.getCmp(blockId);
-                    var index = me.getIndex(blockElement, container);
-                    var tmpContainer = pimcore.viewport;
+                    var blockElement = me.layout,
+                        prevElement = blockElement.previousSibling();
 
-                    var newIndex = index - 1;
-                    if (newIndex < 0) {
-                        newIndex = 0;
+                    if (prevElement) {
+                        me.parentPanel.container.moveBefore(blockElement, prevElement);
+                        me.dirty = true;
+
+                        me.updateIndex();
+                        prevElement.blockClass.updateIndex();
                     }
-
-                    // move this node temorary to an other so ext recognizes a change
-                    container.remove(blockElement, false);
-                    tmpContainer.add(blockElement);
-                    container.updateLayout();
-                    tmpContainer.updateLayout();
-
-                    // move the element to the right position
-                    tmpContainer.remove(blockElement, false);
-                    container.insert(newIndex, blockElement);
-                    container.updateLayout();
-                    tmpContainer.updateLayout();
-
-                    pimcore.layout.refresh();
-                }.bind(window, index, parent, container),
+                },
                 xtype: 'button'
             });
             items.push({
                 iconCls: 'pimcore_icon_down',
                 handler: function (blockId, parent, container) {
-                    var blockElement = Ext.getCmp(blockId);
-                    var index = me.getIndex(blockElement, container);
-                    var tmpContainer = pimcore.viewport;
+                    var blockElement = me.layout,
+                        nextElement = blockElement.nextSibling();
 
-                    // move this node temorary to an other so ext recognizes a change
-                    container.remove(blockElement, false);
-                    tmpContainer.add(blockElement);
-                    container.updateLayout();
-                    tmpContainer.updateLayout();
+                    if (nextElement) {
+                        me.parentPanel.container.moveAfter(blockElement, nextElement);
+                        me.dirty = true;
 
-                    // move the element to the right position
-                    tmpContainer.remove(blockElement, false);
-                    container.insert(index + 1, blockElement);
-                    container.updateLayout();
-                    tmpContainer.updateLayout();
-
-                    pimcore.layout.refresh();
-
-                }.bind(window, index, parent, container),
+                        me.updateIndex();
+                        nextElement.blockClass.updateIndex();
+                    }
+                },
                 xtype: 'button'
             });
             items.push('->');
             items.push({
                 iconCls: 'pimcore_icon_delete',
-                handler: function (index, parent, container) {
-                    container.remove(Ext.getCmp(index));
-                }.bind(window, index, parent, container),
+                handler: function () {
+                    me.parentPanel.container.remove(me.layout);
+                    me.dirty = true;
+                    me.removed = true;
+                },
                 xtype: 'button'
             });
         }
