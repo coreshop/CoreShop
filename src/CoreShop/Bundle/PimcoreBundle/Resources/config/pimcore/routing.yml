@@ -1,0 +1,7 @@
+coreshop_pimcore_embedded_class_get_custom_layouts:
+    path: /%coreshop.admin.route.base%/embedded-class/get-custom-layouts
+    defaults: { _controller: 'CoreShop\Bundle\PimcoreBundle\Controller\Admin\EmbeddedClassController::getCustomLayoutsAction'}
+
+coreshop_pimcore_embedded_class_get_layout_configuration:
+    path: /%coreshop.admin.route.base%/embedded-class/get-layout-configuration
+    defaults: { _controller: 'CoreShop\Bundle\PimcoreBundle\Controller\Admin\EmbeddedClassController::getClassLayoutAction'}
