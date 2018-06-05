@@ -25,32 +25,6 @@ matrix:
 
         -
           sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-            - CORESHOP_RUN_BEHAT=0
-
-        -
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-
-        -
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.2"
-
-        -
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.1.3"
-            - CORESHOP_RUN_BEHAT=0
-
-        -
-          sudo: required
           php: 7.1
           env:
             - PIMCORE_BRANCH="tags/v5.1.3"
@@ -65,46 +39,20 @@ matrix:
           sudo: required
           php: 7
           env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
+            - PIMCORE_BRANCH="tags/v5.2.3"
             - CORESHOP_RUN_BEHAT=0
 
         -
           sudo: required
           php: 7.1
           env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
+            - PIMCORE_BRANCH="tags/v5.2.3"
 
         -
           sudo: required
           php: 7.2
           env:
-            - PIMCORE_BRANCH="tags/v5.2.0"
-
-        -
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-            - CORESHOP_RUN_BEHAT=0
-
-        -
-          sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-
-        -
-          sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_BRANCH="tags/v5.2.1"
-
-        -
-          sudo: required
-          php: 7
-          env:
-            - PIMCORE_BRANCH="master"
-            - CORESHOP_RUN_BEHAT=0
+            - PIMCORE_BRANCH="tags/v5.2.3"
 
         -
           sudo: required
