@@ -621,6 +621,24 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^the (object-instance) is published$/
+     */
+    public function theObjectInstanceIsPublished(Concrete $instance)
+    {
+        $instance->setPublished(true);
+        $instance->save();
+    }
+
+    /**
+     * @Given /^the (object-instance) is not published$/
+     */
+    public function theObjectInstanceIsNotPublished(Concrete $instance)
+    {
+        $instance->setPublished(false);
+        $instance->save();
+    }
+
+    /**
      * @Given /the (object-instance) has following values:/
      */
     public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table)
