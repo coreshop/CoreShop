@@ -2,5 +2,6 @@
 set -e
 
 rm -rf var/cache
-# PIMCORE_TEST_DB_DSN=mysql://coreshop2:coreshop2@localhost/coreshop2___behat
+
+echo "BEHAT TESTS"
 vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.yml.dist

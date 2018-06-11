@@ -3,5 +3,6 @@ pimcore:
         class_definitions:
             data:
                 map:
+                    coreShopEmbeddedClass: CoreShop\Bundle\PimcoreBundle\CoreExtension\EmbeddedClass
                     coreShopSerializedData: CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData
 
