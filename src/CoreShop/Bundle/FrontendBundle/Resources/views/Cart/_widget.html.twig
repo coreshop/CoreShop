@@ -15,7 +15,7 @@
                     <tr>
                         <td class="text-center">
                             {% if item.getProduct() %}
-                            <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">
+                            <a href="{{ coreshop_path(item.getProduct(), 'coreshop_product_detail') }}">
                                 {% if item.getProduct() and item.getProduct().getImage() %}
                                     {{ item.product.image.thumbnail("coreshop_productCartPreview").html({'class': 'img-thumbnail img-fluid', 'title': item.getProduct().getName(), 'alt': item.getProduct().getName()})|raw }}
                                 {% endif %}
@@ -24,7 +24,7 @@
                         </td>
                         <td class="text-left">
                             {% if item.getProduct() %}
-                            <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">
+                            <a href="{{ coreshop_path(item.getProduct(), 'coreshop_product_detail') }}">
                                 {{ item.getProduct().getName() }}
                             </a>
                             {% endif %}
