@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <select name="variant" class="form-control selectpicker btn-white">
                             {% for variantValue in variant['variantValues'] %}
-                                <option data-href="{{ path('coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
+                                <option data-href="{{ coreshop_path(variant, 'coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
                             {% endfor %}
                         </select>
                     </div>
