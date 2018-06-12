@@ -55,9 +55,9 @@ trait CategoriesConditionCheckerTrait
                     continue;
                 }
 
-                $allChilds = $this->categoryRepository->findRecursiveChildCategoryIdsForStore($category, $this->storeContext->getStore());
+                $subCategories = $this->categoryRepository->findRecursiveChildCategoryIdsForStore($category, $this->storeContext->getStore());
 
-                foreach ($allChilds as $child) {
+                foreach ($subCategories as $child) {
                     if (!in_array($child, $categoryIdsToCheck)) {
                         $categoryIdsToCheck[] = $child;
                     }
