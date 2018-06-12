@@ -17,6 +17,9 @@ use Pimcore\Model\DataObject\Concrete;
 
 class LinkGenerator implements LinkGeneratorInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function generate(Concrete $object, array $params = []): string
     {
         if ($linkGenerator = $object->getClass()->getLinkGenerator()) {
@@ -27,6 +30,14 @@ class LinkGenerator implements LinkGeneratorInterface
         }
 
         throw new \InvalidArgumentException(sprintf('Object %s with class %s has no Link Generator configured', $object->getId(), $object->getClassName()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasGenerator(Concrete $object): bool
+    {
+        return $object->getClass()->getLinkGenerator() instanceof LinkGeneratorInterface;
     }
 }
 

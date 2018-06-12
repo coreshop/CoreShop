@@ -200,7 +200,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('product_price_rule_item')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/item.js')->end()
                             ->scalarNode('product_price_rule_action')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/action.js')->end()
                             ->scalarNode('product_price_rule_condition')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/condition.js')->end()
-                            ->scalarNode('product_price_rule_condition_categories')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/categories.js')->end()
                             ->scalarNode('product_price_rule_condition_nested')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/nested.js')->end()
                             ->scalarNode('product_price_rule_condition_products')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/products.js')->end()
                             ->scalarNode('product_price_rule_condition_timespan')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/timespan.js')->end()

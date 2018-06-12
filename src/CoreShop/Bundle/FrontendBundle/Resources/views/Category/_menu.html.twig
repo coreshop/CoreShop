@@ -11,7 +11,7 @@
 
                     <li class="nav-item{% if dropdown %} dropdown {% endif %}">
                         <!-- TODO: URL -->
-                        <a href="{{ path('coreshop_category_list', {name: category.getName, category: category.getId}) }}" class="nav-link{% if dropdown %} dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10{%  endif %}">
+                        <a href="{{ coreshop_path(category, 'coreshop_category_list') }}" class="nav-link{% if dropdown %} dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="10{%  endif %}">
                             {{ category.getName() }}
                         </a>
 

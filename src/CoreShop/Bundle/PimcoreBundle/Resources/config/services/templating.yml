@@ -1,0 +1,7 @@
+services:
+    coreshop.templating.helper.link_generator:
+        class: CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelper
+        arguments:
+            - '@coreshop.link_generator'
+        tags:
+          - { name: templating.helper, alias: coreshop_link}

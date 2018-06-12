@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -92,22 +93,34 @@ final class IndexContext implements Context
 
     /**
      * @Then /^the (index) should have indexed the (product "[^"]+")$/
+     * @Then /^the (index) should have indexed the (object)$/
      */
-    public function theIndexShouldHaveIndexedProduct(IndexInterface $index, ProductInterface $product)
+    public function theIndexShouldHaveIndexedProduct(IndexInterface $index, IndexableInterface $object)
     {
-        $productEntry = $this->fetchAllFromIndex($index, $product);
+        $productEntry = $this->fetchAllFromIndex($index, $object);
 
-        Assert::isArray($productEntry, sprintf('Could not find index entry for product %s', $product->getId()));
+        Assert::isArray($productEntry, sprintf('Could not find index entry for object %s', $object->getId()));
 
         Assert::same(
             intval($productEntry['o_id']),
-            $product->getId(),
+            $object->getId(),
             sprintf(
                 'Expected to find id %s in index but found %s instead',
                 intval($productEntry['o_id']),
-                $product->getId()
+                $object->getId()
             )
         );
+    }
+
+    /**
+     * @Then /^the (index) should not have indexed the (object)$/
+     * @Then /^the (index) should not have indexed the (product "[^"]+")$/
+     */
+    public function theIndexShouldNotHaveIndexedTheObject(IndexInterface $index, IndexableInterface $object)
+    {
+        $productEntry = $this->fetchAllFromIndex($index, $object);
+
+        Assert::false($productEntry, sprintf('Could find index entry for object %s', $object->getId()));
     }
 
     /**
@@ -115,7 +128,7 @@ final class IndexContext implements Context
      * @Then /^the (index) column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      * @Then /^the (index) column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
-    public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
+    public function theIndexColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value)
     {
         $this->indexEntryShouldHaveValue($index, $object, $column, $value);
     }
@@ -125,7 +138,7 @@ final class IndexContext implements Context
      * @Then /^the (index) localized column "([^"]+)" for (object-instance) should have value "([^"]+)"$/
      * @Then /^the (index) localized column "([^"]+)" for (object-instance "[^"]+") should have value "([^"]+)"$/
      */
-    public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, Concrete $object, $value)
+    public function theIndexLocalizedColumnForProductShouldHaveValue(IndexInterface $index, $column, IndexableInterface $object, $value)
     {
         $this->indexEntryShouldHaveValue($index, $object, $column, $value, true);
     }
@@ -154,12 +167,12 @@ final class IndexContext implements Context
 
     /**
      * @param IndexInterface $index
-     * @param Concrete $object
+     * @param IndexableInterface $object
      * @param $column
      * @param $value
      * @param bool $localized
      */
-    protected function indexEntryShouldHaveValue(IndexInterface $index, Concrete $object, $column, $value, $localized = false)
+    protected function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, $column, $value, $localized = false)
     {
         $productEntry = $this->fetchAllFromIndex($index, $object, $localized);
 
@@ -179,11 +192,11 @@ final class IndexContext implements Context
 
     /**
      * @param IndexInterface $index
-     * @param Concrete|null $object
+     * @param IndexableInterface|null $object
      * @param bool $localized
      * @return array
      */
-    protected function fetchAllFromIndex(IndexInterface $index, Concrete $object = null, $localized = false)
+    protected function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, $localized = false)
     {
         if ($localized) {
             $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());

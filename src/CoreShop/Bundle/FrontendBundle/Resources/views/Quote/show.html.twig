@@ -26,7 +26,7 @@
             </thead>
             <tbody>
             {% for item in quote.getItems %}
-                {% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
+                {% set productUrl = coreshop_path(item.getProduct(), 'coreshop_product_detail') %}
                 <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
                     <td class="text-center">
                         {% if item.getProduct and item.getProduct.getImage() %}

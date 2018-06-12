@@ -18,7 +18,8 @@
     }
   ],
   "require": {
-    "php": "^7.0"
+    "php": "^7.0",
+    "coreshop/seo": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

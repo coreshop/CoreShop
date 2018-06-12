@@ -132,7 +132,7 @@ class Version20180508095520 extends AbstractPimcoreMigration implements Containe
         }
 
         if (!$productClassUpdater->hasField('pimcoreMetaDescription')) {
-            $productClassUpdater->insertFieldAfter('bricks', $localizedSeoFields);
+            $productClassUpdater->insertFieldAfter('stores', $localizedSeoFields);
         }
 
         $categoryClassUpdater->save();

@@ -169,6 +169,50 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is active$/
+     * @Given /^the (product) is active$/
+     */
+    public function theProductIsActive(ProductInterface $product)
+    {
+        $product->setActive(true);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is not active$/
+     * @Given /^the (product) is not active$/
+     */
+    public function theProductIsNotActive(ProductInterface $product)
+    {
+        $product->setActive(false);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is published$/
+     * @Given /^the (product) is published$/
+     */
+    public function theProductIsPublished(ProductInterface $product)
+    {
+        $product->setPublished(true);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is not published$/
+     * @Given /^the (product) is not published$/
+     */
+    public function theProductIsNotPublished(ProductInterface $product)
+    {
+        $product->setPublished(false);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") sku is "([^"]+)"$/
      * @Given /^the (products) sku is "([^"]+)"$/
      */

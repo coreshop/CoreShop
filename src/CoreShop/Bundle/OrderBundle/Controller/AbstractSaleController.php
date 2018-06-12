@@ -34,6 +34,11 @@ abstract class AbstractSaleController extends PimcoreController
 
         foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
             $getter = 'get'.ucfirst($key);
+
+            if (!method_exists($data, $getter)) {
+                continue;
+            }
+
             $fieldData = $data->$getter();
 
             if ($def instanceof DataObject\ClassDefinition\Data\Href) {

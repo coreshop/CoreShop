@@ -265,6 +265,20 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (shipping rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/
+     * @Given /^the (shipping rule) has a condition categories with (category "[^"]+") and it is recursive$/
+     */
+    public function theShippingRuleHasACategoriesConditionAndItIsRecursive(ShippingRuleInterface $rule, CategoryInterface $category)
+    {
+        $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
+
+        $this->addCondition($rule, $this->createConditionWithForm('categories', [
+            'categories' => [$category->getId()],
+            'recursive' => true
+        ]));
+    }
+
+    /**
      * @Given /^the (shipping rule "[^"]+") has a condition categories with (categories "[^"]+", "[^"]+")$/
      * @Given /^the (shipping rule) has a condition categories with (categories "[^"]+", "[^"]+")$/
      */

@@ -23,6 +23,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
     {
         // prepend the default provider to let users override it easily
         array_unshift($providers, new PimcoreLanguageProvider($serviceCompiler));
+        array_unshift($providers, new PHPFunctionsProvider($serviceCompiler));
 
         parent::__construct($cache, $providers);
     }
