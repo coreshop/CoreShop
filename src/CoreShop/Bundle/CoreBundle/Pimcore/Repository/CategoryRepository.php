@@ -61,16 +61,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function findRecuriveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
-    {
-        @trigger_error('Method findRecuriveChildCategoriesForStore is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use method findRecursiveChildCategoriesForStore instead.', E_USER_DEPRECATED);
-
-        return $this->findRecuriveChildCategoriesForStore($category, $store);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
@@ -108,6 +98,10 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
+    /**
+     * @param Listing $list
+     * @param CategoryInterface $category
+     */
     private function setSortingForListing(Listing $list, CategoryInterface $category)
     {
         //TODO: fix as soon as CoreShop requires pimcore/core-version:~5.2.2 as minimum
@@ -124,6 +118,9 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         }
     }
 
+    /**
+     * @param Listing $list
+     */
     private function setSortingForListingWithoutCategory(Listing $list)
     {
         $list->setOrderKey(
