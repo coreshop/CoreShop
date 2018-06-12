@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Product\ProductPriceRule\Condition;
+namespace CoreShop\Component\Core\Product\Rule\Condition;
 
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;

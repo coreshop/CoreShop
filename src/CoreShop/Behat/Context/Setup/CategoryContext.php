@@ -74,6 +74,7 @@ final class CategoryContext implements Context
 
     /**
      * @Given /^the (category) is child of (category "[^"]+")$/
+     * @Given /^the (category "[^"]+") is child of (category "[^"]+")$/
      */
     public function categoryIsChildOfAnotherCategory(CategoryInterface $child, CategoryInterface $parent)
     {

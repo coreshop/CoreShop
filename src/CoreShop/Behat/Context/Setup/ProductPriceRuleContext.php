@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
@@ -25,7 +26,6 @@ use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
@@ -270,9 +270,21 @@ final class ProductPriceRuleContext implements Context
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
-            'categories' => [
-                $category->getId()
-            ]
+            'categories' => [$category->getId()]
+        ]));
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition categories with (category "[^"]+") and it is recursive$/
+     * @Given /^the (price rule) has a condition categories with (category "[^"]+") and it is recursive$/
+     */
+    public function theProductPriceRuleHasACategoriesConditionAndItIsRecursive(ProductPriceRuleInterface $rule, CategoryInterface $category)
+    {
+        $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
+
+        $this->addCondition($rule, $this->createConditionWithForm('categories', [
+            'categories' => [$category->getId()],
+            'recursive' => true
         ]));
     }
 

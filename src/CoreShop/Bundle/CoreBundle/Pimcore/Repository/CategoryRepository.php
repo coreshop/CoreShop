@@ -24,7 +24,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
      */
     public function findForStore(StoreInterface $store)
     {
-        return $this->findBy([['condition' => 'stores LIKE ?', 'variable' => '%'.$store->getId().'%']]);
+        return $this->findBy([['condition' => 'stores LIKE ?', 'variable' => '%' . $store->getId() . '%']]);
     }
 
     /**
@@ -33,7 +33,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findFirstLevelForStore(StoreInterface $store)
     {
         $list = $this->getList();
-        $list->setCondition('parentCategory__id is null AND stores LIKE "%,'.$store->getId().',%"');
+        $list->setCondition('parentCategory__id is null AND stores LIKE "%,' . $store->getId() . ',%"');
 
         return $list->getObjects();
     }
@@ -44,7 +44,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
-        $list->setCondition('parentCategory__id = ? AND stores LIKE "%,'.$store->getId().',%"', [$category->getId()]);
+        $list->setCondition('parentCategory__id = ? AND stores LIKE "%,' . $store->getId() . ',%"', [$category->getId()]);
 
         return $list->getObjects();
     }
@@ -52,37 +52,37 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function findRecuriveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
+    public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
 
         $db = \Pimcore\Db::get();
-        $select1 = $db->select()
+        $query = $db->select()
             ->from($list->getTableName(), ['oo_id'])
-            ->where('parentCategory__id = ?', $category->getId())
-            ->where('stores LIKE ?', '%,'.$store->getId().',%');
-
-        $select2 = $db->select()
-            ->from($list->getTableName(), ['oo_id'])
-            ->where('parentCategory__id IN ('.$select1->getSQL().')');
-
-        $childQuery = $db->select()
-            ->union(
-                [$select1, $select2],
-                'UNION'
-            );
+            ->where('o_path LIKE ?', $category->getRealFullPath() . '/%')
+            ->where('stores LIKE ?', '%,' . $store->getId() . ',%');
 
         $childIds = [];
-        foreach ($childQuery->execute()->fetchAll() as $column) {
+        foreach ($query->execute()->fetchAll() as $column) {
             $childIds[] = $column['oo_id'];
         };
+
+        return $childIds;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
+    {
+        $childIds = $this->findRecursiveChildCategoryIdsForStore($category, $store);
 
         if (empty($childIds)) {
             return [];
         }
 
         $list = $this->getList();
-        $list->setCondition('oo_id IN ('.implode(',', $childIds).')');
+        $list->setCondition('oo_id IN (' . implode(',', $childIds) . ')');
 
         return $list->getObjects();
     }
