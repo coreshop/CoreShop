@@ -6,9 +6,9 @@
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ coreshop_path(customer, 'coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
                 <li class="breadcrumb-item active">{{ 'coreshop.ui.order'|trans }}</li>
             </ol>
         </nav>
@@ -73,7 +73,7 @@
                         {% set productUrl = '/' %}
 
                         {% if productIsAvailable %}
-                            {% set productUrl = path('coreshop_product_detail', {name: item.getProduct.getName, product: item.getProduct.getId}) %}
+                            {% set productUrl = coreshop_path(item.getProduct, 'coreshop_product_detail') %}
                         {% endif %}
 
                         <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">

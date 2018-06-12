@@ -3,9 +3,9 @@
 {% block center %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
             {% for cat in category.getHierarchy() %}
-                <li class="breadcrumb-item active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
+                <li class="breadcrumb-item active"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.getName }}</a></li>
             {% endfor %}
         </ol>
     </nav>

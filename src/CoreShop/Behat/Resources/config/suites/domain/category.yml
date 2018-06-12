@@ -18,5 +18,6 @@ default:
                 - coreshop.behat.context.setup.product
 
                 - coreshop.behat.context.domain.category
+                - coreshop.behat.context.domain.link_generator
             filters:
                 tags: "@category"
