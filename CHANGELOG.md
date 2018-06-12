@@ -1,7 +1,10 @@
 # Within V2
 
 ## 2.0.0-beta.1 to 2.0.0-beta.2
- - Nothing Yet
+ - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:
+    - CoreShopProduct: add `@coreshop.object.link_generator.product` as Link Provider
+    - CoreShopCategory: add `@coreshop.object.link_generator.category` as Link Provider
+    - Change `{{ path('') }}` to `{{ coreshop_path('') }}`. You may want to checkout the FrontendBundle to get a deeper insight.
 
 ## 2.0.0-alpha.4 to 2.0.0-beta.1
  - **BC break** Signature of following interfaces changed:
