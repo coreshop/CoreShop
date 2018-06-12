@@ -192,7 +192,8 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
             throw 'edit not available';
         }
 
-        var items = this.container.getItems(),
+        var me = this,
+            items = this.container.getItems(),
             values = [],
             object,
             objectValues;
@@ -201,6 +202,8 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
             object = item.objectEdit;
 
             if (!item.isRemoved()) {
+                object.object.ignoreMandatoryFields = me.object.ignoreMandatoryFields;
+
                 objectValues = object.getValues();
 
                 if (object.object.data.hasOwnProperty('id')) {
