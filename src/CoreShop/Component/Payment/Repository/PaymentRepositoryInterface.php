@@ -12,16 +12,25 @@
 
 namespace CoreShop\Component\Payment\Repository;
 
-use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface PaymentRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param OrderInterface $order
+     * @param PayableInterface $payable
+     *
+     * @return PaymentInterface[]
+     *
+     * @deprecated use findForPayable instead
+     */
+    public function findForOrder(PayableInterface $payable);
+
+    /**
+     * @param PayableInterface $payable
      *
      * @return PaymentInterface[]
      */
-    public function findForOrder(OrderInterface $order);
+    public function findForPayable(PayableInterface $payable);
 }

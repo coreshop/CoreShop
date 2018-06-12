@@ -36,6 +36,7 @@ trait CoreSaleCreationTrait
         $shippingAddressId = $request->get("shippingAddress");
         $invoiceAddressId = $request->get("invoiceAddress");
         $storeId = $request->get('store');
+        $language = $request->get('language');
 
         /**
          * @var $currency CurrencyInterface
@@ -73,7 +74,7 @@ trait CoreSaleCreationTrait
         /**
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
-        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
+        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
         $this->get('coreshop.cart_processor')->process($cart);
 
         $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());

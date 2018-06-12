@@ -1,6 +1,0 @@
-jms_serializer:
-    metadata:
-        directories:
-            core-shop-configuration:
-                namespace_prefix: "CoreShop\\Component\\Configuration"
-                path: "@CoreShopConfigurationBundle/Resources/config/serializer"

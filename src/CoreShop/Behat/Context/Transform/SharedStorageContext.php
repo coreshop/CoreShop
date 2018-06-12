@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use Pimcore\Model\DataObject\Concrete;
 
 final class SharedStorageContext implements Context
 {
@@ -36,5 +37,13 @@ final class SharedStorageContext implements Context
     public function getLatestResource()
     {
         return $this->sharedStorage->getLatestResource();
+    }
+
+    /**
+     * @Transform /^(object)$/
+     */
+    public function getLatestObject()
+    {
+        return $this->getLatestResource() instanceof Concrete ? $this->getLatestResource() : null;
     }
 }

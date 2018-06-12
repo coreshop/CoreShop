@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
@@ -147,6 +148,52 @@ final class IndexContext implements Context
             $this->objectManager->persist($column);
             // $row['name'], $row['email'], $row['phone']
         }
+
+        $this->saveIndex($index);
+    }
+
+    /**
+     * @Given /the (index) has an index for columns "([^"]+)"/
+     */
+    public function theIndexHasAnIndexForColumn(IndexInterface $index, $columns)
+    {
+        $tableIndex = new TableIndex();
+        $tableIndex->setType(TableIndex::TABLE_INDEX_TYPE_INDEX);
+        $tableIndex->setColumns(explode(', ', $columns));
+
+        $this->addIndexToIndex($index, $tableIndex);
+    }
+
+    /**
+     * @Given /the (index) has an localized index for columns "([^"]+)"/
+     */
+    public function theIndexHasAnLocalizedIndexForColumn(IndexInterface $index, $columns)
+    {
+        $tableIndex = new TableIndex();
+        $tableIndex->setType(TableIndex::TABLE_INDEX_TYPE_INDEX);
+        $tableIndex->setColumns(explode(', ', $columns));
+
+        $this->addIndexToIndex($index, $tableIndex, true);
+    }
+
+    /**
+     * @param IndexInterface $index
+     * @param TableIndex $tableIndex
+     * @param bool $localized
+     */
+    private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false)
+    {
+        $configurationEntry = $localized ? 'localizedIndexes' : 'indexes';
+
+        $configuration = $index->getConfiguration();
+
+        if (!isset($configuration[$configurationEntry])) {
+            $configuration[$configurationEntry] = [];
+        }
+
+        $configuration[$configurationEntry][] = $tableIndex;
+
+        $index->setConfiguration($configuration);
 
         $this->saveIndex($index);
     }

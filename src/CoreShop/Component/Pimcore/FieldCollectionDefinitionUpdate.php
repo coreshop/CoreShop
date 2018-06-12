@@ -12,42 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject;
-
-class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\FieldCollectionDefinitionUpdate is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var string
+     * @deprecated Class CoreShop\Component\Pimcore\FieldCollectionDefinitionUpdate is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate class instead.
      */
-    private $fieldCollectionKey;
-
-    /**
-     * @var DataObject\Fieldcollection\Definition
-     */
-    private $fieldCollectionDefinition;
-
-    /**
-     * @param $fieldCollectionKey
-     * @throws ClassDefinitionNotFoundException
-     */
-    public function __construct($fieldCollectionKey)
+    class FieldCollectionDefinitionUpdate
     {
-        $this->fieldCollectionKey = $fieldCollectionKey;
-        $this->fieldCollectionDefinition = DataObject\Fieldcollection\Definition::getByKey($fieldCollectionKey);
 
-        if (is_null($this->fieldCollectionDefinition)) {
-            throw new ClassDefinitionNotFoundException(sprintf('Fieldcollection Definition %s not found', $fieldCollectionKey));
-        }
-
-        $this->fieldDefinitions = $this->fieldCollectionDefinition->getFieldDefinitions();
-        $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->fieldCollectionDefinition), true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save()
-    {
-        return DataObject\ClassDefinition\Service::importFieldCollectionFromJson($this->fieldCollectionDefinition, json_encode($this->jsonDefinition), true);
     }
 }

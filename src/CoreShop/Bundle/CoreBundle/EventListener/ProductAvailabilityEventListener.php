@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\Version;
 

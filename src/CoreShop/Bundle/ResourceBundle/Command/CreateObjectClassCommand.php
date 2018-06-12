@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use CoreShop\Bundle\ResourceBundle\Generator\PimcoreResourceClassGenerator;
-use CoreShop\Component\Pimcore\Migrate;
+use CoreShop\Component\Pimcore\DataObject\Migrate;
 use Pimcore\Cache;
 use Sensio\Bundle\GeneratorBundle\Command\GeneratorCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;

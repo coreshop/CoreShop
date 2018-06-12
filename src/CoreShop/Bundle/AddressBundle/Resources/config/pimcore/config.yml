@@ -6,3 +6,10 @@ pimcore:
                     coreShopCountry: CoreShop\Bundle\AddressBundle\CoreExtension\Country
                     coreShopState: CoreShop\Bundle\AddressBundle\CoreExtension\State
                     coreShopCountryMultiselect: CoreShop\Bundle\AddressBundle\CoreExtension\CountryMultiselect
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-address:
+                namespace_prefix: "CoreShop\\Component\\Address"
+                path: "@CoreShopAddressBundle/Resources/config/serializer"

@@ -14,7 +14,7 @@ namespace CoreShop\Component\SEO\Extractor;
 
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
-use Pimcore\Image;
+use Pimcore\Model\Asset\Image;
 use Pimcore\Tool;
 
 final class ImageExtractor implements ExtractorInterface

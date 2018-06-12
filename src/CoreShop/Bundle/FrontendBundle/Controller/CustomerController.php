@@ -19,7 +19,7 @@ use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontendController
@@ -174,7 +174,7 @@ class CustomerController extends FrontendController
                 $customer->save();
 
                 $this->addFlash('success', sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated'));
-                return $this->redirect($handledForm->get('_redirect')->getData() ?: $this->generateUrl('coreshop_customer_addresses'));
+                return $this->redirect($handledForm->get('_redirect')->getData() ?: $this->generateCoreShopUrl($customer, 'coreshop_customer_addresses'));
             }
         }
 

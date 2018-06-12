@@ -173,6 +173,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule_condition_invoice_state')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/invoice/invoiceState.js')->end()
                             ->scalarNode('notification_rule_condition_invoice_transition')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/invoice/invoiceTransition.js')->end()
                             ->scalarNode('notification_rule_condition_user_user_type')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/user/userType.js')->end()
+                            ->scalarNode('object_grid_column_store_price')->defaultValue('/bundles/coreshopcore/pimcore/js/object/gridcolumn/operator/storePrice.js')->end()
                             ->scalarNode('settings')->defaultValue('/bundles/coreshopcore/pimcore/js/settings.js')->end()
                             ->scalarNode('helpers')->defaultValue('/bundles/coreshopcore/pimcore/js/helpers.js')->end()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopcore/pimcore/js/resource.js')->end()

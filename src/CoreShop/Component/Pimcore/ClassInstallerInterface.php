@@ -12,31 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject;
-
-interface ClassInstallerInterface
-{
+if (interface_exists(\CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface::class)) {
+    @trigger_error('Interface CoreShop\Component\Pimcore\ClassInstallerInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param $jsonFile
-     * @param $brickName
-     * @return mixed|DataObject\Objectbrick\Definition
+     * @deprecated Interface CoreShop\Component\Pimcore\ClassInstallerInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface instead.
      */
-    public function createBrick($jsonFile, $brickName);
+    interface ClassInstallerInterface
+    {
 
-    /**
-     * @param $jsonFile
-     * @param $className
-     * @param bool $updateClass
-     *
-     * @return DataObject\ClassDefinition
-     */
-    public function createClass($jsonFile, $className, $updateClass = false);
-
-    /**
-     * @param $name
-     * @param null $jsonFile
-     *
-     * @return mixed|null|DataObject\Fieldcollection\Definition
-     */
-    public function createFieldCollection($jsonFile, $name);
+    }
 }

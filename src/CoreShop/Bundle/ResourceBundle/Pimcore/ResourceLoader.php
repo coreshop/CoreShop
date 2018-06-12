@@ -12,29 +12,14 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
-use Pimcore\Tool\Admin;
-
-final class ResourceLoader
-{
+if (class_exists(\CoreShop\Component\Pimcore\ResourceLoader::class)) {
+    @trigger_error('Class CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\ResourceLoader class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param $resources
-     * @param $minify
-     * @return array
+     * @deprecated Class CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\ResourceLoader class instead.
      */
-    public function loadResources($resources, $minify = false)
+    class ResourceLoader
     {
-        if (PIMCORE_DEVMODE || !$minify) {
-            return $resources;
-        }
 
-        $scriptContents = "";
-
-        foreach ($resources as $scriptUrl) {
-            if (is_file(PIMCORE_WEB_ROOT.$scriptUrl)) {
-                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT.$scriptUrl)."\n\n\n";
-            }
-        }
-
-        return [Admin::getMinimizedScriptPath($scriptContents)];
     }
 }

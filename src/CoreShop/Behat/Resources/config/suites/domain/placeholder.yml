@@ -1,0 +1,18 @@
+default:
+    suites:
+        domain_placeholder:
+            contexts_services:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+
+                - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.store
+
+                - coreshop.behat.context.domain.placeholder
+            filters:
+                tags: "@placeholder"

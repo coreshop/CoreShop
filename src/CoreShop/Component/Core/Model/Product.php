@@ -220,6 +220,6 @@ class Product extends BaseProduct implements ProductInterface
      */
     public function getIndexable()
     {
-        return true;
+        return $this->getEnabled();
     }
 }

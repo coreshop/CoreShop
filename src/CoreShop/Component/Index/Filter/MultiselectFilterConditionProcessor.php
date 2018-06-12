@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\Condition;
+use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -61,7 +61,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
             $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
 
             if (!empty($values)) {
-                $list->addCondition(Condition::in($field, $values), $fieldName);
+                $list->addCondition(new InCondition($field, $values), $fieldName);
             }
         }
 

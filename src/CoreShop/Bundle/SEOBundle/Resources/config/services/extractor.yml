@@ -19,3 +19,7 @@ services:
         tags:
             - { name: coreshop.seo.extractor, type: image }
 
+    coreshop.seo.extractor.document:
+        class: CoreShop\Component\SEO\Extractor\DocumentExtractor
+        tags:
+            - { name: coreshop.seo.extractor, type: document }

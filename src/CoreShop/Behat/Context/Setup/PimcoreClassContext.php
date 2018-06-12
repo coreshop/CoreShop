@@ -16,10 +16,10 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Pimcore\BrickDefinitionUpdate;
-use CoreShop\Component\Pimcore\ClassUpdate;
-use CoreShop\Component\Pimcore\ClassUpdateInterface;
-use CoreShop\Component\Pimcore\FieldCollectionDefinitionUpdate;
+use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface;
+use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
@@ -618,6 +618,24 @@ final class PimcoreClassContext implements Context
         $instance->save();
 
         $this->sharedStorage->set('object-instance', $instance);
+    }
+
+    /**
+     * @Given /^the (object-instance) is published$/
+     */
+    public function theObjectInstanceIsPublished(Concrete $instance)
+    {
+        $instance->setPublished(true);
+        $instance->save();
+    }
+
+    /**
+     * @Given /^the (object-instance) is not published$/
+     */
+    public function theObjectInstanceIsNotPublished(Concrete $instance)
+    {
+        $instance->setPublished(false);
+        $instance->save();
     }
 
     /**
