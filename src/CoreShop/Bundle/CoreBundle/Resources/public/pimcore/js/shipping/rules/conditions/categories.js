@@ -49,7 +49,8 @@ coreshop.shippingrule.conditions.categories = Class.create(coreshop.rules.condit
 
     getValues: function () {
         return {
-            categories: this.categories.getValue()
+            categories: this.categories.getValue(),
+            recursive: this.recursive.getValue()
         };
     }
 });
