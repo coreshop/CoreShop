@@ -56,25 +56,14 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     {
         $list = $this->getList();
 
-        //TODO: Maybe refactor this, this is not a 100% right, we could use the path cause hierachy is always achived thru the pimcore path
         $db = \Pimcore\Db::get();
-        $select1 = $db->select()
+        $query = $db->select()
             ->from($list->getTableName(), ['oo_id'])
-            ->where('parentCategory__id = ?', $category->getId())
+            ->where('o_path LIKE ?', $category->getRealFullPath() . '/%')
             ->where('stores LIKE ?', '%,' . $store->getId() . ',%');
 
-        $select2 = $db->select()
-            ->from($list->getTableName(), ['oo_id'])
-            ->where('parentCategory__id IN (' . $select1->getSQL() . ')');
-
-        $childQuery = $db->select()
-            ->union(
-                [$select1, $select2],
-                'UNION'
-            );
-
         $childIds = [];
-        foreach ($childQuery->execute()->fetchAll() as $column) {
+        foreach ($query->execute()->fetchAll() as $column) {
             $childIds[] = $column['oo_id'];
         };
 
