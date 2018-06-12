@@ -14,19 +14,19 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 final class CustomerNewsletterConfirmListener
 {
     /**
-     * @var RouterInterface
+     * @var LinkGeneratorInterface
      */
-    private $router;
+    private $linkGenerator;
 
     /**
      * @var RequestStack
@@ -39,17 +39,17 @@ final class CustomerNewsletterConfirmListener
     private $eventDispatcher;
 
     /**
-     * @param RouterInterface $router
+     * @param LinkGeneratorInterface $linkGenerator
      * @param RequestStack $requestStack
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        RouterInterface $router,
+        LinkGeneratorInterface $linkGenerator,
         RequestStack $requestStack,
         EventDispatcherInterface $eventDispatcher
     )
     {
-        $this->router = $router;
+        $this->linkGenerator = $linkGenerator;
         $this->requestStack = $requestStack;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -80,7 +80,7 @@ final class CustomerNewsletterConfirmListener
 
         $confirmEvent = new RequestNewsletterConfirmationEvent(
             $user,
-            $this->router->generate('coreshop_customer_confirm_newsletter', ['_locale' => $this->requestStack->getMasterRequest()->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->linkGenerator->generate($event->getSubject(), 'coreshop_customer_confirm_newsletter', ['_locale' => $this->requestStack->getMasterRequest()->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL)
         );
         $this->eventDispatcher->dispatch('coreshop.customer.request_newsletter_confirm', $confirmEvent);
     }

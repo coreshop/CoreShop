@@ -24,6 +24,7 @@ imports:
     - { resource: "services/locale.yml" }
     - { resource: "services/payment.yml" }
     - { resource: "services/grid_config.yml" }
+    - { resource: "services/routing.yml" }
 
 services:
     coreshop.core.key_transformer:

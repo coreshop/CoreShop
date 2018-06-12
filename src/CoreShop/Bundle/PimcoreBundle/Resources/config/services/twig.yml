@@ -20,3 +20,10 @@ services:
             - '@coreshop.object_link_generator'
         tags:
             - { name: twig.extension }
+
+    coreshop.twig.extension.link_generator:
+        class: CoreShop\Component\Pimcore\Twig\Extension\LinkGeneratorExtensions
+        arguments:
+            - '@coreshop.templating.helper.link_generator'
+        tags:
+            - { name: twig.extension }

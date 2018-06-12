@@ -1,4 +1,5 @@
 imports:
+    - { resource: "services/templating.yml" }
     - { resource: "services/twig.yml" }
 
 parameters:
@@ -35,3 +36,9 @@ services:
     coreshop.resource.object_cloner:
         alias: coreshop.object_cloner
         deprecated: 'use @coreshop.object_cloner instead'
+
+    coreshop.link_generator:
+        class: CoreShop\Component\Pimcore\Routing\LinkGenerator
+        arguments:
+            - '@coreshop.object_link_generator'
+            - '@router'

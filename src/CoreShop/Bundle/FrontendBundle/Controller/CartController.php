@@ -117,7 +117,7 @@ class CartController extends FrontendController
     {
         $cart = $this->getCart();
         $form = $this->createForm(ShippingCalculatorType::class, null, [
-                'action' => $this->generateUrl('coreshop_cart_check_shipment')
+                'action' => $this->generateCoreShopUrl(null, 'coreshop_cart_check_shipment')
             ]
         );
 
