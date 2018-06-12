@@ -27,7 +27,23 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
     public function getFunctions()
     {
         return array(
-            ExpressionFunction::fromPHP('sprintf')
+            ExpressionFunction::fromPHP('sprintf'),
+            ExpressionFunction::fromPHP('substr'),
+            ExpressionFunction::fromPHP('strlen'),
+            ExpressionFunction::fromPHP('str_replace'),
+            ExpressionFunction::fromPHP('strtolower'),
+            ExpressionFunction::fromPHP('strtoupper'),
+            ExpressionFunction::fromPHP('trim'),
+            ExpressionFunction::fromPHP('ltrim'),
+            ExpressionFunction::fromPHP('rtrim'),
+            ExpressionFunction::fromPHP('ucfirst'),
+            ExpressionFunction::fromPHP('lcfirst'),
+            ExpressionFunction::fromPHP('ucwords'),
+            ExpressionFunction::fromPHP('wordwrap'),
+            ExpressionFunction::fromPHP('nl2br'),
+            ExpressionFunction::fromPHP('number_format'),
+            ExpressionFunction::fromPHP('strip_tags'),
+            ExpressionFunction::fromPHP('strrev'),
         );
     }
 }
