@@ -118,7 +118,7 @@ class CarriersReport implements ReportInterface
             }
 
             $data[] = [
-                'carrier' => $carrier instanceof CarrierInterface ? $carrier->getName() : $result['carrier'],
+                'carrier' => $carrier instanceof CarrierInterface ? $carrier->getIdentifier() : $result['carrier'],
                 'data' => floatval($result['percentage']),
             ];
         }

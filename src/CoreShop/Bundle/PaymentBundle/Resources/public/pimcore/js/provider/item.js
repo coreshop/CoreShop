@@ -23,6 +23,10 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         return [this.getFormPanel()];
     },
 
+    getTitleText: function () {
+        return this.data.identifier;
+    },
+
     getFormPanel: function () {
         var data = this.data,
             langTabs = [];
@@ -34,10 +38,10 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 layout: 'form',
                 items: [{
                     xtype: 'textfield',
-                    name: 'translations.' + lang + '.name',
-                    fieldLabel: t('name'),
+                    name: 'translations.' + lang + '.title',
+                    fieldLabel: t('title'),
                     width: 400,
-                    value: data.translations[lang] ? data.translations[lang].name : ''
+                    value: data.translations[lang] ? data.translations[lang].title : ''
                 }, {
                     xtype: 'textarea',
                     name: 'translations.' + lang + '.description',

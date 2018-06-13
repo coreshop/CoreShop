@@ -28,7 +28,7 @@ class CarrierType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('identifier', TextType::class)
             ->add('trackingUrl', TextType::class)
             ->add('isFree', CheckboxType::class)
             ->add('shippingRules', ShippingRuleGroupCollectionType::class)

@@ -25,7 +25,7 @@ final class CarrierTranslationType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label', TextType::class)
+            ->add('title', TextType::class)
             ->add('description', TextareaType::class, [
                 'required' => false,
             ]);

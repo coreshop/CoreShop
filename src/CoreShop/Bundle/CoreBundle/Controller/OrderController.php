@@ -42,7 +42,7 @@ class OrderController extends BaseOrderController
 
         if ($sale instanceof OrderInterface) {
             $order['shippingPayment'] = [
-                'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getName() : null,
+                'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
                 'weight' => $sale->getWeight(),
                 'cost' => $sale->getShipping(),
             ];

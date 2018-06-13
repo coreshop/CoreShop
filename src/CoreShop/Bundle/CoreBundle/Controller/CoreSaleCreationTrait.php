@@ -91,7 +91,7 @@ trait CoreSaleCreationTrait
 
             $result[] = [
                 'id' => $carrier->getId(),
-                'name' => $carrier->getName(),
+                'name' => $carrier->getIdentifier(),
                 'price' => $price,
                 'priceFormatted' => $priceFormatted
             ];

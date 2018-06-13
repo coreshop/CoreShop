@@ -215,8 +215,8 @@ class Data
              * @var $carrier CarrierInterface
              */
             $carrier = $carrierFactory->createNew();
-            $carrier->setName('Test-Carrier-Weight');
-            $carrier->setLabel('Test-Carrier-Weight', 'en');
+            $carrier->setIdentifier('Test-Carrier-Weight');
+            $carrier->setTitle('Test-Carrier-Weight', 'en');
             $carrier->setTaxRule(self::$taxRuleGroup);
             $carrier->setIsFree(false);
             $carrier->setDescription('TEST', 'en');

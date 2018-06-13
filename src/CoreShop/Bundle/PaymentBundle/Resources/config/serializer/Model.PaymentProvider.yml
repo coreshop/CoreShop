@@ -23,8 +23,3 @@ CoreShop\Component\Payment\Model\PaymentProvider:
             expose: true
             type: array
             groups: [Detailed]
-    virtual_properties:
-          getName:
-              serialized_name: name
-              type: string
-              groups: [List, Detailed]

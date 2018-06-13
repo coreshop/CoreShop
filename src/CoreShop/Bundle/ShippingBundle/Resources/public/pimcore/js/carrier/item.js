@@ -30,6 +30,10 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         }.bind(this));
     },
 
+    getTitleText: function () {
+        return this.data.identifier;
+    },
+
     getPanel: function () {
         return new Ext.TabPanel({
             activeTab: 0,
@@ -69,9 +73,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 layout: 'form',
                 items: [{
                     xtype: 'textfield',
-                    name: 'translations.' + lang + '.label',
-                    fieldLabel: t('coreshop_carrier_label'),
-                    value: data.translations && data.translations[lang] ? data.translations[lang].label : '',
+                    name: 'translations.' + lang + '.title',
+                    fieldLabel: t('title'),
+                    value: data.translations && data.translations[lang] ? data.translations[lang].title : '',
                     required: true
                 }, {
                     xtype: 'textarea',
@@ -99,6 +103,17 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 defaults: {width: '100%'},
                 items: [
                     {
+                        xtype: 'textfield',
+                        name: 'identifier',
+                        fieldLabel: t('coreshop_identifier'),
+                        value: data.identifier,
+                        required: true
+                    }, {
+                        xtype: 'textfield',
+                        name: 'trackingUrl',
+                        fieldLabel: t('coreshop_carrier_trackingUrl'),
+                        value: data.trackingUrl
+                    }, {
                         xtype: 'tabpanel',
                         activeTab: 0,
                         defaults: {
@@ -106,17 +121,6 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                             bodyStyle: 'padding:10px;'
                         },
                         items: langTabs
-                    }, {
-                        xtype: 'textfield',
-                        name: 'name',
-                        fieldLabel: t('name'),
-                        value: data.name,
-                        required: true
-                    }, {
-                        xtype: 'textfield',
-                        name: 'trackingUrl',
-                        fieldLabel: t('coreshop_carrier_trackingUrl'),
-                        value: data.trackingUrl
                     }
                 ]
             }]

@@ -54,6 +54,10 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
         });
     },
 
+    getTitleText: function () {
+        return this.data.identifier;
+    },
+
     getConfig: function () {
         this.factoryTypes = new Ext.data.ArrayStore({
             data: [],
@@ -87,6 +91,10 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
         return {
             store: this.store
         };
+    },
+
+    getDefaultGridDisplayColumnName: function() {
+        return 'identifier';
     },
 
     prepareAdd: function (object) {

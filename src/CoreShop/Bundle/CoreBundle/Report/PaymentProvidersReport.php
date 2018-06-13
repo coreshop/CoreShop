@@ -119,7 +119,7 @@ class PaymentProvidersReport implements ReportInterface
             }
 
             $data[] = [
-                'provider' => $paymentProvider instanceof PaymentProviderInterface ? $paymentProvider->getName() : 'unkown',
+                'provider' => $paymentProvider instanceof PaymentProviderInterface ? $paymentProvider->getTitle() : 'unkown',
                 'data' => floatval($result['percentage']),
             ];
         }

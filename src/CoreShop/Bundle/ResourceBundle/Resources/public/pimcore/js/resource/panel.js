@@ -83,6 +83,10 @@ coreshop.resource.panel = Class.create({
         return [this.getNavigation(), this.getTabPanel()];
     },
 
+    getDefaultGridDisplayColumnName: function() {
+        return 'name';
+    },
+
     getDefaultGridConfiguration: function () {
         return {
             region: 'west',
@@ -90,7 +94,7 @@ coreshop.resource.panel = Class.create({
             columns: [
                 {
                     text: '',
-                    dataIndex: 'name',
+                    dataIndex: this.getDefaultGridDisplayColumnName(),
                     flex: 1,
                     renderer: function (value, metadata, record) {
                         metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
@@ -165,7 +169,6 @@ coreshop.resource.panel = Class.create({
     },
 
     getTreeNodeListeners: function () {
-
         return {
             itemclick: this.onTreeNodeClick.bind(this),
             itemcontextmenu: this.onTreeNodeContextmenu.bind(this)

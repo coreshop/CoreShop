@@ -472,7 +472,7 @@ final class ShippingContext implements Context
          * @var $carrier CarrierInterface
          */
         $carrier = $this->carrierFactory->createNew();
-        $carrier->setName($name);
+        $carrier->setIdentifier($name);
 
         if ($this->sharedStorage->has('store')) {
             $carrier->addStore($this->sharedStorage->get('store'));
