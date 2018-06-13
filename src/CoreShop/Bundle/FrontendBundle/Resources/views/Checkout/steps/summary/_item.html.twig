@@ -1,6 +1,6 @@
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
-{% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
+{% set productUrl = coreshop_path(item.getProduct(), 'coreshop_product_detail') %}
 
 <tr class="shopping-cart-item">
     <td class="text-center">

@@ -10,7 +10,7 @@ CoreShop\Component\Shipping\Model\Carrier:
         name:
             expose: true
             type: string
-            groups: [Detailed]
+            groups: [List, Detailed]
         trackingUrl:
             expose: true
             type: string

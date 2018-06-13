@@ -58,11 +58,6 @@ services:
         tags:
             - { name: coreshop.product_specific_price_rule.condition, type: nested, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType }
 
-    coreshop.product_price_rule.condition.categories:
-        class: CoreShop\Component\Product\Rule\Condition\CategoriesConditionChecker
-        tags:
-            - { name: coreshop.product_price_rule.condition, type: categories, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
-
     coreshop.product_price_rule.condition.timespan:
         class: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
         tags:

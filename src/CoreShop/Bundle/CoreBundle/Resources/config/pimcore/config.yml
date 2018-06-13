@@ -1,9 +1,24 @@
+imports:
+    - { resource: "coreshop.yml" }
+    - { resource: "security.yml" }
+    - { resource: "payum.yml" }
+    - { resource: "checkout.yml" }
+    - { resource: "workflow.yml" }
+
+jms_serializer:
+    metadata:
+        directories:
+            core-shop-core:
+                namespace_prefix: "CoreShop\\Component\\Core"
+                path: "@CoreShopCoreBundle/Resources/config/serializer"
+
+twig:
+    globals:
+        coreshop: "@coreshop.context.shopper"
+
 pimcore:
     objects:
         class_definitions:
             data:
                 map:
                     coreShopStorePrice: CoreShop\Bundle\CoreBundle\CoreExtension\StorePrice
-
-imports:
-    - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }

@@ -45,7 +45,7 @@ class ExpressionInterpreter implements InterpreterInterface
             'value' => $value,
             'object' => $object,
             'config' => $config,
-            'container' => $this->container
+            'container' => $this->container,
         ]);
     }
 }

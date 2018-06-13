@@ -37,6 +37,20 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
         $list = $this->getList();
         $list->setCondition("parentCategory__id = ?", [$category->getId()]);
 
+        //TODO: fix as soon as CoreShop requires pimcore/core-version:~5.2.2 as minimum
+        if (method_exists($category, 'getChildrenSortBy')) {
+            $list->setOrderKey(
+                sprintf('o_%s ASC', $category->getChildrenSortBy()),
+                false
+            );
+        }
+        else {
+            $list->setOrderKey(
+                'o_key ASC',
+                false
+            );
+        }
+
         return $list->getObjects();
     }
 }

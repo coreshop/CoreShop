@@ -1,3 +1,6 @@
+imports:
+    - { resource: "workflow.yml" }
+
 pimcore:
     objects:
         class_definitions:
@@ -5,3 +8,9 @@ pimcore:
                 map:
                   coreShopPaymentProvider: CoreShop\Bundle\PaymentBundle\CoreExtension\PaymentProvider
 
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-payment:
+                namespace_prefix: "CoreShop\\Component\\Payment"
+                path: "@CoreShopPaymentBundle/Resources/config/serializer"

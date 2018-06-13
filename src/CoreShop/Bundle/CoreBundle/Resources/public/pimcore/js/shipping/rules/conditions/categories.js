@@ -30,9 +30,17 @@ coreshop.shippingrule.conditions.categories = Class.create(coreshop.rules.condit
             fieldtype: 'objects'
         });
 
+        this.recursive = Ext.create({
+            xtype: 'checkbox',
+            fieldLabel: t('coreshop_condition_recursive'),
+            name: 'recursive',
+            checked: this.data ? this.data.recursive : false
+        });
+
         this.form = new Ext.form.Panel({
             items: [
-                this.categories.getLayoutEdit()
+                this.categories.getLayoutEdit(),
+                this.recursive
             ]
         });
 
@@ -41,7 +49,8 @@ coreshop.shippingrule.conditions.categories = Class.create(coreshop.rules.condit
 
     getValues: function () {
         return {
-            categories: this.categories.getValue()
+            categories: this.categories.getValue(),
+            recursive: this.recursive.getValue()
         };
     }
 });

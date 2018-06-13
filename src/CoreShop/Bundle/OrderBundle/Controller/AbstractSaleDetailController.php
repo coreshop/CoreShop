@@ -136,7 +136,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'o_id' => $sale->getId(),
             'saleDate' => $date,
             'saleNumber' => $sale->getSaleNumber(),
-            'lang' => $sale->getSaleLanguage(),
+            'lang' => $sale->getLocaleCode(),
             'discount' => $sale->getDiscount(),
             'subtotal' => $sale->getSubtotal(),
             'shipping' => $sale->getShipping(),

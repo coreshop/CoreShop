@@ -14,18 +14,10 @@ namespace CoreShop\Bundle\PimcoreBundle;
 
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pimcore\Placeholder;
 
 final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-    }
-
     /**
      * @return string
      */
@@ -52,5 +44,43 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         }
 
         return 'coreshop/core-shop';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        Placeholder::addPlaceholderClassPrefix('CoreShop\Component\Pimcore\Placeholder\\');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJsPaths()
+    {
+        $jsFiles = [];
+
+        if ($this->container->hasParameter('coreshop.all.pimcore.admin.js')) {
+            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.js'), true);
+        }
+
+        return $jsFiles;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCssPaths()
+    {
+        $cssFiles = [];
+
+        if ($this->container->hasParameter('coreshop.all.pimcore.admin.css')) {
+            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.css'));
+        }
+
+        return $cssFiles;
     }
 }

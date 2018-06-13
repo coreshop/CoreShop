@@ -1,4 +1,48 @@
 inherit: true
+build:
+    nodes:
+        coverage:
+            requires:
+                - branch: master
+            environment:
+                mysql: 5.6
+                php:
+                    version: '7.1'
+                variables:
+                    PIMCORE_ENVIRONMENT: test
+                    PIMCORE_TEST_DB_DSN: mysql://root@localhost/coreshop_test
+                    CORESHOP_TEST: 1
+                    CORESHOP_RUN_BEHAT: 1
+            cache:
+                directories:
+                    - vendor/
+                    - ~/.npm
+            dependencies:
+                after:
+                    - ~/build/etc/scrutinizer/install
+            tests:
+                override:
+                    -
+                      command: 'vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.coverage.yml.dist'
+                      coverage:
+                          file: 'lib/CoreShop/build/coverage.clover'
+                          format: 'clover'
+        analysis:
+            dependencies:
+                after:
+                    - git clone https://github.com/pimcore/pimcore
+                    - cd ./pimcore
+                    - git reset --hard b132bb1b89d2b0318a188769aba0bc4e509dfa2f
+                    - composer install
+                    - cd ../
+                    - composer install
+
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - php-scrutinizer-run
 tools:
   php_mess_detector:
     config:
@@ -50,9 +94,14 @@ tools:
   php_pdepend: true
   php_sim: true
   php_changetracking: true
+checks:
+    php: true
 filter:
+  dependency_paths:
+    - "pimcore/"
   excluded_paths:
     - "tests/"
-    - "update/"
-    - "static/"
     - "docs/"
+    - "pimcore/"
+    - "src/CoreShop/Behat"
+    - "src/CoreShop/Bundle/CoreBundle/Migrations"

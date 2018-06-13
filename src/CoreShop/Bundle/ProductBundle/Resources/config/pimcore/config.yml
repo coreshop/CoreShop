@@ -4,3 +4,10 @@ pimcore:
             data:
                 map:
                     coreShopProductSpecificPriceRules: CoreShop\Bundle\ProductBundle\CoreExtension\ProductSpecificPriceRules
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-product:
+                namespace_prefix: "CoreShop\\Component\\Product"
+                path: "@CoreShopProductBundle/Resources/config/serializer"

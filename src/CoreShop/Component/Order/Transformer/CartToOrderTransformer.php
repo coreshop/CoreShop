@@ -15,7 +15,7 @@ namespace CoreShop\Component\Order\Transformer;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Webmozart\Assert\Assert;
 

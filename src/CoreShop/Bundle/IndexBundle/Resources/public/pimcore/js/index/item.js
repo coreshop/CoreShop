@@ -38,19 +38,17 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     },
 
     getItems: function () {
+        var fields = this.getIndexFields();
+        var settings = this.getSettings();
+
         return [
-            this.getSettings(),
-            this.getIndexFields()
+            settings,
+            fields
         ];
     },
 
     getSettings: function () {
-        this.indexTypeSettings = new Ext.form.Panel({});
-
-        if (this.data.type) {
-            this.getIndexTypeConfig(this.data.type);
-        }
-
+        this.indexWorkerSettings = new Ext.form.Panel({});
 
         this.formPanel = new Ext.panel.Panel({
             iconCls: 'coreshop_icon_settings',
@@ -108,7 +106,7 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                                     name: 'worker',
                                     listeners: {
                                         change: function (combo, value) {
-                                            this.getIndexTypeConfig(value);
+                                            this.getIndexWorkerConfig(value);
                                         }.bind(this)
                                     }
                                 }
@@ -116,9 +114,13 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                         }
                     ]
                 },
-                this.indexTypeSettings
+                this.indexWorkerSettings
             ]
         });
+
+        if (this.data.worker) {
+            this.getIndexWorkerConfig(this.data.worker);
+        }
 
         return this.formPanel;
     },
@@ -145,21 +147,23 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
         return this.indexFields;
     },
 
-    getIndexTypeConfig: function (worker) {
-        if (this.indexTypeSettings) {
-            this.indexTypeSettings.removeAll();
+    getIndexWorkerConfig: function (worker) {
+        if (this.indexWorkerSettings) {
+            this.indexWorkerSettings.removeAll();
 
-            if (coreshop.index.type[worker] !== undefined) {
-                var workerSettings = new coreshop.index.type[worker]();
-
-                this.indexTypeSettings.add(workerSettings.getFields(this.data.config));
-            }
-
-            if (this.indexTypeSettings.items.items.length === 0) {
-                this.indexTypeSettings.hide();
+            if (coreshop.index.worker[worker] !== undefined) {
+                this.workerSettings = new coreshop.index.worker[worker](this);
+                this.indexWorkerSettings.add(this.workerSettings.getForm(this.data.configuration));
             }
             else {
-                this.indexTypeSettings.show();
+                this.workerSettings = null;
+            }
+
+            if (this.indexWorkerSettings.items.items.length === 0) {
+                this.indexWorkerSettings.hide();
+            }
+            else {
+                this.indexWorkerSettings.show();
             }
         }
     },
@@ -167,7 +171,12 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
     getSaveData: function () {
         var saveData = this.formPanel.down("form").getForm().getFieldValues();
 
-        saveData['configuration'] = this.indexTypeSettings.getForm().getFieldValues();
+        if (this.workerSettings && Ext.isFunction(this.workerSettings.getData)) {
+            saveData['configuration'] = this.workerSettings.getData();
+        }
+        else {
+            saveData['configuration'] = this.indexWorkerSettings.getForm().getFieldValues();
+        }
         saveData['columns'] = this.fieldsPanel.getData();
 
         return saveData;

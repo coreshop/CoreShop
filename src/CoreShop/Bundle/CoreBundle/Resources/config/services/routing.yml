@@ -1,0 +1,14 @@
+services:
+    coreshop.object.link_generator.product:
+        class: CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator\DataObjectLinkGenerator
+        arguments:
+            - 'product'
+            - 'coreshop_product_detail'
+            - '@router'
+
+    coreshop.object.link_generator.category:
+        class: CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator\DataObjectLinkGenerator
+        arguments:
+            - 'category'
+            - 'coreshop_category_list'
+            - '@router'

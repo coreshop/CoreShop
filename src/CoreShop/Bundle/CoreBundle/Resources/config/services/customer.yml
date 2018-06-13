@@ -18,7 +18,7 @@ services:
     coreshop.customer.request_newsletter_confirm.listener:
         class: CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener
         arguments:
-            - '@router'
+            - '@coreshop.link_generator'
             - '@request_stack'
             - '@event_dispatcher'
         tags:

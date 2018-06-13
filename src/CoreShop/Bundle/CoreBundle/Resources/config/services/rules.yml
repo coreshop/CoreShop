@@ -51,7 +51,35 @@ services:
             - { name: coreshop.product_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
             - { name: coreshop.product_specific_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
 
+    coreshop.product_price_rule.condition.categories:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CategoriesConditionChecker
+        arguments:
+            - '@coreshop.repository.category'
+            - '@coreshop.context.store'
+        tags:
+            - { name: coreshop.product_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+
+    coreshop.product_price_rule.condition.quantity:
+        class: CoreShop\Component\Core\Product\Rule\Condition\QuantityConditionChecker
+        arguments:
+            - '@coreshop.context.cart'
+        tags:
+            - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType }
+
     # Cart Price Rules
+    coreshop.cart_price_rule.condition.categories:
+        class: CoreShop\Component\Core\Cart\Rule\Condition\CategoriesConditionChecker
+        arguments:
+            - '@coreshop.repository.category'
+            - '@coreshop.context.store'
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+
+    coreshop.cart_price_rule.condition.products:
+        class: CoreShop\Component\Core\Cart\Rule\Condition\ProductsConditionChecker
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+
     coreshop.rule.cart_price_rule.condition.customers:
         class: CoreShop\Component\Core\Cart\Rule\Condition\CustomersConditionChecker
         tags:

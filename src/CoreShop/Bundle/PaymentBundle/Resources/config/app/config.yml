@@ -1,9 +1,0 @@
-imports:
-    - { resource: "workflow.yml" }
-
-jms_serializer:
-    metadata:
-        directories:
-            coreshop-payment:
-                namespace_prefix: "CoreShop\\Component\\Payment"
-                path: "@CoreShopPaymentBundle/Resources/config/serializer"
