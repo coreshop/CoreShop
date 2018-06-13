@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
+use CoreShop\Bundle\TrackingBundle\Manager\TrackingManagerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
@@ -31,6 +32,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CartController extends FrontendController
 {
+    /**
+     * @var TrackingManagerInterface
+     */
+    protected $trackingManager;
+
     /**
      * @param Request $request
      *
@@ -191,7 +197,7 @@ class CartController extends FrontendController
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('coreshop.tracking.manager')->trackCartPurchasableAdd($this->getCart(), $product, $quantity);
+        $this->trackingManager->trackCartPurchasableAdd($this->getCart(), $product, $quantity);
 
         $this->addFlash('success', 'coreshop.ui.item_added');
 
@@ -220,7 +226,7 @@ class CartController extends FrontendController
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('coreshop.tracking.manager')->trackCartPurchasableRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
+        $this->trackingManager->trackCartPurchasableRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -328,5 +334,13 @@ class CartController extends FrontendController
     protected function getCartManager()
     {
         return $this->get('coreshop.cart.manager');
+    }
+
+    /**
+     * @param TrackingManagerInterface $trackingManager
+     */
+    public function setTrackingManager(TrackingManagerInterface $trackingManager)
+    {
+        $this->trackingManager = $trackingManager;
     }
 }

@@ -21,13 +21,17 @@ use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
-use CoreShop\Component\SEO\SEOPresentationInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Paginator\Paginator;
 
 class CategoryController extends FrontendController
 {
+    /**
+     * @var TrackingManagerInterface
+     */
+    protected $trackingManager;
+
     /**
      * @var array
      */
@@ -90,11 +94,10 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
-     * @param SEOPresentationInterface $presentation
-     * @param TrackingManagerInterface $trackingManager
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request, SEOPresentationInterface $seoPresentation, TrackingManagerInterface $trackingManager)
+    public function indexAction(Request $request)
     {
         $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
         $gridPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.grid.per_page');
@@ -203,10 +206,10 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $trackingManager->trackPurchasableImpression($product);
+            $this->trackingManager->trackPurchasableImpression($product);
         }
 
-        $seoPresentation->updateSeoMetadata($category);
+        $this->seoPresentation->updateSeoMetadata($category);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
@@ -272,5 +275,13 @@ class CategoryController extends FrontendController
     protected function getContext()
     {
         return $this->get('coreshop.context.shopper');
+    }
+
+    /**
+     * @param TrackingManagerInterface $trackingManager
+     */
+    public function setTrackingManager(TrackingManagerInterface $trackingManager)
+    {
+        $this->trackingManager = $trackingManager;
     }
 }

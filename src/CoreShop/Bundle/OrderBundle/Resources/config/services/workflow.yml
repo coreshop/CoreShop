@@ -96,6 +96,7 @@ services:
 
     coreshop.workflow.state_manager:
         class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager
+        public: true
         arguments:
             - '@event_dispatcher'
             - '@coreshop.state_machine_manager'
@@ -113,6 +114,7 @@ services:
 
     coreshop.workflow.order_state_history_logger:
         class: CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger
+        public: true
         arguments:
             - '@coreshop.repository.order'
             - '@coreshop.state_machine_manager'

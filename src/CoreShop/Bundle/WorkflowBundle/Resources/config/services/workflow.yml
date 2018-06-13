@@ -1,6 +1,7 @@
 services:
     coreshop.state_machine_manager:
         class: CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager
+        public: true
         arguments:
             - '@workflow.registry'
 

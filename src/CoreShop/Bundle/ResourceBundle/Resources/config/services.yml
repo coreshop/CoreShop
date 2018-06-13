@@ -14,6 +14,7 @@ services:
 
     coreshop.jms_serializer.handler.relation:
         class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
@@ -34,6 +35,7 @@ services:
 
     coreshop.admin_controller.resource_settings:
         class: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController
+        public: true
         arguments:
           - '@coreshop.resource_controller.view_handler'
         calls:

@@ -81,7 +81,7 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
     }
 
     /**
-     * @param ContainerBuilder $containercoreshop.context.shopper"
+     * @param ContainerBuilder $container
      */
     private function addAliasForCompositeIfServiceDoesNotExist(ContainerBuilder $container)
     {

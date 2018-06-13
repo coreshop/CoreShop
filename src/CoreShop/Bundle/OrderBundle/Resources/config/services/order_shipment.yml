@@ -14,6 +14,7 @@ services:
 
     coreshop.order.transformer.order_to_shipment:
         class: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
+        public: true
         arguments:
             - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
             - '@coreshop.core.key_transformer'

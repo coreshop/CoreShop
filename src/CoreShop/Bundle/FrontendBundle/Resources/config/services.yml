@@ -8,6 +8,7 @@ services:
         calls:
             - [setContainer, ['@service_container']]
             - [setTemplateConfigurator, ['@coreshop.frontend.template_configurator']]
+            - [setSeoPresentation, ['@coreshop.seo.presentation']]
 
     coreshop.frontend.controller.index:
         class: '%coreshop.frontend.controller.index%'
@@ -55,6 +56,8 @@ services:
         class: '%coreshop.frontend.controller.cart%'
         public: true
         parent: coreshop.frontend.controller.abstract
+        calls:
+            - [setTrackingManager, ['@coreshop.tracking.manager']]
         tags:
             - { name: controller.service_arguments }
 
@@ -63,6 +66,7 @@ services:
         public: true
         arguments:
             - '@coreshop.checkout_manager.factory'
+            - '@coreshop.tracking.manager'
         parent: coreshop.frontend.controller.abstract
         tags:
             - { name: controller.service_arguments }
@@ -78,6 +82,8 @@ services:
         class: '%coreshop.frontend.controller.category%'
         public: true
         parent: coreshop.frontend.controller.abstract
+        calls:
+            - [setTrackingManager, ['@coreshop.tracking.manager']]
         tags:
             - { name: controller.service_arguments }
 
@@ -85,6 +91,8 @@ services:
         class: '%coreshop.frontend.controller.product%'
         public: true
         parent: coreshop.frontend.controller.abstract
+        calls:
+            - [setTrackingManager, ['@coreshop.tracking.manager']]
         tags:
             - { name: controller.service_arguments }
 

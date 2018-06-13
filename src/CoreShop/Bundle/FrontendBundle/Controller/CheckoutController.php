@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\TrackingBundle\Manager\TrackingManagerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
@@ -25,8 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
-;
-
 class CheckoutController extends FrontendController
 {
     /**
@@ -35,11 +34,21 @@ class CheckoutController extends FrontendController
     protected $checkoutManagerFactory;
 
     /**
-     * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
+     * @var TrackingManagerInterface
      */
-    public function __construct(CheckoutManagerFactoryInterface $checkoutManagerFactory)
+    protected $trackingManager;
+
+    /**
+     * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
+     * @param TrackingManagerInterface $trackingManager
+     */
+    public function __construct(
+        CheckoutManagerFactoryInterface $checkoutManagerFactory,
+        TrackingManagerInterface $trackingManager
+    )
     {
         $this->checkoutManagerFactory = $checkoutManagerFactory;
+        $this->trackingManager = $trackingManager;
     }
 
     /**
@@ -110,7 +119,7 @@ class CheckoutController extends FrontendController
         }
 
         $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
-        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
+        $this->trackingManager->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -239,7 +248,7 @@ class CheckoutController extends FrontendController
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order);
+        $this->trackingManager->trackCheckoutComplete($order);
 
         //After successfull payment, we log out the customer
         if ($this->get('coreshop.context.shopper')->hasCustomer() &&

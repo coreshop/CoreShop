@@ -35,6 +35,7 @@ services:
 
     coreshop.address.formatter:
         class: CoreShop\Component\Address\Formatter\AddressFormatter
+        public: true
         arguments:
             - '@pimcore.translator'
 

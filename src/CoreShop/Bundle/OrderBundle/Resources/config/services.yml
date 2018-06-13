@@ -20,6 +20,7 @@ services:
 
     coreshop.cart.manager:
         class: CoreShop\Bundle\OrderBundle\Manager\CartManager
+        public: true
         arguments:
             - '@coreshop.cart_processor'
             - '@coreshop.object_service'
@@ -27,18 +28,21 @@ services:
 
     coreshop.cart.modifier:
         class: CoreShop\Component\Order\Cart\CartModifier
+        public: true
         arguments:
             - '@coreshop.factory.cart_item'
             - '@event_dispatcher'
 
     coreshop.order.invoice.processable:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems
+        public: true
         arguments:
             - '@coreshop.repository.order_invoice'
             - !php/const CoreShop\Component\Order\InvoiceStates::STATE_CANCELLED
 
     coreshop.order.shipment.processable:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems
+        public: true
         arguments:
             - '@coreshop.repository.order_shipment'
             - !php/const CoreShop\Component\Order\ShipmentStates::STATE_CANCELLED

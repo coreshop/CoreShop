@@ -1,5 +1,6 @@
 services:
     coreshop.inventory.availability_checker.default:
+        public: true
         class: CoreShop\Component\Inventory\Checker\AvailabilityChecker
 
     coreshop.validator.in_stock:
