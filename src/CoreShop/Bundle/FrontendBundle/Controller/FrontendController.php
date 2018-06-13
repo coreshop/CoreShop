@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Component\SEO\SEOPresentationInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class FrontendController extends \Pimcore\Controller\FrontendController
@@ -23,11 +24,24 @@ class FrontendController extends \Pimcore\Controller\FrontendController
     protected $templateConfigurator;
 
     /**
+     * @var SEOPresentationInterface
+     */
+    protected $seoPresentation;
+
+    /**
      * @param TemplateConfiguratorInterface $templateConfigurator
      */
     public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator)
     {
         $this->templateConfigurator = $templateConfigurator;
+    }
+
+    /**
+     * @param SEOPresentationInterface $seoPresentation
+     */
+    public function setSeoPresentation(SEOPresentationInterface $seoPresentation)
+    {
+        $this->seoPresentation = $seoPresentation;
     }
 
     /**

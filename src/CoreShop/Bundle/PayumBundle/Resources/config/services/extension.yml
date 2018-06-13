@@ -1,6 +1,7 @@
 services:
     coreshop.payum_extension.update_payment_state:
         class: CoreShop\Bundle\PayumBundle\Extension\UpdatePaymentStateExtension
+        public: true
         arguments:
             - '@coreshop.state_machine_manager'
         tags:
@@ -8,6 +9,7 @@ services:
 
     coreshop.payum_extension.update_order_state:
         class: CoreShop\Bundle\PayumBundle\Extension\UpdateOrderStateExtension
+        public: true
         arguments:
             - '@coreshop.state_machine_manager'
             - '@coreshop.repository.order'

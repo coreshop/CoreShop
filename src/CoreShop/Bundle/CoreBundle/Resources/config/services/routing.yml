@@ -1,6 +1,7 @@
 services:
     coreshop.object.link_generator.product:
         class: CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator\DataObjectLinkGenerator
+        public: true
         arguments:
             - 'product'
             - 'coreshop_product_detail'
@@ -8,6 +9,7 @@ services:
 
     coreshop.object.link_generator.category:
         class: CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator\DataObjectLinkGenerator
+        public: true
         arguments:
             - 'category'
             - 'coreshop_category_list'

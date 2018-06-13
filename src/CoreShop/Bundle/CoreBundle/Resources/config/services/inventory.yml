@@ -1,5 +1,6 @@
 services:
     coreshop.inventory.order_operator:
       class: CoreShop\Component\Core\Inventory\Operator\OrderInventoryOperator
+      public: true
       arguments:
           - '@coreshop.manager.product'

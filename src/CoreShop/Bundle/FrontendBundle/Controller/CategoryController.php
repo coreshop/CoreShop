@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\TrackingBundle\Manager\TrackingManagerInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
@@ -26,6 +27,11 @@ use Zend\Paginator\Paginator;
 
 class CategoryController extends FrontendController
 {
+    /**
+     * @var TrackingManagerInterface
+     */
+    protected $trackingManager;
+
     /**
      * @var array
      */
@@ -88,7 +94,8 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
@@ -199,10 +206,10 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
+            $this->trackingManager->trackPurchasableImpression($product);
         }
 
-        $this->get('coreshop.seo.presentation')->updateSeoMetadata($category);
+        $this->seoPresentation->updateSeoMetadata($category);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
@@ -268,5 +275,13 @@ class CategoryController extends FrontendController
     protected function getContext()
     {
         return $this->get('coreshop.context.shopper');
+    }
+
+    /**
+     * @param TrackingManagerInterface $trackingManager
+     */
+    public function setTrackingManager(TrackingManagerInterface $trackingManager)
+    {
+        $this->trackingManager = $trackingManager;
     }
 }

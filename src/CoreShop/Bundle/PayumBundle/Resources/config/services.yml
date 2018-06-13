@@ -12,6 +12,7 @@ services:
 
     coreshop.payum_action.resolve_next_route:
         class: CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction
+        public: true
         arguments:
             - '@coreshop.repository.order'
         tags:
@@ -19,6 +20,7 @@ services:
 
     coreshop.payum_action.confirm_order:
         class: CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction
+        public: true
         arguments:
             - '@coreshop.repository.order'
             - '@coreshop.state_machine_applier'
@@ -28,11 +30,13 @@ services:
     # Offline Payment
     coreshop.payum_action.offline.convert_payment:
         class: CoreShop\Bundle\PayumBundle\Action\Offline\ConvertPaymentAction
+        public: true
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.convert_payment }
 
     coreshop.payum_action.offine.resolve_next_route:
         class: CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction
+        public: true
         arguments:
             - '@coreshop.repository.order'
         tags:
@@ -40,6 +44,7 @@ services:
 
     coreshop.payum_action.offine.confirm_order:
         class: CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction
+        public: true
         arguments:
             - '@coreshop.repository.order'
             - '@coreshop.state_machine_applier'
@@ -48,5 +53,6 @@ services:
 
     coreshop.payum_action.offline.status:
         class: CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction
+        public: true
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.status }

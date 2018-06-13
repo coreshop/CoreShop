@@ -21,12 +21,14 @@ services:
 
     coreshop.resource_loader:
         class: CoreShop\Component\Pimcore\ResourceLoader
+        public: true
 
     coreshop.object_service:
         class: CoreShop\Component\Pimcore\DataObject\ObjectService
 
     coreshop.object_note_service:
         class: CoreShop\Component\Pimcore\DataObject\NoteService
+        public: true
         arguments:
             - '@event_dispatcher'
 
@@ -39,6 +41,7 @@ services:
 
     coreshop.link_generator:
         class: CoreShop\Component\Pimcore\Routing\LinkGenerator
+        public: true
         arguments:
             - '@coreshop.object_link_generator'
             - '@router'

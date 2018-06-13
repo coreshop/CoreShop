@@ -1,6 +1,7 @@
 services:
     coreshop.admin_controller.settings:
         class: CoreShop\Bundle\CoreBundle\Controller\SettingsController
+        public: true
         arguments:
           - '@coreshop.resource_controller.view_handler'
         calls:
@@ -8,6 +9,7 @@ services:
 
     coreshop.admin_controller.reports:
         class: CoreShop\Bundle\CoreBundle\Controller\ReportsController
+        public: true
         arguments:
           - '@coreshop.resource_controller.view_handler'
         calls:
@@ -15,6 +17,7 @@ services:
 
     coreshop.admin_controller.portlets:
         class: CoreShop\Bundle\CoreBundle\Controller\PortletsController
+        public: true
         arguments:
           - '@coreshop.resource_controller.view_handler'
         calls:

@@ -4,6 +4,7 @@ imports:
 services:
     coreshop.configuration.service:
         class: CoreShop\Component\Configuration\Service\ConfigurationService
+        public: true
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.configuration'

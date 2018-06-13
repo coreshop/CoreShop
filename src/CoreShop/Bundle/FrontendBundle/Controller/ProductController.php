@@ -12,13 +12,20 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\TrackingBundle\Manager\TrackingManagerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends FrontendController
 {
+    /**
+     * @var TrackingManagerInterface
+     */
+    protected $trackingManager;
+
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -52,8 +59,8 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        $this->get('coreshop.seo.presentation')->updateSeoMetadata($product);
-        $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
+        $this->seoPresentation->updateSeoMetadata($product);
+        $this->trackingManager->trackPurchasableView($product);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,
@@ -67,5 +74,13 @@ class ProductController extends FrontendController
     private function getProductByRequest(Request $request)
     {
         return $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+    }
+
+    /**
+     * @param TrackingManagerInterface $trackingManager
+     */
+    public function setTrackingManager(TrackingManagerInterface $trackingManager)
+    {
+        $this->trackingManager = $trackingManager;
     }
 }

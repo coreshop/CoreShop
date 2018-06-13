@@ -96,3 +96,6 @@ services:
         class: CoreShop\Bundle\TrackingBundle\Manager\TrackingManager
         arguments:
             - '@coreshop.registry.tracking.tracker'
+
+    CoreShop\Bundle\TrackingBundle\Manager\TrackingManagerInterface:
+        alias: coreshop.tracking.manager
