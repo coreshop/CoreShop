@@ -50,13 +50,13 @@ final class CarrierChoiceType extends AbstractType
                      * "usort(): Array was modified by the user comparison function"
                      */
                     @usort($carriers, function($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                        return $a->getIdentifier() < $b->getIdentifier() ? -1 : 1;
                     });
 
                     return $carriers;
                 },
                 'choice_value' => 'id',
-                'choice_label' => 'name',
+                'choice_label' => 'identifier',
                 'choice_translation_domain' => false,
                 'active' => true,
             ]);
