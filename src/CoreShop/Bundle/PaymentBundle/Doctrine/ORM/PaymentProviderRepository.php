@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PaymentBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 
 class PaymentProviderRepository extends EntityRepository implements PaymentProviderRepositoryInterface
@@ -20,19 +21,29 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
     /**
      * {@inheritdoc}
      */
-    public function findByName($name, $locale)
+    public function findByTitle($title, $locale)
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.translations', 'translation')
-            ->andWhere('translation.name = :name')
+            ->andWhere('translation.title = :title')
             ->andWhere('translation.locale = :locale')
-            ->setParameter('name', $name)
+            ->setParameter('title', $title)
             ->setParameter('locale', $locale)
             ->addOrderBy('o.position')
             ->getQuery()
             ->useQueryCache(true)
             ->useResultCache(true)
             ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByName($name, $locale)
+    {
+        @trigger_error('findByName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use findByTitle instead', E_USER_DEPRECATED);
+
+        return $this->findByTitle($name, $locale);
     }
 
     /**

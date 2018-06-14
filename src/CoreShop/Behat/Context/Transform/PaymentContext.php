@@ -47,14 +47,14 @@ final class PaymentContext implements Context
     /**
      * @Transform /^payment provider "([^"]+)"$/
      */
-    public function getPaymentProviderByName($name)
+    public function getPaymentProviderByTitle($title)
     {
-        $paymentProviders = $this->paymentProviderRepository->findByName($name, 'en');
+        $paymentProviders = $this->paymentProviderRepository->findByTitle($title, 'en');
 
         Assert::eq(
             count($paymentProviders),
             1,
-            sprintf('%d payment provider has been found with name "%s".', count($paymentProviders), $name)
+            sprintf('%d payment provider has been found with name "%s".', count($paymentProviders), $title)
         );
 
         return reset($paymentProviders);
