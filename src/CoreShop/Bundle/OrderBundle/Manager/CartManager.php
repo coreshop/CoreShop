@@ -16,7 +16,7 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 
 final class CartManager implements CartManagerInterface
 {

@@ -15,30 +15,22 @@ namespace CoreShop\Bundle\PayumBundle\Action\Offline;
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface
 {
     /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
      * @var StateMachineApplier
      */
     private $stateMachineApplier;
 
     /**
-     * @param OrderRepositoryInterface $orderRepository
      * @param StateMachineApplier $stateMachineApplier
      */
-    public function __construct(OrderRepositoryInterface $orderRepository, StateMachineApplier $stateMachineApplier)
+    public function __construct(StateMachineApplier $stateMachineApplier)
     {
-        $this->orderRepository = $orderRepository;
         $this->stateMachineApplier = $stateMachineApplier;
     }
 
@@ -50,8 +42,7 @@ final class ConfirmOrderAction implements ActionInterface
     public function execute($request)
     {
         $payment = $request->getFirstModel();
-
-        $order = $this->orderRepository->find($payment->getOrderId());
+        $order = $payment->getOrder();
 
         if ($order instanceof OrderInterface) {
             //Confirm

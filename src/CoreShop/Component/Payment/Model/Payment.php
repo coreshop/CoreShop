@@ -170,6 +170,8 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      */
     public function getOrderId()
     {
+        @trigger_error('getOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getOrder from Core Component instead', E_USER_DEPRECATED);
+
         return $this->orderId;
     }
 
@@ -178,6 +180,8 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      */
     public function setOrderId($orderId)
     {
+        @trigger_error('setOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setOrder from Core Component instead', E_USER_DEPRECATED);
+
         $this->orderId = $orderId;
     }
 }

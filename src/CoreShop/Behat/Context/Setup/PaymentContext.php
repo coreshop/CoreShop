@@ -17,8 +17,8 @@ use Carbon\Carbon;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Tool;
@@ -113,10 +113,9 @@ final class PaymentContext implements Context
         $payment->setNumber($order->getId());
         $payment->setPaymentProvider($paymentProvider);
         $payment->setTotalAmount($amount);
-        $payment->setOrderId($order->getId());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
-        $payment->setOrderId($order->getId());
+        $payment->setOrder($order);
 
         $this->entityManager->persist($payment->getCurrency());
         $this->entityManager->persist($payment);

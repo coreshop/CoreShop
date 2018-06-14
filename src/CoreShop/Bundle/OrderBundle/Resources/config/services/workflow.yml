@@ -114,7 +114,6 @@ services:
     coreshop.workflow.order_state_history_logger:
         class: CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger
         arguments:
-            - '@coreshop.repository.order'
             - '@coreshop.state_machine_manager'
             - '@coreshop.object_note_service'
             - '@pimcore.translator'
