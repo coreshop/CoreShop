@@ -142,6 +142,7 @@
     background: url(../img/payments.svg) center center no-repeat !important;
 }
 
-.coreshop_rule_icon_action_orderMail {
+.coreshop_rule_icon_action_orderMail,
+.coreshop_rule_icon_action_storeMail{
     background: url(../img/mail.svg) center center no-repeat !important;
 }
