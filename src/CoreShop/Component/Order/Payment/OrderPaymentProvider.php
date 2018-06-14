@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Core\Model\PaymentInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
