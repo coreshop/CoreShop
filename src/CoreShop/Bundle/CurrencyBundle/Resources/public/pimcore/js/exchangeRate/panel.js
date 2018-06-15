@@ -88,7 +88,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
                     dataIndex: 'exchangeRate',
                     editor: {
                         xtype: 'numberfield',
-                        decimalPrecision: 2,
+                        decimalPrecision: 10,
                         required: true
                     }
                 },
