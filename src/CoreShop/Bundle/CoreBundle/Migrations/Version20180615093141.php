@@ -12,34 +12,34 @@ class Version20180615093141 extends AbstractPimcoreMigration implements Containe
 {
     use ContainerAwareTrait;
 
-    private const CORE_SHOP_PRODUCT_FIELDS = [
-        [
-            'fieldName' => 'active',
-            'yesValue'  => 'active',
-            'noValue'   => 'inactive',
-        ],
-        [
-            'fieldName' => 'digitalProduct',
-            'yesValue'  => 'isDigitalProduct',
-            'noValue'   => 'noDigitalProduct',
-        ],
-        [
-            'fieldName' => 'isTracked',
-            'yesValue'  => 'isTracked',
-            'noValue'   => 'notTracked',
-        ],
-    ];
-
     /**
      * @param Schema $schema
      */
     public function up(Schema $schema)
     {
+        $coreShopProductFields = [
+            [
+                'fieldName' => 'active',
+                'yesValue'  => 'active',
+                'noValue'   => 'inactive',
+            ],
+            [
+                'fieldName' => 'digitalProduct',
+                'yesValue'  => 'isDigitalProduct',
+                'noValue'   => 'noDigitalProduct',
+            ],
+            [
+                'fieldName' => 'isTracked',
+                'yesValue'  => 'isTracked',
+                'noValue'   => 'notTracked',
+            ],
+        ];
+
         $coreShopProductClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
 
         $classUpdater = new ClassUpdate($coreShopProductClass);
 
-        foreach (self::CORE_SHOP_PRODUCT_FIELDS as $updateField) {
+        foreach ($coreShopProductFields as $updateField) {
             if ($classUpdater->hasField($updateField['fieldName'])) {
                 $classUpdater->replaceFieldProperties(
                     $updateField['fieldName'],
@@ -73,11 +73,29 @@ class Version20180615093141 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
+        $coreShopProductFields = [
+            [
+                'fieldName' => 'active',
+                'yesValue'  => 'active',
+                'noValue'   => 'inactive',
+            ],
+            [
+                'fieldName' => 'digitalProduct',
+                'yesValue'  => 'isDigitalProduct',
+                'noValue'   => 'noDigitalProduct',
+            ],
+            [
+                'fieldName' => 'isTracked',
+                'yesValue'  => 'isTracked',
+                'noValue'   => 'notTracked',
+            ],
+        ];
+
         $coreShopProductClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
 
         $classUpdater = new ClassUpdate($coreShopProductClass);
 
-        foreach (self::CORE_SHOP_PRODUCT_FIELDS as $updateField) {
+        foreach ($coreShopProductFields as $updateField) {
             if ($classUpdater->hasField($updateField['fieldName'])) {
                 $classUpdater->replaceFieldProperties($updateField['fieldName'], ['fieldtype' => 'checkbox']);
             }
