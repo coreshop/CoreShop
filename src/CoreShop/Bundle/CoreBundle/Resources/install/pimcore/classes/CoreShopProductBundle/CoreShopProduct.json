@@ -216,29 +216,17 @@
                                         "emptyLabel": null,
                                         "options": [
                                             {
-                                                0: [
-                                                    {
-                                                        "key": "empty",
-                                                        "value": 0
-                                                    }
-                                                ]
+                                                "key": "empty",
+                                                "value": 0
                                             },
                                             {
-                                                1: [
-                                                    {
-                                                        "key": "isDigitalProduct",
-                                                        "value": 1
-                                                    }
-                                                ]
+                                                "key": "isDigitalProduct",
+                                                "value": 1
                                             },
                                             {
-                                                2: [
-                                                    {
-                                                        "key": "noDigitalProduct",
-                                                        "value": -1
-                                                    }
-                                                ]
-                                            },
+                                                "key": "noDigitalProduct",
+                                                "value": -1
+                                            }
                                         ],
                                         "queryColumnType": "tinyint(1)",
                                         "columnType": "tinyint(1)",
@@ -679,29 +667,17 @@
                                 "emptyLabel": null,
                                 "options": [
                                     {
-                                        0: [
-                                            {
-                                                "key": "empty",
-                                                "value": 0
-                                            }
-                                        ]
+                                        "key": "empty",
+                                        "value": 0
                                     },
                                     {
-                                        1: [
-                                            {
-                                                "key": "isTracked",
-                                                "value": 1
-                                            }
-                                        ]
+                                        "key": "isTracked",
+                                        "value": 1
                                     },
                                     {
-                                        2: [
-                                            {
-                                                "key": "notTracked",
-                                                "value": -1
-                                            }
-                                        ]
-                                    },
+                                        "key": "notTracked",
+                                        "value": -1
+                                    }
                                 ],
                                 "queryColumnType": "tinyint(1)",
                                 "columnType": "tinyint(1)",
