@@ -188,8 +188,36 @@
                                         "visibleSearch": true
                                     },
                                     {
-                                        "fieldtype": "checkbox",
-                                        "defaultValue": 0,
+                                        "fieldtype": "booleanSelect",
+                                        "yesLabel": "active",
+                                        "noLabel": "inactive",
+                                        "emptyLabel": null,
+                                        "options": [
+                                          {
+                                            0: [
+                                              {
+                                                "key": "empty",
+                                                "value": 0
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            1: [
+                                              {
+                                                "key": "active",
+                                                "value": 1
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            2: [
+                                              {
+                                                "key": "inactive",
+                                                "value": -1
+                                              }
+                                            ]
+                                          },
+                                        ],
                                         "queryColumnType": "tinyint(1)",
                                         "columnType": "tinyint(1)",
                                         "phpdocType": "boolean",

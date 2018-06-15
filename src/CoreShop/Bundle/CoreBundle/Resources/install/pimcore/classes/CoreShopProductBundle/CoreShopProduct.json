@@ -210,8 +210,36 @@
                                         "visibleSearch": true
                                     },
                                     {
-                                        "fieldtype": "checkbox",
-                                        "defaultValue": 0,
+                                        "fieldtype": "booleanSelect",
+                                        "yesLabel": "isDigitalProduct",
+                                        "noLabel": "noDigitalProduct",
+                                        "emptyLabel": null,
+                                        "options": [
+                                            {
+                                                0: [
+                                                    {
+                                                        "key": "empty",
+                                                        "value": 0
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                1: [
+                                                    {
+                                                        "key": "isDigitalProduct",
+                                                        "value": 1
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                2: [
+                                                    {
+                                                        "key": "noDigitalProduct",
+                                                        "value": -1
+                                                    }
+                                                ]
+                                            },
+                                        ],
                                         "queryColumnType": "tinyint(1)",
                                         "columnType": "tinyint(1)",
                                         "phpdocType": "boolean",
@@ -645,8 +673,36 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "checkbox",
-                                "defaultValue": 0,
+                                "fieldtype": "booleanSelect",
+                                "yesLabel": "isTracked",
+                                "noLabel": "notTracked",
+                                "emptyLabel": null,
+                                "options": [
+                                    {
+                                        0: [
+                                            {
+                                                "key": "empty",
+                                                "value": 0
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        1: [
+                                            {
+                                                "key": "isTracked",
+                                                "value": 1
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        2: [
+                                            {
+                                                "key": "notTracked",
+                                                "value": -1
+                                            }
+                                        ]
+                                    },
+                                ],
                                 "queryColumnType": "tinyint(1)",
                                 "columnType": "tinyint(1)",
                                 "phpdocType": "boolean",
