@@ -27,12 +27,7 @@ class StoreMailConfigurationType extends AbstractType
         $builder
             ->add('mails', CollectionType::class, [
                 'allow_add' => true,
-                'allow_delete' => true,
-                'entry_type' => CollectionType::class,
-                'entry_options' => [
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                ]
+                'allow_delete' => true
             ])
         ;
     }
