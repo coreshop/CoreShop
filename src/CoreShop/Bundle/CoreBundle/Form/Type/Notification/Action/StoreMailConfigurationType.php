@@ -17,18 +17,19 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class OrderMailConfigurationType extends StoreMailConfigurationType
+class StoreMailConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
         $builder
-            ->add('sendInvoices', CheckboxType::class)
-            ->add('sendShipments', CheckboxType::class);
+            ->add('mails', CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true
+            ])
+        ;
     }
 
     /**
@@ -36,6 +37,6 @@ class OrderMailConfigurationType extends StoreMailConfigurationType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_notification_rule_action_order_mail';
+        return 'coreshop_notification_rule_action_store_mail';
     }
 }

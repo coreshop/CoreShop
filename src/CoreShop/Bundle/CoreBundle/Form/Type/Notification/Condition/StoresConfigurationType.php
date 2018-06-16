@@ -10,25 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
+use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class OrderMailConfigurationType extends StoreMailConfigurationType
+final class StoresConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
         $builder
-            ->add('sendInvoices', CheckboxType::class)
-            ->add('sendShipments', CheckboxType::class);
+            ->add('stores', StoreChoiceType::class, [
+                'multiple' => true
+            ]);
     }
 
     /**
@@ -36,6 +34,6 @@ class OrderMailConfigurationType extends StoreMailConfigurationType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_notification_rule_action_order_mail';
+        return 'coreshop_notification_condition_stores';
     }
 }
