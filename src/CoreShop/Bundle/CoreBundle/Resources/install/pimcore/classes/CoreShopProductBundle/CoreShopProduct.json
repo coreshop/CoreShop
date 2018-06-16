@@ -210,8 +210,24 @@
                                         "visibleSearch": true
                                     },
                                     {
-                                        "fieldtype": "checkbox",
-                                        "defaultValue": 0,
+                                        "fieldtype": "booleanSelect",
+                                        "yesLabel": "isDigitalProduct",
+                                        "noLabel": "noDigitalProduct",
+                                        "emptyLabel": null,
+                                        "options": [
+                                            {
+                                                "key": "empty",
+                                                "value": 0
+                                            },
+                                            {
+                                                "key": "isDigitalProduct",
+                                                "value": 1
+                                            },
+                                            {
+                                                "key": "noDigitalProduct",
+                                                "value": -1
+                                            }
+                                        ],
                                         "queryColumnType": "tinyint(1)",
                                         "columnType": "tinyint(1)",
                                         "phpdocType": "boolean",
@@ -645,8 +661,24 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "checkbox",
-                                "defaultValue": 0,
+                                "fieldtype": "booleanSelect",
+                                "yesLabel": "isTracked",
+                                "noLabel": "notTracked",
+                                "emptyLabel": null,
+                                "options": [
+                                    {
+                                        "key": "empty",
+                                        "value": 0
+                                    },
+                                    {
+                                        "key": "isTracked",
+                                        "value": 1
+                                    },
+                                    {
+                                        "key": "notTracked",
+                                        "value": -1
+                                    }
+                                ],
                                 "queryColumnType": "tinyint(1)",
                                 "columnType": "tinyint(1)",
                                 "phpdocType": "boolean",
