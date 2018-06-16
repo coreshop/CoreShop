@@ -69,7 +69,7 @@ CoreShop\Component\Order\Model\CartPriceRule:
                         nullable: false
                         onDelete: CASCADE
                 inverseJoinColumns:
-                    condition_id:
+                    action_id:
                         referencedColumnName: id
                         nullable: false
                         onDelete: CASCADE
