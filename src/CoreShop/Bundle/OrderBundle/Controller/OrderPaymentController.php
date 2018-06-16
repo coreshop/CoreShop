@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
@@ -24,7 +25,6 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Symfony\Component\HttpFoundation\Request;
-
 
 class OrderPaymentController extends PimcoreController
 {
@@ -36,11 +36,12 @@ class OrderPaymentController extends PimcoreController
     public function updatePaymentAction(Request $request)
     {
         $payment = $this->getPaymentRepository()->find($request->get('id'));
-        $order = $this->getSaleRepository()->find($payment->getOrderId());
 
-        if (!$payment instanceof PaymentInterface) {
+        if (!$payment instanceof OrderPaymentInterface) {
             return $this->viewHandler->handle(['success' => false]);
         }
+
+        $order = $payment->getOrder();
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false]);

@@ -79,11 +79,15 @@ interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceI
     public function setNumber($number);
 
     /**
+     * @deprecated setOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setOrder from Core Component instead
+     *
      * @param int $orderId
      */
     public function setOrderId($orderId);
 
     /**
+     * @deprecated getOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getOrder from Core Component instead
+     *
      * @return int
      */
     public function getOrderId();

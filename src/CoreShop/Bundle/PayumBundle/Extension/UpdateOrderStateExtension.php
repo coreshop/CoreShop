@@ -4,10 +4,9 @@ namespace CoreShop\Bundle\PayumBundle\Extension;
 
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\Generic;
@@ -21,18 +20,11 @@ final class UpdateOrderStateExtension implements ExtensionInterface
     private $stateMachineManager;
 
     /**
-     * @var PimcoreRepositoryInterface
-     */
-    protected $orderRepository;
-
-    /**
      * @param StateMachineManager $stateMachineManager
-     * @param PimcoreRepositoryInterface $orderRepository
      */
-    public function __construct(StateMachineManager $stateMachineManager, PimcoreRepositoryInterface $orderRepository)
+    public function __construct(StateMachineManager $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
-        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -91,7 +83,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         $context->getGateway()->execute($status = new GetStatus($payment));
         $value = $status->getValue();
         if (PaymentInterface::STATE_UNKNOWN !== $value) {
-            $order = $this->orderRepository->find($payment->getOrderId());
+            $order = $payment->getOrder();
             if ($order instanceof OrderInterface) {
                 $this->confirmOrderState($order);
             }

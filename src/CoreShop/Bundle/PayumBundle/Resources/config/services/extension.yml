@@ -10,6 +10,5 @@ services:
         class: CoreShop\Bundle\PayumBundle\Extension\UpdateOrderStateExtension
         arguments:
             - '@coreshop.state_machine_manager'
-            - '@coreshop.repository.order'
         tags:
             - { name: payum.extension, all: true, prepend: true }

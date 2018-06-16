@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -21,11 +20,6 @@ use Symfony\Component\Workflow\Event\Event;
 
 final class OrderStateHistoryLogger
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
     /**
      * @var StateMachineManager
      */
@@ -47,21 +41,18 @@ final class OrderStateHistoryLogger
     private $noteIdentifier;
 
     /**
-     * @param OrderRepositoryInterface $orderRepository
      * @param StateMachineManager $stateMachineManager
      * @param NoteServiceInterface $noteService
      * @param TranslatorInterface $translator
      * @param string $noteIdentifier
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
         StateMachineManager $stateMachineManager,
         NoteServiceInterface $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
     )
     {
-        $this->orderRepository = $orderRepository;
         $this->stateMachineManager = $stateMachineManager;
         $this->noteService = $noteService;
         $this->translator = $translator;
@@ -69,16 +60,11 @@ final class OrderStateHistoryLogger
     }
 
     /**
+     * @param OrderInterface $order
      * @param Event $event
-     * @param       $orderId
      */
-    public function log($orderId = null, Event $event)
+    public function log(OrderInterface $order, Event $event)
     {
-        $order = $this->orderRepository->find($orderId);
-        if (!$order instanceof OrderInterface) {
-            return;
-        }
-
         $subject = $event->getSubject();
         $transition = $event->getTransition();
 

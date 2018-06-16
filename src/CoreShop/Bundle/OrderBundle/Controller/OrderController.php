@@ -18,7 +18,6 @@ use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
-use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\OrderTransitions;
@@ -50,7 +49,7 @@ class OrderController extends AbstractSaleDetailController
         $folderPath = $this->getParameter('coreshop.folder.order');
         $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
 
-        $folder = DataObject::getByPath('/'.$folderPath);
+        $folder = DataObject::getByPath('/' . $folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
@@ -205,7 +204,7 @@ class OrderController extends AbstractSaleDetailController
                     if (empty($detailValue) && $detailValue != 0) {
                         continue;
                     }
-                    if(is_array($detailValue)) {
+                    if (is_array($detailValue)) {
                         $detailValue = join(', ', $detailValue);
                     }
 

@@ -12,15 +12,12 @@ services:
 
     coreshop.payum_action.resolve_next_route:
         class: CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction
-        arguments:
-            - '@coreshop.repository.order'
         tags:
             - { name: payum.action, all: true, alias: coreshop.resolve_next_route }
 
     coreshop.payum_action.confirm_order:
         class: CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction
         arguments:
-            - '@coreshop.repository.order'
             - '@coreshop.state_machine_applier'
         tags:
             - { name: payum.action, all: true, alias: coreshop.confirm_order }
@@ -41,7 +38,6 @@ services:
     coreshop.payum_action.offine.confirm_order:
         class: CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction
         arguments:
-            - '@coreshop.repository.order'
             - '@coreshop.state_machine_applier'
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.confirm_order }
