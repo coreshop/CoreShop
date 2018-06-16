@@ -25,7 +25,7 @@ class OrderMailConfigurationType extends StoreMailConfigurationType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-        
+
         $builder
             ->add('sendInvoices', CheckboxType::class)
             ->add('sendShipments', CheckboxType::class);
