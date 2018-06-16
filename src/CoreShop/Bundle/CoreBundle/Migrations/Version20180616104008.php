@@ -4,9 +4,13 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20180616104008 extends AbstractPimcoreMigration
+class Version20180616104008 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @param Schema $schema
      */
@@ -41,6 +45,8 @@ class Version20180616104008 extends AbstractPimcoreMigration
         $this->addSql('ALTER TABLE coreshop_notification_rule_action ADD CONSTRAINT FK_D2282E7B9D32F035 FOREIGN KEY (action_id) REFERENCES coreshop_rule_action (id) ON DELETE CASCADE;');
         $this->addSql('CREATE INDEX IDX_D2282E7B9D32F035 ON coreshop_notification_rule_action (action_id);');
         $this->addSql('ALTER TABLE coreshop_notification_rule_action ADD PRIMARY KEY (notification_id, action_id);');
+
+        $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
     }
 
     /**
