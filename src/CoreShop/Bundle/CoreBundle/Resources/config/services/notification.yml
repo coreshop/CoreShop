@@ -139,6 +139,20 @@ services:
         tags:
             - { name: coreshop.notification_rule.condition, type: userType, notification-type: user, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\UserTypeConfigurationType }
 
+    #### MULTIPLE
+    coreshop.notification_rule.condition.store:
+        class: CoreShop\Component\Core\Notification\Rule\Condition\StoresChecker
+        arguments:
+            - '@coreshop.context.store'
+            - '@coreshop.repository.order'
+        tags:
+            - { name: coreshop.notification_rule.condition, type: stores, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: stores, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: stores, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: stores, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: stores, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }
+            - { name: coreshop.notification_rule.condition, type: stores, notification-type: user, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }
+
     # Notification Rule Actions
     coreshop.notification_rule.action.order_mail:
         class: CoreShop\Component\Core\Notification\Rule\Action\Order\OrderMailActionProcessor
@@ -159,6 +173,30 @@ services:
             - { name: coreshop.notification_rule.action, type: mail, notification-type: quote, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
             - { name: coreshop.notification_rule.action, type: mail, notification-type: shipment, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
             - { name: coreshop.notification_rule.action, type: mail, notification-type: invoice, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }
+
+    coreshop.notification_rule.action.store_mail:
+        class: CoreShop\Component\Core\Notification\Rule\Action\Order\StoreMailActionProcessor
+        arguments:
+            - '@coreshop.notification_rule.action.mail'
+            - '@coreshop.context.store'
+        tags:
+            - { name: coreshop.notification_rule.action, type: storeMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeMail, notification-type: user, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeMail, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeMail, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeMail, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreMailConfigurationType }
+
+    coreshop.notification_rule.action.store_order_mail:
+        class: CoreShop\Component\Core\Notification\Rule\Action\Order\StoreOrderMailActionProcessor
+        arguments:
+            - '@coreshop.notification_rule.action.order_mail'
+            - '@coreshop.context.store'
+        tags:
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
 
     # Listeners -> here the actual magic happens
     coreshop.notification.listener.rule.abstract:
