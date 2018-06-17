@@ -138,7 +138,7 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
             data = {},
             general = {
                 o_className: me.fieldConfig.embeddedClassName,
-                o_key: t('new')
+                index: t('new')
             },
             object = {
                 data: data,

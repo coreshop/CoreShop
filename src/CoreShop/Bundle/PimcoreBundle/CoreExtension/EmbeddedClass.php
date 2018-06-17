@@ -66,7 +66,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
-                'index' => $embeddedObject->getKey(),
+                'index' => $embeddedObject->getIndex(),
             ];
 
             $allowedKeys = ['o_published', 'o_key', 'o_id', 'o_modificationDate', 'o_creationDate', 'o_classId', 'o_className', 'o_locked', 'o_type', 'o_parentId', 'o_userOwner', 'o_userModification'];
@@ -105,8 +105,10 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
             if (!$embeddedObject instanceof DataObject\Concrete) {
                 $embeddedObject = $this->createNewInstance();
-                $embeddedObject->setKey($objectData['currentIndex']);
+                $embeddedObject->setKey(uniqid());
             }
+
+            $embeddedObject->setIndex($objectData['currentIndex']);
 
             foreach ($objectData as $key => $value) {
                 if (in_array($key, ['id', 'originalIndex', 'currentIndex'])) {
@@ -148,6 +150,14 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             $embeddedObjects[] = $embeddedObject;
         }
 
+        usort($embeddedObjects, function($objectA, $objectB) {
+            if ($objectA->getIndex() === $objectB->getIndex()) {
+                return 0;
+            }
+
+            return ($objectA->getIndex() < $objectB->getIndex()) ? -1 : 1;
+        });
+
         return $embeddedObjects;
     }
 
@@ -155,9 +165,9 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     {
         $data = parent::preSetData($object, $data, $params);
 
-        foreach ($data as $index => $d) {
+        foreach ($data as $d) {
             if ($d instanceof DataObject\Concrete) {
-                $d->setKey($index);
+                $d->setKey(uniqid());
             }
         }
 

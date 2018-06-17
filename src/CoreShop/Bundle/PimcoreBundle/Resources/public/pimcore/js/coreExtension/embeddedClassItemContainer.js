@@ -38,7 +38,7 @@ coreshop.pimcore.coreExtension.embeddedClassItemContainer = Class.create({
             border: true,
             scrollable: true,
             bodyPadding: 10,
-            tbar: this.getTopBar(this.objectMetaData['o_className'] + ': ' + this.objectMetaData['o_key'], this.icon),
+            tbar: this.getTopBar(this.objectMetaData['o_className'] + ': ' + this.objectMetaData['index'], this.icon),
             items: [
                 itemLayout
             ]
