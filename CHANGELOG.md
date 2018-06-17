@@ -9,9 +9,11 @@
     - Change `{{ path('') }}` to `{{ coreshop_path('') }}`. You may want to checkout the FrontendBundle to get a deeper insight.
  - Deprecated Field Names in - ```CoreShop\Component\Payment\Model\PaymentInterface```:
     - getName is now getTitle
+    - getOrderId is now getOrder and directly returns a OrderInterface
  - Deprecated Field Names in - ```CoreShop\Component\Shipping\Model\CarrierInterface```:
     - getLabel is not getTitle
     - getName is now getIdentifier
+
 
 ## 2.0.0-alpha.4 to 2.0.0-beta.1
  - **BC break** Signature of following interfaces changed:
