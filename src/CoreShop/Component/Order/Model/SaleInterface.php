@@ -27,20 +27,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function getItemForProduct(PurchasableInterface $product);
 
     /**
-     * @return string
-     *
-     * @deprecated use getLocaleCode
-     */
-    public function getSaleLanguage();
-
-    /**
-     * @param $saleLanguage
-     *
-     * @deprecated use setLocaleCode
-     */
-    public function setSaleLanguage($saleLanguage);
-
-    /**
      * @return CurrencyInterface
      */
     public function getBaseCurrency();

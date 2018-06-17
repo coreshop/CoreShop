@@ -59,20 +59,6 @@ interface OrderInterface extends SaleInterface, PayableInterface
     public function setPaymentState($paymentState);
 
     /**
-     * @return string
-     *
-     * @deprecated use getLocaleCode
-     */
-    public function getOrderLanguage();
-
-    /**
-     * @param $orderLanguage
-     *
-     * @deprecated use setLocaleCode
-     */
-    public function setOrderLanguage($orderLanguage);
-
-    /**
      * @return Carbon
      */
     public function getOrderDate();

@@ -18,16 +18,6 @@ use Carbon\Carbon;
 interface QuoteInterface extends SaleInterface
 {
     /**
-     * @return string
-     */
-    public function getQuoteLanguage();
-
-    /**
-     * @param $quoteLanguage
-     */
-    public function setQuoteLanguage($quoteLanguage);
-
-    /**
      * @return Carbon
      */
     public function getQuoteDate();
