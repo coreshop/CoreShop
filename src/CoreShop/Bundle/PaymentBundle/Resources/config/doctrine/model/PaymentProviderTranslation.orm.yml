@@ -8,9 +8,9 @@ CoreShop\Component\Payment\Model\PaymentProviderTranslation:
             id: true
             generator:
                 strategy: AUTO
-        name:
+        title:
             type: string
-            column: name
+            column: title
         description:
             type: text
             column: description

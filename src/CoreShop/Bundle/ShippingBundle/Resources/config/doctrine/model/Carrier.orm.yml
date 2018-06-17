@@ -8,8 +8,8 @@ CoreShop\Component\Shipping\Model\Carrier:
             id: true
             generator:
                 strategy: AUTO
-        name:
-            column: name
+        identifier:
+            column: identifier
             type: string
             nullable: true
         trackingUrl:

@@ -25,7 +25,7 @@ final class PaymentProviderTranslationType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add('title', TextType::class, [
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,

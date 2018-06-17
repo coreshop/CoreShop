@@ -57,7 +57,7 @@ final class ShippingContext implements Context
      */
     public function getCarrierByName($name)
     {
-        $carriers = $this->carrierRepository->findBy(['name' => $name]);
+        $carriers = $this->carrierRepository->findBy(['identifier' => $name]);
 
         Assert::eq(
             count($carriers),

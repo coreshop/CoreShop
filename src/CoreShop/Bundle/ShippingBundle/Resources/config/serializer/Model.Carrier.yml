@@ -7,7 +7,7 @@ CoreShop\Component\Shipping\Model\Carrier:
             type: integer
             xml_attribute: true
             groups: [List, Detailed]
-        name:
+        identifier:
             expose: true
             type: string
             groups: [List, Detailed]

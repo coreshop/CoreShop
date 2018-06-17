@@ -99,7 +99,7 @@ final class CarrierType extends AbstractResourceType
                         $amount = $this->currencyConverter->convert($carrierPrice, $this->shopperContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
                         $formattedAmount = $this->moneyFormatter->format($amount, $this->shopperContext->getCurrency()->getIsoCode(), $this->shopperContext->getLocaleCode());
 
-                        return sprintf('%s %s', $carrier->getLabel(), $formattedAmount);
+                        return sprintf('%s %s', $carrier->getTitle(), $formattedAmount);
                     }
 
 

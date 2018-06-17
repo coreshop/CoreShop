@@ -85,7 +85,7 @@ final class PaymentContext implements Context
         $gatewayConfig = $this->gatewayConfigFactory->createNew();
 
         foreach (Tool::getValidLanguages() as $lang) {
-            $paymentProvider->setName($name, $lang);
+            $paymentProvider->setTitle($name, $lang);
         }
 
         $gatewayConfig->setFactoryName($factory);

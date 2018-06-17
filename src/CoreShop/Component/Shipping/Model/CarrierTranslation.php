@@ -27,7 +27,7 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
     /**
      * @var string
      */
-    protected $label = '';
+    protected $title = '';
 
     /**
      * @var string
@@ -56,7 +56,9 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
      */
     public function getLabel()
     {
-        return $this->label;
+        @trigger_error('getLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
+
+        return $this->getTitle();
     }
 
     /**
@@ -64,7 +66,25 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
      */
     public function setLabel($label)
     {
-        $this->label = $label;
+        @trigger_error('setLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
+
+        $this->setTitle($label);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     /**

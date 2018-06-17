@@ -92,7 +92,7 @@ class OrderPaymentController extends PimcoreController
         foreach ($providers as $provider) {
             if ($provider instanceof PaymentProviderInterface) {
                 $result[] = [
-                    'name' => $provider->getName(),
+                    'name' => $provider->getTitle(),
                     'id' => $provider->getId(),
                 ];
             }

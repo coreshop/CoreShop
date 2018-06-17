@@ -1,6 +1,6 @@
 CoreShop\Component\Shipping\Model\Carrier:
     properties:
-      name:
+      identifier:
           - NotBlank: { groups: [coreshop] }
       isFree:
           - Type: { type: boolean }

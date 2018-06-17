@@ -8,9 +8,9 @@ CoreShop\Component\Shipping\Model\CarrierTranslation:
             id: true
             generator:
                 strategy: AUTO
-        label:
+        title:
             type: string
-            column: label
+            column: title
             nullable: true
         description:
             type: text

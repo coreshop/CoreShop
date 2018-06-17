@@ -28,8 +28,11 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
         list: '/admin/coreshop/carriers/list'
     },
 
-
     getItemClass: function() {
         return coreshop.carrier.item;
+    },
+
+    getDefaultGridDisplayColumnName: function() {
+        return 'identifier';
     }
 });
