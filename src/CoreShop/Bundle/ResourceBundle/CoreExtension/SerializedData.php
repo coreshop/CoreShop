@@ -16,7 +16,7 @@ if (class_exists(\CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData::cl
     @trigger_error('Class CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData class instead.', E_USER_DEPRECATED);
 } else {
     /**
-     * e@deprecated Class CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData class instead.
+     * @deprecated Class CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData class instead.
      */
     class SerializedData
     {
