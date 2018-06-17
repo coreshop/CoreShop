@@ -1,10 +1,17 @@
 # Within V2
 
+## 2.0.0-beta.2 to 2.0.0-beta.3
+
 ## 2.0.0-beta.1 to 2.0.0-beta.2
  - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:
     - CoreShopProduct: add `@coreshop.object.link_generator.product` as Link Provider
     - CoreShopCategory: add `@coreshop.object.link_generator.category` as Link Provider
     - Change `{{ path('') }}` to `{{ coreshop_path('') }}`. You may want to checkout the FrontendBundle to get a deeper insight.
+ - Deprecated Field Names in - ```CoreShop\Component\Payment\Model\PaymentInterface```:
+    - getName is now getTitle
+ - Deprecated Field Names in - ```CoreShop\Component\Shipping\Model\CarrierInterface```:
+    - getLabel is not getTitle
+    - getName is now getIdentifier
 
 ## 2.0.0-alpha.4 to 2.0.0-beta.1
  - **BC break** Signature of following interfaces changed:
