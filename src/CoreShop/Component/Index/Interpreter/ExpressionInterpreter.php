@@ -35,9 +35,9 @@ class ExpressionInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config)
+    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
     {
-        $expression = $config->getInterpreterConfig()['expression'];
+        $expression = $interpreterConfig['expression'];
 
         $expr = new ExpressionLanguage();
 

@@ -21,7 +21,7 @@ class ObjectInterpreter implements RelationInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config)
+    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $result = [];
 
@@ -47,7 +47,7 @@ class ObjectInterpreter implements RelationInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config)
+    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $result = [];
 
