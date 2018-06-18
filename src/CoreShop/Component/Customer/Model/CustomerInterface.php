@@ -102,20 +102,6 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
     public function setPasswordResetHash($passwordResetHash);
 
     /**
-     * @return string
-     *
-     * @deprecated use getLocaleCode
-     */
-    public function getLocale();
-
-    /**
-     * @param string $locale
-     *
-     * @deprecated use setLocaleCode
-     */
-    public function setLocale($locale);
-
-    /**
      * @return bool
      */
     public function getIsGuest();

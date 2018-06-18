@@ -176,45 +176,4 @@ class Order extends Sale implements OrderInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSaleLanguage()
-    {
-        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us getLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
-
-        return $this->getLocaleCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSaleLanguage($saleLanguage)
-    {
-        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us setLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
-
-        return $this->setLocaleCode($saleLanguage);
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderLanguage()
-    {
-        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us getLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
-
-        return $this->getLocaleCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOrderLanguage($orderLanguage)
-    {
-        @trigger_error(sprintf('The %s() method is deprecated since CoreShop 2.0.0-beta.1 and will be removed in CoreShop 2.0.0-beta.2. Please us setLocaleCode instead.', __METHOD__), E_USER_DEPRECATED);
-
-        return $this->setLocaleCode($orderLanguage);
-    }
 }
