@@ -209,46 +209,6 @@ abstract class AbstractWorker implements WorkerInterface
         return $result;
     }
 
-    protected function prepareLocalizedFields(IndexColumnInterface $column, IndexableInterface $object, $virtualObjectId)
-    {
-        $getter = 'get' . ucfirst($column->getObjectKey());
-
-        $validLanguages = Tool::getValidLanguages();
-
-        $localizedData = [];
-        $relationData = [];
-
-        if (method_exists($object, $getter)) {
-            foreach ($validLanguages as $language) {
-                $value = $object->$getter($language);
-
-                $interpreterClass = $this->getInterpreterObject($column);
-
-                if ($interpreterClass instanceof InterpreterInterface) {
-                    $value = $interpreterClass->interpret($value, $object, $column, $column->getInterpreterConfig());
-
-                    if ($interpreterClass instanceof RelationInterpreterInterface) {
-                        $relationalValue = $interpreterClass->interpretRelational($value, $object, $column, $column->getInterpreterConfig());
-
-                        $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
-                    }
-                }
-
-                if (is_array($value)) {
-                    $value = ',' . implode($value, ',') . ',';
-                }
-
-                $value = $this->typeCastValues($column, $value);
-
-                $localizedData['values'][$language][$column->getName()] = $value;
-            }
-        }
-
-        return [
-            $localizedData, $relationData
-        ];
-    }
-
     /**
      * @param IndexColumnInterface $column
      * @param $value

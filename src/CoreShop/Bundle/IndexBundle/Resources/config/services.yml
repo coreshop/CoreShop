@@ -175,6 +175,20 @@ services:
         tags:
           - { name: coreshop.index.interpreter, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
 
+    coreshop.index.interpreter.nested_localized:
+        class: CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter
+        arguments:
+            - '@coreshop.registry.index.interpreter'
+        tags:
+          - { name: coreshop.index.interpreter, type: nested_localized, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
+
+    coreshop.index.interpreter.nested_relational:
+        class: CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter
+        arguments:
+            - '@coreshop.registry.index.interpreter'
+        tags:
+          - { name: coreshop.index.interpreter, type: nested_relational, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
+
     # Index Column Types
     coreshop.index.column_type.classification_store:
         class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType

@@ -16,7 +16,7 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 
-class NestedInterpreter implements InterpreterInterface
+class RelationalNestedInterpreter implements RelationInterpreterInterface
 {
     use NestedTrait;
 
@@ -26,6 +26,22 @@ class NestedInterpreter implements InterpreterInterface
     public function __construct(ServiceRegistryInterface $interpreterRegistry)
     {
         $this->interpreterRegistry = $interpreterRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
+    {
+        $this->assert($interpreterConfig);
+
+        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($object, $config) {
+            if ($interpreter instanceof RelationInterpreterInterface) {
+                return $interpreter->interpretRelational($value, $object, $config, $interpreterConfig);
+            }
+
+            return $value;
+        }); 
     }
 
     /**

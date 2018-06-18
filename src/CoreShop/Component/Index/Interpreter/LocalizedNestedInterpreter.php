@@ -16,7 +16,7 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 
-class NestedInterpreter implements InterpreterInterface
+class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
 {
     use NestedTrait;
 
@@ -33,14 +33,24 @@ class NestedInterpreter implements InterpreterInterface
      */
     public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
     {
+        throw new \Exception('method "interpret" in Localized Interpreter not allowed. Please use "interpretForLanguage" instead.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    {
         $this->assert($interpreterConfig);
 
-        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($object, $config) {
-            if ($interpreter instanceof InterpreterInterface) {
-                return $interpreter->interpret($value, $object, $config, $interpreterConfig);
+        $value = $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($language, $object, $config) {
+            if ($interpreter instanceof LocalizedInterpreterInterface) {
+                return $interpreter->interpretForLanguage($language, $value, $object, $config, $interpreterConfig);
             }
 
             return $value;
         });
+
+        return $value;
     }
 }
