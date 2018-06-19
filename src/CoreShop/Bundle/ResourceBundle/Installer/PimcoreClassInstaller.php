@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\Pimcore\ClassInstallerInterface;
+use CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;

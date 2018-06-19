@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\GridConfigConfiguration;
-use CoreShop\Component\Pimcore\GridConfigInstallerInterface;
+use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
