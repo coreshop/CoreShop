@@ -12,28 +12,9 @@
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 
-class OrderInvoiceRepository extends PimcoreRepository implements OrderInvoiceRepositoryInterface
+class OrderInvoiceRepository extends AbstractOrderDocumentRepository implements OrderInvoiceRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocuments(OrderInterface $order)
-    {
-        return $this->findBy(['order__id' => $order->getId()], [['key' => 'o_id', 'direction' => 'DESC']]);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocumentsNotInState(OrderInterface $order, $state)
-    {
-        $list = $this->getList();
-        $list->setCondition('order__id = ? AND state <> ?', [$order->getId(), $state]);
-
-        return $list->getObjects();
-    }
 }

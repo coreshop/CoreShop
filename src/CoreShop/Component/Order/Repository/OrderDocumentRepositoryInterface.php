@@ -31,5 +31,13 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderDocumentInterface[]
      */
+    public function getDocumentsInState(OrderInterface $order, $state);
+
+    /**
+     * @param OrderInterface $order
+     * @param string $state
+     *
+     * @return OrderDocumentInterface[]
+     */
     public function getDocumentsNotInState(OrderInterface $order, $state);
 }

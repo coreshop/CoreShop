@@ -15,15 +15,15 @@ namespace CoreShop\Bundle\CoreBundle\Order;
 use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Notes;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
+use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Monolog\Logger;
 use Pimcore\Mail;
@@ -115,7 +115,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $recipient = [
             [
                 $order->getCustomer()->getEmail(),
-                $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname()
+                $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
             ],
         ];
 
@@ -128,7 +128,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $mail->setEnableLayoutOnPlaceholderRendering(false);
 
         if ($sendInvoices) {
-            $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
+            $invoices = $this->invoiceRepository->getDocumentsInState($order, InvoiceStates::STATE_COMPLETE);
             foreach ($invoices as $invoice) {
                 if ($invoice instanceof OrderInvoiceInterface) {
                     try {
@@ -142,7 +142,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         }
 
         if ($sendShipments) {
-            $shipments = $this->shipmentRepository->getDocumentsNotInState($order, OrderShipmentStates::STATE_CANCELLED);
+            $shipments = $this->shipmentRepository->getDocumentsInState($order, ShipmentStates::STATE_SHIPPED);
             foreach ($shipments as $shipment) {
                 if ($shipment instanceof OrderShipmentInterface) {
                     try {
@@ -155,7 +155,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             }
         }
 
-        $this->themeHelper->useTheme($order->getStore()->getTemplate(), function() use ($mail) {
+        $this->themeHelper->useTheme($order->getStore()->getTemplate(), function () use ($mail) {
             $mail->send();
         });
 
@@ -215,7 +215,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $noteInstance->setTitle('Order Mail');
 
         $noteInstance->addData('document', 'text', $emailDocument->getId());
-        $noteInstance->addData('recipient', 'text', implode(', ', (array) $mail->getTo()));
+        $noteInstance->addData('recipient', 'text', implode(', ', (array)$mail->getTo()));
         $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
 
         foreach ($params as $key => $value) {
