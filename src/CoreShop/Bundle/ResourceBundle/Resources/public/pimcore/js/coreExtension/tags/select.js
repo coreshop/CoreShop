@@ -14,6 +14,7 @@ pimcore.registerNS('coreshop.object.tags.select');
 coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
 
     allowEmpty: false,
+    displayField: 'name',
 
     initialize: function (data, fieldConfig) {
         this.data = data;
@@ -68,7 +69,7 @@ coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
             componentCls: 'object_field',
             width: 250,
             labelWidth: 100,
-            displayField: 'name',
+            displayField: this.displayField,
             valueField: 'id',
             queryMode: 'local',
             value: this.data ? parseInt(this.data) : null,
