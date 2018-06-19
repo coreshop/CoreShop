@@ -101,6 +101,7 @@ filter:
     - "pimcore/"
   excluded_paths:
     - "tests/"
+    - "vendor/"
     - "docs/"
     - "pimcore/"
     - "src/CoreShop/Behat"
