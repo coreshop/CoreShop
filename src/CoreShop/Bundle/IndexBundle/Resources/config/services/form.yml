@@ -63,6 +63,24 @@ services:
         tags:
             - { name: form.type }
 
+
+    coreshop.form.type.index.interpreter_type:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterType
+        arguments: ['@coreshop.form_registry.index.interpreter']
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.index.interpreter_collection:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterCollectionType
+        arguments: ['@coreshop.registry.index.interpreter']
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.index_nested:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType
+        tags:
+            - { name: form.type }
+
     # Filter Forms
     coreshop.form.type.filter:
         class: CoreShop\Bundle\IndexBundle\Form\Type\FilterType

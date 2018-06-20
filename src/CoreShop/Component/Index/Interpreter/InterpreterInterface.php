@@ -21,8 +21,9 @@ interface InterpreterInterface
      * @param $value
      * @param IndexableInterface        $object
      * @param IndexColumnInterface|null $config
+     * @param array $interpreterConfig
      *
      * @return mixed
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config);
+    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
 }

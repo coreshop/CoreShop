@@ -14,9 +14,20 @@ namespace CoreShop\Component\Index\Interpreter;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 
-class LocaleMappingInterpreter implements LocalizedInterpreterInterface
+class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
 {
+    use NestedTrait;
+
+    /**
+     * @param ServiceRegistryInterface $interpreterRegistry
+     */
+    public function __construct(ServiceRegistryInterface $interpreterRegistry)
+    {
+        $this->interpreterRegistry = $interpreterRegistry;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,14 +41,16 @@ class LocaleMappingInterpreter implements LocalizedInterpreterInterface
      */
     public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
     {
-        if (!is_array($value)) {
+        $this->assert($interpreterConfig);
+
+        $value = $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($language, $object, $config) {
+            if ($interpreter instanceof LocalizedInterpreterInterface) {
+                return $interpreter->interpretForLanguage($language, $value, $object, $config, $interpreterConfig);
+            }
+
             return $value;
-        }
+        });
 
-        if (isset($value[$language])) {
-            return $value[$language];
-        }
-
-        return null;
+        return $value;
     }
 }

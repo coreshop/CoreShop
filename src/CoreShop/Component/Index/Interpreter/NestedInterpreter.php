@@ -12,17 +12,35 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
-use Carbon\Carbon;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 
-class TimestampInterpreter implements InterpreterInterface
+class NestedInterpreter implements InterpreterInterface
 {
+    use NestedTrait;
+
+    /**
+     * @param ServiceRegistryInterface $interpreterRegistry
+     */
+    public function __construct(ServiceRegistryInterface $interpreterRegistry)
+    {
+        $this->interpreterRegistry = $interpreterRegistry;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
     {
-        return Carbon::createFromTimestamp($value);
+        $this->assert($interpreterConfig);
+
+        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($object, $config) {
+            if ($interpreter instanceof InterpreterInterface) {
+                return $interpreter->interpret($value, $object, $config, $interpreterConfig);
+            }
+
+            return $value;
+        });
     }
 }
