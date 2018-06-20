@@ -11,8 +11,8 @@
  * @license    https://github.com/w-vision/ImportDefinitions/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-pimcore.registerNS('coreshop.index.interpreters.nested_relational');
+pimcore.registerNS('coreshop.index.interpreters.nestedrelational');
 
-coreshop.index.interpreters.nested_relational = Class.create(coreshop.index.interpreters.nested, {
+coreshop.index.interpreters.nestedrelational = Class.create(coreshop.index.interpreters.nested, {
     
 });
