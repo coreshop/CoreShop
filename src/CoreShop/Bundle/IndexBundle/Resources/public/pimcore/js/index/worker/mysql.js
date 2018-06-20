@@ -39,6 +39,12 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
             );
         }
 
+        var values = config[localized ? 'localizedIndexes' : 'indexes'];
+
+        if (!Ext.isObject(values)) {
+            values = {};
+        }
+
         var store = Ext.create('Ext.data.Store', {
             // destroy the store if the grid is destroyed
             autoDestroy: true,
@@ -46,7 +52,7 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
                 type: 'memory'
             },
             model: modelName,
-            data: Object.values(config[localized ? 'localizedIndexes' : 'indexes'])
+            data: Object.values(values)
         });
 
         var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
@@ -174,7 +180,7 @@ coreshop.index.worker.mysql = Class.create(coreshop.index.worker.abstract, {
     getIndexData: function (localized) {
         var me = this,
             grid = localized ? me.localizedIndexesGrid : me.indexesGrid,
-            availableFields = me.getColumns(localized).map(function(col) {
+            availableFields = me.getColumns(localized).map(function (col) {
                 return col.name;
             }),
             indexes = grid.getStore().getRange().map(function (rec) {

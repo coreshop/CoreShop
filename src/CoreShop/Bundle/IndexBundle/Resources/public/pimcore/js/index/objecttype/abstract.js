@@ -162,11 +162,12 @@ coreshop.index.objecttype.abstract = Class.create({
         var interpreterPanelClass = this.interpreterPanelClass;
 
         if (form.isValid() && getterForm.isValid()) {
-            if (interpreterPanelClass && interpreterPanelClass.isValid()) {
+            if (interpreterPanelClass) {
+                if (!interpreterPanelClass.isValid()) {
+                    return;
+                }
+
                 this.record.set('interpreterConfig', interpreterPanelClass.getInterpreterData());
-            }
-            else {
-                return;
             }
 
             if (this.getGetterPanel().isVisible()) {
@@ -239,9 +240,11 @@ coreshop.index.objecttype.abstract = Class.create({
                 this.getInterpreterPanel().add(interpreter.getForm(this.record, this.record.data.interpreterConfig));
                 this.getInterpreterPanel().show();
             } else {
+                this.interpreterPanelClass = null;
                 this.getInterpreterPanel().hide();
             }
         } else {
+            this.interpreterPanelClass = null;
             this.getInterpreterPanel().hide();
         }
     }
