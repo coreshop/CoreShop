@@ -74,7 +74,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
             }
 
             return [
-                'categoryIds' => implode(',', $categoryIds) . ',',
+                'categoryIds' => ',' . implode(',', $categoryIds) . ',',
                 'parentCategoryIds' => ',' . implode(',', $parentCategoryIds) . ',',
                 'stores' => ',' . @implode(',', $indexable->getStores()) . ','
             ];

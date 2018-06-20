@@ -10,29 +10,34 @@
  *
  */
 
-pimcore.registerNS('coreshop.filter.conditions.relational_multiselect');
+pimcore.registerNS('coreshop.filter.conditions.category_select');
 
-coreshop.filter.conditions.relational_multiselect = Class.create(coreshop.filter.conditions.abstract, {
-    type: 'relational_multiselect',
+coreshop.filter.conditions.category_select = Class.create(coreshop.filter.conditions.abstract, {
+    type: 'category_select',
 
     getItems: function () {
+
+        var catValue = this.data.configuration.preSelect;
+        var categorySelect = new coreshop.object.elementHref({
+            id: catValue,
+            type: 'object',
+            subtype: coreshop.class_map.coreshop.category
+        }, {
+            objectsAllowed: true,
+            classes: [{
+                classes: coreshop.class_map.coreshop.category
+            }],
+            name: 'preSelect',
+            title: t('coreshop_filters_category_name')
+        });
+
         return [
-            this.getFieldsComboBox(),
+            categorySelect.getLayoutEdit(),
             {
-                xtype: 'combo',
-                fieldLabel: t('coreshop_filters_values'),
-                name: 'preSelects',
-                width: 400,
-                store: this.valueStore,
-                displayField: 'value',
-                multiSelect: true,
-                valueField: 'key',
-                triggerAction: 'all',
-                typeAhead: false,
-                editable: false,
-                forceSelection: true,
-                queryMode: 'local',
-                value: this.data.configuration.preSelects
+                xtype: 'checkbox',
+                fieldLabel: t('coreshop_filters_include_subcategories'),
+                name: 'includeSubCategories',
+                checked: this.data.configuration.includeSubCategories
             }
         ];
     }

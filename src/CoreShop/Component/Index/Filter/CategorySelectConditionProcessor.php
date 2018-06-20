@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\InCondition;
+use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -20,19 +20,37 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class RelationalMultiselectConditionProcessor implements FilterConditionProcessorInterface
+class CategorySelectConditionProcessor implements FilterConditionProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        $field = $condition->getConfiguration()['field'];
+        $field = 'categoryIds';
+        $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
+        if($includeSubCategories === true) {
+            $field = 'parentCategoryIds';
+        }
 
-        $rawValues = $list->getGroupByRelationValues($field, true);
+        $values = [];
+        $rawValues = $list->getGroupByValues($field, true);
+        foreach ($rawValues as $v) {
+            $explode = explode(',', $v['value']);
+            foreach ($explode as $e) {
+                if (!empty($e)) {
+                    if ($values[$e]) {
+                        $count = (int)$values[$e]['count'] + (int)$v['count'];
+                    } else {
+                        $count = (int)$v['count'];
+                    }
+                    $values[$e] = ['value' => $e, 'count' => (int)$count];
+                }
+            }
+        }
+
         $objects = [];
-
-        foreach ($rawValues as $value) {
+        foreach ($values as $value) {
             $object = Concrete::getById($value['value']);
             if ($object instanceof Concrete) {
                 $objects[] = $object;
@@ -40,10 +58,11 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         }
 
         return [
-            'type' => 'relational_multiselect',
+            'type' => 'category_select',
             'label' => $condition->getLabel(),
             'currentValues' => $currentFilter[$field],
-            'values' => $rawValues,
+            'includeSubCategories' => $includeSubCategories,
+            'values' => $values,
             'objects' => $objects,
             'fieldName' => $field,
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
@@ -55,26 +74,29 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
-        $field = $condition->getConfiguration()['field'];
-
-        $values = $parameterBag->get($field);
-
-        if (empty($values)) {
-            $values = $condition->getConfiguration()['preSelects'];
+        $field = 'categoryIds';
+        $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
+        if($includeSubCategories === true) {
+            $field = 'parentCategoryIds';
         }
 
-        $currentFilter[$field] = $values;
+        $value = $parameterBag->get($field);
 
-        if ($values === static::EMPTY_STRING) {
-            $values = null;
-        }
+        $currentFilter[$field] = $value;
 
-        if (!empty($values)) {
-            $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
-
-            if (!empty($values)) {
-                $list->addRelationCondition(new InCondition('dest', $values), $fieldName);
+        if ($value === static::EMPTY_STRING) {
+            $value = null;
+        } elseif (empty($value)) {
+            $preSelectValue = $condition->getConfiguration()['preSelect'];
+            if (is_numeric($preSelectValue)) {
+                $value = $preSelectValue;
             }
+        }
+
+        if (!empty($value)) {
+            $value = '%,' . trim($value) . ',%';
+            $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
+            $list->addCondition(new LikeCondition($field, 'both', $value), $fieldName);
         }
 
         return $currentFilter;

@@ -13,10 +13,11 @@
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class FilterConditionSelectType extends AbstractType
+final class FilterConditionCategorySelectType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -25,7 +26,8 @@ final class FilterConditionSelectType extends AbstractType
     {
         $builder
             ->add('field', TextType::class)
-            ->add('preSelect', TextType::class);
+            ->add('preSelect', TextType::class)
+            ->add('includeSubCategories', CheckboxType::class);
     }
 
     /**
@@ -33,6 +35,6 @@ final class FilterConditionSelectType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_filter_condition_type_select';
+        return 'coreshop_filter_condition_type_category_select';
     }
 }

@@ -1,4 +1,4 @@
-{% if values|length > 0 %}
+{% if objects|length > 0 %}
 <div class="list-group">
     {% if label %}
         <div class="list-group-item">
@@ -8,10 +8,10 @@
 
     <div class="list-group-item">
         <div class="filter-group filter-group-checkbox">
-            {% for value in values if value %}
+            {% for value in objects if value %}
                 <label class="checkbox">
-                    <input name="{{ fieldName }}[]" type="checkbox" value="{{ value['value'] }}" {% if currentValues is iterable and value['value'] in currentValues %} checked="checked" {% endif %}>
-                    {{ value['value']|trans }} {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
+                    <input name="{{ fieldName }}[]" type="checkbox" value="{{ value.id }}" {% if currentValues is iterable and value.id in currentValues %} checked="checked" {% endif %}>
+                    {{ value.getName }}
                 </label>
             {% endfor %}
         </div>
