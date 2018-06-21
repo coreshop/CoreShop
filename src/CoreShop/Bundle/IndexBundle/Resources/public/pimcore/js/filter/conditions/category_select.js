@@ -15,6 +15,18 @@ pimcore.registerNS('coreshop.filter.conditions.category_select');
 coreshop.filter.conditions.category_select = Class.create(coreshop.filter.conditions.abstract, {
     type: 'category_select',
 
+    getDefaultItems: function () {
+        return [
+            {
+                xtype: 'textfield',
+                name: 'label',
+                width: 400,
+                fieldLabel: t('label'),
+                value: this.data.label
+            }
+        ];
+    },
+
     getItems: function () {
 
         var catValue = this.data.configuration.preSelect;

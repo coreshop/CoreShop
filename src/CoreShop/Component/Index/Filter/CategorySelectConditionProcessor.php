@@ -17,7 +17,6 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\DataObject\QuantityValue\Unit;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CategorySelectConditionProcessor implements FilterConditionProcessorInterface
@@ -69,8 +68,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
             'includeSubCategories' => $includeSubCategories,
             'values' => $values,
             'objects' => $objects,
-            'fieldName' => $field,
-            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
+            'fieldName' => $field
         ];
     }
 
