@@ -33,21 +33,26 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
             $field = 'parentCategoryIds';
         }
 
-        $values = [];
+        $parsedValues = [];
         $rawValues = $list->getGroupByValues($field, true);
+
         foreach ($rawValues as $v) {
             $explode = explode(',', $v['value']);
             foreach ($explode as $e) {
-                if (!empty($e)) {
-                    if ($values[$e]) {
-                        $count = (int)$values[$e]['count'] + (int)$v['count'];
-                    } else {
-                        $count = (int)$v['count'];
-                    }
-                    $values[$e] = ['value' => $e, 'count' => (int)$count];
+                if (empty($e)) {
+                    continue;
                 }
+                if ($parsedValues[$e]) {
+                    $count = (int)$parsedValues[$e]['count'] + (int)$v['count'];
+                } else {
+                    $count = (int)$v['count'];
+                }
+                $parsedValues[$e] = ['value' => $e, 'count' => (int)$count];
+
             }
         }
+
+        $values = array_values($parsedValues);
 
         $objects = [];
         foreach ($values as $value) {
