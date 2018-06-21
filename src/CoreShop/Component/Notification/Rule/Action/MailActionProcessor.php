@@ -23,6 +23,10 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
      */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
     {
+        if (!array_key_exists('doNotSendToDesignatedRecipient', $configuration)) {
+            $configuration['doNotSendToDesignatedRecipient'] = false;
+        }
+
         $language = null;
         $mails = $configuration['mails'];
 
@@ -47,7 +51,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
                 $mail = new Mail();
                 $params['object'] = $subject;
 
-                if ($recipient) {
+                if ($recipient && !$configuration['doNotSendToDesignatedRecipient']) {
                     $mail->setTo($recipient);
                 }
 

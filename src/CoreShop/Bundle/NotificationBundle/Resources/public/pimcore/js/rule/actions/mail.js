@@ -49,6 +49,13 @@ coreshop.notification.rule.actions.mail = Class.create(coreshop.rules.actions.ab
 
         }.bind(this));
 
+        this.doNotSendToDesignatedRecipient = Ext.create({
+            fieldLabel: t('coreshop_mail_rule_do_not_send_to_designated_recipient'),
+            xtype: 'checkbox',
+            name: 'doNotSendToDesignatedRecipient',
+            checked: this.data ? this.data.doNotSendToDesignatedRecipient : false
+        });
+
         this.form = new Ext.form.FieldSet({
             items: [
                 {
@@ -60,7 +67,8 @@ coreshop.notification.rule.actions.mail = Class.create(coreshop.rules.actions.ab
                         bodyStyle: 'padding:10px;'
                     },
                     items: tabs
-                }
+                },
+                this.doNotSendToDesignatedRecipient
             ],
             getValues: this.getValues.bind(this)
         });
@@ -76,7 +84,8 @@ coreshop.notification.rule.actions.mail = Class.create(coreshop.rules.actions.ab
         });
 
         return {
-            mails: values
+            mails: values,
+            doNotSendToDesignatedRecipient: this.doNotSendToDesignatedRecipient.getValue()
         };
     }
 });

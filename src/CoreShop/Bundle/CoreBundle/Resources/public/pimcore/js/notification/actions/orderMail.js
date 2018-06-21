@@ -22,6 +22,13 @@ coreshop.notification.rule.actions.orderMail = Class.create(coreshop.notificatio
         var form = $super(),
             me = this;
 
+        this.doNotSendToDesignatedRecipient = Ext.create({
+            fieldLabel: t('coreshop_mail_rule_do_not_send_to_designated_recipient'),
+            xtype: 'checkbox',
+            name: 'doNotSendToDesignatedRecipient',
+            checked: this.data ? this.data.doNotSendToDesignatedRecipient : false
+        });
+
         this.sendInvoices = Ext.create({
             fieldLabel: t('coreshop_mail_rule_send_invoices'),
             xtype: 'checkbox',
@@ -46,7 +53,8 @@ coreshop.notification.rule.actions.orderMail = Class.create(coreshop.notificatio
 
         values = Ext.applyIf({
             'sendInvoices': this.sendInvoices.getValue(),
-            'sendShipments': this.sendShipments.getValue()
+            'sendShipments': this.sendShipments.getValue(),
+            'doNotSendToDesignatedRecipient': this.doNotSendToDesignatedRecipient.getValue()
         }, values);
 
         return values;

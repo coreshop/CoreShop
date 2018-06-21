@@ -121,7 +121,9 @@ class OrderMailProcessor implements OrderMailProcessorInterface
 
         $mail = new Mail();
 
-        $this->addRecipients($mail, $emailDocument, $recipient);
+        if (!isset($params['doNotSendToDesignatedRecipient']) || !$params['doNotSendToDesignatedRecipient']) {
+            $this->addRecipients($mail, $emailDocument, $recipient);
+        }
 
         $mail->setDocument($emailDocument);
         $mail->setParams($emailParameters);

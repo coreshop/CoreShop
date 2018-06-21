@@ -38,6 +38,11 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
      */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
     {
+        if (!array_key_exists('doNotSendToDesignatedRecipient', $configuration)) {
+            $configuration['doNotSendToDesignatedRecipient'] = false;
+        }
+
+        $params['doNotSendToDesignatedRecipient'] = $configuration['doNotSendToDesignatedRecipient'];
         $order = null;
 
         if ($subject instanceof OrderInterface) {
