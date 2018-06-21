@@ -105,3 +105,4 @@ services:
            - '@coreshop.renderer.order.pdf'
            - '@coreshop.object_note_service'
            - '@coreshop.store.theme_helper'
+           - '@event_dispatcher'

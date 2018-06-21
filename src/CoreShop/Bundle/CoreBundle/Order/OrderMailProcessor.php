@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Order;
 
+use CoreShop\Bundle\CoreBundle\Event\OrderMailEvent;
+use CoreShop\Bundle\CoreBundle\Events;
 use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
@@ -28,6 +30,7 @@ use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Monolog\Logger;
 use Pimcore\Mail;
 use Pimcore\Model\Document;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
 {
@@ -67,6 +70,11 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $themeHelper;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param Logger $logger
      * @param MoneyFormatterInterface $priceFormatter
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
@@ -74,6 +82,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
      * @param OrderDocumentRendererInterface $orderDocumentRenderer
      * @param NoteServiceInterface $noteService
      * @param ThemeHelperInterface $themeHelper
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         Logger $logger,
@@ -82,7 +91,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderShipmentRepositoryInterface $shipmentRepository,
         OrderDocumentRendererInterface $orderDocumentRenderer,
         NoteServiceInterface $noteService,
-        ThemeHelperInterface $themeHelper
+        ThemeHelperInterface $themeHelper,
+        EventDispatcherInterface $eventDispatcher
     )
     {
         $this->logger = $logger;
@@ -92,6 +102,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $this->orderDocumentRenderer = $orderDocumentRenderer;
         $this->noteService = $noteService;
         $this->themeHelper = $themeHelper;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -155,8 +166,21 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             }
         }
 
-        $this->themeHelper->useTheme($order->getStore()->getTemplate(), function() use ($mail) {
-            $mail->send();
+        $orderMailEvent = new OrderMailEvent(
+            $order,
+            $emailDocument,
+            $mail,
+            $params
+        );
+
+        $this->themeHelper->useTheme($order->getStore()->getTemplate(), function() use ($mail, $orderMailEvent) {
+            $this->eventDispatcher->dispatch(Events::PRE_ORDER_MAIL_SEND, $orderMailEvent);
+
+            if ($orderMailEvent->getShouldSendMail()) {
+                $mail->send();
+            }
+
+            $this->eventDispatcher->dispatch(Events::POST_ORDER_MAIL_SEND, $orderMailEvent);
         });
 
         $this->addOrderNote($order, $emailDocument, $mail);
