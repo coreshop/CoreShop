@@ -103,6 +103,5 @@ services:
            - '@coreshop.repository.order_invoice'
            - '@coreshop.repository.order_shipment'
            - '@coreshop.renderer.order.pdf'
-           - '@coreshop.object_note_service'
            - '@coreshop.store.theme_helper'
-           - '@event_dispatcher'
+           - '@coreshop.mail_processor'

@@ -1,23 +1,17 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Event;
+namespace CoreShop\Bundle\PimcoreBundle\Event;
 
-use CoreShop\Component\Order\Model\OrderInterface;
-use Pimcore\Mail;
+use CoreShop\Component\Pimcore\Mail;
 use Pimcore\Model\Document\Email;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
-final class OrderMailEvent extends Event
+final class MailEvent extends GenericEvent
 {
-    /**
-     * @var OrderInterface
-     */
-    protected $order;
-
     /**
      * @var Email
      */
-    protected $orderEmailDocument;
+    protected $emailDocument;
 
     /**
      * @var Mail
@@ -35,33 +29,26 @@ final class OrderMailEvent extends Event
     protected $shouldSendMail = true;
 
     /**
-     * @param OrderInterface $order
-     * @param Email $orderEmailDocument
+     * @param $subject
+     * @param Email $emailDocument
      * @param Mail $mail
      * @param array $params
      */
-    public function __construct(OrderInterface $order, Email $orderEmailDocument, Mail $mail, array $params = [])
+    public function __construct($subject, Email $emailDocument, Mail $mail, array $params = [])
     {
-        $this->order = $order;
-        $this->orderEmailDocument = $orderEmailDocument;
+        parent::__construct($subject);
+
+        $this->emailDocument = $emailDocument;
         $this->mail = $mail;
         $this->params = $params;
     }
 
     /**
-     * @return OrderInterface
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
      * @return Email
      */
-    public function getOrderEmailDocument()
+    public function getEmailDocument()
     {
-        return $this->orderEmailDocument;
+        return $this->emailDocument;
     }
 
     /**
