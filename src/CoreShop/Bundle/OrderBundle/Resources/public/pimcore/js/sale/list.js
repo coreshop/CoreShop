@@ -259,15 +259,60 @@ coreshop.order.sale.list = Class.create({
             }
         });
 
+        var filterStore = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: '/admin/coreshop/orderlist/get-filter'
+            }),
+            reader: new Ext.data.JsonReader({}, [
+                {name: 'id'},
+                {name: 'name'}
+            ]),
+            listeners: {
+                load: function (store) {
+                    var rec = {id: 'none', name: t('coreshop_order_list_filter_empty')};
+                    store.insert(0, rec);
+                }.bind(this)
+            }
+        });
+
+        filterStore.load();
+
         var searchLayout = this.search.getLayout();
         if (searchLayout) {
             searchLayout.on('afterLayout', function (layout) {
                 layout.setTitle(t('coreshop_' + this.type + '_manage'));
                 layout.setIconCls('coreshop_icon_' + this.type);
+
                 var gridPanels = layout.query('gridpanel');
                 if (gridPanels.length > 0) {
                     var grid = gridPanels[0];
                     if (!grid._coreshop_listener) {
+
+                        var label = new Ext.Toolbar.TextItem({
+                            text: t('coreshop_order_list_filter')
+                        });
+
+                        layout.down('toolbar').insert(2, [
+                            label,
+                            {
+                                xtype: 'combo',
+                                value: 'none',
+                                store: filterStore,
+                                valueField: 'id',
+                                displayField: 'name',
+                                queryMode: 'local',
+                                disabled: false,
+                                name: 'coreshopFilter',
+                                listeners: {
+                                    'change': function (field) {
+                                        grid.getStore().getProxy().setExtraParam('coreshop_filter', field.getValue());
+                                        layout.down('pagingtoolbar').moveFirst();
+                                    }.bind(this)
+                                }
+                            }
+                        ]);
+
                         grid._coreshop_listener = true;
                         grid.on('beforeedit', function (grid, cell) {
                             if (cell.column.hasEditor() === false) {

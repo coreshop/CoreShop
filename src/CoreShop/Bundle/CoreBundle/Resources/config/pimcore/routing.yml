@@ -28,6 +28,21 @@ coreshop_admin_portlet_get_data:
     methods: [GET]
     defaults:  { _controller: coreshop.admin_controller.portlets:getPortletDataAction}
 
+coreshop_admin_order_list_get_filter:
+    path: /%coreshop.admin.route.base%/orderlist/get-filter
+    methods: [GET]
+    defaults:  { _controller: coreshop.admin_controller.order_list:getOrderListFiltersAction}
+
+coreshop_admin_order_list_get_bulk:
+    path: /%coreshop.admin.route.base%/orderlist/get-bulk
+    methods: [GET]
+    defaults:  { _controller: coreshop.admin_controller.order_list:getOrderListBulkAction}
+
+coreshop_admin_order_list_apply_bulk:
+    path: /%coreshop.admin.route.base%/orderlist/apply-bulk
+    methods: [POST]
+    defaults:  { _controller: coreshop.admin_controller.order_list:applyOrderListBulkAction}
+
 coreshop_admin_settings_get:
     path: /%coreshop.admin.route.base%/settings/get
     methods: [GET]
