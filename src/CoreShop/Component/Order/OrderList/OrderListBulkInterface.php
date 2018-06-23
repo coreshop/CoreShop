@@ -30,7 +30,7 @@ interface OrderListBulkInterface
 
     /**
      * @param array $processIds
-     * @return DataObject\Listing
+     * @return string
      */
     public function apply(array $processIds);
 
