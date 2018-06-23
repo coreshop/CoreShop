@@ -1,7 +1,7 @@
 # CoreShop Order List Bulk Actions
 
-This comes in handy if you need some special filtered data in your Order List.
-Your Customer is able to filter orders on specific conditions.
+Bulk Actions allows you to process orders rapidly.
+For Example: Apply shipment state "shipped" to all selected orders at once.
 
 ![filter](http://g.recordit.co/QCN7emXQ8L.gif)
 
