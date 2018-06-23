@@ -1,4 +1,4 @@
-# CoreShop Order List Filter
+# CoreShop Order List Bulk Actions
 
 This comes in handy if you need some special filtered data in your Order List.
 Your Customer is able to filter orders on specific conditions.
