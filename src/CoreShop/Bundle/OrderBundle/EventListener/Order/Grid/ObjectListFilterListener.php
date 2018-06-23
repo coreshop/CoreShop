@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\EventListener\Order\Grid;
+namespace CoreShop\Bundle\OrderBundle\EventListener\Order\Grid;
 
-use CoreShop\Component\Core\OrderList\OrderListFilterInterface;
+use CoreShop\Component\Order\OrderList\OrderListFilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\EventDispatcher\GenericEvent;

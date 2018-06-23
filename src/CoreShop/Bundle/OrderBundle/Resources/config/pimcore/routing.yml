@@ -60,6 +60,22 @@ coreshop_order_find:
     path: /%coreshop.admin.route.base%/order/find
     defaults: { _controller: 'coreshop.pimcore_controller.order:findSaleAction'}
 
+##### ORDER LIST
+coreshop_admin_order_list_get_filter:
+    path: /%coreshop.admin.route.base%/orderlist/get-filter/{saleType}
+    methods: [GET]
+    defaults:  { _controller: coreshop.pimcore_controller.order_list:getOrderListFiltersAction}
+
+coreshop_admin_order_list_get_bulk:
+    path: /%coreshop.admin.route.base%/orderlist/get-bulk/{saleType}
+    methods: [GET]
+    defaults:  { _controller: coreshop.pimcore_controller.order_list:getOrderListBulkAction}
+
+coreshop_admin_order_list_apply_bulk:
+    path: /%coreshop.admin.route.base%/orderlist/apply-bulk
+    methods: [POST]
+    defaults:  { _controller: coreshop.pimcore_controller.order_list:applyOrderListBulkAction}
+
 ##### ORDER PAYMENT
 coreshop_order_payment_add:
     path: /%coreshop.admin.route.base%/order-payment/add-payment

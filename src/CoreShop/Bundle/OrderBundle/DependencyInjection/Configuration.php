@@ -17,6 +17,7 @@ use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderListController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderPaymentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
@@ -224,6 +225,7 @@ final class Configuration implements ConfigurationInterface
                                             ->addDefaultsIfNotSet()
                                             ->children()
                                                 ->scalarNode('default')->defaultValue(OrderController::class)->end()
+                                                ->scalarNode('list')->defaultValue(OrderListController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
                                                 ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
                                                 ->scalarNode('comment')->defaultValue(OrderCommentController::class)->end()

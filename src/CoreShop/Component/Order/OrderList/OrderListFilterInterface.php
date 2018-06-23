@@ -10,13 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\OrderList;
+namespace CoreShop\Component\Order\OrderList;
 
 use Pimcore\Model\DataObject;
 
 interface OrderListFilterInterface
 {
+    const SALE_TYPE_ORDER = 'order';
+
+    const SALE_TYPE_QUOTE = 'quote';
+
     /**
+     * The name of filter action.
+     * This value will be translated via backend translator,
+     * so it's good practice to choose a symfony standard translation keys like "coreshop.order_filter.your_filter_name".
+     *
      * @return string
      */
     public function getName();
@@ -27,4 +35,12 @@ interface OrderListFilterInterface
      * @return DataObject\Listing
      */
     public function filter(DataObject\Listing $list, array $context);
+
+    /**
+     * Define if filter for current sale type.
+     *
+     * @param string $saleType
+     * @return bool
+     */
+    public function typeIsValid($saleType = self::SALE_TYPE_ORDER);
 }

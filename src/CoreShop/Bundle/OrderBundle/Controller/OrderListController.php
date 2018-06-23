@@ -10,28 +10,35 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Controller;
+namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
-use CoreShop\Component\Core\OrderList\OrderListBulkInterface;
-use CoreShop\Component\Core\OrderList\OrderListFilterInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Component\Order\OrderList\OrderListBulkInterface;
+use CoreShop\Component\Order\OrderList\OrderListFilterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderListController extends AdminController
+class OrderListController extends PimcoreController
 {
     /**
+     * @param $saleType
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getOrderListFiltersAction()
+    public function getOrderListFiltersAction($saleType)
     {
         $orderListFilterRepository = $this->get('coreshop.registry.order_list_filter');
+        $trans = $this->get('translator');
 
         $services = [];
         /** @var OrderListFilterInterface $service */
         foreach ($orderListFilterRepository->all() as $id => $service) {
+
+            if ($service->typeIsValid($saleType) !== true) {
+                continue;
+            }
+
             $services[] = [
                 'id'   => $id,
-                'name' => $service->getName()
+                'name' => $trans->trans($service->getName(), [], 'admin')
             ];
         }
 
@@ -39,18 +46,25 @@ class OrderListController extends AdminController
     }
 
     /**
+     * @param $saleType
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getOrderListBulkAction()
+    public function getOrderListBulkAction($saleType)
     {
         $orderListFilterRepository = $this->get('coreshop.registry.order_list_bulk');
+        $trans = $this->get('translator');
 
         $services = [];
         /** @var OrderListBulkInterface $service */
         foreach ($orderListFilterRepository->all() as $id => $service) {
+
+            if ($service->typeIsValid($saleType) !== true) {
+                continue;
+            }
+
             $services[] = [
                 'id'   => $id,
-                'name' => $service->getName()
+                'name' => $trans->trans($service->getName(), [], 'admin')
             ];
         }
 

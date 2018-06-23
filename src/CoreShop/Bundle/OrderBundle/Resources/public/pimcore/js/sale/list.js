@@ -16,6 +16,7 @@ coreshop.order.sale.list = Class.create({
     type: '',
     search: null,
     grid: null,
+    gridPaginator: null,
     gridConfig: {},
     store: null,
     contextMenuPlugin: null,
@@ -32,8 +33,6 @@ coreshop.order.sale.list = Class.create({
                 this.setClassFolder()
             }.bind(this)
         });
-
-        this.setupContextMenuPlugin();
     },
 
     activate: function () {
@@ -259,28 +258,11 @@ coreshop.order.sale.list = Class.create({
             }
         });
 
-        var filterStore = new Ext.data.Store({
-            restful: false,
-            proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/orderlist/get-filter'
-            }),
-            reader: new Ext.data.JsonReader({}, [
-                {name: 'id'},
-                {name: 'name'}
-            ]),
-            listeners: {
-                load: function (store) {
-                    var rec = {id: 'none', name: t('coreshop_order_list_filter_empty')};
-                    store.insert(0, rec);
-                }.bind(this)
-            }
-        });
-
-        filterStore.load();
-
         var searchLayout = this.search.getLayout();
+
         if (searchLayout) {
             searchLayout.on('afterLayout', function (layout) {
+
                 layout.setTitle(t('coreshop_' + this.type + '_manage'));
                 layout.setIconCls('coreshop_icon_' + this.type);
 
@@ -289,8 +271,12 @@ coreshop.order.sale.list = Class.create({
                     var grid = gridPanels[0];
                     if (!grid._coreshop_listener) {
 
+                        grid._coreshop_listener = true;
+                        this.setGridPaginator(layout);
+                        this.setupContextMenuPlugin();
+
                         var label = new Ext.Toolbar.TextItem({
-                            text: t('coreshop_order_list_filter')
+                            text: t('coreshop_order_list_filter') + ':'
                         });
 
                         layout.down('toolbar').insert(2, [
@@ -298,7 +284,8 @@ coreshop.order.sale.list = Class.create({
                             {
                                 xtype: 'combo',
                                 value: 'none',
-                                store: filterStore,
+                                store: this.getFilterStore(),
+                                flex: 1,
                                 valueField: 'id',
                                 displayField: 'name',
                                 queryMode: 'local',
@@ -307,13 +294,12 @@ coreshop.order.sale.list = Class.create({
                                 listeners: {
                                     'change': function (field) {
                                         grid.getStore().getProxy().setExtraParam('coreshop_filter', field.getValue());
-                                        layout.down('pagingtoolbar').moveFirst();
+                                        this.getGridPaginator().moveFirst();
                                     }.bind(this)
                                 }
                             }
                         ]);
 
-                        grid._coreshop_listener = true;
                         grid.on('beforeedit', function (grid, cell) {
                             if (cell.column.hasEditor() === false) {
                                 return false;
@@ -347,5 +333,54 @@ coreshop.order.sale.list = Class.create({
 
     open: function (id, callback) {
         coreshop.order.helper.openSale(id, this.type, callback);
+    },
+
+    setGridPaginator: function (layout) {
+        this.gridPaginator = layout.down('pagingtoolbar');
+    },
+
+    getGridPaginator: function () {
+        return this.gridPaginator;
+    },
+
+    getFilterStore: function () {
+
+        var filterStore = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: '/admin/coreshop/orderlist/get-filter/' + this.type
+            }),
+            reader: new Ext.data.JsonReader({}, [
+                {name: 'id'},
+                {name: 'name'}
+            ]),
+            listeners: {
+                load: function (store) {
+                    var rec = {id: 'none', name: t('coreshop_order_list_filter_empty')};
+                    store.insert(0, rec);
+                }.bind(this)
+            }
+        });
+
+        filterStore.load();
+        return filterStore;
+    },
+
+    getBulkStore: function () {
+
+        var bulkStore = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: '/admin/coreshop/orderlist/get-bulk/' + this.type
+            }),
+            reader: new Ext.data.JsonReader({}, [
+                {name: 'id'},
+                {name: 'name'}
+            ])
+        });
+
+        bulkStore.load();
+        return bulkStore;
     }
+
 });

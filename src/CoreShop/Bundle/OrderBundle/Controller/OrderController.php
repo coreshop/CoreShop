@@ -357,12 +357,15 @@ class OrderController extends AbstractSaleDetailController
         return $shipmentArray;
     }
 
+    /**
+     * @param SaleInterface $sale
+     * @return array
+     */
     protected function getSummary(SaleInterface $sale)
     {
         $summary = parent::getSummary($sale);
         return $summary;
     }
-
 
     /**
      * @return ProcessableInterface

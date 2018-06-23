@@ -2,9 +2,13 @@ pimcore.registerNS('coreshop.sales.plugin.salesListContextMenu');
 coreshop.sales.plugin.salesListContextMenu = Class.create({
     openerCallback: null,
     allowedClasses: [],
-    initialize: function (openerCallback, allowedClasses) {
+    bulkStore: null,
+    gridPaginator: null,
+    initialize: function (openerCallback, allowedClasses, bulkStore, gridPaginator) {
         this.openerCallback = openerCallback;
         this.allowedClasses = allowedClasses;
+        this.bulkStore = bulkStore;
+        this.gridPaginator = gridPaginator;
         pimcore.plugin.broker.registerPlugin(this);
     },
     prepareOnRowContextmenu: function (menu, grid, selectedRows) {
@@ -48,42 +52,39 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
             }));
         }
 
-        this.getBulkStore().on('load', function () {
+        if (this.bulkStore !== undefined) {
 
-            var bulkItems = [];
-            for (var i = 0; i < this.getCount(); i++) {
-                bulkItems.push({
-                    text: this.getAt(i).get('name'),
-                    iconCls: 'pimcore_icon_table',
-                    name: this.getAt(i).get('id'),
-                    handler: function (item) {
-                        _.applyBulk(grid, item.name, selectedRows)
-                    }
-                });
+            var addBulksToMenu = function () {
+                var bulkItems = [];
+                this.bulkStore.each(function (rec) {
+                    bulkItems.push({
+                        text: rec.get('name'),
+                        iconCls: 'pimcore_icon_table',
+                        name: rec.get('id'),
+                        handler: function (item) {
+                            this.applyBulk(grid, item.name, selectedRows)
+                        }.bind(this)
+                    });
+                }.bind(this));
+
+                if (bulkItems.length > 0) {
+                    menu.add({
+                        text: t('coreshop_order_list_bulk') + ' (' + selectedRows.length + ' ' + t(selectedRows.length === 1 ? 'item' : 'items') + ')',
+                        iconCls: 'pimcore_icon_table pimcore_icon_overlay_go',
+                        hideOnClick: false,
+                        menu: bulkItems
+                    });
+                }
+            }.bind(this);
+
+            if (this.bulkStore.isLoading() || !this.bulkStore.isLoaded()) {
+                this.bulkStore.on('load', function () {
+                    addBulksToMenu();
+                }.bind(this));
+            } else {
+                addBulksToMenu();
             }
-
-            menu.add({
-                text: t('coreshop_order_list_bulk'),
-                iconCls: 'pimcore_icon_table pimcore_icon_overlay_go',
-                hideOnClick: false,
-                menu: bulkItems
-            });
-
-        }).load();
-
-    },
-
-    getBulkStore: function () {
-        return new Ext.data.Store({
-            restful: false,
-            proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/orderlist/get-bulk'
-            }),
-            reader: new Ext.data.JsonReader({}, [
-                {name: 'id'},
-                {name: 'name'}
-            ])
-        });
+        }
     },
 
     applyBulk: function (grid, bulkId, selectedRows) {
@@ -109,7 +110,7 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
             }.bind(this),
             failure: function (response) {
                 grid.setLoading(false);
-                // do nothing: pimcore will through a error window.
+                // do nothing: pimcore will throw a error window.
             }.bind(this)
         });
 
@@ -131,9 +132,9 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
             buttons: [{
                 text: t('OK'),
                 handler: function () {
-                    //@todo: reload grid.
+                    this.gridPaginator.moveFirst();
                     win.close();
-                }
+                }.bind(this)
             }]
         });
 

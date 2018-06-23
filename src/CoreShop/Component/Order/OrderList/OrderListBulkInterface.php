@@ -10,13 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\OrderList;
+namespace CoreShop\Component\Order\OrderList;
 
 use Pimcore\Model\DataObject;
 
 interface OrderListBulkInterface
 {
+    const SALE_TYPE_ORDER = 'order';
+
+    const SALE_TYPE_QUOTE = 'quote';
+
     /**
+     * The name of bulk action.
+     * This value will be translated via backend translator,
+     * so it's good practice to choose a symfony standard translation keys like "coreshop.order_bulk.your_bulk_name"
      * @return string
      */
     public function getName();
@@ -26,4 +33,12 @@ interface OrderListBulkInterface
      * @return DataObject\Listing
      */
     public function apply(array $processIds);
+
+    /**
+     * Define if filter for current sale type.
+     *
+     * @param string $saleType
+     * @return bool
+     */
+    public function typeIsValid($saleType = self::SALE_TYPE_ORDER);
 }

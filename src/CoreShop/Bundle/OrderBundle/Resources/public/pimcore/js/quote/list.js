@@ -19,7 +19,9 @@ coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map.coreshop.quote]
+            [coreshop.class_map.coreshop.quote],
+            this.getBulkStore(),
+            this.getGridPaginator()
         );
     },
 

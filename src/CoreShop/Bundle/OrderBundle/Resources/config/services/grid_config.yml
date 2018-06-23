@@ -13,3 +13,24 @@ services:
             - '@coreshop.context.locale'
         tags:
             - { name: pimcore.data_object.grid_column_config.operator_factory, id: PriceFormatter }
+
+    coreshop.data_object.grid_column_config.list.listener.before_filter_prepare:
+        class: CoreShop\Bundle\OrderBundle\EventListener\Order\Grid\ObjectListFilterListener
+        arguments:
+            - '@coreshop.registry.order_list_filter'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }
+
+    coreshop.registry.order_list_filter:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        public: true
+        arguments:
+            - 'CoreShop\Component\Order\OrderList\OrderListFilterInterface'
+            - 'coreshop-order-list-filter'
+
+    coreshop.registry.order_list_bulk:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        public: true
+        arguments:
+            - 'CoreShop\Component\Order\OrderList\OrderListBulkInterface'
+            - 'coreshop-order-list-bulk'

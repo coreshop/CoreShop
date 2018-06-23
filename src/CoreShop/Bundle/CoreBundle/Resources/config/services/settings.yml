@@ -19,10 +19,3 @@ services:
           - '@coreshop.resource_controller.view_handler'
         calls:
           - [setContainer, ['@service_container']]
-
-    coreshop.admin_controller.order_list:
-        class: CoreShop\Bundle\CoreBundle\Controller\OrderListController
-        arguments:
-          - '@coreshop.resource_controller.view_handler'
-        calls:
-          - [setContainer, ['@service_container']]
