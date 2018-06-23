@@ -44,7 +44,7 @@ class DemoBulk implements OrderListBulkInterface
         $message = '';
         foreach ($processIds as $id) {
             // do your bulk work here!
-            $message .= sprintf('- order with id %s successfully applied state "demo"', $id) . '<br>';
+            $message .= sprintf('- order with id %s successfully applied state "demo".%s', $id, '<br>');
         }
 
         return $message;
