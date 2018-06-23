@@ -8,9 +8,9 @@ For Example: Apply shipment state "shipped" to all selected orders at once.
 ## Register Filter Service
 
 ```yml
-AppBundle\CoreShop\OrderList\Filter\DemoFilter:
+AppBundle\CoreShop\OrderList\Bulk\DemoBulk:
     tags:
-        - { name: coreshop.order_list_filter, type: demo }
+        - { name: coreshop.order_list_bulk, type: demo }
 ```
 
 ## Create PHP Class
