@@ -73,10 +73,6 @@ coreshop_order_payment_update_state:
     path: /%coreshop.admin.route.base%/order-payment/update-payment-state
     defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updateStateAction'}
 
-coreshop_order_get_payment_providers:
-    path: /%coreshop.admin.route.base%/order-payment/get-payment-providers
-    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:getPaymentProvidersAction'}
-
 ##### ORDER INVOICE
 coreshop_order_invoice_get_processable_items:
     path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items

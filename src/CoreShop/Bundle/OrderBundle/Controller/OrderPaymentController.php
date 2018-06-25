@@ -83,24 +83,6 @@ class OrderPaymentController extends PimcoreController
     }
 
     /**
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getPaymentProvidersAction()
-    {
-        $providers = $this->getPaymentProviderRepository()->findAll();
-        $result = [];
-        foreach ($providers as $provider) {
-            if ($provider instanceof PaymentProviderInterface) {
-                $result[] = [
-                    'name' => $provider->getTitle(),
-                    'id' => $provider->getId(),
-                ];
-            }
-        }
-        return $this->viewHandler->handle(['success' => true, 'data' => $result]);
-    }
-
-    /**
      * @param Request $request
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      * @throws \Doctrine\ORM\OptimisticLockException
