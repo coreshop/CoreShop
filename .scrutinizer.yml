@@ -1,32 +1,32 @@
 inherit: true
 build:
     nodes:
-        coverage:
-            requires:
-                - branch: master
-            environment:
-                mysql: 5.6
-                php:
-                    version: '7.1'
-                variables:
-                    PIMCORE_ENVIRONMENT: test
-                    PIMCORE_TEST_DB_DSN: mysql://root@localhost/coreshop_test
-                    CORESHOP_TEST: 1
-                    CORESHOP_RUN_BEHAT: 1
-            cache:
-                directories:
-                    - vendor/
-                    - ~/.npm
-            dependencies:
-                after:
-                    - ~/build/etc/scrutinizer/install
-            tests:
-                override:
-                    -
-                      command: 'vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.coverage.yml.dist'
-                      coverage:
-                          file: 'lib/CoreShop/build/coverage.clover'
-                          format: 'clover'
+#        coverage:
+#            requires:
+#                - branch: master
+#            environment:
+#                mysql: 5.6
+#                php:
+#                    version: '7.1'
+#                variables:
+#                    PIMCORE_ENVIRONMENT: test
+#                    PIMCORE_TEST_DB_DSN: mysql://root@localhost/coreshop_test
+#                    CORESHOP_TEST: 1
+#                    CORESHOP_RUN_BEHAT: 1
+#            cache:
+#                directories:
+#                    - vendor/
+#                    - ~/.npm
+#            dependencies:
+#                after:
+#                    - ~/build/etc/scrutinizer/install
+#            tests:
+#                override:
+#                    -
+#                      command: 'vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.coverage.yml.dist'
+#                      coverage:
+#                          file: 'lib/CoreShop/build/coverage.clover'
+#                          format: 'clover'
         analysis:
             dependencies:
                 after:
@@ -101,6 +101,7 @@ filter:
     - "pimcore/"
   excluded_paths:
     - "tests/"
+    - "vendor/"
     - "docs/"
     - "pimcore/"
     - "src/CoreShop/Behat"

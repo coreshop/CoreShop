@@ -1,6 +1,10 @@
 # Within V2
 
 ## 2.0.0-beta.2 to 2.0.0-beta.3
+ - **BC break** Signature of following interfaces changed:
+    - ```CoreShop\Component\Index\Interpreter\InterpreterInterface```: public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
+    - ```CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface```: public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
+    - ```CoreShop\Component\Index\Interpreter\RelationInterpreterInterface```: public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
 
 ## 2.0.0-beta.1 to 2.0.0-beta.2
  - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:

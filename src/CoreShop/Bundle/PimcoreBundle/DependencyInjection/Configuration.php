@@ -51,6 +51,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_tag_embeddedClass')->defaultValue('/bundles/coreshoppimcore/pimcore/js/coreExtension/tags/coreShopEmbeddedClass.js')->end()
                             ->scalarNode('core_extension_embeddedClass_container')->defaultValue('/bundles/coreshoppimcore/pimcore/js/coreExtension/embeddedClassContainer.js')->end()
                             ->scalarNode('core_extension_embeddedClass_item_container')->defaultValue('/bundles/coreshoppimcore/pimcore/js/coreExtension/embeddedClassItemContainer.js')->end()
+                            ->scalarNode('grid_plugin')->defaultValue('/bundles/coreshoppimcore/pimcore/js/plugin/grid.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')

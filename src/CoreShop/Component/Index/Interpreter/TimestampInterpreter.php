@@ -21,7 +21,7 @@ class TimestampInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config)
+    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
     {
         return Carbon::createFromTimestamp($value);
     }

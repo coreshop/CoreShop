@@ -335,12 +335,9 @@ class OrderController extends AbstractSaleDetailController
             $data['carrierName'] = $shipment->getCarrier()->getName();
 
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
-                'hold',
-                'release',
-                'prepare',
+                'create',
                 'ship',
-                'cancel',
-                'return'
+                'cancel'
             ], false);
 
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
@@ -357,12 +354,15 @@ class OrderController extends AbstractSaleDetailController
         return $shipmentArray;
     }
 
+    /**
+     * @param SaleInterface $sale
+     * @return array
+     */
     protected function getSummary(SaleInterface $sale)
     {
         $summary = parent::getSummary($sale);
         return $summary;
     }
-
 
     /**
      * @return ProcessableInterface

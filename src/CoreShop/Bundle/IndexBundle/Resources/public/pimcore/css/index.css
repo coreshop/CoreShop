@@ -30,6 +30,10 @@
     background: url(../img/filter-combined.svg) center center no-repeat !important;
 }
 
+.coreshop_filters_icon_conditions_category_select {
+    background: url(../img/filter-category-select.svg) center center no-repeat !important;
+}
+
 .coreshop_filters_preConditions {
     background: url(../img/search.svg) center center no-repeat !important;
 }

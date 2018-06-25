@@ -12,12 +12,25 @@
 
 namespace CoreShop\Component\Notification\Rule\Action;
 
+use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
-use Pimcore\Mail;
 use Pimcore\Model\Document;
 
 class MailActionProcessor implements NotificationRuleProcessorInterface
 {
+    /**
+     * @var MailProcessorInterface
+     */
+    protected $mailProcessor;
+
+    /**
+     * @param MailProcessorInterface $mailProcessor
+     */
+    public function __construct(MailProcessorInterface $mailProcessor)
+    {
+        $this->mailProcessor = $mailProcessor;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -44,17 +57,9 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
             unset($params['recipient'], $params['_locale']);
 
             if ($mailDocument instanceof Document\Email) {
-                $mail = new Mail();
                 $params['object'] = $subject;
 
-                if ($recipient) {
-                    $mail->setTo($recipient);
-                }
-
-                $mail->setDocument($mailDocument);
-                $mail->setParams($params);
-
-                $mail->send();
+                $this->mailProcessor->sendMail($mailDocument, $subject, [$recipient], [], $params);
             }
         }
     }

@@ -14,14 +14,14 @@ pimcore.registerNS('coreshop.index.interpreters.objectproperty');
 
 coreshop.index.interpreters.objectproperty = Class.create(coreshop.index.interpreters.abstract, {
 
-    getLayout: function (record) {
+    getLayout: function (record, interpreterConfig) {
         return [
             {
                 xtype: 'textfield',
                 fieldLabel: t('coreshop_index_interpreter_property'),
                 name: 'property',
                 length: 255,
-                value: record.data.interpreterConfig ? record.data.interpreterConfig.property : null,
+                value: interpreterConfig ? interpreterConfig.property : null,
                 allowBlank: false
             }
         ];

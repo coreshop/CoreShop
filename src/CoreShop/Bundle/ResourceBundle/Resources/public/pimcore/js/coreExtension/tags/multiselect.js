@@ -12,6 +12,7 @@
 
 pimcore.registerNS('coreshop.object.tags.multiselect');
 coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect, {
+    displayField: 'name',
 
     getLayoutEdit: function () {
 
@@ -33,7 +34,7 @@ coreshop.object.tags.multiselect = Class.create(pimcore.object.tags.multiselect,
             itemCls: 'object_field',
             maxHeight: 400,
             queryMode: 'local',
-            displayField: 'name',
+            displayField: this.displayField,
             valueField: 'id',
             listeners: {
                 beforerender: function () {

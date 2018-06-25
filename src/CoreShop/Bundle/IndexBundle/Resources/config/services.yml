@@ -168,6 +168,27 @@ services:
         tags:
           - { name: coreshop.index.interpreter, type: expression, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ExpressionInterpreterFormType}
 
+    coreshop.index.interpreter.nested:
+        class: CoreShop\Component\Index\Interpreter\NestedInterpreter
+        arguments:
+            - '@coreshop.registry.index.interpreter'
+        tags:
+          - { name: coreshop.index.interpreter, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
+
+    coreshop.index.interpreter.nested_localized:
+        class: CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter
+        arguments:
+            - '@coreshop.registry.index.interpreter'
+        tags:
+          - { name: coreshop.index.interpreter, type: nestedLocalized, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
+
+    coreshop.index.interpreter.nested_relational:
+        class: CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter
+        arguments:
+            - '@coreshop.registry.index.interpreter'
+        tags:
+          - { name: coreshop.index.interpreter, type: nestedRelational, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
+
     # Index Column Types
     coreshop.index.column_type.classification_store:
         class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType
@@ -228,10 +249,15 @@ services:
     #  tags:
     #    - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType}
 
-    coreshop.filter.condition_type.releational_multihref:
+    coreshop.filter.condition_type.relational_multihref:
         class: CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor
         tags:
             - { name: coreshop.filter.condition_type, type: relational_multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
+
+    coreshop.filter.condition_type.category_select:
+        class: CoreShop\Component\Index\Filter\CategorySelectConditionProcessor
+        tags:
+            - { name: coreshop.filter.condition_type, type: category_select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategorySelectType}
 
     # Index Updater Service
     coreshop.index.updater:

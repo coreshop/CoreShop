@@ -32,42 +32,11 @@ coreshop.order.order.editShipment = {
                 },
                 buttons: [
                     {
-                        text: t('save'),
+                        text: t('OK'),
                         handler: function (btn) {
-                            var form = btn.up('window').down('form').getForm();
-
-                            if (form.isValid()) {
-                                var formValues = form.getFieldValues();
-
-                                formValues['id'] = shipment.get('o_id');
-
-                                Ext.Ajax.request({
-                                    url: '/admin/coreshop/order-shipment/update-shipment',
-                                    method: 'post',
-                                    params: formValues,
-                                    callback: function (request, success, response) {
-                                        try {
-                                            response = Ext.decode(response.responseText);
-
-                                            if (response.success === true) {
-                                                window.close();
-                                                window.destroy();
-
-                                                if (callback) {
-                                                    callback(response);
-                                                }
-                                            } else if(response.success === false) {
-                                                Ext.Msg.alert(t('error'), response.message);
-                                            }
-                                        }
-                                        catch (e) {
-                                            //pimcore returns a error window. don't do this twice.
-                                        }
-                                    }
-                                });
-                            }
+                            window.close();
+                            window.destroy();
                         },
-
                         iconCls: 'pimcore_icon_apply'
                     }
                 ],
@@ -92,7 +61,7 @@ coreshop.order.order.editShipment = {
                         xtype: 'textfield',
                         fieldLabel: t('coreshop_tracking_code'),
                         name: 'trackingCode',
-                        disabled: false,
+                        disabled: true,
                         value: shipment.get('trackingCode')
                     },
                     {

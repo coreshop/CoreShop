@@ -134,6 +134,11 @@ class Dao
         $queryBuilder->from($this->model->getRelationTablename(), 'q');
 
         if ($countValues) {
+            $subQueryBuilder = new QueryBuilder($this->database);
+            $subQueryBuilder->select($this->quoteIdentifier('o_id'));
+            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+            $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
+
             if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(DISTINCT src_virtualObjectId) AS ' . $this->quoteIdentifier('count'));
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
@@ -142,10 +147,6 @@ class Dao
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
             }
 
-            $subQueryBuilder = new QueryBuilder($this->database);
-            $subQueryBuilder->select($this->quoteIdentifier('o_id'));
-            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
-            $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
             $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
             $queryBuilder->groupBy('dest');
 

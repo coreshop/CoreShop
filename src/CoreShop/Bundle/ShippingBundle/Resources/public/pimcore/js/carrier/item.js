@@ -30,14 +30,10 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         }.bind(this));
     },
 
-    getTitleText: function () {
-        return this.data.identifier;
-    },
-
     getPanel: function () {
         return new Ext.TabPanel({
             activeTab: 0,
-            title: this.data.name,
+            title: this.data.identifier,
             closable: true,
             deferredRender: false,
             forceLayout: true,

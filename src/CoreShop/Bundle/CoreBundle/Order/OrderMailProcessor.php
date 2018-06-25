@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Order;
 
+use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
 use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
@@ -19,14 +20,13 @@ use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
-use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
-use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Monolog\Logger;
-use Pimcore\Mail;
 use Pimcore\Model\Document;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
@@ -57,14 +57,14 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $orderDocumentRenderer;
 
     /**
-     * @var NoteServiceInterface
-     */
-    private $noteService;
-
-    /**
      * @var ThemeHelperInterface
      */
     private $themeHelper;
+
+    /**
+     * @var MailProcessorInterface
+     */
+    private $mailProcessor;
 
     /**
      * @param Logger $logger
@@ -72,8 +72,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
      * @param OrderDocumentRendererInterface $orderDocumentRenderer
-     * @param NoteServiceInterface $noteService
      * @param ThemeHelperInterface $themeHelper
+     * @param MailProcessorInterface $mailProcessor
      */
     public function __construct(
         Logger $logger,
@@ -81,8 +81,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderInvoiceRepositoryInterface $invoiceRepository,
         OrderShipmentRepositoryInterface $shipmentRepository,
         OrderDocumentRendererInterface $orderDocumentRenderer,
-        NoteServiceInterface $noteService,
-        ThemeHelperInterface $themeHelper
+        ThemeHelperInterface $themeHelper,
+        MailProcessorInterface $mailProcessor
     )
     {
         $this->logger = $logger;
@@ -90,8 +90,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         $this->invoiceRepository = $invoiceRepository;
         $this->shipmentRepository = $shipmentRepository;
         $this->orderDocumentRenderer = $orderDocumentRenderer;
-        $this->noteService = $noteService;
         $this->themeHelper = $themeHelper;
+        $this->mailProcessor = $mailProcessor;
     }
 
     /**
@@ -103,12 +103,14 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             return false;
         }
 
+        $attachments = [];
         $emailParameters = array_merge($order->getCustomer()->getObjectVars(), $params);
         $emailParameters['orderTotal'] = $this->priceFormatter->format($order->getTotal(), $order->getCurrency()->getIsoCode());
         $emailParameters['orderNumber'] = $order->getOrderNumber();
 
         //always add the model to email!
         $emailParameters['object'] = $order;
+        $emailParameters['storeNote'] = true;
 
         unset($emailParameters['____pimcore_cache_item__'], $emailParameters['__dataVersionTimestamp']);
 
@@ -119,21 +121,14 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             ],
         ];
 
-        $mail = new Mail();
-
-        $this->addRecipients($mail, $emailDocument, $recipient);
-
-        $mail->setDocument($emailDocument);
-        $mail->setParams($emailParameters);
-        $mail->setEnableLayoutOnPlaceholderRendering(false);
-
         if ($sendInvoices) {
             $invoices = $this->invoiceRepository->getDocumentsInState($order, InvoiceStates::STATE_COMPLETE);
+
             foreach ($invoices as $invoice) {
                 if ($invoice instanceof OrderInvoiceInterface) {
                     try {
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($invoice);
-                        $mail->attach(\Swift_Attachment::newInstance($data, 'invoice.pdf', 'application/pdf'));
+                        $attachments[] = \Swift_Attachment::newInstance($data, sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), 'application/pdf');
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching invoice to order mail. Messages was: ' . $e->getMessage(), [$e]);
                     }
@@ -143,11 +138,12 @@ class OrderMailProcessor implements OrderMailProcessorInterface
 
         if ($sendShipments) {
             $shipments = $this->shipmentRepository->getDocumentsInState($order, ShipmentStates::STATE_SHIPPED);
+
             foreach ($shipments as $shipment) {
                 if ($shipment instanceof OrderShipmentInterface) {
                     try {
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($shipment);
-                        $mail->attach(\Swift_Attachment::newInstance($data, 'shipment.pdf', 'application/pdf'));
+                        $attachments[] = \Swift_Attachment::newInstance($data, sprintf('shipment-%s.pdf', $shipment->getShipmentNumber()), 'application/pdf');
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching packing slip to order mail. Messages was: ' . $e->getMessage(), [$e]);
                     }
@@ -155,76 +151,9 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             }
         }
 
-        $this->themeHelper->useTheme($order->getStore()->getTemplate(), function () use ($mail) {
-            $mail->send();
+        return $this->themeHelper->useTheme($order->getStore()->getTemplate(), function () use ($emailDocument, $order, $recipient, $attachments, $emailParameters) {
+            return $this->mailProcessor->sendMail($emailDocument, $order, $recipient, $attachments, $emailParameters);
         });
-
-        $this->addOrderNote($order, $emailDocument, $mail);
-
-        return true;
-    }
-
-    /**
-     * @param Mail $mail
-     * @param Document\Email $emailDocument
-     * @param string|array $recipients
-     */
-    private function addRecipients($mail, $emailDocument, $recipients = '')
-    {
-        $toRecipients = [];
-        if (is_array($recipients)) {
-            foreach ($recipients as $recipient) {
-                if (is_array($recipient)) {
-                    $toRecipients[] = [$recipient[0], $recipient[1]];
-                } else {
-                    $multiRecipients = array_filter(explode(';', $recipient));
-                    foreach ($multiRecipients as $multiRecipient) {
-                        $toRecipients[] = [$multiRecipient, ''];
-                    }
-                }
-            }
-        } else {
-            $multiRecipients = array_filter(explode(';', $recipients));
-            foreach ($multiRecipients as $multiRecipient) {
-                $toRecipients[] = [$multiRecipient, ''];
-            }
-        }
-
-        //now add recipients from emailDocument, if given.
-        $storedRecipients = array_filter(explode(';', $emailDocument->getTo()));
-        foreach ($storedRecipients as $multiRecipient) {
-            $toRecipients[] = [$multiRecipient, ''];
-        }
-
-        foreach ($toRecipients as $recipient) {
-            $mail->addTo($recipient[0], $recipient[1]);
-        }
-    }
-
-    /**
-     * @param OrderInterface $order
-     * @param Document\Email $emailDocument
-     * @param Mail $mail
-     * @param array $params
-     * @return bool
-     */
-    private function addOrderNote(OrderInterface $order, Document\Email $emailDocument, Mail $mail, $params = [])
-    {
-        $noteInstance = $this->noteService->createPimcoreNoteInstance($order, Notes::NOTE_EMAIL);
-
-        $noteInstance->setTitle('Order Mail');
-
-        $noteInstance->addData('document', 'text', $emailDocument->getId());
-        $noteInstance->addData('recipient', 'text', implode(', ', (array)$mail->getTo()));
-        $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
-
-        foreach ($params as $key => $value) {
-            $noteInstance->addData($key, 'text', $value);
-        }
-
-        $this->noteService->storeNoteForEmail($noteInstance, $emailDocument);
-
-        return true;
     }
 }
 

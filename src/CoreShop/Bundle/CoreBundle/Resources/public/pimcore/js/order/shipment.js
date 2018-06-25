@@ -29,7 +29,7 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
             fieldLabel: t('coreshop_carrier'),
             mode: 'local',
             store: store,
-            displayField: 'name',
+            displayField: 'identifier',
             valueField: 'id',
             forceSelection: true,
             triggerAction: 'all',

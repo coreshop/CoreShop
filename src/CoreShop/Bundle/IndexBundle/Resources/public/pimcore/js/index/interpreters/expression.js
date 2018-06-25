@@ -14,14 +14,14 @@ pimcore.registerNS('coreshop.index.interpreters.expression');
 
 coreshop.index.interpreters.expression = Class.create(coreshop.index.interpreters.abstract, {
 
-    getLayout: function (record) {
+    getLayout: function (record, interpreterConfig) {
         return [
             {
                 xtype: 'textfield',
                 fieldLabel: t('coreshop_index_interpreter_expression'),
                 name: 'expression',
                 length: 255,
-                value: record.data.interpreterConfig ? record.data.interpreterConfig.expression : null,
+                value: interpreterConfig ? interpreterConfig.expression : null,
                 allowBlank: false
             }
         ];

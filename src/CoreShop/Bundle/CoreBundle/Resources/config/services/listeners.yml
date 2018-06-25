@@ -25,6 +25,13 @@ services:
             - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
             - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }
 
+    coreshop.listener.order.mail_sent:
+        class: CoreShop\Bundle\CoreBundle\EventListener\Order\OrderMailNoteEventListener
+        arguments:
+            - '@coreshop.object_note_service'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.mail.post_send, method: onOrderMailSent }
+
     coreshop.listener.product_update:
         class: CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener
         arguments: ['@coreshop.configuration.service']
