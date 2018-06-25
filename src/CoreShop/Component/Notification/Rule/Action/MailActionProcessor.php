@@ -12,21 +12,30 @@
 
 namespace CoreShop\Component\Notification\Rule\Action;
 
+use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
-use Pimcore\Mail;
 use Pimcore\Model\Document;
 
 class MailActionProcessor implements NotificationRuleProcessorInterface
 {
     /**
+     * @var MailProcessorInterface
+     */
+    protected $mailProcessor;
+
+    /**
+     * @param MailProcessorInterface $mailProcessor
+     */
+    public function __construct(MailProcessorInterface $mailProcessor)
+    {
+        $this->mailProcessor = $mailProcessor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
     {
-        if (!array_key_exists('doNotSendToDesignatedRecipient', $configuration)) {
-            $configuration['doNotSendToDesignatedRecipient'] = false;
-        }
-
         $language = null;
         $mails = $configuration['mails'];
 
@@ -41,24 +50,26 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
         if (array_key_exists($language, $mails)) {
             $mailDocumentId = $mails[$language];
             $mailDocument = Document::getById($mailDocumentId);
-            $recipient = $params['recipient'];
+            $recipient = [];
+
+            if (!$configuration['doNotSendToDesignatedRecipient']) {
+                if (array_key_exists('recipient', $params)) {
+                    if (is_string($params['recipient'])) {
+                        $recipient = [$params['recipient']];
+                    } elseif (is_array($params['recipient'])) {
+                        $recipient = $params['recipient'];
+                    }
+                }
+            }
 
             $params['rule'] = $rule;
 
             unset($params['recipient'], $params['_locale']);
 
             if ($mailDocument instanceof Document\Email) {
-                $mail = new Mail();
                 $params['object'] = $subject;
 
-                if ($recipient && !$configuration['doNotSendToDesignatedRecipient']) {
-                    $mail->setTo($recipient);
-                }
-
-                $mail->setDocument($mailDocument);
-                $mail->setParams($params);
-
-                $mail->send();
+                $this->mailProcessor->sendMail($mailDocument, $subject, $recipient, [], $params);
             }
         }
     }

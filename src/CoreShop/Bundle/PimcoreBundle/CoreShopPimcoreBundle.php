@@ -12,9 +12,12 @@
 
 namespace CoreShop\Bundle\PimcoreBundle;
 
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Placeholder;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 {
@@ -54,6 +57,17 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         parent::boot();
 
         Placeholder::addPlaceholderClassPrefix('CoreShop\Component\Pimcore\Placeholder\\');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterGridActionPass());
+        $container->addCompilerPass(new RegisterGridFilterPass());
     }
 
     /**

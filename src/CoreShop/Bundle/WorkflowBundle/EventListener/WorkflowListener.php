@@ -46,14 +46,35 @@ class WorkflowListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.completed' => ['checkCoreShopTransition']
+            'workflow.enter'     => ['onTransitionEnter'],
+            'workflow.completed' => ['onTransitionCompleted']
         ];
     }
 
     /**
      * @param Event $event
      */
-    public function checkCoreShopTransition(Event $event)
+    public function onTransitionEnter(Event $event)
+    {
+        if (!isset($this->callbackConfig[$event->getWorkflowName()])) {
+            return;
+        }
+
+        $workflowCallbacks = $this->callbackConfig[$event->getWorkflowName()];
+        $transitionName = $event->getTransition()->getName();
+
+        if (empty($workflowCallbacks['before'])) {
+            return;
+        }
+
+        $beforeActions = $this->setCallbacksPriority($workflowCallbacks['before']);
+        $this->applyTransition($transitionName, $event, $beforeActions);
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function onTransitionCompleted(Event $event)
     {
         if (!isset($this->callbackConfig[$event->getWorkflowName()])) {
             return;
@@ -67,7 +88,17 @@ class WorkflowListener implements EventSubscriberInterface
         }
 
         $afterActions = $this->setCallbacksPriority($workflowCallbacks['after']);
-        foreach ($afterActions as $callback) {
+        $this->applyTransition($transitionName, $event, $afterActions);
+    }
+
+    /**
+     * @param $transitionName
+     * @param Event $event
+     * @param $actions
+     */
+    public function applyTransition($transitionName, Event $event, $actions)
+    {
+        foreach ($actions as $callback) {
             if (!in_array($transitionName, $callback['on'])) {
                 continue;
             }
@@ -76,7 +107,7 @@ class WorkflowListener implements EventSubscriberInterface
                 continue;
             }
 
-            InheritanceHelper::useInheritedValues(function() use ($event, $callback) {
+            InheritanceHelper::useInheritedValues(function () use ($event, $callback) {
                 $this->call($event, $callback['do'], $callback['args']);
             });
         }
@@ -104,7 +135,7 @@ class WorkflowListener implements EventSubscriberInterface
         } else {
             $expr = new ExpressionLanguage();
             $args = array_map(
-                function($arg) use ($expr, $event) {
+                function ($arg) use ($expr, $event) {
                     if (!is_string($arg)) {
                         return $arg;
                     }
@@ -127,7 +158,7 @@ class WorkflowListener implements EventSubscriberInterface
      */
     protected function setCallbacksPriority(array $callbacks)
     {
-        uasort($callbacks, function($a, $b) {
+        uasort($callbacks, function ($a, $b) {
             if ($a['priority'] === $b['priority']) {
                 return 0;
             }

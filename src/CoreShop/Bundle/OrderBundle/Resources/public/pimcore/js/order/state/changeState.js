@@ -42,6 +42,9 @@ coreshop.order.order.state.changeState = {
                             } else {
                                 Ext.Msg.alert(t('error'), res.message);
                             }
+                        }.bind(this),
+                        failure: function (response) {
+                            btn.setDisabled(false);
                         }.bind(this)
                     });
                 }

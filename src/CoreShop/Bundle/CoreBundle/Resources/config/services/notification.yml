@@ -165,6 +165,8 @@ services:
             - { name: coreshop.notification_rule.action, type: orderMail, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
 
     coreshop.notification_rule.action.mail:
+        arguments:
+            - '@coreshop.mail_processor'
         class: CoreShop\Component\Notification\Rule\Action\MailActionProcessor
         tags:
             - { name: coreshop.notification_rule.action, type: mail, notification-type: order, form-type: CoreShop\Bundle\NotificationBundle\Form\Type\Rule\Action\MailActionConfigurationType }

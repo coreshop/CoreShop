@@ -35,7 +35,7 @@ coreshop.order.sale.create.step.payment = Class.create(coreshop.order.sale.creat
                     mode: 'local',
                     listWidth: 100,
                     store: pimcore.globalmanager.get('coreshop_payment_provider'),
-                    displayField: 'name',
+                    displayField: 'identifier',
                     valueField: 'id',
                     triggerAction: 'all',
                     labelWidth: 150,

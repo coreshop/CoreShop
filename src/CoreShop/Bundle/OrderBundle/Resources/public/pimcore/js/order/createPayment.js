@@ -19,13 +19,13 @@ coreshop.order.order.createPayment = {
         var paymentProvidersStore = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/order-payment/get-payment-providers',
+                url: '/admin/coreshop/payment_providers/list',
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
                 }
             },
-            fields: ['id', 'name']
+            fields: ['id', 'identifier']
         });
         paymentProvidersStore.load();
 
@@ -109,7 +109,7 @@ coreshop.order.order.createPayment = {
                         mode: 'local',
                         listWidth: 100,
                         store: paymentProvidersStore,
-                        displayField: 'name',
+                        displayField: 'identifier',
                         valueField: 'id',
                         forceSelection: true,
                         triggerAction: 'all',
