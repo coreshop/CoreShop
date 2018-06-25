@@ -15,39 +15,46 @@ coreshop.cart.pricerules.conditions.timespan = Class.create(coreshop.rules.condi
     type: 'timespan',
 
     getForm: function () {
-
         var me = this;
 
         var dateFrom = {
             itemCls: 'object_field',
-            width: 160
+            width: 160,
+            value: new Date()
         };
 
         var dateTo = {
             itemCls: 'object_field',
-            width: 160
+            width: 160,
+            value: new Date()
         };
 
         var timeFrom = {
             format: 'H:i',
             emptyText: '',
-            width: 120
+            width: 120,
+            value: Ext.Date.format(new Date(), 'H:i')
         };
 
         var timeTo = {
             format: 'H:i',
             emptyText: '',
-            width: 120
+            width: 120,
+            value: Ext.Date.format(new Date(), 'H:i')
         };
 
         if (this.data) {
-            var tmpDateFrom = new Date(intval(this.data.dateFrom));
-            dateFrom.value = tmpDateFrom;
-            timeFrom.value = Ext.Date.format(tmpDateFrom, 'H:i');
+            if (this.data.dateFrom) {
+                var tmpDateFrom = new Date(intval(this.data.dateFrom));
+                dateFrom.value = tmpDateFrom;
+                timeFrom.value = Ext.Date.format(tmpDateFrom, 'H:i');
+            }
 
-            var tmpDateTo = new Date(intval(this.data.dateTo));
-            dateTo.value = tmpDateTo;
-            timeTo.value = Ext.Date.format(tmpDateTo, 'H:i');
+            if (this.data.dateTo) {
+                var tmpDateTo = new Date(intval(this.data.dateTo));
+                dateTo.value = tmpDateTo;
+                timeTo.value = Ext.Date.format(tmpDateTo, 'H:i');
+            }
         }
 
         this.dateFromField = new Ext.form.DateField(dateFrom);
