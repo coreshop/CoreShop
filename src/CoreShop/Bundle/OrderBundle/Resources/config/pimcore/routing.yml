@@ -65,10 +65,6 @@ coreshop_order_payment_add:
     path: /%coreshop.admin.route.base%/order-payment/add-payment
     defaults: { _controller: 'coreshop.pimcore_controller.order_payment:addPaymentAction'}
 
-coreshop_order_payment_update:
-    path: /%coreshop.admin.route.base%/order-payment/update-payment
-    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updatePaymentAction'}
-
 coreshop_order_payment_update_state:
     path: /%coreshop.admin.route.base%/order-payment/update-payment-state
     defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updateStateAction'}
