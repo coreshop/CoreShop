@@ -10,34 +10,33 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle\Controller;
+namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
-use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
-use CoreShop\Component\Order\OrderList\OrderListBulkInterface;
-use CoreShop\Component\Order\OrderList\OrderListFilterInterface;
+use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
+use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
+use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderListController extends PimcoreController
+class GridController extends AdminController
 {
     /**
-     * @param $saleType
+     * @param $listType
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getOrderListFiltersAction($saleType)
+    public function getGridFiltersAction($listType)
     {
-        $orderListFilterRepository = $this->get('coreshop.registry.order_list_filter');
+        $gridFilterRepository = $this->get('coreshop.registry.grid.filter');
         $trans = $this->get('translator');
 
         $services = [];
-        /** @var OrderListFilterInterface $service */
-        foreach ($orderListFilterRepository->all() as $id => $service) {
-
-            if ($service->typeIsValid($saleType) !== true) {
+        /** @var GridFilterInterface $service */
+        foreach ($gridFilterRepository->all() as $id => $service) {
+            if ($service->supports($listType) !== true) {
                 continue;
             }
 
             $services[] = [
-                'id'   => $id,
+                'id' => $id,
                 'name' => $trans->trans($service->getName(), [], 'admin')
             ];
         }
@@ -46,24 +45,24 @@ class OrderListController extends PimcoreController
     }
 
     /**
-     * @param $saleType
+     * @param $listType
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getOrderListBulkAction($saleType)
+    public function getGridActionsAction($listType)
     {
-        $orderListFilterRepository = $this->get('coreshop.registry.order_list_bulk');
+        $gridActionRepository = $this->get('coreshop.registry.grid.action');
         $trans = $this->get('translator');
 
         $services = [];
-        /** @var OrderListBulkInterface $service */
-        foreach ($orderListFilterRepository->all() as $id => $service) {
+        /** @var GridActionInterface $service */
+        foreach ($gridActionRepository->all() as $id => $service) {
 
-            if ($service->typeIsValid($saleType) !== true) {
+            if ($service->supports($listType) !== true) {
                 continue;
             }
 
             $services[] = [
-                'id'   => $id,
+                'id' => $id,
                 'name' => $trans->trans($service->getName(), [], 'admin')
             ];
         }
@@ -75,27 +74,26 @@ class OrderListController extends PimcoreController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function applyOrderListBulkAction(Request $request)
+    public function applyGridAction(Request $request)
     {
         $requestedIds = $request->request->get('ids');
-        $bulkId = $request->request->get('bulkId');
+        $actionId = $request->request->get('actionId');
 
         if (is_string($requestedIds)) {
             $requestedIds = json_decode($requestedIds);
         }
 
-        $orderListBulkRepository = $this->get('coreshop.registry.order_list_bulk');
+        $gridActionRepository = $this->get('coreshop.registry.grid.action');
 
         $success = true;
-        $message = '';
 
-        if (!$orderListBulkRepository->has($bulkId)) {
+        if (!$gridActionRepository->has($actionId)) {
             $success = false;
-            $message = sprintf('Bulk Service %s not found.', $bulkId);
+            $message = sprintf('Action Service %s not found.', $actionId);
         } else {
             try {
-                /** @var OrderListBulkInterface $bulkService */
-                $bulkService = $orderListBulkRepository->get($bulkId);
+                /** @var GridActionInterface $bulkService */
+                $bulkService = $gridActionRepository->get($actionId);
                 $message = $bulkService->apply($requestedIds);
             } catch (\Exception $e) {
                 $success = false;

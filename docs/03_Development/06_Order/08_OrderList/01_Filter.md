@@ -10,7 +10,7 @@ Your Customer is able to filter orders on specific conditions.
 ```yml
 AppBundle\CoreShop\OrderList\Filter\DemoFilter:
     tags:
-        - { name: coreshop.order_list_filter, type: demo }
+        - { name: coreshop.grid.filter, type: demo }
 ```
 
 ## Create PHP Class
@@ -21,11 +21,11 @@ In this example we want to filter orders with available shipments in state "read
 
 namespace AppBundle\CoreShop\OrderList\Filter;
 
-use CoreShop\Component\Order\OrderList\OrderListFilterInterface;
+use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
 use Pimcore\Db\ZendCompatibility\QueryBuilder;
 use Pimcore\Model\DataObject;
 
-class DemoFilter implements OrderListFilterInterface
+class DemoFilter implements GridFilterInterface
 {
 
     /**
@@ -66,9 +66,9 @@ class DemoFilter implements OrderListFilterInterface
      * @param string $saleType
      * @return bool
      */
-    public function typeIsValid($saleType = OrderListFilterInterface::SALE_TYPE_ORDER)
+    public function supports($listType)
     {
-        return $saleType === OrderListFilterInterface::SALE_TYPE_ORDER;
+        return $listType === 'coreshop_order';
     }
 }
 ```

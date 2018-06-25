@@ -17,7 +17,6 @@ use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
-use CoreShop\Bundle\OrderBundle\Controller\OrderListController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderPaymentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderShipmentController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
@@ -225,7 +224,6 @@ final class Configuration implements ConfigurationInterface
                                             ->addDefaultsIfNotSet()
                                             ->children()
                                                 ->scalarNode('default')->defaultValue(OrderController::class)->end()
-                                                ->scalarNode('list')->defaultValue(OrderListController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
                                                 ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
                                                 ->scalarNode('comment')->defaultValue(OrderCommentController::class)->end()
@@ -417,7 +415,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('cart_pricerule_condition_nested')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/nested.js')->end()
                             ->scalarNode('cart_pricerule_condition_timespan')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/timespan.js')->end()
                             ->scalarNode('cart_pricerule_condition_voucher')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/voucher.js')->end()
-                            ->scalarNode('sale_list_plugin')->defaultValue('/bundles/coreshoporder/pimcore/js/plugin/salesListContextMenu.js')->end()
                             ->scalarNode('sale_detail_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/panel.js')->end()
                             ->scalarNode('sale_detail_abstract_block')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/abstractBlock.js')->end()
                             ->scalarNode('sale_detail_abstract_block_header')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/blocks/header.js')->end()

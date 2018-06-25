@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle\EventListener\Order\Grid;
+namespace CoreShop\Bundle\PimcoreBundle\EventListener\Grid;
 
-use CoreShop\Component\Order\OrderList\OrderListFilterInterface;
+use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -49,7 +49,7 @@ final class ObjectListFilterListener
             return;
         }
 
-        /** @var OrderListFilterInterface $filterService */
+        /** @var GridFilterInterface $filterService */
         $filterService = $this->filterServiceRegistry->get($filter);
         $data = $filterService->filter($list, $context);
 

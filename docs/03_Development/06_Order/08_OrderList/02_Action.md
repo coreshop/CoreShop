@@ -1,4 +1,4 @@
-# CoreShop Order List Bulk Actions
+# CoreShop Order List Actions
 
 Bulk Actions allows you to process orders rapidly, right in the order grid view.
 
@@ -12,7 +12,7 @@ AppBundle\CoreShop\OrderList\Bulk\DemoBulk:
         $stateMachineManager: '@coreshop.state_machine_manager'
         $shipmentRepository: '@coreshop.repository.order_shipment'
     tags:
-        - { name: coreshop.order_list_bulk, type: demo }
+        - { name: coreshop.grid.action, type: demo }
 ```
 
 ## Create PHP Class
@@ -25,10 +25,10 @@ namespace AppBundle\CoreShop\OrderList\Bulk;
 
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
-use CoreShop\Component\Order\OrderList\OrderListBulkInterface;
+use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use Pimcore\Model\DataObject\CoreShopOrder;
 
-class DemoBulk implements OrderListBulkInterface
+class DemoBulk implements GridActionInterface
 {
     protected $stateMachineManager;
 
@@ -42,21 +42,11 @@ class DemoBulk implements OrderListBulkInterface
         $this->shipmentRepository = $shipmentRepository;
     }
 
-    /**
-     * The name of bulk action.
-     * This value will be translated via backend translator,
-     * so it's good practice to choose a symfony standard translation keys like "coreshop.order_bulk.your_bulk_name"
-     * @return string
-     */
     public function getName()
     {
-        return 'coreshop.order_bulk.demo';
+        return 'coreshop.order.demo';
     }
 
-    /**
-     * @param array $processIds
-     * @return string
-     */
     public function apply(array $processIds)
     {
         $message = '';
@@ -104,15 +94,9 @@ class DemoBulk implements OrderListBulkInterface
         return $message;
     }
 
-    /**
-     * Define if filter for current sale type.
-     *
-     * @param string $saleType
-     * @return bool
-     */
-    public function typeIsValid($saleType = OrderListBulkInterface::SALE_TYPE_ORDER)
+    public function supports($listType)
     {
-        return $saleType === OrderListBulkInterface::SALE_TYPE_ORDER;
+        return $listType === 'coreshop_order';
     }
 }
 ```

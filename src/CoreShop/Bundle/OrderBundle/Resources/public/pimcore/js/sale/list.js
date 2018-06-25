@@ -41,12 +41,7 @@ coreshop.order.sale.list = Class.create({
     },
 
     setupContextMenuPlugin: function () {
-        this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
-            function (id) {
-                this.open(id);
-            }.bind(this),
-            []
-        );
+        throw new Error('Please implement me');
     },
 
     setClassFolder: function () {
@@ -348,7 +343,7 @@ coreshop.order.sale.list = Class.create({
         var filterStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/orderlist/get-filter/' + this.type
+                url: '/admin/coreshop/grid/filters/coreshop_' + this.type
             }),
             reader: new Ext.data.JsonReader({}, [
                 {name: 'id'},
@@ -364,23 +359,5 @@ coreshop.order.sale.list = Class.create({
 
         filterStore.load();
         return filterStore;
-    },
-
-    getBulkStore: function () {
-
-        var bulkStore = new Ext.data.Store({
-            restful: false,
-            proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/orderlist/get-bulk/' + this.type
-            }),
-            reader: new Ext.data.JsonReader({}, [
-                {name: 'id'},
-                {name: 'name'}
-            ])
-        });
-
-        bulkStore.load();
-        return bulkStore;
     }
-
 });

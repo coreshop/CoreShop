@@ -13,4 +13,4 @@ This guide should lead you through how CoreShop handles Orders.
  ## CoreShop Order List
 
  - [Order List: Add Custom Filter](./08_OrderList/01_Filter.md)
- - [Order List: Add Custom Bulk Actions](./08_OrderList/02_Bulk.md)
+ - [Order List: Add Custom Actions](./08_OrderList/02_Action.md)

@@ -10,37 +10,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\OrderList;
+namespace CoreShop\Component\Pimcore\DataObject\Grid;
 
-use Pimcore\Model\DataObject;
-
-interface OrderListFilterInterface
+interface GridActionInterface
 {
-    const SALE_TYPE_ORDER = 'order';
-
-    const SALE_TYPE_QUOTE = 'quote';
-
     /**
-     * The name of filter action.
+     * The name of bulk action.
      * This value will be translated via backend translator,
-     * so it's good practice to choose a symfony standard translation keys like "coreshop.order_filter.your_filter_name".
-     *
+     * so it's good practice to choose a symfony standard translation keys like "coreshop.grid.action.your_bulk_name"
      * @return string
      */
     public function getName();
 
     /**
-     * @param DataObject\Listing $list
-     * @param array              $context
-     * @return DataObject\Listing
+     * @param array $processIds
+     * @return string
      */
-    public function filter(DataObject\Listing $list, array $context);
+    public function apply(array $processIds);
 
     /**
      * Define if filter for current sale type.
      *
-     * @param string $saleType
+     * @param string $type
      * @return bool
      */
-    public function typeIsValid($saleType = self::SALE_TYPE_ORDER);
+    public function supports($type);
 }

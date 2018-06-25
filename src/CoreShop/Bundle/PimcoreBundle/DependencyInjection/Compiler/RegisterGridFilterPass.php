@@ -10,18 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
+namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
-class RegisterOrderListBulkPass extends RegisterSimpleRegistryTypePass
+class RegisterGridFilterPass extends RegisterSimpleRegistryTypePass
 {
     public function __construct()
     {
         parent::__construct(
-            'coreshop.registry.order_list_bulk',
-            'coreshop.order_list_bulk',
-            'coreshop.order_list_bulk'
+            'coreshop.registry.grid.filter',
+            'coreshop.grid.filters',
+            'coreshop.grid.filter'
         );
     }
 }

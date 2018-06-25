@@ -1,16 +1,39 @@
-pimcore.registerNS('coreshop.sales.plugin.salesListContextMenu');
-coreshop.sales.plugin.salesListContextMenu = Class.create({
+pimcore.registerNS('coreshop.pimcore.plugin.grid');
+coreshop.pimcore.plugin.grid = Class.create({
+
     openerCallback: null,
     allowedClasses: [],
-    bulkStore: null,
+    actionStore: null,
+    type: null,
     gridPaginator: null,
-    initialize: function (openerCallback, allowedClasses, bulkStore, gridPaginator) {
+
+    initialize: function (type, openerCallback, allowedClasses, gridPaginator) {
+        this.type = type;
         this.openerCallback = openerCallback;
         this.allowedClasses = allowedClasses;
-        this.bulkStore = bulkStore;
         this.gridPaginator = gridPaginator;
+        this.actionStore = this.getActionStore();
+
         pimcore.plugin.broker.registerPlugin(this);
     },
+
+    getActionStore: function () {
+        var actionStore = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: '/admin/coreshop/grid/actions/' + this.type
+            }),
+            reader: new Ext.data.JsonReader({}, [
+                {name: 'id'},
+                {name: 'name'}
+            ])
+        });
+
+        actionStore.load();
+
+        return actionStore;
+    },
+
     prepareOnRowContextmenu: function (menu, grid, selectedRows) {
 
         var extraParams = grid.getStore().getProxy().getExtraParams(),
@@ -52,42 +75,42 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
             }));
         }
 
-        if (this.bulkStore !== undefined) {
+        if (this.actionStore !== undefined) {
 
-            var addBulksToMenu = function () {
-                var bulkItems = [];
-                this.bulkStore.each(function (rec) {
-                    bulkItems.push({
+            var addActionsToMenu = function () {
+                var actionItems = [];
+                this.actionStore.each(function (rec) {
+                    actionItems.push({
                         text: rec.get('name'),
                         iconCls: 'pimcore_icon_table',
                         name: rec.get('id'),
                         handler: function (item) {
-                            this.applyBulk(grid, item.name, selectedRows)
+                            this.applyAction(grid, item.name, selectedRows)
                         }.bind(this)
                     });
                 }.bind(this));
 
-                if (bulkItems.length > 0) {
+                if (actionItems.length > 0) {
                     menu.add({
-                        text: t('coreshop_order_list_bulk') + ' (' + selectedRows.length + ' ' + t(selectedRows.length === 1 ? 'item' : 'items') + ')',
+                        text: t('coreshop_order_list_action') + ' (' + selectedRows.length + ' ' + t(selectedRows.length === 1 ? 'item' : 'items') + ')',
                         iconCls: 'pimcore_icon_table pimcore_icon_overlay_go',
                         hideOnClick: false,
-                        menu: bulkItems
+                        menu: actionItems
                     });
                 }
             }.bind(this);
 
-            if (this.bulkStore.isLoading() || !this.bulkStore.isLoaded()) {
-                this.bulkStore.on('load', function () {
-                    addBulksToMenu();
+            if (this.actionStore.isLoading() || !this.actionStore.isLoaded()) {
+                this.actionStore.on('load', function () {
+                    addActionsToMenu();
                 }.bind(this));
             } else {
-                addBulksToMenu();
+                addActionsToMenu();
             }
         }
     },
 
-    applyBulk: function (grid, bulkId, selectedRows) {
+    applyAction: function (grid, actionId, selectedRows) {
 
         var selectedObjects = [];
         for (var i = 0; i < selectedRows.length; i++) {
@@ -97,10 +120,10 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
         grid.setLoading(t('loading'));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/orderlist/apply-bulk',
+            url: '/admin/coreshop/grid/apply-action',
             method: 'post',
             params: {
-                bulkId: bulkId,
+                actionId: actionId,
                 ids: Ext.encode(selectedObjects)
             },
             success: function (response) {
@@ -120,7 +143,7 @@ coreshop.sales.plugin.salesListContextMenu = Class.create({
         var win = new Ext.Window({
             modal: true,
             iconCls: 'pimcore_icon_' + type,
-            title: t('coreshop_order_list_bulk_review'),
+            title: t('coreshop_order_list_action_review'),
             width: 700,
             maxHeight: 500,
             html: message,

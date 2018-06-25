@@ -5,3 +5,19 @@ coreshop_pimcore_embedded_class_get_custom_layouts:
 coreshop_pimcore_embedded_class_get_layout_configuration:
     path: /%coreshop.admin.route.base%/embedded-class/get-layout-configuration
     defaults: { _controller: 'CoreShop\Bundle\PimcoreBundle\Controller\Admin\EmbeddedClassController::getClassLayoutAction'}
+
+##### GRID
+coreshop_pimcore_grid_get_filters:
+    path: /%coreshop.admin.route.base%/grid/filters/{listType}
+    methods: [GET]
+    defaults:  { _controller: coreshop.pimcore_controller.grid:getGridFiltersAction}
+
+coreshop_pimcore_grid_get_actions:
+    path: /%coreshop.admin.route.base%/grid/actions/{listType}
+    methods: [GET]
+    defaults:  { _controller: coreshop.pimcore_controller.grid:getGridActionsAction}
+
+coreshop_pimcore_grid_apply_action:
+    path: /%coreshop.admin.route.base%/grid/apply-action
+    methods: [POST]
+    defaults:  { _controller: coreshop.pimcore_controller.grid:applyGridAction}
