@@ -27,24 +27,11 @@ use Pimcore\Model\DataObject;
 
 class DemoFilter implements GridFilterInterface
 {
-
-    /**
-     * The name of filter action.
-     * This value will be translated via backend translator,
-     * so it's good practice to choose a symfony standard translation keys like "coreshop.order_filter.your_filter_name".
-     *
-     * @return string
-     */
     public function getName()
     {
         return 'coreshop.order_filter.shipment_apply';
     }
 
-    /**
-     * @param DataObject\Listing $list
-     * @param array              $context
-     * @return DataObject\Listing
-     */
     public function filter(DataObject\Listing $list, array $context)
     {
         $list->onCreateQuery(function (QueryBuilder $select) use ($list) {
@@ -60,12 +47,6 @@ class DemoFilter implements GridFilterInterface
         return $list;
     }
 
-    /**
-     * Define if filter for current sale type.
-     *
-     * @param string $saleType
-     * @return bool
-     */
     public function supports($listType)
     {
         return $listType === 'coreshop_order';

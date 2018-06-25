@@ -33,7 +33,7 @@ interface GridFilterInterface
     public function filter(DataObject\Listing $list, array $context);
 
     /**
-     * Define if filter for current sale type.
+     * Define if filter is valid for $type
      *
      * @param string $listType
      * @return bool

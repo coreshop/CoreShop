@@ -29,7 +29,7 @@ interface GridActionInterface
     public function apply(array $processIds);
 
     /**
-     * Define if filter for current sale type.
+     * Define if action is valid for $type
      *
      * @param string $type
      * @return bool
