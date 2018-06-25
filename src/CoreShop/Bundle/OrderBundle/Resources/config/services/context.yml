@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.context.cart.fixed:
         class: CoreShop\Component\Order\Context\FixedCartContext
         tags:

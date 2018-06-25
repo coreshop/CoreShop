@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.rule.condition.customers:
         class: CoreShop\Component\Core\Product\Rule\Condition\CustomersConditionChecker
         arguments:

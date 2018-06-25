@@ -3,6 +3,9 @@ imports:
     - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.collector.taxes:
         class: CoreShop\Component\Taxation\Collector\TaxCollector
         arguments:

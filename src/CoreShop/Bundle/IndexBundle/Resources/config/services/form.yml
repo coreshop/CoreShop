@@ -8,6 +8,9 @@ parameters:
     coreshop.form.type.filter.filter_condition.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.index:
         class: CoreShop\Bundle\IndexBundle\Form\Type\IndexType
         arguments:

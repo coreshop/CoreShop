@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.data_object.grid_column_config.operator.factory.store_price:
         class: CoreShop\Bundle\CoreBundle\Pimcore\GridColumnConfig\Operator\Factory\StorePriceFactory
         arguments:

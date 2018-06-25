@@ -2,6 +2,9 @@ imports:
     - { resource: "services/wishlist.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.frontend.controller.abstract:
         class: CoreShop\Bundle\FrontendBundle\Controller\FrontendController
         abstract: true

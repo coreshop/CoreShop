@@ -9,6 +9,9 @@ parameters:
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
 services:
+    _defaults:
+        public: true
+
     coreshop.resource_registry:
         class: CoreShop\Component\Resource\Metadata\Registry
 

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.payment.payment_provider_resolver:
         class: CoreShop\Component\Payment\Resolver\PaymentProviderResolver
         arguments:

@@ -80,6 +80,7 @@ final class PimcoreDriver extends AbstractDriver
     {
         $definition = new Definition($classValue);
         $definition
+            ->setPublic(true)
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
@@ -149,6 +150,7 @@ final class PimcoreDriver extends AbstractDriver
         }
 
         $definition = new Definition($repositoryClass);
+        $definition->setPublic(true);
         $definition->setArguments([
             $this->getMetadataDefinition($metadata),
         ]);
@@ -165,6 +167,7 @@ final class PimcoreDriver extends AbstractDriver
 
         if (!$container->has($serviceName)) {
             $definition = new Definition(ObjectManager::class);
+            $definition->setPublic(true);
 
             $container->setDefinition($serviceName, $definition);
         }

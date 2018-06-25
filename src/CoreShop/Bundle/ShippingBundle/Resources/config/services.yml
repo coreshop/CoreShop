@@ -4,6 +4,9 @@ imports:
     - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
   # Carrier Validator
     coreshop.shipping.carrier.validator.composite:
         class: CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator

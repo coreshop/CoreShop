@@ -3,6 +3,9 @@ parameters:
     coreshop.form.type.customer_guest.validation_groups: [coreshop_customer_guest]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.customer:
         class: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType
         arguments:

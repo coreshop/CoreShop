@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.pimcore_controller.grid:
         class: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController
 

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.twig.extension.pimcore_asset:
         class: CoreShop\Component\Pimcore\Twig\Extension\AssetHelperExtensions
         tags:

@@ -3,6 +3,9 @@ parameters:
     coreshop.translation.translatable_listener.doctrine.orm.class: CoreShop\Bundle\ResourceBundle\EventListener\ORMTranslatableListener
 
 services:
+    _defaults:
+        public: true
+
     coreshop.event_subscriber.orm_mapped_super_class:
         class: CoreShop\Bundle\ResourceBundle\EventListener\ORMMappedSuperClassSubscriber
         arguments:

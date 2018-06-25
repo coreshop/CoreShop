@@ -9,6 +9,9 @@ parameters:
     coreshop.admin.route.base: /admin/coreshop
 
 services:
+    _defaults:
+        public: true
+
     coreshop.class_installer:
         class: CoreShop\Component\Pimcore\DataObject\ClassInstaller
 

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.tracking.tracker:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.object.link_generator.product:
         class: CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator\DataObjectLinkGenerator
         arguments:

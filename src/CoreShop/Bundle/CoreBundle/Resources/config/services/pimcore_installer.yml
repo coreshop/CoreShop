@@ -2,7 +2,7 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: false
+        public: true
 
     CoreShop\Bundle\CoreBundle\Installer:
         public: true

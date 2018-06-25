@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.command.install.abstract:
         abstract: true
         class: CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.carrier.price_calculator.free_shipping_rule:
         class: CoreShop\Component\Core\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
         tags:

@@ -5,6 +5,9 @@ imports:
     - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.factory.index.list:
         class: CoreShop\Bundle\IndexBundle\Factory\ListingFactory
         arguments:

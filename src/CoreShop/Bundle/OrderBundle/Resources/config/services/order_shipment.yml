@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.order_shipment.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments:

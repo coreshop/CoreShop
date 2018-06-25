@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.currency_collector:
         class: CoreShop\Bundle\CoreBundle\Collector\CurrencyCollector
         arguments:

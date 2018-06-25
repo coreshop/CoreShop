@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.seo.extractor.description:
         class: CoreShop\Component\SEO\Extractor\DescriptionExtractor
         tags:

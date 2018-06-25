@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.command.cart.expire:
         class: CoreShop\Bundle\OrderBundle\Command\CartExpireCommand
         arguments:

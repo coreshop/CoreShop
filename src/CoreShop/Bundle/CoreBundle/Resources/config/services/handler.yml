@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.handler.shop_logout:
         class: CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler
         arguments:

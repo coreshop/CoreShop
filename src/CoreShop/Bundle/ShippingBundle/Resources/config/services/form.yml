@@ -8,6 +8,9 @@ parameters:
     coreshop.form.type.shipping_rule.rule_condition.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.shipping_rule:
         class: CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleType
         arguments:

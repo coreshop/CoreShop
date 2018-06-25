@@ -5,6 +5,9 @@ imports:
     - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.context.store.composite:
         class: CoreShop\Component\Store\Context\CompositeStoreContext
         public: false

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.reports:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.factory.wishlist:
         class: CoreShop\Component\Resource\Factory\Factory
         arguments:

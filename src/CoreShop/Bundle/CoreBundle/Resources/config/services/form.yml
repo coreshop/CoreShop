@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.form.extension.type.store:
         class: CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension
         tags:

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.sequence.generator:
         class: CoreShop\Component\Sequence\Generator\SequenceGenerator
         arguments:

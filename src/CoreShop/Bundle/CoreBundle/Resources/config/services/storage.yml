@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.storage.session:
         class: CoreShop\Bundle\CoreBundle\Storage\SessionStorage
         arguments: ['@session']

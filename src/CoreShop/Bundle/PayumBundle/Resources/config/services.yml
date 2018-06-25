@@ -3,6 +3,9 @@ imports:
     - { resource: "services/extension.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form_registry.payum_gateway_config:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 

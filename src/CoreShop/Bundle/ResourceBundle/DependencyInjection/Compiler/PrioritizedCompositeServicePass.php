@@ -12,12 +12,115 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass as BasePrioritizedCompositeServicePass;
+use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @deprecated Deprecated since 2.0.0-beta.3 and will be removed in 2.0.0, use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass instead
- */
-abstract class PrioritizedCompositeServicePass extends BasePrioritizedCompositeServicePass
+abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
 {
+    /**
+     * @var string
+     */
+    private $serviceId;
 
+    /**
+     * @var string
+     */
+    private $compositeId;
+
+    /**
+     * @var string
+     */
+    private $tagName;
+
+    /**
+     * @var string
+     */
+    private $methodName;
+
+    /**
+     * @param string $serviceId
+     * @param string $compositeId
+     * @param string $tagName
+     * @param string $methodName
+     */
+    public function __construct($serviceId, $compositeId, $tagName, $methodName)
+    {
+        $this->serviceId = $serviceId;
+        $this->compositeId = $compositeId;
+        $this->tagName = $tagName;
+        $this->methodName = $methodName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition($this->compositeId)) {
+            return;
+        }
+
+        $this->injectTaggedServicesIntoComposite($container);
+        $this->addAliasForCompositeIfServiceDoesNotExist($container);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    private function injectTaggedServicesIntoComposite(ContainerBuilder $container)
+    {
+        $channelContextDefinition = $container->findDefinition($this->compositeId);
+
+        $taggedServices = $container->findTaggedServiceIds($this->tagName);
+        foreach ($taggedServices as $id => $tags) {
+            $this->addMethodCalls($channelContextDefinition, $id, $tags);
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    private function addAliasForCompositeIfServiceDoesNotExist(ContainerBuilder $container)
+    {
+        if ($container->has($this->serviceId)) {
+            return;
+        }
+
+        if ($container->hasDefinition($this->serviceId)) {
+            $container->getDefinition($this->serviceId)->setPublic(true);
+        }
+
+        $container->setAlias($this->serviceId, new Alias($this->compositeId, true));
+    }
+
+    /**
+     * @param Definition $channelContextDefinition
+     * @param string $id
+     * @param array $tags
+     */
+    private function addMethodCalls(Definition $channelContextDefinition, $id, $tags)
+    {
+        foreach ($tags as $attributes) {
+            $this->addMethodCall($channelContextDefinition, $id, $attributes);
+        }
+    }
+
+    /**
+     * @param Definition $channelContextDefinition
+     * @param string $id
+     * @param array $attributes
+     */
+    private function addMethodCall(Definition $channelContextDefinition, $id, $attributes)
+    {
+        $arguments = [new Reference($id)];
+
+        if (isset($attributes['priority'])) {
+            $arguments[] = $attributes['priority'];
+        }
+
+        $channelContextDefinition->addMethodCall($this->methodName, $arguments);
+    }
 }
