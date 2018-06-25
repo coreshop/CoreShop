@@ -43,3 +43,8 @@ services:
         arguments:
             - '@coreshop.object_link_generator'
             - '@router'
+
+    coreshop.mail_processor:
+        class: CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor
+        arguments:
+            - '@event_dispatcher'
