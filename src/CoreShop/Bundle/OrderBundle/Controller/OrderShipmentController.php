@@ -134,33 +134,6 @@ class OrderShipmentController extends PimcoreController
 
     /**
      * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function updateShipmentAction(Request $request)
-    {
-        $shipmentId = $request->get('id');
-        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
-
-        if (!$shipment instanceof OrderShipmentInterface) {
-            return $this->viewHandler->handle(['success' => false]);
-        }
-
-        $values = $request->request->all();
-        unset($values['state']);
-
-        $shipment->setValues($values);
-
-        VersionHelper::useVersioning(function() use ($shipment) {
-            $shipment->save();
-        }, false);
-
-        return $this->viewHandler->handle(['success' => true]);
-
-    }
-
-    /**
-     * @param Request $request
      * @return mixed
      */
     public function updateStateAction(Request $request)
