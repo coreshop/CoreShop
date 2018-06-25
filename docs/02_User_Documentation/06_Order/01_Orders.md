@@ -10,6 +10,6 @@ CoreShop comes with a default column configuration:
 It's possible to add custom filter definitions based on your project.
 This has to be done via a php service. Read more about it [here](../../03_Development/06_Order/08_OrderList/01_Filter.md).
 
-## Apply Bulk Actions in Grid View
+## Apply Actions in Grid View
 It's possible to apply custom bulk actions for selected orders.
-This has to be done via a php service. Read more about it [here](../../03_Development/06_Order/08_OrderList/02_Bulk.md).
+This has to be done via a php service. Read more about it [here](../../03_Development/06_Order/08_OrderList/02_Action.md).

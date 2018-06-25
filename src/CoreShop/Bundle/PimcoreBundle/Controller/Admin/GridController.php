@@ -92,9 +92,9 @@ class GridController extends AdminController
             $message = sprintf('Action Service %s not found.', $actionId);
         } else {
             try {
-                /** @var GridActionInterface $bulkService */
-                $bulkService = $gridActionRepository->get($actionId);
-                $message = $bulkService->apply($requestedIds);
+                /** @var GridActionInterface $actionService */
+                $actionService = $gridActionRepository->get($actionId);
+                $message = $actionService->apply($requestedIds);
             } catch (\Exception $e) {
                 $success = false;
                 $message = $e->getMessage();

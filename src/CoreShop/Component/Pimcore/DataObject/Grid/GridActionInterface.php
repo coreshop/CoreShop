@@ -15,9 +15,9 @@ namespace CoreShop\Component\Pimcore\DataObject\Grid;
 interface GridActionInterface
 {
     /**
-     * The name of bulk action.
+     * The name of action.
      * This value will be translated via backend translator,
-     * so it's good practice to choose a symfony standard translation keys like "coreshop.grid.action.your_bulk_name"
+     * so it's good practice to choose a symfony standard translation keys like "coreshop.grid.action.your_action_name"
      * @return string
      */
     public function getName();

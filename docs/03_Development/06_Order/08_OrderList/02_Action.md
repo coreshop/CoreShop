@@ -1,13 +1,13 @@
 # CoreShop Order List Actions
 
-Bulk Actions allows you to process orders rapidly, right in the order grid view.
+Actions allows you to process orders rapidly, right in the order grid view.
 
 ![filter](http://g.recordit.co/QCN7emXQ8L.gif)
 
 ## Register Filter Service
 
 ```yml
-AppBundle\CoreShop\OrderList\Bulk\DemoBulk:
+AppBundle\CoreShop\OrderList\Action\Demo:
     arguments:
         $stateMachineManager: '@coreshop.state_machine_manager'
         $shipmentRepository: '@coreshop.repository.order_shipment'
@@ -21,14 +21,14 @@ In this example we want to apply the shipment transition "ship" to selected orde
 ```php
 <?php
 
-namespace AppBundle\CoreShop\OrderList\Bulk;
+namespace AppBundle\CoreShop\OrderList\Action;
 
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface;
 use Pimcore\Model\DataObject\CoreShopOrder;
 
-class DemoBulk implements GridActionInterface
+class DemoAction implements GridActionInterface
 {
     protected $stateMachineManager;
 
