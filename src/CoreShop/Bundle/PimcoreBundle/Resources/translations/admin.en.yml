@@ -1,3 +1,7 @@
 coreshop_embedded_class_name: 'Embedded Class'
 coreshop_object_embedded_class_layout: 'Embedded Layout'
 coreshop_serialized_data: 'Serialized Data'
+coreshop_order_list_filter: 'Filter'
+coreshop_order_list_filter_empty: 'No Filter'
+coreshop_order_list_action: 'Apply Action'
+coreshop_order_list_action_review: 'Action Review'

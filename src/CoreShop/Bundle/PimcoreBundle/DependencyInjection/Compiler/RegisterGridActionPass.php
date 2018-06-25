@@ -10,17 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\Payment;
+namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
-interface OrderPaymentProviderInterface
+class RegisterGridActionPass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * @param OrderInterface $order
-     *
-     * @return PaymentInterface
-     */
-    public function provideOrderPayment(OrderInterface $order);
+    public function __construct()
+    {
+        parent::__construct(
+            'coreshop.registry.grid.action',
+            'coreshop.grid.actions',
+            'coreshop.grid.action'
+        );
+    }
 }

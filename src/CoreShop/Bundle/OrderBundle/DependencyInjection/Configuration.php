@@ -415,7 +415,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('cart_pricerule_condition_nested')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/nested.js')->end()
                             ->scalarNode('cart_pricerule_condition_timespan')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/timespan.js')->end()
                             ->scalarNode('cart_pricerule_condition_voucher')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/voucher.js')->end()
-                            ->scalarNode('sale_list_plugin')->defaultValue('/bundles/coreshoporder/pimcore/js/plugin/salesListContextMenu.js')->end()
                             ->scalarNode('sale_detail_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/panel.js')->end()
                             ->scalarNode('sale_detail_abstract_block')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/abstractBlock.js')->end()
                             ->scalarNode('sale_detail_abstract_block_header')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/blocks/header.js')->end()

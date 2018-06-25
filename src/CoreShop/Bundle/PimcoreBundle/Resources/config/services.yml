@@ -1,6 +1,7 @@
 imports:
     - { resource: "services/templating.yml" }
     - { resource: "services/twig.yml" }
+    - { resource: "services/grid.yml" }
 
 parameters:
     coreshop.admin.route.base: /admin/coreshop

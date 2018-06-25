@@ -16,6 +16,7 @@ coreshop.order.sale.list = Class.create({
     type: '',
     search: null,
     grid: null,
+    gridPaginator: null,
     gridConfig: {},
     store: null,
     contextMenuPlugin: null,
@@ -32,8 +33,6 @@ coreshop.order.sale.list = Class.create({
                 this.setClassFolder()
             }.bind(this)
         });
-
-        this.setupContextMenuPlugin();
     },
 
     activate: function () {
@@ -42,12 +41,7 @@ coreshop.order.sale.list = Class.create({
     },
 
     setupContextMenuPlugin: function () {
-        this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
-            function (id) {
-                this.open(id);
-            }.bind(this),
-            []
-        );
+        throw new Error('Please implement me');
     },
 
     setClassFolder: function () {
@@ -260,15 +254,47 @@ coreshop.order.sale.list = Class.create({
         });
 
         var searchLayout = this.search.getLayout();
+
         if (searchLayout) {
             searchLayout.on('afterLayout', function (layout) {
+
                 layout.setTitle(t('coreshop_' + this.type + '_manage'));
                 layout.setIconCls('coreshop_icon_' + this.type);
+
                 var gridPanels = layout.query('gridpanel');
                 if (gridPanels.length > 0) {
                     var grid = gridPanels[0];
                     if (!grid._coreshop_listener) {
+
                         grid._coreshop_listener = true;
+                        this.setGridPaginator(layout);
+                        this.setupContextMenuPlugin();
+
+                        var label = new Ext.Toolbar.TextItem({
+                            text: t('coreshop_order_list_filter') + ':'
+                        });
+
+                        layout.down('toolbar').insert(2, [
+                            label,
+                            {
+                                xtype: 'combo',
+                                value: 'none',
+                                store: this.getFilterStore(),
+                                flex: 1,
+                                valueField: 'id',
+                                displayField: 'name',
+                                queryMode: 'local',
+                                disabled: false,
+                                name: 'coreshopFilter',
+                                listeners: {
+                                    'change': function (field) {
+                                        grid.getStore().getProxy().setExtraParam('coreshop_filter', field.getValue());
+                                        this.getGridPaginator().moveFirst();
+                                    }.bind(this)
+                                }
+                            }
+                        ]);
+
                         grid.on('beforeedit', function (grid, cell) {
                             if (cell.column.hasEditor() === false) {
                                 return false;
@@ -302,5 +328,36 @@ coreshop.order.sale.list = Class.create({
 
     open: function (id, callback) {
         coreshop.order.helper.openSale(id, this.type, callback);
+    },
+
+    setGridPaginator: function (layout) {
+        this.gridPaginator = layout.down('pagingtoolbar');
+    },
+
+    getGridPaginator: function () {
+        return this.gridPaginator;
+    },
+
+    getFilterStore: function () {
+
+        var filterStore = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: '/admin/coreshop/grid/filters/coreshop_' + this.type
+            }),
+            reader: new Ext.data.JsonReader({}, [
+                {name: 'id'},
+                {name: 'name'}
+            ]),
+            listeners: {
+                load: function (store) {
+                    var rec = {id: 'none', name: t('coreshop_order_list_filter_empty')};
+                    store.insert(0, rec);
+                }.bind(this)
+            }
+        });
+
+        filterStore.load();
+        return filterStore;
     }
 });
