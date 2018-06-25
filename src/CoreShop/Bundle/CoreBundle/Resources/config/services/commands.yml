@@ -1,7 +1,4 @@
 services:
-    _defaults:
-        public: true
-
     coreshop.command.install.abstract:
         abstract: true
         class: CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand
@@ -12,17 +9,20 @@ services:
     coreshop.command.install.assets:
         class: CoreShop\Bundle\CoreBundle\Command\AssetsInstallCommand
         parent: coreshop.command.install.abstract
+        public: true
         tags:
           - { name: console.command, command: 'coreshop:install:assets' }
 
     coreshop.command.install.classes:
         class: CoreShop\Bundle\CoreBundle\Command\InstallClassesCommand
         parent: coreshop.command.install.abstract
+        public: true
         tags:
           - { name: console.command, command: 'coreshop:install:classes' }
 
     coreshop.command.install.database:
         class: CoreShop\Bundle\CoreBundle\Command\InstallDatabaseCommand
+        public: true
         arguments:
             - '@kernel'
             - '@coreshop.installer.checker.command_directory'
@@ -33,17 +33,20 @@ services:
     coreshop.command.install.demo:
         class: CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand
         parent: coreshop.command.install.abstract
+        public: true
         tags:
           - { name: console.command, command: 'coreshop:install:demo' }
 
     coreshop.command.install.fixture:
         class: CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand
         parent: coreshop.command.install.abstract
+        public: true
         tags:
           - { name: console.command, command: 'coreshop:install:fixtures' }
 
     coreshop.command.install.folders:
         class: CoreShop\Bundle\CoreBundle\Command\InstallFoldersCommand
+        public: true
         arguments:
             - '@kernel'
             - '@coreshop.installer.checker.command_directory'
@@ -54,6 +57,7 @@ services:
     coreshop.command.install:
         class: CoreShop\Bundle\CoreBundle\Command\InstallCommand
         parent: coreshop.command.install.abstract
+        public: true
         arguments:
             $migrationManager: '@Pimcore\Migrations\MigrationManager'
             $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"

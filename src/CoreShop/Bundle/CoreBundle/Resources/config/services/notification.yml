@@ -1,7 +1,4 @@
 services:
-    _defaults:
-        public: true
-
     # Notification Rule Conditions
     #### ORDER
     ##### Order Invoice State
