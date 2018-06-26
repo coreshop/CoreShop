@@ -114,12 +114,16 @@ class OrderMailProcessor implements OrderMailProcessorInterface
 
         unset($emailParameters['____pimcore_cache_item__'], $emailParameters['__dataVersionTimestamp']);
 
-        $recipient = [
-            [
-                $order->getCustomer()->getEmail(),
-                $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
-            ],
-        ];
+        $recipient = [];
+
+        if (!isset($params['doNotSendToDesignatedRecipient']) || !$params['doNotSendToDesignatedRecipient']) {
+            $recipient = [
+                [
+                    $order->getCustomer()->getEmail(),
+                    $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
+                ],
+            ];
+        }
 
         if ($sendInvoices) {
             $invoices = $this->invoiceRepository->getDocumentsInState($order, InvoiceStates::STATE_COMPLETE);

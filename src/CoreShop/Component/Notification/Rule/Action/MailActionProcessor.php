@@ -50,7 +50,17 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
         if (array_key_exists($language, $mails)) {
             $mailDocumentId = $mails[$language];
             $mailDocument = Document::getById($mailDocumentId);
-            $recipient = $params['recipient'];
+            $recipient = [];
+
+            if (!$configuration['doNotSendToDesignatedRecipient']) {
+                if (array_key_exists('recipient', $params)) {
+                    if (is_string($params['recipient'])) {
+                        $recipient = [$params['recipient']];
+                    } elseif (is_array($params['recipient'])) {
+                        $recipient = $params['recipient'];
+                    }
+                }
+            }
 
             $params['rule'] = $rule;
 
@@ -59,7 +69,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
             if ($mailDocument instanceof Document\Email) {
                 $params['object'] = $subject;
 
-                $this->mailProcessor->sendMail($mailDocument, $subject, [$recipient], [], $params);
+                $this->mailProcessor->sendMail($mailDocument, $subject, $recipient, [], $params);
             }
         }
     }

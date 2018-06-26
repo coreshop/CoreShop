@@ -28,7 +28,8 @@ class OrderMailConfigurationType extends StoreMailConfigurationType
 
         $builder
             ->add('sendInvoices', CheckboxType::class)
-            ->add('sendShipments', CheckboxType::class);
+            ->add('sendShipments', CheckboxType::class)
+            ->add('doNotSendToDesignatedRecipient', CheckboxType::class);
     }
 
     /**
