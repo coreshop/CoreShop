@@ -20,6 +20,7 @@ Feature: Create a new order and add a invoice
   Scenario: Create full invoice
     Given I create an order from my cart
     And I create a invoice for my order
+    And I apply order invoice transition "request_invoice" to my order
     And I apply invoice transition "complete" to latest order invoice
     Then the order invoice state should be "invoiced"
 
@@ -27,6 +28,7 @@ Feature: Create a new order and add a invoice
     Given I add the product "T-Shirt" to my cart
     And I create an order from my cart
     And I create a invoice for my order
+    And I apply order invoice transition "request_invoice" to my order
     And I apply invoice transition "complete" to latest order invoice
     Then the order invoice state should be "partially_invoiced"
 
@@ -34,6 +36,7 @@ Feature: Create a new order and add a invoice
     Given I add the product "T-Shirt" to my cart
     And I create an order from my cart
     And I create a invoice for my order
+    And I apply order invoice transition "request_invoice" to my order
     And I apply invoice transition "complete" to latest order invoice
     And I create another invoice for my order
     And I apply invoice transition "complete" to latest order invoice

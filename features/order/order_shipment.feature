@@ -20,6 +20,7 @@ Feature: Create a new order and add a shipment
 
   Scenario: Create full shipment
     Given I create a shipment for my order
+    And I apply order shipment transition "request_shipment" to my order
     And I apply shipment transition "ship" to latest order shipment
     Then the order shipping state should be "shipped"
 
@@ -27,6 +28,7 @@ Feature: Create a new order and add a shipment
     Given I add the product "T-Shirt" to my cart
     And I create an order from my cart
     And I create a shipment for my order
+    And I apply order shipment transition "request_shipment" to my order
     And I apply shipment transition "ship" to latest order shipment
     Then the order shipping state should be "partially_shipped"
 
@@ -34,6 +36,7 @@ Feature: Create a new order and add a shipment
     Given I add the product "T-Shirt" to my cart
     And I create an order from my cart
     And I create a shipment for my order
+    And I apply order shipment transition "request_shipment" to my order
     And I apply shipment transition "ship" to latest order shipment
     And I create another shipment for my order
     And I apply shipment transition "ship" to latest order shipment

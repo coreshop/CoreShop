@@ -17,6 +17,8 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\OrderInvoiceTransitions;
+use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
@@ -110,6 +112,22 @@ final class OrderContext implements Context
     public function iApplyTransitionToOrder($transition, OrderInterface $order)
     {
         $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, $transition);
+    }
+
+    /**
+     * @Given /^I apply order invoice transition "([^"]+)" to (my order)$/
+     */
+    public function iApplyTransitionToOrderInvoice($transition, OrderInterface $order)
+    {
+        $this->stateMachineApplier->apply($order, OrderInvoiceTransitions::IDENTIFIER, $transition);
+    }
+
+    /**
+     * @Given /^I apply order shipment transition "([^"]+)" to (my order)$/
+     */
+    public function iApplyTransitionToOrderShipment($transition, OrderInterface $order)
+    {
+        $this->stateMachineApplier->apply($order, OrderShipmentTransitions::IDENTIFIER, $transition);
     }
 
 }
