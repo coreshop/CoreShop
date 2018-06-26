@@ -80,7 +80,9 @@ class OrderState extends AbstractOperator
         $opacity = $workflow === 'coreshop_order' ? 1 : 0.3;
 
         if ($this->highlightLabel === true) {
-            $result->value = '<span class="rounded-color" style="background-color: rgba('.join(',', $rgb).', '.$opacity.'); color: black">'.$state['label'].'</span>';
+            $textColor = $workflow === 'coreshop_order' ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
+            $backgroundColor = join(',', $rgb);
+            $result->value = '<span class="rounded-color" style="background-color: rgba('.$backgroundColor.', '.$opacity.'); color: '.$textColor.';">'.$state['label'].'</span>';
         } else {
             $result->value = $state['label'];
         }
@@ -107,5 +109,34 @@ class OrderState extends AbstractOperator
         }
         $rgb = [$r, $g, $b];
         return $rgb;
+    }
+
+    /**
+     * @param $r
+     * @param $g
+     * @param $b
+     * @return string
+     */
+    private function getContrastColor($r, $g, $b)
+    {
+        $l1 = 0.2126 * pow($r / 255, 2.2) +
+            0.7152 * pow($g / 255, 2.2) +
+            0.0722 * pow($b / 255, 2.2);
+
+        $l2 = 0.2126 * pow(0 / 255, 2.2) +
+            0.7152 * pow(0 / 255, 2.2) +
+            0.0722 * pow(0 / 255, 2.2);
+
+        if ($l1 > $l2) {
+            $contrastRatio = (int)(($l1 + 0.05) / ($l2 + 0.05));
+        } else {
+            $contrastRatio = (int)(($l2 + 0.05) / ($l1 + 0.05));
+        }
+
+        if ($contrastRatio > 7) {
+            return 'black';
+        } else {
+            return 'white';
+        }
     }
 }

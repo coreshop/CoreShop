@@ -16,6 +16,7 @@ final class OrderShipmentTransitions
 {
     const IDENTIFIER = 'coreshop_order_shipment';
 
+    const TRANSITION_REQUEST_SHIPMENT = 'request_shipment';
     const TRANSITION_PARTIALLY_SHIP = 'partially_ship';
     const TRANSITION_CANCEL = 'cancel';
     const TRANSITION_SHIP = 'ship';

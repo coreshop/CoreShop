@@ -25,7 +25,7 @@ core_shop_workflow:
                     from: [ready]
                     to: cancelled
             place_colors:
-                new: '#feb624'
+                new: '#61c2cb'
                 ready: '#feb624'
                 cancelled: '#f2583e'
                 shipped: '#5b981a'
