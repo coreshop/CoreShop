@@ -14,10 +14,10 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\InvoiceStates;
-use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
@@ -91,11 +91,17 @@ class OrderInvoiceController extends PimcoreController
         }
 
         try {
-            $items = $this->decodeJson($items);
+
+            // request invoice ready state from order, if it's our first invoice.
+            $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_invoice');
+            if ($workflow->can($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE)) {
+                $workflow->apply($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE);
+            }
 
             $invoice = $this->getInvoiceFactory()->createNew();
             $invoice->setState(InvoiceStates::STATE_NEW);
 
+            $items = $this->decodeJson($items);
             $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
 
             return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);

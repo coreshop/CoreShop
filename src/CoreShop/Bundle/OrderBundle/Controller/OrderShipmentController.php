@@ -18,11 +18,12 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
+use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,7 +106,12 @@ class OrderShipmentController extends PimcoreController
             }
 
             try {
-                $items = $resource['items'];
+
+                // request shipment ready state from order, if it's our first shipment.
+                $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_shipment');
+                if ($workflow->can($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT)) {
+                    $workflow->apply($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT);
+                }
 
                 /**
                  * @var OrderShipmentInterface
@@ -121,6 +127,7 @@ class OrderShipmentController extends PimcoreController
                     $shipment->setValue($key, $value);
                 }
 
+                $items = $resource['items'];
                 $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
 
                 return $this->viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
@@ -191,7 +198,7 @@ class OrderShipmentController extends PimcoreController
     }
 
     /**
-     * @return PimcoreRepositoryInterface
+     * @return OrderShipmentRepositoryInterface
      */
     protected function getOrderShipmentRepository()
     {
