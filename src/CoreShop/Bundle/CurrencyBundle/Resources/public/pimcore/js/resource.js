@@ -53,4 +53,6 @@ coreshop.currency.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.currency.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.currency.resource();
+});

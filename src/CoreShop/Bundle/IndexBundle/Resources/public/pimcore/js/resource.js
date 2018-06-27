@@ -46,4 +46,6 @@ coreshop.index.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.index.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.index.resource();
+});

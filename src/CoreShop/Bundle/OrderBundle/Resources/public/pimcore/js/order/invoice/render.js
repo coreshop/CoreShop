@@ -39,9 +39,13 @@ coreshop.invoice.render = Class.create({
     loadDocument: function (invoiceId) {
         var frameUrl = '/admin/coreshop/order-invoice/render?id=' + invoiceId;
 
+        if (Ext.isFunction(pimcore.helpers.addCsrfTokenToUrl)) {
+            frameUrl = pimcore.helpers.addCsrfTokenToUrl(frameUrl);
+        }
+
         //check for native/plugin PDF viewer
         if (this.hasNativePDFViewer()) {
-            frameUrl += '?native-viewer=true';
+            frameUrl += '&native-viewer=true';
         }
 
         var editPanel = new Ext.Panel({
