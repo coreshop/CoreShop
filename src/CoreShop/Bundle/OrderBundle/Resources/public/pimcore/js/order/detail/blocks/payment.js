@@ -164,9 +164,22 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.de
     },
 
     updateSale: function () {
-        var me = this;
+        var me = this,
+            tool = me.paymentInfo.tools.find(function(tool) { return tool.type === 'coreshop-add'; });
 
         me.paymentsStore.loadRawData(me.sale.payments);
         me.updatePaymentInfoAlert();
+
+        if (me.sale.paymentCreationAllowed) {
+            if (tool && Ext.isFunction(tool.show)) {
+                tool.show();
+            }
+        } else {
+            if (tool && Ext.isFunction(tool.hide)) {
+                tool.hide();
+            } else {
+                tool.hidden = true;
+            }
+        }
     }
 });

@@ -164,24 +164,20 @@ coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.sale.d
 
     updateSale: function () {
         var me = this,
-            tool = me.shippingInfo.tools.find(function(tool) { return tool.type === 'coreshop-add';});
+            tool = me.shippingInfo.tools.find(function(tool) { return tool.type === 'coreshop-add'; });
 
         me.shipmentsStore.loadRawData(me.sale.shipments);
 
         if (me.sale.shipmentCreationAllowed) {
             me.topBarButton.show();
-
             if (tool && Ext.isFunction(tool.show)) {
                 tool.show();
             }
-        }
-        else {
+        } else {
             me.topBarButton.hide();
-
             if (tool && Ext.isFunction(tool.hide)) {
                 tool.hide();
-            }
-            else {
+            } else {
                 tool.hidden = true;
             }
         }

@@ -20,6 +20,7 @@ use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
@@ -260,6 +261,7 @@ class OrderController extends AbstractSaleDetailController
             $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
             $order['invoices'] = $this->getInvoices($sale);
             $order['shipments'] = $this->getShipments($sale);
+            $order['paymentCreationAllowed'] = $sale->getOrderState() !== OrderStates::STATE_CANCELLED;
             $order['invoiceCreationAllowed'] = $this->getInvoiceProcessableHelper()->isProcessable($sale);
             $order['shipmentCreationAllowed'] = $this->getShipmentProcessableHelper()->isProcessable($sale);
         }
