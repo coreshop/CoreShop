@@ -147,6 +147,7 @@ final class PimcoreClassContext implements Context
 
         $brickDefinition = new Objectbrick\Definition();
         $brickDefinition->setKey($name);
+        $brickDefinition->setLayoutDefinitions([]);
         $brickDefinition->save();
 
         $json = '{
