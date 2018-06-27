@@ -663,4 +663,6 @@ coreshop.core.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.core.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.core.resource();
+});

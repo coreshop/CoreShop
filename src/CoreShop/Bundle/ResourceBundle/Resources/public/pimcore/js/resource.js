@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.resource');
-coreshop.resource = Class.create({
+pimcore.registerNS('coreshop.resources');
+coreshop.resources = Class.create({
     resources: {},
 
     initialize: function () {
@@ -53,4 +53,6 @@ coreshop.deepCloneStore = function (source) {
     return target;
 };
 
-coreshop.global.resource = new coreshop.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    coreshop.global.resource = new coreshop.resources();
+});

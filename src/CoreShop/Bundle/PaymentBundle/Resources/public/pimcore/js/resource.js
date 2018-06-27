@@ -34,4 +34,6 @@ coreshop.payment.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.payment.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.payment.resource();
+});

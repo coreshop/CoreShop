@@ -54,4 +54,6 @@ coreshop.shipping.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.shipping.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.shipping.resource();
+});
