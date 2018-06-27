@@ -261,7 +261,7 @@ class OrderController extends AbstractSaleDetailController
             $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
             $order['invoices'] = $this->getInvoices($sale);
             $order['shipments'] = $this->getShipments($sale);
-            $order['paymentCreationAllowed'] = $sale->getOrderState() !== OrderStates::STATE_CANCELLED;
+            $order['paymentCreationAllowed'] = !in_array($sale->getOrderState(), [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE]);
             $order['invoiceCreationAllowed'] = $this->getInvoiceProcessableHelper()->isProcessable($sale);
             $order['shipmentCreationAllowed'] = $this->getShipmentProcessableHelper()->isProcessable($sale);
         }
