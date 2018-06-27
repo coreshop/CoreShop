@@ -170,24 +170,20 @@ coreshop.order.order.detail.blocks.invoice = Class.create(coreshop.order.sale.de
 
     updateSale: function () {
         var me = this,
-            tool = me.invoiceDetails.tools.find(function(tool) { return tool.type === 'coreshop-add';});
+            tool = me.invoiceDetails.tools.find(function(tool) { return tool.type === 'coreshop-add'; });
 
         me.invoicesStore.loadRawData(me.sale.invoices);
 
         if (me.sale.invoiceCreationAllowed) {
             me.topBarButton.show();
-
             if (tool && Ext.isFunction(tool.show)) {
                 tool.show();
             }
-        }
-        else {
+        } else {
             me.topBarButton.hide();
-
             if (tool && Ext.isFunction(tool.hide)) {
                 tool.hide();
-            }
-            else {
+            } else {
                 tool.hidden = true;
             }
         }

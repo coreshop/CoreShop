@@ -12,9 +12,9 @@
 
 namespace CoreShop\Component\Order\Processable;
 
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 class ProcessableOrderItems implements ProcessableInterface
@@ -112,6 +112,6 @@ class ProcessableOrderItems implements ProcessableInterface
      */
     public function isProcessable(OrderInterface $order)
     {
-        return !$this->isFullyProcessed($order) && $order->getPaymentState() === OrderPaymentStates::STATE_PAID;
+        return !$this->isFullyProcessed($order) && $order->getOrderState() !== OrderStates::STATE_CANCELLED;
     }
 }
