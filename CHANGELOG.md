@@ -5,6 +5,8 @@
     - ```CoreShop\Component\Index\Interpreter\InterpreterInterface```: public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
     - ```CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface```: public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
     - ```CoreShop\Component\Index\Interpreter\RelationInterpreterInterface```: public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
+    - ```CoreShop\Component\Customer\Model\UserInterface::ROLE_DEFAULT``` renamed ```CoreShop\Component\Customer\Model\UserInterface::CORESHOP_ROLE_DEFAULT```
+    - ```CoreShop\Component\Customer\Model\UserInterface::ROLE_SUPER_ADMIN``` renamed ```CoreShop\Component\Customer\Model\UserInterface::CORESHOP_ROLE_SUPER_ADMIN```
 
 ## 2.0.0-beta.1 to 2.0.0-beta.2
  - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:
