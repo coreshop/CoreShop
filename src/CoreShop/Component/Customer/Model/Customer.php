@@ -223,7 +223,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
         }
 
         // we need to make sure to have at least one role
-        $roles[] = static::ROLE_DEFAULT;
+        $roles[] = static::CORESHOP_ROLE_DEFAULT;
 
         return array_unique($roles);
     }

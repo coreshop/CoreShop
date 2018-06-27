@@ -20,8 +20,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, UserInterface, EquatableInterface, LocaleAwareInterface
 {
-    const ROLE_DEFAULT = 'ROLE_USER';
-    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
+    const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     /**
      * @return string
