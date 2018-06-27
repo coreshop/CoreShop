@@ -23,5 +23,5 @@ $invoice = $this->container->get('coreshop.factory.order_invoice')->createNew();
 $invoice->setState(InvoiceStates::STATE_NEW);
 
 $items = [];
-$invoice = $this->get(''coreshop.order.transformer.order_to_invoice'')->transform($order, $invoice, $items);
+$invoice = $this->get('coreshop.order.transformer.order_to_invoice')->transform($order, $invoice, $items);
 ```

@@ -22,5 +22,5 @@ $shipment = $this->container->get('coreshop.factory.order_shipment')->createNew(
 $shipment->setState(ShipmentStates::STATE_NEW);
 
 $items = [];
-$shipment = $this->get(''coreshop.order.transformer.order_to_shipment'')->transform($order, $shipment, $items);
+$shipment = $this->get('coreshop.order.transformer.order_to_shipment')->transform($order, $shipment, $items);
 ```
