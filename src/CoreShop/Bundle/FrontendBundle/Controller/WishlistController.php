@@ -30,7 +30,8 @@ class WishlistController extends FrontendController
         $product = $this->get('coreshop.repository.product')->find($request->get('product'));
 
         if (!$product instanceof ProductInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+            return $this->redirect($redirect);
         }
 
         $quantity = intval($request->get('quantity', 1));
@@ -43,7 +44,8 @@ class WishlistController extends FrontendController
 
         $this->addFlash('success', 'coreshop.ui.item_added');
 
-        return $this->redirectToRoute('coreshop_wishlist_summary');
+        $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getWishlist(), 'coreshop_wishlist_summary'));
+        return $this->redirect($redirect);
     }
 
     /**
