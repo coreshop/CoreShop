@@ -170,7 +170,8 @@ class CartController extends FrontendController
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
-            return $this->redirectToRoute('coreshop_index');
+            $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+            return $this->redirect($redirect);
         }
 
         $quantity = intval($request->get('quantity', 1));
@@ -179,12 +180,14 @@ class CartController extends FrontendController
             $quantity = 1;
         }
 
+        $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
+
         if ($product instanceof StockableInterface) {
             $hasStock = $this->get('coreshop.inventory.availability_checker.default')->isStockSufficient($product, $quantity);
 
             if (!$hasStock) {
                 $this->addFlash('error', 'coreshop.ui.item_is_out_of_stock');
-                return $this->redirectToRoute('coreshop_cart_summary');
+                return $this->redirect($redirect);
             }
         }
 
@@ -195,7 +198,7 @@ class CartController extends FrontendController
 
         $this->addFlash('success', 'coreshop.ui.item_added');
 
-        return $this->redirectToRoute('coreshop_cart_summary');
+        return $this->redirect($redirect);
     }
 
     /**
