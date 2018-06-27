@@ -93,7 +93,7 @@ final class OrderShipmentContext implements Context
     /**
      * @Given /^I apply shipment transition "([^"]+)" to (latest order shipment)$/
      */
-    public function iApplyShipmentTransitionToOrderShipment($shipmentTransition, OrderShipmentInterface $shipment)
+    public function iApplyShipmentTransitionToShipment($shipmentTransition, OrderShipmentInterface $shipment)
     {
         $this->stateMachineApplier->apply($shipment, ShipmentTransitions::IDENTIFIER, $shipmentTransition);
     }

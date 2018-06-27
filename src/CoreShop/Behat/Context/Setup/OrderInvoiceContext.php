@@ -93,7 +93,7 @@ final class OrderInvoiceContext implements Context
     /**
      * @Given /^I apply invoice transition "([^"]+)" to (latest order invoice)$/
      */
-    public function iApplyInvoiceTransitionToOrderInvoice($invoiceTransition, OrderInvoiceInterface $invoice)
+    public function iApplyInvoiceTransitionToInvoice($invoiceTransition, OrderInvoiceInterface $invoice)
     {
         $this->stateMachineApplier->apply($invoice, InvoiceTransitions::IDENTIFIER, $invoiceTransition);
     }

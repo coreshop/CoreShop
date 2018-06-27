@@ -36,12 +36,16 @@ Feature: Create a new order and change states
 
   Scenario: Test order shipping states
     Then the order shipping state should be "new"
+    And I should be able to apply shipping transition "request_shipment" to my order
+    And I apply order shipment transition "request_shipment" to my order
     And I should be able to apply shipping transition "partially_ship" to my order
     And I should be able to apply shipping transition "cancel" to my order
     And I should be able to apply shipping transition "ship" to my order
 
   Scenario: Test order invoice states
     Then the order invoice state should be "new"
+    And I should be able to apply invoice transition "request_invoice" to my order
+    And I apply order invoice transition "request_invoice" to my order
     And I should be able to apply invoice transition "partially_invoice" to my order
     And I should be able to apply invoice transition "cancel" to my order
     And I should be able to apply invoice transition "invoice" to my order

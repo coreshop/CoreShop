@@ -23,6 +23,7 @@ Feature: Create a new order and add a invoice
     And I create a payment for my order with payment provider "Bankwire" and amount 2400
     And I apply payment transition "complete" to latest order payment
     And I create a shipment for my order
+    And I apply order shipment transition "request_shipment" to my order
     And I apply shipment transition "ship" to latest order shipment
     Then the order shipping state should be "shipped"
     And the order payment state should be "paid"
@@ -34,6 +35,7 @@ Feature: Create a new order and add a invoice
     And I create a payment for my order with payment provider "Bankwire" and amount 2400
     And I apply payment transition "complete" to latest order payment
     And I create a shipment for my order
+    And I apply order shipment transition "request_shipment" to my order
     And I apply shipment transition "ship" to latest order shipment
     Then the order shipping state should be "shipped"
     And the order payment state should be "paid"

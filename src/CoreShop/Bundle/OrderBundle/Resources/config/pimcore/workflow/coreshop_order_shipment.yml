@@ -11,23 +11,26 @@ core_shop_workflow:
         coreshop_order_shipment:
             places:
                 - new
+                - ready
                 - cancelled
                 - partially_shipped
                 - shipped
             transitions:
-                partially_ship:
+                request_shipment:
                     from: [new]
+                    to: ready
+                partially_ship:
+                    from: [ready]
                     to: partially_shipped
                 cancel:
-                    from: [new]
+                    from: [ready]
                     to: cancelled
                 ship:
-                    from: [new, partially_shipped]
+                    from: [ready, partially_shipped]
                     to: shipped
 
             place_colors:
-                initialized: '#61c2cb'
-                new: '#feb624'
+                new: '#61c2cb'
                 ready: '#feb624'
                 partially_shipped: '#f27024'
                 shipped: '#5b981a'

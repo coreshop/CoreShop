@@ -11,22 +11,25 @@ core_shop_workflow:
         coreshop_order_invoice:
             places:
                 - new
+                - ready
                 - cancelled
                 - partially_invoiced
                 - invoiced
             transitions:
-                partially_invoice:
+                request_invoice:
                     from: [new]
+                    to: ready
+                partially_invoice:
+                    from: [ready]
                     to: partially_invoiced
                 cancel:
-                    from: [new]
+                    from: [ready]
                     to: cancelled
                 invoice:
-                    from: [new, partially_invoiced]
+                    from: [ready, partially_invoiced]
                     to: invoiced
             place_colors:
-                initialized: '#61c2cb'
-                new: '#feb624'
+                new: '#61c2cb'
                 ready: '#feb624'
                 partially_invoiced: '#f27024'
                 invoiced: '#5b981a'

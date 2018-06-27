@@ -16,6 +16,7 @@ final class OrderInvoiceTransitions
 {
     const IDENTIFIER = 'coreshop_order_invoice';
 
+    const TRANSITION_REQUEST_INVOICE = 'request_invoice';
     const TRANSITION_PARTIALLY_INVOICE = 'partially_invoice';
     const TRANSITION_CANCEL = 'cancel';
     const TRANSITION_INVOICE = 'invoice';
