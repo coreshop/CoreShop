@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
 
 final class ProductSpecificPriceRuleActionPass extends RegisterRegistryTypePass
 {

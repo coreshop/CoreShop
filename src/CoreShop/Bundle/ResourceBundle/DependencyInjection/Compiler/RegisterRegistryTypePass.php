@@ -12,70 +12,12 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass as BaseRegisterRegistryTypePass;
 
-abstract class RegisterRegistryTypePass implements CompilerPassInterface
+/**
+ * @deprecated Deprecated since 2.0.0-beta.2 and will be removed in 2.0.0-beta.3, use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass instead
+ */
+abstract class RegisterRegistryTypePass extends BaseRegisterRegistryTypePass
 {
-    /**
-     * @var string
-     */
-    protected $registry;
 
-    /**
-     * @var string
-     */
-    protected $formRegistry;
-
-    /**
-     * @var string
-     */
-    protected $parameter;
-
-    /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @param string $registry
-     * @param string $formRegistry
-     * @param string $parameter
-     * @param string $tag
-     */
-    public function __construct($registry, $formRegistry, $parameter, $tag)
-    {
-        $this->registry = $registry;
-        $this->formRegistry = $formRegistry;
-        $this->parameter = $parameter;
-        $this->tag = $tag;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
-    {
-        if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
-            return;
-        }
-
-        $registry = $container->getDefinition($this->registry);
-        $formRegistry = $container->getDefinition($this->formRegistry);
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
-            if (!isset($attributes[0]['type'], $attributes[0]['form-type'])) {
-                throw new \InvalidArgumentException('Tagged Service `'.$id.'` needs to have `type` and `form-type` attributes.');
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-            $formRegistry->addMethodCall('add', [$attributes[0]['type'], 'default', $attributes[0]['form-type']]);
-        }
-
-        $container->setParameter($this->parameter, $map);
-    }
 }
