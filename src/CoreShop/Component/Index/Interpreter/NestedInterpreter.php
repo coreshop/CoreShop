@@ -31,13 +31,13 @@ class NestedInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $this->assert($interpreterConfig);
 
-        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($object, $config) {
+        return $this->loop($value, $interpreterConfig, function ($value, InterpreterInterface $interpreter, $interpreterConfig) use ($indexable, $config) {
             if ($interpreter instanceof InterpreterInterface) {
-                return $interpreter->interpret($value, $object, $config, $interpreterConfig);
+                return $interpreter->interpret($value, $indexable, $config, $interpreterConfig);
             }
 
             return $value;

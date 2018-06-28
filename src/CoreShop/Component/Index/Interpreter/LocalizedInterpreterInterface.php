@@ -20,11 +20,11 @@ interface LocalizedInterpreterInterface extends InterpreterInterface
     /**
      * @param $language
      * @param $value
-     * @param IndexableInterface   $object
+     * @param IndexableInterface   $indexable
      * @param IndexColumnInterface $config
      * @param array $interpreterConfig
      *
      * @return mixed
      */
-    public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
+    public function interpretForLanguage($language, $value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
 }

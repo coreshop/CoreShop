@@ -20,7 +20,7 @@ class LocaleMappingInterpreter implements LocalizedInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         throw new \Exception('method "interpret" in Localized Interpreter not allowed. Please use "interpretForLanguage" instead.');
     }
@@ -28,7 +28,7 @@ class LocaleMappingInterpreter implements LocalizedInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpretForLanguage($language, $value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         if (!is_array($value)) {
             return $value;

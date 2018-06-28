@@ -20,7 +20,7 @@ class SoundexInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         if (is_null($value)) {
             return null;

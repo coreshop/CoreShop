@@ -21,7 +21,7 @@ class ObjectPropertyInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         if ($value instanceof AbstractObject) {
             if (array_key_exists('property', $interpreterConfig)) {

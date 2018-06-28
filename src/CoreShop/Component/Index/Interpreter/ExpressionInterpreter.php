@@ -35,7 +35,7 @@ class ExpressionInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $expression = $interpreterConfig['expression'];
 
@@ -43,7 +43,7 @@ class ExpressionInterpreter implements InterpreterInterface
 
         return $expr->evaluate($expression, [
             'value' => $value,
-            'object' => $object,
+            'object' => $indexable,
             'config' => $config,
             'container' => $this->container,
         ]);

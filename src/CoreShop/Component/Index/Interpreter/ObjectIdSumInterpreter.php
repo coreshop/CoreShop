@@ -21,13 +21,13 @@ class ObjectIdSumInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $sum = 0;
         if (is_array($value)) {
-            foreach ($value as $object) {
-                if ($object instanceof ElementInterface) {
-                    $sum += $object->getId();
+            foreach ($value as $indexable) {
+                if ($indexable instanceof ElementInterface) {
+                    $sum += $indexable->getId();
                 }
             }
         }
