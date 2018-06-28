@@ -4,5 +4,10 @@ Ext.define('CoreShop.store.Country', {
 
     name: 'country',
     fieldLabel: t('coreshop_country'),
-    store: pimcore.globalmanager.get('coreshop_countries')
+
+    initComponent: function () {
+        this.store = pimcore.globalmanager.get('coreshop_countries');
+
+        this.callParent();
+    }
 });
