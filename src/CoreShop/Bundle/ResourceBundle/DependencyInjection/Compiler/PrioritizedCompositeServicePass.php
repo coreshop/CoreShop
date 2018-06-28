@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass as BasePrioritizedCompositeServicePass;
 
 /**
- * @deprecated Deprecated since 2.0.0-beta.2 and will be removed in 2.0.0-beta.3, use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass instead
+ * @deprecated Deprecated since 2.0.0-beta.3 and will be removed in 2.0.0, use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass instead
  */
 abstract class PrioritizedCompositeServicePass extends BasePrioritizedCompositeServicePass
 {
