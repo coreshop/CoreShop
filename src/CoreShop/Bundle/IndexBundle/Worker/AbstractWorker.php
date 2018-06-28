@@ -18,6 +18,7 @@ use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
+use CoreShop\Component\Index\Interpreter\RelationalValueInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
@@ -264,16 +265,30 @@ abstract class AbstractWorker implements WorkerInterface
      */
     protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
     {
-        Assert::isArray($value);
+        if (is_null($value)) {
+            return [];
+        }
+
         $relationData = [];
 
         foreach ($value as $v) {
             $relData = [];
             $relData['src'] = $object->getId();
             $relData['src_virtualObjectId'] = $virtualObjectId;
-            $relData['dest'] = $v['dest'];
             $relData['fieldname'] = $column->getName();
-            $relData['type'] = $v['type'];
+
+            if ($v instanceof RelationalValueInterface) {
+                $relData['dest'] = $v->getDestinationId();
+                $relData['type'] = $v->getType();
+            }
+            elseif (is_array($v) && array_key_exists('dest', $v) && array_key_exists('type', $v)) {
+                $relData['dest'] = $v['dest'];
+                $relData['type'] = $v['type'];
+            }
+            else {
+                throw new \InvalidArgumentException(sprintf("Result needs either be instanceof %s or an array with `id` and `type`", RelationalValueInterface::class));
+            }
+
             $relationData[] = $relData;
         }
 

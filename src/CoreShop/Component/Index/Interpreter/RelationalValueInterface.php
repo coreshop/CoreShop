@@ -15,15 +15,15 @@ namespace CoreShop\Component\Index\Interpreter;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 
-interface RelationInterpreterInterface extends InterpreterInterface
+interface RelationalValueInterface
 {
     /**
-     * @param $value
-     * @param IndexableInterface $indexable
-     * @param IndexColumnInterface $config
-     * @param array $interpreterConfig
-     *
-     * @return array|RelationalValueInterface[]
+     * @return int
      */
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
+    public function getDestinationId();
+
+    /**
+     * @return string
+     */
+    public function getType();
 }
