@@ -32,6 +32,8 @@ coreshop.order.sale.detail.panel = Class.create({
     initialize: function (sale) {
         var me = this;
 
+        me.blocks = {};
+        me.modules = {};
         me.eventManager = new CoreShop.resource.EventManager();
         me.sale = sale;
         me.layoutId = 'coreshop_' + this.type + '_' + this.sale.o_id;
