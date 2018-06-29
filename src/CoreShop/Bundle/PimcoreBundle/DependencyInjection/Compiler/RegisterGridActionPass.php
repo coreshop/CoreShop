@@ -12,8 +12,6 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
-
 class RegisterGridActionPass extends RegisterSimpleRegistryTypePass
 {
     public function __construct()

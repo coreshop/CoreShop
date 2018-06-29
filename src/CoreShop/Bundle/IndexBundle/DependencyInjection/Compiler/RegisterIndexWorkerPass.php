@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
 
 class RegisterIndexWorkerPass extends RegisterRegistryTypePass
 {

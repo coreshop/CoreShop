@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
 
 final class CompositeShippableValidatorPass extends PrioritizedCompositeServicePass
 {

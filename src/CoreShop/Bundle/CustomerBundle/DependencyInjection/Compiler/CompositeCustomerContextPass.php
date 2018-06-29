@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
 
 final class CompositeCustomerContextPass extends PrioritizedCompositeServicePass
 {

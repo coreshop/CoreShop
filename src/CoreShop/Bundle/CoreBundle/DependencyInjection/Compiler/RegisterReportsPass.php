@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
 class RegisterReportsPass extends RegisterSimpleRegistryTypePass
 {

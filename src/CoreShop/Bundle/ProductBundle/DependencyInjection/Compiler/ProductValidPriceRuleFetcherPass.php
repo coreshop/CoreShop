@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
 final class ProductValidPriceRuleFetcherPass extends RegisterSimpleRegistryTypePass
 {
