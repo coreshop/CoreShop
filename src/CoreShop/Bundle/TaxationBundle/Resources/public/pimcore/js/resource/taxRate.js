@@ -4,5 +4,10 @@ Ext.define('CoreShop.store.TaxRate', {
 
     name: 'taxRate',
     fieldLabel: t('coreshop_tax_rate'),
-    store: pimcore.globalmanager.get('coreshop_tax_rates')
+
+    initComponent: function () {
+        this.store = pimcore.globalmanager.get('coreshop_tax_rates');
+
+        this.callParent();
+    }
 });
