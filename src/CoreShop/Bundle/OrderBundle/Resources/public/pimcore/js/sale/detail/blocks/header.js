@@ -59,13 +59,13 @@ coreshop.order.sale.detail.blocks.header = Class.create(coreshop.order.sale.deta
                 me.storePanel
             ];
 
-        me.panel = Ext.create('Ext.panel.Panel', {
+        me.headerPanel = Ext.create('Ext.panel.Panel', {
             layout: 'hbox',
             margin: 0,
             items: items
         });
 
-        return me.panel;
+        return me.headerPanel;
     },
 
     updateSale: function () {
