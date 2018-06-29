@@ -1,0 +1,9 @@
+services:
+    coreshop.pimcore.document.tag.carrier:
+        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        arguments:
+            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
+            - 'coreshop.repository.carrier'
+            - 'name'
+        tags:
+            - { name: coreshop.pimcore.document.tag, type: coreshop_carrier }

@@ -2,6 +2,7 @@ imports:
     - { resource: "services/form.yml" }
     - { resource: "services/profiler.yml" }
     - { resource: "services/theme.yml" }
+    - { resource: "services/pimcore.yml" }
 
 services:
     coreshop.context.store.composite:

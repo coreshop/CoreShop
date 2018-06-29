@@ -1,18 +1,18 @@
 services:
-    coreshop.pimcore.document.tag.filter:
+    coreshop.pimcore.document.tag.tax_rate:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.filter'
+            - 'coreshop.repository.tax_rate'
             - 'name'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_filter }
+            - { name: coreshop.pimcore.document.tag, type: coreshop_tax_rate }
 
-    coreshop.pimcore.document.tag.index:
+    coreshop.pimcore.document.tag.tax_rule_group:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:
             - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.index'
+            - 'coreshop.repository.tax_rule_group'
             - 'name'
         tags:
-            - { name: coreshop.pimcore.document.tag, type: coreshop_index }
+            - { name: coreshop.pimcore.document.tag, type: coreshop_tax_rule_group }
