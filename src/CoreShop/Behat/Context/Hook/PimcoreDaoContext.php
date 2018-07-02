@@ -61,6 +61,14 @@ final class PimcoreDaoContext implements Context
     /**
      * @BeforeScenario
      */
+    public function clearRuntimeCache()
+    {
+        \Pimcore\Cache\Runtime::clear();
+    }
+
+    /**
+     * @BeforeScenario
+     */
     public function purgeClasses()
     {
         $list = new ClassDefinition\Listing();
