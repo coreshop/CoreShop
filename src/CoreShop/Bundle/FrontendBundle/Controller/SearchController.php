@@ -40,13 +40,10 @@ class SearchController extends FrontendController
 
             $query = [
                 'name LIKE ?',
-                'description LIKE ?',
                 'shortDescription LIKE ?',
-                'sku LIKE ?',
-                'condition' => 'stores LIKE ?'
+                'sku LIKE ?'
             ];
             $queryParams = [
-                '%'.$text.'%',
                 '%'.$text.'%',
                 '%'.$text.'%',
                 '%'.$text.'%',
@@ -54,7 +51,7 @@ class SearchController extends FrontendController
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
-            $list->setCondition('active = 1 AND ('.implode(' OR ', $query).')', $queryParams);
+            $list->setCondition('active = 1 AND ('.implode(' OR ', $query).') AND stores LIKE ?', $queryParams);
 
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);
