@@ -4,5 +4,10 @@ Ext.define('CoreShop.store.Currency', {
 
     name: 'currency',
     fieldLabel: t('coreshop_currency'),
-    store: pimcore.globalmanager.get('coreshop_currencies')
+
+    initComponent: function () {
+        this.store = pimcore.globalmanager.get('coreshop_currencies');
+
+        this.callParent();
+    }
 });

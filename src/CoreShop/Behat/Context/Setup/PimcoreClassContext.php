@@ -529,7 +529,7 @@ final class PimcoreClassContext implements Context
     public function definitionHasABrickField($definition, $name)
     {
         if (!$definition instanceof ClassDefinition) {
-            throw new \InvalidArgumentException('Bricks are only allowed in Classes');
+            throw new \InvalidArgumentException(sprintf('Bricks are only allowed in ClassDefinitions, given %s', null !== $definition ? get_class($definition) : 'null'));
         }
 
         $jsonDefinition = sprintf('
@@ -566,7 +566,7 @@ final class PimcoreClassContext implements Context
     public function definitionHasAFieldCollectionField($definition, $name, Fieldcollection\Definition $fieldCollectionDefinition)
     {
         if (!$definition instanceof ClassDefinition) {
-            throw new \InvalidArgumentException('Fieldcollections are only allowed in Classes');
+            throw new \InvalidArgumentException(sprintf('Fieldcollections are only allowed in ClassDefinitions, given %s', null !== $definition ? get_class($definition) : 'null'));
         }
 
         $jsonDefinition = sprintf('
@@ -744,7 +744,7 @@ final class PimcoreClassContext implements Context
         }
 
         if (!$definitionUpdater instanceof ClassUpdateInterface) {
-            throw new \InvalidArgumentException('Invalid Definition Updater Class given');
+            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? get_class($definition) : 'null'));
         }
 
         return $definitionUpdater;
