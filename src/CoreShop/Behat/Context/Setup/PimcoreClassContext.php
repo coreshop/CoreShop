@@ -740,7 +740,7 @@ final class PimcoreClassContext implements Context
         } elseif ($definition instanceof Fieldcollection\Definition) {
             $definitionUpdater = new FieldCollectionDefinitionUpdate($definition->getKey());
         } else {
-            throw new \InvalidArgumentException('Definition Updater not yet implemented');
+            throw new \InvalidArgumentException(sprintf('Definition Updater for %s not found', null !== $definition ? get_class($definition) : 'null'));
         }
 
         if (!$definitionUpdater instanceof ClassUpdateInterface) {
