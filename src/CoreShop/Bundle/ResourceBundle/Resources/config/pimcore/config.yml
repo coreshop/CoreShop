@@ -1,7 +1,7 @@
 jms_serializer:
     metadata:
         directories:
-            pimcore:
+            coreshop-resource:
                 namespace_prefix: "Pimcore"
                 path: "@CoreShopResourceBundle/Resources/config/serializer"
 
