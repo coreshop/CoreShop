@@ -13,8 +13,8 @@
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
-use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
@@ -29,7 +29,7 @@ final class PimcoreDaoContext implements Context
         /**
          * @var $list Listing
          */
-        $list = Concrete::getList();
+        $list = new DataObject\Listing();
         $list->setUnpublished(true);
         $list->setCondition('o_id <> 1');
         $list->load();
@@ -59,7 +59,7 @@ final class PimcoreDaoContext implements Context
     }
 
     /**
-     * @BeforeScenario
+     * @BeforeStep
      */
     public function clearRuntimeCache()
     {
