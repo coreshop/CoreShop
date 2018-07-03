@@ -9,6 +9,6 @@ pimcore:
 jms_serializer:
     metadata:
         directories:
-            coreshop-address:
+            coreshop-currency:
                 namespace_prefix: "CoreShop\\Component\\Currency"
                 path: "@CoreShopCurrencyBundle/Resources/config/serializer"

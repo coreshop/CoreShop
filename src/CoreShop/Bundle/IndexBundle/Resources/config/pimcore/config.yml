@@ -8,6 +8,6 @@ pimcore:
 jms_serializer:
     metadata:
         directories:
-            coreshop-address:
+            coreshop-index:
                 namespace_prefix: "CoreShop\\Component\\Index"
                 path: "@CoreShopIndexBundle/Resources/config/serializer"
