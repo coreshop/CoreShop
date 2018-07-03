@@ -1,6 +1,6 @@
 jms_serializer:
     metadata:
         directories:
-            coreshop-address:
+            coreshop-rule:
                 namespace_prefix: "CoreShop\\Component\\Rule"
                 path: "@CoreShopRuleBundle/Resources/config/serializer"
