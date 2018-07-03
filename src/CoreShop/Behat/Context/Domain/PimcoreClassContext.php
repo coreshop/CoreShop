@@ -95,6 +95,8 @@ final class PimcoreClassContext implements Context
             $field = $definition->getFieldDefinition($name);
         } else if ($definition instanceof ClassDefinition) {
             $field = $definition->getFieldDefinition($name);
+        } else {
+            throw new \InvalidArgumentException(sprintf('Definition with type %s is not supported', null !== $definition ? get_class($definition) : 'null'));
         }
 
         Assert::isInstanceOf(
