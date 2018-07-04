@@ -152,6 +152,13 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/css/resource.css')->end()
                         ->end()
                     ->end()
+                    ->arrayNode('editmode_js')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('core_extension_document:tag_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/document/select.js')->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();
