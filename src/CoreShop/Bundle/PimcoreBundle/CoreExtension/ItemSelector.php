@@ -136,7 +136,7 @@ class ItemSelector extends Multihref
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         //if not set, return null
-        if ($data === null or $data === FALSE) {
+        if ($data === null or $data === false) {
             return null;
         }
 
@@ -147,6 +147,7 @@ class ItemSelector extends Multihref
             }
 
         }
+
         //must return array if data shall be set
         return $elements;
     }
@@ -163,6 +164,7 @@ class ItemSelector extends Multihref
                 /** @var AbstractObject $element */
                 $return[] = $element->getId();
             }
+
             return implode(",", $return);
         }
 

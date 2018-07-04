@@ -196,11 +196,13 @@ class DynamicDropdown extends Href
     public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_int($data)) {
-            return [[
-                "dest_id" => $data,
-                "type" => "object",
-                "fieldname" => $this->getName()
-            ]];
+            return [
+                [
+                    "dest_id" => $data,
+                    "type" => "object",
+                    "fieldname" => $this->getName(),
+                ],
+            ];
         }
 
         return parent::getDataForResource($data, $object, $params);

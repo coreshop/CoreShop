@@ -144,7 +144,7 @@ class SuperBoxSelect extends Multihref
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         //if not set, return null
-        if ($data === null or $data === FALSE) {
+        if ($data === null or $data === false) {
             return null;
         }
 
@@ -154,6 +154,7 @@ class SuperBoxSelect extends Multihref
                 $elements[] = Service::getElementById("object", $id);
             }
         }
+
         //must return array if data shall be set
         return $elements;
     }
@@ -170,6 +171,7 @@ class SuperBoxSelect extends Multihref
                 /** @var AbstractObject $element */
                 $return[] = $element->getId();
             }
+
             return implode(",", $return);
         }
 

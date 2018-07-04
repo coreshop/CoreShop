@@ -49,38 +49,54 @@ final class DynamicDropdownController extends AdminController
             } else {
                 $message = sprintf('The folder submitted could not be found: "%s"', $folderName);
                 \Pimcore\Logger::crit($message);
-                return $this->json([
-                    "success" => false,
-                    "message" => $message,
-                    "options" => $options
-                ]);
+
+                return $this->json(
+                    [
+                        "success" => false,
+                        "message" => $message,
+                        "options" => $options,
+                    ]
+                );
             }
         } else {
             $message = sprintf('The folder submitted for parentId is not valid: "%s"', $folderName);
             \Pimcore\Logger::warning($message);
 
-            return $this->json([
-                "success" => false,
-                "message" => $message,
-                "options" => $options
-            ]);
+            return $this->json(
+                [
+                    "success" => false,
+                    "message" => $message,
+                    "options" => $options,
+                ]
+            );
         }
 
-        if (!is_null($options)) usort($options, function ($a, $b) use ($sort) {
-            $field = "id";
+        if (!is_null($options)) {
+            usort(
+                $options,
+                function ($a, $b) use ($sort) {
+                    $field = "id";
 
-            if ($sort == "byValue") $field = "key";
+                    if ($sort == "byValue") {
+                        $field = "key";
+                    }
 
-            if ($a[$field] == $b[$field]) return 0;
+                    if ($a[$field] == $b[$field]) {
+                        return 0;
+                    }
 
-            return $a[$field] < $b[$field] ? 0 : 1;
-        });
+                    return $a[$field] < $b[$field] ? 0 : 1;
+                }
+            );
+        }
 
 
-        return $this->json([
-            "success" => true,
-            "options" => $options
-        ]);
+        return $this->json(
+            [
+                "success" => true,
+                "options" => $options,
+            ]
+        );
     }
 
     /**
@@ -94,7 +110,7 @@ final class DynamicDropdownController extends AdminController
         $className = preg_replace("@[^a-zA-Z0-9_\-]@", "", $request->get('className'));
 
         if (!empty($className)) {
-            $classMethods = $this->getThisClassMethods("\\Pimcore\\Model\\DataObject\\" . ucfirst($className));
+            $classMethods = $this->getThisClassMethods("\\Pimcore\\Model\\DataObject\\".ucfirst($className));
 
             if (!is_null($classMethods)) {
                 foreach ($classMethods as $methodName) {
@@ -109,10 +125,10 @@ final class DynamicDropdownController extends AdminController
     }
 
     /**
-     * @param Request $request
+     * @param Request                   $request
      * @param DataObject\AbstractObject $folder
-     * @param array $options
-     * @param string $path
+     * @param array                     $options
+     * @param string                    $path
      * @return array
      * @throws \Exception
      */
@@ -121,7 +137,7 @@ final class DynamicDropdownController extends AdminController
         $currentLang = $request->get("current_language");
         $source = $request->get("methodName");
         $className = ucfirst($request->get('className'));
-        $objectName = "Pimcore\\Model\\DataObject\\" . $className;
+        $objectName = "Pimcore\\Model\\DataObject\\".$className;
 
         $usesI18n = false;
         $children = $folder->getChildren();
@@ -151,19 +167,20 @@ final class DynamicDropdownController extends AdminController
                      * @var DataObject\Folder $child
                      */
                     $key = $child->getProperty("Taglabel") != "" ? $child->getProperty("Taglabel") : $child->getKey();
-                    if ($request->get("recursive") == "true")
-                        $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
+                    if ($request->get("recursive") == "true") {
+                        $options = $this->walkPath($request, $child, $options, $path.$this->separator.$key);
+                    }
                     break;
                 case $objectName:
                     $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
                     $options[] = [
                         "value" => $child->getId(),
-                        "key" => ltrim($path . $this->separator . $key, $this->separator),
-                        "published" => $child->getPublished()
+                        "key" => ltrim($path.$this->separator.$key, $this->separator),
+                        "published" => $child->getPublished(),
                     ];
 
                     if ($request->get("recursive") == "true") {
-                        $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
+                        $options = $this->walkPath($request, $child, $options, $path.$this->separator.$key);
                     }
 
                     break;
@@ -192,7 +209,7 @@ final class DynamicDropdownController extends AdminController
 
     /**
      * @param DataObject\Concrete $object
-     * @param $method
+     * @param                     $method
      * @return bool
      */
     private function isUsingI18n(DataObject\Concrete $object, $method)
@@ -220,10 +237,11 @@ final class DynamicDropdownController extends AdminController
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?
             $children = $tree->getChildren();
             foreach ($children as $child) {
-                $definition["get" . ucfirst($child->name)] = $tree->fieldtype == "localizedfields";
+                $definition["get".ucfirst($child->name)] = $tree->fieldtype == "localizedfields";
                 $definition = $this->parseTree($child, $definition);
             }
         }
+
         return $definition;
     }
 }
