@@ -1,5 +1,6 @@
 imports:
     - { resource: "services/form.yml" }
+    - { resource: "services/pimcore.yml" }
 
 services:
     coreshop.collector.taxes:

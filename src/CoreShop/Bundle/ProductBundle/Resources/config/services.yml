@@ -139,3 +139,11 @@ services:
         class: CoreShop\Bundle\ProductBundle\EventListener\CategoryPersistEventListener
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: onPreUpdate }
+
+    coreshop.listeners.product.post_delete:
+        class: CoreShop\Bundle\ProductBundle\EventListener\ProductDeleteListener
+        arguments:
+            - '@coreshop.repository.product_specific_price_rule'
+            - '@coreshop.manager.product_specific_price_rule'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }
