@@ -51,6 +51,12 @@ CoreShop comes with a lot of build-in events.
 | `coreshop.note.*.post_add` | GenericEvent | Fires after a note of type `*` has been created |
 | `coreshop.note.*.post_delete` | GenericEvent | Fires after a note of type `*` has been deleted |
 
+## Rules
+
+| Name | EventType | Description |
+|:-----|:------------|:----------|
+| `coreshop.rule.availability_check` | RuleAvailabilityCheckEvent | Fires in `RuleAvailabilityCheck` maintenance/command for every active rule. |
+
 Replace symbol (*) with one of those note types:
 
 - `payment`

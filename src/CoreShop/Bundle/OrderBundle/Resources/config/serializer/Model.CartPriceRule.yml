@@ -22,7 +22,7 @@ CoreShop\Component\Order\Model\CartPriceRule:
         active:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [List, Detailed]
         conditions:
             expose: true
             type: array

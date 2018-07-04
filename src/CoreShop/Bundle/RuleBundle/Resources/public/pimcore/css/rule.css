@@ -10,3 +10,20 @@
 .coreshop_rule_actions {
     background: url(../img/lightning.svg) center center no-repeat !important;
 }
+
+.pimcore_rule_disabled {
+    background: url(/pimcore/static6/img/flat-color-icons/warning.svg) center right no-repeat !important;
+    background-size: 10% 60% !important;
+    color: #717171;
+    font-style: italic;
+}
+
+.pimcore_rule_disabled.standalone {
+    display: block;
+    float: right;
+    height: 14px;
+    width: 14px;
+    background-size: 100% !important;
+    margin: 3px 0 0 5px;
+    padding: 0;
+}
