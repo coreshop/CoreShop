@@ -40,10 +40,12 @@ class SearchController extends FrontendController
 
             $query = [
                 'name LIKE ?',
+                'description LIKE ?',
                 'shortDescription LIKE ?',
                 'sku LIKE ?'
             ];
             $queryParams = [
+                '%'.$text.'%',
                 '%'.$text.'%',
                 '%'.$text.'%',
                 '%'.$text.'%',
