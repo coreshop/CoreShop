@@ -22,11 +22,13 @@ use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRule;
 use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model\DataObject\CoreShopCart;
 use Pimcore\Model\DataObject\CoreShopProduct;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,6 +39,11 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
 
     /**
      * @var CartPriceRuleRepositoryInterface
@@ -81,6 +88,8 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
     /**
      * RuleAvailabilityCheck constructor.
      *
+     * @param EventDispatcherInterface                    $eventDispatcher
+     * @param EntityManagerInterface                      $entityManager
      * @param CartPriceRuleRepositoryInterface            $cartPriceRuleRepository
      * @param ProductPriceRuleRepositoryInterface         $productPriceRuleRepository
      * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
@@ -92,6 +101,7 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
+        EntityManagerInterface $entityManager,
         CartPriceRuleRepositoryInterface $cartPriceRuleRepository,
         ProductPriceRuleRepositoryInterface $productPriceRuleRepository,
         ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository,
@@ -102,6 +112,7 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
         RuleValidationProcessorInterface $shippingRuleValidationProcessor
     ) {
         $this->eventDispatcher = $eventDispatcher;
+        $this->entityManager = $entityManager;
         $this->cartPriceRuleRepository = $cartPriceRuleRepository;
         $this->productPriceRuleRepository = $productPriceRuleRepository;
         $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
@@ -163,7 +174,11 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
         );
 
         if ($event->isAvailable() === false) {
-            var_dump("disable! " . $event->getRuleType() . ' ' . $rule->getName());
+            if ($rule instanceof ToggleableInterface) {
+                $rule->setActive(false);
+                $this->entityManager->persist($rule);
+                $this->entityManager->flush();
+            }
         }
     }
 

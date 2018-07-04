@@ -134,6 +134,7 @@ services:
         shared: false
         arguments:
              - '@event_dispatcher'
+             - '@doctrine.orm.default_entity_manager'
              - '@coreshop.repository.cart_price_rule'
              - '@coreshop.repository.product_price_rule'
              - '@coreshop.repository.product_specific_price_rule'
