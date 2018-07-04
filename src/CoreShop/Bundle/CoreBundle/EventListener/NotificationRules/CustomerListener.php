@@ -28,12 +28,23 @@ final class CustomerListener extends AbstractNotificationRuleListener
      */
     public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event)
     {
-        $this->rulesProcessor->applyRules('user', $event->getCustomer(), [
-            'type' => UserTypeChecker::TYPE_PASSWORD_RESET,
-            'recipient' => $event->getCustomer()->getEmail(),
-            'resetLink' => $event->getResetLink(),
-            '_locale' => $this->shopperContext->getLocaleCode()
-        ]);
+        Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
+
+        /**
+         * @var $user CustomerInterface
+         */
+        $user = $event->getCustomer();
+
+        $params = $this->prepareCustomerParameters($user);
+        $params = array_merge(
+            $params,
+            [
+                'type' => UserTypeChecker::TYPE_PASSWORD_RESET,
+                'resetLink' => $event->getResetLink(),
+            ]
+        );
+
+        $this->rulesProcessor->applyRules('user', $event->getCustomer(), $params);
     }
 
     /**
@@ -52,11 +63,15 @@ final class CustomerListener extends AbstractNotificationRuleListener
             return;
         }
 
-        $this->rulesProcessor->applyRules('user', $user, [
-            'type' => UserTypeChecker::TYPE_REGISTER,
-            'recipient' => $user->getEmail(),
-            '_locale' => $this->shopperContext->getLocaleCode()
-        ]);
+        $params = $this->prepareCustomerParameters($user);
+        $params = array_merge(
+            $params,
+            [
+                'type' => UserTypeChecker::TYPE_REGISTER,
+            ]
+        );
+
+        $this->rulesProcessor->applyRules('user', $user, $params);
     }
 
     /**
@@ -81,25 +96,31 @@ final class CustomerListener extends AbstractNotificationRuleListener
 
         $user->setNewsletterToken(hash('md5', $user->getId().$user->getEmail().mt_rand().time()));
 
-        VersionHelper::useVersioning(function() use ($user) {
-            $user->save();
-        }, false);
+        VersionHelper::useVersioning(
+            function () use ($user) {
+                $user->save();
+            },
+            false
+        );
 
         $confirmLink = $event->getConfirmLink();
-        $confirmLink = $confirmLink.(parse_url($confirmLink, PHP_URL_QUERY) ? '&' : '?').'token='.$user->getNewsletterToken();
+        $confirmLink = $confirmLink.(parse_url(
+                $confirmLink,
+                PHP_URL_QUERY
+            ) ? '&' : '?').'token='.$user->getNewsletterToken();
 
-        $this->rulesProcessor->applyRules('user', $user, [
-            'type' => UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
-            'recipient' => $user->getEmail(),
-            '_locale' => $this->shopperContext->getLocaleCode(),
-            'gender' => $user->getGender(),
-            'firstname' => $user->getFirstname(),
-            'lastname' => $user->getLastname(),
-            'email' => $user->getEmail(),
-            'token' => $user->getNewsletterToken(),
-            'object' => $user,
-            'confirmLink' => $confirmLink
-        ]);
+
+        $params = $this->prepareCustomerParameters($user);
+        $params = array_merge(
+            $params,
+            [
+                'type' => UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
+                'confirmLink' => $confirmLink,
+                'token' => $user->getNewsletterToken(),
+            ]
+        );
+
+        $this->rulesProcessor->applyRules('user', $user, $params);
     }
 
     /**
@@ -118,10 +139,31 @@ final class CustomerListener extends AbstractNotificationRuleListener
             return;
         }
 
-        $this->rulesProcessor->applyRules('user', $user, [
-            'type' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
-            'recipient' => $user->getEmail(),
-            '_locale' => $this->shopperContext->getLocaleCode()
-        ]);
+        $params = $this->prepareCustomerParameters($user);
+        $params = array_merge(
+            $params,
+            [
+                'type' => UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
+            ]
+        );
+
+        $this->rulesProcessor->applyRules('user', $user, $params);
+    }
+
+    /**
+     * @param CustomerInterface $customer
+     * @return array
+     */
+    private function prepareCustomerParameters(CustomerInterface $customer)
+    {
+        return [
+            '_locale' => $this->shopperContext->getLocaleCode(),
+            'recipient' => $customer->getEmail(),
+            'gender' => $customer->getGender(),
+            'firstname' => $customer->getFirstname(),
+            'lastname' => $customer->getLastname(),
+            'email' => $customer->getEmail(),
+            'object' => $customer,
+        ];
     }
 }

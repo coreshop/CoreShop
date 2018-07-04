@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\PimcoreBundle;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagImplementationLoaderPass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagPass;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Placeholder;
@@ -68,6 +70,8 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 
         $container->addCompilerPass(new RegisterGridActionPass());
         $container->addCompilerPass(new RegisterGridFilterPass());
+        $container->addCompilerPass(new RegisterPimcoreDocumentTagImplementationLoaderPass());
+        $container->addCompilerPass(new RegisterPimcoreDocumentTagPass());
     }
 
     /**
@@ -93,6 +97,34 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 
         if ($this->container->hasParameter('coreshop.all.pimcore.admin.css')) {
             $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.css'));
+        }
+
+        return $cssFiles;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeJsPaths()
+    {
+        $jsFiles = [];
+
+        if ($this->container->hasParameter('coreshop.all.pimcore.admin.editmode_js')) {
+            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.editmode_js'), true);
+        }
+
+        return $jsFiles;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeCssPaths()
+    {
+        $cssFiles = [];
+
+        if ($this->container->hasParameter('coreshop.all.pimcore.admin.editmode_css')) {
+            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.editmode_css'));
         }
 
         return $cssFiles;

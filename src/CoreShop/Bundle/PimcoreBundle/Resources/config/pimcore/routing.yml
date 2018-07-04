@@ -21,3 +21,13 @@ coreshop_pimcore_grid_apply_action:
     path: /%coreshop.admin.route.base%/grid/apply-action
     methods: [POST]
     defaults:  { _controller: coreshop.pimcore_controller.grid:applyGridAction}
+
+coreshop_dynamic_dropdown_options:
+    path: /%coreshop.admin.route.base%/dynamic-dropdown/options
+    defaults: { _controller: coreshop.pimcore_controller.dynamic_dropdown:optionsAction }
+    methods:  [GET, POST]
+
+coreshop_dynamic_dropdown_methods:
+    path: /%coreshop.admin.route.base%/dynamic-dropdown/methods
+    defaults: { _controller: coreshop.pimcore_controller.dynamic_dropdown:methodsAction }
+    methods:  [GET, POST]

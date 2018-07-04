@@ -24,7 +24,7 @@ abstract class AbstractPimcoreExtension extends Extension
      */
     protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
     {
-        $resourceTypes = ['js', 'css'];
+        $resourceTypes = ['js', 'css', 'editmode_js', 'editmode_css'];
 
         foreach ($resourceTypes as $resourceType) {
             if (!array_key_exists($resourceType, $bundleResources)) {

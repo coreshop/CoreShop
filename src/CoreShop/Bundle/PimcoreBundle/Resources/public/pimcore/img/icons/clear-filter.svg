@@ -1,0 +1,22 @@
+﻿<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
+<g>
+	<polygon style="fill:#DCD5F2;" points="16.197,19.5 1.5,5.783 1.5,1.5 38.5,1.5 38.5,5.783 23.803,19.5 &#9;"/>
+	<g>
+		<path style="fill:#8B75A1;" d="M38,2v3.565L23.606,19h-7.212L2,5.565V2H38 M39,1H1v5l15,14h8L39,6V1L39,1z"/>
+	</g>
+</g>
+<g>
+	<polygon style="fill:#DCD5F2;" points="16.5,32.75 16.5,19.5 23.5,19.5 23.5,38 &#9;"/>
+	<g>
+		<path style="fill:#8B75A1;" d="M23,20v17l-6-4.5V20H23 M24,19h-8v14l8,6V19L24,19z"/>
+	</g>
+</g>
+<g>
+	<path style="fill:#F78F8F;" d="M31,39.5c-4.687,0-8.5-3.813-8.5-8.5s3.813-8.5,8.5-8.5s8.5,3.813,8.5,8.5S35.687,39.5,31,39.5z"/>
+	<g>
+		<path style="fill:#C74343;" d="M31,23c4.411,0,8,3.589,8,8s-3.589,8-8,8s-8-3.589-8-8S26.589,23,31,23 M31,22&#10;&#9;&#9;&#9;c-4.971,0-9,4.029-9,9s4.029,9,9,9s9-4.029,9-9S35.971,22,31,22L31,22z"/>
+	</g>
+</g>
+<line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" x1="27.5" y1="34.5" x2="34.5" y2="27.5"/>
+<line style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;" x1="27.5" y1="27.5" x2="34.5" y2="34.5"/>
+</svg>

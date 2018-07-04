@@ -7,3 +7,90 @@
 .pimcore_icon_coreShopSerializedData {
     background: url(../img/icons/serialized.svg) center center no-repeat !important;
 }
+.pimcore_icon_coreShopDynamicDropdown {
+    background: url('../img/icons/dynamic-dropdown.svg') left center no-repeat !important;
+}
+
+.pimcore_icon_coreShopDynamicDropdownMultiple {
+    background: url('../img/icons/dynamic-dropdown-multiple.svg') left center no-repeat !important;
+}
+
+.pimcore_icon_coreShopItemSelector {
+    background: url('../img/icons/item-selector.svg') left center no-repeat !important;
+}
+
+.pimcore_icon_coreShopSuperBoxSelect {
+    background: url('../img/icons/super-box-select.svg') left center no-repeat !important;
+}
+
+.x-form-itemselector-btn {
+    font: 16px/30px FontAwesome;
+}
+
+.x-form-itemselector-top:before {
+    content: "\f102";
+}
+
+.x-form-itemselector-up:before {
+    content: "\f106";
+}
+
+.x-form-itemselector-add:before {
+    content: "\f105";
+}
+
+.x-form-itemselector-remove:before {
+    content: "\f104";
+}
+
+.x-form-itemselector-down:before {
+    content: "\f107";
+}
+
+.x-form-itemselector-bottom:before {
+    content: "\f103";
+}
+
+.x-combo-item-disabled {
+    pointer-events: none;
+    color: #AAAAAA;
+}
+
+.x-combo-item-disabled:hover {
+    cursor: default;
+}
+
+.ext-ux-clearbutton {
+    width: 12px;
+    height: 12px;
+    background-image: url('../img/icons/clear-filter.svg');
+    background-repeat: no-repeat;
+    -moz-user-focus: ignore; /* https://developer.mozilla.org/en/CSS/-moz-user-focus */
+    cursor: pointer;
+    position: absolute;
+    overflow:  hidden; /* IE 6 :-( */
+    margin-top: 4px;
+    background-color: white;
+}
+
+.ext-ux-clearbutton-on {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .35s linear;
+    -webkit-transition: opacity .35s linear;
+    -moz-transition: opacity .35s linear;
+    -o-transition: opacity .35s linear;
+    -ms-transition: opacity .35s linear;
+    -khtml-transition: opacity .35s linear;
+}
+
+.ext-ux-clearbutton-off {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .35s linear, visibility .0s linear .35s;
+    -webkit-transition: opacity .35s linear, visibility .0s linear .35s;
+    -moz-transition: opacity .35s linear, visibility .0s linear .35s;
+    -o-transition: opacity .35s linear, visibility .0s linear .35s;
+    -ms-transition: opacity .35s linear, visibility .0s linear .35s;
+    -khtml-transition: opacity .35s linear, visibility .0s linear .35s;
+}

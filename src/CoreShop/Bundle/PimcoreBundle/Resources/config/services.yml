@@ -2,6 +2,8 @@ imports:
     - { resource: "services/templating.yml" }
     - { resource: "services/twig.yml" }
     - { resource: "services/grid.yml" }
+    - { resource: "services/dynamic_dropdown.yml" }
+    - { resource: "services/pimcore.yml" }
 
 parameters:
     coreshop.admin.route.base: /admin/coreshop
