@@ -14,7 +14,7 @@ namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface RuleAvailabilityAccessorInterface
+interface RuleAvailabilityAssessorInterface
 {
     /**
      * @return RuleInterface[]

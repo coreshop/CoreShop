@@ -10,15 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\RuleBundle\Accessor;
+namespace CoreShop\Bundle\RuleBundle\Assessor;
 
 use Carbon\Carbon;
-use CoreShop\Component\Rule\Condition\RuleAvailabilityAccessorInterface;
+use CoreShop\Component\Rule\Condition\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
-final class RuleAvailabilityAssessor implements RuleAvailabilityAccessorInterface
+final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterface
 {
     /**
      * @var RuleRepositoryInterface

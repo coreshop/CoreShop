@@ -14,14 +14,14 @@ namespace CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
-class RuleAvailabilityAccessorPass extends RegisterSimpleRegistryTypePass
+class RuleAvailabilityAssessorPass extends RegisterSimpleRegistryTypePass
 {
     public function __construct()
     {
         parent::__construct(
-            'coreshop.registry.rule_availability_accessor',
-            'coreshop.registry.rule_availability_accessors',
-            'coreshop.registry.rule_availability_accessor'
+            'coreshop.registry.rule_availability_assessor',
+            'coreshop.registry.rule_availability_assessors',
+            'coreshop.registry.rule_availability_assessor'
         );
     }
 }

@@ -1,45 +1,45 @@
 services:
 
     coreshop.rule_availability_processor:
-        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityProcessor
+        class: CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor
         arguments:
             - '@event_dispatcher'
             - '@doctrine.orm.default_entity_manager'
-            - '@coreshop.registry.rule_availability_accessor'
+            - '@coreshop.registry.rule_availability_assessor'
 
-    coreshop.registry.rule_availability_accessor:
+    coreshop.registry.rule_availability_assessor:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - 'CoreShop\Component\Rule\Condition\RuleAvailabilityAccessorInterface'
-            - 'rule-availability-accessor'
+            - 'CoreShop\Component\Rule\Condition\RuleAvailabilityAssessorInterface'
+            - 'rule-availability-assessor'
 
-    coreshop.rule.availability_accessor.cart_price:
-        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+    coreshop.rule.availability_assessor.cart_price:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
         arguments:
              - '@coreshop.repository.cart_price_rule'
         tags:
-            - { name: coreshop.registry.rule_availability_accessor, type: cart_price }
+            - { name: coreshop.registry.rule_availability_assessor, type: cart_price }
 
-    coreshop.rule.availability_accessor.product_price:
-        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+    coreshop.rule.availability_assessor.product_price:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
         arguments:
              - '@coreshop.repository.product_price_rule'
         tags:
-            - { name: coreshop.registry.rule_availability_accessor, type: product_price }
+            - { name: coreshop.registry.rule_availability_assessor, type: product_price }
 
-    coreshop.rule.availability_accessor.product_specific_price:
-        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+    coreshop.rule.availability_assessor.product_specific_price:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
         arguments:
              - '@coreshop.repository.product_specific_price_rule'
         tags:
-            - { name: coreshop.registry.rule_availability_accessor, type: product_specific_price }
+            - { name: coreshop.registry.rule_availability_assessor, type: product_specific_price }
 
-    coreshop.rule.availability_accessor.shipping_rule:
-        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+    coreshop.rule.availability_assessor.shipping_rule:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
         arguments:
              - '@coreshop.repository.shipping_rule'
         tags:
-            - { name: coreshop.registry.rule_availability_accessor, type: shipping_rule }
+            - { name: coreshop.registry.rule_availability_assessor, type: shipping_rule }
 
     coreshop.rule_availability_processor_command.maintenance_listener:
         class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener

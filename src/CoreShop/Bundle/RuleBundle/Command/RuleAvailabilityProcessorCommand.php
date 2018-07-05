@@ -12,12 +12,12 @@
 
 namespace CoreShop\Bundle\RuleBundle\Command;
 
-use CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityProcessorInterface;
+use CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class RuleAvailabilityAccessorCommand extends Command
+final class RuleAvailabilityProcessorCommand extends Command
 {
     /**
      * @var RuleAvailabilityProcessorInterface

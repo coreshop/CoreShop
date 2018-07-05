@@ -10,12 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\RuleBundle\Accessor;
+namespace CoreShop\Bundle\RuleBundle\Processor;
 
 use CoreShop\Bundle\CoreBundle\Event\RuleAvailabilityCheckEvent;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
-use CoreShop\Component\Rule\Condition\RuleAvailabilityAccessorInterface;
+use CoreShop\Component\Rule\Condition\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -60,7 +60,7 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
      */
     public function process()
     {
-        /** @var RuleAvailabilityAccessorInterface $ruleAssessor */
+        /** @var RuleAvailabilityAssessorInterface $ruleAssessor */
         foreach ($this->ruleRepository->all() as $ruleAssessor) {
 
             foreach ($ruleAssessor->getRules() as $rule) {
@@ -85,9 +85,8 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
 
         if ($event->isAvailable() === false) {
             if ($rule instanceof ToggleableInterface) {
-                var_dump($rule->getName());
-                //$rule->setActive(false);
-                //$this->entityManager->persist($rule);
+                $rule->setActive(false);
+                $this->entityManager->persist($rule);
             }
         }
     }

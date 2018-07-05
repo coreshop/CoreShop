@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\Rule;
 
-use CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityProcessorInterface;
+use CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Pimcore\Event\System\MaintenanceEvent;
 use Pimcore\Model\Schedule\Maintenance\Job;
