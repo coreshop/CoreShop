@@ -62,7 +62,6 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     {
         /** @var RuleAvailabilityAssessorInterface $ruleAssessor */
         foreach ($this->ruleRegistry->all() as $ruleAssessor) {
-
             foreach ($ruleAssessor->getRules() as $rule) {
                 $ruleIsAvailable = $ruleAssessor->isValid($rule);
                 $this->processRule($rule, $ruleIsAvailable);
@@ -83,6 +82,7 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
             new RuleAvailabilityCheckEvent($rule, get_class($rule), $ruleIsAvailable)
         );
 
+        var_dump($rule->getName());
         if ($event->isAvailable() === false) {
             if ($rule instanceof ToggleableInterface) {
                 $rule->setActive(false);

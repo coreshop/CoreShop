@@ -33,10 +33,3 @@ services:
              - '@coreshop.repository.product_specific_price_rule'
         tags:
             - { name: coreshop.registry.rule_availability_assessor, type: product_specific_price }
-
-    coreshop.rule.availability_assessor.shipping_rule:
-        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
-        arguments:
-             - '@coreshop.repository.shipping_rule'
-        tags:
-            - { name: coreshop.registry.rule_availability_assessor, type: shipping_rule }
