@@ -40,7 +40,7 @@ final class StateChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function(Options $options) {
+                'choices' => function (Options $options) {
                     if (null === $options['active']) {
                         $states = $this->countryRepository->findAll();
                     } else {
@@ -51,7 +51,7 @@ final class StateChoiceType extends AbstractType
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($states, function($a, $b) {
+                    @usort($states, function ($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 

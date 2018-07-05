@@ -20,6 +20,5 @@ if (interface_exists(\CoreShop\Component\Pimcore\DataObject\ClassInstallerInterf
      */
     interface ClassInstallerInterface
     {
-
     }
 }

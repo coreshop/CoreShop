@@ -18,9 +18,6 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Http\HttpUtils;
-use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
@@ -48,7 +45,7 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
     /**
      * @param LinkGeneratorInterface $linkGenerator
      * @param $routeName
-     * @param SessionInterface $session
+     * @param SessionInterface      $session
      * @param StoreContextInterface $storeContext
      */
     public function __construct(
@@ -56,8 +53,7 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
         $routeName,
         SessionInterface $session,
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         $this->linkGenerator = $linkGenerator;
         $this->routeName = $routeName;
         $this->session = $session;

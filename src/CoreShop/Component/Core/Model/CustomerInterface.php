@@ -29,22 +29,22 @@ interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterfa
     public function setDefaultAddress($address);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getNewsletterActive();
 
     /**
-     * @param boolean $newsletterActive
+     * @param bool $newsletterActive
      */
     public function setNewsletterActive($newsletterActive);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getNewsletterConfirmed();
 
     /**
-     * @param boolean $newsletterConfirmed
+     * @param bool $newsletterConfirmed
      */
     public function setNewsletterConfirmed($newsletterConfirmed);
 

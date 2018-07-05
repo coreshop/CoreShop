@@ -27,15 +27,17 @@ interface GridFilterInterface
 
     /**
      * @param DataObject\Listing $list
-     * @param array $context
+     * @param array              $context
+     *
      * @return DataObject\Listing
      */
     public function filter(DataObject\Listing $list, array $context);
 
     /**
-     * Define if filter is valid for $type
+     * Define if filter is valid for $type.
      *
      * @param string $listType
+     *
      * @return bool
      */
     public function supports($listType);

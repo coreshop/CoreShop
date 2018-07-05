@@ -20,17 +20,18 @@ use Pimcore\Analytics\TrackerInterface;
 interface EcommerceTrackerInterface
 {
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEnabled();
 
     /**
-     * @param boolean $enabled
+     * @param bool $enabled
      */
     public function setEnabled($enabled);
 
     /**
      * @param TrackerInterface $tracker
+     *
      * @return mixed
      */
     public function setTracker(TrackerInterface $tracker);
@@ -46,24 +47,24 @@ interface EcommerceTrackerInterface
     public function trackPurchasableImpression(PurchasableInterface $product);
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface        $cart
      * @param PurchasableInterface $product
-     * @param int $quantity
+     * @param int                  $quantity
      */
     public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1);
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface        $cart
      * @param PurchasableInterface $product
-     * @param int $quantity
+     * @param int                  $quantity
      */
     public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1);
 
     /**
      * @param CartInterface $cart
-     * @param null $stepIdentifier
-     * @param boolean $isFirstStep
-     * @param null $checkoutOption
+     * @param null          $stepIdentifier
+     * @param bool          $isFirstStep
+     * @param null          $checkoutOption
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null);
 

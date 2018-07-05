@@ -31,10 +31,10 @@ final class ShippingCalculatorType extends AbstractType
                 'label' => 'coreshop.form.cart.carrier.country',
             ])
             ->add('zip', TextType::class, [
-                'label' => 'coreshop.form.cart.carrier.zip'
+                'label' => 'coreshop.form.cart.carrier.zip',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'coreshop.form.cart.carrier.submit'
+                'label' => 'coreshop.form.cart.carrier.submit',
             ]);
     }
 

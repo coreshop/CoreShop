@@ -17,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-
 final class AddressType extends AbstractResourceType
 {
     /**
@@ -28,7 +27,7 @@ final class AddressType extends AbstractResourceType
         $builder
             ->add('company', TextType::class, [
                 'label' => 'coreshop.form.address.company',
-                'required' => false
+                'required' => false,
             ])
             ->add('salutation', SalutationChoiceType::class, [
                 'label' => 'coreshop.form.address.salutation',
@@ -57,7 +56,7 @@ final class AddressType extends AbstractResourceType
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'coreshop.form.address.phone_number',
-                'required' => false
+                'required' => false,
             ])
             ->add('_redirect', HiddenType::class, array(
                 'mapped' => false,

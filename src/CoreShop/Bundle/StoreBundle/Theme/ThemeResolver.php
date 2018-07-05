@@ -35,16 +35,15 @@ final class ThemeResolver implements ThemeResolverInterface
     private $storeRepository;
 
     /**
-     * @param ActiveTheme $activeTheme
+     * @param ActiveTheme           $activeTheme
      * @param StoreContextInterface $storeContext
-     * @param RepositoryInterface $storeRepository
+     * @param RepositoryInterface   $storeRepository
      */
     public function __construct(
         ActiveTheme $activeTheme,
         StoreContextInterface $storeContext,
         RepositoryInterface $storeRepository
-    )
-    {
+    ) {
         $this->activeTheme = $activeTheme;
         $this->storeContext = $storeContext;
         $this->storeRepository = $storeRepository;
@@ -78,7 +77,6 @@ final class ThemeResolver implements ThemeResolverInterface
                 $this->activeTheme->setName($theme);
             }
         } catch (StoreNotFoundException $exception) {
-
         }
     }
 }

@@ -33,6 +33,7 @@ final class CartBlamerListener
 
     /**
      * CartBlamerListener constructor.
+     *
      * @param CartManagerInterface $cartManager
      * @param CartContextInterface $cartContext
      */

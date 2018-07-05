@@ -18,6 +18,7 @@ interface PaymentProviderResolverInterface
 {
     /**
      * @param ResourceInterface $subject
+     *
      * @return mixed
      */
     public function resolvePaymentProviders(ResourceInterface $subject = null);

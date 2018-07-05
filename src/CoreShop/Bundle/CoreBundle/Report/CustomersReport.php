@@ -48,10 +48,10 @@ class CustomersReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * @param Connection $db
+     * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
+     * @param LocaleContextInterface  $localeContext
+     * @param array                   $pimcoreClasses
      */
     public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, LocaleContextInterface $localeContext, array $pimcoreClasses)
     {

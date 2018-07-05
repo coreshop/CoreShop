@@ -31,7 +31,7 @@ class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInt
 
     /**
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     * @param int $priority
+     * @param int                                $priority
      */
     public function addValidator(ShippableCarrierValidatorInterface $shippableCarrierValidator, $priority = 0)
     {

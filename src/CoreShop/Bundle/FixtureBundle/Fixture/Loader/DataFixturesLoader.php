@@ -25,7 +25,7 @@ class DataFixturesLoader extends ContainerAwareLoader
     /**
      * Constructor.
      *
-     * @param EntityManager $em
+     * @param EntityManager      $em
      * @param ContainerInterface $container
      */
     public function __construct(EntityManager $em, ContainerInterface $container)
@@ -36,7 +36,7 @@ class DataFixturesLoader extends ContainerAwareLoader
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFixtures()
     {
@@ -70,7 +70,7 @@ class DataFixturesLoader extends ContainerAwareLoader
     }
 
     /**
-     * Determines whether the given data fixture is already loaded or not
+     * Determines whether the given data fixture is already loaded or not.
      *
      * @param object $fixtureObject
      *
@@ -78,7 +78,7 @@ class DataFixturesLoader extends ContainerAwareLoader
      */
     protected function isFixtureAlreadyLoaded($fixtureObject)
     {
-        if (!is_array($this->loadedFixtures) || count($this->loadedFixtures) === 0) {
+        if (!is_array($this->loadedFixtures) || 0 === count($this->loadedFixtures)) {
             $this->loadedFixtures = [];
 
             $loadedFixtures = $this->em->getRepository('CoreShopFixtureBundle:DataFixture')->findAll();
@@ -94,7 +94,7 @@ class DataFixturesLoader extends ContainerAwareLoader
             $alreadyLoaded = true;
             $loadedVersion = $this->loadedFixtures[get_class($fixtureObject)];
             if ($fixtureObject instanceof VersionedFixtureInterface
-                && version_compare($loadedVersion, $fixtureObject->getVersion()) == -1
+                && -1 == version_compare($loadedVersion, $fixtureObject->getVersion())
             ) {
                 if ($fixtureObject instanceof LoadedFixtureVersionAwareInterface) {
                     $fixtureObject->setLoadedVersion($loadedVersion);

@@ -35,9 +35,9 @@ class ConfigurationService implements ConfigurationServiceInterface
     protected $configurationFactory;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface           $entityManager
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface $configurationFactory
+     * @param FactoryInterface                 $configurationFactory
      */
     public function __construct(EntityManagerInterface $entityManager, ConfigurationRepositoryInterface $configurationRepository, FactoryInterface $configurationFactory)
     {

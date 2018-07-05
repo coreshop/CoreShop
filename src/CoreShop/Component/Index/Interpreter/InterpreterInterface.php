@@ -21,7 +21,7 @@ interface InterpreterInterface
      * @param $value
      * @param IndexableInterface        $indexable
      * @param IndexColumnInterface|null $config
-     * @param array $interpreterConfig
+     * @param array                     $interpreterConfig
      *
      * @return mixed
      */

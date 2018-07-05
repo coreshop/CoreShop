@@ -67,7 +67,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
          * Getter Configurations
          */
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 $type = $this->getGetterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -75,7 +75,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $this->addGetterConfigurationFields($event->getForm(), $this->getterTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 $type = $this->getGetterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -83,7 +83,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $event->getForm()->get('getter')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
                 $data = $event->getData();
 
                 if (!isset($data['getter'])) {
@@ -97,7 +97,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
          * Interpreter Configurations
          */
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 $type = $this->getInterpreterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -105,7 +105,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $this->addInterpreterConfigurationFields($event->getForm(), $this->interpreterTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 $type = $this->getInterpreterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -113,7 +113,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $event->getForm()->get('interpreter')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
                 $data = $event->getData();
 
                 if (!isset($data['interpreter'])) {
@@ -126,7 +126,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addGetterConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -135,7 +135,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -144,7 +144,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */
@@ -159,7 +159,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

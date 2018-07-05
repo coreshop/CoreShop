@@ -86,6 +86,7 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
 
     /**
      * @param PaymentProviderInterface $paymentProvider
+     *
      * @return PaymentProviderInterface
      */
     public function setPaymentProvider($paymentProvider);

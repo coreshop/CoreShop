@@ -119,7 +119,7 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function getShortDescription($language = null);
 
     /**
-     * @param string $shortDescription
+     * @param string      $shortDescription
      * @param string|null $language
      */
     public function setShortDescription($shortDescription, $language = null);
@@ -132,7 +132,7 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function getDescription($language = null);
 
     /**
-     * @param string $description
+     * @param string      $description
      * @param string|null $language
      */
     public function setDescription($description, $language = null);

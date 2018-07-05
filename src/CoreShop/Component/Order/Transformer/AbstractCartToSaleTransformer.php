@@ -84,15 +84,15 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $voucherCodeRepository;
 
     /**
-     * @param ProposalItemTransformerInterface $cartItemToSaleItemTransformer
-     * @param ItemKeyTransformerInterface $keyTransformer
-     * @param NumberGeneratorInterface $numberGenerator
-     * @param string $orderFolderPath
-     * @param ObjectServiceInterface $objectService
-     * @param PimcoreFactoryInterface $saleItemFactory
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param CurrencyConverterInterface $currencyConverter
-     * @param ObjectClonerInterface $objectCloner
+     * @param ProposalItemTransformerInterface        $cartItemToSaleItemTransformer
+     * @param ItemKeyTransformerInterface             $keyTransformer
+     * @param NumberGeneratorInterface                $numberGenerator
+     * @param string                                  $orderFolderPath
+     * @param ObjectServiceInterface                  $objectService
+     * @param PimcoreFactoryInterface                 $saleItemFactory
+     * @param TransformerEventDispatcherInterface     $eventDispatcher
+     * @param CurrencyConverterInterface              $currencyConverter
+     * @param ObjectClonerInterface                   $objectCloner
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */
     public function __construct(
@@ -106,8 +106,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         CurrencyConverterInterface $currencyConverter,
         ObjectClonerInterface $objectCloner,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-    )
-    {
+    ) {
         $this->cartItemToSaleItemTransformer = $cartItemToSaleItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -125,7 +124,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      */
     public function transformSale(ProposalInterface $cart, ProposalInterface $sale, $type)
     {
-        /**
+        /*
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
@@ -141,7 +140,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
 
-        /**
+        /*
          * @var $sale SaleInterface
          */
         $sale->setBaseCurrency($fromCurrency);
@@ -189,12 +188,12 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         /*
          * We need to save the sale twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function() use ($sale) {
+        VersionHelper::useVersioning(function () use ($sale) {
             $sale->save();
         }, false);
 
         $shippingAddress = $this->objectCloner->cloneObject(
-            $cart->hasShippableItems() === false ? $cart->getInvoiceAddress() : $cart->getShippingAddress(),
+            false === $cart->hasShippableItems() ? $cart->getInvoiceAddress() : $cart->getShippingAddress(),
             $this->objectService->createFolderByPath(sprintf('%s/addresses', $sale->getFullPath())),
             'shipping'
         );
@@ -204,7 +203,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             'invoice'
         );
 
-        VersionHelper::useVersioning(function() use ($shippingAddress, $invoiceAddress) {
+        VersionHelper::useVersioning(function () use ($shippingAddress, $invoiceAddress) {
             $shippingAddress->save();
             $invoiceAddress->save();
         }, false);
@@ -212,7 +211,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setShippingAddress($shippingAddress);
         $sale->setInvoiceAddress($invoiceAddress);
 
-        /**
+        /*
          * @var CartItemInterface
          */
         foreach ($cart->getItems() as $cartItem) {
@@ -238,7 +237,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $this->eventDispatcher->dispatchPostEvent($type, $sale, ['cart' => $cart]);
 
-        VersionHelper::useVersioning(function() use ($sale) {
+        VersionHelper::useVersioning(function () use ($sale) {
             $sale->save();
         }, false);
 

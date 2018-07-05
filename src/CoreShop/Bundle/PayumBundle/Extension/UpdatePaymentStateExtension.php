@@ -57,7 +57,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
             return;
         }
 
-        if ($previousStackSize === 1) {
+        if (1 === $previousStackSize) {
             $previousActionClassName = get_class($previousStack[0]->getAction());
             if (false === stripos($previousActionClassName, 'NotifyNullAction')) {
                 return;
@@ -89,7 +89,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
 
     /**
      * @param PaymentInterface $payment
-     * @param string $nextState
+     * @param string           $nextState
      */
     private function updatePaymentState(PaymentInterface $payment, string $nextState)
     {

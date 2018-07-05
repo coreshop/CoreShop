@@ -29,7 +29,7 @@ interface StorageListManagerInterface
     /**
      * @param StorageListInterface $storageList
      *
-     * @return boolean
+     * @return bool
      */
     public function persist(StorageListInterface $storageList);
 }

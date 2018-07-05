@@ -31,8 +31,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
      */
     public function __construct(
         ServiceRegistryInterface $actionServiceRegistry
-    )
-    {
+    ) {
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
@@ -55,6 +54,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
                             }
 
                             $priceRuleItem = $rule;
+
                             break;
                         }
                     }

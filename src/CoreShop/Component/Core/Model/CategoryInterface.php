@@ -17,10 +17,7 @@ use CoreShop\Component\Product\Model\CategoryInterface as BaseCategoryInterface;
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 
-interface CategoryInterface extends
-    BaseCategoryInterface,
-    PimcoreSEOAwareInterface,
-    SEOOpenGraphAwareInterface
+interface CategoryInterface extends BaseCategoryInterface, PimcoreSEOAwareInterface, SEOOpenGraphAwareInterface
 {
     /**
      * @return FilterInterface

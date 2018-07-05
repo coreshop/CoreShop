@@ -32,7 +32,7 @@ final class StorePriceFactory implements OperatorFactoryInterface
 
     /**
      * @param StoreRepositoryInterface $storeRepository
-     * @param MoneyFormatterInterface $moneyFormatter
+     * @param MoneyFormatterInterface  $moneyFormatter
      */
     public function __construct(StoreRepositoryInterface $storeRepository, MoneyFormatterInterface $moneyFormatter)
     {

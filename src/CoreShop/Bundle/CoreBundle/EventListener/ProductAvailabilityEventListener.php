@@ -35,14 +35,13 @@ final class ProductAvailabilityEventListener
     private $cartItemRepository;
 
     /**
-     * @param CartRepositoryInterface $cartRepository
+     * @param CartRepositoryInterface     $cartRepository
      * @param CartItemRepositoryInterface $cartItemRepository
      */
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartItemRepositoryInterface $cartItemRepository
-    )
-    {
+    ) {
         $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
     }
@@ -65,34 +64,32 @@ final class ProductAvailabilityEventListener
         }
 
         /**
-         * return if new state is published
+         * return if new state is published.
          *
-         * @var \Pimcore\Model\Version $currentVersion
+         * @var \Pimcore\Model\Version
          **/
         $currentVersion = $versions[0];
-        if (!$currentVersion->getData() instanceof PurchasableInterface || $currentVersion->getData()->isPublished() === true) {
+        if (!$currentVersion->getData() instanceof PurchasableInterface || true === $currentVersion->getData()->isPublished()) {
             return;
         }
 
         /**
-         *
          * return if last state was not published.
          *
-         * @var \Pimcore\Model\Version $prevVersion
+         * @var \Pimcore\Model\Version
          **/
         $prevVersion = $versions[1];
-        if (!$prevVersion->getData() instanceof PurchasableInterface || $prevVersion->getData()->isPublished() === false) {
+        if (!$prevVersion->getData() instanceof PurchasableInterface || false === $prevVersion->getData()->isPublished()) {
             return;
         }
 
         $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
 
-        if (count($cartItems) === 0) {
+        if (0 === count($cartItems)) {
             return;
         }
 
         $this->informCarts($cartItems);
-
     }
 
     /**
@@ -108,7 +105,7 @@ final class ProductAvailabilityEventListener
 
         $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
 
-        if (count($cartItems) === 0) {
+        if (0 === count($cartItems)) {
             return;
         }
 
@@ -133,7 +130,7 @@ final class ProductAvailabilityEventListener
 
             $cart->removeItem($cartItem);
 
-            VersionHelper::useVersioning(function() use ($cart) {
+            VersionHelper::useVersioning(function () use ($cart) {
                 $cart->setNeedsRecalculation(true);
                 $cart->save();
             }, false);

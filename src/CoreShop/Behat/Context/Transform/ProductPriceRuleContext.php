@@ -31,14 +31,13 @@ final class ProductPriceRuleContext implements Context
     private $productPriceRuleRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface              $sharedStorage
      * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductPriceRuleRepositoryInterface $productPriceRuleRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->productPriceRuleRepository = $productPriceRuleRepository;
     }

@@ -33,7 +33,7 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
     protected $storeContext;
 
     /**
-     * @param MailActionProcessor $mailActionProcessor
+     * @param MailActionProcessor   $mailActionProcessor
      * @param StoreContextInterface $storeContext
      */
     public function __construct(MailActionProcessor $mailActionProcessor, StoreContextInterface $storeContext)
@@ -63,7 +63,6 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
             try {
                 $store = $this->storeContext->getStore();
             } catch (StoreNotFoundException $exception) {
-
             }
         }
 
@@ -73,7 +72,7 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
 
         if (array_key_exists($store->getId(), $mails)) {
             $this->mailActionProcessor->apply($subject, $rule, [
-                'mails' => $mails[$store->getId()]
+                'mails' => $mails[$store->getId()],
             ], $params);
         }
     }

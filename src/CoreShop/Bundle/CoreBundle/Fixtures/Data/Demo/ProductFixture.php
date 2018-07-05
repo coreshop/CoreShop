@@ -57,7 +57,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
     {
         return [
             CategoryFixture::class,
-            TaxRuleGroupFixture::class
+            TaxRuleGroupFixture::class,
         ];
     }
 
@@ -77,16 +77,16 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
 
             $categories = $this->container->get('coreshop.repository.category')->findAll();
 
-            for ($i = 0; $i < $productsCount; $i++) {
+            for ($i = 0; $i < $productsCount; ++$i) {
                 /**
-                 * @var $usedCategory CategoryInterface
+                 * @var CategoryInterface
                  */
                 $usedCategory = $categories[rand(0, count($categories) - 1)];
                 $folder = \Pimcore\Model\Asset\Service::createFolderByPath(sprintf('/demo/products/%s', $usedCategory->getName()));
 
                 $images = [];
 
-                for ($j = 0; $j < 3; $j++) {
+                for ($j = 0; $j < 3; ++$j) {
                     $imagePath = $this->container->get('kernel')->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3)));
 
                     $fileName = 'image'.($i).'_'.($j).'.jpg';
@@ -109,13 +109,13 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 }
 
                 /**
-                 * @var $product ProductInterface
+                 * @var ProductInterface
                  */
                 $product = $this->container->get('coreshop.factory.product')->createNew();
                 $product->setName($faker->words(3, true));
                 $product->setSku($faker->ean13);
                 $product->setShortDescription($faker->text());
-                $product->setDescription(implode("<br/>", $faker->paragraphs(3)));
+                $product->setDescription(implode('<br/>', $faker->paragraphs(3)));
                 $product->setEan($faker->ean13);
                 $product->setActive(true);
                 $product->setCategories([$usedCategory]);

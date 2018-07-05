@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 final class UniqueEntityValidator extends ConstraintValidator
 {
     /**
-     * @param Concrete $entity
+     * @param Concrete   $entity
      * @param Constraint $constraint
      */
     public function validate($entity, Constraint $constraint)
@@ -72,16 +72,14 @@ final class UniqueEntityValidator extends ConstraintValidator
                 foreach ($criteriaValue as $criteriaSubValue) {
                     if (is_null($criteriaSubValue)) {
                         $subConditions[] = $criteriaName.' IS NULL';
-                    }
-                    else {
+                    } else {
                         $subConditions[] = $criteriaName.' = ?';
                         $values[] = $criteriaSubValue;
                     }
                 }
 
                 $condition[] = '('.implode(' OR ', $subConditions).')';
-            }
-            else {
+            } else {
                 $condition[] = $criteriaName.' = ?';
                 $values[] = $criteriaValue;
             }
@@ -92,8 +90,7 @@ final class UniqueEntityValidator extends ConstraintValidator
         $elements = $list->load();
 
         if (count($elements) > 0) {
-
-            if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $elements[0]->getId()) {
+            if ($constraint->allowSameEntity && 1 === count($elements) && $entity->getId() === $elements[0]->getId()) {
                 return;
             }
 

@@ -32,21 +32,21 @@ class CustomerRegistrationType extends AbstractType
             ->add('customer', CustomerType::class, [
                 'label' => 'coreshop.form.customer_registration.customer',
                 'label_attr' => [
-                    'class' => 'cs-customer'
+                    'class' => 'cs-customer',
                 ],
                 'allow_password_field' => true,
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']])
-                ]
+                    new Valid(['groups' => ['coreshop']]),
+                ],
             ])
             ->add('address', AddressType::class, [
                 'label' => 'coreshop.form.customer_registration.address',
                 'label_attr' => [
-                    'class' => 'cs-address'
+                    'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']])
-                ]
+                    new Valid(['groups' => ['coreshop']]),
+                ],
             ])
             ->add('termsAccepted', CheckboxType::class, array(
                 'label' => 'coreshop.form.customer.terms',

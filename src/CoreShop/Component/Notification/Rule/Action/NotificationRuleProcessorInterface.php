@@ -19,8 +19,8 @@ interface NotificationRuleProcessorInterface
     /**
      * @param $subject
      * @param NotificationRuleInterface $rule
-     * @param array $configuration
-     * @param array $params
+     * @param array                     $configuration
+     * @param array                     $params
      *
      * @return mixed
      */

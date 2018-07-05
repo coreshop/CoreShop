@@ -37,7 +37,7 @@ class Condition implements ConditionInterface
      *
      * @param string $fieldName
      * @param string $type
-     * @param mixed $values
+     * @param mixed  $values
      */
     public function __construct($fieldName, $type, $values)
     {
@@ -49,9 +49,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use IsCondition directly
+     * @deprecated don't use anymore, use IsCondition directly
      *
-     * IN Condition (in).
+     * IN Condition (in)
      *
      * @param $fieldName
      * @param $null
@@ -66,9 +66,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use InCondition directly
+     * @deprecated don't use anymore, use InCondition directly
      *
-     * IN Condition (in).
+     * IN Condition (in)
      *
      * @param $fieldName
      * @param $array
@@ -83,9 +83,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use RangeCondition directly
+     * @deprecated don't use anymore, use RangeCondition directly
      *
-     * Range Condition (>=, <=).
+     * Range Condition (>=, <=)
      *
      * @param $fieldName
      * @param $fromRange
@@ -101,13 +101,13 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use ConcatCondition directly
+     * @deprecated don't use anymore, use ConcatCondition directly
      *
-     * Concat Conditions with "AND" or "OR".
+     * Concat Conditions with "AND" or "OR"
      *
      * @param $fieldName
      * @param ConditionInterface[] $conditions
-     * @param string $operator ("AND", "OR")
+     * @param string               $operator   ("AND", "OR")
      *
      * @return ConditionInterface
      */
@@ -119,9 +119,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use LikeCondition directly
+     * @deprecated don't use anymore, use LikeCondition directly
      *
-     * Like Condition (%).
+     * Like Condition (%)
      *
      * @param $fieldName
      * @param $value
@@ -137,9 +137,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use MatchCondition directly
+     * @deprecated don't use anymore, use MatchCondition directly
      *
-     * Match Condition (=).
+     * Match Condition (=)
      *
      * @param $fieldName
      * @param $value
@@ -154,9 +154,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use NotMatchCondition directly
+     * @deprecated don't use anymore, use NotMatchCondition directly
      *
-     * Match Condition (=).
+     * Match Condition (=)
      *
      * @param $fieldName
      * @param $value
@@ -171,9 +171,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use LowerThanCondition directly
+     * @deprecated don't use anymore, use LowerThanCondition directly
      *
-     * Lower Than Condition (<).
+     * Lower Than Condition (<)
      *
      * @param $fieldName
      * @param $value
@@ -188,9 +188,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use LowerThanEqualCondition directly
+     * @deprecated don't use anymore, use LowerThanEqualCondition directly
      *
-     * Lower Than Equal Condition (<=).
+     * Lower Than Equal Condition (<=)
      *
      * @param $fieldName
      * @param $value
@@ -205,9 +205,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use GreaterThanCondition directly
+     * @deprecated don't use anymore, use GreaterThanCondition directly
      *
-     * Greater Than Condition (>).
+     * Greater Than Condition (>)
      *
      * @param $fieldName
      * @param $value
@@ -222,9 +222,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use GreaterThanEqualCondition directly
+     * @deprecated don't use anymore, use GreaterThanEqualCondition directly
      *
-     * Greater Than Equal Condition (<=).
+     * Greater Than Equal Condition (<=)
      *
      * @param $fieldName
      * @param $value
@@ -239,9 +239,9 @@ class Condition implements ConditionInterface
     }
 
     /**
-     * @deprecated Don't use anymore, use CompareCondition directly
+     * @deprecated don't use anymore, use CompareCondition directly
      *
-     * Compare Condition ($operator).
+     * Compare Condition ($operator)
      *
      * @param $fieldName
      * @param $value

@@ -29,7 +29,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
 
     /**
      * @param RequestResolverInterface $requestResolver
-     * @param int $priority
+     * @param int                      $priority
      */
     public function addResolver(RequestResolverInterface $requestResolver, $priority = 0)
     {

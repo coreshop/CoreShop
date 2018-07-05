@@ -21,7 +21,7 @@ final class DefaultCheckoutManagerFactory implements CheckoutManagerFactoryInter
 
     /**
      * @param ContainerInterface $steps
-     * @param array $priorityMap
+     * @param array              $priorityMap
      */
     public function __construct(ContainerInterface $steps, array $priorityMap)
     {

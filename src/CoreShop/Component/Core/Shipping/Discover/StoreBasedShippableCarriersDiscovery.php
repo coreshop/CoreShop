@@ -37,16 +37,15 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
     private $storeContext;
 
     /**
-     * @param CarrierRepositoryInterface $carrierRepository
+     * @param CarrierRepositoryInterface         $carrierRepository
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface              $storeContext
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         $this->carrierRepository = $carrierRepository;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->storeContext = $storeContext;

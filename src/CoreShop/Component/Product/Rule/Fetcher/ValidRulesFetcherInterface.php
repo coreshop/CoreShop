@@ -19,6 +19,7 @@ interface ValidRulesFetcherInterface
 {
     /**
      * @param ProductInterface $product
+     *
      * @return RuleInterface[]
      */
     public function getValidRules(ProductInterface $product);

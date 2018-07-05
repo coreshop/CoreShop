@@ -31,6 +31,7 @@ class WishlistController extends FrontendController
 
         if (!$product instanceof ProductInterface) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+
             return $this->redirect($redirect);
         }
 
@@ -45,6 +46,7 @@ class WishlistController extends FrontendController
         $this->addFlash('success', 'coreshop.ui.item_added');
 
         $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getWishlist(), 'coreshop_wishlist_summary'));
+
         return $this->redirect($redirect);
     }
 
@@ -76,7 +78,7 @@ class WishlistController extends FrontendController
     public function summaryAction(Request $request)
     {
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist:summary.html'), [
-            'wishlist' => $this->getWishlist()
+            'wishlist' => $this->getWishlist(),
         ]);
     }
 

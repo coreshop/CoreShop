@@ -46,9 +46,9 @@ final class ProposalExpireMaintenanceManagerListener
 
     /**
      * @param ConfigurationServiceInterface $configurationService
-     * @param ProposalExpirationInterface $proposalExpiration
-     * @param int $days
-     * @param array $params
+     * @param ProposalExpirationInterface   $proposalExpiration
+     * @param int                           $days
+     * @param array                         $params
      */
     public function __construct(ConfigurationServiceInterface $configurationService, ProposalExpirationInterface $proposalExpiration, $type, $days = 0, $params = [])
     {

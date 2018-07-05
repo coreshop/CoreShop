@@ -38,14 +38,13 @@ final class ORMTranslatableListener implements EventSubscriber
     private $translatableEntityLocaleAssigner;
 
     /**
-     * @param RegistryInterface $resourceMetadataRegistry
+     * @param RegistryInterface  $resourceMetadataRegistry
      * @param ContainerInterface $container
      */
     public function __construct(
         RegistryInterface $resourceMetadataRegistry,
         ContainerInterface $container
-    )
-    {
+    ) {
         $this->resourceMetadataRegistry = $resourceMetadataRegistry;
         $this->translatableEntityLocaleAssigner = $container->get('coreshop.translatable_entity_locale_assigner');
     }
@@ -197,7 +196,7 @@ final class ORMTranslatableListener implements EventSubscriber
      * Check if a unique constraint has been defined.
      *
      * @param ClassMetadata $metadata
-     * @param array $columns
+     * @param array         $columns
      *
      * @return bool
      */

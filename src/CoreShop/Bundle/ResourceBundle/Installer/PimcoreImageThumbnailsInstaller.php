@@ -25,7 +25,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**<
      * @param KernelInterface $kernel
@@ -84,10 +84,11 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
     }
 
     /**
-     * Check if Image Thumbnail is already installed
+     * Check if Image Thumbnail is already installed.
      *
      * @param $name
      * @param $properties
+     *
      * @return Config
      */
     private function installThumbnail($name, $properties)

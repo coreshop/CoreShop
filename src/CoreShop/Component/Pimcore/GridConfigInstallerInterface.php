@@ -20,6 +20,5 @@ if (interface_exists(\CoreShop\Component\Pimcore\DataObject\GridConfigInstallerI
      */
     interface GridConfigInstallerInterface
     {
-
     }
 }

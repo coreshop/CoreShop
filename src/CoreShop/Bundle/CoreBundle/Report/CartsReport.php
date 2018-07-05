@@ -46,20 +46,18 @@ class CartsReport implements ReportInterface, PortletInterface
      * CartsReport constructor.
      *
      * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param array $pimcoreClasses
+     * @param Connection          $db
+     * @param array               $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         array $pimcoreClasses
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->pimcoreClasses = $pimcoreClasses;
     }
-
 
     /**
      * {@inheritdoc}
@@ -79,6 +77,7 @@ class CartsReport implements ReportInterface, PortletInterface
 
     /**
      * @param ParameterBag $parameterBag
+     *
      * @return array
      */
     protected function getData(ParameterBag $parameterBag)

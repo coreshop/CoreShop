@@ -78,7 +78,7 @@ final class RuleCollector extends DataCollector
 
             $processedTypes[] = [
                 'name' => $validationProcessor->getType(),
-                'count' => count($processedConditions[$validationProcessor->getType()])
+                'count' => count($processedConditions[$validationProcessor->getType()]),
             ];
         }
 

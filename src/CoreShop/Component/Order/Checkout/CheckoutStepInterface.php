@@ -44,7 +44,7 @@ interface CheckoutStepInterface
      * Commit Step from Request (validate form or whatever).
      *
      * @param CartInterface $cart
-     * @param Request $request
+     * @param Request       $request
      *
      * @throws CheckoutException
      */
@@ -54,7 +54,7 @@ interface CheckoutStepInterface
      * Prepare Checkout Step.
      *
      * @param CartInterface $cart
-     * @param Request $request
+     * @param Request       $request
      *
      * @return array $params for the view
      */

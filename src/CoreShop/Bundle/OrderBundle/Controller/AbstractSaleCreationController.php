@@ -28,13 +28,14 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 {
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function getCustomerDetailsAction(Request $request)
     {
         $this->isGrantedOr403();
 
-        $customerId = $request->get("customerId");
+        $customerId = $request->get('customerId');
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
 
         if (!$customer instanceof CustomerInterface) {
@@ -46,17 +47,18 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function getProductDetailsAction(Request $request)
     {
         $this->isGrantedOr403();
 
-        $productIds = $request->get("products");
+        $productIds = $request->get('products');
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
         $store = $this->get('coreshop.repository.store')->find($request->get('store'));
         $customer = $this->get('coreshop.repository.customer')->find($request->get('customer'));
 
@@ -130,9 +132,9 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $storeId = $request->get('store');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
 
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
         $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
@@ -198,9 +200,9 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $storeId = $request->get('store');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
 
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
         $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
@@ -263,40 +265,40 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         return [
             [
                 'key' => 'subtotal',
-                'value' => $cart->getSubtotal(true)
+                'value' => $cart->getSubtotal(true),
             ],
             [
                 'key' => 'subtotal_tax',
-                'value' => $cart->getSubtotalTax()
+                'value' => $cart->getSubtotalTax(),
             ],
             [
                 'key' => 'subtotal_without_tax',
-                'value' => $cart->getSubtotal(false)
+                'value' => $cart->getSubtotal(false),
             ],
             [
                 'key' => 'discount_without_tax',
-                'value' => -1 * $cart->getDiscount(false)
+                'value' => -1 * $cart->getDiscount(false),
             ],
             [
                 'key' => 'discount_tax',
-                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false)
+                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false),
             ],
             [
                 'key' => 'discount',
-                'value' => -1 * $cart->getDiscount(true)
+                'value' => -1 * $cart->getDiscount(true),
             ],
             [
                 'key' => 'total_without_tax',
-                'value' => $cart->getTotal(false)
+                'value' => $cart->getTotal(false),
             ],
             [
                 'key' => 'total_tax',
-                'value' => $cart->getTotalTax()
+                'value' => $cart->getTotalTax(),
             ],
             [
                 'key' => 'total',
-                'value' => $cart->getTotal(true)
-            ]
+                'value' => $cart->getTotal(true),
+            ],
         ];
     }
 
@@ -307,10 +309,9 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         CurrencyInterface $currency,
         $localeCode,
         array $productIds
-    )
-    {
+    ) {
         /**
-         * @var $cart CartInterface
+         * @var CartInterface
          */
         $cart = $this->get('coreshop.factory.cart')->createNew();
         $cart->setParent(\Pimcore\Model\DataObject\Service::createFolderByPath('/coreshop/tmp'));
@@ -338,10 +339,10 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
     /**
      * @return ProposalTransformerInterface
      */
-    protected abstract function getTransformer();
+    abstract protected function getTransformer();
 
     /**
      * @param ProposalInterface $sale
      */
-    protected abstract function afterSaleCreation(ProposalInterface $sale);
+    abstract protected function afterSaleCreation(ProposalInterface $sale);
 }

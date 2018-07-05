@@ -26,6 +26,7 @@ trait NestedTrait
      * @param $value
      * @param $interpreterConfig
      * @param callable $callback
+     *
      * @return mixed
      */
     protected function loop($value, $interpreterConfig, callable $callback)

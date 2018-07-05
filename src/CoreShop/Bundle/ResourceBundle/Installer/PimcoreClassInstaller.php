@@ -23,37 +23,36 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
     /**
      * @var array
      */
-    protected $installedClasses = [];
+    private $installedClasses = [];
 
     /**
      * @var array
      */
-    protected $installedCollections = [];
+    private $installedCollections = [];
 
     /**
      * @var array
      */
-    protected $installedBricks = [];
+    private $installedBricks = [];
 
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**
      * @var ClassInstallerInterface
      */
-    protected $classInstaller;
+    private $classInstaller;
 
     /**
-     * @param KernelInterface $kernel
+     * @param KernelInterface         $kernel
      * @param ClassInstallerInterface $classInstaller
      */
     public function __construct(
         KernelInterface $kernel,
         ClassInstallerInterface $classInstaller
-    )
-    {
+    ) {
         $this->kernel = $kernel;
         $this->classInstaller = $classInstaller;
     }
@@ -75,30 +74,29 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
                 $modelName = explode('\\', $pimcoreModel['classes']['model']);
                 $modelName = $modelName[count($modelName) - 1];
 
-                if (array_key_exists("install_file", $pimcoreModel['classes'])) {
+                if (array_key_exists('install_file', $pimcoreModel['classes'])) {
                     $type = $pimcoreModel['classes']['type'];
 
                     try {
                         $file = $this->kernel->locateResource($pimcoreModel['classes']['install_file']);
 
-                        if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
+                        if (CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT === $type) {
                             //$this->createClass($file, $modelName, true);
                             $classes[$identifier] = [
                                 'model' => $modelName,
-                                'file' => $file
+                                'file' => $file,
                             ];
-                        } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION) {
+                        } elseif (CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION === $type) {
                             $fieldCollections[$identifier] = [
                                 'model' => $modelName,
-                                'file' => $file
+                                'file' => $file,
                             ];
-                        } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK) {
+                        } elseif (CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK === $type) {
                             $bricks[$identifier] = [
                                 'model' => $modelName,
-                                'file' => $file
+                                'file' => $file,
                             ];
                         }
-
                     } catch (\InvalidArgumentException $ex) {
                         //File not found, continue with next, maybe add some logging?
                     }

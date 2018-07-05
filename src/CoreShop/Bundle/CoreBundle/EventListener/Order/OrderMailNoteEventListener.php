@@ -49,9 +49,10 @@ final class OrderMailNoteEventListener
 
     /**
      * @param OrderInterface $order
-     * @param Email $emailDocument
-     * @param Mail $mail
-     * @param array $params
+     * @param Email          $emailDocument
+     * @param Mail           $mail
+     * @param array          $params
+     *
      * @return bool
      */
     private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, $params = [])
@@ -68,8 +69,7 @@ final class OrderMailNoteEventListener
         foreach ($mail->getTo() as $mail => $name) {
             if ($name) {
                 $mailTos[] = sprintf('%s <%s>', $name, $mail);
-            }
-            else {
+            } else {
                 $mailTos[] = $mail;
             }
         }

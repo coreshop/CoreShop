@@ -17,7 +17,7 @@ use Pimcore\Model\Translation\Website;
 class SharedTranslation
 {
     /**
-     * Add a new Shared Translation
+     * Add a new Shared Translation.
      *
      * @param $key
      * @param $language
@@ -31,7 +31,7 @@ class SharedTranslation
     }
 
     /**
-     * Cleanup Translations
+     * Cleanup Translations.
      */
     public static function cleanup()
     {

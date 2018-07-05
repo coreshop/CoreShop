@@ -133,7 +133,7 @@ final class InstallerContext implements Context
     private function iExecuteCommandAndConfirm($name)
     {
         $this->questionHelper = $this->command->getHelper('question');
-        $inputString = 'y' . PHP_EOL;
+        $inputString = 'y'.PHP_EOL;
         $this->questionHelper->setInputStream($this->getInputStream($inputString));
 
         try {

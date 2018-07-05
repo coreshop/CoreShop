@@ -39,15 +39,14 @@ final class CustomerGroupContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $customerGroupFactory
-     * @param RepositoryInterface $customerGroupRepository
+     * @param FactoryInterface       $customerGroupFactory
+     * @param RepositoryInterface    $customerGroupRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerGroupFactory,
         RepositoryInterface $customerGroupRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerGroupFactory = $customerGroupFactory;
         $this->customerGroupRepository = $customerGroupRepository;
@@ -65,11 +64,12 @@ final class CustomerGroupContext implements Context
 
     /**
      * @param string $name
+     *
      * @return CustomerGroupInterface
      */
     private function createCustomerGroup(string $name)
     {
-        /** @var CustomerGroupInterface $group*/
+        /** @var CustomerGroupInterface $group */
         $group = $this->customerGroupFactory->createNew();
 
         $group->setKey(File::getValidFilename($name));

@@ -58,7 +58,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/universal'
+            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/universal',
         ]);
     }
 
@@ -107,7 +107,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -120,9 +120,9 @@ class UniversalEcommerce extends AbstractEcommerceTracker
 
         $calls = [
             'ecommerce:addTransaction' => [
-                $orderData
+                $orderData,
             ],
-            'ecommerce:addItem' => []
+            'ecommerce:addItem' => [],
         ];
 
         foreach ($items as $item) {
@@ -141,7 +141,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     protected function isGlobalSiteTagMode()
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === false) {
+        if (false === $config) {
             return false;
         }
 
@@ -149,7 +149,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     }
 
     /**
-     * Transform product action into universal data object
+     * Transform product action into universal data object.
      *
      * @param ProductData $item
      *
@@ -158,10 +158,10 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     protected function transformProductAction(ProductData $item)
     {
         return $this->filterNullValues([
-            'sku'      => $item->getId(),
-            'name'     => $item->getName(),
+            'sku' => $item->getId(),
+            'name' => $item->getName(),
             'category' => $item->getCategory(),
-            'price'    => round($item->getPrice(), 2),
+            'price' => round($item->getPrice(), 2),
             'quantity' => $item->getQuantity() ?: 1,
         ]);
     }

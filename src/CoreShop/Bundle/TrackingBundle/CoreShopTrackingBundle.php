@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\TrackingBundle;
 
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
-use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackerPass;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;

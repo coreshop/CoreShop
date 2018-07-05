@@ -63,6 +63,5 @@ class Version20180322165817 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
-
     }
 }

@@ -20,8 +20,8 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 interface ProposalCartPriceRuleCalculatorInterface
 {
     /**
-     * @param CartInterface $cart
-     * @param CartPriceRuleInterface $cartPriceRule
+     * @param CartInterface                          $cart
+     * @param CartPriceRuleInterface                 $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
      *
      * @return ProposalCartPriceRuleItemInterface|false

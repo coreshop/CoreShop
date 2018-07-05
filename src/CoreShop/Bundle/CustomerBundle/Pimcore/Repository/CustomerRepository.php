@@ -26,7 +26,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         $list->setCondition('passwordResetHash = ?', [$resetToken]);
         $objects = $list->load();
 
-        if (count($objects) === 1) {
+        if (1 === count($objects)) {
             return $objects[0];
         }
 
@@ -42,7 +42,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         $list->setCondition('newsletterToken = ?', [$newsletterToken]);
         $objects = $list->load();
 
-        if (count($objects) === 1) {
+        if (1 === count($objects)) {
             return $objects[0];
         }
 

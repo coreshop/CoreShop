@@ -29,7 +29,7 @@ final class SummaryType extends AbstractResourceType
             ->add('acceptTerms', CheckboxType::class, [
                 'constraints' => [new NotBlank(['groups' => ['coreshop']])],
                 'label' => 'coreshop.ui.accept_terms',
-                'mapped' => false
+                'mapped' => false,
             ]);
     }
 

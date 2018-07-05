@@ -214,7 +214,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     {
         $roles = $this->roles;
 
-        /** @var CustomerGroupInterface $group */
+        /* @var CustomerGroupInterface $group */
         if (is_array($this->getCustomerGroups())) {
             foreach ($this->getCustomerGroups() as $group) {
                 $groupRoles = $group->getRoles();

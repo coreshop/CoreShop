@@ -12,20 +12,14 @@
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
-use Carbon\Carbon;
 use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use Doctrine\ORM\EntityManagerInterface;
 use Payum\Core\Payum;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,15 +46,14 @@ class PaymentController extends Controller
      * PaymentController constructor.
      *
      * @param OrderPaymentProviderInterface $orderPaymentProvider,
-     * @param PimcoreRepositoryInterface $orderRepository
-     * @param ObjectServiceInterface $pimcoreObjectService
+     * @param PimcoreRepositoryInterface    $orderRepository
+     * @param ObjectServiceInterface        $pimcoreObjectService
      */
     public function __construct(
         OrderPaymentProviderInterface $orderPaymentProvider,
         PimcoreRepositoryInterface $orderRepository,
         ObjectServiceInterface $pimcoreObjectService
-    )
-    {
+    ) {
         $this->orderPaymentProvider = $orderPaymentProvider;
         $this->orderRepository = $orderRepository;
         $this->pimcoreObjectService = $pimcoreObjectService;
@@ -68,11 +61,12 @@ class PaymentController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function prepareCaptureAction(Request $request)
     {
-        /**
+        /*
          * @var $order OrderInterface
          */
         if ($request->attributes->has('token')) {
@@ -110,7 +104,9 @@ class PaymentController extends Controller
      * Here we return from the Payment Provider and process the result.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \Exception
      * @throws \Payum\Core\Reply\ReplyInterface
      */
@@ -134,7 +130,7 @@ class PaymentController extends Controller
 
         //Start Workflow with $status->getStatus()
 
-        /**
+        /*
          * Further process the status here, kick-off the pimcore workflow for orders?
          */
         return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());

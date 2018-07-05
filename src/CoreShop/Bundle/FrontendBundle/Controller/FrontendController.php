@@ -34,7 +34,8 @@ class FrontendController extends \Pimcore\Controller\FrontendController
      * @param $object |null
      * @param $route |null
      * @param array $parameters
-     * @param int $referenceType
+     * @param int   $referenceType
+     *
      * @return mixed|string
      */
     protected function generateCoreShopUrl($object, $route = null, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)

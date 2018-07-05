@@ -33,17 +33,16 @@ class PriceFormatter extends AbstractOperator
      * OrderState constructor.
      *
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeService
-     * @param \stdClass $config
-     * @param null $context
+     * @param LocaleContextInterface  $localeService
+     * @param \stdClass               $config
+     * @param null                    $context
      */
     public function __construct(
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         \stdClass $config,
         $context = null
-    )
-    {
+    ) {
         parent::__construct($config, $context);
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
@@ -51,6 +50,7 @@ class PriceFormatter extends AbstractOperator
 
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
+     *
      * @return null|\stdClass|string
      */
     public function getLabeledValue($element)
@@ -73,5 +73,4 @@ class PriceFormatter extends AbstractOperator
 
         return $result;
     }
-
 }

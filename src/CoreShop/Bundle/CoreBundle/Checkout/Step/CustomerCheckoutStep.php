@@ -45,8 +45,8 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     private $registrationService;
 
     /**
-     * @param CustomerContextInterface $customerContext
-     * @param FormFactoryInterface $formFactory
+     * @param CustomerContextInterface     $customerContext
+     * @param FormFactoryInterface         $formFactory
      * @param RegistrationServiceInterface $registrationService
      */
     public function __construct(CustomerContextInterface $customerContext, FormFactoryInterface $formFactory, RegistrationServiceInterface $registrationService)
@@ -71,7 +71,6 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     {
         return true;
     }
-
 
     /**
      * {@inheritdoc}
@@ -134,12 +133,13 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     public function prepareStep(CartInterface $cart, Request $request)
     {
         return [
-            'guestForm' => $this->createForm($request)->createView()
+            'guestForm' => $this->createForm($request)->createView(),
         ];
     }
 
     /**
      * @param Request $request
+     *
      * @return FormInterface
      */
     private function createForm(Request $request)

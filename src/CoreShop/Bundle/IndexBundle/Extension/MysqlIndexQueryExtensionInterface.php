@@ -21,13 +21,15 @@ interface MysqlIndexQueryExtensionInterface extends IndexExtensionInterface
 {
     /**
      * @param IndexInterface $index
+     *
      * @return ConditionInterface[]
      */
     public function preConditionQuery(IndexInterface $index);
 
     /**
      * @param IndexInterface $index
-     * @param QueryBuilder $queryBuilder
+     * @param QueryBuilder   $queryBuilder
+     *
      * @return array
      */
     public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder);

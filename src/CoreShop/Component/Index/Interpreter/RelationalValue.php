@@ -12,9 +12,6 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
-
 class RelationalValue implements RelationalValueInterface
 {
     /**
@@ -68,5 +65,4 @@ class RelationalValue implements RelationalValueInterface
     {
         $this->type = $type;
     }
-
 }

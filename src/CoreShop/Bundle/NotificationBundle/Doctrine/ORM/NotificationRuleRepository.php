@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\NotificationBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
 

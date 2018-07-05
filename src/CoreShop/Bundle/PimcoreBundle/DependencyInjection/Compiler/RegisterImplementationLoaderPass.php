@@ -30,6 +30,7 @@ abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
 
     /**
      * RegisterImplementationLoaderPass constructor.
+     *
      * @param string $implementationLoader
      * @param string $tag
      */

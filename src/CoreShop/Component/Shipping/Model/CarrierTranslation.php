@@ -34,7 +34,6 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
      */
     protected $description = '';
 
-
     /**
      * @return string
      */

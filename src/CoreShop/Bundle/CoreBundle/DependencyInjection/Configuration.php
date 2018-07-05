@@ -216,14 +216,16 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->validate()
-                                ->ifTrue(function($array) {
+                                ->ifTrue(function ($array) {
                                     $notValid = false;
                                     foreach ($array as $key => $value) {
-                                        if ($key === 'cart') {
+                                        if ('cart' === $key) {
                                             $notValid = true;
+
                                             break;
                                         }
                                     }
+
                                     return $notValid;
                                 })
                                 ->thenInvalid('"cart" is a coreshop reserved checkout step. please use another name.')

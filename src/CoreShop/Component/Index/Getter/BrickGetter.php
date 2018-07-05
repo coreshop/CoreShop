@@ -42,7 +42,6 @@ class BrickGetter implements GetterInterface
 
         if (!$brickContainer) {
             return null;
-
         }
         $brick = $brickContainer->$brickGetter();
 
@@ -51,7 +50,6 @@ class BrickGetter implements GetterInterface
 
             return $brick->$fieldGetter();
         }
-
 
         return null;
     }

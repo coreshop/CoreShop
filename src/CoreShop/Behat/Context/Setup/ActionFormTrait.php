@@ -23,6 +23,7 @@ trait ActionFormTrait
     /**
      * @param $class
      * @param $type
+     *
      * @throws \Exception
      */
     protected function assertActionForm($class, $type)
@@ -56,7 +57,9 @@ trait ActionFormTrait
 
     /**
      * @param $type
+     *
      * @return FormInterface
+     *
      * @throws \Exception
      */
     protected function getActionForm($type)
@@ -71,15 +74,15 @@ trait ActionFormTrait
     /**
      * @return FormTypeRegistryInterface
      */
-    protected abstract function getActionFormRegistry();
+    abstract protected function getActionFormRegistry();
 
     /**
      * @return FormFactoryInterface
      */
-    protected abstract function getFormFactory();
+    abstract protected function getFormFactory();
 
     /**
      * @return string
      */
-    protected abstract function getActionFormClass();
+    abstract protected function getActionFormClass();
 }

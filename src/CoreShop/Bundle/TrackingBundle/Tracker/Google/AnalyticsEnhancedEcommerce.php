@@ -37,7 +37,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
     public $config;
 
     /**
-     * Dependencies to include before any tracking actions
+     * Dependencies to include before any tracking actions.
      *
      * @var array
      */
@@ -72,7 +72,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/enhanced'
+            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/enhanced',
         ]);
     }
 
@@ -81,7 +81,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackPurchasableView(PurchasableInterface $product)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -103,7 +103,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackPurchasableImpression(PurchasableInterface $product)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -112,7 +112,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $item = $this->itemBuilder->buildPurchasableImpressionItem($product);
 
         $parameters = [
-            'productData' => $this->transformProductImpression($item)
+            'productData' => $this->transformProductImpression($item),
         ];
 
         $result = $this->renderTemplate('product_impression', $parameters);
@@ -124,7 +124,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -137,7 +137,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -150,7 +150,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -173,7 +173,6 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
@@ -181,7 +180,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
      */
     public function trackCheckoutComplete(OrderInterface $order)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -203,7 +202,6 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
@@ -211,7 +209,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
      */
     protected function trackPurchasableAction(PurchasableInterface $product, $action, $quantity = 1)
     {
-        if ($this->isGlobalSiteTagMode() === true) {
+        if (true === $this->isGlobalSiteTagMode()) {
             return;
         }
 
@@ -226,69 +224,72 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
-     * Transform ActionData into classic analytics data array
+     * Transform ActionData into classic analytics data array.
      *
      * @param ActionData $actionData
+     *
      * @return array
      */
     protected function transformOrder(ActionData $actionData)
     {
         return [
-            'id'         => $actionData->getId(),
+            'id' => $actionData->getId(),
             'affilation' => $actionData->getAffiliation() ?: '',
-            'revenue'    => $actionData->getRevenue(),
-            'tax'        => $actionData->getTax(),
-            'shipping'   => $actionData->getShipping()
+            'revenue' => $actionData->getRevenue(),
+            'tax' => $actionData->getTax(),
+            'shipping' => $actionData->getShipping(),
         ];
     }
 
     /**
-     * Transform product action into enhanced data object
+     * Transform product action into enhanced data object.
      *
      * @param ProductData $item
+     *
      * @return array
      */
     protected function transformProductAction(ProductData $item)
     {
         return $this->filterNullValues([
-            'id'       => $item->getId(),
-            'name'     => $item->getName(),
+            'id' => $item->getId(),
+            'name' => $item->getName(),
             'category' => $item->getCategory(),
-            'brand'    => $item->getBrand(),
-            'variant'  => $item->getVariant(),
-            'price'    => round($item->getPrice(), 2),
+            'brand' => $item->getBrand(),
+            'variant' => $item->getVariant(),
+            'price' => round($item->getPrice(), 2),
             'quantity' => $item->getQuantity() ?: 1,
             'position' => $item->getPosition(),
-            'coupon'   => $item->getCoupon()
+            'coupon' => $item->getCoupon(),
         ]);
     }
 
     /**
-     * Transform product action into enhanced data object
+     * Transform product action into enhanced data object.
      *
      * @param ImpressionData $item
+     *
      * @return array
      */
     protected function transformProductImpression(ImpressionData $item)
     {
         return $this->filterNullValues([
-            'id'       => $item->getId(),
-            'name'     => $item->getName(),
+            'id' => $item->getId(),
+            'name' => $item->getName(),
             'category' => $item->getCategory(),
-            'brand'    => $item->getBrand(),
-            'variant'  => $item->getVariant(),
-            'price'    => round($item->getPrice(), 2),
-            'list'     => $item->getList(),
-            'position' => $item->getPosition()
+            'brand' => $item->getBrand(),
+            'variant' => $item->getVariant(),
+            'price' => round($item->getPrice(), 2),
+            'list' => $item->getList(),
+            'position' => $item->getPosition(),
         ]);
     }
 
     /**
      * @param array $items
+     *
      * @return array
      */
     protected function buildCheckoutCalls(array $items)
@@ -302,7 +303,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
     }
 
     /**
-     * Makes sure dependencies are included once before any call
+     * Makes sure dependencies are included once before any call.
      */
     protected function ensureDependencies()
     {
@@ -312,7 +313,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('dependencies', [
             'dependencies' => $this->dependencies,
-            'currency'     => $this->getCurrentCurrency()
+            'currency' => $this->getCurrentCurrency(),
         ]);
 
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -326,7 +327,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
     protected function isGlobalSiteTagMode()
     {
         $config = $this->config->getGoogleConfig();
-        if ($config === false) {
+        if (false === $config) {
             return false;
         }
 

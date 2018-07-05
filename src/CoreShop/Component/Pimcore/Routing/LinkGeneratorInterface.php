@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Pimcore\Routing;
 
-use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 interface LinkGeneratorInterface
@@ -21,7 +20,8 @@ interface LinkGeneratorInterface
      * @param $object
      * @param $routeName
      * @param array $params
-     * @param int $referenceType
+     * @param int   $referenceType
+     *
      * @return mixed
      */
     public function generate($object, $routeName = null, $params = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH);

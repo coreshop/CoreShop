@@ -33,13 +33,12 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
 
     /**
      * @param ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param CartPriceRuleVoucherRepositoryInterface  $voucherCodeRepository
      */
     public function __construct(
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-    )
-    {
+    ) {
         $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
         $this->voucherCodeRepository = $voucherCodeRepository;
     }

@@ -20,6 +20,5 @@ if (class_exists(\CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFo
      */
     final class ClassDefinitionFieldNotFoundException extends \Exception
     {
-
     }
 }

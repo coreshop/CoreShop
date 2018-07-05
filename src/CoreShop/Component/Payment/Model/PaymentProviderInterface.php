@@ -41,7 +41,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
      * @deprecated setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead
      *
      * @param string $name
-     * @param null $language
+     * @param null   $language
      */
     public function setName($name, $language = null);
 
@@ -54,7 +54,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $title
-     * @param null $language
+     * @param null   $language
      */
     public function setTitle($title, $language = null);
 
@@ -67,7 +67,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $description
-     * @param null $language
+     * @param null   $language
      */
     public function setDescription($description, $language = null);
 
@@ -80,7 +80,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $instructions
-     * @param null $language
+     * @param null   $language
      */
     public function setInstructions($instructions, $language = null);
 

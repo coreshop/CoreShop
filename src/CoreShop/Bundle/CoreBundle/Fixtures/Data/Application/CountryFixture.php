@@ -55,7 +55,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         return [
             ZoneFixture::class,
             CurrencyFixture::class,
-            StoreFixture::class
+            StoreFixture::class,
         ];
     }
 
@@ -85,7 +85,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '%DataObject(country,{"method" : "getName"});',
                 '%Text(phone);',
             ],
-            'region' => ''
+            'region' => '',
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $defaultSalutations = ['mrs', 'mr'];
@@ -103,7 +103,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         foreach ($countries as $country) {
             if ($country instanceof Country) {
                 /**
-                 * @var $newCountry CountryInterface
+                 * @var CountryInterface
                  */
                 $newCountry = $this->container->get('coreshop.repository.country')->findByCode($country->getIsoAlpha2());
 
@@ -118,7 +118,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 }
 
                 $newCountry->setIsoCode($country->getIsoAlpha2());
-                $newCountry->setActive($country->getIsoAlpha2() === 'AT');
+                $newCountry->setActive('AT' === $country->getIsoAlpha2());
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
                 $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
 
@@ -144,7 +144,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 $newCountry->setSalutations($defaultSalutations);
                 $manager->persist($newCountry);
 
-                if ($country->getIsoAlpha2() === 'AT') {
+                if ('AT' === $country->getIsoAlpha2()) {
                     //States
                     $divisions = $country->getDivisions();
 

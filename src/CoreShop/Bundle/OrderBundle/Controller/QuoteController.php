@@ -18,6 +18,7 @@ class QuoteController extends AbstractSaleDetailController
 {
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getFolderConfigurationAction()
@@ -42,7 +43,6 @@ class QuoteController extends AbstractSaleDetailController
         }
 
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
-
     }
 
     /**

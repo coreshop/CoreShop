@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\PaymentBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 
 class PaymentProviderRepository extends EntityRepository implements PaymentProviderRepositoryInterface

@@ -105,7 +105,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $object
+     * @param null  $object
      * @param array $params
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -115,7 +115,7 @@ class ProductSpecificPriceRules extends Data
         $data = [
             'actions' => array_keys($this->getConfigActions()),
             'conditions' => array_keys($this->getConfigConditions()),
-            'rules' => []
+            'rules' => [],
         ];
 
         if ($object instanceof ProductInterface) {
@@ -135,7 +135,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $object
+     * @param null  $object
      * @param array $params
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -175,7 +175,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param Concrete $object
-     * @param array $params
+     * @param array    $params
      */
     public function save($object, $params = [])
     {
@@ -234,9 +234,9 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $relatedObject
+     * @param null  $relatedObject
      * @param mixed $params
-     * @param null $idMapper
+     * @param null  $idMapper
      *
      * @return ProductSpecificPriceRuleInterface[]
      *

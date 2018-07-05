@@ -33,7 +33,7 @@ final class StackRepositoryPass implements CompilerPassInterface
         $stackConfig = $container->getParameter('coreshop.all.stack');
 
         foreach ($container->getParameter('coreshop.all.stack.pimcore_class_names') as $alias => $classes) {
-            list ($applicationName, $name) = explode('.', $alias);
+            list($applicationName, $name) = explode('.', $alias);
 
             $definition = new Definition(Metadata::class);
             $definition
@@ -44,7 +44,7 @@ final class StackRepositoryPass implements CompilerPassInterface
             $repositoryDefinition->setArguments([
                 $definition,
                 $stackConfig[$alias],
-                $classes
+                $classes,
             ]);
 
             $container->setDefinition(sprintf('%s.repository.stack.%s', $applicationName, $name), $repositoryDefinition);

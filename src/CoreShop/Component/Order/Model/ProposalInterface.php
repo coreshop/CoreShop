@@ -21,7 +21,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface
 {
-
     /**
      * @return CurrencyInterface
      */
@@ -29,6 +28,7 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
 
     /**
      * @param CurrencyInterface $currency
+     *
      * @return mixed
      */
     public function setCurrency($currency);
@@ -65,7 +65,7 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
     public function getDiscount($withTax = true);
 
     /**
-     * @param int $discount
+     * @param int  $discount
      * @param bool $withTax
      */
     public function setDiscount($discount, $withTax = true);
@@ -167,5 +167,4 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      * @param \Pimcore\Model\DataObject\Objectbrick $additionalData
      */
     public function setAdditionalData($additionalData);
-
 }

@@ -41,18 +41,16 @@ final class ProductContext implements Context
      */
     private $productRepository;
 
-
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $productFactory
+     * @param SharedStorageInterface     $sharedStorage
+     * @param FactoryInterface           $productFactory
      * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
         ProductRepositoryInterface $productRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
@@ -244,8 +242,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @param string $productName
-     * @param int $price
+     * @param string              $productName
+     * @param int                 $price
      * @param StoreInterface|null $store
      *
      * @return ProductInterface

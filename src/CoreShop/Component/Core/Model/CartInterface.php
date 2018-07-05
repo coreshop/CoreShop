@@ -54,6 +54,7 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
 
     /**
      * @param bool $needsRecalculation
+     *
      * @return mixed
      */
     public function setNeedsRecalculation($needsRecalculation);

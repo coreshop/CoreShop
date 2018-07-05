@@ -18,7 +18,7 @@ interface AddressFormatterInterface
 {
     /**
      * @param AddressInterface $address
-     * @param bool $asHtml
+     * @param bool             $asHtml
      *
      * @return mixed
      */

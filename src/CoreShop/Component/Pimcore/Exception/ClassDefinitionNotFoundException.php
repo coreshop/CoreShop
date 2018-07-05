@@ -14,7 +14,6 @@ namespace CoreShop\Component\Pimcore\Exception;
 
 final class ClassDefinitionNotFoundException extends \Exception
 {
-
 }
 
 class_alias(ClassDefinitionNotFoundException::class, 'CoreShop\Component\Pimcore\ClassDefinitionNotFoundException');

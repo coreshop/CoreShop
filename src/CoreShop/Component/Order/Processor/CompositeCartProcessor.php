@@ -29,7 +29,7 @@ final class CompositeCartProcessor implements CartProcessorInterface
 
     /**
      * @param CartProcessorInterface $cartProcessor
-     * @param int $priority
+     * @param int                    $priority
      */
     public function addProcessor(CartProcessorInterface $cartProcessor, $priority = 0)
     {

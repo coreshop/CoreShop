@@ -28,7 +28,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     {
         $conditions = [
             ['condition' => 'active = ?', 'variable' => 1],
-            ['condition' => 'stores LIKE ?', 'variable' => '%,'.$store->getId().',%']
+            ['condition' => 'stores LIKE ?', 'variable' => '%,'.$store->getId().',%'],
         ];
 
         return $this->findBy($conditions, ['o_creationDate DESC'], $count);
@@ -48,7 +48,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             'order' => 'ASC',
             'order_key_quote' => true,
             'object_types' => null,
-            'return_type' => 'objects'
+            'return_type' => 'objects',
         ]);
 
         $resolver->setRequired(['store']);
@@ -61,14 +61,15 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $resolver->setAllowedTypes('object_types', ['null', 'array']);
         $resolver->setAllowedTypes('return_type', 'string');
         $resolver->setAllowedValues('return_type', ['objects', 'list']);
-        $resolver->setAllowedValues('object_types', function($value) {
+        $resolver->setAllowedValues('object_types', function ($value) {
             $valid = [
                 null,
                 AbstractObject::OBJECT_TYPE_FOLDER,
                 AbstractObject::OBJECT_TYPE_OBJECT,
-                AbstractObject::OBJECT_TYPE_VARIANT
+                AbstractObject::OBJECT_TYPE_VARIANT,
             ];
-            $isvalid = $value === null || !array_diff($value, $valid);
+            $isvalid = null === $value || !array_diff($value, $valid);
+
             return $isvalid;
         });
 
@@ -76,11 +77,11 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $list = $this->getList();
 
-        if ($listOptions['object_types'] !== null) {
+        if (null !== $listOptions['object_types']) {
             $list->setObjectTypes($listOptions['object_types']);
         }
 
-        if ($listOptions['only_active'] === true) {
+        if (true === $listOptions['only_active']) {
             $list->addConditionParam('active = ?', 1);
         }
 
@@ -104,6 +105,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list->setOrderKey($listOptions['order_key'], $listOptions['order_key_quote']);
         $list->setOrder($listOptions['order']);
 
-        return $listOptions['return_type'] === 'objects' ? $list->load() : $list;
+        return 'objects' === $listOptions['return_type'] ? $list->load() : $list;
     }
 }

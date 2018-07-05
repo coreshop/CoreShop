@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Order\Calculator;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
-use CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 

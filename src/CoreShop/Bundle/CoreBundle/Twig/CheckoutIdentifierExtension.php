@@ -36,7 +36,7 @@ final class CheckoutIdentifierExtension extends \Twig_Extension
     {
         return [
             new \Twig_Function('coreshop_checkout_steps', [$this->helper, 'getSteps']),
-            new \Twig_Function('coreshop_checkout_steps_*', [$this->helper, 'getStep'])
+            new \Twig_Function('coreshop_checkout_steps_*', [$this->helper, 'getStep']),
         ];
     }
 }

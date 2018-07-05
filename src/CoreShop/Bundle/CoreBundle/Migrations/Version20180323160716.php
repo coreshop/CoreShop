@@ -17,6 +17,7 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
      * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
@@ -72,7 +73,7 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
                     'salutations',
                     'simple_array',
                     [
-                        'notnull' => false
+                        'notnull' => false,
                     ]
                 );
             }
@@ -92,19 +93,17 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
 
         /** @var CountryInterface $country */
         foreach ($countryRepository->findAll() as $country) {
-
             //set salutation
             $country->setSalutations($defaultSalutations);
 
             //update address format
             $addressFormat = $country->getAddressFormat();
-            if (strpos($addressFormat, '%Text(firstname);') !== false && strpos($addressFormat, '%Text(salutation);') === false) {
+            if (false !== strpos($addressFormat, '%Text(firstname);') && false === strpos($addressFormat, '%Text(salutation);')) {
                 $addressFormat = str_replace('%Text(firstname);', '%Text(salutation); %Text(firstname);', $addressFormat);
                 $country->setAddressFormat($addressFormat);
             }
 
             $manager->persist($country);
-
         }
 
         $manager->flush();
@@ -115,6 +114,5 @@ class Version20180323160716 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
-
     }
 }

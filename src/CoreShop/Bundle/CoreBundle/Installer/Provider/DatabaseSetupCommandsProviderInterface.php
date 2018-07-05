@@ -19,9 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface DatabaseSetupCommandsProviderInterface
 {
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param QuestionHelper $questionHelper
+     * @param QuestionHelper  $questionHelper
      *
      * @return array
      */

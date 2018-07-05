@@ -16,6 +16,7 @@ interface TemplateConfiguratorInterface
 {
     /**
      * @param $templateName
+     *
      * @return string
      */
     public function findTemplate($templateName);

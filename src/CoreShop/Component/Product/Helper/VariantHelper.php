@@ -18,7 +18,6 @@ use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Classificationstore;
 use Pimcore\Model\DataObject\Classificationstore\KeyConfig;
 
-
 /**
  * TODO: This class needs some hard refactoring! Currently only copy&paste from Version 1!
  */
@@ -34,9 +33,9 @@ class VariantHelper
     /**
      * @param ProductInterface $master
      * @param ProductInterface $currentProduct
-     * @param string $type
-     * @param string $field
-     * @param string $language
+     * @param string           $type
+     * @param string           $field
+     * @param string           $language
      *
      * @return array
      */
@@ -50,10 +49,12 @@ class VariantHelper
         switch ($type) {
             case 'objectbricks':
                 $baseData = self::getVariantValuesFromBrick($master, $field, $language);
+
                 break;
 
             case 'classificationstore':
                 $baseData = self::getVariantValuesFromClassificationStore($master, $field, $language);
+
                 break;
         }
 
@@ -114,8 +115,8 @@ class VariantHelper
 
     /**
      * @param ProductInterface $master
-     * @param string $classificationStoreField
-     * @param string $language
+     * @param string           $classificationStoreField
+     * @param string           $language
      *
      * @return array
      */
@@ -194,8 +195,8 @@ class VariantHelper
      * get data for variants from a brick-field.
      *
      * @param ProductInterface $master
-     * @param string $brickField
-     * @param string $language
+     * @param string           $brickField
+     * @param string           $language
      *
      * @return array
      *
@@ -255,7 +256,7 @@ class VariantHelper
                             $variantValue = $getter->getValueForVariant($dMethod, $language);
                             $variantName = $getter->getNameForVariant($dMethod);
 
-                            if ($variantValue === false) {
+                            if (false === $variantValue) {
                                 continue;
                             }
 
@@ -326,7 +327,7 @@ class VariantHelper
 
     /**
      * @param Classificationstore\GroupConfig $group
-     * @param KeyConfig $field
+     * @param KeyConfig                       $field
      *
      * @return array
      */
@@ -364,7 +365,7 @@ class VariantHelper
         foreach ($fields as $field) {
             $isValid = false;
 
-            if ($restrictTypes === true) {
+            if (true === $restrictTypes) {
                 if (in_array($field->getFieldType(), self::$allowedVariationTypes)) {
                     $isValid = true;
                 }

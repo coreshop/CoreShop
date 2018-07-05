@@ -60,11 +60,11 @@ class CategoriesReport implements ReportInterface
     /**
      * CategoriesReport constructor.
      *
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @param RepositoryInterface     $storeRepository
+     * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeService
-     * @param array $pimcoreClasses
+     * @param LocaleContextInterface  $localeService
+     * @param array                   $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -72,8 +72,7 @@ class CategoriesReport implements ReportInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         array $pimcoreClasses
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -105,7 +104,6 @@ class CategoriesReport implements ReportInterface
             return [];
         }
 
-
         $query = "
             SELECT 
               orderItems.product__id,
@@ -123,8 +121,7 @@ class CategoriesReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $catSales = InheritanceHelper::useInheritedValues(function() use ($productSales) {
-
+        $catSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
             $catSales = [];
             foreach ($productSales as $productSale) {
                 $product = DataObject::getById($productSale['product__id']);
@@ -148,10 +145,9 @@ class CategoriesReport implements ReportInterface
             }
 
             return $catSales;
-
         });
 
-        usort($catSales, function($a, $b) {
+        usort($catSales, function ($a, $b) {
             return $b['orderCount'] <=> $a['orderCount'];
         });
 

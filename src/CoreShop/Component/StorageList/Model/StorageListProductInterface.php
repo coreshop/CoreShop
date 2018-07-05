@@ -16,5 +16,4 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface StorageListProductInterface extends ResourceInterface
 {
-
 }

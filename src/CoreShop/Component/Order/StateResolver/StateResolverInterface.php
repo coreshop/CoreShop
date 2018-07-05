@@ -18,6 +18,7 @@ interface StateResolverInterface
 {
     /**
      * @param OrderInterface $order
+     *
      * @return mixed
      */
     public function resolve(OrderInterface $order);

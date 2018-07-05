@@ -17,7 +17,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 interface ValidationCheckoutStepInterface
 {
     /**
-     * Validates Step
+     * Validates Step.
      *
      * @param CartInterface $cart
      *

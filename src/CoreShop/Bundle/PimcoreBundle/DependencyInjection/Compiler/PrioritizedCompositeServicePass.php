@@ -93,8 +93,8 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
 
     /**
      * @param Definition $channelContextDefinition
-     * @param string $id
-     * @param array $tags
+     * @param string     $id
+     * @param array      $tags
      */
     private function addMethodCalls(Definition $channelContextDefinition, $id, $tags)
     {
@@ -105,8 +105,8 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
 
     /**
      * @param Definition $channelContextDefinition
-     * @param string $id
-     * @param array $attributes
+     * @param string     $id
+     * @param array      $attributes
      */
     private function addMethodCall(Definition $channelContextDefinition, $id, $attributes)
     {

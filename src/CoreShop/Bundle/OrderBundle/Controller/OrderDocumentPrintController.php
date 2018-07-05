@@ -23,7 +23,7 @@ class OrderDocumentPrintController extends FrontendController
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:invoice.html.twig', [
             'document' => $document,
             'order' => $order,
-            'type' => $document::getDocumentType()
+            'type' => $document::getDocumentType(),
         ]);
     }
 
@@ -32,7 +32,7 @@ class OrderDocumentPrintController extends FrontendController
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:shipment.html.twig', [
             'document' => $document,
             'order' => $order,
-            'type' => $document::getDocumentType()
+            'type' => $document::getDocumentType(),
         ]);
     }
 
@@ -41,7 +41,7 @@ class OrderDocumentPrintController extends FrontendController
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:header.html.twig', [
             'document' => $document,
             'order' => $order,
-            'type' => $document::getDocumentType()
+            'type' => $document::getDocumentType(),
         ]);
     }
 
@@ -50,7 +50,7 @@ class OrderDocumentPrintController extends FrontendController
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:footer.html.twig', [
             'document' => $document,
             'order' => $order,
-            'type' => $document::getDocumentType()
+            'type' => $document::getDocumentType(),
         ]);
     }
 }

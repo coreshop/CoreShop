@@ -28,13 +28,12 @@ final class CountryCollector extends DataCollector
 
     /**
      * @param CountryContextInterface $countryContext
-     * @param bool $countryChangeSupport
+     * @param bool                    $countryChangeSupport
      */
     public function __construct(
         CountryContextInterface $countryContext,
         $countryChangeSupport = false
-    )
-    {
+    ) {
         $this->countryContext = $countryContext;
 
         $this->data = [

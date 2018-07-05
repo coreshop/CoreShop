@@ -34,13 +34,12 @@ final class CartItemTaxProcessor implements CartProcessorInterface
 
     /**
      * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
-     * @param TaxCollectorInterface $taxCollector
+     * @param TaxCollectorInterface                $taxCollector
      */
     public function __construct(
         ProductTaxCalculatorFactoryInterface $productTaxFactory,
         TaxCollectorInterface $taxCollector
-    )
-    {
+    ) {
         $this->productTaxFactory = $productTaxFactory;
         $this->taxCollector = $taxCollector;
     }
@@ -51,7 +50,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
     public function process(CartInterface $cart)
     {
         /**
-         * @var $item CartItemInterface
+         * @var CartItemInterface
          */
         foreach ($cart->getItems() as $item) {
             $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct());

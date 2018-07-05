@@ -28,7 +28,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
-        if($includeSubCategories === true) {
+        if (true === $includeSubCategories) {
             $field = 'parentCategoryIds';
         }
 
@@ -42,12 +42,11 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
                     continue;
                 }
                 if ($parsedValues[$e]) {
-                    $count = (int)$parsedValues[$e]['count'] + (int)$v['count'];
+                    $count = (int) $parsedValues[$e]['count'] + (int) $v['count'];
                 } else {
-                    $count = (int)$v['count'];
+                    $count = (int) $v['count'];
                 }
-                $parsedValues[$e] = ['value' => $e, 'count' => (int)$count];
-
+                $parsedValues[$e] = ['value' => $e, 'count' => (int) $count];
             }
         }
 
@@ -68,7 +67,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
             'includeSubCategories' => $includeSubCategories,
             'values' => $values,
             'objects' => $objects,
-            'fieldName' => $field
+            'fieldName' => $field,
         ];
     }
 
@@ -79,7 +78,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
-        if($includeSubCategories === true) {
+        if (true === $includeSubCategories) {
             $field = 'parentCategoryIds';
         }
 
@@ -97,8 +96,8 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
         }
 
         if (!empty($value)) {
-            $value = '%,' . trim($value) . ',%';
-            $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
+            $value = '%,'.trim($value).',%';
+            $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
             $list->addCondition(new LikeCondition($field, 'both', $value), $fieldName);
         }
 

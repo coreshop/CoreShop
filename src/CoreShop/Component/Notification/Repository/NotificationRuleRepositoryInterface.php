@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Notification\Repository;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 interface NotificationRuleRepositoryInterface extends RuleRepositoryInterface

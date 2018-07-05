@@ -21,8 +21,7 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
         $payment = [
             'fieldtype' => 'coreShopSerializedData',
             'phpdocType' => 'array',
-            'allowedTypes' =>
-                [
+            'allowedTypes' => [
                 ],
             'maxItems' => 1,
             'name' => 'paymentSettings',
@@ -68,7 +67,9 @@ class Version20180115121745 extends AbstractPimcoreMigration implements Containe
     /**
      * @param $jsonFile
      * @param $brickName
+     *
      * @return mixed|DataObject\Objectbrick\Definition
+     *
      * @throws \Exception
      */
     private function createBrick($jsonFile, $brickName)

@@ -20,6 +20,5 @@ if (class_exists(\CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor::class)) {
      */
     class OrderMailProcessor
     {
-
     }
 }

@@ -46,18 +46,18 @@ final class CountryContext implements Context
 
     /**
      * CountryContext constructor.
-     * @param SharedStorageInterface $sharedStorage
+     *
+     * @param SharedStorageInterface     $sharedStorage
      * @param CountryRepositoryInterface $countryRepository
-     * @param CountryContextInterface $countryContext
-     * @param AddressFormatterInterface $addressFormatter
+     * @param CountryContextInterface    $countryContext
+     * @param AddressFormatterInterface  $addressFormatter
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CountryRepositoryInterface $countryRepository,
         CountryContextInterface $countryContext,
         AddressFormatterInterface $addressFormatter
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->countryRepository = $countryRepository;
         $this->countryContext = $countryContext;

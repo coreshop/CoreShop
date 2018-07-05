@@ -21,17 +21,17 @@ abstract class AbstractProductPriceCalculatorPass implements CompilerPassInterfa
     /**
      * @return string
      */
-    protected abstract function getRegistry();
+    abstract protected function getRegistry();
 
     /**
      * @return string
      */
-    protected abstract function getTag();
+    abstract protected function getTag();
 
     /**
      * @return string
      */
-    protected abstract function getParameter();
+    abstract protected function getParameter();
 
     /**
      * {@inheritdoc}

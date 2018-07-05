@@ -25,8 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
-;
-
 class CheckoutController extends FrontendController
 {
     /**
@@ -109,7 +107,7 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
+        $isFirstStep = false === $checkoutManager->hasPreviousStep($stepIdentifier);
         $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
@@ -124,10 +122,11 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @param Request $request
+     * @param Request               $request
      * @param CheckoutStepInterface $step
      * @param $stepIdentifier
      * @param $dataForStep
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
@@ -139,7 +138,9 @@ class CheckoutController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse
+     *
      * @throws \Exception
      */
     public function doCheckoutAction(Request $request)
@@ -163,7 +164,7 @@ class CheckoutController extends FrontendController
          * Check all previous steps if they are valid, if not, redirect back
          */
 
-        /**
+        /*
          * @var $step CheckoutStepInterface
          */
         foreach ($checkoutManager->getSteps() as $stepIdentifier) {
@@ -182,6 +183,7 @@ class CheckoutController extends FrontendController
 
         if (0 === $order->getTotal()) {
             $request->getSession()->set('coreshop_order_id', $order->getId());
+
             return $this->redirectToRoute('coreshop_checkout_confirmation');
         }
 
@@ -207,7 +209,7 @@ class CheckoutController extends FrontendController
         $request->getSession()->remove('coreshop_order_id');
 
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface
          */
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
@@ -218,7 +220,7 @@ class CheckoutController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [
             'order' => $order,
             'payments' => $payments,
-            'lastPayment' => $lastPayment
+            'lastPayment' => $lastPayment,
         ]);
     }
 

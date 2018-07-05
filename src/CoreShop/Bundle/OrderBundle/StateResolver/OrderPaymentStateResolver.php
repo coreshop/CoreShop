@@ -25,15 +25,15 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var PaymentRepositoryInterface
      */
-    protected $paymentRepository;
+    private $paymentRepository;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager        $stateMachineManager
      * @param PaymentRepositoryInterface $paymentRepository
      */
     public function __construct(StateMachineManager $stateMachineManager, PaymentRepositoryInterface $paymentRepository)
@@ -58,7 +58,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     /**
      * @param Workflow $workflow
      * @param          $subject
-     * @param string $transition
+     * @param string   $transition
      */
     private function applyTransition(Workflow $workflow, $subject, string $transition)
     {
@@ -99,7 +99,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
 
         $payments = $this->paymentRepository->findForPayable($order);
 
-        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getTotal()) || count($payments) === 0) {
+        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getTotal()) || 0 === count($payments)) {
             return OrderPaymentTransitions::TRANSITION_PAY;
         }
 
@@ -112,7 +112,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $state
+     * @param string         $state
      *
      * @return PaymentInterface[]
      */
@@ -125,6 +125,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
                 $filteredPayments[] = $payment;
             }
         }
+
         return $filteredPayments;
     }
 }

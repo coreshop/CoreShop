@@ -21,9 +21,9 @@ interface ShippingRuleActionProcessorInterface
 {
     /**
      * @param ShippingRuleInterface $shippingRule
-     * @param CarrierInterface $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface $address
+     * @param CarrierInterface      $carrier
+     * @param ShippableInterface    $shippable
+     * @param AddressInterface      $address
      *
      * @return mixed
      */
@@ -31,9 +31,9 @@ interface ShippingRuleActionProcessorInterface
 
     /**
      * @param ShippingRuleInterface $shippingRule
-     * @param CarrierInterface $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface $address
+     * @param CarrierInterface      $carrier
+     * @param ShippableInterface    $shippable
+     * @param AddressInterface      $address
      * @param $price
      *
      * @return mixed

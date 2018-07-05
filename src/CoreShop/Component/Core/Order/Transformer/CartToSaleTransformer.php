@@ -18,22 +18,21 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
     /**
      * @var ProposalTransformerInterface
      */
-    protected $innerCartToOrderTransformer;
+    private $innerCartToOrderTransformer;
 
     /**
      * @var CurrencyConverterInterface
      */
-    protected $currencyConverter;
+    private $currencyConverter;
 
     /**
      * @param ProposalTransformerInterface $innerCartToOrderTransformer
-     * @param CurrencyConverterInterface $currencyConverter
+     * @param CurrencyConverterInterface   $currencyConverter
      */
     public function __construct(
         ProposalTransformerInterface $innerCartToOrderTransformer,
         CurrencyConverterInterface $currencyConverter
-    )
-    {
+    ) {
         $this->innerCartToOrderTransformer = $innerCartToOrderTransformer;
         $this->currencyConverter = $currencyConverter;
     }
@@ -41,11 +40,12 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
     /**
      * @param ProposalInterface $cart
      * @param ProposalInterface $sale
+     *
      * @return ProposalInterface|mixed
      */
     public function transform(ProposalInterface $cart, ProposalInterface $sale)
     {
-        /**
+        /*
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
@@ -64,7 +64,7 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
                 if ($sale instanceof PaymentSettingsAwareInterface) {
                     $sale->setPaymentSettings($cart->getPaymentSettings());
                 }
-                
+
                 $sale->setAdditionalData($cart->getAdditionalData());
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(true), $fromCurrency, $toCurrency), true);
                 $sale->setShipping($this->currencyConverter->convert($cart->getShipping(false), $fromCurrency, $toCurrency), false);

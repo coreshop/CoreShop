@@ -16,7 +16,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 
-
 abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
 {
     /**
@@ -80,6 +79,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
                 //This could cause Problems with translations, therefore, we need to set
                 //the value here
                 $object->setValue($this->getName(), $tmpData);
+
                 return $tmpData;
             }
         }

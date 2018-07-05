@@ -31,17 +31,15 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
 
     /**
      * @param CartPriceRuleRepositoryInterface $cartPriceRuleRepository
-     * @param CartPriceRuleProcessorInterface $cartPriceRuleProcessor
+     * @param CartPriceRuleProcessorInterface  $cartPriceRuleProcessor
      */
     public function __construct(
         CartPriceRuleRepositoryInterface $cartPriceRuleRepository,
         CartPriceRuleProcessorInterface $cartPriceRuleProcessor
-    )
-    {
+    ) {
         $this->cartPriceRuleRepository = $cartPriceRuleRepository;
         $this->cartPriceRuleProcessor = $cartPriceRuleProcessor;
     }
-
 
     /**
      * {@inheritdoc}

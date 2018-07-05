@@ -61,13 +61,14 @@ final class StoreContext implements Context
 
     /**
      * StoreContext constructor.
-     * @param SharedStorageInterface $sharedStorage
-     * @param EntityManagerInterface $entityManager
-     * @param FactoryInterface $storeFactory
+     *
+     * @param SharedStorageInterface   $sharedStorage
+     * @param EntityManagerInterface   $entityManager
+     * @param FactoryInterface         $storeFactory
      * @param StoreRepositoryInterface $storeRepository
-     * @param FactoryInterface $currencyFactory
-     * @param FactoryInterface $countryFactory
-     * @param FixedStoreContext $fixedStoreContext
+     * @param FactoryInterface         $currencyFactory
+     * @param FactoryInterface         $countryFactory
+     * @param FixedStoreContext        $fixedStoreContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -77,8 +78,7 @@ final class StoreContext implements Context
         FactoryInterface $currencyFactory,
         FactoryInterface $countryFactory,
         FixedStoreContext $fixedStoreContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->entityManager = $entityManager;
         $this->storeFactory = $storeFactory;
@@ -113,19 +113,20 @@ final class StoreContext implements Context
     /**
      * @param $name
      * @param CurrencyInterface|null $currency
-     * @param CountryInterface|null $country
+     * @param CountryInterface|null  $country
+     *
      * @return StoreInterface
      */
     private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null)
     {
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface
          */
         $store = $this->storeFactory->createNew();
 
         if (null === $currency) {
             /**
-             * @var $currency CurrencyInterface
+             * @var CurrencyInterface
              */
             $currency = $this->currencyFactory->createNew();
             $currency->setIsoCode('EUR');
@@ -139,7 +140,7 @@ final class StoreContext implements Context
 
         if (null === $country) {
             /**
-             * @var $country CountryInterface
+             * @var CountryInterface
              */
             $country = $this->countryFactory->createNew();
             $country->setName('Austria');

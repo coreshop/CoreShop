@@ -31,7 +31,7 @@ class FreeShippingPriceRuleActionCalculator implements CarrierPriceCalculatorInt
                 foreach ($shippable->getPriceRules() as $priceRule) {
                     if ($priceRule instanceof CartPriceRuleInterface) {
                         foreach ($priceRule->getActions() as $action) {
-                            if ($action->getType() === 'freeShipping') {
+                            if ('freeShipping' === $action->getType()) {
                                 return 0;
                             }
                         }

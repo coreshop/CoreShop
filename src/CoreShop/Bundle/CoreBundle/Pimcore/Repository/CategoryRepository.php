@@ -25,9 +25,8 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
      */
     public function findForStore(StoreInterface $store)
     {
-
         $list = $this->getList();
-        $list->setCondition('stores LIKE ?', ['%,' . $store->getId() . ',%']);
+        $list->setCondition('stores LIKE ?', ['%,'.$store->getId().',%']);
         $this->setSortingForListingWithoutCategory($list);
 
         return $list->getObjects();
@@ -39,7 +38,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findFirstLevelForStore(StoreInterface $store)
     {
         $list = $this->getList();
-        $list->setCondition('parentCategory__id is null AND stores LIKE "%,' . $store->getId() . ',%"');
+        $list->setCondition('parentCategory__id is null AND stores LIKE "%,'.$store->getId().',%"');
 
         $this->setSortingForListingWithoutCategory($list);
 
@@ -52,7 +51,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
-        $list->setCondition('parentCategory__id = ? AND stores LIKE "%,' . $store->getId() . ',%"', [$category->getId()]);
+        $list->setCondition('parentCategory__id = ? AND stores LIKE "%,'.$store->getId().',%"', [$category->getId()]);
 
         $this->setSortingForListing($list, $category);
 
@@ -69,8 +68,8 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $db = \Pimcore\Db::get();
         $query = $db->select()
             ->from($list->getTableName(), ['oo_id'])
-            ->where('o_path LIKE ?', $category->getRealFullPath() . '/%')
-            ->where('stores LIKE ?', '%,' . $store->getId() . ',%');
+            ->where('o_path LIKE ?', $category->getRealFullPath().'/%')
+            ->where('stores LIKE ?', '%,'.$store->getId().',%');
 
         $childIds = [];
 
@@ -93,7 +92,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         }
 
         $list = $this->getList();
-        $list->setCondition('oo_id IN (' . implode(',', $childIds) . ')');
+        $list->setCondition('oo_id IN ('.implode(',', $childIds).')');
 
         $this->setSortingForListing($list, $category);
 
@@ -101,7 +100,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     }
 
     /**
-     * @param Listing $list
+     * @param Listing           $list
      * @param CategoryInterface $category
      */
     private function setSortingForListing(Listing $list, CategoryInterface $category)

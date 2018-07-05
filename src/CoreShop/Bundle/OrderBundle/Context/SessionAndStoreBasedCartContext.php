@@ -43,18 +43,18 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
 
     /**
      * SessionAndChannelBasedCartContext constructor.
-     * @param SessionInterface $session
-     * @param string $sessionKeyName
+     *
+     * @param SessionInterface        $session
+     * @param string                  $sessionKeyName
      * @param CartRepositoryInterface $cartRepository
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface   $storeContext
      */
     public function __construct(
         SessionInterface $session,
         string $sessionKeyName,
         CartRepositoryInterface $cartRepository,
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         $this->session = $session;
         $this->sessionKeyName = $sessionKeyName;
         $this->cartRepository = $cartRepository;

@@ -35,15 +35,14 @@ class RulesProcessor implements RulesProcessorInterface
 
     /**
      * @param NotificationRuleRepositoryInterface $ruleRepository
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param RuleApplierInterface $ruleApplier
+     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
+     * @param RuleApplierInterface                $ruleApplier
      */
     public function __construct(
         NotificationRuleRepositoryInterface $ruleRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         RuleApplierInterface $ruleApplier
-    )
-    {
+    ) {
         $this->ruleRepository = $ruleRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->ruleApplier = $ruleApplier;
@@ -57,7 +56,7 @@ class RulesProcessor implements RulesProcessorInterface
         $rules = $this->ruleRepository->findForType($type);
 
         /**
-         * @var $rule NotificationRuleInterface
+         * @var NotificationRuleInterface
          */
         foreach ($rules as $rule) {
             if ($this->ruleValidationProcessor->isValid($subject, $rule, ['params' => $params])) {

@@ -21,12 +21,12 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     /**
      * @var array
      */
-    protected $modelsToPersist = [];
+    private $modelsToPersist = [];
 
     /**
      * @var array
      */
-    protected $modelsToRemove = [];
+    private $modelsToRemove = [];
 
     /**
      * {@inheritdoc}

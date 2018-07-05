@@ -41,18 +41,17 @@ final class OrderStateHistoryLogger
     private $noteIdentifier;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager  $stateMachineManager
      * @param NoteServiceInterface $noteService
-     * @param TranslatorInterface $translator
-     * @param string $noteIdentifier
+     * @param TranslatorInterface  $translator
+     * @param string               $noteIdentifier
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         NoteServiceInterface $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
-    )
-    {
+    ) {
         $this->stateMachineManager = $stateMachineManager;
         $this->noteService = $noteService;
         $this->translator = $translator;
@@ -61,7 +60,7 @@ final class OrderStateHistoryLogger
 
     /**
      * @param OrderInterface $order
-     * @param Event $event
+     * @param Event          $event
      */
     public function log(OrderInterface $order, Event $event)
     {
@@ -100,6 +99,7 @@ final class OrderStateHistoryLogger
 
     /**
      * @param array $froms
+     *
      * @return mixed
      */
     private function getFrom(array $froms)
@@ -109,6 +109,7 @@ final class OrderStateHistoryLogger
 
     /**
      * @param array $tos
+     *
      * @return mixed
      */
     private function getTo(array $tos)

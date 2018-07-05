@@ -24,10 +24,10 @@ final class ObjectHelperExtensions extends \Twig_Extension
             }),
             new \Twig_Test('object_class', function ($object, $className) {
                 $className = ucfirst($className);
-                $className = 'Pimcore\\Model\\DataObject\\' . $className;
+                $className = 'Pimcore\\Model\\DataObject\\'.$className;
 
                 return class_exists($className) && $object instanceof $className;
-            })
+            }),
         ];
     }
 }

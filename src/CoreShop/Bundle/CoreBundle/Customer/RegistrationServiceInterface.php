@@ -19,9 +19,10 @@ interface RegistrationServiceInterface
 {
     /**
      * @param CustomerInterface $customer
-     * @param AddressInterface $address
+     * @param AddressInterface  $address
      * @param $formData
      * @param bool $isGuest
+     *
      * @return mixed
      */
     public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false);

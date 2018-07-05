@@ -19,8 +19,8 @@ interface TaxCollectorInterface
 {
     /**
      * @param TaxCalculatorInterface $taxCalculator
-     * @param int $price
-     * @param array $usedTaxes
+     * @param int                    $price
+     * @param array                  $usedTaxes
      *
      * @return TaxItemInterface[]
      */

@@ -20,6 +20,5 @@ if (class_exists(\CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData::cl
      */
     class SerializedData
     {
-
     }
 }

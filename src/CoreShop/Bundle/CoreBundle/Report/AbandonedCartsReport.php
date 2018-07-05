@@ -45,15 +45,14 @@ class AbandonedCartsReport implements ReportInterface
      * AbandonedCartsReport constructor.
      *
      * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param array $pimcoreClasses
+     * @param Connection          $db
+     * @param array               $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         array $pimcoreClasses
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->pimcoreClasses = $pimcoreClasses;
@@ -80,7 +79,7 @@ class AbandonedCartsReport implements ReportInterface
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 50);
-        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
 
         $userClassId = $this->pimcoreClasses['customer'];
         $cartClassId = $this->pimcoreClasses['cart'];

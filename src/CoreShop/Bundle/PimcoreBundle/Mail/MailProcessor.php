@@ -23,7 +23,7 @@ final class MailProcessor implements MailProcessorInterface
     /**
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     /**
      * @param EventDispatcherInterface $eventDispatcher

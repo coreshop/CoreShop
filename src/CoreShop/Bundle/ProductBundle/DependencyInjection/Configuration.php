@@ -59,7 +59,8 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addStack(ArrayNodeDefinition $node) {
+    private function addStack(ArrayNodeDefinition $node)
+    {
         $node->children()
             ->arrayNode('stack')
                 ->addDefaultsIfNotSet()

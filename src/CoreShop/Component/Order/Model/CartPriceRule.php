@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

@@ -17,7 +17,7 @@ use Symfony\Component\Templating\Helper\HelperInterface;
 interface CheckoutIdentifierHelperInterface extends HelperInterface
 {
     /**
-     * Get all Steps of Checkout (cart is always first step here)
+     * Get all Steps of Checkout (cart is always first step here).
      *
      * @return array
      */
@@ -25,6 +25,7 @@ interface CheckoutIdentifierHelperInterface extends HelperInterface
 
     /**
      * @param string $type
+     *
      * @return mixed
      */
     public function getStep($type = '');

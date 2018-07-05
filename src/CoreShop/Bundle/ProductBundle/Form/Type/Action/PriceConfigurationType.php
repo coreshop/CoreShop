@@ -37,19 +37,19 @@ final class PriceConfigurationType extends AbstractType
             ])
             ->add('currency', CurrencyChoiceType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']])
+                    new NotBlank(['groups' => ['coreshop']]),
                 ],
             ]);
 
         $builder->get('currency')->addModelTransformer(new CallbackTransformer(
-            function($currency) {
+            function ($currency) {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }
 
                 return null;
             },
-            function($currency) {
+            function ($currency) {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }

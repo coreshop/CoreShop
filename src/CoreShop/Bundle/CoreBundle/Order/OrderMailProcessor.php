@@ -20,8 +20,6 @@ use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
@@ -67,13 +65,13 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $mailProcessor;
 
     /**
-     * @param Logger $logger
-     * @param MoneyFormatterInterface $priceFormatter
-     * @param OrderInvoiceRepositoryInterface $invoiceRepository
+     * @param Logger                           $logger
+     * @param MoneyFormatterInterface          $priceFormatter
+     * @param OrderInvoiceRepositoryInterface  $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
-     * @param OrderDocumentRendererInterface $orderDocumentRenderer
-     * @param ThemeHelperInterface $themeHelper
-     * @param MailProcessorInterface $mailProcessor
+     * @param OrderDocumentRendererInterface   $orderDocumentRenderer
+     * @param ThemeHelperInterface             $themeHelper
+     * @param MailProcessorInterface           $mailProcessor
      */
     public function __construct(
         Logger $logger,
@@ -83,8 +81,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderDocumentRendererInterface $orderDocumentRenderer,
         ThemeHelperInterface $themeHelper,
         MailProcessorInterface $mailProcessor
-    )
-    {
+    ) {
         $this->logger = $logger;
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
@@ -120,7 +117,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             $recipient = [
                 [
                     $order->getCustomer()->getEmail(),
-                    $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
+                    $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname(),
                 ],
             ];
         }
@@ -134,7 +131,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($invoice);
                         $attachments[] = \Swift_Attachment::newInstance($data, sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), 'application/pdf');
                     } catch (\Exception $e) {
-                        $this->logger->error('Error while attaching invoice to order mail. Messages was: ' . $e->getMessage(), [$e]);
+                        $this->logger->error('Error while attaching invoice to order mail. Messages was: '.$e->getMessage(), [$e]);
                     }
                 }
             }
@@ -149,7 +146,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($shipment);
                         $attachments[] = \Swift_Attachment::newInstance($data, sprintf('shipment-%s.pdf', $shipment->getShipmentNumber()), 'application/pdf');
                     } catch (\Exception $e) {
-                        $this->logger->error('Error while attaching packing slip to order mail. Messages was: ' . $e->getMessage(), [$e]);
+                        $this->logger->error('Error while attaching packing slip to order mail. Messages was: '.$e->getMessage(), [$e]);
                     }
                 }
             }

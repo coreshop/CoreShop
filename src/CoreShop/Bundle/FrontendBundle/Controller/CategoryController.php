@@ -53,6 +53,7 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuAction(Request $request)
@@ -66,6 +67,7 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuLeftAction(Request $request)
@@ -82,12 +84,13 @@ class CategoryController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
-            'activeSubCategories' => $activeSubCategories
+            'activeSubCategories' => $activeSubCategories,
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -103,8 +106,8 @@ class CategoryController extends FrontendController
         $page = $request->get('page', 0);
         $type = $request->get('type', $listModeDefault);
 
-        $defaultPerPage = $type === 'list' ? $listPerPageDefault : $gridPerPageDefault;
-        $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
+        $defaultPerPage = 'list' === $type ? $listPerPageDefault : $gridPerPageDefault;
+        $allowedPerPage = 'list' === $type ? $listPerPageAllowed : $gridPerPageAllowed;
 
         $perPage = $request->get('perPage', $defaultPerPage);
 
@@ -126,7 +129,6 @@ class CategoryController extends FrontendController
         $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
-
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
@@ -156,14 +158,13 @@ class CategoryController extends FrontendController
             $viewParameters['currentFilter'] = $currentFilter;
             $viewParameters['paginator'] = $paginator;
             $viewParameters['conditions'] = $preparedConditions;
-
         } else {
             //Classic Listing Mode
             $sort = $request->get('sort', $this->defaultSortName.'_'.$this->defaultSortDirection);
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
-            if ($displaySubCategories === true) {
+            if (true === $displaySubCategories) {
                 foreach ($this->getRepository()->findRecursiveChildCategoriesForStore($category, $this->getContext()->getStore()) as $subCategory) {
                     $categories[] = $subCategory;
                 }
@@ -174,10 +175,10 @@ class CategoryController extends FrontendController
                 'order' => $sortParsed['direction'],
                 'categories' => $categories,
                 'store' => $this->getContext()->getStore(),
-                'return_type' => 'list'
+                'return_type' => 'list',
             ];
 
-            if ($variantMode !== ListingInterface::VARIANT_MODE_HIDE) {
+            if (ListingInterface::VARIANT_MODE_HIDE !== $variantMode) {
                 $options['object_types'] = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
             }
 

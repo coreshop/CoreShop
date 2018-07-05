@@ -30,7 +30,7 @@ final class UserTypeConfigurationType extends AbstractType
                     UserTypeChecker::TYPE_PASSWORD_RESET,
                     UserTypeChecker::TYPE_REGISTER,
                     UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
-                    UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED
+                    UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
                 ],
             ]);
     }

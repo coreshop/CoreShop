@@ -15,7 +15,7 @@ namespace CoreShop\Component\Index\Condition;
 class InCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var
      */
     private $fieldName;
 

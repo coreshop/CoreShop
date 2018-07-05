@@ -50,7 +50,7 @@ class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAware
     {
         return [
             ShippingRuleFixture::class,
-            CarrierFixture::class
+            CarrierFixture::class,
         ];
     }
 
@@ -63,7 +63,7 @@ class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAware
             $carrier = $this->getReference('carrier');
 
             /**
-             * @var $shippingRuleGroup ShippingRuleGroupInterface
+             * @var ShippingRuleGroupInterface
              */
             $shippingRuleGroup = $this->container->get('coreshop.factory.shipping_rule_group')->createNew();
             $shippingRuleGroup->setShippingRule($this->getReference('shippingRule0'));

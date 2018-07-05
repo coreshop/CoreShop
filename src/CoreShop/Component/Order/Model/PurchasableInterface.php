@@ -24,6 +24,7 @@ interface PurchasableInterface extends StorageListProductInterface
 
     /**
      * @param string|null $language
+     *
      * @return string
      */
     public function getName($language = null);

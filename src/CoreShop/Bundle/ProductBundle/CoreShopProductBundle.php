@@ -51,7 +51,7 @@ final class CoreShopProductBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductSpecificPriceRuleConditionPass());
         $container->addCompilerPass(new ProductSpecificPriceRuleActionPass());
         $container->addCompilerPass(new ProductValidPriceRuleFetcherPass());
-        
+
         $container->addCompilerPass(new ProductRetailPriceCalculatorsPass());
         $container->addCompilerPass(new ProductDiscountPriceCalculatorsPass());
         $container->addCompilerPass(new ProductDiscountCalculatorsPass());

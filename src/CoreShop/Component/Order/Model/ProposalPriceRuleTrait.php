@@ -90,6 +90,7 @@ trait ProposalPriceRuleTrait
 
                 if ($arrayItem->getCartPriceRule()->getId() === $priceRule->getId()) {
                     $items->remove($i);
+
                     break;
                 }
             }
@@ -117,5 +118,4 @@ trait ProposalPriceRuleTrait
 
         return false;
     }
-
 }

@@ -33,7 +33,7 @@ class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterfac
 
     /**
      * @param OrderMailActionProcessor $orderMailActionProcessor
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface    $storeContext
      */
     public function __construct(OrderMailActionProcessor $orderMailActionProcessor, StoreContextInterface $storeContext)
     {
@@ -62,7 +62,6 @@ class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterfac
             try {
                 $store = $this->storeContext->getStore();
             } catch (StoreNotFoundException $exception) {
-
             }
         }
 

@@ -18,5 +18,4 @@ use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 
 interface OrderInterface extends BaseOrderInterface, CarrierAwareInterface, PaymentSettingsAwareInterface
 {
-
 }

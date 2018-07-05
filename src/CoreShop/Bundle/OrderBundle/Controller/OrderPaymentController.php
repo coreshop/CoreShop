@@ -29,6 +29,7 @@ class OrderPaymentController extends PimcoreController
 {
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function updateStateAction(Request $request)
@@ -47,13 +48,15 @@ class OrderPaymentController extends PimcoreController
         }
 
         $workflow->apply($payment, $transition);
-        return $this->viewHandler->handle(['success' => true]);
 
+        return $this->viewHandler->handle(['success' => true]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function addPaymentAction(Request $request)
@@ -72,9 +75,9 @@ class OrderPaymentController extends PimcoreController
 
         $payments = $this->getPaymentRepository()->findForPayable($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
-        $totalPayed = array_sum(array_map(function(PaymentInterface $payment) {
-            if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
-                $payment->getState() === PaymentInterface::STATE_REFUNDED) {
+        $totalPayed = array_sum(array_map(function (PaymentInterface $payment) {
+            if (PaymentInterface::STATE_CANCELLED === $payment->getState() ||
+                PaymentInterface::STATE_REFUNDED === $payment->getState()) {
                 return 0;
             }
 
@@ -111,7 +114,7 @@ class OrderPaymentController extends PimcoreController
 
                 return $this->viewHandler->handle([
                     'success' => true,
-                    'totalPayed' => $totalPayed
+                    'totalPayed' => $totalPayed,
                 ]);
             }
         } else {
@@ -166,5 +169,4 @@ class OrderPaymentController extends PimcoreController
     {
         return $this->get('coreshop.repository.order');
     }
-
 }

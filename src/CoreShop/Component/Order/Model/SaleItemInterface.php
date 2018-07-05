@@ -17,13 +17,14 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
 {
     /**
-     * @param int $total
+     * @param int  $total
      * @param bool $withTax
      */
     public function setTotal($total, $withTax = true);
 
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getName($language = null);
@@ -31,6 +32,7 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     /**
      * @param string $name
      * @param string $language
+     *
      * @return mixed
      */
     public function setName($name, $language = null);
@@ -62,24 +64,26 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseItemPrice($withTax = true);
 
     /**
-     * @param int $itemPrice
+     * @param int  $itemPrice
      * @param bool $withTax
      */
     public function setBaseItemPrice($itemPrice, $withTax = true);
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseItemRetailPrice($withTax = true);
 
     /**
-     * @param int $itemRetailPrice
+     * @param int  $itemRetailPrice
      * @param bool $withTax
      */
     public function setBaseItemRetailPrice($itemRetailPrice, $withTax = true);
@@ -108,12 +112,13 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseTotal($withTax = true);
 
     /**
-     * @param int $total
+     * @param int  $total
      * @param bool $withTax
      */
     public function setBaseTotal($total, $withTax = true);

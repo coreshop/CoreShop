@@ -35,7 +35,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 {
     /**
      * @param Request $request
+     *
      * @return mixed
+     *
      * @throws \Exception
      */
     public function listAction(Request $request)
@@ -49,7 +51,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         if ($request->get('filter', null)) {
             $conditionFilters = [];
             $conditionFilters[] = DataObject\Service::getFilterCondition($this->getParam('filter'), DataObject\ClassDefinition::getById($this->getParameter($this->getSaleClassName())));
-            if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
+            if (count($conditionFilters) > 0 && '(())' !== $conditionFilters[0]) {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
         }
@@ -81,6 +83,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function detailAction(Request $request)
@@ -101,6 +104,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function findSaleAction(Request $request)
@@ -125,7 +129,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
+     *
      * @throws \Exception
      */
     protected function prepareSale(SaleInterface $sale)
@@ -146,7 +152,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'currencyName' => $sale->getCurrency() instanceof CurrencyInterface ? $sale->getCurrency()->getName() : '',
             'customerName' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getFirstname().' '.$sale->getCustomer()->getLastname() : '',
             'customerEmail' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getEmail() : '',
-            'store' => $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null
+            'store' => $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null,
         ];
 
         $element = array_merge($element, $this->prepareAddress($sale->getShippingAddress(), 'shipping'), $this->prepareAddress($sale->getInvoiceAddress(), 'invoice'));
@@ -157,7 +163,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     /**
      * @param $address
      * @param $type
+     *
      * @return array
+     *
      * @throws \Exception
      */
     protected function prepareAddress($address, $type)
@@ -171,7 +179,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $value = '';
 
             if ($address instanceof AddressInterface && $address instanceof DataObject\Concrete) {
-                $getter = "get".ucfirst($fieldDefinition->getName());
+                $getter = 'get'.ucfirst($fieldDefinition->getName());
 
                 if (method_exists($address, $getter)) {
                     $value = $address->$getter();
@@ -196,13 +204,14 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
      */
     protected function getDetails(SaleInterface $sale)
     {
         $jsonSale = $this->getDataForObject($sale);
 
-        if ($jsonSale['items'] === null) {
+        if (null === $jsonSale['items']) {
             $jsonSale['items'] = [];
         }
 
@@ -261,6 +270,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
      */
     protected function getMailCorrespondence(SaleInterface $sale)
@@ -272,7 +282,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         foreach ($notes as $note) {
             $noteElement = [
                 'date' => $note->date,
-                'description' => $note->description
+                'description' => $note->description,
             ];
 
             foreach ($note->data as $key => $noteData) {
@@ -321,7 +331,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                     $summary[] = [
                         'key' => 'tax_'.$tax->getName(),
                         'text' => sprintf('Tax (%s - %s)', $tax->getName(), $tax->getRate()),
-                        'value' => $tax->getAmount()
+                        'value' => $tax->getAmount(),
                     ];
                 }
             }
@@ -360,6 +370,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleItemInterface $item
+     *
      * @return array<string,integer|null|string>
      */
     protected function prepareSaleItem(SaleItemInterface $item)
@@ -392,45 +403,46 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param StoreInterface $store
+     *
      * @return array<string,integer|string>
      */
     protected function getStore(StoreInterface $store)
     {
         return [
-            "id" => $store->getId(),
-            "name" => $store->getName()
+            'id' => $store->getId(),
+            'name' => $store->getName(),
         ];
     }
 
     /**
      * @return PimcoreRepositoryInterface
      */
-    protected abstract function getSaleRepository();
+    abstract protected function getSaleRepository();
 
     /**
      * @return \Pimcore\Model\DataObject\Listing
      */
-    protected abstract function getSalesList();
+    abstract protected function getSalesList();
 
     /**
      * @return string
      */
-    protected abstract function getSaleClassName();
+    abstract protected function getSaleClassName();
 
     /**
      * @return array
      */
-    protected abstract function getFolderConfigurationAction();
+    abstract protected function getFolderConfigurationAction();
 
     /**
      * @return string
      */
-    protected abstract function getOrderKey();
+    abstract protected function getOrderKey();
 
     /**
      * @return string
      */
-    protected abstract function getSaleNumberField();
+    abstract protected function getSaleNumberField();
 
     /**
      * @return AddressFormatterInterface

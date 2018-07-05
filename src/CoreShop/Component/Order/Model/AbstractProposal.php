@@ -46,6 +46,7 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
 
             if ($arrayItem->getId() === $item->getId()) {
                 unset($items[$i]);
+
                 break;
             }
         }
@@ -222,7 +223,6 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 
     /**
      * {@inheritdoc}

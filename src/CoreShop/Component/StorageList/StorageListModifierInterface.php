@@ -19,16 +19,16 @@ use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 interface StorageListModifierInterface
 {
     /**
-     * @param StorageListInterface $storageList
+     * @param StorageListInterface        $storageList
      * @param StorageListProductInterface $product
-     * @param int $quantity
+     * @param int                         $quantity
      *
      * @return mixed
      */
     public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1);
 
     /**
-     * @param StorageListInterface $storageList
+     * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $item
      *
      * @return mixed
@@ -36,10 +36,10 @@ interface StorageListModifierInterface
     public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item);
 
     /**
-     * @param StorageListInterface $storageList
+     * @param StorageListInterface        $storageList
      * @param StorageListProductInterface $product
-     * @param int $quantity
-     * @param bool $increaseAmount
+     * @param int                         $quantity
+     * @param bool                        $increaseAmount
      *
      * @return mixed
      */

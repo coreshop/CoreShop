@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Model;
 
-
 class QuoteItem extends SaleItem implements QuoteItemInterface
 {
     /**
@@ -35,8 +34,8 @@ class QuoteItem extends SaleItem implements QuoteItemInterface
                 return $parent;
             }
             $parent = $parent->getParent();
-        } while ($parent != null);
+        } while (null != $parent);
 
-        throw new \InvalidArgumentException("Quote could not be found!");
+        throw new \InvalidArgumentException('Quote could not be found!');
     }
 }

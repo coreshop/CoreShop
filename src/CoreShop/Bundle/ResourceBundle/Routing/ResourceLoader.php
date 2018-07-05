@@ -33,7 +33,7 @@ final class ResourceLoader implements LoaderInterface
     private $routeFactory;
 
     /**
-     * @param RegistryInterface $modelRegistry
+     * @param RegistryInterface     $modelRegistry
      * @param RouteFactoryInterface $routeFactory
      */
     public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
@@ -69,7 +69,7 @@ final class ResourceLoader implements LoaderInterface
         if (isset($configuration['only']) && is_array($configuration['only']) && count($configuration['only']) > 0) {
             foreach ($defaultRoutes as $key => $method) {
                 if (!in_array($key, $configuration['only'])) {
-                    unset ($defaultRoutes[$key]);
+                    unset($defaultRoutes[$key]);
                 }
             }
         }
@@ -130,10 +130,10 @@ final class ResourceLoader implements LoaderInterface
 
     /**
      * @param MetadataInterface $metadata
-     * @param array $configuration
-     * @param string $path
-     * @param string $actionName
-     * @param array $methods
+     * @param array             $configuration
+     * @param string            $path
+     * @param string            $actionName
+     * @param array             $methods
      *
      * @return Route
      */
@@ -148,8 +148,8 @@ final class ResourceLoader implements LoaderInterface
 
     /**
      * @param MetadataInterface $metadata
-     * @param array $configuration
-     * @param string $actionName
+     * @param array             $configuration
+     * @param string            $actionName
      *
      * @return string
      */

@@ -15,6 +15,7 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
      * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
      */
     public function up(Schema $schema)
@@ -39,7 +40,7 @@ class Version20171208164423 extends AbstractPimcoreMigration implements Containe
             'relationType' => false,
             'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch' => false
+            'visibleSearch' => false,
         ];
 
         $cartClass = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');

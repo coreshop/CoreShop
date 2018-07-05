@@ -47,7 +47,8 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addStack(ArrayNodeDefinition $node) {
+    private function addStack(ArrayNodeDefinition $node)
+    {
         $node->children()
             ->arrayNode('stack')
                 ->addDefaultsIfNotSet()
@@ -116,9 +117,9 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
-        /**
-         * @param ArrayNodeDefinition $node
-         */
+    /**
+     * @param ArrayNodeDefinition $node
+     */
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()

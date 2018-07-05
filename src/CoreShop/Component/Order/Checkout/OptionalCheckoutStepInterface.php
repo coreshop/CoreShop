@@ -17,7 +17,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 interface OptionalCheckoutStepInterface
 {
     /**
-     * Determines if this step is required and will therefore be listed
+     * Determines if this step is required and will therefore be listed.
      *
      * @param CartInterface $cart
      *

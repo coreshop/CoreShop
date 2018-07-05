@@ -32,14 +32,13 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     protected $shippingRuleProcessor;
 
     /**
-     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
+     * @param CarrierShippingRuleCheckerInterface  $carrierShippingRuleChecker
      * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
      */
     public function __construct(
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
         ShippingRuleActionProcessorInterface $shippingRuleProcessor
-    )
-    {
+    ) {
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
         $this->shippingRuleProcessor = $shippingRuleProcessor;
     }

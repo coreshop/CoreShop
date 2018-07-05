@@ -26,6 +26,7 @@ class CartPriceRuleController extends ResourceController
 {
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getConfigAction(Request $request)
@@ -38,6 +39,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getVoucherCodesAction(Request $request)
@@ -54,6 +56,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function createVoucherCodeAction(Request $request)
@@ -84,6 +87,7 @@ class CartPriceRuleController extends ResourceController
 
             $this->manager->persist($codeObject);
             $this->manager->flush();
+
             return $this->viewHandler->handle(['success' => true]);
         }
 
@@ -92,6 +96,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function generateVoucherCodesAction(Request $request)
@@ -162,6 +167,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteVoucherCodeAction(Request $request)
@@ -181,6 +187,7 @@ class CartPriceRuleController extends ResourceController
 
         if ($code instanceof CartPriceRuleVoucherCode) {
             $repository->remove($code);
+
             return $this->viewHandler->handle(['success' => true, 'id' => $id]);
         }
 

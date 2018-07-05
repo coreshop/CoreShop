@@ -53,10 +53,10 @@ final class TaxRuleGroupContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $taxRuleGroupFactory
-     * @param FactoryInterface $taxRuleFactory
-     * @param RepositoryInterface $taxRuleGroupRepository
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $taxRuleGroupFactory
+     * @param FactoryInterface       $taxRuleFactory
+     * @param RepositoryInterface    $taxRuleGroupRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -64,8 +64,7 @@ final class TaxRuleGroupContext implements Context
         FactoryInterface $taxRuleGroupFactory,
         FactoryInterface $taxRuleFactory,
         RepositoryInterface $taxRuleGroupRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRuleGroupFactory = $taxRuleGroupFactory;
@@ -88,7 +87,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -107,7 +106,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -126,7 +125,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -155,7 +154,7 @@ final class TaxRuleGroupContext implements Context
     private function createTaxRuleGroup($name)
     {
         /**
-         * @var $taxRule TaxRuleGroupInterface
+         * @var TaxRuleGroupInterface
          */
         $taxRule = $this->taxRuleGroupFactory->createNew();
         $taxRule->setName($name);

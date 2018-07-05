@@ -34,7 +34,7 @@ final class IndexCommand extends Command
     protected $indexUpdater;
 
     /**
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface          $indexRepository
      * @param IndexUpdaterServiceInterface $indexUpdater
      */
     public function __construct(RepositoryInterface $indexRepository, IndexUpdaterServiceInterface $indexUpdater)
@@ -58,7 +58,7 @@ final class IndexCommand extends Command
     /**
      * Execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
@@ -69,7 +69,7 @@ final class IndexCommand extends Command
         $classesToUpdate = [];
 
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface
          */
         foreach ($indices as $index) {
             if (!in_array($index->getClass(), $classesToUpdate)) {

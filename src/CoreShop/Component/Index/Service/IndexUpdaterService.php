@@ -33,7 +33,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     private $workerServiceRegistry;
 
     /**
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface      $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
      */
     public function __construct(RepositoryInterface $indexRepository, ServiceRegistryInterface $workerServiceRegistry)
@@ -62,7 +62,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
      * @param $subject
      * @param string $operation
      */
-    protected function operationOnIndex($subject, $operation = 'update')
+    private function operationOnIndex($subject, $operation = 'update')
     {
         $indices = $this->indexRepository->findAll();
 
@@ -71,8 +71,8 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
                 continue;
             }
             /**
-             * @var $index IndexInterface
-             * @var $subject IndexableInterface
+             * @var IndexInterface
+             * @var $subject       IndexableInterface
              */
             $worker = $index->getWorker();
 
@@ -81,11 +81,11 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
             }
 
             /**
-             * @var $worker WorkerInterface
+             * @var WorkerInterface
              */
             $worker = $this->workerServiceRegistry->get($worker);
 
-            if ($operation === 'update') {
+            if ('update' === $operation) {
                 $worker->updateIndex($index, $subject);
             } else {
                 $worker->deleteFromIndex($index, $subject);
@@ -96,9 +96,10 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * @param $index
      * @param $subject
+     *
      * @return bool
      */
-    protected function isEligible($index, $subject)
+    private function isEligible($index, $subject)
     {
         if (!$index instanceof IndexInterface) {
             return false;

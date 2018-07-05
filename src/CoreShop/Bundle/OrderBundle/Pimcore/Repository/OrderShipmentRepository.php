@@ -16,5 +16,4 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 
 class OrderShipmentRepository extends AbstractOrderDocumentRepository implements OrderShipmentRepositoryInterface
 {
-
 }

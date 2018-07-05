@@ -30,21 +30,21 @@ class GuestRegistrationType extends AbstractType
             ->add('customer', CustomerType::class, [
                 'label' => 'coreshop.form.customer_registration.customer',
                 'label_attr' => [
-                    'class' => 'cs-customer'
+                    'class' => 'cs-customer',
                 ],
                 'guest' => true,
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop_customer_guest']])
-                ]
+                    new Valid(['groups' => ['coreshop_customer_guest']]),
+                ],
             ])
             ->add('address', AddressType::class, [
                 'label' => 'coreshop.form.customer_registration.address',
                 'label_attr' => [
-                    'class' => 'cs-address'
+                    'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']])
-                ]
+                    new Valid(['groups' => ['coreshop']]),
+                ],
             ])
 
             ->add('submit', SubmitType::class);

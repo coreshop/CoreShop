@@ -31,7 +31,7 @@ class StoreBasedPaymentProviderResolver implements PaymentProviderResolverInterf
 
     /**
      * @param PaymentProviderRepositoryInterface $paymentProviderRepository
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface              $storeContext
      */
     public function __construct(PaymentProviderRepositoryInterface $paymentProviderRepository, StoreContextInterface $storeContext)
     {

@@ -27,8 +27,8 @@ final class InstallDatabaseCommand extends AbstractInstallCommand
     protected $databaseSetupCommand;
 
     /**
-     * @param KernelInterface $kernel
-     * @param CommandDirectoryChecker $directoryChecker
+     * @param KernelInterface                        $kernel
+     * @param CommandDirectoryChecker                $directoryChecker
      * @param DatabaseSetupCommandsProviderInterface $databaseSetupCommand
      */
     public function __construct(

@@ -18,7 +18,7 @@ interface PdfRendererInterface
      * @param $string
      * @param string $header
      * @param string $footer
-     * @param array $config
+     * @param array  $config
      *
      * @return string
      */

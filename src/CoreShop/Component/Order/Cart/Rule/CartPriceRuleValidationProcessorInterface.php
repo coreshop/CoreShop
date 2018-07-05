@@ -20,9 +20,10 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 interface CartPriceRuleValidationProcessorInterface extends RuleValidationProcessorInterface
 {
     /**
-     * @param CartInterface $cart
-     * @param CartPriceRuleInterface $cartPriceRule
+     * @param CartInterface                          $cart
+     * @param CartPriceRuleInterface                 $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
      * @return mixed
      */
     public function isValidCartRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);

@@ -31,7 +31,7 @@ class WorkflowListener implements EventSubscriberInterface
     protected $container;
 
     /**
-     * @param array $callbackConfig
+     * @param array              $callbackConfig
      * @param ContainerInterface $container
      */
     public function __construct($callbackConfig = [], ContainerInterface $container)
@@ -46,8 +46,8 @@ class WorkflowListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'workflow.enter'     => ['onTransitionEnter'],
-            'workflow.completed' => ['onTransitionCompleted']
+            'workflow.enter' => ['onTransitionEnter'],
+            'workflow.completed' => ['onTransitionCompleted'],
         ];
     }
 
@@ -117,6 +117,7 @@ class WorkflowListener implements EventSubscriberInterface
      * @param Event $event
      * @param array $callable
      * @param array $callableArgs
+     *
      * @return mixed
      */
     public function call(Event $event, array $callable, $callableArgs = [])
@@ -139,14 +140,14 @@ class WorkflowListener implements EventSubscriberInterface
                     if (!is_string($arg)) {
                         return $arg;
                     }
+
                     return $expr->evaluate($arg, [
                         'object' => $event->getSubject(),
                         'event' => $event,
-                        'container' => $this->container
+                        'container' => $this->container,
                     ]);
                 }, $callableArgs
             );
-
         }
 
         call_user_func_array($callable, $args);
@@ -154,6 +155,7 @@ class WorkflowListener implements EventSubscriberInterface
 
     /**
      * @param array $callbacks
+     *
      * @return array
      */
     protected function setCallbacksPriority(array $callbacks)
@@ -162,8 +164,10 @@ class WorkflowListener implements EventSubscriberInterface
             if ($a['priority'] === $b['priority']) {
                 return 0;
             }
+
             return $a['priority'] < $b['priority'] ? -1 : 1;
         });
+
         return $callbacks;
     }
 }

@@ -19,6 +19,7 @@ interface OrderPaymentProviderInterface
 {
     /**
      * @param OrderInterface $order
+     *
      * @return PaymentInterface
      */
     public function provideOrderPayment(OrderInterface $order);

@@ -36,9 +36,9 @@ class MysqlWorker extends AbstractWorker
     protected $database;
 
     /**
-     * @param ServiceRegistryInterface $extensionsRegistry
-     * @param ServiceRegistryInterface $getterServiceRegistry
-     * @param ServiceRegistryInterface $interpreterServiceRegistry
+     * @param ServiceRegistryInterface   $extensionsRegistry
+     * @param ServiceRegistryInterface   $getterServiceRegistry
+     * @param ServiceRegistryInterface   $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
@@ -46,8 +46,7 @@ class MysqlWorker extends AbstractWorker
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper
-    )
-    {
+    ) {
         parent::__construct($extensionsRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
 
         $this->database = Db::get();
@@ -94,8 +93,10 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
+     *
      * @throws \Exception
      */
     protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -116,7 +117,7 @@ class MysqlWorker extends AbstractWorker
             if ($column instanceof IndexColumnInterface) {
                 $type = $column->getObjectType();
                 $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
-                if ($type !== 'localizedfields' && !$interpreterClass instanceof LocalizedInterpreterInterface) {
+                if ('localizedfields' !== $type && !$interpreterClass instanceof LocalizedInterpreterInterface) {
                     $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), ['notnull' => false]);
                 }
             }
@@ -132,10 +133,10 @@ class MysqlWorker extends AbstractWorker
 
         if (array_key_exists('indexes', $index->getConfiguration())) {
             /**
-             * @var $tableIndex TableIndex
+             * @var TableIndex
              */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                if (TableIndex::TABLE_INDEX_TYPE_UNIQUE === $tableIndex->getType()) {
                     $table->addUniqueIndex($tableIndex->getColumns());
                 } else {
                     $table->addIndex($tableIndex->getColumns());
@@ -148,8 +149,10 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
+     *
      * @throws \Exception
      */
     protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -165,7 +168,7 @@ class MysqlWorker extends AbstractWorker
         foreach ($index->getColumns() as $column) {
             $type = $column->getObjectType();
             $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
-            if ($type === 'localizedfields' || $interpreterClass instanceof LocalizedInterpreterInterface) {
+            if ('localizedfields' === $type || $interpreterClass instanceof LocalizedInterpreterInterface) {
                 $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), ['notnull' => false]);
             }
         }
@@ -180,10 +183,10 @@ class MysqlWorker extends AbstractWorker
 
         if (array_key_exists('localizedIndexes', $index->getConfiguration())) {
             /**
-             * @var $tableIndex TableIndex
+             * @var TableIndex
              */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
-                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                if (TableIndex::TABLE_INDEX_TYPE_UNIQUE === $tableIndex->getType()) {
                     $table->addUniqueIndex($tableIndex->getColumns());
                 } else {
                     $table->addIndex($tableIndex->getColumns());
@@ -196,7 +199,8 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
      */
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -216,6 +220,7 @@ class MysqlWorker extends AbstractWorker
      * Create Localized Views.
      *
      * @param IndexInterface $index
+     *
      * @return array
      */
     protected function createLocalizedViews(IndexInterface $index)
@@ -256,12 +261,12 @@ QUERY;
             $languages = Tool::getValidLanguages();
 
             foreach ($languages as $language) {
-                $this->database->query('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index, $language) . '`');
+                $this->database->query('DROP VIEW IF EXISTS `'.$this->getLocalizedViewName($index, $language).'`');
             }
 
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getTablename($index) . '`');
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getTablename($index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getLocalizedTablename($index).'`');
+            $this->database->query('DROP TABLE IF EXISTS `'.$this->getRelationTablename($index).'`');
         } catch (\Exception $e) {
             $this->logger->error($e);
         }
@@ -290,13 +295,13 @@ QUERY;
             try {
                 $this->doInsertData($index, $preparedData['data']);
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
+                $this->logger->warn('Error during updating index table: '.$e->getMessage(), [$e]);
             }
 
             try {
                 $this->doInsertLocalizedData($index, $preparedData['localizedData']);
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
+                $this->logger->warn('Error during updating index table: '.$e->getMessage(), [$e]);
             }
 
             try {
@@ -305,10 +310,10 @@ QUERY;
                     $this->database->insert($this->getRelationTablename($index), $rd);
                 }
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index relation table: ' . $e->getMessage(), [$e]);
+                $this->logger->warn('Error during updating index relation table: '.$e->getMessage(), [$e]);
             }
         } else {
-            $this->logger->info('Don\'t adding object ' . $object->getId() . ' to index.');
+            $this->logger->info('Don\'t adding object '.$object->getId().' to index.');
 
             $this->deleteFromIndex($index, $object);
         }
@@ -331,12 +336,12 @@ QUERY;
         foreach ($data as $key => $d) {
             $dataKeys[$this->database->quoteIdentifier($key)] = '?';
             $updateData[] = $d;
-            $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
+            $insertStatement[] = $this->database->quoteIdentifier($key).' = ?';
             $insertData[] = $d;
         }
 
-        $insert = 'INSERT INTO ' . $this->getTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
-            . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
+        $insert = 'INSERT INTO '.$this->getTablename($index).' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
+            .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
 
         $this->database->query($insert, array_merge($updateData, $insertData));
     }
@@ -371,12 +376,12 @@ QUERY;
                 $dataKeys[$this->database->quoteIdentifier($key)] = '?';
                 $updateData[] = $d;
 
-                $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
+                $insertStatement[] = $this->database->quoteIdentifier($key).' = ?';
                 $insertData[] = $d;
             }
 
-            $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
-                . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
+            $insert = 'INSERT INTO '.$this->getLocalizedTablename($index).' ('.implode(',', array_keys($dataKeys)).') VALUES ('.implode(',', $dataKeys).')'
+                .' ON DUPLICATE KEY UPDATE '.implode(',', $insertStatement);
 
             $this->database->query($insert, array_merge($updateData, $insertData));
         }
@@ -417,7 +422,7 @@ QUERY;
                 return 'text';
         }
 
-        throw new \Exception($type . ' is not supported by MySQL Index');
+        throw new \Exception($type.' is not supported by MySQL Index');
     }
 
     /**
@@ -437,7 +442,7 @@ QUERY;
      */
     public function getTablename(IndexInterface $index)
     {
-        return 'coreshop_index_mysql_' . $index->getName();
+        return 'coreshop_index_mysql_'.$index->getName();
     }
 
     /**
@@ -449,7 +454,7 @@ QUERY;
      */
     public function getLocalizedTablename(IndexInterface $index)
     {
-        return 'coreshop_index_mysql_localized_' . $index->getName();
+        return 'coreshop_index_mysql_localized_'.$index->getName();
     }
 
     /**
@@ -462,7 +467,7 @@ QUERY;
      */
     public function getLocalizedViewName(IndexInterface $index, $language)
     {
-        return $this->getLocalizedTablename($index) . '_' . $language;
+        return $this->getLocalizedTablename($index).'_'.$language;
     }
 
     /**
@@ -474,6 +479,6 @@ QUERY;
      */
     public function getRelationTablename(IndexInterface $index)
     {
-        return 'coreshop_index_mysql_relations_' . $index->getName();
+        return 'coreshop_index_mysql_relations_'.$index->getName();
     }
 }

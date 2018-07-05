@@ -20,7 +20,7 @@ interface RuleValidationProcessorInterface
     /**
      * @param $subject
      * @param RuleInterface $rule
-     * @param array $params
+     * @param array         $params
      *
      * @return bool
      */

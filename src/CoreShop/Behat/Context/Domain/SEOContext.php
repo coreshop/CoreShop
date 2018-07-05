@@ -15,10 +15,6 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Templating\Helper\HeadMeta;
 use Pimcore\Templating\Helper\HeadTitle;
@@ -47,10 +43,10 @@ final class SEOContext implements Context
     private $headMeta;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface   $sharedStorage
      * @param SEOPresentationInterface $seoPresentation
-     * @param HeadTitle $headTitle
-     * @param HeadMeta $headMeta
+     * @param HeadTitle                $headTitle
+     * @param HeadMeta                 $headMeta
      */
     public function __construct(SharedStorageInterface $sharedStorage, SEOPresentationInterface $seoPresentation, HeadTitle $headTitle, HeadMeta $headMeta)
     {
@@ -83,8 +79,9 @@ final class SEOContext implements Context
         $descriptionItem = null;
 
         foreach ($this->headMeta as $item) {
-            if ($item->name === 'description') {
+            if ('description' === $item->name) {
                 $descriptionItem = $item;
+
                 break;
             }
         }

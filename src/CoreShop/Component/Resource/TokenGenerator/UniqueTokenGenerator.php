@@ -28,11 +28,11 @@ final class UniqueTokenGenerator
     {
         $this->alphabet =
             implode(range('a', 'z'))
-            . implode(range('A', 'Z'));
+            .implode(range('A', 'Z'));
 
         $this->numbers = implode(range(0, 9));
 
-        if ($onlyNumbers === false) {
+        if (false === $onlyNumbers) {
             $this->keys = $this->alphabet.$this->numbers;
         } else {
             $this->keys = $this->numbers;
@@ -43,13 +43,14 @@ final class UniqueTokenGenerator
 
     /**
      * @param int $length
+     *
      * @return string
      */
     public function generate($length)
     {
         $token = '';
 
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $randomKey = $this->getRandomInteger(0, $this->keyLength);
             $token .= $this->keys[$randomKey];
         }
@@ -81,6 +82,6 @@ final class UniqueTokenGenerator
             $rnd = $rnd & $filter;
         } while ($rnd >= $range);
 
-        return ($min + $rnd);
+        return $min + $rnd;
     }
 }

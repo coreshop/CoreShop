@@ -23,7 +23,7 @@ interface StorageInterface
 
     /**
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
      *
      * @return mixed
      */
@@ -31,7 +31,7 @@ interface StorageInterface
 
     /**
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function set($name, $value);
 

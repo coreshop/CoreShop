@@ -99,7 +99,7 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
     {
         $resolver->setRequired(['template_prefix', 'template_extension']);
         $resolver->setDefaults([
-            'template_extension' => 'twig'
+            'template_extension' => 'twig',
         ]);
 
         $resolver->setAllowedTypes('template_prefix', 'string');
@@ -108,6 +108,7 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
 
     /**
      * @param string $name
+     *
      * @return string
      */
     protected function getTemplatePath(string $name)
@@ -123,6 +124,7 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
     /**
      * @param string $name
      * @param array  $parameters
+     *
      * @return string
      */
     protected function renderTemplate(string $name, array $parameters)
@@ -142,7 +144,7 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
     }
 
     /**
-     * Remove null values from an object, keep protected keys in any case
+     * Remove null values from an object, keep protected keys in any case.
      *
      * @param array $data
      * @param array $protectedKeys

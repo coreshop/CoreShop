@@ -45,7 +45,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
         parent::buildForm($builder, $options);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 $objectType = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $objectType) {
                     return;
@@ -53,7 +53,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($objectType, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 $objectType = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $objectType) {
                     return;
@@ -61,7 +61,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
                 $event->getForm()->get('objectType')->setData($objectType);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
                 $data = $event->getData();
 
                 if (!isset($data['objectType'])) {
@@ -86,7 +86,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -97,7 +97,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

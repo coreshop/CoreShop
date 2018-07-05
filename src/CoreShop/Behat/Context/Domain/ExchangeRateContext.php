@@ -14,19 +14,8 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
-use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
-use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
-use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
 final class ExchangeRateContext implements Context
@@ -42,14 +31,13 @@ final class ExchangeRateContext implements Context
     private $currencyConverter;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface     $sharedStorage
      * @param CurrencyConverterInterface $currencyConverter
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CurrencyConverterInterface $currencyConverter
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->currencyConverter = $currencyConverter;
     }

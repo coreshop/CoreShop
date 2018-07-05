@@ -36,8 +36,7 @@ final class GatewayConfigType extends AbstractResourceType
         $dataClass,
         array $validationGroups = [],
         FormTypeRegistryInterface $gatewayConfigurationTypeRegistry
-    )
-    {
+    ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->gatewayConfigurationTypeRegistry = $gatewayConfigurationTypeRegistry;
@@ -50,7 +49,7 @@ final class GatewayConfigType extends AbstractResourceType
     {
         $builder
             ->add('factoryName', TextType::class)
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $gatewayConfig = $event->getData();
 
                 if (!$gatewayConfig instanceof GatewayConfigInterface) {

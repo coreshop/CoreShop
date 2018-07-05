@@ -28,7 +28,7 @@ final class CompositeCurrencyContext implements CurrencyContextInterface
 
     /**
      * @param CurrencyContextInterface $currencyContext
-     * @param int $priority
+     * @param int                      $priority
      */
     public function addContext(CurrencyContextInterface $currencyContext, $priority = 0)
     {

@@ -80,7 +80,7 @@ final class InterpreterCollectionType extends AbstractType
             'allow_delete' => true,
             'by_reference' => false,
             'error_bubbling' => false,
-            'entry_type' => InterpreterType::class
+            'entry_type' => InterpreterType::class,
         ]);
     }
 

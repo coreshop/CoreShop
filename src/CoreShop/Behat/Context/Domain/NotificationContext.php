@@ -30,14 +30,13 @@ final class NotificationContext implements Context
     private $notificationRuleListener;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface            $sharedStorage
      * @param NotificationRuleListenerInterface $notificationRuleListener
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         NotificationRuleListenerInterface $notificationRuleListener
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->notificationRuleListener = $notificationRuleListener;
     }

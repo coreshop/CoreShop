@@ -45,17 +45,16 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
 
     /**
      * @param CustomerContextInterface $customerContext
-     * @param StoreContextInterface $storeContext
-     * @param CartRepositoryInterface $cartRepository
-     * @param RequestHelper $pimcoreRequestHelper
+     * @param StoreContextInterface    $storeContext
+     * @param CartRepositoryInterface  $cartRepository
+     * @param RequestHelper            $pimcoreRequestHelper
      */
     public function __construct(
         CustomerContextInterface $customerContext,
         StoreContextInterface $storeContext,
         CartRepositoryInterface $cartRepository,
         RequestHelper $pimcoreRequestHelper
-    )
-    {
+    ) {
         $this->customerContext = $customerContext;
         $this->storeContext = $storeContext;
         $this->cartRepository = $cartRepository;
@@ -68,7 +67,7 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
     public function getCart()
     {
         if ($this->pimcoreRequestHelper->hasMasterRequest()) {
-            if ($this->pimcoreRequestHelper->getMasterRequest()->get('_route') !== 'coreshop_login_check') {
+            if ('coreshop_login_check' !== $this->pimcoreRequestHelper->getMasterRequest()->get('_route')) {
                 throw new CartNotFoundException('CustomerAndStoreBasedCartContext can only be applied in coreshop_login_check route.');
             }
         }

@@ -29,22 +29,21 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * @var ValidRulesFetcherInterface
      */
-    protected $validRulesFetcher;
+    private $validRulesFetcher;
 
     /**
      * @var ServiceRegistryInterface
      */
-    protected $actionServiceRegistry;
+    private $actionServiceRegistry;
 
     /**
      * @param ValidRulesFetcherInterface $validRulesFetcher
-     * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param ServiceRegistryInterface   $actionServiceRegistry
      */
     public function __construct(
         ValidRulesFetcherInterface $validRulesFetcher,
         ServiceRegistryInterface $actionServiceRegistry
-    )
-    {
+    ) {
         $this->validRulesFetcher = $validRulesFetcher;
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
@@ -63,7 +62,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
 
         if (is_array($rules)) {
             foreach ($rules as $rule) {
-                /**
+                /*
                  * @var ActionInterface
                  */
                 foreach ($rule->getActions() as $action) {
@@ -82,11 +81,12 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
             }
         }
 
-        return $price === 0 ? false : $price;
+        return 0 === $price ? false : $price;
     }
 
     /**
      * @param ProductInterface $subject
+     *
      * @return bool|int|mixed
      */
     public function getDiscountPrice(ProductInterface $subject)
@@ -100,7 +100,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
 
         if (is_array($rules)) {
             foreach ($rules as $rule) {
-                /**
+                /*
                  * @var ActionInterface
                  */
                 foreach ($rule->getActions() as $action) {
@@ -119,7 +119,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
             }
         }
 
-        return $price === 0 ? false : $price;
+        return 0 === $price ? false : $price;
     }
 
     /**
@@ -137,7 +137,6 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         if (!is_array($rules)) {
             return $discount;
         }
-
 
         foreach ($rules as $rule) {
             foreach ($rule->getActions() as $action) {

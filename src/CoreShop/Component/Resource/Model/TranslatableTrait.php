@@ -51,7 +51,7 @@ trait TranslatableTrait
 
     /**
      * @param string|null $locale
-     * @param bool $useFallbackTranslation
+     * @param bool        $useFallbackTranslation
      *
      * @return TranslationInterface
      */

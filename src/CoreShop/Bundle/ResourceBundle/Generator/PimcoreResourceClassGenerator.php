@@ -20,7 +20,7 @@ final class PimcoreResourceClassGenerator extends Generator
             'namespace' => $bundle->getNamespace(),
             'bundle' => $bundle->getName(),
             'model' => $modelName,
-            'inheritFrom' => $inheritFrom
+            'inheritFrom' => $inheritFrom,
         );
 
         $this->renderFile('model/Resource.php.twig', $modelFile, $parameters);

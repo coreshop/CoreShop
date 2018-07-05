@@ -19,7 +19,7 @@ final class CustomerRegistrationEvent extends GenericEvent
 
     /**
      * @param CustomerInterface $customer
-     * @param array $data
+     * @param array             $data
      */
     public function __construct(CustomerInterface $customer, array $data)
     {
@@ -44,5 +44,4 @@ final class CustomerRegistrationEvent extends GenericEvent
     {
         return $this->data;
     }
-
 }

@@ -38,8 +38,8 @@ class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterfac
 
     /**
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param PimcoreFactoryInterface $addressFactory
-     * @param CountryContextInterface $countryContext
+     * @param PimcoreFactoryInterface       $addressFactory
+     * @param CountryContextInterface       $countryContext
      */
     public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory, PimcoreFactoryInterface $addressFactory, CountryContextInterface $countryContext)
     {

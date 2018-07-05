@@ -23,7 +23,7 @@ interface TaxRuleRepositoryInterface extends BaseTaxRuleRepositoryInterface
     /**
      * @param TaxRuleGroupInterface $taxRuleGroup
      * @param CountryInterface|null $country
-     * @param StateInterface|null $state
+     * @param StateInterface|null   $state
      *
      * @return TaxRuleInterface[]
      */

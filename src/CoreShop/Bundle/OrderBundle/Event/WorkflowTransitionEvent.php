@@ -29,7 +29,7 @@ final class WorkflowTransitionEvent extends Event
     /**
      * WorkflowTransitionEvent constructor.
      *
-     * @param array $allowedTransitions
+     * @param array  $allowedTransitions
      * @param string $workflowName
      */
     public function __construct(array $allowedTransitions, $workflowName)
@@ -70,4 +70,3 @@ final class WorkflowTransitionEvent extends Event
         return $this->allowedTransitions;
     }
 }
-

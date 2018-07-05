@@ -36,7 +36,7 @@ final class CurrencyConverter implements CurrencyConverterInterface
 
     /**
      * @param ExchangeRateRepositoryInterface $exchangeRateRepository
-     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param CurrencyRepositoryInterface     $currencyRepository
      */
     public function __construct(ExchangeRateRepositoryInterface $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
     {

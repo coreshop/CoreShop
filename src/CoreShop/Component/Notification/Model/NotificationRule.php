@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Notification\Model;
 
-use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 
 class NotificationRule implements NotificationRuleInterface

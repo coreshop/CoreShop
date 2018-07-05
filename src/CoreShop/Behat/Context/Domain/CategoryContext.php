@@ -16,12 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
 final class CategoryContext implements Context
@@ -37,7 +32,7 @@ final class CategoryContext implements Context
     private $categoryRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface      $sharedStorage
      * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(SharedStorageInterface $sharedStorage, CategoryRepositoryInterface $categoryRepository)
@@ -63,7 +58,8 @@ final class CategoryContext implements Context
     /**
      * @Then /^the (category "[^"]+") should be child of (category "[^"]+")$/
      */
-    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent) {
+    public function theCategoryShouldBeChildOfCategory(CategoryInterface $child, CategoryInterface $parent)
+    {
         Assert::eq(
             $child->getParent()->getId(),
             $parent->getId(),

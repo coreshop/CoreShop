@@ -26,27 +26,27 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**
      * @var array
      */
-    protected $classIds;
+    private $classIds;
 
     /**
      * @var GridConfigInstallerInterface
      */
-    protected $gridConfigInstaller;
+    private $gridConfigInstaller;
 
     /**
      * @var PimcoreClassInstallerInterface
      */
-    protected $pimcoreClassInstaller;
+    private $pimcoreClassInstaller;
 
     /**
-     * @param KernelInterface $kernel
-     * @param array $classIds
-     * @param GridConfigInstallerInterface $gridConfigInstaller
+     * @param KernelInterface                $kernel
+     * @param array                          $classIds
+     * @param GridConfigInstallerInterface   $gridConfigInstaller
      * @param PimcoreClassInstallerInterface $classInstaller
      */
     public function __construct(
@@ -54,8 +54,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         array $classIds,
         GridConfigInstallerInterface $gridConfigInstaller,
         PimcoreClassInstallerInterface $classInstaller
-    )
-    {
+    ) {
         $this->kernel = $kernel;
         $this->classIds = $classIds;
         $this->gridConfigInstaller = $gridConfigInstaller;
@@ -112,9 +111,10 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
 
     /**
      * @param $classIdentifier
+     *
      * @return int
      */
-    protected function findClassId($classIdentifier)
+    private function findClassId($classIdentifier)
     {
         if (isset($this->classIds[$classIdentifier])) {
             return $this->classIds[$classIdentifier];

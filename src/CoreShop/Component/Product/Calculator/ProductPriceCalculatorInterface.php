@@ -18,7 +18,7 @@ interface ProductPriceCalculatorInterface extends ProductRetailPriceCalculatorIn
 {
     /**
      * @param ProductInterface $subject
-     * @param bool $withDiscount
+     * @param bool             $withDiscount
      *
      * @return int
      */

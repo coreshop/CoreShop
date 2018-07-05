@@ -12,10 +12,8 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface PriceRuleInterface extends RuleInterface
 {
-
 }

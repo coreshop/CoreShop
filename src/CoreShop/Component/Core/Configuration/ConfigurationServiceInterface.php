@@ -21,7 +21,7 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
     /**
      * @param $key
      * @param StoreInterface|null $store
-     * @param bool $returnObject
+     * @param bool                $returnObject
      *
      * @return ConfigurationInterface|string
      */

@@ -19,5 +19,4 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
  */
 abstract class PrioritizedCompositeServicePass extends BasePrioritizedCompositeServicePass
 {
-
 }

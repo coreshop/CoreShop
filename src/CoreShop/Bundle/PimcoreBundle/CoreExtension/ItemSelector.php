@@ -19,11 +19,11 @@ use Pimcore\Model\DataObject\Service;
 class ItemSelector extends Multihref
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopItemSelector";
+    public $fieldtype = 'coreShopItemSelector';
 
     /**
      * @var string
@@ -136,16 +136,15 @@ class ItemSelector extends Multihref
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         //if not set, return null
-        if ($data === null or $data === false) {
+        if (null === $data or false === $data) {
             return null;
         }
 
         $elements = array();
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $id) {
-                $elements[] = Service::getElementById("object", $id);
+                $elements[] = Service::getElementById('object', $id);
             }
-
         }
 
         //must return array if data shall be set
@@ -161,11 +160,11 @@ class ItemSelector extends Multihref
 
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $element) {
-                /** @var AbstractObject $element */
+                /* @var AbstractObject $element */
                 $return[] = $element->getId();
             }
 
-            return implode(",", $return);
+            return implode(',', $return);
         }
 
         return false;

@@ -135,6 +135,7 @@ class Select extends Tag
 
     /**
      * @param ResourceInterface $resource
+     *
      * @return mixed
      */
     protected function getResourceName(ResourceInterface $resource)

@@ -21,7 +21,7 @@ class VersionHelper
      * after your functions is finished.
      *
      * @param \Closure $function
-     * @param bool $enabled
+     * @param bool     $enabled
      *
      * @return mixed
      */

@@ -34,7 +34,7 @@ final class LocaleNotFoundException extends \RuntimeException
 
     /**
      * @param string $localeCode
-     * @param array $availableLocalesCodes
+     * @param array  $availableLocalesCodes
      *
      * @return self
      */

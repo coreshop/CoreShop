@@ -44,6 +44,6 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
             $this->firedEvents[$type] = 0;
         }
 
-        $this->firedEvents[$type]++;
+        ++$this->firedEvents[$type];
     }
 }

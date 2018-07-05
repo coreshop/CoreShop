@@ -16,6 +16,7 @@ interface PimcoreSEOAwareInterface extends SEOAwareInterface
 {
     /**
      * @param string|null $language
+     *
      * @return string
      */
     public function getPimcoreMetaTitle($language = null);
@@ -28,6 +29,7 @@ interface PimcoreSEOAwareInterface extends SEOAwareInterface
 
     /**
      * @param string|null $language
+     *
      * @return string
      */
     public function getPimcoreMetaDescription($language = null);

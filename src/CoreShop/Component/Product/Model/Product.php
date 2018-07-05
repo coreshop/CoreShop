@@ -60,7 +60,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     public function getVariantMaster()
     {
         $master = $this;
-        while ($master->getType() === 'variant') {
+        while ('variant' === $master->getType()) {
             $master = $master->getParent();
         }
 

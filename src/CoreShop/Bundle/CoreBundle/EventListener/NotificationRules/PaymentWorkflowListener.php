@@ -41,7 +41,7 @@ final class PaymentWorkflowListener extends AbstractNotificationRuleListener
 
         $this->rulesProcessor->applyRules('payment', $event->getSubject(), [
             'order' => $event->getSubject()->getOrder(),
-            'paymentState' => $event->getSubject()->getState()
+            'paymentState' => $event->getSubject()->getState(),
         ]);
     }
 }

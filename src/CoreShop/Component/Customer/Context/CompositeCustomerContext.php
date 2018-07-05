@@ -28,7 +28,7 @@ final class CompositeCustomerContext implements CustomerContextInterface
 
     /**
      * @param CustomerContextInterface $customerContext
-     * @param int $priority
+     * @param int                      $priority
      */
     public function addContext(CustomerContextInterface $customerContext, $priority = 0)
     {

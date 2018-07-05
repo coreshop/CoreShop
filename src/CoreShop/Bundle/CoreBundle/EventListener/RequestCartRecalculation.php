@@ -41,18 +41,17 @@ final class RequestCartRecalculation
     private $pimcoreRequestHelper;
 
     /**
-     * @param CartManagerInterface $cartManager
-     * @param CartContextInterface $cartContext
+     * @param CartManagerInterface          $cartManager
+     * @param CartContextInterface          $cartContext
      * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper $pimcoreRequestHelper
+     * @param RequestHelper                 $pimcoreRequestHelper
      */
     public function __construct(
         CartManagerInterface $cartManager,
         CartContextInterface $cartContext,
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper
-    )
-    {
+    ) {
         $this->cartManager = $cartManager;
         $this->cartContext = $cartContext;
         $this->configurationService = $configurationService;
@@ -60,7 +59,7 @@ final class RequestCartRecalculation
     }
 
     /**
-     * Force Cart to be recalculated
+     * Force Cart to be recalculated.
      *
      * @param GetResponseEvent $event
      */

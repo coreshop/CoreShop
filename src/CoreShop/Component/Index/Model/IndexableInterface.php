@@ -20,12 +20,12 @@ interface IndexableInterface
     public function getId();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getEnabled();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIndexable();
 
@@ -51,6 +51,7 @@ interface IndexableInterface
 
     /**
      * @param $language
+     *
      * @return string
      */
     public function getName($language);

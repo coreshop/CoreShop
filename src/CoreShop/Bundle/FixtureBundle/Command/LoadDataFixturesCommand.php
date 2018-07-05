@@ -31,7 +31,7 @@ class LoadDataFixturesCommand extends Command
     protected $fixtureExecutor;
 
     /**
-     * @param DataFixturesLoader $fixtureLoader
+     * @param DataFixturesLoader            $fixtureLoader
      * @param DataFixturesExecutorInterface $fixtureExecutor
      */
     public function __construct(DataFixturesLoader $fixtureLoader, DataFixturesExecutorInterface $fixtureExecutor)
@@ -82,13 +82,14 @@ class LoadDataFixturesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fixtures = null;
+
         try {
             $fixtures = $this->getFixtures($input, $output);
         } catch (\RuntimeException $ex) {
             $output->writeln('');
             $output->writeln(sprintf('<error>%s</error>', $ex->getMessage()));
 
-            return $ex->getCode() == 0 ? 1 : $ex->getCode();
+            return 0 == $ex->getCode() ? 1 : $ex->getCode();
         }
 
         if (!empty($fixtures)) {
@@ -98,13 +99,16 @@ class LoadDataFixturesCommand extends Command
                 $this->processFixtures($input, $output, $fixtures);
             }
         }
+
         return 0;
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return array
+     *
      * @throws \RuntimeException if loading of data fixtures should be terminated
      */
     protected function getFixtures(InputInterface $input, OutputInterface $output)
@@ -131,11 +135,11 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     * Output list of fixtures
+     * Output list of fixtures.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param array $fixtures
+     * @param array           $fixtures
      */
     protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -151,11 +155,11 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     * Process fixtures
+     * Process fixtures.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param array $fixtures
+     * @param array           $fixtures
      */
     protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -167,7 +171,7 @@ class LoadDataFixturesCommand extends Command
         );
 
         $this->fixtureExecutor->setLogger(
-            function($message) use ($output) {
+            function ($message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
             }
         );
@@ -176,6 +180,7 @@ class LoadDataFixturesCommand extends Command
 
     /**
      * @param InputInterface $input
+     *
      * @return string
      */
     protected function getTypeOfFixtures(InputInterface $input)
@@ -185,11 +190,12 @@ class LoadDataFixturesCommand extends Command
 
     /**
      * @param InputInterface $input
+     *
      * @return string
      */
     protected function getFixtureRelativePath(InputInterface $input)
     {
-        $fixtureRelativePath = $this->getTypeOfFixtures($input) == self::DEMO_FIXTURES_TYPE
+        $fixtureRelativePath = self::DEMO_FIXTURES_TYPE == $this->getTypeOfFixtures($input)
             ? self::DEMO_FIXTURES_PATH
             : self::MAIN_FIXTURES_PATH;
 

@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -27,7 +26,6 @@ final class PostcodeConfigurationType extends AbstractType
     {
         $builder
             ->add('postcodes', TextType::class, [
-                
             ])
             ->add('exclusion', CheckboxType::class);
     }

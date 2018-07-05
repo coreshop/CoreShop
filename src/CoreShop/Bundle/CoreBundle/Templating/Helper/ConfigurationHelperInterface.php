@@ -20,6 +20,7 @@ interface ConfigurationHelperInterface extends HelperInterface
     /**
      * @param $name
      * @param StoreInterface $store
+     *
      * @return mixed
      */
     public function getConfiguration($name, StoreInterface $store = null);

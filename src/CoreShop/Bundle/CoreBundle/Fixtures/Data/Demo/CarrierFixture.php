@@ -52,7 +52,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
     public function getDependencies()
     {
         return [
-            TaxRuleGroupFixture::class
+            TaxRuleGroupFixture::class,
         ];
     }
 
@@ -68,7 +68,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
             $faker->addProvider(new Lorem($faker));
 
             /**
-             * @var $carrier CarrierInterface
+             * @var CarrierInterface
              */
             $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
             $carrier->setIdentifier('Standard');
@@ -79,7 +79,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
 
             foreach (Tool::getValidLanguages() as $lang) {
                 $carrier->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
-                $carrier->setTitle('Standard - ' . strtoupper($lang), $lang);
+                $carrier->setTitle('Standard - '.strtoupper($lang), $lang);
             }
 
             $manager->persist($carrier);

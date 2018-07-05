@@ -23,7 +23,7 @@ class SearchController extends FrontendController
         $form = $this->createSearchForm();
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/_widget.html'), [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -42,14 +42,14 @@ class SearchController extends FrontendController
                 'name LIKE ?',
                 'description LIKE ?',
                 'shortDescription LIKE ?',
-                'sku LIKE ?'
+                'sku LIKE ?',
             ];
             $queryParams = [
                 '%'.$text.'%',
                 '%'.$text.'%',
                 '%'.$text.'%',
                 '%'.$text.'%',
-                '%'.$this->container->get('coreshop.context.store')->getStore()->getId().'%'
+                '%'.$this->container->get('coreshop.context.store')->getStore()->getId().'%',
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
@@ -61,9 +61,10 @@ class SearchController extends FrontendController
 
             return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
-                'searchText' => $text
+                'searchText' => $text,
             ]);
         }
+
         return $this->redirectToRoute('coreshop_index');
     }
 
@@ -71,7 +72,7 @@ class SearchController extends FrontendController
     {
         return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
-            'method' => 'GET'
+            'method' => 'GET',
         ]);
     }
 }

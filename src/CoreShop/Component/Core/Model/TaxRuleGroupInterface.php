@@ -17,5 +17,4 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface as BaseTaxRuleGroupI
 
 interface TaxRuleGroupInterface extends BaseTaxRuleGroupInterface, StoresAwareInterface
 {
-
 }

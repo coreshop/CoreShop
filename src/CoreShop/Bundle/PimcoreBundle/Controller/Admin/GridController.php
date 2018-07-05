@@ -21,6 +21,7 @@ class GridController extends AdminController
 {
     /**
      * @param $listType
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getGridFiltersAction($listType)
@@ -31,13 +32,13 @@ class GridController extends AdminController
         $services = [];
         /** @var GridFilterInterface $service */
         foreach ($gridFilterRepository->all() as $id => $service) {
-            if ($service->supports($listType) !== true) {
+            if (true !== $service->supports($listType)) {
                 continue;
             }
 
             $services[] = [
                 'id' => $id,
-                'name' => $trans->trans($service->getName(), [], 'admin')
+                'name' => $trans->trans($service->getName(), [], 'admin'),
             ];
         }
 
@@ -46,6 +47,7 @@ class GridController extends AdminController
 
     /**
      * @param $listType
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getGridActionsAction($listType)
@@ -56,14 +58,13 @@ class GridController extends AdminController
         $services = [];
         /** @var GridActionInterface $service */
         foreach ($gridActionRepository->all() as $id => $service) {
-
-            if ($service->supports($listType) !== true) {
+            if (true !== $service->supports($listType)) {
                 continue;
             }
 
             $services[] = [
                 'id' => $id,
-                'name' => $trans->trans($service->getName(), [], 'admin')
+                'name' => $trans->trans($service->getName(), [], 'admin'),
             ];
         }
 
@@ -72,6 +73,7 @@ class GridController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function applyGridAction(Request $request)
@@ -103,7 +105,7 @@ class GridController extends AdminController
 
         return $this->json([
             'success' => $success,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 }

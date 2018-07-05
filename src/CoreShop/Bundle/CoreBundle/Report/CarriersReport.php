@@ -49,17 +49,16 @@ class CarriersReport implements ReportInterface
 
     /**
      * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @param Connection          $db
      * @param RepositoryInterface $carrierRepository
-     * @param array $pimcoreClasses
+     * @param array               $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         RepositoryInterface $carrierRepository,
         array $pimcoreClasses
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->carrierRepository = $carrierRepository;

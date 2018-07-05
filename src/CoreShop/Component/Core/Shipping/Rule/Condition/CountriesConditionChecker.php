@@ -17,7 +17,6 @@ use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
 
-
 class CountriesConditionChecker extends AbstractConditionChecker
 {
     /**

@@ -32,7 +32,6 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
         }
 
         $pimcoreClasses = [
-
         ];
         $applicationClasses = [];
 

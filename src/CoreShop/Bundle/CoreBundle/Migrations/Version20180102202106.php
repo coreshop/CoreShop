@@ -20,6 +20,7 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
      * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
      * @throws \Exception
      */
@@ -116,7 +117,6 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
 
         /** @var OrderItemInterface $object */
         foreach ($orderItems as $object) {
-
             $productObject = $object->getProduct();
             if (!$productObject instanceof ProductInterface) {
                 continue;
@@ -125,9 +125,9 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
             $object->setObjectId($productObject->getId());
             $mainObjectId = null;
 
-            if ($productObject->getType() === 'variant') {
+            if ('variant' === $productObject->getType()) {
                 $mainProduct = $productObject;
-                while ($mainProduct->getType() === 'variant') {
+                while ('variant' === $mainProduct->getType()) {
                     $mainProduct = $mainProduct->getParent();
                 }
 

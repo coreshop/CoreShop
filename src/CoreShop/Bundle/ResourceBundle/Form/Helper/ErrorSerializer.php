@@ -19,6 +19,7 @@ final class ErrorSerializer
 {
     /**
      * @param FormInterface $handledForm
+     *
      * @return array
      */
     public function serializeErrorFromHandledForm(FormInterface $handledForm)
@@ -26,7 +27,7 @@ final class ErrorSerializer
         $errors = [];
 
         /**
-         * @var $e FormError
+         * @var FormError
          */
         foreach ($handledForm->getErrors(true, true) as $e) {
             if ($e instanceof FormError) {

@@ -30,7 +30,7 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface       $storeContext
      */
     public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
     {

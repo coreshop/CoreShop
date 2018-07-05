@@ -28,7 +28,7 @@ final class CompositeStoreContext implements StoreContextInterface
 
     /**
      * @param StoreContextInterface $storeContext
-     * @param int $priority
+     * @param int                   $priority
      */
     public function addContext(StoreContextInterface $storeContext, $priority = 0)
     {

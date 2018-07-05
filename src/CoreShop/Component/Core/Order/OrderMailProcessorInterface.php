@@ -19,9 +19,9 @@ interface OrderMailProcessorInterface
     /**
      * @param $emailDocument
      * @param OrderInterface $order
-     * @param bool $sendInvoices
-     * @param bool $sendShipments
-     * @param array $params
+     * @param bool           $sendInvoices
+     * @param bool           $sendShipments
+     * @param array          $params
      */
     public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = []);
 }

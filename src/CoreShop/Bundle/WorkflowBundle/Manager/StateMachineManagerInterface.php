@@ -16,10 +16,10 @@ use Symfony\Component\Workflow\Workflow;
 
 interface StateMachineManagerInterface
 {
-
     /**
      * @param $subject
      * @param null $workflowName
+     *
      * @return Workflow
      */
     public function get($subject, $workflowName = null);
@@ -28,6 +28,7 @@ interface StateMachineManagerInterface
      * @param Workflow $workflow
      * @param $subject
      * @param string $fromState
+     *
      * @return mixed
      */
     public function getTransitionFromState(Workflow $workflow, $subject, string $fromState);
@@ -36,6 +37,7 @@ interface StateMachineManagerInterface
      * @param Workflow $workflow
      * @param $subject
      * @param string $toState
+     *
      * @return mixed
      */
     public function getTransitionToState(Workflow $workflow, $subject, string $toState);

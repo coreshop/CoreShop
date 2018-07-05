@@ -19,6 +19,7 @@ final class ResourceLoader
     /**
      * @param $resources
      * @param $minify
+     *
      * @return array
      */
     public function loadResources($resources, $minify = false)
@@ -27,7 +28,7 @@ final class ResourceLoader
             return $resources;
         }
 
-        $scriptContents = "";
+        $scriptContents = '';
 
         foreach ($resources as $scriptUrl) {
             if (is_file(PIMCORE_WEB_ROOT.$scriptUrl)) {

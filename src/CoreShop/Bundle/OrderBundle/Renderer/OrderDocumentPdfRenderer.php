@@ -46,17 +46,16 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
     /**
      * @param FragmentRendererInterface $fragmentRenderer
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param PdfRendererInterface $renderer
-     * @param ThemeHelperInterface $themeHelper
+     * @param EventDispatcherInterface  $eventDispatcher
+     * @param PdfRendererInterface      $renderer
+     * @param ThemeHelperInterface      $themeHelper
      */
     public function __construct(
         FragmentRendererInterface $fragmentRenderer,
         EventDispatcherInterface $eventDispatcher,
         PdfRendererInterface $renderer,
         ThemeHelperInterface $themeHelper
-    )
-    {
+    ) {
         $this->fragmentRenderer = $fragmentRenderer;
         $this->eventDispatcher = $eventDispatcher;
         $this->renderer = $renderer;
@@ -68,7 +67,7 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
-        return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function() use ($orderDocument) {
+        return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function () use ($orderDocument) {
             $params = [
                 'id' => $orderDocument->getId(),
                 'order' => $orderDocument->getOrder(),

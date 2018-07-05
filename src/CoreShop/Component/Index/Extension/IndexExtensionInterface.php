@@ -12,14 +12,14 @@
 
 namespace CoreShop\Component\Index\Extension;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 
 interface IndexExtensionInterface
 {
     /**
      * @param IndexInterface $index
-     * @return boolean
+     *
+     * @return bool
      */
     public function supports(IndexInterface $index);
 }

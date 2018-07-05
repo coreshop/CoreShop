@@ -60,12 +60,12 @@ final class OrderContext implements Context
     private $stateMachineApplier;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param StoreContextInterface $storeContext
+     * @param SharedStorageInterface       $sharedStorage
+     * @param StoreContextInterface        $storeContext
      * @param ProposalTransformerInterface $orderTransformer
-     * @param FactoryInterface $orderFactory
-     * @param PaymentRepositoryInterface $paymentRepository
-     * @param StateMachineApplier $stateMachineApplier
+     * @param FactoryInterface             $orderFactory
+     * @param PaymentRepositoryInterface   $paymentRepository
+     * @param StateMachineApplier          $stateMachineApplier
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -74,8 +74,7 @@ final class OrderContext implements Context
         FactoryInterface $orderFactory,
         PaymentRepositoryInterface $paymentRepository,
         StateMachineApplier $stateMachineApplier
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->storeContext = $storeContext;
         $this->orderTransformer = $orderTransformer;
@@ -129,5 +128,4 @@ final class OrderContext implements Context
     {
         $this->stateMachineApplier->apply($order, OrderShipmentTransitions::IDENTIFIER, $transition);
     }
-
 }

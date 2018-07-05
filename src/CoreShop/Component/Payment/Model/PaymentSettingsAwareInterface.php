@@ -21,6 +21,7 @@ interface PaymentSettingsAwareInterface
 
     /**
      * @param $paymentSettings
+     *
      * @return mixed
      */
     public function setPaymentSettings($paymentSettings);

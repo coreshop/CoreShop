@@ -19,6 +19,7 @@ interface OrderStateHelperInterface extends HelperInterface
 {
     /**
      * @param OrderInterface $order
+     *
      * @return mixed
      */
     public function getOrderState(OrderInterface $order);

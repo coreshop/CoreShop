@@ -19,5 +19,4 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
  */
 abstract class RegisterRegistryTypePass extends BaseRegisterRegistryTypePass
 {
-
 }

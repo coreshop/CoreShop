@@ -13,11 +13,7 @@
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use Pimcore\Model\DataObject\ClassDefinition;
-use Pimcore\Model\DataObject\Fieldcollection;
-use Pimcore\Model\DataObject\Objectbrick;
 use Webmozart\Assert\Assert;
 
 final class PlaceholderContext implements Context
@@ -27,14 +23,12 @@ final class PlaceholderContext implements Context
      */
     private $sharedStorage;
 
-
     /**
      * @param SharedStorageInterface $sharedStorage
      */
     public function __construct(
         SharedStorageInterface $sharedStorage
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
     }
 
@@ -61,7 +55,7 @@ final class PlaceholderContext implements Context
     {
         $placeholderHelper = new \Pimcore\Placeholder();
         $data = [
-            'object' => $object
+            'object' => $object,
         ];
         $executedValue = $placeholderHelper->replacePlaceholders($expression, $data);
 

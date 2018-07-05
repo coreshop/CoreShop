@@ -18,30 +18,30 @@ class Version20180326090909 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $roles = [
-            "fieldtype" => "multiselect",
-            "options" => [],
-            "width" => "",
-            "height" => "",
-            "maxItems" => "",
-            "optionsProviderClass" => "CoreShop\\Bundle\\CustomerBundle\\CoreExtension\\Provider\\RoleOptionsProvider",
-            "optionsProviderData" => "",
-            "queryColumnType" => "text",
-            "columnType" => "text",
-            "phpdocType" => "array",
-            "name" => "roles",
-            "title" => "roles",
-            "tooltip" => "",
-            "mandatory" => false,
-            "noteditable" => false,
-            "index" => false,
-            "locked" => false,
-            "style" => "",
-            "permissions" => null,
-            "datatype" => "data",
-            "relationType" => false,
-            "invisible" => false,
-            "visibleGridView" => false,
-            "visibleSearch" => false
+            'fieldtype' => 'multiselect',
+            'options' => [],
+            'width' => '',
+            'height' => '',
+            'maxItems' => '',
+            'optionsProviderClass' => 'CoreShop\\Bundle\\CustomerBundle\\CoreExtension\\Provider\\RoleOptionsProvider',
+            'optionsProviderData' => '',
+            'queryColumnType' => 'text',
+            'columnType' => 'text',
+            'phpdocType' => 'array',
+            'name' => 'roles',
+            'title' => 'roles',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => false,
+            'index' => false,
+            'locked' => false,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
         ];
 
         $customerGroup = $this->container->getParameter('coreshop.model.customer_group.pimcore_class_name');
@@ -58,6 +58,5 @@ class Version20180326090909 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
-
     }
 }
