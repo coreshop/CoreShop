@@ -20,18 +20,28 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new product shipping rule which is valid
     Given adding a shipping rule named "product"
+    And the shipping rule is active
     And the shipping rule has a condition products with product "Shoe"
     And I add the product "Shoe" to my cart
     Then the shipping rule should be valid for my cart with carrier "Post"
 
+  Scenario: Add a new product shipping rule which is inactive
+    Given adding a shipping rule named "product"
+    And the shipping rule is inactive
+    And the shipping rule has a condition products with product "Shoe"
+    And I add the product "Shoe" to my cart
+    Then the shipping rule should be invalid for my cart with carrier "Post"
+
   Scenario: Add a new product shipping rule which is invalid
     Given adding a shipping rule named "product"
+    And the shipping rule is active
     And the shipping rule has a condition products with product "Shoe"
     And I add the product "Jacket" to my cart
     Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new product shipping rule with two products which is valid
     Given adding a shipping rule named "product"
+    And the shipping rule is active
     And the shipping rule has a condition products with products "Shoe", "Jacket"
     And I add the product "Jacket" to my cart
     And I add the product "Shoe" to my cart
@@ -39,6 +49,7 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new product shipping rule with two products which is valid
     Given adding a shipping rule named "product"
+    And the shipping rule is active
     And the shipping rule has a condition products with product "Jacket"
     And I add the product "Jacket" to my cart
     And I add the product "Shoe" to my cart

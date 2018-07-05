@@ -23,11 +23,19 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new zone shipping rule which is valid
     Given adding a shipping rule named "zones"
+    And the shipping rule is active
     And the shipping rule has a condition zones with zone "Europe"
     Then the shipping rule should be valid for my cart with carrier "Post"
+
+  Scenario: Add a new zone shipping rule which is inactive
+    Given adding a shipping rule named "zones"
+    And the shipping rule is inactive
+    And the shipping rule has a condition zones with zone "Europe"
+    Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new zone shipping rule which is invalid
     Given the site has a zone "America"
     And adding a shipping rule named "zones"
+    And the shipping rule is active
     And the shipping rule has a condition zones with zone "America"
     Then the shipping rule should be invalid for my cart with carrier "Post"

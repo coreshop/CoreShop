@@ -16,7 +16,7 @@ use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface CartPriceRuleInterface extends RuleInterface, ToggleableInterface
+interface CartPriceRuleInterface extends RuleInterface
 {
     /**
      * @return string

@@ -17,6 +17,7 @@ Feature: Adding a new Shipping Rule
     And I add the product "Shoe" to my cart
     And the site has a carrier "Post"
     And adding a shipping rule named "fixed"
+    And the shipping rule is active
     And the shipping rule has a action price of 20 in currency "EUR"
     And the shipping rule belongs to carrier "Post"
     Then the shipping rule should be valid for my cart with carrier "Post"

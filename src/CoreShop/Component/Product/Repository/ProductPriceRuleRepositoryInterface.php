@@ -12,13 +12,9 @@
 
 namespace CoreShop\Component\Product\Repository;
 
-use CoreShop\Component\Product\Model\ProductPriceRule;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
-interface ProductPriceRuleRepositoryInterface extends RepositoryInterface
+interface ProductPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
-    /**
-     * @return ProductPriceRule[]
-     */
-    public function findActive();
+
 }

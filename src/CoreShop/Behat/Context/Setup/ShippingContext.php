@@ -163,6 +163,30 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (shipping rule "[^"]+") is active$/
+     * @Given /^the (shipping rule) is active$/
+     */
+    public function theShippingRuleIsActive(ShippingRuleInterface $rule)
+    {
+        $rule->setActive(true);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") is inactive$/
+     * @Given /^the (shipping rule) is inactive$/
+     */
+    public function theShippingRuleIsInActive(ShippingRuleInterface $rule)
+    {
+        $rule->setActive(false);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    /**
      * @Given /^the (shipping rule "[^"]+") belongs to (carrier "[^"]+")$/
      * @Given /^the (shipping rule) belongs to (carrier "[^"]+")$/
      */

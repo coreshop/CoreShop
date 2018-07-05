@@ -28,18 +28,28 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new category shipping rule which is valid
     Given adding a shipping rule named "category"
+    And the shipping rule is active
     And the shipping rule has a condition categories with category "Shoes"
     And I add the product "Shoe" to my cart
     Then the shipping rule should be valid for my cart with carrier "Post"
 
+  Scenario: Add a new category shipping rule which is inactive
+    Given adding a shipping rule named "category"
+    And the shipping rule is inactive
+    And the shipping rule has a condition categories with category "Shoes"
+    And I add the product "Shoe" to my cart
+    Then the shipping rule should be invalid for my cart with carrier "Post"
+
   Scenario: Add a new category shipping rule which is invalid
     Given adding a shipping rule named "category"
+    And the shipping rule is active
     And the shipping rule has a condition categories with category "Shoes"
     And I add the product "Jacket" to my cart
     Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new category shipping rule with two products which is valid
     Given adding a shipping rule named "category"
+    And the shipping rule is active
     And the shipping rule has a condition categories with categories "Coats", "Shoes"
     And I add the product "Jacket" to my cart
     And I add the product "Shoe" to my cart
@@ -47,6 +57,7 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new category shipping rule with two products which is valid
     Given adding a shipping rule named "category"
+    And the shipping rule is active
     And the shipping rule has a condition categories with category "Coats"
     And I add the product "Jacket" to my cart
     And I add the product "Shoe" to my cart
@@ -54,12 +65,14 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new category shipping rule which includes all subcategory and is invalid
     Given adding a shipping rule named "category"
+    And the shipping rule is active
     And the shipping rule has a condition categories with category "Shoes"
     And I add the product "Sneaker" to my cart
     Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new category shipping rule which includes all subcategory and is valid
     Given adding a shipping rule named "category"
+    And the shipping rule is active
     And the shipping rule has a condition categories with category "Shoes" and it is recursive
     And I add the product "Sneaker" to my cart
     Then the shipping rule should be valid for my cart with carrier "Post"

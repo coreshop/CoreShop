@@ -13,9 +13,10 @@
 namespace CoreShop\Bundle\NotificationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
 
-class NotificationRuleRepository extends EntityRepository implements NotificationRuleRepositoryInterface
+class NotificationRuleRepository extends RuleRepository implements NotificationRuleRepositoryInterface
 {
     /**
      * {@inheritdoc}

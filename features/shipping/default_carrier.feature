@@ -15,6 +15,7 @@ Feature: In Order to make checkout easier
     And the product has the tax rule group "AT"
     And the site has a carrier "Post"
     And adding a shipping rule named "post"
+    And the shipping rule is active
     And the shipping rule has a action price of 20 in currency "EUR"
     And the shipping rule belongs to carrier "Post"
 
