@@ -110,7 +110,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         $jsFiles = [];
 
         if ($this->container->hasParameter('coreshop.all.pimcore.admin.editmode_js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.editmode_js'), true);
+            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.editmode_js'), false);
         }
 
         return $jsFiles;

@@ -11,6 +11,9 @@ CoreShop\Component\Shipping\Model\ShippingRule:
         name:
             column: name
             type: string
+        active:
+            column: active
+            type: boolean
         creationDate:
             type: datetime
             gedmo:

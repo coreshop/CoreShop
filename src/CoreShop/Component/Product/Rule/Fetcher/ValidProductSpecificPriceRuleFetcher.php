@@ -43,10 +43,6 @@ final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInt
         }
 
         foreach ($rules as $rule) {
-            if (!$rule->getActive()) {
-                continue;
-            }
-
             if (!$this->ruleValidationProcessor->isValid($product, $rule)) {
                 continue;
             }

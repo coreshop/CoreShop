@@ -23,7 +23,7 @@ core_shop_workflow:
                     from: [ready]
                     to: partially_invoiced
                 cancel:
-                    from: [ready]
+                    from: [new, ready]
                     to: cancelled
                 invoice:
                     from: [ready, partially_invoiced]

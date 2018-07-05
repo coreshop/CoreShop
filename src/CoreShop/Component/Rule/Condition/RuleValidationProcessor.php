@@ -35,6 +35,10 @@ class RuleValidationProcessor implements RuleValidationProcessorInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
     {
+        if (!$rule->getActive()) {
+            return false;
+        }
+
         return $this->ruleConditionsValidationProcessor->isValid($subject, $rule, $rule->getConditions(), $params);
     }
 }

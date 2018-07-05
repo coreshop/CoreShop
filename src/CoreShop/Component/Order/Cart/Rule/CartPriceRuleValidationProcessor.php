@@ -55,15 +55,6 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
     {
-        /**
-         * @var $rule CartPriceRuleInterface
-         */
-        Assert::isInstanceOf($rule, CartPriceRuleInterface::class);
-
-        if (!$rule->getActive()) {
-            return false;
-        }
-
         return $this->ruleConditionsValidationProcessor->isValid(
             $subject,
             $rule,

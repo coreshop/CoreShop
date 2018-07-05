@@ -15,8 +15,9 @@ namespace CoreShop\Component\Product\Repository;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
-interface ProductSpecificPriceRuleRepositoryInterface extends RepositoryInterface
+interface ProductSpecificPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
     /**
      * @param ProductInterface $product

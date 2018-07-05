@@ -143,15 +143,17 @@ class ShippingRule extends RuleTest
     }
 
     /**
+     * @param bool $active
      * @return ShippingRuleInterface
      */
-    protected function createRule()
+    protected function createRule($active = true)
     {
         /**
          * @var ShippingRuleInterface
          */
         $shippingRule = $this->getFactory('shipping_rule')->createNew();
         $shippingRule->setName('test-rule');
+        $shippingRule->setActive($active);
 
         return $shippingRule;
     }

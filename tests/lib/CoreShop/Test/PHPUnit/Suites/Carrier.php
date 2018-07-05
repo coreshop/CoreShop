@@ -148,6 +148,7 @@ class Carrier extends RuleTest
          */
         $shippingRule = $this->createResourceWithForm('shipping_rule', ShippingRuleInterface::class, [
             'name' => 'test->true',
+            'active' => true
         ]);
         $shippingRule->addAction($this->createActionWithForm('price', [
             'price' => 10,

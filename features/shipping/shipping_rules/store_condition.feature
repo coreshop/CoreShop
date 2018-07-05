@@ -18,12 +18,20 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new stores shipping rule which is valid
     Given adding a shipping rule named "stores"
+    And the shipping rule is active
     And the shipping rule has a condition stores with store "Austria"
     Then the shipping rule should be valid for my cart with carrier "Post"
+
+  Scenario: Add a new stores shipping rule which is inactive
+    Given adding a shipping rule named "stores"
+    And the shipping rule is inactive
+    And the shipping rule has a condition stores with store "Austria"
+    Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new stores shipping rule which is invalid
     Given the site has a country "Germany" with currency "EUR"
     And the site has a store "Germany" with country "Germany" and currency "EUR"
     And adding a shipping rule named "stores"
+    And the shipping rule is active
     And the shipping rule has a condition stores with store "Germany"
     Then the shipping rule should be invalid for my cart with carrier "Post"

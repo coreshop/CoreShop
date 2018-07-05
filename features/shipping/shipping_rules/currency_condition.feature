@@ -19,13 +19,21 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new currency shipping rule which is valid
     Given adding a shipping rule named "currencies"
+    And the shipping rule is active
     And the shipping rule has a condition currencies with currency "EUR"
     Then the shipping rule should be valid for my cart with carrier "Post"
+
+  Scenario: Add a new currency shipping rule which is inactive
+    Given adding a shipping rule named "currencies"
+    And the shipping rule is inactive
+    And the shipping rule has a condition currencies with currency "EUR"
+    Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new currency shipping rule which is invalid
     Given the site has a currency "YEN" with iso "YEN"
     And the site has a country "China" with currency "YEN"
     And adding a shipping rule named "currencies"
+    And the shipping rule is active
     And the shipping rule has a condition currencies with currency "YEN"
     And I am using currency "YEN"
     Then the shipping rule should be invalid for my cart with carrier "Post"

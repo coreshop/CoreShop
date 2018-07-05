@@ -12,9 +12,9 @@
 
 namespace CoreShop\Component\Order\Repository;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
-interface CartPriceRuleRepositoryInterface extends RepositoryInterface
+interface CartPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
     /**
      * @return mixed

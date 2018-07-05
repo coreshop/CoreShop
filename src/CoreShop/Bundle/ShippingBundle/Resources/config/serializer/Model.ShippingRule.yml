@@ -11,6 +11,10 @@ CoreShop\Component\Shipping\Model\ShippingRule:
             expose: true
             type: string
             groups: [List, Detailed]
+        active:
+            expose: true
+            type: boolean
+            groups: [Detailed]
         conditions:
             expose: true
             type: array

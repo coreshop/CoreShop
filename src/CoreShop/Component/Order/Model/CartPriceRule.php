@@ -19,7 +19,6 @@ use Doctrine\Common\Collections\Collection;
 
 class CartPriceRule implements CartPriceRuleInterface
 {
-    use ToggleableTrait;
     use RuleTrait {
         __construct as private initializeRuleTrait;
     }

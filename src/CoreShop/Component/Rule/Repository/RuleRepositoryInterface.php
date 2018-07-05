@@ -10,30 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Notification\Model;
+namespace CoreShop\Component\Rule\Repository;
 
-use CoreShop\Component\Resource\Model\ToggleableInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface NotificationRuleInterface extends RuleInterface
+interface RuleRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @return string
+     * @return RuleInterface[]
      */
-    public function getType();
+    public function findActive();
 
     /**
-     * @param string $type
+     * @param $conditionType
+     * @return RuleInterface[]
      */
-    public function setType($type);
+    public function findWithConditionOfType($conditionType);
 
     /**
-     * @return int
+     * @param $actionType
+     * @return RuleInterface[]
      */
-    public function getSort();
-
-    /**
-     * @param int $sort
-     */
-    public function setSort($sort);
+    public function findWithActionOfType($actionType);
 }

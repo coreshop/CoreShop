@@ -115,10 +115,11 @@ class NotificationRule extends RuleTest
     protected function createRule()
     {
         /**
-         * @var NotificationRuleInterface
+         * @var $notificationRule NotificationRuleInterface
          */
         $notificationRule = $this->getFactory('notification_rule')->createNew();
         $notificationRule->setName('test-rule');
+        $notificationRule->setActive(true);
 
         return $notificationRule;
     }
