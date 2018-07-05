@@ -129,7 +129,7 @@ services:
             - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }
 
     # Rules Availability Check
-    coreshop.rule_availability_processor_command.maintenance_listener:
+    coreshop.rule_availability_assessor.maintenance_listener:
         class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener
         arguments:
             - '@coreshop.configuration.service'

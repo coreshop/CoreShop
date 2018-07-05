@@ -40,7 +40,7 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
      */
     public function getRules()
     {
-        return $this->ruleRepository->findBy(['active' => true]);
+        return $this->ruleRepository->findActive();
     }
 
     /**
@@ -48,8 +48,6 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
      */
     public function isValid(RuleInterface $rule)
     {
-        $valid = true;
-
         /** @var Condition $condition */
         foreach ($rule->getConditions() as $id => $condition) {
 
@@ -66,26 +64,23 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
             // future rule is also valid
             if ($configuration['dateFrom'] > 0) {
                 if ($dateFrom->getTimestamp() > $date->getTimestamp()) {
-                    continue;
+                    return true;
                 }
             }
 
             if ($configuration['dateFrom'] > 0) {
                 if ($date->getTimestamp() < $dateFrom->getTimestamp()) {
-                    $valid = false;
-                    break;
+                    return false;
                 }
             }
 
             if ($configuration['dateTo'] > 0) {
                 if ($date->getTimestamp() > $dateTo->getTimestamp()) {
-                    $valid = false;
-                    break;
+                    return false;
                 }
             }
-
         }
 
-        return $valid;
+        return true;
     }
 }

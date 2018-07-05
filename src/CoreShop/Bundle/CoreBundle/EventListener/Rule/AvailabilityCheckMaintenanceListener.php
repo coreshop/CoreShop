@@ -49,7 +49,7 @@ final class AvailabilityCheckMaintenanceListener
         $lastMaintenance = $this->configurationService->get('system.rule.availability_check.last_run');
 
         if (is_null($lastMaintenance)) {
-            $lastMaintenance = time() - 82800; //t-23h
+            $lastMaintenance = time() - 90000; //t-25h
         }
 
         $timeDiff = time() - $lastMaintenance;
@@ -57,10 +57,7 @@ final class AvailabilityCheckMaintenanceListener
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
         if ($timeDiff > 24 * 60 * 60) {
             $manager = $maintenanceEvent->getManager();
-            $manager->registerJob(new Job('coreshop.rule.availability_check', [
-                $this->ruleAvailabilityProcessor,
-                'process'
-            ]));
+            $manager->registerJob(new Job('coreshop.rule.availability_check', [$this->ruleAvailabilityProcessor, 'process']));
             $this->configurationService->set('system.rule.availability_check.last_run', time());
         }
     }

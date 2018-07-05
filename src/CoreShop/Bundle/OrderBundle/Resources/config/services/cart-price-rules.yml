@@ -190,7 +190,6 @@ services:
       tags:
           - { name: validator.constraint_validator, alias: 'coreshop_cart_rule_valid' }
 
-
   coreshop.rule.availability_assessor.cart_price:
       class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
       arguments:
