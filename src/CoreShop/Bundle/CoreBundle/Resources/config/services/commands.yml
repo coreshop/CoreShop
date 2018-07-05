@@ -58,9 +58,9 @@ services:
           - { name: console.command, command: 'coreshop:install' }
 
 
-    coreshop.command.check_price_rule_availability:
+    coreshop.command.check_rule_availability:
         class: CoreShop\Bundle\CoreBundle\Command\RuleAvailabilityCommand
         arguments:
             - '@coreshop.rule.availability_check'
         tags:
-          - { name: console.command, command: 'coreshop:check-price-rule-availability' }
+          - { name: console.command, command: 'coreshop:check-rule-availability' }

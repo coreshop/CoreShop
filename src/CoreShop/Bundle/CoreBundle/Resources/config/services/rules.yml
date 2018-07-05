@@ -139,10 +139,6 @@ services:
              - '@coreshop.repository.product_price_rule'
              - '@coreshop.repository.product_specific_price_rule'
              - '@coreshop.repository.shipping_rule'
-             - '@coreshop.cart_price_rule.rule_validation.processor'
-             - '@coreshop.product_price_rule.processor'
-             - '@coreshop.product_specific_price_rule.processor'
-             - '@coreshop.shipping_rule.processor'
 
     coreshop.rule.availability_check.maintenance_listener:
         class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener

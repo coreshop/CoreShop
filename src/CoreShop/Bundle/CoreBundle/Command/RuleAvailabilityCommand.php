@@ -47,8 +47,8 @@ final class RuleAvailabilityCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('coreshop:check-price-rule-availability')
-            ->setDescription('Check for outdated / invalid price rules and disable them.');
+            ->setName('coreshop:check-rule-availability')
+            ->setDescription('Check for outdated / invalid rules and disable them.');
     }
 
     /**
