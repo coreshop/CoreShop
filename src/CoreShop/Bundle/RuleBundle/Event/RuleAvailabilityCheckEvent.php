@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreShop\Bundle\CoreBundle\Event;
+namespace CoreShop\Bundle\RuleBundle\Event;
 
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Symfony\Component\EventDispatcher\Event;

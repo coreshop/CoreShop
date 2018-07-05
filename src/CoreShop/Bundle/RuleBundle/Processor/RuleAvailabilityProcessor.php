@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\RuleBundle\Processor;
 
-use CoreShop\Bundle\CoreBundle\Event\RuleAvailabilityCheckEvent;
+use CoreShop\Bundle\RuleBundle\Event\RuleAvailabilityCheckEvent;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
@@ -36,23 +36,23 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     /**
      * @var RuleRepositoryInterface
      */
-    protected $ruleRepository;
+    protected $ruleRegistry;
 
     /**
      * RuleAvailabilityProcessor constructor.
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param EntityManagerInterface   $entityManager
-     * @param ServiceRegistryInterface $ruleRepository
+     * @param ServiceRegistryInterface $ruleRegistry
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         EntityManagerInterface $entityManager,
-        ServiceRegistryInterface $ruleRepository
+        ServiceRegistryInterface $ruleRegistry
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->entityManager = $entityManager;
-        $this->ruleRepository = $ruleRepository;
+        $this->ruleRegistry = $ruleRegistry;
     }
 
     /**
@@ -61,7 +61,7 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     public function process()
     {
         /** @var RuleAvailabilityAssessorInterface $ruleAssessor */
-        foreach ($this->ruleRepository->all() as $ruleAssessor) {
+        foreach ($this->ruleRegistry->all() as $ruleAssessor) {
 
             foreach ($ruleAssessor->getRules() as $rule) {
                 $ruleIsAvailable = $ruleAssessor->isValid($rule);

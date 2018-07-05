@@ -40,11 +40,3 @@ services:
              - '@coreshop.repository.shipping_rule'
         tags:
             - { name: coreshop.registry.rule_availability_assessor, type: shipping_rule }
-
-    coreshop.rule_availability_processor_command.maintenance_listener:
-        class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener
-        arguments:
-            - '@coreshop.configuration.service'
-            - '@coreshop.rule_availability_processor'
-        tags:
-            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerAvailabilityCheck }

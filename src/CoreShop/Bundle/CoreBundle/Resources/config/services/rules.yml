@@ -127,3 +127,12 @@ services:
             - '@coreshop.cart.modifier'
         tags:
             - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }
+
+    # Rules Availability Check
+    coreshop.rule_availability_processor_command.maintenance_listener:
+        class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener
+        arguments:
+            - '@coreshop.configuration.service'
+            - '@coreshop.rule_availability_processor'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerAvailabilityCheck }
