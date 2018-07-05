@@ -189,3 +189,11 @@ services:
           - '@coreshop.repository.cart_price_rule_voucher_code'
       tags:
           - { name: validator.constraint_validator, alias: 'coreshop_cart_rule_valid' }
+
+
+  coreshop.rule.availability_assessor.cart_price:
+      class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
+      arguments:
+          - '@coreshop.repository.cart_price_rule'
+      tags:
+          - { name: coreshop.registry.rule_availability_assessor, type: cart_price }

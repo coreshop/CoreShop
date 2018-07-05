@@ -77,12 +77,12 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
      */
     private function processRule(RuleInterface $rule, bool $ruleIsAvailable)
     {
+        /** @var RuleAvailabilityCheckEvent $event */
         $event = $this->eventDispatcher->dispatch(
             'coreshop.rule.availability_check',
             new RuleAvailabilityCheckEvent($rule, get_class($rule), $ruleIsAvailable)
         );
 
-        var_dump($rule->getName());
         if ($event->isAvailable() === false) {
             if ($rule instanceof ToggleableInterface) {
                 $rule->setActive(false);
