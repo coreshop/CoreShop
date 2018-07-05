@@ -246,6 +246,7 @@ class Data
              * @var $rule1 ShippingRuleInterface
              */
             $rule1 = $shippingRuleFactory->createNew();
+            $rule1->setActive(true);
             $rule1->setName('carrier1-rule');
             $rule1->addAction($priceAct);
             $rule1->addCondition($weightCond);
