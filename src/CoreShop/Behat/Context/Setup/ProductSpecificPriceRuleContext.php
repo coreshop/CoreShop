@@ -25,6 +25,7 @@ use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionTyp
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -311,6 +312,68 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->addAction($rule, $this->createActionWithForm('price', [
             'price' => intval($price),
             'currency' => $currency->getId()
+        ]));
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
+     * @Given /^the (specific price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
+     */
+    public function theProductsSpecificPriceRuleHasANestedConditionWithStores(ProductSpecificPriceRuleInterface $rule, $operator, StoreInterface $store1, StoreInterface $store2)
+    {
+        $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
+
+        $this->addCondition($rule, $this->createConditionWithForm('nested', [
+            'operator' => $operator,
+            'conditions' => [
+                [
+                    'type' => 'stores',
+                    'configuration' => [
+                        'stores' => [
+                            $store1->getId()
+                        ]
+                    ]
+                ],
+                [
+                    'type' => 'stores',
+                    'configuration' => [
+                        'stores' => [
+                            $store2->getId()
+                        ]
+                    ]
+                ]
+            ]
+        ]));
+    }
+
+    /**
+     * @Given /^the (specific price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
+     * @Given /^the (specific price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
+     */
+    public function theProductsSpecificPriceRuleHasANestedConditionWithStoreAndCountry(ProductSpecificPriceRuleInterface $rule, $operator, StoreInterface $store, CountryInterface $country)
+    {
+        $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
+
+        $this->addCondition($rule, $this->createConditionWithForm('nested', [
+            'operator' => $operator,
+            'conditions' => [
+                [
+                    'type' => 'stores',
+                    'configuration' => [
+                        'stores' => [
+                            $store->getId()
+                        ]
+                    ]
+                ],
+                [
+                    'type' => 'countries',
+                    'configuration' => [
+                        'countries' => [
+                            $country->getId()
+                        ]
+                    ]
+                ]
+            ]
         ]));
     }
 
