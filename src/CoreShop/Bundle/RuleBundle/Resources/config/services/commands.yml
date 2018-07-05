@@ -1,0 +1,8 @@
+services:
+
+    coreshop.command.rule_availability_processor_command:
+        class: CoreShop\Bundle\RuleBundle\Command\RuleAvailabilityAccessorCommand
+        arguments:
+            - '@coreshop.rule_availability_processor'
+        tags:
+          - { name: console.command, command: 'coreshop:rules:check-availability' }

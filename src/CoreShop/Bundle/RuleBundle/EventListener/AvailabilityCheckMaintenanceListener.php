@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\Rule;
 
-use CoreShop\Bundle\CoreBundle\Rule\RuleAvailabilityCheckInterface;
+use CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityProcessorInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Pimcore\Event\System\MaintenanceEvent;
 use Pimcore\Model\Schedule\Maintenance\Job;
@@ -25,18 +25,20 @@ final class AvailabilityCheckMaintenanceListener
     private $configurationService;
 
     /**
-     * @var RuleAvailabilityCheckInterface
+     * @var RuleAvailabilityProcessorInterface
      */
-    private $ruleAvailabilityCheck;
+    protected $ruleAvailabilityProcessor;
 
     /**
-     * @param ConfigurationServiceInterface  $configurationService
-     * @param RuleAvailabilityCheckInterface $ruleAvailabilityCheck
+     * @param ConfigurationServiceInterface      $configurationService
+     * @param RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
      */
-    public function __construct(ConfigurationServiceInterface $configurationService, RuleAvailabilityCheckInterface $ruleAvailabilityCheck)
-    {
+    public function __construct(
+        ConfigurationServiceInterface $configurationService,
+        RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
+    ) {
         $this->configurationService = $configurationService;
-        $this->ruleAvailabilityCheck = $ruleAvailabilityCheck;
+        $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
     }
 
     /**
@@ -56,8 +58,8 @@ final class AvailabilityCheckMaintenanceListener
         if ($timeDiff > 24 * 60 * 60) {
             $manager = $maintenanceEvent->getManager();
             $manager->registerJob(new Job('coreshop.rule.availability_check', [
-                $this->ruleAvailabilityCheck,
-                'check'
+                $this->ruleAvailabilityProcessor,
+                'process'
             ]));
             $this->configurationService->set('system.rule.availability_check.last_run', time());
         }

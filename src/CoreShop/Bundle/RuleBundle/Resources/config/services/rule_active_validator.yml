@@ -1,0 +1,50 @@
+services:
+
+    coreshop.rule_availability_processor:
+        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityProcessor
+        arguments:
+            - '@event_dispatcher'
+            - '@doctrine.orm.default_entity_manager'
+            - '@coreshop.registry.rule_availability_accessor'
+
+    coreshop.registry.rule_availability_accessor:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - 'CoreShop\Component\Rule\Condition\RuleAvailabilityAccessorInterface'
+            - 'rule-availability-accessor'
+
+    coreshop.rule.availability_accessor.cart_price:
+        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+        arguments:
+             - '@coreshop.repository.cart_price_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_accessor, type: cart_price }
+
+    coreshop.rule.availability_accessor.product_price:
+        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+        arguments:
+             - '@coreshop.repository.product_price_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_accessor, type: product_price }
+
+    coreshop.rule.availability_accessor.product_specific_price:
+        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+        arguments:
+             - '@coreshop.repository.product_specific_price_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_accessor, type: product_specific_price }
+
+    coreshop.rule.availability_accessor.shipping_rule:
+        class: CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityAssessor
+        arguments:
+             - '@coreshop.repository.shipping_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_accessor, type: shipping_rule }
+
+    coreshop.rule_availability_processor_command.maintenance_listener:
+        class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener
+        arguments:
+            - '@coreshop.configuration.service'
+            - '@coreshop.rule_availability_processor'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerAvailabilityCheck }

@@ -10,12 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Rule;
+namespace CoreShop\Component\Rule\Condition;
 
-interface RuleAvailabilityCheckInterface
+use CoreShop\Component\Rule\Model\RuleInterface;
+
+interface RuleAvailabilityAccessorInterface
 {
     /**
-     * @param array $params
+     * @return RuleInterface[]
      */
-    public function check($params = []);
+    public function getRules();
+
+    /**
+     * @param RuleInterface $rule
+     * @return bool
+     */
+    public function isValid(RuleInterface $rule);
 }

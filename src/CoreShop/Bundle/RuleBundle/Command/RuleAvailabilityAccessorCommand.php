@@ -10,33 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Command;
+namespace CoreShop\Bundle\RuleBundle\Command;
 
-use CoreShop\Bundle\CoreBundle\Rule\RuleAvailabilityCheckInterface;
+use CoreShop\Bundle\RuleBundle\Accessor\RuleAvailabilityProcessorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class RuleAvailabilityCommand extends Command
+final class RuleAvailabilityAccessorCommand extends Command
 {
     /**
-     * @var RuleAvailabilityCheckInterface
+     * @var RuleAvailabilityProcessorInterface
      */
-    protected $ruleAvailabilityCheck;
+    protected $ruleAvailabilityProcessor;
 
     /**
-     * @var array
+     * @param RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
      */
-    protected $params;
-
-    /**
-     * @param RuleAvailabilityCheckInterface $ruleAvailabilityCheck
-     * @param array                          $params
-     */
-    public function __construct(RuleAvailabilityCheckInterface $ruleAvailabilityCheck, $params = [])
+    public function __construct(RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor)
     {
-        $this->ruleAvailabilityCheck = $ruleAvailabilityCheck;
-        $this->params = $params;
+        $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
 
         parent::__construct();
     }
@@ -47,7 +40,7 @@ final class RuleAvailabilityCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('coreshop:check-rule-availability')
+            ->setName('coreshop:rules:check-availability')
             ->setDescription('Check for outdated / invalid rules and disable them.');
     }
 
@@ -61,8 +54,7 @@ final class RuleAvailabilityCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $params = $this->params;
-        $this->ruleAvailabilityCheck->check($params);
+        $this->ruleAvailabilityProcessor->process();
         return 0;
     }
 }

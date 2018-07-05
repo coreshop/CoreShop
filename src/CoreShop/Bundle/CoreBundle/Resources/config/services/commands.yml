@@ -56,10 +56,3 @@ services:
             $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
         tags:
           - { name: console.command, command: 'coreshop:install' }
-
-    coreshop.command.check_rule_availability:
-        class: CoreShop\Bundle\CoreBundle\Command\RuleAvailabilityCommand
-        arguments:
-            - '@coreshop.rule.availability_check'
-        tags:
-          - { name: console.command, command: 'coreshop:check-rule-availability' }
