@@ -43,3 +43,4 @@ This section provides a quick getting started tutorial for CoreShop and covers t
     7. [Carrier Distribution](./09_Reports/07_Carrier_Distribution.md)
     8. [Payment Distribution](./09_Reports/08_Payment_Distribution.md)
     9. [Vouchers](./09_Reports/09_Vouchers.md)
+12. [Automation](./10_Automation/README.md)

@@ -34,6 +34,10 @@ Apply Price Rules to specific products.
 Since it's possible to add multiple Specific Price Rules per Product you can adjust the
 priority via the priority number field.
 
+## Automatic Rule Availability Checker
+Rules with time-span elements included on root level will be disabled automatically if they're outdated.
+Read more about automation [here](../10_Automation/README.md#expired-rules).
+
 ## More Information
 
 - [Cart Price Rules](./01_Cart_Price_Rules.md)
