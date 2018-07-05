@@ -12,10 +12,10 @@
 
 namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
-class CartPriceRuleRepository extends EntityRepository implements CartPriceRuleRepositoryInterface
+class CartPriceRuleRepository extends RuleRepository implements CartPriceRuleRepositoryInterface
 {
     /**
      * {@inheritdoc}
