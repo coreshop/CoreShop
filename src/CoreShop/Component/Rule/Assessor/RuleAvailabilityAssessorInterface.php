@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Rule\Condition;
+namespace CoreShop\Component\Rule\Condition\Assessor;
 
 use CoreShop\Component\Rule\Model\RuleInterface;
 

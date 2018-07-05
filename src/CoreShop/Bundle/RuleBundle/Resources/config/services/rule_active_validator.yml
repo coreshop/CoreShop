@@ -10,7 +10,7 @@ services:
     coreshop.registry.rule_availability_assessor:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - 'CoreShop\Component\Rule\Condition\RuleAvailabilityAssessorInterface'
+            - 'CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface'
             - 'rule-availability-assessor'
 
     coreshop.rule.availability_assessor.cart_price:

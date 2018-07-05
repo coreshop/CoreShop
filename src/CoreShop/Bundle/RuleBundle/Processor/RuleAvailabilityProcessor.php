@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\RuleBundle\Processor;
 use CoreShop\Bundle\CoreBundle\Event\RuleAvailabilityCheckEvent;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
-use CoreShop\Component\Rule\Condition\RuleAvailabilityAssessorInterface;
+use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;

@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\RuleBundle\Assessor;
 
 use Carbon\Carbon;
-use CoreShop\Component\Rule\Condition\RuleAvailabilityAssessorInterface;
+use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\Condition;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
