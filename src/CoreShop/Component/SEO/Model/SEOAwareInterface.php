@@ -16,12 +16,14 @@ interface SEOAwareInterface
 {
     /**
      * @param string|null $language
+     *
      * @return string
      */
     public function getMetaTitle($language = null);
 
     /**
      * @param string|null $language
+     *
      * @return string
      */
     public function getMetaDescription($language = null);

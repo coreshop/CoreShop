@@ -71,14 +71,14 @@ class ResourceController extends AdminController
     protected $formErrorSerializer;
 
     /**
-     * @param MetadataInterface $metadata
-     * @param RepositoryInterface $repository
-     * @param FactoryInterface $factory
-     * @param ObjectManager $manager
-     * @param ViewHandler $viewHandler
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param MetadataInterface            $metadata
+     * @param RepositoryInterface          $repository
+     * @param FactoryInterface             $factory
+     * @param ObjectManager                $manager
+     * @param ViewHandler                  $viewHandler
+     * @param EventDispatcherInterface     $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
-     * @param ErrorSerializer $formErrorSerializer
+     * @param ErrorSerializer              $formErrorSerializer
      */
     public function __construct(
         MetadataInterface $metadata,
@@ -89,8 +89,7 @@ class ResourceController extends AdminController
         EventDispatcherInterface $eventDispatcher,
         ResourceFormFactoryInterface $resourceFormFactory,
         ErrorSerializer $formErrorSerializer
-    )
-    {
+    ) {
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;

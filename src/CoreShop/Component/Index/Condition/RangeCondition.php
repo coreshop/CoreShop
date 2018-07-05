@@ -15,7 +15,7 @@ namespace CoreShop\Component\Index\Condition;
 class RangeCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var
      */
     private $fieldName;
 
@@ -31,6 +31,7 @@ class RangeCondition implements ConditionInterface
 
     /**
      * InCondition constructor.
+     *
      * @param $fieldName
      * @param string $from
      * @param string $to

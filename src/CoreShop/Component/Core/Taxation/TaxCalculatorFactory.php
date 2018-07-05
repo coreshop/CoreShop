@@ -33,13 +33,12 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
 
     /**
      * @param TaxRuleRepositoryInterface $taxRuleRepository
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface      $storeContext
      */
     public function __construct(
         TaxRuleRepositoryInterface $taxRuleRepository,
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         $this->taxRuleRepository = $taxRuleRepository;
         $this->storeContext = $storeContext;
     }
@@ -69,7 +68,7 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
                 $firstRow = false;
             }
 
-            if ($taxRule->getBehavior() === TaxCalculatorInterface::DISABLE_METHOD) {
+            if (TaxCalculatorInterface::DISABLE_METHOD === $taxRule->getBehavior()) {
                 break;
             }
         }

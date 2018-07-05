@@ -24,8 +24,6 @@ use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 
-;
-
 class ShopperContext implements ShopperContextInterface
 {
     /**
@@ -59,12 +57,12 @@ class ShopperContext implements ShopperContextInterface
     private $cartContext;
 
     /**
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface    $storeContext
      * @param CurrencyContextInterface $currencyContext
-     * @param LocaleContextInterface $localeContext
-     * @param CountryContextInterface $countryContext
+     * @param LocaleContextInterface   $localeContext
+     * @param CountryContextInterface  $countryContext
      * @param CustomerContextInterface $customerContext
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface     $cartContext
      */
     public function __construct(
         StoreContextInterface $storeContext,
@@ -73,8 +71,7 @@ class ShopperContext implements ShopperContextInterface
         CountryContextInterface $countryContext,
         CustomerContextInterface $customerContext,
         CartContextInterface $cartContext
-    )
-    {
+    ) {
         $this->storeContext = $storeContext;
         $this->currencyContext = $currencyContext;
         $this->localeContext = $localeContext;
@@ -98,6 +95,7 @@ class ShopperContext implements ShopperContextInterface
     {
         try {
             $this->storeContext->getStore();
+
             return true;
         } catch (StoreNotFoundException $ex) {
             return false;
@@ -119,6 +117,7 @@ class ShopperContext implements ShopperContextInterface
     {
         try {
             $this->currencyContext->getCurrency();
+
             return true;
         } catch (CurrencyNotFoundException $ex) {
             return false;
@@ -140,6 +139,7 @@ class ShopperContext implements ShopperContextInterface
     {
         try {
             $this->localeContext->getLocaleCode();
+
             return true;
         } catch (LocaleNotFoundException $ex) {
             return false;
@@ -161,6 +161,7 @@ class ShopperContext implements ShopperContextInterface
     {
         try {
             $this->countryContext->getCountry();
+
             return true;
         } catch (CountryNotFoundException $ex) {
             return false;
@@ -182,6 +183,7 @@ class ShopperContext implements ShopperContextInterface
     {
         try {
             $this->customerContext->getCustomer();
+
             return true;
         } catch (CustomerNotFoundException $ex) {
             return false;

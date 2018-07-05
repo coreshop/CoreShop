@@ -56,11 +56,11 @@ class SalesReport implements ReportInterface, PortletInterface
     private $pimcoreClasses;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @param RepositoryInterface     $storeRepository
+     * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
+     * @param LocaleContextInterface  $localeContext
+     * @param array                   $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -68,8 +68,7 @@ class SalesReport implements ReportInterface, PortletInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
         array $pimcoreClasses
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -95,6 +94,7 @@ class SalesReport implements ReportInterface, PortletInterface
 
     /**
      * @param ParameterBag $parameterBag
+     *
      * @return array
      */
     protected function getData(ParameterBag $parameterBag)
@@ -128,16 +128,18 @@ class SalesReport implements ReportInterface, PortletInterface
             case 'day':
                 $dateFormatter = 'd-m-Y';
                 $groupSelector = 'DATE(FROM_UNIXTIME(orders.orderDate))';
+
                 break;
             case 'month':
                 $dateFormatter = 'F Y';
                 $groupSelector = 'MONTH(FROM_UNIXTIME(orders.orderDate))';
+
                 break;
             case 'year':
                 $dateFormatter = 'Y';
                 $groupSelector = 'YEAR(FROM_UNIXTIME(orders.orderDate))';
-                break;
 
+                break;
         }
 
         $sqlQuery = "
@@ -155,7 +157,7 @@ class SalesReport implements ReportInterface, PortletInterface
                 'timestamp' => $date->getTimestamp(),
                 'datetext' => $date->format($dateFormatter),
                 'sales' => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode())
+                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 

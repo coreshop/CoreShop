@@ -35,8 +35,8 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
 
     /**
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface $moneyConverter
-     * @param CurrencyContextInterface $currencyContext
+     * @param CurrencyConverterInterface  $moneyConverter
+     * @param CurrencyContextInterface    $currencyContext
      */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
     {

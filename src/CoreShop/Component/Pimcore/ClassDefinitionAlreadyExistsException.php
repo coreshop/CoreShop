@@ -20,6 +20,5 @@ if (class_exists(\CoreShop\Component\Pimcore\Exception\ClassDefinitionAlreadyExi
      */
     final class ClassDefinitionAlreadyExistsException extends \Exception
     {
-
     }
 }

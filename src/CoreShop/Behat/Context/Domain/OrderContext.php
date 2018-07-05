@@ -36,13 +36,12 @@ final class OrderContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager    $stateMachineManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         StateMachineManager $stateMachineManager
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->stateMachineManager = $stateMachineManager;
     }

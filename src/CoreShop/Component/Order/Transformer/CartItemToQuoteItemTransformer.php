@@ -26,7 +26,7 @@ class CartItemToQuoteItemTransformer extends AbstractCartItemToSaleItemTransform
      */
     public function transform(ProposalInterface $quote, ProposalItemInterface $cartItem, ProposalItemInterface $quoteItem)
     {
-        /**
+        /*
          * @var $quote QuoteInterface
          * @var $cartItem CartItemInterface
          * @var $quoteItem QuoteItemInterface

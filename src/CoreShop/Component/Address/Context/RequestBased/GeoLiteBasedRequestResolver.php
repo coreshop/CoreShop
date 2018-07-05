@@ -82,7 +82,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         ];
 
         $longIp = ip2long($clientIp);
-        if ($longIp != -1) {
+        if (-1 != $longIp) {
             foreach ($priAddrs as $priAddr) {
                 list($start, $end) = explode('|', $priAddr);
 

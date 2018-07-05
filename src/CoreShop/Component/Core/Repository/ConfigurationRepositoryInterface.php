@@ -19,7 +19,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface ConfigurationRepositoryInterface extends BaseConfigurationRepositoryInterface
 {
     /**
-     * @param string $key
+     * @param string         $key
      * @param StoreInterface $store
      *
      * @return ConfigurationInterface[]

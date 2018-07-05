@@ -54,7 +54,7 @@ class ArrayHelper
 
     /**
      * @param AbstractObject $object
-     * @param null $fieldDefintions
+     * @param null           $fieldDefintions
      *
      * @return array|false
      */
@@ -93,11 +93,13 @@ class ArrayHelper
                             $collection[$fieldName] = _objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
                         }
                     }
+
                     break;
 
                 case 'date':
                     /* @var $value \Pimcore\Date */
                     $collection[$fieldName] = ($value instanceof Carbon) ? $value->getTimestamp() : 0;
+
                     break;
                 default:
                     /* @var $value string */

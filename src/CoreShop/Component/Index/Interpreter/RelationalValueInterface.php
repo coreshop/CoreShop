@@ -12,9 +12,6 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
-
 interface RelationalValueInterface
 {
     /**

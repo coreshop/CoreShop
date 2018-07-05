@@ -25,7 +25,7 @@ interface AvailabilityCheckerInterface
 
     /**
      * @param StockableInterface $stockable
-     * @param int $quantity
+     * @param int                $quantity
      *
      * @return bool
      */

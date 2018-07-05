@@ -62,7 +62,7 @@ interface CategoryInterface extends PimcoreModelInterface
     public function getChildCategories();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasChildCategories();
 

@@ -42,16 +42,15 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     private $cartManager;
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface  $formFactory
      * @param StoreContextInterface $storeContext
-     * @param CartManagerInterface $cartManager
+     * @param CartManagerInterface  $cartManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         StoreContextInterface $storeContext,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->storeContext = $storeContext;
         $this->cartManager = $cartManager;
@@ -122,7 +121,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     }
 
     /**
-     * @param Request $request
+     * @param Request       $request
      * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface
@@ -130,7 +129,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     private function createForm(Request $request, CartInterface $cart)
     {
         $form = $this->formFactory->createNamed('', PaymentType::class, $cart, [
-            'payment_subject' => $cart
+            'payment_subject' => $cart,
         ]);
 
         if ($request->isMethod('post')) {

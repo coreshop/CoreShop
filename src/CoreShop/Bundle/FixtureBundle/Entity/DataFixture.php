@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class DataFixture
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -58,6 +58,7 @@ class DataFixture
 
     /**
      * @param string $className
+     *
      * @return $this
      */
     public function setClassName($className)
@@ -77,6 +78,7 @@ class DataFixture
 
     /**
      * @param \DateTime $loadedAt
+     *
      * @return $this
      */
     public function setLoadedAt($loadedAt)
@@ -88,6 +90,7 @@ class DataFixture
 
     /**
      * @param string $version
+     *
      * @return $this
      */
     public function setVersion($version)

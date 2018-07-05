@@ -30,7 +30,7 @@ final class OrderExpiration implements ProposalExpirationInterface
 
     /**
      * @param OrderRepositoryInterface $orderRepository
-     * @param StateMachineApplier $stateMachineApplier
+     * @param StateMachineApplier      $stateMachineApplier
      */
     public function __construct(OrderRepositoryInterface $orderRepository, StateMachineApplier $stateMachineApplier)
     {

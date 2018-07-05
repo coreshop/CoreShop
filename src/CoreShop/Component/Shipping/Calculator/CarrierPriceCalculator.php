@@ -29,8 +29,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
      */
     public function __construct(
         PrioritizedServiceRegistryInterface $shippingCalculatorRegistry
-    )
-    {
+    ) {
         $this->shippingCalculatorRegistry = $shippingCalculatorRegistry;
     }
 
@@ -42,13 +41,14 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
         $netPrice = 0;
 
         /**
-         * @var $calculator CarrierPriceCalculatorInterface
+         * @var CarrierPriceCalculatorInterface
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
             $price = $calculator->getPrice($carrier, $shippable, $address);
 
             if (false !== $price && null !== $price) {
                 $netPrice = $price;
+
                 break;
             }
         }

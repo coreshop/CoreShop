@@ -22,6 +22,5 @@ final class CoreShopWorkflowBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-
     }
 }

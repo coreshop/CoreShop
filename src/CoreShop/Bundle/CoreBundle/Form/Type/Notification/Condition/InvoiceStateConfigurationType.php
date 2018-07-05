@@ -25,7 +25,6 @@ final class InvoiceStateConfigurationType extends AbstractType
     {
         $builder
             ->add('invoiceState', TextType::class, [
-
             ]);
     }
 

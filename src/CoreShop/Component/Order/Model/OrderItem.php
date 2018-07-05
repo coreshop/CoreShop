@@ -34,8 +34,8 @@ class OrderItem extends SaleItem implements OrderItemInterface
                 return $parent;
             }
             $parent = $parent->getParent();
-        } while ($parent != null);
+        } while (null != $parent);
 
-        throw new \InvalidArgumentException("Order could not be found!");
+        throw new \InvalidArgumentException('Order could not be found!');
     }
 }

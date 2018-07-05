@@ -49,7 +49,7 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
 
     /**
      * @param ProductPriceCalculatorInterface $inner
-     * @param RequestStack $requestStack
+     * @param RequestStack                    $requestStack
      */
     public function __construct(ProductPriceCalculatorInterface $inner, RequestStack $requestStack)
     {

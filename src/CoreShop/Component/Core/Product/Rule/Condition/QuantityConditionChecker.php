@@ -40,7 +40,7 @@ final class QuantityConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        /**
+        /*
          * @var $subject ProductInterface
          */
         Assert::isInstanceOf($subject, ProductInterface::class);

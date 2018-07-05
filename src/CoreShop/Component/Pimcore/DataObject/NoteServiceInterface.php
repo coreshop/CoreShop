@@ -15,41 +15,43 @@ namespace CoreShop\Component\Pimcore\DataObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
-use Pimcore\Model\Tool\Email\Log;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 interface NoteServiceInterface
 {
     /**
      * @param $id
+     *
      * @return Note
      */
     public function getNoteById($id);
 
     /**
      * @param Concrete $object
-     * @param string $noteType
+     * @param string   $noteType
+     *
      * @return Note
      */
     public function createPimcoreNoteInstance(Concrete $object, $noteType);
 
     /**
      * @param string $noteType
+     *
      * @return Note
      */
     public function createAnonymousNoteInstance($noteType);
 
     /**
      * @param Concrete $object
-     * @param string $noteType
+     * @param string   $noteType
+     *
      * @return mixed
      */
     public function getObjectNotes(Concrete $object, $noteType);
 
     /**
-     * @param  Note $note
-     * @param  Document\Email $emailDocument
+     * @param Note           $note
+     * @param Document\Email $emailDocument
+     *
      * @return Note
      */
     public function storeNoteForEmail(Note $note, Document\Email $emailDocument);
@@ -57,6 +59,7 @@ interface NoteServiceInterface
     /**
      * @param $note
      * @param $eventParams
+     *
      * @return Note
      */
     public function storeNote(Note $note, $eventParams = []);
@@ -64,7 +67,6 @@ interface NoteServiceInterface
     /**
      * @param $noteId
      * @param $eventParams
-     * @return void
      */
     public function deleteNote($noteId, $eventParams = []);
 }

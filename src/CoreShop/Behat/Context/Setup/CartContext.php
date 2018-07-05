@@ -45,18 +45,17 @@ final class CartContext implements Context
     private $cartManager;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param CartContextInterface $cartContext
+     * @param SharedStorageInterface       $sharedStorage
+     * @param CartContextInterface         $cartContext
      * @param StorageListModifierInterface $cartModifier
-     * @param CartManagerInterface $cartManager
+     * @param CartManagerInterface         $cartManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext,
         StorageListModifierInterface $cartModifier,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->cartContext = $cartContext;
         $this->cartModifier = $cartModifier;
@@ -104,7 +103,7 @@ final class CartContext implements Context
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
-        $address = current(array_filter($customer->getAddresses(), function($address) use ($postcode) {
+        $address = current(array_filter($customer->getAddresses(), function ($address) use ($postcode) {
             return $address->getPostcode() === $postcode;
         }));
 
@@ -121,7 +120,7 @@ final class CartContext implements Context
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
-        $address = current(array_filter($customer->getAddresses(), function($address) use ($postcode) {
+        $address = current(array_filter($customer->getAddresses(), function ($address) use ($postcode) {
             return $address->getPostcode() === $postcode;
         }));
 

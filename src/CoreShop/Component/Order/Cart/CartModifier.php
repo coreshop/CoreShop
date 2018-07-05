@@ -37,7 +37,7 @@ class CartModifier implements StorageListModifierInterface
     protected $eventDispatcher;
 
     /**
-     * @param FactoryInterface $cartItemFactory
+     * @param FactoryInterface         $cartItemFactory
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(FactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
@@ -51,7 +51,7 @@ class CartModifier implements StorageListModifierInterface
      */
     public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1)
     {
-        /**
+        /*
          * @var $storageList CartInterface
          * @var $product PurchasableInterface
          */
@@ -72,7 +72,7 @@ class CartModifier implements StorageListModifierInterface
      */
     public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item)
     {
-        /**
+        /*
          * @var $storageList CartInterface
          * @var $item CartItemInterface
          */
@@ -92,7 +92,7 @@ class CartModifier implements StorageListModifierInterface
      */
     public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false)
     {
-        /**
+        /*
          * @var $storageList CartInterface
          * @var $product PurchasableInterface
          */

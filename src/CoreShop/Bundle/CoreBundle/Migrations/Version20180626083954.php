@@ -31,25 +31,24 @@ class Version20180626083954 extends AbstractPimcoreMigration implements Containe
         $list->load();
 
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface
          */
         foreach ($list->getObjects() as $order) {
-
             $shipments = $orderShipmentRepository->getDocuments($order);
             $invoice = $orderInvoiceRepository->getDocuments($order);
 
             $changed = false;
-            if (count($shipments) > 0 && $order->getShippingState() === OrderShipmentStates::STATE_NEW) {
+            if (count($shipments) > 0 && OrderShipmentStates::STATE_NEW === $order->getShippingState()) {
                 $changed = true;
                 $order->setShippingState(OrderShipmentStates::STATE_READY);
             }
 
-            if (count($invoice) > 0 && $order->getInvoiceState() === OrderInvoiceStates::STATE_NEW) {
+            if (count($invoice) > 0 && OrderInvoiceStates::STATE_NEW === $order->getInvoiceState()) {
                 $changed = true;
                 $order->setInvoiceState(OrderInvoiceStates::STATE_READY);
             }
 
-            if ($changed === true) {
+            if (true === $changed) {
                 $order->save();
             }
         }
@@ -62,4 +61,3 @@ class Version20180626083954 extends AbstractPimcoreMigration implements Containe
     {
     }
 }
-

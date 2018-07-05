@@ -32,8 +32,9 @@ class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterf
 
     /**
      * EventBasedPaymentProviderResolver constructor.
+     *
      * @param PaymentProviderResolverInterface $inner
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param EventDispatcherInterface         $eventDispatcher
      */
     public function __construct(PaymentProviderResolverInterface $inner, EventDispatcherInterface $eventDispatcher)
     {

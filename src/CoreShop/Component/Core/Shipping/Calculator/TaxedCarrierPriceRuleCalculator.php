@@ -41,15 +41,14 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
 
     /**
      * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param TaxApplicatorInterface $taxApplicator
+     * @param TaxCalculatorFactoryInterface   $taxCalculatorFactory
+     * @param TaxApplicatorInterface          $taxApplicator
      */
     public function __construct(
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
         TaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxApplicatorInterface $taxApplicator
-    )
-    {
+    ) {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxApplicator = $taxApplicator;

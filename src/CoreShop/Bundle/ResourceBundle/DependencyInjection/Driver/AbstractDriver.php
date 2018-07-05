@@ -42,7 +42,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata)
@@ -62,7 +62,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addController(ContainerBuilder $container, MetadataInterface $metadata)
@@ -77,7 +77,7 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference('coreshop.resource_controller.view_handler'),
                 new Reference('coreshop.resource_controller.event_dispatcher'),
                 new Reference('coreshop.resource_controller.form_factory'),
-                new Reference('coreshop.resource.helper.form_error_serializer')
+                new Reference('coreshop.resource.helper.form_error_serializer'),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
@@ -85,7 +85,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addFactory(ContainerBuilder $container, MetadataInterface $metadata)
@@ -124,13 +124,13 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     abstract protected function addManager(ContainerBuilder $container, MetadataInterface $metadata);
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     abstract protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata);

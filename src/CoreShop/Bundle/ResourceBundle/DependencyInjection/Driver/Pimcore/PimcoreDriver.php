@@ -54,7 +54,6 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -68,7 +67,7 @@ final class PimcoreDriver extends AbstractDriver
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
@@ -84,7 +83,7 @@ final class PimcoreDriver extends AbstractDriver
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
-                new Reference('coreshop.resource_controller.view_handler')
+                new Reference('coreshop.resource_controller.view_handler'),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
@@ -98,7 +97,7 @@ final class PimcoreDriver extends AbstractDriver
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata)

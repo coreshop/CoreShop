@@ -44,18 +44,17 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
     private $requestStack;
 
     /**
-     * @param PimcoreContextResolver $pimcoreContextResolver
-     * @param TokenStorageUserResolver $tokenStorageUserResolver
+     * @param PimcoreContextResolver             $pimcoreContextResolver
+     * @param TokenStorageUserResolver           $tokenStorageUserResolver
      * @param TranslationLocaleProviderInterface $localeProvider
-     * @param RequestStack $requestStack
+     * @param RequestStack                       $requestStack
      */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         TokenStorageUserResolver $tokenStorageUserResolver,
         TranslationLocaleProviderInterface $localeProvider,
         RequestStack $requestStack
-    )
-    {
+    ) {
         $this->pimcoreContextResolver = $pimcoreContextResolver;
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
         $this->localeProvider = $localeProvider;
@@ -73,7 +72,7 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
             throw new LocaleNotFoundException('No Request in RequestStack, cannot determine Pimcore Context');
         }
 
-        if ($this->pimcoreContextResolver->getPimcoreContext($request) !== PimcoreContextResolver::CONTEXT_ADMIN) {
+        if (PimcoreContextResolver::CONTEXT_ADMIN !== $this->pimcoreContextResolver->getPimcoreContext($request)) {
             throw new LocaleNotFoundException('Not in Admin Mode');
         }
 

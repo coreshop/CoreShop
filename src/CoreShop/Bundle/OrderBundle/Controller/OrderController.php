@@ -37,6 +37,7 @@ class OrderController extends AbstractSaleDetailController
 {
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getFolderConfigurationAction()
@@ -50,7 +51,7 @@ class OrderController extends AbstractSaleDetailController
         $folderPath = $this->getParameter('coreshop.folder.order');
         $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
 
-        $folder = DataObject::getByPath('/' . $folderPath);
+        $folder = DataObject::getByPath('/'.$folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
@@ -61,12 +62,13 @@ class OrderController extends AbstractSaleDetailController
         }
 
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
-
     }
 
     /**
      * @param Request $request
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function getStatesAction(Request $request)
@@ -78,7 +80,7 @@ class OrderController extends AbstractSaleDetailController
             OrderInvoiceTransitions::IDENTIFIER,
             PaymentTransitions::IDENTIFIER,
             InvoiceTransitions::IDENTIFIER,
-            ShipmentTransitions::IDENTIFIER
+            ShipmentTransitions::IDENTIFIER,
         ];
         $states = [];
         $transitions = [];
@@ -89,7 +91,7 @@ class OrderController extends AbstractSaleDetailController
             $states[$identifier] = [];
 
             /**
-             * @var $stateMachine StateMachine
+             * @var StateMachine
              */
             $stateMachine = $this->get(sprintf('state_machine.%s', $identifier));
             $places = $stateMachine->getDefinition()->getPlaces();
@@ -104,7 +106,7 @@ class OrderController extends AbstractSaleDetailController
                     $transitions[$identifier][$transition->getName()] = [
                         'name' => $transition->getName(),
                         'froms' => [],
-                        'tos' => []
+                        'tos' => [],
                     ];
                 }
 
@@ -119,7 +121,6 @@ class OrderController extends AbstractSaleDetailController
                         $transitions[$identifier][$transition->getName()]['tos'],
                         $transition->getFroms()
                     );
-
             }
 
             $transitions[$identifier] = array_values($transitions[$identifier]);
@@ -130,7 +131,9 @@ class OrderController extends AbstractSaleDetailController
 
     /**
      * @param Request $request
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function updateOrderStateAction(Request $request)
@@ -150,8 +153,8 @@ class OrderController extends AbstractSaleDetailController
         }
 
         $workflow->apply($order, $transition);
-        return $this->viewHandler->handle(['success' => true]);
 
+        return $this->viewHandler->handle(['success' => true]);
     }
 
     /**
@@ -202,7 +205,7 @@ class OrderController extends AbstractSaleDetailController
             $details = [];
             if (is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
                 foreach ($payment->getDetails() as $detailName => $detailValue) {
-                    if (empty($detailValue) && $detailValue != 0) {
+                    if (empty($detailValue) && 0 != $detailValue) {
                         continue;
                     }
                     if (is_array($detailValue)) {
@@ -216,7 +219,7 @@ class OrderController extends AbstractSaleDetailController
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($payment, 'coreshop_payment', [
                 'cancel',
                 'complete',
-                'refund'
+                'refund',
             ], false);
 
             $return[] = [
@@ -227,7 +230,7 @@ class OrderController extends AbstractSaleDetailController
                 'details' => $details,
                 'amount' => $payment->getTotalAmount(),
                 'stateInfo' => $this->getWorkflowStateManager()->getStateInfo('coreshop_payment', $payment->getState(), false),
-                'transitions' => $availableTransitions
+                'transitions' => $availableTransitions,
             ];
         }
 
@@ -236,6 +239,7 @@ class OrderController extends AbstractSaleDetailController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
      */
     protected function getDetails(SaleInterface $sale)
@@ -243,7 +247,6 @@ class OrderController extends AbstractSaleDetailController
         $order = parent::getDetails($sale);
 
         if ($sale instanceof OrderInterface) {
-
             $workflowStateManager = $this->getWorkflowStateManager();
             $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
             $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
@@ -251,7 +254,7 @@ class OrderController extends AbstractSaleDetailController
             $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
 
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($sale, 'coreshop_order', [
-                'cancel'
+                'cancel',
             ], false);
 
             $order['availableOrderTransitions'] = $availableTransitions;
@@ -271,7 +274,9 @@ class OrderController extends AbstractSaleDetailController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
+     *
      * @throws \Exception
      */
     protected function prepareSale(SaleInterface $sale)
@@ -300,10 +305,9 @@ class OrderController extends AbstractSaleDetailController
         $invoiceArray = [];
 
         foreach ($invoices as $invoice) {
-
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($invoice, 'coreshop_invoice', [
                 'complete',
-                'cancel'
+                'cancel',
             ], false);
 
             $data = $this->getDataForObject($invoice);
@@ -339,7 +343,7 @@ class OrderController extends AbstractSaleDetailController
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'create',
                 'ship',
-                'cancel'
+                'cancel',
             ], false);
 
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
@@ -358,11 +362,13 @@ class OrderController extends AbstractSaleDetailController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
      */
     protected function getSummary(SaleInterface $sale)
     {
         $summary = parent::getSummary($sale);
+
         return $summary;
     }
 

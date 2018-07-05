@@ -19,12 +19,14 @@ interface ProductTaxHelperInterface extends HelperInterface
 {
     /**
      * @param PurchasableInterface $product
+     *
      * @return mixed
      */
     public function getTaxAmount(PurchasableInterface $product);
 
     /**
      * @param PurchasableInterface $product
+     *
      * @return mixed
      */
     public function getTaxRate(PurchasableInterface $product);

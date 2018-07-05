@@ -23,6 +23,7 @@ interface ManufacturerInterface extends PimcoreModelInterface
 
     /**
      * @param $name
+     *
      * @return mixed
      */
     public function setName($name);

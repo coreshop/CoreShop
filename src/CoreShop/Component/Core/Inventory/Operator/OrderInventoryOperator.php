@@ -45,6 +45,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
             true
         )) {
             $this->giveBack($order);
+
             return;
         }
 

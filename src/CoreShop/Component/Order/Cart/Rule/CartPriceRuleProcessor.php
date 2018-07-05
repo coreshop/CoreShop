@@ -30,13 +30,12 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 
     /**
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
+     * @param ProposalCartPriceRuleCalculatorInterface  $proposalCartPriceRuleCalculator
      */
     public function __construct(
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
-    )
-    {
+    ) {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
     }

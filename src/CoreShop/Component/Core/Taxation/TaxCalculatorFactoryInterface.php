@@ -19,7 +19,7 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 interface TaxCalculatorFactoryInterface
 {
     /**
-     * @param AddressInterface $address
+     * @param AddressInterface      $address
      * @param TaxRuleGroupInterface $taxRuleGroup
      *
      * @return TaxCalculatorInterface

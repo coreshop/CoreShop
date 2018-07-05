@@ -67,10 +67,11 @@ class FilterGroupHelper implements FilterGroupHelperInterface
 
                         $returnValues[] = [
                             'key' => $id,
-                            'value' => sprintf('%s (%s)', $name, $obj->getId())
+                            'value' => sprintf('%s (%s)', $name, $obj->getId()),
                         ];
                     }
                 }
+
                 break;
 
             default:

@@ -21,7 +21,7 @@ class InheritanceHelper
      * after your functions is finished.
      *
      * @param \Closure $function
-     * @param bool $inheritValues
+     * @param bool     $inheritValues
      *
      * @return mixed
      */

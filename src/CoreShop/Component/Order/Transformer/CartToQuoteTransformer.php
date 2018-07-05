@@ -24,7 +24,7 @@ class CartToQuoteTransformer extends AbstractCartToSaleTransformer
      */
     public function transform(ProposalInterface $cart, ProposalInterface $quote)
     {
-        /**
+        /*
          * @var $cart CartInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);

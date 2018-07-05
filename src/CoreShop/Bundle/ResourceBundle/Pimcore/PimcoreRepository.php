@@ -146,7 +146,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     }
 
     /**
-     * Normalize critera input
+     * Normalize critera input.
      *
      * Input could be
      *
@@ -164,12 +164,12 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      * ]
      *
      * @param $criteria
+     *
      * @return array
      */
     private function normalizeCriteria($criteria)
     {
         $normalized = [
-
         ];
 
         if (is_array($criteria)) {
@@ -189,7 +189,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                         $normalizedCriterion['condition'] = $criterion;
                     }
                 } else {
-                    $normalizedCriterion['condition'] = $key." = ?";
+                    $normalizedCriterion['condition'] = $key.' = ?';
                     $normalizedCriterion['variable'] = [$criterion];
                 }
 
@@ -203,7 +203,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     }
 
     /**
-     * Normalizes Order By
+     * Normalizes Order By.
      *
      * [
      *      "key" => "o_id",
@@ -215,13 +215,14 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      * "o_id ASC"
      *
      * @param $orderBy
+     *
      * @return array
      */
     private function normalizeOrderBy($orderBy)
     {
         $normalized = [
             'key' => '',
-            'direction' => 'ASC'
+            'direction' => 'ASC',
         ];
 
         if (is_array($orderBy)) {
@@ -233,7 +234,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                 $normalized['direction'] = $orderBy['direction'];
             }
         } elseif (is_string($orderBy)) {
-            $exploded = explode(" ", $orderBy);
+            $exploded = explode(' ', $orderBy);
 
             $normalized['key'] = $exploded[0];
 

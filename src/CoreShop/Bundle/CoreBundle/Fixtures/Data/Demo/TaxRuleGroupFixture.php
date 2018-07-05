@@ -51,7 +51,7 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     public function getDependencies()
     {
         return [
-            TaxRateFixture::class
+            TaxRateFixture::class,
         ];
     }
 
@@ -64,7 +64,7 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
             $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
 
             /**
-             * @var $taxRuleGroup TaxRuleGroupInterface
+             * @var TaxRuleGroupInterface
              */
             $taxRuleGroup = $this->container->get('coreshop.factory.tax_rule_group')->createNew();
             $taxRuleGroup->setName('AT');
@@ -72,7 +72,7 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
             $taxRuleGroup->addStore($defaultStore);
 
             /**
-             * @var $taxRule TaxRuleInterface
+             * @var TaxRuleInterface
              */
             $taxRule = $this->container->get('coreshop.factory.tax_rule')->createNew();
             $taxRule->setCountry($this->container->get('coreshop.repository.country')->findByCode('AT'));

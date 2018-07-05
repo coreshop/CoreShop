@@ -17,5 +17,4 @@ use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 
 interface QuoteInterface extends BaseQuoteInterface, CarrierAwareInterface
 {
-
 }

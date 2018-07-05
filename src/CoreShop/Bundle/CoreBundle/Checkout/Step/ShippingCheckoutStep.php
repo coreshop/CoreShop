@@ -55,11 +55,11 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     private $cartManager;
 
     /**
-     * @param CarriersResolverInterface $carriersResolver
+     * @param CarriersResolverInterface          $carriersResolver
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     * @param FormFactoryInterface $formFactory
-     * @param StoreContextInterface $storeContext
-     * @param CartManagerInterface $cartManager
+     * @param FormFactoryInterface               $formFactory
+     * @param StoreContextInterface              $storeContext
+     * @param CartManagerInterface               $cartManager
      */
     public function __construct(
         CarriersResolverInterface $carriersResolver,
@@ -67,8 +67,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         FormFactoryInterface $formFactory,
         StoreContextInterface $storeContext,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->carriersResolver = $carriersResolver;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
@@ -97,7 +96,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function doAutoForward(CartInterface $cart)
     {
-        return $cart->hasShippableItems() === false;
+        return false === $cart->hasShippableItems();
     }
 
     /**
@@ -105,7 +104,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function validate(CartInterface $cart)
     {
-        return $cart->hasShippableItems() === false
+        return false === $cart->hasShippableItems()
             || ($cart->hasItems() &&
                 $cart->getCarrier() instanceof CarrierInterface &&
                 $cart->getShippingAddress() instanceof AddressInterface &&
@@ -124,6 +123,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
                 $cart = $form->getData();
 
                 $this->cartManager->persistCart($cart);
+
                 return true;
             } else {
                 throw new CheckoutException('Shipping Form is invalid', 'coreshop.ui.error.coreshop_checkout_shipping_form_invalid');
@@ -155,6 +155,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     private function getCarriers(CartInterface $cart)
     {
         $carriers = $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
+
         return $carriers;
     }
 
@@ -169,7 +170,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     {
         $form = $this->formFactory->createNamed('', CarrierType::class, $cart, [
             'carriers' => $carriers,
-            'cart' => $cart
+            'cart' => $cart,
         ]);
 
         if ($request->isMethod('post')) {

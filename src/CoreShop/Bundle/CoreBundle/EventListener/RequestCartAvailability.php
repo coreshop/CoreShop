@@ -49,11 +49,11 @@ final class RequestCartAvailability
     private $session;
 
     /**
-     * @param CartManagerInterface $cartManager
-     * @param CartContextInterface $cartContext
+     * @param CartManagerInterface          $cartManager
+     * @param CartContextInterface          $cartContext
      * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper $pimcoreRequestHelper
-     * @param SessionInterface $session
+     * @param RequestHelper                 $pimcoreRequestHelper
+     * @param SessionInterface              $session
      */
     public function __construct(
         CartManagerInterface $cartManager,
@@ -61,8 +61,7 @@ final class RequestCartAvailability
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper,
         SessionInterface $session
-    )
-    {
+    ) {
         $this->cartManager = $cartManager;
         $this->cartContext = $cartContext;
         $this->configurationService = $configurationService;
@@ -71,7 +70,7 @@ final class RequestCartAvailability
     }
 
     /**
-     * Check if Cart needs a recalculation because of changed items from system
+     * Check if Cart needs a recalculation because of changed items from system.
      *
      * @param GetResponseEvent $event
      */
@@ -89,7 +88,7 @@ final class RequestCartAvailability
         $cart = $this->cartContext->getCart();
 
         if ($cart->getId()) {
-            if ($cart->getNeedsRecalculation() === true) {
+            if (true === $cart->getNeedsRecalculation()) {
                 $this->session->getFlashBag()->add('coreshop_global_error', 'coreshop.global_error.cart_has_changed');
                 $cart->setNeedsRecalculation(false);
                 $this->cartManager->persistCart($cart);

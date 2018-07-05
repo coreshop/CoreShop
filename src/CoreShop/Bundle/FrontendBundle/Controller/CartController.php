@@ -45,6 +45,7 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function summaryAction(Request $request)
@@ -62,9 +63,10 @@ class CartController extends FrontendController
 
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                     $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
+
                     return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
                         'cart' => $this->getCart(),
-                        'form' => $form->createView()
+                        'form' => $form->createView(),
                     ]);
                 }
 
@@ -76,9 +78,10 @@ class CartController extends FrontendController
 
                     if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
                         $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
+
                         return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
                             'cart' => $this->getCart(),
-                            'form' => $form->createView()
+                            'form' => $form->createView(),
                         ]);
                     }
                 }
@@ -105,19 +108,20 @@ class CartController extends FrontendController
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
             'cart' => $cart,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function shipmentCalculationAction(Request $request)
     {
         $cart = $this->getCart();
         $form = $this->createForm(ShippingCalculatorType::class, null, [
-                'action' => $this->generateCoreShopUrl(null, 'coreshop_cart_check_shipment')
+                'action' => $this->generateCoreShopUrl(null, 'coreshop_cart_check_shipment'),
             ]
         );
 
@@ -126,7 +130,6 @@ class CartController extends FrontendController
 
         //check if there is a shipping calculation request
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
-
             $shippingCalculatorFormData = $form->getData();
             $carrierPriceCalculator = $this->get('coreshop.carrier.price_calculator.taxed');
             $carriersResolver = $this->get('coreshop.carrier.resolver');
@@ -141,22 +144,22 @@ class CartController extends FrontendController
                 $price = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress);
                 $priceWithoutTax = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress, false);
                 $availableCarriers[] = [
-                    'name'            => $carrier->getLabel(),
-                    'isFreeShipping'  => $price === 0,
-                    'price'           => $price,
+                    'name' => $carrier->getLabel(),
+                    'isFreeShipping' => 0 === $price,
+                    'price' => $price,
                     'priceWithoutTax' => $priceWithoutTax,
-                    'data'            => $carrier
+                    'data' => $carrier,
                 ];
             }
-            uasort($availableCarriers, function($a, $b) {
-                return ($a['price'] > $b['price']);
+            uasort($availableCarriers, function ($a, $b) {
+                return $a['price'] > $b['price'];
             });
         }
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
-            'availableCarriers' => $availableCarriers
+            'availableCarriers' => $availableCarriers,
         ]);
     }
 
@@ -171,6 +174,7 @@ class CartController extends FrontendController
 
         if (!$product instanceof PurchasableInterface) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+
             return $this->redirect($redirect);
         }
 
@@ -187,6 +191,7 @@ class CartController extends FrontendController
 
             if (!$hasStock) {
                 $this->addFlash('error', 'coreshop.ui.item_is_out_of_stock');
+
                 return $this->redirect($redirect);
             }
         }
@@ -254,6 +259,7 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createQuoteAction(Request $request)

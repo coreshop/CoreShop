@@ -58,13 +58,15 @@ final class WkHtmlToPdf implements PdfRendererInterface
         }
 
         $pdfContent = null;
+
         try {
             $pdfContent = $this->convert($bodyHtml, $config);
         } catch (\Exception $e) {
             $this->unlinkFile($bodyHtml);
             $this->unlinkFile($headerHtml);
             $this->unlinkFile($footerHtml);
-            throw new \Exception('error while converting pdf. message was: ' . $e->getMessage(), 0, $e);
+
+            throw new \Exception('error while converting pdf. message was: '.$e->getMessage(), 0, $e);
         }
 
         $this->unlinkFile($bodyHtml);
@@ -86,6 +88,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
         if ($string) {
             $tmpHtmlFile = $this->kernelCacheDir.'/'.uniqid().'.htm';
             file_put_contents($tmpHtmlFile, $this->replaceUrls($string));
+
             return $tmpHtmlFile;
         }
 
@@ -94,6 +97,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
 
     /**
      * @param $string
+     *
      * @return mixed|null|string|string[]
      */
     private function replaceUrls($string)
@@ -107,14 +111,14 @@ final class WkHtmlToPdf implements PdfRendererInterface
             foreach ($matches[0] as $key => $value) {
                 $path = $matches[2][$key];
 
-                if (strpos($path, '//') === 0) {
+                if (0 === strpos($path, '//')) {
                     $absolutePath = 'http:'.$path;
-                } elseif (strpos($path, '/') === 0) {
+                } elseif (0 === strpos($path, '/')) {
                     $absolutePath = preg_replace('@^'.$replacePrefix.'/@', '/', $path);
                     $absolutePath = $hostUrl.$absolutePath;
                 } else {
                     $absolutePath = $hostUrl."/$path";
-                    if ($path[0] == '?') {
+                    if ('?' == $path[0]) {
                         $absolutePath = $hostUrl.$path;
                     }
                     $netUrl = new \Net_URL2($absolutePath);
@@ -184,7 +188,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
         if ($xvfb = self::getXvfbBinary()) {
             $command = $xvfb.' --auto-servernum --server-args="-screen 0, 1280x1024x24" '.$wkHtmlTopPfBinary.' --use-xserver '.$options;
         } else {
-            $command = $wkHtmlTopPfBinary . $options;
+            $command = $wkHtmlTopPfBinary.$options;
         }
 
         $execCommand = $command.' '.$httpSource.' '.$tmpPdfFile;
@@ -200,7 +204,6 @@ final class WkHtmlToPdf implements PdfRendererInterface
         $this->unlinkFile($tmpPdfFile);
 
         return $pdfContent;
-
     }
 
     /**

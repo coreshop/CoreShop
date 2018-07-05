@@ -86,6 +86,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
 
             if ($arrayItem->getId() === $item->getId()) {
                 unset($items[$i]);
+
                 break;
             }
         }

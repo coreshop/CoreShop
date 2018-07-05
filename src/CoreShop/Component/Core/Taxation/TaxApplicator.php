@@ -17,8 +17,7 @@ final class TaxApplicator implements TaxApplicatorInterface
      */
     public function __construct(
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         $this->storeContext = $storeContext;
     }
 

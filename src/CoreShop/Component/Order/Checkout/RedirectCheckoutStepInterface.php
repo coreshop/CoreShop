@@ -22,7 +22,7 @@ interface RedirectCheckoutStepInterface
      * Get Next Route for Step.
      *
      * @param CartInterface $cart
-     * @param Request $request
+     * @param Request       $request
      *
      * @returns RedirectResponse
      **/

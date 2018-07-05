@@ -51,11 +51,11 @@ final class ShippingContext implements Context
     private $carrierPriceCalculator;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param CarrierRepositoryInterface $carrierRepository
+     * @param SharedStorageInterface           $sharedStorage
+     * @param CarrierRepositoryInterface       $carrierRepository
      * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param FactoryInterface $addressFactory
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @param FactoryInterface                 $addressFactory
+     * @param CarrierPriceCalculatorInterface  $carrierPriceCalculator
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -63,8 +63,7 @@ final class ShippingContext implements Context
         RuleValidationProcessorInterface $ruleValidationProcessor,
         FactoryInterface $addressFactory,
         CarrierPriceCalculatorInterface $carrierPriceCalculator
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
@@ -96,7 +95,7 @@ final class ShippingContext implements Context
 
         Assert::true($this->ruleValidationProcessor->isValid($carrier, $rule, [
             'shippable' => $cart,
-            'address' => $address
+            'address' => $address,
         ]));
     }
 
@@ -110,7 +109,7 @@ final class ShippingContext implements Context
 
         Assert::false($this->ruleValidationProcessor->isValid($carrier, $rule, [
             'shippable' => $cart,
-            'address' => $address
+            'address' => $address,
         ]));
     }
 

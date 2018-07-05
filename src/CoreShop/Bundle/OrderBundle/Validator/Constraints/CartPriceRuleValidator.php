@@ -36,7 +36,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
 
     /**
      * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
      */
     public function __construct(CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
@@ -49,7 +49,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        /** @var CartPriceRule $constraint */
+        /* @var CartPriceRule $constraint */
         Assert::isInstanceOf($constraint, CartPriceRule::class);
 
         if (!$value instanceof CartInterface) {

@@ -33,7 +33,6 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
             $em->persist($filterCondition);
         }
 
-
         $em->flush();
 
         $db = $this->container->get('doctrine.dbal.default_connection')->executeQuery('ALTER TABLE coreshop_filter_condition CHANGE field field VARCHAR(255) DEFAULT NULL;');
@@ -45,6 +44,5 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

@@ -25,9 +25,9 @@ class GridConfigInstaller implements GridConfigInstallerInterface
         $list->addConditionParam('name = ?', $name);
         $elements = $list->load();
 
-        if (count($elements) === 0) {
+        if (0 === count($elements)) {
             $gridConfig = new GridConfig();
-        } else if ($overwrite) {
+        } elseif ($overwrite) {
             $gridConfig = $elements[0];
         } else {
             return;

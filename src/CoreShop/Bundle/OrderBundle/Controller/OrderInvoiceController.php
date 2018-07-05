@@ -32,6 +32,7 @@ class OrderInvoiceController extends PimcoreController
 {
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function getInvoiceAbleItemsAction(Request $request)
@@ -91,7 +92,6 @@ class OrderInvoiceController extends PimcoreController
         }
 
         try {
-
             // request invoice ready state from order, if it's our first invoice.
             $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_invoice');
             if ($workflow->can($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE)) {
@@ -112,6 +112,7 @@ class OrderInvoiceController extends PimcoreController
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function updateStateAction(Request $request)
@@ -131,6 +132,7 @@ class OrderInvoiceController extends PimcoreController
         }
 
         $workflow->apply($invoice, $transition);
+
         return $this->viewHandler->handle(['success' => true]);
     }
 
@@ -145,11 +147,10 @@ class OrderInvoiceController extends PimcoreController
         $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
 
         if ($invoice instanceof OrderInvoiceInterface) {
-
             try {
                 $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice);
                 $header = [
-                    'Content-Type'        => 'application/pdf',
+                    'Content-Type' => 'application/pdf',
                     'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
                 ];
             } catch (\Exception $e) {
@@ -158,7 +159,6 @@ class OrderInvoiceController extends PimcoreController
             }
 
             return new Response($responseData, 200, $header);
-
         }
 
         throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));

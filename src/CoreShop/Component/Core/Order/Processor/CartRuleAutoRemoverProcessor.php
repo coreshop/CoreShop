@@ -39,20 +39,18 @@ final class CartRuleAutoRemoverProcessor implements CartProcessorInterface
 
     /**
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param CartPriceRuleUnProcessorInterface         $cartPriceRuleUnProcessor
+     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
      */
     public function __construct(
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
         CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-    )
-    {
+    ) {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
         $this->voucherCodeRepository = $voucherCodeRepository;
     }
-
 
     /**
      * {@inheritdoc}

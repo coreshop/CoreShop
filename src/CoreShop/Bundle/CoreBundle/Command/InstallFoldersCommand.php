@@ -26,9 +26,8 @@ final class InstallFoldersCommand extends AbstractInstallCommand
      */
     protected $folderInstaller;
 
-
     /**
-     * @param KernelInterface $kernel
+     * @param KernelInterface         $kernel
      * @param CommandDirectoryChecker $directoryChecker
      * @param FolderInstallerProvider $folderInstaller
      */

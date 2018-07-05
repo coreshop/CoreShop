@@ -19,6 +19,7 @@ class MailController extends FrontendController
 {
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function mailAction(Request $request)
@@ -28,6 +29,7 @@ class MailController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function orderConfirmationAction(Request $request)

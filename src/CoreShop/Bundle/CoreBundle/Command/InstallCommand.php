@@ -42,7 +42,7 @@ final class InstallCommand extends AbstractInstallCommand
         [
             'command' => 'assets',
             'message' => 'Install CoreShop Assets.',
-        ]
+        ],
     ];
 
     /**
@@ -56,10 +56,10 @@ final class InstallCommand extends AbstractInstallCommand
     private $bundle;
 
     /**
-     * @param KernelInterface $kernel
+     * @param KernelInterface         $kernel
      * @param CommandDirectoryChecker $directoryChecker
-     * @param MigrationManager $migrationManager
-     * @param Bundle $bundle
+     * @param MigrationManager        $migrationManager
+     * @param Bundle                  $bundle
      */
     public function __construct(
         KernelInterface $kernel,
@@ -72,7 +72,6 @@ final class InstallCommand extends AbstractInstallCommand
         $this->migrationManager = $migrationManager;
         $this->bundle = $bundle;
     }
-
 
     /**
      * {@inheritdoc}

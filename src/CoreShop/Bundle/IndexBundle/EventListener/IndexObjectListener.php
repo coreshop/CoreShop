@@ -63,7 +63,7 @@ final class IndexObjectListener
     /**
      * @param AbstractObject $object
      */
-    protected function updateInheritableChildren(AbstractObject $object)
+    private function updateInheritableChildren(AbstractObject $object)
     {
         if (!$object->hasChildren($this->validObjectTypes)) {
             return;

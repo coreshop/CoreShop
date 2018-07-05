@@ -54,11 +54,11 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $taxItemFactory;
 
     /**
-     * @param ObjectServiceInterface $objectService
-     * @param string $pathForItems
+     * @param ObjectServiceInterface              $objectService
+     * @param string                              $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param FactoryInterface $taxRateFactory
-     * @param FactoryInterface $taxItemFactory
+     * @param FactoryInterface                    $taxRateFactory
+     * @param FactoryInterface                    $taxItemFactory
      */
     public function __construct(
         ObjectServiceInterface $objectService,
@@ -66,8 +66,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         TransformerEventDispatcherInterface $eventDispatcher,
         FactoryInterface $taxRateFactory,
         FactoryInterface $taxItemFactory
-    )
-    {
+    ) {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -80,7 +79,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
      */
     public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity)
     {
-        /**
+        /*
          * @var $invoice OrderInvoiceInterface
          * @var $orderItem OrderItemInterface
          * @var $invoiceItem OrderInvoiceItemInterface
@@ -111,7 +110,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), false);
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), true);
 
-        VersionHelper::useVersioning(function() use ($invoiceItem) {
+        VersionHelper::useVersioning(function () use ($invoiceItem) {
             $invoiceItem->save();
         }, false);
 
@@ -121,7 +120,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     }
 
     /**
-     * @param OrderItemInterface $orderItem
+     * @param OrderItemInterface        $orderItem
      * @param OrderInvoiceItemInterface $docItem
      * @param $quantity
      * @param bool $base
@@ -141,7 +140,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
             foreach ($orderTaxes as $tax) {
                 if ($tax instanceof TaxItemInterface) {
                     /**
-                     * @var $taxRate TaxRateInterface
+                     * @var TaxRateInterface
                      */
                     $taxRate = $this->taxRateFactory->createNew();
                     $taxRate->setRate($tax->getRate());
@@ -149,7 +148,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
                     $taxCalculator = new TaxRulesTaxCalculator([$taxRate]);
 
                     /**
-                     * @var $itemTax TaxItemInterface
+                     * @var TaxItemInterface
                      */
                     $itemTax = $this->taxItemFactory->createNew();
                     $itemTax->setName($tax->getName());

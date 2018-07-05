@@ -20,6 +20,5 @@ if (class_exists(\CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitio
      */
     class FieldCollectionDefinitionUpdate
     {
-
     }
 }

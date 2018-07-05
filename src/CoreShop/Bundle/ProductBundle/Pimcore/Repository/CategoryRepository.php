@@ -24,7 +24,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     public function findFirstLevel()
     {
         $list = $this->getList();
-        $list->setCondition("parentCategory__id is null");
+        $list->setCondition('parentCategory__id is null');
 
         return $list->getObjects();
     }
@@ -35,7 +35,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     public function findChildCategories(CategoryInterface $category)
     {
         $list = $this->getList();
-        $list->setCondition("parentCategory__id = ?", [$category->getId()]);
+        $list->setCondition('parentCategory__id = ?', [$category->getId()]);
 
         //TODO: fix as soon as CoreShop requires pimcore/core-version:~5.2.2 as minimum
         if (method_exists($category, 'getChildrenSortBy')) {
@@ -43,8 +43,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
                 sprintf('o_%s ASC', $category->getChildrenSortBy()),
                 false
             );
-        }
-        else {
+        } else {
             $list->setOrderKey(
                 'o_key ASC',
                 false

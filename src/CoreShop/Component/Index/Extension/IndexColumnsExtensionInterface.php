@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Index\Extension;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
 
 interface IndexColumnsExtensionInterface extends IndexExtensionInterface
 {
@@ -29,6 +28,7 @@ interface IndexColumnsExtensionInterface extends IndexExtensionInterface
 
     /**
      * @param IndexableInterface $indexable
+     *
      * @return array
      */
     public function getIndexColumns(IndexableInterface $indexable);

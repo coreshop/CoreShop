@@ -55,11 +55,11 @@ class VouchersReport implements ReportInterface
     private $pimcoreClasses;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @param RepositoryInterface     $storeRepository
+     * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
+     * @param LocaleContextInterface  $localeContext
+     * @param array                   $pimcoreClasses
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -67,8 +67,7 @@ class VouchersReport implements ReportInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
         array $pimcoreClasses
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -91,7 +90,7 @@ class VouchersReport implements ReportInterface
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 25);
-        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
 
         $classId = $this->pimcoreClasses['order'];
 
@@ -128,7 +127,7 @@ class VouchersReport implements ReportInterface
                 'usedDate' => $date->getTimestamp(),
                 'code' => $result['code'],
                 'rule' => !empty($result['rule']) ? $result['rule'] : '--',
-                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode())
+                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 

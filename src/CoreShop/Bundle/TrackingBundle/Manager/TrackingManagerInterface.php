@@ -18,7 +18,6 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface TrackingManagerInterface
 {
-
     /**
      * @param PurchasableInterface $product
      */
@@ -46,7 +45,7 @@ interface TrackingManagerInterface
     /**
      * @param CartInterface $cart
      * @param null          $stepIdentifier
-     * @param boolean       $isFirstStep
+     * @param bool          $isFirstStep
      * @param null          $checkoutOption
      */
     public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null);

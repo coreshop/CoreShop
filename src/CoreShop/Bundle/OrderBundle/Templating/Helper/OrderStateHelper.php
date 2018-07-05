@@ -50,12 +50,12 @@ class OrderStateHelper extends Helper implements OrderStateHelperInterface
         $calculatedState = $orderState['state'];
 
         // order has been canceled or is done.
-        if ($calculatedState !== OrderStates::STATE_NEW) {
+        if (OrderStates::STATE_NEW !== $calculatedState) {
             $calculatedState = $orderState['label'];
         } else {
-            if ($paymentState['state'] !== OrderPaymentStates::STATE_PAID) {
+            if (OrderPaymentStates::STATE_PAID !== $paymentState['state']) {
                 $calculatedState = $paymentState['label'];
-            } elseif ($shippingState['state'] !== OrderShipmentStates::STATE_SHIPPED) {
+            } elseif (OrderShipmentStates::STATE_SHIPPED !== $shippingState['state']) {
                 $calculatedState = $shippingState['label'];
             }
         }

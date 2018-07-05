@@ -65,25 +65,25 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
                         'path' => '^/admin/coreshop',
                         'priorities' => ['json', 'xml'],
                         'fallback_format' => 'json',
-                        'prefer_extension' => true
+                        'prefer_extension' => true,
                     ],
                     [
                         'path' => '^/',
-                        'stop' => true
-                    ]
-                ]
-            ]
+                        'stop' => true,
+                    ],
+                ],
+            ],
         ];
 
         $frameworkConfig = [
-            'form' => true
+            'form' => true,
         ];
 
         $doctrineConfig = [
             'dbal' => [
                 'mapping_types' => [
-                    'enum' => 'string'
-                ]
+                    'enum' => 'string',
+                ],
             ],
             'orm' => [
                 'auto_generate_proxy_classes' => '%kernel.debug%',
@@ -92,47 +92,47 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
                         'auto_mapping' => true,
                         'metadata_cache_driver' => [
                             'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_metadata_cache'
+                            'id' => 'doctrine_cache.providers.coreshop_pimcore_metadata_cache',
                         ],
                         'result_cache_driver' => [
                             'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_result_cache'
+                            'id' => 'doctrine_cache.providers.coreshop_pimcore_result_cache',
                         ],
                         'query_cache_driver' => [
                             'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_query_cache'
-                        ]
-                    ]
-                ]
-            ]
+                            'id' => 'doctrine_cache.providers.coreshop_pimcore_query_cache',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $doctrineCacheConfig = [
             'custom_providers' => [
                 'coreshop_pimcore_cache' => [
-                    'prototype' => 'coreshop.doctrine.cache.pimcore'
-                ]
+                    'prototype' => 'coreshop.doctrine.cache.pimcore',
+                ],
             ],
             'providers' => [
                 'coreshop_pimcore_metadata_cache' => [
-                    'coreshop_pimcore_cache' => []
+                    'coreshop_pimcore_cache' => [],
                 ],
                 'coreshop_pimcore_result_cache' => [
-                    'coreshop_pimcore_cache' => []
+                    'coreshop_pimcore_cache' => [],
                 ],
                 'coreshop_pimcore_query_cache' => [
-                    'coreshop_pimcore_cache' => []
-                ]
-            ]
+                    'coreshop_pimcore_cache' => [],
+                ],
+            ],
         ];
 
         $stofDoctrineExtensions = [
             'default_locale' => '%locale%',
             'orm' => [
                 'default' => [
-                    'timestampable' => true
-                ]
-            ]
+                    'timestampable' => true,
+                ],
+            ],
         ];
 
         $container->prependExtensionConfig('fos_rest', $fosRestConfig);

@@ -17,7 +17,6 @@ use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 
-
 class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
     /**

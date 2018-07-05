@@ -28,13 +28,12 @@ final class ThemeHelper implements ThemeHelperInterface
 
     /**
      * @param ThemeResolverInterface $themeResolver
-     * @param ActiveTheme $activeTheme
+     * @param ActiveTheme            $activeTheme
      */
     public function __construct(
         ThemeResolverInterface $themeResolver,
         ActiveTheme $activeTheme
-    )
-    {
+    ) {
         $this->themeResolver = $themeResolver;
         $this->activeTheme = $activeTheme;
     }
@@ -42,6 +41,7 @@ final class ThemeHelper implements ThemeHelperInterface
     /**
      * @param $themeName
      * @param \Closure $function
+     *
      * @return mixed
      */
     public function useTheme($themeName, \Closure $function)

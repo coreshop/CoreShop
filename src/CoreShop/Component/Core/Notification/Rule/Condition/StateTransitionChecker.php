@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Core\Notification\Rule\Condition;
 
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Webmozart\Assert\Assert;
 
 final class StateTransitionChecker extends AbstractConditionChecker
@@ -22,7 +21,6 @@ final class StateTransitionChecker extends AbstractConditionChecker
      * @var string
      */
     private $interface;
-
 
     /**
      * @param string $interface

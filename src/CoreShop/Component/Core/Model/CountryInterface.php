@@ -15,7 +15,6 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Address\Model\CountryInterface as BaseCountryInterface;
 use CoreShop\Component\Store\Model\StoresAwareInterface;
 
-
 interface CountryInterface extends BaseCountryInterface, StoresAwareInterface
 {
     /**

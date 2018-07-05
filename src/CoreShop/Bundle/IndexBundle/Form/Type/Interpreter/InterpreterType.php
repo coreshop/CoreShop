@@ -43,7 +43,7 @@ final class InterpreterType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-         $builder
+        $builder
             ->add('type', IndexColumnInterpreterChoiceType::class)
         ;
 

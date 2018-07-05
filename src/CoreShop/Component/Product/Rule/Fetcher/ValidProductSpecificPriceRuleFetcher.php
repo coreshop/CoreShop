@@ -20,7 +20,7 @@ final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInt
     /**
      * @var RuleValidationProcessorInterface
      */
-    protected $ruleValidationProcessor;
+    private $ruleValidationProcessor;
 
     /**
      * @param RuleValidationProcessorInterface $ruleValidationProcessor

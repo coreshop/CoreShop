@@ -14,7 +14,6 @@ namespace CoreShop\Component\Pimcore\Exception;
 
 final class ClassDefinitionAlreadyExistsException extends \Exception
 {
-
 }
 
 class_alias(ClassDefinitionAlreadyExistsException::class, 'CoreShop\Component\Pimcore\ClassDefinitionAlreadyExistsException');

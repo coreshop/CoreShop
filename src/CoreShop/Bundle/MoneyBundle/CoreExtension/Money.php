@@ -18,7 +18,7 @@ use Pimcore\Model;
 class Money extends Model\DataObject\ClassDefinition\Data
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
@@ -35,21 +35,21 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public $defaultValue;
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var string
      */
     public $queryColumnType = 'bigint(20)';
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var string
      */
     public $columnType = 'bigint(20)';
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
@@ -90,7 +90,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     public function getDefaultValue()
     {
-        if ($this->defaultValue !== null) {
+        if (null !== $this->defaultValue) {
             return $this->toNumeric($this->defaultValue);
         }
 
@@ -162,9 +162,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataFromResource
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -180,9 +180,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataForQueryResource
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -194,9 +194,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataForEditmode
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -208,9 +208,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataFromEditmode
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -226,9 +226,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getVersionPreview
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -238,10 +238,10 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * Checks if data is valid for current data field
+     * Checks if data is valid for current data field.
      *
      * @param mixed $data
-     * @param bool $omitMandatoryCheck
+     * @param bool  $omitMandatoryCheck
      *
      * @throws \Exception
      */
@@ -273,12 +273,12 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * converts object data to a simple string value or CSV Export
+     * converts object data to a simple string value or CSV Export.
      *
      * @abstract
      *
      * @param Model\DataObject\AbstractObject $object
-     * @param array $params
+     * @param array                           $params
      *
      * @return string
      */
@@ -290,11 +290,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * fills object field data values from CSV Import String
+     * fills object field data values from CSV Import String.
      *
-     * @param string $importValue
+     * @param string                               $importValue
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -307,7 +307,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
 
     /** True if change is allowed in edit mode.
      * @param string $object
-     * @param mixed $params
+     * @param mixed  $params
      *
      * @return bool
      */
@@ -333,7 +333,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     protected function toNumeric($value)
     {
-        if (strpos((string) $value, '.') === false) {
+        if (false === strpos((string) $value, '.')) {
             return (int) $value;
         }
 

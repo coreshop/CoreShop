@@ -20,7 +20,7 @@ class Version20180310155354 extends AbstractPimcoreMigration
 
         foreach ($results as $result) {
             /**
-             * @var $email Document\Email
+             * @var Document\Email
              */
             $email = Document\Email::getById($result['id']);
 

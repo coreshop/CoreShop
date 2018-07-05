@@ -27,29 +27,28 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var OrderInvoiceRepositoryInterface
      */
-    protected $orderInvoiceRepository;
+    private $orderInvoiceRepository;
 
     /**
      * @var ProcessableInterface
      */
-    protected $processable;
+    private $processable;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager             $stateMachineManager
      * @param OrderInvoiceRepositoryInterface $orderInvoiceRepository
-     * @param ProcessableInterface $processable
+     * @param ProcessableInterface            $processable
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         OrderInvoiceRepositoryInterface $orderInvoiceRepository,
         ProcessableInterface $processable
-    )
-    {
+    ) {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderInvoiceRepository = $orderInvoiceRepository;
         $this->processable = $processable;
@@ -57,11 +56,12 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
+     *
      * @return mixed|void
      */
     public function resolve(OrderInterface $order)
     {
-        if ($order->getInvoiceState() === OrderInvoiceStates::STATE_INVOICED) {
+        if (OrderInvoiceStates::STATE_INVOICED === $order->getInvoiceState()) {
             return;
         }
 
@@ -78,7 +78,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $invoiceState
+     * @param string         $invoiceState
      *
      * @return int
      */
@@ -90,7 +90,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         /** @var OrderInvoiceInterface $invoice */
         foreach ($invoices as $invoice) {
             if ($invoice->getState() === $invoiceState) {
-                $items++;
+                ++$items;
             }
         }
 
@@ -99,8 +99,8 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $invoiceState
-     * @param string $orderInvoiceState
+     * @param string         $invoiceState
+     * @param string         $orderInvoiceState
      *
      * @return bool
      */
@@ -108,8 +108,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         OrderInterface $order,
         string $invoiceState,
         string $orderInvoiceState
-    ): bool
-    {
+    ): bool {
         $invoiceInStateAmount = $this->countOrderInvoicesInState($order, $invoiceState);
         $invoiceAmount = count($this->orderInvoiceRepository->getDocuments($order));
 

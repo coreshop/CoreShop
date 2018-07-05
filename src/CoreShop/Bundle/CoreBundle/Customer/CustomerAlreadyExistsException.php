@@ -14,5 +14,4 @@ namespace CoreShop\Bundle\CoreBundle\Customer;
 
 final class CustomerAlreadyExistsException extends \Exception
 {
-
 }

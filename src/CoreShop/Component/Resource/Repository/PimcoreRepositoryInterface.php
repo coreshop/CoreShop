@@ -24,6 +24,7 @@ interface PimcoreRepositoryInterface extends RepositoryInterface
     /**
      * @param $id
      * @param bool $force
+     *
      * @return mixed
      */
     public function forceFind($id, $force = true);

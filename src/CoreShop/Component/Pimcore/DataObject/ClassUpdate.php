@@ -29,6 +29,7 @@ class ClassUpdate extends AbstractDefinitionUpdate
 
     /**
      * @param $className
+     *
      * @throws ClassDefinitionNotFoundException
      */
     public function __construct($className)

@@ -14,7 +14,6 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,14 +30,13 @@ final class CountryContext implements Context
     private $countryRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface     $sharedStorage
      * @param CountryRepositoryInterface $countryRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CountryRepositoryInterface $countryRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->countryRepository = $countryRepository;
     }

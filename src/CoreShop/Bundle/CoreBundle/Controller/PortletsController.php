@@ -20,6 +20,7 @@ class PortletsController extends AdminController
 {
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function getPortletDataAction(Request $request)
@@ -36,7 +37,7 @@ class PortletsController extends AdminController
 
         return $this->viewHandler->handle([
             'success' => true,
-            'data' => $portlet->getPortletData($request->query)
+            'data' => $portlet->getPortletData($request->query),
         ]);
     }
 }

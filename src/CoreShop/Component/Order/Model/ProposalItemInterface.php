@@ -40,48 +40,52 @@ interface ProposalItemInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getItemPrice($withTax = true);
 
     /**
-     * @param int $itemPrice
+     * @param int  $itemPrice
      * @param bool $withTax
      */
     public function setItemPrice($itemPrice, $withTax = true);
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getItemRetailPrice($withTax = true);
 
     /**
-     * @param int $itemRetailPrice
+     * @param int  $itemRetailPrice
      * @param bool $withTax
      */
     public function setItemRetailPrice($itemRetailPrice, $withTax = true);
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getItemDiscountPrice($withTax = true);
 
     /**
-     * @param int $itemDiscountPrice
+     * @param int  $itemDiscountPrice
      * @param bool $withTax
      */
     public function setItemDiscountPrice($itemDiscountPrice, $withTax = true);
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getItemDiscount($withTax = true);
 
     /**
-     * @param int $itemDiscount
+     * @param int  $itemDiscount
      * @param bool $withTax
      */
     public function setItemDiscount($itemDiscount, $withTax = true);
@@ -113,6 +117,7 @@ interface ProposalItemInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getTotal($withTax = true);

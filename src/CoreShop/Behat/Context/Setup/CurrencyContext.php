@@ -14,12 +14,10 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\FixedCurrencyContext;
-use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -51,11 +49,11 @@ final class CurrencyContext implements Context
     private $fixedCurrencyContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $currencyFactory
+     * @param SharedStorageInterface      $sharedStorage
+     * @param ObjectManager               $objectManager
+     * @param FactoryInterface            $currencyFactory
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param FixedCurrencyContext $fixedCurrencyContext
+     * @param FixedCurrencyContext        $fixedCurrencyContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -63,8 +61,7 @@ final class CurrencyContext implements Context
         FactoryInterface $currencyFactory,
         CurrencyRepositoryInterface $currencyRepository,
         FixedCurrencyContext $fixedCurrencyContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->currencyFactory = $currencyFactory;
@@ -112,7 +109,7 @@ final class CurrencyContext implements Context
 
         if (!$currency) {
             /**
-             * @var $currency CurrencyInterface
+             * @var CurrencyInterface
              */
             $currency = $this->currencyFactory->createNew();
             $currency->setName($name);

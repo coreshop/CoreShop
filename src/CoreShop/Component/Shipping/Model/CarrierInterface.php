@@ -52,7 +52,7 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
 
     /**
      * @param string $description
-     * @param null $language
+     * @param null   $language
      */
     public function setDescription($description, $language = null);
 
@@ -69,7 +69,7 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
      * @deprecated setLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead
      *
      * @param string $label
-     * @param null $language
+     * @param null   $language
      */
     public function setLabel($label, $language = null);
 
@@ -82,7 +82,7 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
 
     /**
      * @param string $title
-     * @param null $language
+     * @param null   $language
      */
     public function setTitle($title, $language = null);
 

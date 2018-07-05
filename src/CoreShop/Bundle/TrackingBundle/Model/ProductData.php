@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\TrackingBundle\Model;
 
 class ProductData extends AbstractProductData
 {
-
     /**
      * @var string
      */

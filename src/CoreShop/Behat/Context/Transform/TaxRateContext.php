@@ -13,8 +13,6 @@
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
 use Webmozart\Assert\Assert;
 

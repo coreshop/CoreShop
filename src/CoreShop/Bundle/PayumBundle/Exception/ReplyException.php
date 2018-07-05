@@ -16,5 +16,4 @@ use Payum\Core\Reply\ReplyInterface;
 
 final class ReplyException extends \Exception implements ReplyInterface
 {
-
 }

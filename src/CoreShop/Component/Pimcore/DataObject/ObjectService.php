@@ -31,7 +31,7 @@ class ObjectService implements ObjectServiceInterface
      */
     public function copyObject(Concrete $fromObject, Concrete $toObject)
     {
-        /**
+        /*
          * @var $fromObject Concrete
          * @var $toObject Concrete
          */

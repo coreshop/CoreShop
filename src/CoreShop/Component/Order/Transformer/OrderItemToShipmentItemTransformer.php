@@ -39,16 +39,15 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
     private $eventDispatcher;
 
     /**
-     * @param ObjectServiceInterface $objectService
-     * @param string $pathForItems
+     * @param ObjectServiceInterface              $objectService
+     * @param string                              $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -59,7 +58,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
      */
     public function transform(OrderDocumentInterface $shipment, OrderItemInterface $orderItem, OrderDocumentItemInterface $shipmentItem, $quantity)
     {
-        /**
+        /*
          * @var $shipment OrderInvoiceInterface
          * @var $orderItem OrderItemInterface
          * @var $shipmentItem OrderShipmentItemInterface
@@ -86,7 +85,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
 
         $shipmentItem->setWeight($orderItem->getTotalWeight());
 
-        VersionHelper::useVersioning(function() use ($shipmentItem) {
+        VersionHelper::useVersioning(function () use ($shipmentItem) {
             $shipmentItem->save();
         }, false);
 

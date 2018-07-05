@@ -21,7 +21,7 @@ class ReferenceValidator implements \PhpDA\Reference\ValidatorInterface
      */
     public function isValidBetween(Name $from, Name $to)
     {
-        if ($from->getFirst() !== 'CoreShop' || $to->getFirst() !== 'CoreShop') {
+        if ('CoreShop' !== $from->getFirst() || 'CoreShop' !== $to->getFirst()) {
             return true;
         }
 
@@ -29,24 +29,24 @@ class ReferenceValidator implements \PhpDA\Reference\ValidatorInterface
             return true;
         }
 
-        if ($from->parts[1] === 'Component' && $to->parts[1] === 'Bundle') {
-            if ($to->parts[2] === 'PayumBundle') {
+        if ('Component' === $from->parts[1] && 'Bundle' === $to->parts[1]) {
+            if ('PayumBundle' === $to->parts[2]) {
                 return true;
             }
 
-            if ($to->parts[2] === 'WorkflowBundle') {
+            if ('WorkflowBundle' === $to->parts[2]) {
                 return true;
             }
 
             return false;
         }
 
-        if ($from->parts[1] === 'Component' && $from->parts[2] !== 'Core' && $to->parts[2] === 'Core') {
+        if ('Component' === $from->parts[1] && 'Core' !== $from->parts[2] && 'Core' === $to->parts[2]) {
             return false;
         }
 
-        if ($from->parts[1] === 'Bundle' && $from->parts[2] !== 'CoreBundle' && $to->parts[2] === 'CoreBundle') {
-            if ($from->parts[2] === 'FrontendBundle') {
+        if ('Bundle' === $from->parts[1] && 'CoreBundle' !== $from->parts[2] && 'CoreBundle' === $to->parts[2]) {
+            if ('FrontendBundle' === $from->parts[2]) {
                 return true;
             }
 
@@ -64,7 +64,7 @@ class ReferenceValidator implements \PhpDA\Reference\ValidatorInterface
         return [
             'Dependency from Component to Bundle is not allowed',
             'Or a Bundle tries to access the CoreBundle',
-            'Or a Component tries to access the Core Component'
+            'Or a Component tries to access the Core Component',
         ];
     }
 }

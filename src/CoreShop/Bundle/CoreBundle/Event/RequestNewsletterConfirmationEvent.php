@@ -29,7 +29,7 @@ final class RequestNewsletterConfirmationEvent extends Event
 
     /**
      * @param CustomerInterface $customer
-     * @param string $confirmLink
+     * @param string            $confirmLink
      */
     public function __construct(CustomerInterface $customer, $confirmLink)
     {

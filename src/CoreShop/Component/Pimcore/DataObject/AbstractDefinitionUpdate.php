@@ -29,7 +29,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public abstract function save();
+    abstract public function save();
 
     /**
      * {@inheritdoc}
@@ -68,8 +68,8 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function insertFieldBefore($fieldName, $jsonFieldDefinition)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-            if ($index === 0) {
+        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+            if (0 === $index) {
                 $index = 1;
             }
 
@@ -86,7 +86,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function insertFieldAfter($fieldName, $jsonFieldDefinition)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
             $childs = $parent['childs'];
 
             array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
@@ -100,7 +100,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function replaceField($fieldName, $jsonFieldDefinition)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
             $foundField = $jsonFieldDefinition;
         });
     }
@@ -110,7 +110,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function replaceFieldProperties($fieldName, array $keyValues)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($keyValues) {
+        $this->findField($fieldName, function (&$foundField, $index, &$parent) use ($keyValues) {
             foreach ($keyValues as $key => $value) {
                 $foundField[$key] = $value;
             }
@@ -122,13 +122,13 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function removeField($fieldName)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) {
+        $this->findField($fieldName, function (&$foundField, $index, &$parent) {
             unset($parent['childs'][$index]);
         });
     }
 
     /**
-     * @param string $fieldName
+     * @param string   $fieldName
      * @param \Closure $callback
      *
      * @throws ClassDefinitionFieldNotFoundException
@@ -137,11 +137,12 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     {
         $found = false;
 
-        $traverseFunction = function($children) use (&$traverseFunction, $fieldName, $callback, &$found) {
+        $traverseFunction = function ($children) use (&$traverseFunction, $fieldName, $callback, &$found) {
             foreach ($children['childs'] as $index => &$child) {
                 if ($child['name'] === $fieldName) {
                     $callback($child, $index, $children);
                     $found = true;
+
                     break;
                 } else {
                     if (array_key_exists('childs', $child)) {

@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Resource\Pimcore;
 
-
 if (class_exists(\CoreShop\Component\Pimcore\DataObject\NoteService::class)) {
     @trigger_error('Class CoreShop\Component\Resource\Pimcore\DataObjectNoteService is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\NoteService class instead.', E_USER_DEPRECATED);
 } else {
@@ -21,6 +20,5 @@ if (class_exists(\CoreShop\Component\Pimcore\DataObject\NoteService::class)) {
      */
     class DataObjectNoteService
     {
-
     }
 }

@@ -45,14 +45,12 @@ final class SimpleStateChecker extends AbstractConditionChecker
         $this->configurationField = $configurationField;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function isNotificationRuleValid($subject, $params, array $configuration)
     {
         Assert::isInstanceOf($subject, $this->interface);
-
 
         $state = PropertyAccess::createPropertyAccessor()->getValue($subject, $this->stateField);
 

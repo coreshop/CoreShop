@@ -100,7 +100,7 @@ class ItemBuilder implements ItemBuilderInterface
             }
         }
 
-        if(count($coupons) > 0) {
+        if (count($coupons) > 0) {
             $item->setCoupon(implode(', ', $coupons));
         }
 

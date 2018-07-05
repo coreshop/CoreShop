@@ -29,7 +29,7 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface       $storeContext
      */
     public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
     {
@@ -41,7 +41,7 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        /**
+        /*
          * @var $subject ProductInterface
          */
         Assert::isInstanceOf($subject, ProductInterface::class);

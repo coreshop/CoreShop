@@ -42,16 +42,15 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     private $cartManager;
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface  $formFactory
      * @param TokenStorageInterface $tokenStorage
-     * @param CartManagerInterface $cartManager
+     * @param CartManagerInterface  $cartManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         TokenStorageInterface $tokenStorage,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->tokenStorage = $tokenStorage;
         $this->cartManager = $cartManager;
@@ -79,7 +78,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     public function validate(CartInterface $cart)
     {
         return $cart->hasItems()
-            && ($cart->hasShippableItems() === false || $cart->getShippingAddress() instanceof AddressInterface)
+            && (false === $cart->hasShippableItems() || $cart->getShippingAddress() instanceof AddressInterface)
             && $cart->getInvoiceAddress() instanceof AddressInterface;
     }
 
@@ -113,7 +112,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
 
         return [
             'form' => $this->createForm($request, $cart, $customer)->createView(),
-            'hasShippableItems' => $cart->hasShippableItems()
+            'hasShippableItems' => $cart->hasShippableItems(),
         ];
     }
 
@@ -134,8 +133,8 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     }
 
     /**
-     * @param Request $request
-     * @param CartInterface $cart
+     * @param Request           $request
+     * @param CartInterface     $cart
      * @param CustomerInterface $customer
      *
      * @return \Symfony\Component\Form\FormInterface
@@ -148,7 +147,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
 
         $form = $this->formFactory->createNamed('', AddressType::class, $cart, $options);
 
-        if ($cart->hasShippableItems() === false) {
+        if (false === $cart->hasShippableItems()) {
             $form->remove('shippingAddress');
             $form->remove('useInvoiceAsShipping');
         }

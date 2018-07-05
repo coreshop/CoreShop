@@ -19,9 +19,9 @@ interface ConditionCheckerInterface
 {
     /**
      * @param ResourceInterface $subject
-     * @param RuleInterface $rule
-     * @param array $configuration
-     * @param array $params
+     * @param RuleInterface     $rule
+     * @param array             $configuration
+     * @param array             $params
      *
      * @return bool
      */

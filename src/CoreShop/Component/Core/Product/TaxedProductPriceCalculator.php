@@ -53,12 +53,12 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     private $taxApplicator;
 
     /**
-     * @param PurchasablePriceCalculatorInterface $priceCalculator
-     * @param PurchasableRetailPriceCalculatorInterface $retailPriceCalculator
+     * @param PurchasablePriceCalculatorInterface         $priceCalculator
+     * @param PurchasableRetailPriceCalculatorInterface   $retailPriceCalculator
      * @param PurchasableDiscountPriceCalculatorInterface $discountPriceCalculator
-     * @param PurchasableDiscountCalculatorInterface $discountCalculator
-     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param TaxApplicatorInterface $taxApplicator
+     * @param PurchasableDiscountCalculatorInterface      $discountCalculator
+     * @param ProductTaxCalculatorFactoryInterface        $taxCalculatorFactory
+     * @param TaxApplicatorInterface                      $taxApplicator
      */
     public function __construct(
         PurchasablePriceCalculatorInterface $priceCalculator,
@@ -67,8 +67,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         PurchasableDiscountCalculatorInterface $discountCalculator,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxApplicatorInterface $taxApplicator
-    )
-    {
+    ) {
         $this->priceCalculator = $priceCalculator;
         $this->retailPriceCalculator = $retailPriceCalculator;
         $this->discountPriceCalculator = $discountPriceCalculator;
@@ -100,7 +99,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         $price = $this->discountPriceCalculator->getDiscountPrice($product);
 
         if (is_null($price)) {
-            throw new \InvalidArgumentException(sprintf("Could not determine a discount price for Product (%s)", $product->getId()));
+            throw new \InvalidArgumentException(sprintf('Could not determine a discount price for Product (%s)', $product->getId()));
         }
 
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
@@ -136,7 +135,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         $price = $this->retailPriceCalculator->getRetailPrice($product);
 
         if (is_null($price)) {
-            throw new \InvalidArgumentException(sprintf("Could not determine a price for Product (%s)", $product->getId()));
+            throw new \InvalidArgumentException(sprintf('Could not determine a price for Product (%s)', $product->getId()));
         }
 
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);

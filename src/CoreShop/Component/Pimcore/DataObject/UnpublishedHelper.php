@@ -21,7 +21,7 @@ class UnpublishedHelper
      * after your functions is finished.
      *
      * @param \Closure $function
-     * @param bool $hide
+     * @param bool     $hide
      *
      * @return mixed
      */

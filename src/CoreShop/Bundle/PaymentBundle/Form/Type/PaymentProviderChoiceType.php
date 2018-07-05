@@ -42,29 +42,29 @@ final class PaymentProviderChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function(Options $options) {
+                'choices' => function (Options $options) {
                     $paymentProvider = $this->paymentProviderResolver->resolvePaymentProviders($options['subject']);
 
                     return $paymentProvider;
                 },
                 'choice_value' => 'id',
-                'choice_label' => function($paymentProvider) {
+                'choice_label' => function ($paymentProvider) {
                     return $paymentProvider->getName();
                 },
-                'choice_attr' => function($val, $key, $index) {
+                'choice_attr' => function ($val, $key, $index) {
                     // adds a class like attending_yes, attending_no, etc
                     return ['data-factory' => $val->getGatewayConfig()->getFactoryName()];
                 },
                 'choice_translation_domain' => false,
                 'active' => true,
-                'subject' => null
+                'subject' => null,
             ]);
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -84,7 +84,7 @@ final class PaymentProviderChoiceType extends AbstractType
 
         $view->vars = array_merge($view->vars, [
             'choices_description' => $description,
-            'choices_instruction' => $instructions
+            'choices_instruction' => $instructions,
         ]);
     }
 

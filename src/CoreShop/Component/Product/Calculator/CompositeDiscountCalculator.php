@@ -42,6 +42,5 @@ class CompositeDiscountCalculator implements ProductDiscountCalculatorInterface
         }
 
         return $discount;
-
     }
 }

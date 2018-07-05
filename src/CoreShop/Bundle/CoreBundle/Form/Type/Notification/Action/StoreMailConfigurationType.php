@@ -27,7 +27,7 @@ class StoreMailConfigurationType extends AbstractType
         $builder
             ->add('mails', CollectionType::class, [
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
             ])
             ->add('doNotSendToDesignatedRecipient', CheckboxType::class)
         ;

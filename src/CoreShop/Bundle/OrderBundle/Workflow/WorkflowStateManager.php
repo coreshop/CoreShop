@@ -49,10 +49,10 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param StateMachineManager $stateMachineManager
-     * @param TranslatorInterface $translator
-     * @param string $noteIdentifier
-     * @param array $stateColors
+     * @param StateMachineManager      $stateMachineManager
+     * @param TranslatorInterface      $translator
+     * @param string                   $noteIdentifier
+     * @param array                    $stateColors
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -60,8 +60,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
         TranslatorInterface $translator,
         $noteIdentifier,
         $stateColors
-    )
-    {
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->stateMachineManager = $stateMachineManager;
         $this->noteIdentifier = $noteIdentifier;
@@ -73,6 +72,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      * @param      $workflowName
      * @param      $value
      * @param bool $forFrontend
+     *
      * @return array
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true)
@@ -85,7 +85,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
         $data = [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
             'state' => $value,
-            'color' => $color
+            'color' => $color,
         ];
 
         return $data;
@@ -95,6 +95,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      * @param      $workflowName
      * @param      $transition
      * @param bool $forFrontend
+     *
      * @return array
      */
     public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
@@ -106,7 +107,7 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
         $data = [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
             'transition' => $transition,
-            'color' => $color
+            'color' => $color,
         ];
 
         return $data;
@@ -116,7 +117,8 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      * @param       $subject
      * @param       $workflowName
      * @param array $transitions
-     * @param bool $forFrontend
+     * @param bool  $forFrontend
+     *
      * @return array
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)

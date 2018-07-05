@@ -45,7 +45,6 @@ final class PaymentType extends AbstractResourceType
         ]);
     }
 
-
     /**
      * {@inheritdoc}
      */

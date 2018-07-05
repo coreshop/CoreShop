@@ -13,9 +13,10 @@ class Version20171218100326 extends AbstractPimcoreMigration implements Containe
 
     /**
      * bin/console doctrine:cache:flush coreshop.doctrine.cache.pimcore
-     * bin/console doctrine:schema:update --dump-sql --force
+     * bin/console doctrine:schema:update --dump-sql --force.
      *
      * @param Schema $schema
+     *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */

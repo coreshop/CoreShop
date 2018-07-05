@@ -18,7 +18,7 @@ class ObjectUnsupportedException extends \Exception
      * ObjectUnsupportedException constructor.
      *
      * @param string $function
-     * @param int $class
+     * @param int    $class
      */
     public function __construct($function, $class)
     {

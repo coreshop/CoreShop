@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Product\Calculator;
 
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
@@ -23,7 +22,7 @@ final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorI
     /**
      * @var StoreContextInterface
      */
-    protected $storeContext;
+    private $storeContext;
 
     /**
      * @param StoreContextInterface $storeContext
@@ -38,7 +37,7 @@ final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorI
      */
     public function getRetailPrice(ProductInterface $subject)
     {
-        /**
+        /*
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface
          */
         Assert::isInstanceOf($subject, \CoreShop\Component\Core\Model\ProductInterface::class);

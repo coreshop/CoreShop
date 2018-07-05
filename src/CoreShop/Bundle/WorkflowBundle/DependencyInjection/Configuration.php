@@ -59,7 +59,7 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('transitions')
                 ->beforeNormalization()
                     ->always()
-                    ->then(function($transitions) {
+                    ->then(function ($transitions) {
                         // It's an indexed array, we let the validation occurs
                         if (isset($transitions[0])) {
                             return $transitions;
@@ -94,7 +94,7 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function($v) { return array($v); })
+                                ->then(function ($v) { return array($v); })
                             ->end()
                             ->requiresAtLeastOneElement()
                             ->prototype('scalar')
@@ -105,7 +105,7 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function($v) { return array($v); })
+                                ->then(function ($v) { return array($v); })
                             ->end()
                             ->requiresAtLeastOneElement()
                             ->prototype('scalar')
@@ -115,7 +115,6 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
-
     }
 
     /**
@@ -153,9 +152,9 @@ final class Configuration implements ConfigurationInterface
 
     /**
      * @param ArrayNodeDefinition $callbacks
-     * @param string      $type
+     * @param string              $type
      */
-    protected function addSubCallbackSection(ArrayNodeDefinition $callbacks, $type)
+    private function addSubCallbackSection(ArrayNodeDefinition $callbacks, $type)
     {
         $callbacks
             ->children()

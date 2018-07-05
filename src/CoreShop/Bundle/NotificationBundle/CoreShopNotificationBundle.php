@@ -51,10 +51,9 @@ final class CoreShopNotificationBundle extends AbstractResourceBundle
         parent::registerDependentBundles($collection);
 
         $collection->addBundles([
-            new CoreShopRuleBundle()
+            new CoreShopRuleBundle(),
         ], 3500);
     }
-
 
     /**
      * {@inheritdoc}

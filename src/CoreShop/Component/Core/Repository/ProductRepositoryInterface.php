@@ -20,7 +20,7 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface
 {
     /**
      * @param StoreInterface $store
-     * @param int $count
+     * @param int            $count
      *
      * @return ProductInterface[]
      */
@@ -28,6 +28,7 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface
 
     /**
      * @param array $options
+     *
      * @return ProductInterface[]
      */
     public function getProducts($options = []);

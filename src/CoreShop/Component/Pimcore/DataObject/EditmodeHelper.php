@@ -29,14 +29,14 @@ class EditmodeHelper
 
         return [
             'objectData' => $this->objectData,
-            'metaData' => $this->metaData
+            'metaData' => $this->metaData,
         ];
     }
 
     private function getDataForEditmode($object, $key, $fielddefinition, $objectFromVersion, $level = 0)
     {
         $parent = DataObject\Service::hasInheritableParentObject($object);
-        $getter = 'get' . ucfirst($key);
+        $getter = 'get'.ucfirst($key);
 
         // relations but not for objectsMetadata, because they have additional data which cannot be loaded directly from the DB
         // nonownerobjects should go in there anyway (regardless if it a version or not), so that the values can be loaded
@@ -50,7 +50,6 @@ class EditmodeHelper
             )
             || $fielddefinition instanceof DataObject\ClassDefinition\Data\Nonownerobjects
         ) {
-
             //lazy loading data is fetched from DB differently, so that not every relation object is instantiated
             $refId = null;
 
@@ -82,7 +81,7 @@ class EditmodeHelper
                 }
                 $this->objectData[$key] = $data;
                 $this->metaData[$key]['objectid'] = $object->getId();
-                $this->metaData[$key]['inherited'] = $level != 0;
+                $this->metaData[$key]['inherited'] = 0 != $level;
             }
         } else {
             $fieldData = $object->$getter();
@@ -113,7 +112,7 @@ class EditmodeHelper
             if ($fielddefinition->isEmpty($fieldData) && !empty($parent)) {
                 $this->getDataForEditmode($parent, $key, $fielddefinition, $objectFromVersion, $level + 1);
             } else {
-                $isInheritedValue = $isInheritedValue || ($level != 0);
+                $isInheritedValue = $isInheritedValue || (0 != $level);
                 $this->metaData[$key]['objectid'] = $object->getId();
 
                 $this->objectData[$key] = $value;

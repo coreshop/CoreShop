@@ -17,12 +17,12 @@ final class ItemBuilder implements ItemBuilderInterface
     /**
      * @var ItemBuilderInterface
      */
-    protected $decoratedItemBuilder;
+    private $decoratedItemBuilder;
 
     /**
      * @var TaxedProductPriceCalculatorInterface
      */
-    protected $taxedProductPriceCalculator;
+    private $taxedProductPriceCalculator;
 
     /**
      * @param ItemBuilderInterface                 $decoratedItemBuilder
@@ -52,7 +52,7 @@ final class ItemBuilder implements ItemBuilderInterface
         }
 
         if ($this->coreClassHasMethod(CoreShopProduct::class, 'getManufacturer')) {
-            if($product->getManufacturer() instanceof ManufacturerInterface) {
+            if ($product->getManufacturer() instanceof ManufacturerInterface) {
                 $item->setBrand($product->getManufacturer()->getName());
             }
         }
@@ -78,7 +78,7 @@ final class ItemBuilder implements ItemBuilderInterface
         }
 
         if ($this->coreClassHasMethod(CoreShopProduct::class, 'getManufacturer')) {
-            if($product->getManufacturer() instanceof ManufacturerInterface) {
+            if ($product->getManufacturer() instanceof ManufacturerInterface) {
                 $item->setBrand($product->getManufacturer()->getName());
             }
         }
@@ -163,7 +163,9 @@ final class ItemBuilder implements ItemBuilderInterface
     /**
      * @param string $class
      * @param string $method
+     *
      * @return bool
+     *
      * @throws \ReflectionException
      */
     private function coreClassHasMethod($class = '', $method = '')

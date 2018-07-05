@@ -26,7 +26,7 @@ final class CartItemType extends AbstractResourceType
         $builder
             ->add('quantity', IntegerType::class, [
                 'attr' => ['min' => 1],
-                'label' => 'coreshop.ui.quantity'
+                'label' => 'coreshop.ui.quantity',
             ]);
     }
 

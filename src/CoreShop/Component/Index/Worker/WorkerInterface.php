@@ -39,7 +39,7 @@ interface WorkerInterface
     /**
      * deletes given element from index.
      *
-     * @param IndexInterface $index
+     * @param IndexInterface     $index
      * @param IndexableInterface $object
      */
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
@@ -47,13 +47,14 @@ interface WorkerInterface
     /**
      * updates given element in index.
      *
-     * @param IndexInterface $index
+     * @param IndexInterface     $index
      * @param IndexableInterface $object
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * @param IndexInterface $index
+     *
      * @return IndexExtensionInterface[]
      */
     public function getExtensions(IndexInterface $index);
@@ -71,7 +72,7 @@ interface WorkerInterface
      * Renders the condition to fit the service.
      *
      * @param ConditionInterface $condition
-     * @param string $prefix
+     * @param string             $prefix
      *
      * @return mixed
      */

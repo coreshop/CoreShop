@@ -31,7 +31,7 @@ final class OGExtractor implements ExtractorInterface
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
         /**
-         * @var $object SEOOpenGraphAwareInterface
+         * @var SEOOpenGraphAwareInterface
          */
         if ($object->getOGTitle()) {
             $seoMetadata->addExtraProperty('og:title', $object->getOGTitle());

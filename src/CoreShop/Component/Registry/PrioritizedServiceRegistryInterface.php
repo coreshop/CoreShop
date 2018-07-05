@@ -21,7 +21,7 @@ interface PrioritizedServiceRegistryInterface
 
     /**
      * @param string $identifier
-     * @param int $priority
+     * @param int    $priority
      * @param object $service
      *
      * @throws ExistingServiceException

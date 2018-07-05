@@ -31,7 +31,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface
          */
         $user = $event->getCustomer();
 
@@ -55,11 +55,11 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface
          */
         $user = $event->getSubject();
 
-        if ($user->getIsGuest() === true) {
+        if (true === $user->getIsGuest()) {
             return;
         }
 
@@ -82,11 +82,11 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface
          */
         $user = $event->getCustomer();
 
-        if ($user->getIsGuest() === true) {
+        if (true === $user->getIsGuest()) {
             return;
         }
 
@@ -109,7 +109,6 @@ final class CustomerListener extends AbstractNotificationRuleListener
                 PHP_URL_QUERY
             ) ? '&' : '?').'token='.$user->getNewsletterToken();
 
-
         $params = $this->prepareCustomerParameters($user);
         $params = array_merge(
             $params,
@@ -131,11 +130,11 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface
          */
         $user = $event->getSubject();
 
-        if ($user->getIsGuest() === true) {
+        if (true === $user->getIsGuest()) {
             return;
         }
 
@@ -152,6 +151,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
 
     /**
      * @param CustomerInterface $customer
+     *
      * @return array
      */
     private function prepareCustomerParameters(CustomerInterface $customer)

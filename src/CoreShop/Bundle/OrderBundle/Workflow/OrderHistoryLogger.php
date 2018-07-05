@@ -41,7 +41,7 @@ final class OrderHistoryLogger
 
     /**
      * @param OrderRepositoryInterface $orderRepository
-     * @param NoteService    $noteService
+     * @param NoteService              $noteService
      * @param TranslatorInterface      $translator
      * @param string                   $noteIdentifier
      */
@@ -74,7 +74,7 @@ final class OrderHistoryLogger
 
         $message = strip_tags($message);
 
-        if ($translate === true) {
+        if (true === $translate) {
             $message = $this->translator->trans($message, [], 'admin');
         }
 

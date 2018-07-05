@@ -78,7 +78,7 @@ class Cart extends AbstractProposal implements CartInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getDiscountPercentage()
     {
@@ -98,6 +98,7 @@ class Cart extends AbstractProposal implements CartInterface
     public function getTotalWithoutDiscount($withTax = true)
     {
         $subtotal = $this->getSubtotal($withTax);
+
         return $subtotal;
     }
 

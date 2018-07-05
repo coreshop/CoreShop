@@ -15,12 +15,12 @@ namespace CoreShop\Component\Index\Condition;
 class IsCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var
      */
     private $fieldName;
 
     /**
-     * @var $string
+     * @var
      */
     private $value;
 

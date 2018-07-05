@@ -27,13 +27,14 @@ class RegisterController extends FrontendController
 {
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function registerAction(Request $request)
     {
         $customer = $this->getCustomer();
 
-        if ($customer instanceof CustomerInterface && $customer->getIsGuest() === false) {
+        if ($customer instanceof CustomerInterface && false === $customer->getIsGuest()) {
             return $this->redirectToRoute('coreshop_customer_profile');
         }
 
@@ -54,7 +55,7 @@ class RegisterController extends FrontendController
                     !$address instanceof AddressInterface
                 ) {
                     return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
-                        'form' => $form->createView()
+                        'form' => $form->createView(),
                     ]);
                 }
 
@@ -64,7 +65,7 @@ class RegisterController extends FrontendController
                     $registrationService->registerCustomer($customer, $address, $formData, false);
                 } catch (CustomerAlreadyExistsException $e) {
                     return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
-                        'form' => $form->createView()
+                        'form' => $form->createView(),
                     ]);
                 }
 
@@ -73,12 +74,13 @@ class RegisterController extends FrontendController
         }
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/register.html'), [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function passwordResetRequestAction(Request $request)
@@ -112,7 +114,7 @@ class RegisterController extends FrontendController
         }
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset-request.html'), [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -144,7 +146,7 @@ class RegisterController extends FrontendController
             }
 
             return $this->renderTemplate($this->templateConfigurator->findTemplate('Register/password-reset.html'), [
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]);
         }
 
@@ -159,7 +161,6 @@ class RegisterController extends FrontendController
         try {
             return $this->get('coreshop.context.customer')->getCustomer();
         } catch (\Exception $ex) {
-
         }
 
         return null;

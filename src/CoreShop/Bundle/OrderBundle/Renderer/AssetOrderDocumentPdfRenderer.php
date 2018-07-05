@@ -39,13 +39,13 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
         // if in dev mode, do not store document
-        if (\Pimcore::getKernel()->getEnvironment() === 'dev') {
+        if ('dev' === \Pimcore::getKernel()->getEnvironment()) {
             return $this->decoratedService->renderDocumentPdf($orderDocument);
         }
 
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
             // check if asset is outdated.
-            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate()) {
+            if ((int) $orderDocument->getRenderedAsset()->getCreationDate() >= (int) $orderDocument->getModificationDate()) {
                 return $orderDocument->getRenderedAsset()->getData();
             }
         }

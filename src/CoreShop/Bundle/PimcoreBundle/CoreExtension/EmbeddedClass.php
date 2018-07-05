@@ -62,7 +62,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             $objectData = [];
 
             $editmodeHelper = new EditmodeHelper();
-            list("objectData" => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
+            list('objectData' => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
 
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
@@ -99,7 +99,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
             if (array_key_exists('id', $objectData)) {
                 $embeddedObject = $this->findInstance($objectData['id']);
-            } else if (array_key_exists('originalIndex', $objectData)) {
+            } elseif (array_key_exists('originalIndex', $objectData)) {
                 $embeddedObject = $this->findInstanceByIndex($object, $objectData['originalIndex']);
             }
 
@@ -150,7 +150,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             $embeddedObjects[] = $embeddedObject;
         }
 
-        usort($embeddedObjects, function($objectA, $objectB) {
+        usort($embeddedObjects, function ($objectA, $objectB) {
             if ($objectA->getIndex() === $objectB->getIndex()) {
                 return 0;
             }
@@ -183,7 +183,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
-            $setter = 'set' . ucfirst($this->getName());
+            $setter = 'set'.ucfirst($this->getName());
 
             if (method_exists($object, $setter)) {
                 $object->$setter($data);
@@ -234,7 +234,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck and $this->getMandatory() and empty($data)) {
-            throw new Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
+            throw new Element\ValidationException('Empty mandatory field [ '.$this->getName().' ]');
         }
 
         $allow = true;
@@ -249,7 +249,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             }
 
             if ($this->getMaxItems() && count($data) > $this->getMaxItems()) {
-                throw new Element\ValidationException('Number of allowed relations in field `' . $this->getName() . '` exceeded (max. ' . $this->getMaxItems() . ')');
+                throw new Element\ValidationException('Number of allowed relations in field `'.$this->getName().'` exceeded (max. '.$this->getMaxItems().')');
             }
         }
     }
@@ -259,7 +259,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
      */
     public function isEmpty($data)
     {
-        if (!is_array($data) || count($data) === 0) {
+        if (!is_array($data) || 0 === count($data)) {
             return true;
         }
 
@@ -267,8 +267,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param  array $relations
-     * @param  array $value
+     * @param array $relations
+     * @param array $value
      *
      * @return array
      */
@@ -290,8 +290,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param  array $relations
-     * @param  array $value
+     * @param array $relations
+     * @param array $value
      *
      * @return array
      */
@@ -314,8 +314,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
     protected function processRemoteOwnerRelations($object, $toDelete, $toAdd, $ownerFieldName)
     {
-        $getter = 'get' . ucfirst($ownerFieldName);
-        $setter = 'set' . ucfirst($ownerFieldName);
+        $getter = 'get'.ucfirst($ownerFieldName);
+        $setter = 'set'.ucfirst($ownerFieldName);
 
         foreach ($toDelete as $id) {
             $owner = DataObject::getById($id);
@@ -323,13 +323,14 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             if (method_exists($owner, $getter)) {
                 $currentData = $owner->$getter();
                 if (is_array($currentData)) {
-                    for ($i = 0; $i < count($currentData); $i++) {
+                    for ($i = 0; $i < count($currentData); ++$i) {
                         if ($currentData[$i]->getId() == $object->getId()) {
                             unset($currentData[$i]);
                             $owner->$setter($currentData);
                             $owner->setUserModification($this->getAdminUser()->getId());
                             $owner->save();
-                            Logger::debug('Saved object id [ ' . $owner->getId() . ' ] by remote modification through [' . $object->getId() . '], Action: deleted [ ' . $object->getId() . " ] from [ $ownerFieldName]");
+                            Logger::debug('Saved object id [ '.$owner->getId().' ] by remote modification through ['.$object->getId().'], Action: deleted [ '.$object->getId()." ] from [ $ownerFieldName]");
+
                             break;
                         }
                     }
@@ -347,13 +348,13 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
                 $owner->$setter($currentData);
                 $owner->setUserModification($this->getAdminUser()->getId());
                 $owner->save();
-                Logger::debug('Saved object id [ ' . $owner->getId() . ' ] by remote modification through [' . $object->getId() . '], Action: added [ ' . $object->getId() . " ] to [ $ownerFieldName ]");
+                Logger::debug('Saved object id [ '.$owner->getId().' ] by remote modification through ['.$object->getId().'], Action: added [ '.$object->getId()." ] to [ $ownerFieldName ]");
             }
         }
     }
 
     /**
-     * Get user from user proxy object which is registered on security component
+     * Get user from user proxy object which is registered on security component.
      *
      * @param bool $proxyUser Return the proxy user (UserInterface) instead of the pimcore model
      *
@@ -375,18 +376,19 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
      */
     private function createNewInstance()
     {
-        $fqcn = 'Pimcore\\Model\\DataObject\\' . $this->embeddedClassName;
+        $fqcn = 'Pimcore\\Model\\DataObject\\'.$this->embeddedClassName;
 
         return new $fqcn();
     }
 
     /**
      * @param $id
+     *
      * @return DataObject\Concrete
      */
     private function findInstance($id)
     {
-        $fqcn = 'Pimcore\\Model\\DataObject\\' . $this->embeddedClassName;
+        $fqcn = 'Pimcore\\Model\\DataObject\\'.$this->embeddedClassName;
 
         return $fqcn::getById($id);
     }
@@ -394,6 +396,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     /**
      * @param DataObject\Concrete $object
      * @param $index
+     *
      * @return mixed
      */
     private function findInstanceByIndex(DataObject\Concrete $object, $index)

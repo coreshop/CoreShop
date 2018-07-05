@@ -14,7 +14,6 @@ namespace CoreShop\Component\Pimcore\Exception;
 
 final class ClassDefinitionFieldNotFoundException extends \Exception
 {
-
 }
 
 class_alias(ClassDefinitionFieldNotFoundException::class, 'CoreShop\Component\Pimcore\ClassDefinitionFieldNotFoundException');

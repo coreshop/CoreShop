@@ -30,7 +30,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isNew()
     {
-        return $this->status === PaymentInterface::STATE_NEW;
+        return PaymentInterface::STATE_NEW === $this->status;
     }
 
     /**
@@ -46,7 +46,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isSuspended()
     {
-        return $this->status === PaymentInterface::STATE_PROCESSING;
+        return PaymentInterface::STATE_PROCESSING === $this->status;
     }
 
     /**
@@ -62,7 +62,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isExpired()
     {
-        return $this->status === PaymentInterface::STATE_FAILED;
+        return PaymentInterface::STATE_FAILED === $this->status;
     }
 
     /**
@@ -78,7 +78,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isCanceled()
     {
-        return $this->status === PaymentInterface::STATE_CANCELLED;
+        return PaymentInterface::STATE_CANCELLED === $this->status;
     }
 
     /**
@@ -94,7 +94,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isPending()
     {
-        return $this->status === PaymentInterface::STATE_PROCESSING;
+        return PaymentInterface::STATE_PROCESSING === $this->status;
     }
 
     /**
@@ -110,7 +110,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isFailed()
     {
-        return $this->status === PaymentInterface::STATE_FAILED;
+        return PaymentInterface::STATE_FAILED === $this->status;
     }
 
     /**
@@ -126,7 +126,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isUnknown()
     {
-        return $this->status === PaymentInterface::STATE_UNKNOWN;
+        return PaymentInterface::STATE_UNKNOWN === $this->status;
     }
 
     /**
@@ -142,7 +142,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isCaptured()
     {
-        return $this->status === PaymentInterface::STATE_COMPLETED;
+        return PaymentInterface::STATE_COMPLETED === $this->status;
     }
 
     /**
@@ -150,7 +150,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isAuthorized()
     {
-        return $this->status === PaymentInterface::STATE_PROCESSING;
+        return PaymentInterface::STATE_PROCESSING === $this->status;
     }
 
     /**
@@ -166,7 +166,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isRefunded()
     {
-        return $this->status === PaymentInterface::STATE_REFUNDED;
+        return PaymentInterface::STATE_REFUNDED === $this->status;
     }
 
     /**
@@ -182,7 +182,7 @@ class GetStatus extends BaseGetStatus
      */
     public function isPayedout()
     {
-        return $this->status === PaymentInterface::STATE_REFUNDED;
+        return PaymentInterface::STATE_REFUNDED === $this->status;
     }
 
     /**

@@ -18,7 +18,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use Webmozart\Assert\Assert;
 
 class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcessorInterface
 {
@@ -46,7 +45,7 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
 
         return $this->isValid($cart, $cartPriceRule, [
             'cartPriceRule' => $cartPriceRule,
-            'voucher' => $voucherCode
+            'voucher' => $voucherCode,
         ]);
     }
 

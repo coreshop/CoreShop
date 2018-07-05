@@ -37,14 +37,14 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
     public function __construct(
         TaxedProductPriceCalculatorInterface $priceCalculator,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-    )
-    {
+    ) {
         $this->priceCalculator = $priceCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
     /**
      * @param PurchasableInterface $product
+     *
      * @return array|int
      */
     public function getTaxAmount(PurchasableInterface $product)
@@ -57,6 +57,7 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
 
     /**
      * @param PurchasableInterface $product
+     *
      * @return float
      */
     public function getTaxRate(PurchasableInterface $product)

@@ -32,7 +32,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     private $cartModifier;
 
     /**
-     * @param ProductRepositoryInterface $productRepository
+     * @param ProductRepositoryInterface   $productRepository
      * @param StorageListModifierInterface $cartModifier
      */
     public function __construct(ProductRepositoryInterface $productRepository, StorageListModifierInterface $cartModifier)

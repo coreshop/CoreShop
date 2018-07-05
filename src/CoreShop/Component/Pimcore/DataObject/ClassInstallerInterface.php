@@ -19,6 +19,7 @@ interface ClassInstallerInterface
     /**
      * @param $jsonFile
      * @param $brickName
+     *
      * @return mixed|DataObject\Objectbrick\Definition
      */
     public function createBrick($jsonFile, $brickName);

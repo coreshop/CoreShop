@@ -63,7 +63,7 @@ class Dao
     public function load(QueryBuilder $queryBuilder)
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $this->model->getVariantMode()) {
             if (!is_null($queryBuilder->getQueryPart('orderBy'))) {
                 $queryBuilder->select('DISTINCT q.o_virtualObjectId as o_id');
                 $queryBuilder->addGroupBy('q.o_virtualObjectId');
@@ -75,6 +75,7 @@ class Dao
         }
         $result = $this->database->executeQuery($queryBuilder->getSQL());
         $this->lastRecordCount = $result->rowCount();
+
         return $result->fetchAll();
     }
 
@@ -90,14 +91,14 @@ class Dao
     public function loadGroupByValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        $queryBuilder->groupBy('q.' . $this->quoteIdentifier($fieldName));
-        $queryBuilder->orderBy('q.' . $this->quoteIdentifier($fieldName));
+        $queryBuilder->groupBy('q.'.$this->quoteIdentifier($fieldName));
+        $queryBuilder->orderBy('q.'.$this->quoteIdentifier($fieldName));
 
         if ($countValues) {
-            if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(DISTINCT o_virtualObjectId) AS count');
+            if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $this->model->getVariantMode()) {
+                $queryBuilder->select($this->quoteIdentifier($fieldName).' AS value, count(DISTINCT o_virtualObjectId) AS count');
             } else {
-                $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
+                $queryBuilder->select($this->quoteIdentifier($fieldName).' AS value, count(*) AS count');
             }
 
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
@@ -139,31 +140,30 @@ class Dao
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
 
-            if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(DISTINCT src_virtualObjectId) AS ' . $this->quoteIdentifier('count'));
-                $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+            if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $this->model->getVariantMode()) {
+                $queryBuilder->select($this->quoteIdentifier('dest').' AS '.$this->quoteIdentifier('value').', count(DISTINCT src_virtualObjectId) AS '.$this->quoteIdentifier('count'));
+                $queryBuilder->where('fieldname = '.$this->quote($fieldName));
             } else {
-                $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(*) AS ' . $this->quoteIdentifier('count'));
-                $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+                $queryBuilder->select($this->quoteIdentifier('dest').' AS '.$this->quoteIdentifier('value').', count(*) AS '.$this->quoteIdentifier('count'));
+                $queryBuilder->where('fieldname = '.$this->quote($fieldName));
             }
 
-            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+            $queryBuilder->andWhere('src IN ('.$subQueryBuilder->getSQL().')');
             $queryBuilder->groupBy('dest');
 
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
             $result = $stmt->fetchAll();
 
             return $result;
-
         } else {
             $queryBuilder->select($this->quoteIdentifier('dest'));
-            $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+            $queryBuilder->where('fieldname = '.$this->quote($fieldName));
 
             $subQueryBuilder = new QueryBuilder($this->database);
             $subQueryBuilder->select('o_id');
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+            $queryBuilder->andWhere('src IN ('.$subQueryBuilder->getSQL().')');
             $queryBuilder->groupBy('dest');
 
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
@@ -190,12 +190,13 @@ class Dao
     public function getCount(QueryBuilder $queryBuilder)
     {
         $queryBuilder->from($this->model->getQueryTableName(), 'q');
-        if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+        if (ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT == $this->model->getVariantMode()) {
             $queryBuilder->select('count(DISTINCT o_virtualObjectId)');
         } else {
             $queryBuilder->select('count(*)');
         }
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+
         return $stmt->fetchColumn();
     }
 
@@ -304,7 +305,7 @@ class Dao
             $columnNames[] = $this->quoteIdentifier($c);
         }
 
-        return 'MATCH (' . implode(',', $columnNames) . ') AGAINST (' . $this->quote($searchString) . ' IN BOOLEAN MODE)';
+        return 'MATCH ('.implode(',', $columnNames).') AGAINST ('.$this->quote($searchString).' IN BOOLEAN MODE)';
     }
 
     /**

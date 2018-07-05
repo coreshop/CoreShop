@@ -21,12 +21,12 @@ final class TableIndex
     /**
      * @var array
      */
-    protected $columns;
+    private $columns;
 
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @return array

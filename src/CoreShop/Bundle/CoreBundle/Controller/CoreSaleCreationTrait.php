@@ -31,17 +31,17 @@ trait CoreSaleCreationTrait
 
     public function getCarrierDetailsAction(Request $request)
     {
-        $productIds = $request->get("products");
-        $customerId = $request->get("customer");
-        $shippingAddressId = $request->get("shippingAddress");
-        $invoiceAddressId = $request->get("invoiceAddress");
+        $productIds = $request->get('products');
+        $customerId = $request->get('customer');
+        $shippingAddressId = $request->get('shippingAddress');
+        $invoiceAddressId = $request->get('invoiceAddress');
         $storeId = $request->get('store');
         $language = $request->get('language');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
 
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
         $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
@@ -72,7 +72,7 @@ trait CoreSaleCreationTrait
         $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
 
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface
          */
         $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
         $this->get('coreshop.cart_processor')->process($cart);
@@ -82,7 +82,7 @@ trait CoreSaleCreationTrait
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
 
         /**
-         * @var $carrier CarrierInterface
+         * @var CarrierInterface
          */
         foreach ($carriers as $carrier) {
             $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice($carrier, $cart, $cart->getShippingAddress());
@@ -93,7 +93,7 @@ trait CoreSaleCreationTrait
                 'id' => $carrier->getId(),
                 'name' => $carrier->getIdentifier(),
                 'price' => $price,
-                'priceFormatted' => $priceFormatted
+                'priceFormatted' => $priceFormatted,
             ];
         }
 
@@ -102,7 +102,7 @@ trait CoreSaleCreationTrait
 
     protected function getTotalArray(CartInterface $cart)
     {
-        /**
+        /*
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
@@ -112,16 +112,16 @@ trait CoreSaleCreationTrait
         array_splice($result, 3, 0, [
             [
                 'key' => 'shipping_without_tax',
-                'value' => $cart->getShipping(false)
+                'value' => $cart->getShipping(false),
             ],
             [
                 'key' => 'shipping_tax',
-                'value' => $cart->getShipping(true) - $cart->getShipping(false)
+                'value' => $cart->getShipping(true) - $cart->getShipping(false),
             ],
             [
                 'key' => 'shipping',
-                'value' => $cart->getShipping(true)
-            ]
+                'value' => $cart->getShipping(true),
+            ],
         ]);
 
         return $result;
@@ -129,7 +129,7 @@ trait CoreSaleCreationTrait
 
     protected function prepareCart(Request $request, CartInterface $cart)
     {
-        /**
+        /*
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);

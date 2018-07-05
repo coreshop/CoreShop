@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Generator;
 
-
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -52,14 +51,17 @@ class CartPriceRuleVoucherCodeGenerator
         switch ($generator->getFormat()) {
             case self::FORMAT_ALPHABETIC:
                 $lettersToUse = implode('', range(chr(65), chr(90)));
+
                 break;
             case self::FORMAT_NUMERIC:
                 $lettersToUse = implode('', range(chr(48), chr(57)));
+
                 break;
 
             case self::FORMAT_ALPHANUMERIC:
             default:
                 $lettersToUse = implode('', range(chr(65), chr(90))).implode('', range(chr(48), chr(57)));
+
                 break;
         }
 

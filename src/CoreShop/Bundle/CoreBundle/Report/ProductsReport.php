@@ -60,12 +60,12 @@ class ProductsReport implements ReportInterface
     private $productStackIds;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @param RepositoryInterface     $storeRepository
+     * @param Connection              $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
-     * @param array $productStackIds
+     * @param LocaleContextInterface  $localeContext
+     * @param array                   $pimcoreClasses
+     * @param array                   $productStackIds
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -74,8 +74,7 @@ class ProductsReport implements ReportInterface
         LocaleContextInterface $localeContext,
         array $pimcoreClasses,
         array $productStackIds
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -99,7 +98,7 @@ class ProductsReport implements ReportInterface
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 50);
-        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+        $offset = $parameterBag->get('offset', 1 === $page ? 0 : ($page - 1) * $limit);
 
         $orderClassId = $this->pimcoreClasses['order'];
         $orderItemClassId = $this->pimcoreClasses['order_item'];
@@ -116,7 +115,7 @@ class ProductsReport implements ReportInterface
             return [];
         }
 
-        if ($objectTypeFilter === 'container') {
+        if ('container' === $objectTypeFilter) {
             $unionData = [];
             foreach ($this->productStackIds as $id) {
                 $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_'.$id.'_'.$locale;
@@ -140,13 +139,11 @@ class ProductsReport implements ReportInterface
                 WHERE products.o_type = 'object' AND `order`.store = $storeId AND `order`.orderState = '$orderCompleteState' AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
-
         } else {
-
             $productTypeCondition = '1=1';
-            if ($objectTypeFilter === 'object') {
+            if ('object' === $objectTypeFilter) {
                 $productTypeCondition = 'orderItems.mainObjectId = NULL';
-            } elseif ($objectTypeFilter === 'variant') {
+            } elseif ('variant' === $objectTypeFilter) {
                 $productTypeCondition = 'orderItems.mainObjectId IS NOT NULL';
             }
 
@@ -164,7 +161,7 @@ class ProductsReport implements ReportInterface
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
-                INNER JOIN object_localized_query_".$orderItemClassId."_".$locale." AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
+                INNER JOIN object_localized_query_".$orderItemClassId.'_'.$locale." AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC

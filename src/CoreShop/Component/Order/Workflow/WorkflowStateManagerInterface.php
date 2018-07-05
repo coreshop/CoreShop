@@ -27,6 +27,7 @@ interface WorkflowStateManagerInterface
      * @param      $workflowName
      * @param      $value
      * @param bool $forFrontend
+     *
      * @return array
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true);
@@ -35,7 +36,8 @@ interface WorkflowStateManagerInterface
      * @param       $subject
      * @param       $workflowName
      * @param array $transitions
-     * @param bool $forFrontend
+     * @param bool  $forFrontend
+     *
      * @return mixed
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);

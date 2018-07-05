@@ -39,7 +39,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
 
     /**
      * @param KernelInterface $kernel
-     * @param array $classes
+     * @param array           $classes
      */
     public function __construct(KernelInterface $kernel, array $classes)
     {
@@ -112,9 +112,9 @@ final class CreateObjectClassCommand extends GeneratorCommand
 
         $helper = $this->getHelper('question');
 
-        $classType = $input->getOption("classType");
-        $prefix = $input->getOption("prefix");
-        $pluginName = ucfirst($input->getOption("bundle"));
+        $classType = $input->getOption('classType');
+        $prefix = $input->getOption('prefix');
+        $pluginName = ucfirst($input->getOption('bundle'));
 
         if (is_string($pluginName)) {
             $bundle = Validators::validateBundleName($pluginName);
@@ -142,12 +142,12 @@ final class CreateObjectClassCommand extends GeneratorCommand
         $oldClassNameArray = explode('\\', $parentClass);
         $className = $prefix.end($oldClassNameArray);
 
-        $newParentClass = $pluginName."\\Model\\".$className;
+        $newParentClass = $pluginName.'\\Model\\'.$className;
 
-        $namespacePath = explode("\\", $newParentClass);
+        $namespacePath = explode('\\', $newParentClass);
         array_pop($namespacePath);
 
-        $pathForFile = $bundle->getPath()."/Model/".$className.".php";
+        $pathForFile = $bundle->getPath().'/Model/'.$className.'.php';
 
         $question = new ConfirmationQuestion("<info>You are going to create a new PHP File $pathForFile and a new Object-Class ($oldPimcoreClassName) for ($className) Are you sure? (y/n)</info>", true);
 
@@ -158,7 +158,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
         $this->getGenerator()->generateResourceClass($bundle, $className, $parentClass);
         Migrate::migrateClass($oldPimcoreClassName, $className, [
             'delete_existing_class' => true,
-            'parentClass' => $parentClass
+            'parentClass' => $parentClass,
         ]);
 
         $question = new ConfirmationQuestion("Do you want to migrate the existing data from $parentClass to $newParentClass? (y/n)", true);
@@ -174,15 +174,14 @@ final class CreateObjectClassCommand extends GeneratorCommand
                 'pimcore' => [
                     $shortClassType => [
                         'classes' => [
-                            'model' => 'Pimcore\Model\DataObject\\'.$className
-                        ]
-                    ]
-                ]
-            ]
+                            'model' => 'Pimcore\Model\DataObject\\'.$className,
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         if (file_exists($configFile)) {
-
             $yamlConfig = Yaml::parse(file_get_contents($configFile));
             $configEntry = array_merge_recursive($yamlConfig, $configEntry);
         }
@@ -198,7 +197,6 @@ final class CreateObjectClassCommand extends GeneratorCommand
 
         return 0;
     }
-
 
     protected function createGenerator()
     {

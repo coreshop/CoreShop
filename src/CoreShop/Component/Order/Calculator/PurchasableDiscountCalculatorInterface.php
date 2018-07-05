@@ -18,7 +18,8 @@ interface PurchasableDiscountCalculatorInterface
 {
     /**
      * @param PurchasableInterface $purchasable
-     * @param int $basePrice
+     * @param int                  $basePrice
+     *
      * @return int
      */
     public function getDiscount(PurchasableInterface $purchasable, $basePrice);

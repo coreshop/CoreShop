@@ -24,20 +24,20 @@ interface RuleConditionsValidationProcessorInterface
     public function getType();
 
     /**
-     * @param ResourceInterface $subject
-     * @param RuleInterface $rule
+     * @param ResourceInterface    $subject
+     * @param RuleInterface        $rule
      * @param ConditionInterface[] $conditions
-     * @param array $params
+     * @param array                $params
      *
      * @return bool
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, $params = []);
 
     /**
-     * @param ResourceInterface $subject
-     * @param RuleInterface $rule
+     * @param ResourceInterface  $subject
+     * @param RuleInterface      $rule
      * @param ConditionInterface $condition
-     * @param array $params
+     * @param array              $params
      *
      * @return mixed
      */

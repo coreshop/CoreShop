@@ -15,7 +15,7 @@ namespace CoreShop\Component\Index\Condition;
 class ConcatCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var
      */
     private $fieldName;
 
@@ -32,7 +32,7 @@ class ConcatCondition implements ConditionInterface
     /**
      * @param $fieldName
      * @param string $operator
-     * @param array $conditions
+     * @param array  $conditions
      */
     public function __construct($fieldName, string $operator, array $conditions)
     {
@@ -40,8 +40,6 @@ class ConcatCondition implements ConditionInterface
         $this->operator = $operator;
         $this->conditions = $conditions;
     }
-
-
 
     /**
      * @return mixed

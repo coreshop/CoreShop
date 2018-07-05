@@ -19,11 +19,11 @@ use Pimcore\Model\DataObject\Service;
 class SuperBoxSelect extends Multihref
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopSuperBoxSelect";
+    public $fieldtype = 'coreShopSuperBoxSelect';
 
     /**
      * @var string
@@ -131,7 +131,7 @@ class SuperBoxSelect extends Multihref
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getObjectsAllowed()
     {
@@ -144,14 +144,14 @@ class SuperBoxSelect extends Multihref
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         //if not set, return null
-        if ($data === null or $data === false) {
+        if (null === $data or false === $data) {
             return null;
         }
 
         $elements = array();
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $id) {
-                $elements[] = Service::getElementById("object", $id);
+                $elements[] = Service::getElementById('object', $id);
             }
         }
 
@@ -168,11 +168,11 @@ class SuperBoxSelect extends Multihref
 
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $element) {
-                /** @var AbstractObject $element */
+                /* @var AbstractObject $element */
                 $return[] = $element->getId();
             }
 
-            return implode(",", $return);
+            return implode(',', $return);
         }
 
         return false;

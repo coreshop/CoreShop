@@ -30,7 +30,7 @@ trait CategoriesConditionCheckerTrait
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface       $storeContext
      */
     public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
     {
@@ -41,6 +41,7 @@ trait CategoriesConditionCheckerTrait
     /**
      * @param $categories
      * @param $recursive
+     *
      * @return array
      */
     protected function getCategoriesToCheck($categories, $recursive)

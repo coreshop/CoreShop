@@ -30,7 +30,7 @@ final class TitleExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
-        /**
+        /*
          * @var $object SEOAwareInterface
          */
         $seoMetadata->setTitle($object->getMetaTitle());

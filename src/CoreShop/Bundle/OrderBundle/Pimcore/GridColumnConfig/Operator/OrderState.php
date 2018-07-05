@@ -31,8 +31,8 @@ class OrderState extends AbstractOperator
      * OrderState constructor.
      *
      * @param WorkflowStateManagerInterface $workflowManager
-     * @param \stdClass $config
-     * @param null $context
+     * @param \stdClass                     $config
+     * @param null                          $context
      */
     public function __construct(WorkflowStateManagerInterface $workflowManager, \stdClass $config, $context = null)
     {
@@ -43,6 +43,7 @@ class OrderState extends AbstractOperator
 
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
+     *
      * @return null|\stdClass|string
      */
     public function getLabeledValue($element)
@@ -61,26 +62,27 @@ class OrderState extends AbstractOperator
         $workflow = null;
 
         //todo: get child attribute instead of silly string comparing!
-        if (strpos($result->label, 'orderState)') !== false) {
+        if (false !== strpos($result->label, 'orderState)')) {
             $workflow = 'coreshop_order';
-        } elseif (strpos($result->label, 'paymentState)') !== false) {
+        } elseif (false !== strpos($result->label, 'paymentState)')) {
             $workflow = 'coreshop_order_payment';
-        } elseif (strpos($result->label, 'shippingState)') !== false) {
+        } elseif (false !== strpos($result->label, 'shippingState)')) {
             $workflow = 'coreshop_order_shipment';
-        } elseif (strpos($result->label, 'invoiceState)') !== false) {
+        } elseif (false !== strpos($result->label, 'invoiceState)')) {
             $workflow = 'coreshop_order_invoice';
         } else {
             $result->value = '--';
+
             return $result;
         }
 
         $state = $this->workflowManager->getStateInfo($workflow, $result->value, false);
 
         $rgb = $this->hex2rgb($state['color']);
-        $opacity = $workflow === 'coreshop_order' ? 1 : 0.3;
+        $opacity = 'coreshop_order' === $workflow ? 1 : 0.3;
 
-        if ($this->highlightLabel === true) {
-            $textColor = $workflow === 'coreshop_order' ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
+        if (true === $this->highlightLabel) {
+            $textColor = 'coreshop_order' === $workflow ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
             $backgroundColor = join(',', $rgb);
             $result->value = '<span class="rounded-color" style="background-color: rgba('.$backgroundColor.', '.$opacity.'); color: '.$textColor.';">'.$state['label'].'</span>';
         } else {
@@ -92,13 +94,14 @@ class OrderState extends AbstractOperator
 
     /**
      * @param $hex
+     *
      * @return array
      */
     private function hex2rgb($hex)
     {
         $hex = str_replace('#', '', $hex);
 
-        if (strlen($hex) == 3) {
+        if (3 == strlen($hex)) {
             $r = hexdec(substr($hex, 0, 1).substr($hex, 0, 1));
             $g = hexdec(substr($hex, 1, 1).substr($hex, 1, 1));
             $b = hexdec(substr($hex, 2, 1).substr($hex, 2, 1));
@@ -108,6 +111,7 @@ class OrderState extends AbstractOperator
             $b = hexdec(substr($hex, 4, 2));
         }
         $rgb = [$r, $g, $b];
+
         return $rgb;
     }
 
@@ -115,6 +119,7 @@ class OrderState extends AbstractOperator
      * @param $r
      * @param $g
      * @param $b
+     *
      * @return string
      */
     private function getContrastColor($r, $g, $b)
@@ -128,9 +133,9 @@ class OrderState extends AbstractOperator
             0.0722 * pow(0 / 255, 2.2);
 
         if ($l1 > $l2) {
-            $contrastRatio = (int)(($l1 + 0.05) / ($l2 + 0.05));
+            $contrastRatio = (int) (($l1 + 0.05) / ($l2 + 0.05));
         } else {
-            $contrastRatio = (int)(($l2 + 0.05) / ($l1 + 0.05));
+            $contrastRatio = (int) (($l2 + 0.05) / ($l1 + 0.05));
         }
 
         if ($contrastRatio > 7) {

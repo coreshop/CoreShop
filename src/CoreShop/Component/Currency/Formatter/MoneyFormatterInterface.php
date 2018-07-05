@@ -15,7 +15,7 @@ namespace CoreShop\Component\Currency\Formatter;
 interface MoneyFormatterInterface
 {
     /**
-     * @param int $amount
+     * @param int    $amount
      * @param string $currencyCode
      * @param string $locale
      *

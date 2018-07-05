@@ -8,6 +8,7 @@ interface CheckoutManagerFactoryInterface
 {
     /**
      * @param CartInterface $cart
+     *
      * @return CheckoutManagerInterface
      */
     public function createCheckoutManager(CartInterface $cart);

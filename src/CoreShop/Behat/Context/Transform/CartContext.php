@@ -14,9 +14,7 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
@@ -32,7 +30,7 @@ final class CartContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface   $cartContext
      */
     public function __construct(SharedStorageInterface $sharedStorage, CartContextInterface $cartContext)
     {

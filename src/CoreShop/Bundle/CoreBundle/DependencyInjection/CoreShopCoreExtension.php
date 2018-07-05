@@ -116,7 +116,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
             $checkoutManagerFactory = new Definition(DefaultCheckoutManagerFactory::class, [
                 new Reference($stepsLocatorId),
-                $priorityMap
+                $priorityMap,
             ]);
 
             $container->setDefinition($checkoutManagerFactoryId, $checkoutManagerFactory);

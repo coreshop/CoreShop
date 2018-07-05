@@ -65,6 +65,7 @@ class ConfigResolver
         $siteConfig = $config->getConfigForSite($configKey);
 
         $this->googleConfig = $siteConfig;
+
         return $this->googleConfig;
     }
 }

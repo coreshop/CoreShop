@@ -43,7 +43,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doContains($id)
     {
-        return $this->coreHandler->load($this->getCacheKey($id)) !== null;
+        return null !== $this->coreHandler->load($this->getCacheKey($id));
     }
 
     /**

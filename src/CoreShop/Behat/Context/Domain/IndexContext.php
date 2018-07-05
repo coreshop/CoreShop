@@ -14,7 +14,6 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -41,15 +40,14 @@ final class IndexContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface    $indexRepository
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         RepositoryInterface $indexRepository,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->indexRepository = $indexRepository;
         $this->entityManager = $entityManager;
@@ -166,13 +164,13 @@ final class IndexContext implements Context
     }
 
     /**
-     * @param IndexInterface $index
+     * @param IndexInterface     $index
      * @param IndexableInterface $object
      * @param $column
      * @param $value
      * @param bool $localized
      */
-    protected function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, $column, $value, $localized = false)
+    private function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, $column, $value, $localized = false)
     {
         $productEntry = $this->fetchAllFromIndex($index, $object, $localized);
 
@@ -191,19 +189,19 @@ final class IndexContext implements Context
     }
 
     /**
-     * @param IndexInterface $index
+     * @param IndexInterface          $index
      * @param IndexableInterface|null $object
-     * @param bool $localized
+     * @param bool                    $localized
+     *
      * @return array
      */
-    protected function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, $localized = false)
+    private function fetchAllFromIndex(IndexInterface $index, IndexableInterface $object = null, $localized = false)
     {
         if ($localized) {
             $tableName = sprintf('coreshop_index_mysql_localized_%s', $index->getName());
         } else {
             $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
         }
-
 
         if ($object instanceof Concrete) {
             if ($localized) {
@@ -218,9 +216,9 @@ final class IndexContext implements Context
 
     /**
      * @param string $tableName
-     * @param array $columns
+     * @param array  $columns
      */
-    protected function indexShouldHaveColumnsInTable(string $tableName, array $columns)
+    private function indexShouldHaveColumnsInTable(string $tableName, array $columns)
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
 
@@ -234,6 +232,7 @@ final class IndexContext implements Context
             foreach ($tableColumns as $tableCol) {
                 if ($tableCol->getName() === $col) {
                     $found = true;
+
                     break;
                 }
             }
@@ -244,9 +243,9 @@ final class IndexContext implements Context
 
     /**
      * @param string $tableName
-     * @param array $columns
+     * @param array  $columns
      */
-    protected function indexShouldHaveIndexInTable(string $tableName, array $columns)
+    private function indexShouldHaveIndexInTable(string $tableName, array $columns)
     {
         $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
 
@@ -261,6 +260,7 @@ final class IndexContext implements Context
             foreach ($columns as $column) {
                 if (!in_array($column, $index->getColumns())) {
                     $found = false;
+
                     break;
                 }
             }

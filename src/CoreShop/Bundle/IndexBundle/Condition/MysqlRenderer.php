@@ -18,8 +18,6 @@ use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Condition\IsCondition;
 use CoreShop\Component\Index\Condition\LikeCondition;
-use CoreShop\Component\Index\Condition\MatchCondition;
-use CoreShop\Component\Index\Condition\NotMatchCondition;
 use CoreShop\Component\Index\Condition\RangeCondition;
 use CoreShop\Component\Index\Condition\RendererInterface;
 use Pimcore\Db;
@@ -46,20 +44,15 @@ class MysqlRenderer implements RendererInterface
     {
         if ($condition instanceof IsCondition) {
             return $this->renderIs($condition, $prefix);
-        }
-        elseif ($condition instanceof InCondition) {
+        } elseif ($condition instanceof InCondition) {
             return $this->renderIn($condition, $prefix);
-        }
-        elseif ($condition instanceof LikeCondition) {
+        } elseif ($condition instanceof LikeCondition) {
             return $this->renderLike($condition, $prefix);
-        }
-        elseif ($condition instanceof RangeCondition) {
+        } elseif ($condition instanceof RangeCondition) {
             return $this->renderRange($condition, $prefix);
-        }
-        elseif ($condition instanceof ConcatCondition) {
+        } elseif ($condition instanceof ConcatCondition) {
             return $this->renderConcat($condition, $prefix);
-        }
-        elseif ($condition instanceof CompareCondition) {
+        } elseif ($condition instanceof CompareCondition) {
             return $this->renderCompare($condition, $prefix);
         }
 
@@ -68,7 +61,7 @@ class MysqlRenderer implements RendererInterface
 
     /**
      * @param InCondition $condition
-     * @param string $prefix
+     * @param string      $prefix
      *
      * @return string
      */
@@ -83,7 +76,7 @@ class MysqlRenderer implements RendererInterface
         }
 
         if (count($inValues) > 0) {
-            return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IN (' . implode(',', $inValues) . ')';
+            return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' IN ('.implode(',', $inValues).')';
         }
 
         return '';
@@ -91,7 +84,7 @@ class MysqlRenderer implements RendererInterface
 
     /**
      * @param IsCondition $condition
-     * @param string $prefix
+     * @param string      $prefix
      *
      * @return string
      */
@@ -99,12 +92,12 @@ class MysqlRenderer implements RendererInterface
     {
         $value = $condition->getValue();
 
-        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
+        return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' IS '.($value ? '' : ' NOT ').'NULL';
     }
 
     /**
      * @param LikeCondition $condition
-     * @param string $prefix
+     * @param string        $prefix
      *
      * @return string
      */
@@ -117,22 +110,25 @@ class MysqlRenderer implements RendererInterface
 
         switch ($pattern) {
             case 'left':
-                $patternValue = '%' . $value;
+                $patternValue = '%'.$value;
+
                 break;
             case 'right':
-                $patternValue = $value . '%';
+                $patternValue = $value.'%';
+
                 break;
             case 'both':
-                $patternValue = '%' . $value . '%';
+                $patternValue = '%'.$value.'%';
+
                 break;
         }
 
-        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' LIKE ' . $this->database->quote($patternValue);
+        return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' LIKE '.$this->database->quote($patternValue);
     }
 
     /**
      * @param RangeCondition $condition
-     * @param string $prefix
+     * @param string         $prefix
      *
      * @return string
      */
@@ -141,12 +137,12 @@ class MysqlRenderer implements RendererInterface
         $from = $condition->getFrom();
         $to = $condition->getTo();
 
-        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' >= ' . $from . ' AND ' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' <= ' . $to;
+        return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' >= '.$from.' AND '.$this->quoteFieldName($condition->getFieldName(), $prefix).' <= '.$to;
     }
 
     /**
      * @param ConcatCondition $condition
-     * @param string $prefix
+     * @param string          $prefix
      *
      * @return string
      */
@@ -156,12 +152,12 @@ class MysqlRenderer implements RendererInterface
             $conditions[] = $this->render($cond, $prefix);
         }
 
-        return '(' . implode(' ' . trim($condition->getOperator()) . ' ', $conditions) . ')';
+        return '('.implode(' '.trim($condition->getOperator()).' ', $conditions).')';
     }
 
     /**
      * @param CompareCondition $condition
-     * @param string $prefix
+     * @param string           $prefix
      *
      * @return string
      */
@@ -170,11 +166,12 @@ class MysqlRenderer implements RendererInterface
         $value = $condition->getValue();
         $operator = $condition->getOperator();
 
-        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' ' . $operator . ' ' . $this->database->quote($value);
+        return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' '.$operator.' '.$this->database->quote($value);
     }
 
     /**
      * @param $identifier
+     *
      * @return string
      */
     protected function quoteIdentifier($identifier)
@@ -184,6 +181,7 @@ class MysqlRenderer implements RendererInterface
 
     /**
      * @param null $prefix
+     *
      * @return string
      */
     protected function renderPrefix($prefix = null)
@@ -192,16 +190,17 @@ class MysqlRenderer implements RendererInterface
             return '';
         }
 
-        return $prefix . '.';
+        return $prefix.'.';
     }
 
     /**
      * @param $fieldName
      * @param null $prefix
+     *
      * @return string
      */
     protected function quoteFieldName($fieldName, $prefix = null)
     {
-        return $this->renderPrefix($prefix) . $this->quoteIdentifier($fieldName);
+        return $this->renderPrefix($prefix).$this->quoteIdentifier($fieldName);
     }
 }

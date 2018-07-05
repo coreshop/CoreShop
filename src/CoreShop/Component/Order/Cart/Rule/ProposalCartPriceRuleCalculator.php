@@ -33,7 +33,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
     private $actionServiceRegistry;
 
     /**
-     * @param FactoryInterface $cartPriceRuleItemFactory
+     * @param FactoryInterface         $cartPriceRuleItemFactory
      * @param ServiceRegistryInterface $actionServiceRegistry
      */
     public function __construct(FactoryInterface $cartPriceRuleItemFactory, ServiceRegistryInterface $actionServiceRegistry)
@@ -59,6 +59,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
                         if ($cartsRule->getId() === $cartPriceRule->getId()) {
                             $priceRuleItem = $rule;
                             $existingPriceRule = true;
+
                             break;
                         }
                     }
@@ -68,10 +69,10 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
 
         $result = false;
 
-        /**
+        /*
          * @var ProposalCartPriceRuleItemInterface
          */
-        if ($priceRuleItem === null) {
+        if (null === $priceRuleItem) {
             $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
         }
 
@@ -82,7 +83,6 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
         }
         $priceRuleItem->setDiscount(0, true);
         $priceRuleItem->setDiscount(0, false);
-
 
         foreach ($cartPriceRule->getActions() as $action) {
             if ($action instanceof ActionInterface) {

@@ -20,6 +20,5 @@ if (class_exists(\CoreShop\Component\Pimcore\Db\Db::class)) {
      */
     final class Db
     {
-
     }
 }

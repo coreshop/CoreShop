@@ -31,7 +31,7 @@ final class DescriptionExtractor implements ExtractorInterface
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
         /**
-         * @var $object SEOAwareInterface
+         * @var SEOAwareInterface
          */
         if ($object->getMetaDescription()) {
             $seoMetadata->setMetaDescription($object->getMetaDescription());

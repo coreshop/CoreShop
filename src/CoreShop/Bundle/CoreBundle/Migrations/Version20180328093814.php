@@ -26,7 +26,7 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
                     'salutations',
                     'simple_array',
                     [
-                        'notnull' => false
+                        'notnull' => false,
                     ]
                 );
             } else {
@@ -60,19 +60,17 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
 
         /** @var CountryInterface $country */
         foreach ($countryRepository->findAll() as $country) {
-
             //set salutation
             $country->setSalutations($defaultSalutations);
 
             //update address format
             $addressFormat = $country->getAddressFormat();
-            if (strpos($addressFormat, '%Text(firstname);') !== false && strpos($addressFormat, '%Text(salutation);') === false) {
+            if (false !== strpos($addressFormat, '%Text(firstname);') && false === strpos($addressFormat, '%Text(salutation);')) {
                 $addressFormat = str_replace('%Text(firstname);', '%Text(salutation); %Text(firstname);', $addressFormat);
                 $country->setAddressFormat($addressFormat);
             }
 
             $manager->persist($country);
-
         }
 
         $manager->flush();
@@ -84,6 +82,5 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

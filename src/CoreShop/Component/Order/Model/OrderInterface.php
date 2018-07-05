@@ -95,6 +95,7 @@ interface OrderInterface extends SaleInterface, PayableInterface
 
     /**
      * @param PaymentProviderInterface $paymentProvider
+     *
      * @return PaymentProviderInterface
      */
     public function setPaymentProvider($paymentProvider);

@@ -73,7 +73,6 @@ class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-
     /**
      * {@inheritdoc}
      */

@@ -26,16 +26,16 @@ final class OrderStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var bool
      */
-    protected $includeInvoiceStateToComplete;
+    private $includeInvoiceStateToComplete;
 
     /**
      * @param StateMachineManager $stateMachineManager
-     * @param bool $includeInvoiceStateToComplete
+     * @param bool                $includeInvoiceStateToComplete
      */
     public function __construct(StateMachineManager $stateMachineManager, $includeInvoiceStateToComplete)
     {
@@ -61,7 +61,7 @@ final class OrderStateResolver implements StateResolverInterface
      */
     private function canOrderBeComplete(OrderInterface $order)
     {
-        /**
+        /*
          * @var $order \CoreShop\Component\Core\Model\OrderInterface
          */
         Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -69,10 +69,10 @@ final class OrderStateResolver implements StateResolverInterface
         $coreStates = OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&
             OrderShipmentStates::STATE_SHIPPED === $order->getShippingState();
 
-        if ($this->includeInvoiceStateToComplete === true) {
-            return $coreStates === true && OrderInvoiceStates::STATE_INVOICED === $order->getInvoiceState();
+        if (true === $this->includeInvoiceStateToComplete) {
+            return true === $coreStates && OrderInvoiceStates::STATE_INVOICED === $order->getInvoiceState();
         }
 
-        return $coreStates === true;
+        return true === $coreStates;
     }
 }

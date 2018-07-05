@@ -87,7 +87,7 @@ final class EventDispatcher implements EventDispatcherInterface
 
     /**
      * @param ResourceInterface $resource
-     * @param Request $request
+     * @param Request           $request
      *
      * @return ResourceControllerEvent
      */

@@ -86,7 +86,7 @@ class GtmDataLayerBlockListener
         }
 
         $serverVars = $event->getRequest()->server;
-        if ($serverVars->get('HTTP_X_PURPOSE') === 'preview') {
+        if ('preview' === $serverVars->get('HTTP_X_PURPOSE')) {
             return;
         }
 
@@ -100,13 +100,12 @@ class GtmDataLayerBlockListener
 
         if (!empty($codeHead)) {
             $headEndPosition = stripos($content, '</head>');
-            if ($headEndPosition !== false) {
-                $content = substr_replace($content, $codeHead . '</head>', $headEndPosition, 7);
+            if (false !== $headEndPosition) {
+                $content = substr_replace($content, $codeHead.'</head>', $headEndPosition, 7);
             }
         }
 
         $response->setContent($content);
-
     }
 
     /**
@@ -116,9 +115,9 @@ class GtmDataLayerBlockListener
     {
         $html = '';
         foreach ($this->codeTracker->getBlocks() as $code) {
-            $html .= $code . "\n";
+            $html .= $code."\n";
         }
 
-        return '<script>' . "\n" . $html . '</script>';
+        return '<script>'."\n".$html.'</script>';
     }
 }

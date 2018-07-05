@@ -35,14 +35,13 @@ class StoresChecker extends AbstractConditionChecker
     private $orderRepository;
 
     /**
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface    $storeContext
      * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         StoreContextInterface $storeContext,
         OrderRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->storeContext = $storeContext;
         $this->orderRepository = $orderRepository;
     }
@@ -56,9 +55,9 @@ class StoresChecker extends AbstractConditionChecker
 
         if ($subject instanceof StoreAwareInterface) {
             $subject->getStore();
-        } else if ($subject instanceof OrderDocumentInterface) {
+        } elseif ($subject instanceof OrderDocumentInterface) {
             $store = $subject->getOrder()->getStore();
-        } else if ($subject instanceof PaymentInterface) {
+        } elseif ($subject instanceof PaymentInterface) {
             $order = $subject->getOrder();
 
             if ($order instanceof OrderInterface) {

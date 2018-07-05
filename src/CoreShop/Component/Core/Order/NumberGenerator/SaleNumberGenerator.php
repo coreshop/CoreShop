@@ -24,28 +24,28 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
     /**
      * @var NumberGeneratorInterface
      */
-    protected $numberGenerator;
+    private $numberGenerator;
 
     /**
      * @var ConfigurationServiceInterface
      */
-    protected $configurationService;
+    private $configurationService;
 
     /**
      * @var string
      */
-    protected $prefixConfigurationKey;
+    private $prefixConfigurationKey;
 
     /**
      * @var string
      */
-    protected $suffixConfigurationKey;
+    private $suffixConfigurationKey;
 
     /**
-     * @param NumberGeneratorInterface $numberGenerator
+     * @param NumberGeneratorInterface      $numberGenerator
      * @param ConfigurationServiceInterface $configurationService
-     * @param string $prefixConfigurationKey
-     * @param string $suffixConfigurationKey
+     * @param string                        $prefixConfigurationKey
+     * @param string                        $suffixConfigurationKey
      */
     public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey)
     {
@@ -64,7 +64,7 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
 
         if ($model instanceof SaleInterface) {
             $store = $model->getStore();
-        } else if ($model instanceof OrderDocumentInterface) {
+        } elseif ($model instanceof OrderDocumentInterface) {
             $store = $model->getOrder()->getStore();
         }
 

@@ -63,6 +63,5 @@ final class CoreShopWorkflowExtension extends Extension
 
         $container->setParameter('coreshop.state_machine.callbacks', $callbackConfig);
         $container->setParameter('coreshop.state_machine.colors', $colorConfig);
-
     }
 }

@@ -24,6 +24,7 @@ class OrderCommentController extends PimcoreController
 {
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function listAction(Request $request)
@@ -44,7 +45,7 @@ class OrderCommentController extends PimcoreController
                 'text' => $note->getDescription(),
                 'date' => $note->getDate(),
                 'userName' => $user ? $user->getName() : 'anonymous',
-                'submitAsEmail' => isset($noteData['submitAsEmail']) && $noteData['submitAsEmail']['data'] === true
+                'submitAsEmail' => isset($noteData['submitAsEmail']) && true === $noteData['submitAsEmail']['data'],
             ];
         }
 
@@ -53,12 +54,13 @@ class OrderCommentController extends PimcoreController
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function addAction(Request $request)
     {
         $comment = $request->get('comment');
-        $submitAsEmail = $request->get('submitAsEmail') === 'true';
+        $submitAsEmail = 'true' === $request->get('submitAsEmail');
         $orderId = $request->get('id');
 
         $order = $this->getOrderRepository()->find($orderId);
@@ -68,7 +70,6 @@ class OrderCommentController extends PimcoreController
         }
 
         try {
-
             $objectNoteService = $this->get('coreshop.object_note_service');
             $commentEntity = $objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_COMMENT);
             $commentEntity->setTitle('Order Comment');
@@ -84,6 +85,7 @@ class OrderCommentController extends PimcoreController
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function deleteAction(Request $request)

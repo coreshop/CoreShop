@@ -36,7 +36,7 @@ abstract class AbstractPimcoreExtension extends Extension
             $globalParameter = sprintf('coreshop.all.pimcore.admin.%s', $resourceType);
 
             $parameters = [
-                $applicationParameter, $globalParameter
+                $applicationParameter, $globalParameter,
             ];
 
             foreach ($parameters as $containerParameter) {

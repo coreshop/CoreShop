@@ -17,7 +17,6 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
     /**
@@ -238,7 +237,6 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 
     /**
      * {@inheritdoc}

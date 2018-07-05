@@ -18,6 +18,7 @@ interface PurchasableRetailPriceCalculatorInterface
 {
     /**
      * @param PurchasableInterface $purchasable
+     *
      * @return int
      */
     public function getRetailPrice(PurchasableInterface $purchasable);

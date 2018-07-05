@@ -39,7 +39,7 @@ final class CartItemProcessor implements CartProcessorInterface
     public function process(CartInterface $cart)
     {
         /**
-         * @var $item CartItemInterface
+         * @var CartItemInterface
          */
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();

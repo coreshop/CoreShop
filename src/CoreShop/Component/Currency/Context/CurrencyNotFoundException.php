@@ -44,7 +44,7 @@ final class CurrencyNotFoundException extends \RuntimeException
 
     /**
      * @param string $currencyCode
-     * @param array $availableCurrenciesCodes
+     * @param array  $availableCurrenciesCodes
      *
      * @return self
      */

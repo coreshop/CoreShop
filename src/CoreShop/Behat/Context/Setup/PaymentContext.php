@@ -53,9 +53,9 @@ final class PaymentContext implements Context
     /**
      * @param SharedStorageInterface $sharedStorage
      * @param EntityManagerInterface $entityManager
-     * @param FactoryInterface $paymentFactory
-     * @param FactoryInterface $paymentProviderFactory
-     * @param FactoryInterface $gatewayConfigFactory
+     * @param FactoryInterface       $paymentFactory
+     * @param FactoryInterface       $paymentProviderFactory
+     * @param FactoryInterface       $gatewayConfigFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -63,8 +63,7 @@ final class PaymentContext implements Context
         FactoryInterface $paymentFactory,
         FactoryInterface $paymentProviderFactory,
         FactoryInterface $gatewayConfigFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->entityManager = $entityManager;
         $this->paymentFactory = $paymentFactory;
@@ -78,8 +77,8 @@ final class PaymentContext implements Context
     public function thereIsAPaymentProviderUsingFactory($name, $factory)
     {
         /**
-         * @var $paymentProvider PaymentProviderInterface
-         * @var $gatewayConfig GatewayConfig
+         * @var PaymentProviderInterface
+         * @var $gatewayConfig           GatewayConfig
          */
         $paymentProvider = $this->paymentProviderFactory->createNew();
         $gatewayConfig = $this->gatewayConfigFactory->createNew();
@@ -106,7 +105,7 @@ final class PaymentContext implements Context
     public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount)
     {
         /**
-         * @var $payment PaymentInterface
+         * @var PaymentInterface
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setCurrency($order->getCurrency());

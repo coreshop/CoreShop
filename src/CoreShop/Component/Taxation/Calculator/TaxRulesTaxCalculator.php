@@ -28,7 +28,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
 
     /**
      * @param array $taxRates
-     * @param int $computationMethod
+     * @param int   $computationMethod
      */
     public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {
@@ -58,7 +58,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     public function getTotalRate()
     {
         $taxes = 0;
-        if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
+        if (self::ONE_AFTER_ANOTHER_METHOD == $this->getComputationMethod()) {
             $taxes = 1;
             foreach ($this->getTaxRates() as $tax) {
                 $taxes *= (1 + (abs($tax->getRate()) / 100));
@@ -84,7 +84,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         $taxAmount = 0;
 
         foreach ($this->getTaxRates() as $tax) {
-            if ($this->getComputationMethod() == self::ONE_AFTER_ANOTHER_METHOD) {
+            if (self::ONE_AFTER_ANOTHER_METHOD == $this->getComputationMethod()) {
                 $taxesAmounts[$tax->getId()] = (int) round($price * (abs($tax->getRate()) / 100));
                 $price = $price + $taxesAmounts[$tax->getId()];
             } else {

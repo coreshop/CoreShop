@@ -62,11 +62,11 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
         if (count($validationProcessors) > 0) {
             $collector = new Definition(RuleCollector::class);
             $collector->setArguments([
-                $validationProcessors
+                $validationProcessors,
             ]);
             $collector->addTag('data_collector', [
                 'template' => 'CoreShopRuleBundle:Collector:rule.html.twig',
-                'id' => 'coreshop.rule_collector'
+                'id' => 'coreshop.rule_collector',
             ]);
 
             $container->setDefinition('coreshop.rule_collector', $collector);

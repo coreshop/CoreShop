@@ -37,16 +37,15 @@ final class CoreShopSetupContext implements Context
     private $eventDispatcher;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface            $entityManager
      * @param NotificationRuleListenerInterface $notificationRuleListener
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param EventDispatcherInterface          $eventDispatcher
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         NotificationRuleListenerInterface $notificationRuleListener,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->notificationRuleListener = $notificationRuleListener;
         $this->eventDispatcher = $eventDispatcher;
@@ -76,13 +75,13 @@ final class CoreShopSetupContext implements Context
         $views = $schemaManager->listViews();
 
         foreach ($tables as $tbl) {
-            if (strpos($tbl, 'coreshop_index_mysql_') === 0) {
+            if (0 === strpos($tbl, 'coreshop_index_mysql_')) {
                 $schemaManager->dropTable($tbl);
             }
         }
 
         foreach ($views as $view) {
-            if (strpos($view->getName(), 'coreshop_index_mysql_') === 0) {
+            if (0 === strpos($view->getName(), 'coreshop_index_mysql_')) {
                 $schemaManager->dropView($view->getName());
             }
         }
@@ -95,7 +94,7 @@ final class CoreShopSetupContext implements Context
     {
         $this->notificationRuleListener->clear();
 
-        $function = function(GenericEvent $event) {
+        $function = function (GenericEvent $event) {
             $this->notificationRuleListener->applyNewFired($event->getSubject());
         };
 

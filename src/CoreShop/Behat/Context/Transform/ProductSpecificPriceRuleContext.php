@@ -14,8 +14,6 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -33,14 +31,13 @@ final class ProductSpecificPriceRuleContext implements Context
     private $productSpecificPriceRuleRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface                      $sharedStorage
      * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
     }

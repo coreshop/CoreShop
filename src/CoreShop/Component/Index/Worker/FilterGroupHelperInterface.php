@@ -19,8 +19,9 @@ interface FilterGroupHelperInterface
 {
     /**
      * @param IndexColumnInterface $column
-     * @param ListingInterface $list
+     * @param ListingInterface     $list
      * @param $field
+     *
      * @return mixed
      */
     public function getGroupByValuesForFilterGroup(IndexColumnInterface $column, ListingInterface $list, $field);

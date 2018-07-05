@@ -36,13 +36,12 @@ final class PimcoreClassContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
+     * @param ClassStorageInterface  $classStorage
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
     }
@@ -98,7 +97,7 @@ final class PimcoreClassContext implements Context
      */
     public function objectInstanceWithKey($key)
     {
-        return Concrete::getByPath('/' . $key);
+        return Concrete::getByPath('/'.$key);
     }
 
     /**
@@ -112,7 +111,7 @@ final class PimcoreClassContext implements Context
         $name = $this->sharedStorage->get('pimcore_definition_name');
         $class = $this->sharedStorage->get('pimcore_definition_class');
 
-        if ($class === ClassDefinition::class) {
+        if (ClassDefinition::class === $class) {
             return ClassDefinition::getByName($this->classStorage->get($name));
         }
 

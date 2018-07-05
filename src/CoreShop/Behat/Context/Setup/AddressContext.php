@@ -38,16 +38,15 @@ final class AddressContext implements Context
     private $addressRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $addressFactory
+     * @param SharedStorageInterface     $sharedStorage
+     * @param FactoryInterface           $addressFactory
      * @param PimcoreRepositoryInterface $addressRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $addressFactory,
         PimcoreRepositoryInterface $addressRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->addressFactory = $addressFactory;
         $this->addressRepository = $addressRepository;
@@ -67,12 +66,13 @@ final class AddressContext implements Context
      * @param $city
      * @param $street
      * @param $nr
+     *
      * @return AddressInterface
      */
     private function createAddress(CountryInterface $country, $postcode, $city, $street, $nr)
     {
         /**
-         * @var AddressInterface $address
+         * @var AddressInterface
          */
         $address = $this->addressFactory->createNew();
 

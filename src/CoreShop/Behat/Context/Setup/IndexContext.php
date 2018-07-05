@@ -64,13 +64,13 @@ final class IndexContext implements Context
     private $indexColumnFactory;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $indexFactory
-     * @param RepositoryInterface $indexRepository
+     * @param SharedStorageInterface   $sharedStorage
+     * @param ClassStorageInterface    $classStorage
+     * @param ObjectManager            $objectManager
+     * @param FactoryInterface         $indexFactory
+     * @param RepositoryInterface      $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
-     * @param FactoryInterface $indexColumnFactory
+     * @param FactoryInterface         $indexColumnFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -80,8 +80,7 @@ final class IndexContext implements Context
         RepositoryInterface $indexRepository,
         ServiceRegistryInterface $workerServiceRegistry,
         FactoryInterface $indexColumnFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
@@ -109,7 +108,7 @@ final class IndexContext implements Context
 
         foreach ($hash as $row) {
             /**
-             * @var $column IndexColumnInterface
+             * @var IndexColumnInterface
              */
             $column = $this->indexColumnFactory->createNew();
             $column->setName($row['name']);
@@ -135,7 +134,7 @@ final class IndexContext implements Context
                 $configuration = json_decode($row['configuration'], true);
 
                 foreach ($configuration as $key => &$value) {
-                    if ($key === 'className') {
+                    if ('className' === $key) {
                         $value = $this->classStorage->get($value);
                     }
                 }
@@ -178,8 +177,8 @@ final class IndexContext implements Context
 
     /**
      * @param IndexInterface $index
-     * @param TableIndex $tableIndex
-     * @param bool $localized
+     * @param TableIndex     $tableIndex
+     * @param bool           $localized
      */
     private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false)
     {
@@ -206,7 +205,7 @@ final class IndexContext implements Context
     private function createIndex($name, $class, $type = 'mysql')
     {
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface
          */
         $index = $this->indexFactory->createNew();
         $index->setName($name);
@@ -237,7 +236,5 @@ final class IndexContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('index', $index);
-
-
     }
 }

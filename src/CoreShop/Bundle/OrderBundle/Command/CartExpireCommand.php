@@ -37,8 +37,8 @@ final class CartExpireCommand extends Command
 
     /**
      * @param ProposalExpirationInterface $cartExpiration
-     * @param int $days
-     * @param array $params
+     * @param int                         $days
+     * @param array                       $params
      */
     public function __construct(ProposalExpirationInterface $cartExpiration, $days = 0, $params = [])
     {
@@ -77,7 +77,7 @@ final class CartExpireCommand extends Command
     /**
      * Execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int

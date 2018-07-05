@@ -57,7 +57,7 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber
 
     protected function getReflectionService()
     {
-        if ($this->reflectionService === null) {
+        if (null === $this->reflectionService) {
             $this->reflectionService = new RuntimeReflectionService();
         }
 

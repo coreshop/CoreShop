@@ -19,7 +19,7 @@ final class StateMachineApplier implements StateMachineApplierInterface
     /**
      * @var StateMachineManagerInterface
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @param StateMachineManagerInterface $stateMachineManager
@@ -38,7 +38,7 @@ final class StateMachineApplier implements StateMachineApplierInterface
     public function apply($subject, $workflowName = null, $transition = null, $soft = true)
     {
         $workflow = $this->stateMachineManager->get($subject, $workflowName);
-        if ($soft === true) {
+        if (true === $soft) {
             if (!$workflow->can($subject, $transition)) {
                 return;
             }

@@ -87,12 +87,13 @@ final class ProductPriceRuleContext implements Context
 
     /**
      * ProductPriceRuleContext constructor.
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FormFactoryInterface $formFactory
-     * @param FormTypeRegistryInterface $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface $actionFormTypeRegistry
-     * @param FactoryInterface $productPriceRuleFactory
+     *
+     * @param SharedStorageInterface              $sharedStorage
+     * @param ObjectManager                       $objectManager
+     * @param FormFactoryInterface                $formFactory
+     * @param FormTypeRegistryInterface           $conditionFormTypeRegistry
+     * @param FormTypeRegistryInterface           $actionFormTypeRegistry
+     * @param FactoryInterface                    $productPriceRuleFactory
      * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
      */
     public function __construct(
@@ -119,7 +120,7 @@ final class ProductPriceRuleContext implements Context
     public function addingAProductPriceRule($ruleName)
     {
         /**
-         * @var $rule ProductPriceRuleInterface
+         * @var ProductPriceRuleInterface
          */
         $rule = $this->productPriceRuleFactory->createNew();
         $rule->setName($ruleName);
@@ -164,8 +165,8 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('countries', [
             'countries' => [
-                $country->getId()
-            ]
+                $country->getId(),
+            ],
         ]));
     }
 
@@ -179,8 +180,8 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
             'customers' => [
-                $customer->getId()
-            ]
+                $customer->getId(),
+            ],
         ]));
     }
 
@@ -197,7 +198,7 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('timespan', [
             'dateFrom' => $from->getTimestamp() * 1000,
-            'dateTo' => $to->getTimestamp() * 1000
+            'dateTo' => $to->getTimestamp() * 1000,
         ]));
     }
 
@@ -211,8 +212,8 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
             'customerGroups' => [
-                $group->getId()
-            ]
+                $group->getId(),
+            ],
         ]));
     }
 
@@ -226,8 +227,8 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('stores', [
             'stores' => [
-                $store->getId()
-            ]
+                $store->getId(),
+            ],
         ]));
     }
 
@@ -241,8 +242,8 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('zones', [
             'zones' => [
-                $zone->getId()
-            ]
+                $zone->getId(),
+            ],
         ]));
     }
 
@@ -256,8 +257,8 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('currencies', [
             'currencies' => [
-                $currency->getId()
-            ]
+                $currency->getId(),
+            ],
         ]));
     }
 
@@ -270,7 +271,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
-            'categories' => [$category->getId()]
+            'categories' => [$category->getId()],
         ]));
     }
 
@@ -284,7 +285,7 @@ final class ProductPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
             'categories' => [$category->getId()],
-            'recursive' => true
+            'recursive' => true,
         ]));
     }
 
@@ -299,8 +300,8 @@ final class ProductPriceRuleContext implements Context
 
         $configuration = [
             'products' => [
-                $product->getId()
-            ]
+                $product->getId(),
+            ],
         ];
 
         if (null !== $product2) {
@@ -319,7 +320,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($discount)
+            'percent' => intval($discount),
         ]));
     }
 
@@ -333,7 +334,7 @@ final class ProductPriceRuleContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
             'amount' => intval($amount),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -347,7 +348,7 @@ final class ProductPriceRuleContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
             'price' => intval($price),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -361,13 +362,13 @@ final class ProductPriceRuleContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('price', [
             'price' => intval($price),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
     /**
      * @param ProductPriceRuleInterface $rule
-     * @param ConditionInterface $condition
+     * @param ConditionInterface        $condition
      */
     private function addCondition(ProductPriceRuleInterface $rule, ConditionInterface $condition)
     {
@@ -379,7 +380,7 @@ final class ProductPriceRuleContext implements Context
 
     /**
      * @param ProductPriceRuleInterface $rule
-     * @param ActionInterface $action
+     * @param ActionInterface           $action
      */
     private function addAction(ProductPriceRuleInterface $rule, ActionInterface $action)
     {

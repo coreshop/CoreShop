@@ -15,17 +15,17 @@ namespace CoreShop\Component\Index\Condition;
 class CompareCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var
      */
     private $fieldName;
 
     /**
-     * @var $string
+     * @var
      */
     private $operator;
 
     /**
-     * @var $string
+     * @var
      */
     private $value;
 

@@ -68,13 +68,13 @@ final class RegistrationService implements RegistrationServiceInterface
 
     /**
      * @param CustomerRepositoryInterface $customerRepository
-     * @param ObjectServiceInterface $objectService
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param TokenStorage $securityTokenStorage
-     * @param LocaleContextInterface $localeContext
-     * @param string $customerFolder
-     * @param string $guestFolder
-     * @param string $addressFolder
+     * @param ObjectServiceInterface      $objectService
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param TokenStorage                $securityTokenStorage
+     * @param LocaleContextInterface      $localeContext
+     * @param string                      $customerFolder
+     * @param string                      $guestFolder
+     * @param string                      $addressFolder
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -102,7 +102,7 @@ final class RegistrationService implements RegistrationServiceInterface
     public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false)
     {
         $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
-        
+
         if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();
         }
@@ -130,5 +130,4 @@ final class RegistrationService implements RegistrationServiceInterface
 
         $customer->save();
     }
-
 }

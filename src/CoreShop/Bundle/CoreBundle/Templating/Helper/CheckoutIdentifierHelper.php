@@ -44,18 +44,17 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     protected $cartContext;
 
     /**
-     * @param RequestStack $requestStack
-     * @param LinkGeneratorInterface $linkGenerator
+     * @param RequestStack                    $requestStack
+     * @param LinkGeneratorInterface          $linkGenerator
      * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface            $cartContext
      */
     public function __construct(
         RequestStack $requestStack,
         LinkGeneratorInterface $linkGenerator,
         CheckoutManagerFactoryInterface $checkoutManagerFactory,
         CartContextInterface $cartContext
-    )
-    {
+    ) {
         $this->requestStack = $requestStack;
         $this->linkGenerator = $linkGenerator;
         $this->checkoutManagerFactory = $checkoutManagerFactory;
@@ -63,7 +62,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * Get all Steps of Checkout (cart is always first step here)
+     * Get all Steps of Checkout (cart is always first step here).
      *
      * @return array
      */
@@ -82,11 +81,10 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
             'cart' => [
                 'waiting' => false,
                 'done' => !is_null($stepIdentifier),
-                'current' => $requestAttributes->get('_route') === 'coreshop_cart_summary',
+                'current' => 'coreshop_cart_summary' === $requestAttributes->get('_route'),
                 'valid' => !is_null($stepIdentifier),
-                'url' => $this->linkGenerator->generate($cart, 'coreshop_cart_summary')
-
-            ]
+                'url' => $this->linkGenerator->generate($cart, 'coreshop_cart_summary'),
+            ],
         ];
 
         foreach ($checkoutSteps as $identifier) {
@@ -94,12 +92,12 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
             $step = $checkoutManager->getStep($identifier);
             $isValid = $step instanceof ValidationCheckoutStepInterface ? $step->validate($cart) : false;
 
-            $shopSteps[(string)$identifier] = [
-                'waiting' => is_null($stepIdentifier) || (int)$currentStep < $stepIndex,
-                'done' => !is_null($stepIdentifier) && (int)$currentStep > $stepIndex,
-                'current' => !is_null($stepIdentifier) && (int)$currentStep === $stepIndex,
+            $shopSteps[(string) $identifier] = [
+                'waiting' => is_null($stepIdentifier) || (int) $currentStep < $stepIndex,
+                'done' => !is_null($stepIdentifier) && (int) $currentStep > $stepIndex,
+                'current' => !is_null($stepIdentifier) && (int) $currentStep === $stepIndex,
                 'valid' => $isValid,
-                'url' => $this->linkGenerator->generate($cart, 'coreshop_checkout', ['stepIdentifier' => (string)$identifier])
+                'url' => $this->linkGenerator->generate($cart, 'coreshop_checkout', ['stepIdentifier' => (string) $identifier]),
             ];
         }
 
@@ -108,13 +106,14 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
 
     /**
      * @param string $type
+     *
      * @return mixed
      */
     public function getStep($type = '')
     {
         $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
 
-        $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))) . 'StepIdentifier';
+        $getter = lcfirst(str_replace('_', '', ucwords($type, '_'))).'StepIdentifier';
         if (!method_exists($this, $getter)) {
             throw new \InvalidArgumentException(sprintf('invalid identifier guess "%s", available guesses are: %s', $type, implode(', ', $validGuesser)));
         }
@@ -125,50 +124,53 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
         $stepIdentifier = $request->get('stepIdentifier');
 
         return $this->$getter($cart, $stepIdentifier, $checkoutManager);
-
     }
 
     /**
-     * @param CartInterface $cart
-     * @param string $stepIdentifier
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
+     *
      * @return mixed
      */
     protected function getCurrentStepIdentifier($cart, $stepIdentifier, $checkoutManager)
     {
         return $stepIdentifier;
-
     }
 
     /**
-     * @param CartInterface $cart
-     * @param string $stepIdentifier
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
+     *
      * @return mixed
      */
     protected function getFirstStepIdentifier($cart, $stepIdentifier, $checkoutManager)
     {
         $steps = $checkoutManager->getSteps();
-        return reset($steps);
 
+        return reset($steps);
     }
 
     /**
-     * @param CartInterface $cart
-     * @param string $stepIdentifier
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
+     *
      * @return mixed
      */
     protected function getLastStepIdentifier($cart, $stepIdentifier, $checkoutManager)
     {
         $steps = $checkoutManager->getSteps();
+
         return end($steps);
     }
 
     /**
-     * @param CartInterface $cart
-     * @param string $stepIdentifier
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
+     *
      * @return mixed
      */
     protected function getPreviousStepIdentifier($cart, $stepIdentifier, $checkoutManager)
@@ -182,13 +184,15 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
                 $identifier = $step->getIdentifier();
             }
         }
+
         return $identifier;
     }
 
     /**
-     * @param CartInterface $cart
-     * @param string $stepIdentifier
+     * @param CartInterface            $cart
+     * @param string                   $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
+     *
      * @return mixed
      */
     protected function getNextStepIdentifier($cart, $stepIdentifier, $checkoutManager)
@@ -202,7 +206,6 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
         }
 
         return $identifier;
-
     }
 
     /**

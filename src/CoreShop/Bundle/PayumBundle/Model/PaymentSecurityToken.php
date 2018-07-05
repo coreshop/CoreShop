@@ -18,9 +18,7 @@ use Payum\Core\Security\TokenInterface;
 use Payum\Core\Security\Util\Random;
 use Payum\Core\Storage\IdentityInterface;
 
-class PaymentSecurityToken implements
-    ResourceInterface,
-    TokenInterface
+class PaymentSecurityToken implements ResourceInterface, TokenInterface
 {
     use SetValuesTrait;
 

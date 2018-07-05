@@ -27,7 +27,7 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $state
+     * @param string         $state
      *
      * @return OrderDocumentInterface[]
      */
@@ -35,7 +35,7 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $state
+     * @param string         $state
      *
      * @return OrderDocumentInterface[]
      */

@@ -30,14 +30,14 @@ final class EmbeddedClassController extends AdminController
             throw new NotFoundHttpException();
         }
 
-        $list->setCondition('classId = ' . $list->quote($class->getId()));
+        $list->setCondition('classId = '.$list->quote($class->getId()));
         $list = $list->load();
         $result = [];
         /** @var $item DataObject\ClassDefinition\CustomLayout */
         foreach ($list as $item) {
             $result[] = [
                 'id' => $item->getId(),
-                'name' => $item->getName() . ' (ID: ' . $item->getId() . ')',
+                'name' => $item->getName().' (ID: '.$item->getId().')',
                 'default' => $item->getDefault() ?: 0,
             ];
         }
@@ -56,7 +56,7 @@ final class EmbeddedClassController extends AdminController
             throw new NotFoundHttpException();
         }
 
-        $fqcn = 'Pimcore\\Model\\DataObject\\' . $className;
+        $fqcn = 'Pimcore\\Model\\DataObject\\'.$className;
         $tempInstance = new $fqcn();
 
         $validLayouts = DataObject\Service::getValidLayouts($tempInstance);
@@ -88,7 +88,7 @@ final class EmbeddedClassController extends AdminController
 
         return $this->adminJson([
             'layout' => $layout,
-            'general' => $general
+            'general' => $general,
         ]);
     }
 }

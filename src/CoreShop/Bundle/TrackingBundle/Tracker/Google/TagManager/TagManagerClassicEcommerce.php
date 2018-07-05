@@ -71,7 +71,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtm/classic'
+            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtm/classic',
         ]);
     }
 
@@ -135,47 +135,48 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->codeTracker->addCodePart($result);
-
     }
 
     /**
-     * Transform ActionData into gtag data array
+     * Transform ActionData into gtag data array.
      *
      * @param ActionData $actionData
+     *
      * @return array
      */
     protected function transformOrder(ActionData $actionData)
     {
         return [
-            'transactionId'          => $actionData->getId(),
+            'transactionId' => $actionData->getId(),
             'transactionAffiliation' => $actionData->getAffiliation() ?: '',
-            'transactionTotal'       => $actionData->getRevenue(),
-            'transactionTax'         => $actionData->getTax(),
-            'transactionShipping'    => $actionData->getShipping(),
-            'transactionCurrency'    => $actionData->getCurrency()
+            'transactionTotal' => $actionData->getRevenue(),
+            'transactionTax' => $actionData->getTax(),
+            'transactionShipping' => $actionData->getShipping(),
+            'transactionCurrency' => $actionData->getCurrency(),
         ];
     }
 
     /**
-     * Transform product action into gtag data object
+     * Transform product action into gtag data object.
      *
      * @param ProductData $item
+     *
      * @return array
      */
     protected function transformProductAction(ProductData $item)
     {
         return $this->filterNullValues([
-            'id'       => $item->getId(),
-            'sku'      => $item->getSku(),
-            'name'     => $item->getName(),
+            'id' => $item->getId(),
+            'sku' => $item->getSku(),
+            'name' => $item->getName(),
             'category' => $item->getCategory(),
-            'price'    => round($item->getPrice(), 2),
-            'quantity' => $item->getQuantity() ?: 1
+            'price' => round($item->getPrice(), 2),
+            'quantity' => $item->getQuantity() ?: 1,
         ]);
     }
 
     /**
-     * Makes sure data layer is included once before any call
+     * Makes sure data layer is included once before any call.
      */
     protected function ensureDataLayer()
     {

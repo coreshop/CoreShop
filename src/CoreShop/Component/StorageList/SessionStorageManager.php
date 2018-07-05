@@ -35,7 +35,7 @@ class SessionStorageManager implements StorageListManagerInterface
 
     /**
      * @param SessionInterface $session
-     * @param string $name
+     * @param string           $name
      * @param FactoryInterface $sessionListFactory
      */
     public function __construct(SessionInterface $session, string $name, FactoryInterface $sessionListFactory)
@@ -70,7 +70,7 @@ class SessionStorageManager implements StorageListManagerInterface
     /**
      * @param StorageListInterface $storageList
      *
-     * @return boolean
+     * @return bool
      */
     public function persist(StorageListInterface $storageList)
     {

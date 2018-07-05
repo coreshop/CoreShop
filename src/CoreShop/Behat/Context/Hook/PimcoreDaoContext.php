@@ -27,7 +27,7 @@ final class PimcoreDaoContext implements Context
     public function purgeObjects()
     {
         /**
-         * @var $list Listing
+         * @var Listing
          */
         $list = new DataObject\Listing();
         $list->setUnpublished(true);
@@ -52,7 +52,7 @@ final class PimcoreDaoContext implements Context
                 continue;
             }
 
-            if (strpos($brick->getKey(), 'Behat') === 0) {
+            if (0 === strpos($brick->getKey(), 'Behat')) {
                 $brick->delete();
             }
         }
@@ -97,7 +97,7 @@ final class PimcoreDaoContext implements Context
                 continue;
             }
 
-            if (strpos($collection->getKey(), 'Behat') === 0) {
+            if (0 === strpos($collection->getKey(), 'Behat')) {
                 $collection->delete();
             }
         }

@@ -50,11 +50,11 @@ final class OrderShipmentContext implements Context
     private $stateMachineApplier;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface            $sharedStorage
      * @param OrderDocumentTransformerInterface $shipmentTransformer
-     * @param FactoryInterface $orderShipmentFactory
-     * @param OrderDocumentRepositoryInterface $orderShipmentRepository
-     * @param StateMachineApplier $stateMachineApplier
+     * @param FactoryInterface                  $orderShipmentFactory
+     * @param OrderDocumentRepositoryInterface  $orderShipmentRepository
+     * @param StateMachineApplier               $stateMachineApplier
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -62,8 +62,7 @@ final class OrderShipmentContext implements Context
         FactoryInterface $orderShipmentFactory,
         OrderDocumentRepositoryInterface $orderShipmentRepository,
         StateMachineApplier $stateMachineApplier
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->shipmentTransformer = $shipmentTransformer;
         $this->orderShipmentFactory = $orderShipmentFactory;
@@ -83,8 +82,8 @@ final class OrderShipmentContext implements Context
         $orderShipment = $this->shipmentTransformer->transform($order, $orderShipment, [
             [
                 'orderItemId' => $orderItem->getId(),
-                'quantity' => 1
-            ]
+                'quantity' => 1,
+            ],
         ]);
 
         $this->sharedStorage->set('orderShipment', $orderShipment);

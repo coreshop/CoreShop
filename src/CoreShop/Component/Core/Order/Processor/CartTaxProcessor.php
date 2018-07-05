@@ -36,14 +36,13 @@ final class CartTaxProcessor implements CartProcessorInterface
     private $taxCalculationFactory;
 
     /**
-     * @param TaxCollectorInterface $taxCollector
+     * @param TaxCollectorInterface         $taxCollector
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
      */
     public function __construct(
         TaxCollectorInterface $taxCollector,
         TaxCalculatorFactoryInterface $taxCalculatorFactory
-    )
-    {
+    ) {
         $this->taxCollector = $taxCollector;
         $this->taxCalculationFactory = $taxCalculatorFactory;
     }
@@ -58,7 +57,7 @@ final class CartTaxProcessor implements CartProcessorInterface
         $usedTaxes = [];
 
         /**
-         * @var $item CartItemInterface
+         * @var CartItemInterface
          */
         foreach ($cart->getItems() as $item) {
             $usedTaxes = $this->taxCollector->mergeTaxes($item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [], $usedTaxes);
@@ -84,10 +83,11 @@ final class CartTaxProcessor implements CartProcessorInterface
 
     /**
      * @param CartInterface $cart
-     * @param array $usedTaxes
+     * @param array         $usedTaxes
+     *
      * @return array
      */
-    protected function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
+    private function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
     {
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return $usedTaxes;

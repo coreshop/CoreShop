@@ -46,6 +46,7 @@ class CompositePriceCalculator implements CarrierPriceCalculatorInterface
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;
+
                 break;
             }
         }

@@ -30,14 +30,13 @@ final class CurrencyContext implements Context
     private $currencyRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface      $sharedStorage
      * @param CurrencyRepositoryInterface $currencyRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CurrencyRepositoryInterface $currencyRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->currencyRepository = $currencyRepository;
     }
@@ -63,6 +62,6 @@ final class CurrencyContext implements Context
      */
     public function latestCurrency()
     {
-        return $this->sharedStorage->get("currency");
+        return $this->sharedStorage->get('currency');
     }
 }
