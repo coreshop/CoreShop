@@ -18,7 +18,6 @@ use CoreShop\Component\Rule\Model\RuleTrait;
 class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
 {
     use RuleTrait;
-    use ToggleableTrait;
 
     /**
      * @var int

@@ -17,7 +17,6 @@ use CoreShop\Component\Rule\Model\RuleTrait;
 
 class NotificationRule implements NotificationRuleInterface
 {
-    use ToggleableTrait;
     use RuleTrait;
 
     /**

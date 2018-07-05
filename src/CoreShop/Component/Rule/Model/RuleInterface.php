@@ -14,9 +14,10 @@ namespace CoreShop\Component\Rule\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface RuleInterface extends ResourceInterface, TimestampableInterface
+interface RuleInterface extends ResourceInterface, TimestampableInterface, ToggleableInterface
 {
     /**
      * @return mixed

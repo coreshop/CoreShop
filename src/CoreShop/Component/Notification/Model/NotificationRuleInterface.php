@@ -15,7 +15,7 @@ namespace CoreShop\Component\Notification\Model;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface NotificationRuleInterface extends RuleInterface, ToggleableInterface
+interface NotificationRuleInterface extends RuleInterface
 {
     /**
      * @return string

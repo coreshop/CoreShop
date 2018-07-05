@@ -15,6 +15,7 @@ namespace CoreShop\Component\Rule\Model;
 
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
+use CoreShop\Component\Resource\Model\ToggleableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -22,6 +23,7 @@ trait RuleTrait
 {
     use TimestampableTrait;
     use SetValuesTrait;
+    use ToggleableTrait;
 
     /**
      * @var string

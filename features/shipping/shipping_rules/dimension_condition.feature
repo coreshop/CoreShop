@@ -20,10 +20,18 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new dimension shipping rule which is valid
     Given adding a shipping rule named "weight"
+    And the shipping rule is active
     And the shipping rule has a condition dimension with 150x150x150
     Then the shipping rule should be valid for my cart with carrier "Post"
 
+  Scenario: Add a new dimension shipping rule which is inactive
+    Given adding a shipping rule named "weight"
+    And the shipping rule is inactive
+    And the shipping rule has a condition dimension with 150x150x150
+    Then the shipping rule should be invalid for my cart with carrier "Post"
+
   Scenario: Add a new dimension shipping rule which is invalid
     Given adding a shipping rule named "amount"
+    And the shipping rule is active
     And the shipping rule has a condition dimension with 50x50x50
     Then the shipping rule should be invalid for my cart with carrier "Post"

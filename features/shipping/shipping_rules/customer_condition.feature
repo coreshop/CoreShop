@@ -21,11 +21,19 @@ Feature: Adding a new Shipping Rule
 
   Scenario: Add a new customer shipping rule which is valid
     Given adding a shipping rule named "customer"
+    And the shipping rule is active
     And the shipping rule has a condition customers with customer "some-customer@something.com"
     Then the shipping rule should be valid for my cart with carrier "Post"
+
+  Scenario: Add a new customer shipping rule which is inactive
+    Given adding a shipping rule named "customer"
+    And the shipping rule is inactive
+    And the shipping rule has a condition customers with customer "some-customer@something.com"
+    Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new customer shipping rule which is invalid
     Given the site has a customer "some-other-customer@something.com"
     And adding a shipping rule named "customer"
+    And the shipping rule is active
     And the shipping rule has a condition customers with customer "some-other-customer@something.com"
     Then the shipping rule should be invalid for my cart with carrier "Post"

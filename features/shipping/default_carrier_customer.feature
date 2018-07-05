@@ -15,6 +15,7 @@ Feature: In Order to make checkout easier
     And the product has the tax rule group "AT"
     And the site has a carrier "Post"
     And adding a shipping rule named "post"
+    And the shipping rule is active
     And the shipping rule has a action price of 20 in currency "EUR"
     And the shipping rule belongs to carrier "Post"
     And the site has a customer "some-customer@something.com"
@@ -31,6 +32,7 @@ Feature: In Order to make checkout easier
     Given the shipping rule has a condition postcode with "4700"
     And the site has another carrier "DPD"
     And adding a shipping rule named "DPD"
+    And the shipping rule is active
     And the shipping rule has a action price of 40 in currency "EUR"
     And the shipping rule belongs to carrier "DPD"
     And I add the product "Shoe" to my cart
@@ -40,6 +42,7 @@ Feature: In Order to make checkout easier
   Scenario: The site has 2 carriers and should resolve to the first default one
     Given the site has another carrier "DPD"
     And adding a shipping rule named "DPD"
+    And the shipping rule is active
     And the shipping rule has a action price of 40 in currency "EUR"
     And the shipping rule belongs to carrier "DPD"
     And I add the product "Shoe" to my cart
@@ -49,6 +52,7 @@ Feature: In Order to make checkout easier
     Given the shipping rule "post" has a condition amount from "0" to "150"
     And the site has another carrier "DPD"
     And adding a shipping rule named "DPD"
+    And the shipping rule is active
     And the shipping rule has a condition amount from "151" to "1000"
     And the shipping rule has a action price of 40 in currency "EUR"
     And the shipping rule belongs to carrier "DPD"
