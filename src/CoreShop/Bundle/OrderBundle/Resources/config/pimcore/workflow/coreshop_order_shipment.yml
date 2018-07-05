@@ -23,7 +23,7 @@ core_shop_workflow:
                     from: [ready]
                     to: partially_shipped
                 cancel:
-                    from: [ready]
+                    from: [new, ready]
                     to: cancelled
                 ship:
                     from: [ready, partially_shipped]
