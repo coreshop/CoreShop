@@ -135,9 +135,7 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
                 'cartPriceRule' => $filteredPriceRule,
                 'voucher'       => null
             ]);
-
             $this->processRule($priceRule, $ruleIsAvailable);
-
         }
 
         /** @var ProductPriceRuleInterface $priceRule */
@@ -190,15 +188,6 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
     {
         /** @var Condition $rule */
         foreach ($priceRule->getConditions() as $id => $condition) {
-            if ($condition->getType() === 'nested') {
-                $filteredCondition = $this->filterNestedRules($condition);
-                $priceRule->removeCondition($condition);
-                if ($filteredCondition !== false) {
-                    $priceRule->addCondition($filteredCondition);
-                }
-                continue;
-            }
-
             if ($condition->getType() === 'timespan') {
                 $isFutureTimeSpanCondition = $this->isFutureTimeSpanCondition($condition);
                 if ($isFutureTimeSpanCondition === true) {
@@ -210,53 +199,6 @@ final class RuleAvailabilityCheck implements RuleAvailabilityCheckInterface
         }
 
         return $priceRule;
-    }
-
-    /**
-     * @param Condition $condition
-     * @param int       $depth
-     * @return bool|Condition
-     */
-    private function filterNestedRules(Condition &$condition, &$depth = 0)
-    {
-        $configuration = $condition->getConfiguration();
-
-        /**
-         * @var int       $conditionIndex
-         * @var Condition $subCondition
-         */
-        foreach ($configuration['conditions'] as $conditionIndex => $subCondition) {
-            if ($subCondition->getType() === 'nested') {
-                $hasConditions = $this->filterNestedRules($subCondition, $depth);
-                if ($hasConditions === false) {
-                    unset($configuration['conditions'][$conditionIndex]);
-                }
-                continue;
-            }
-
-            if ($subCondition->getType() === 'timespan') {
-                $isFutureTimeSpanCondition = $this->isFutureTimeSpanCondition($subCondition);
-                if ($isFutureTimeSpanCondition === true) {
-                    unset($configuration['conditions'][$conditionIndex]);
-                }
-            } else {
-                unset($configuration['conditions'][$conditionIndex]);
-            }
-
-        }
-
-        // reindex conditions.
-        $configuration['conditions'] = array_values($configuration['conditions']);
-
-        $depth++;
-        $condition->setConfiguration($configuration);
-
-        // if no conditions are available, skip it
-        if (count($configuration['conditions']) === 0) {
-            return false;
-        }
-
-        return $condition;
     }
 
     /**
