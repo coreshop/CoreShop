@@ -19,7 +19,7 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-class VoucherModifier
+class VoucherModifier implements VoucherModifierInterface
 {
     /**
      * @var EntityManagerInterface
@@ -46,7 +46,7 @@ class VoucherModifier
     }
 
     /**
-     * @param OrderInterface $order
+     * @inheritdoc
      */
     public function increment(OrderInterface $order)
     {
@@ -72,7 +72,7 @@ class VoucherModifier
     }
 
     /**
-     * @param OrderInterface $order
+     * @inheritdoc
      */
     public function decrement(OrderInterface $order)
     {
