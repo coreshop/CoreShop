@@ -27,7 +27,7 @@ class SettingsController extends AdminController
     public function onKernelController(FilterControllerEvent $event)
     {
         // permission check
-        $access = $this->getUser()->getPermission('coreshop_permission_settings');
+        $access = $this->getUser()->isAllowed('coreshop_permission_settings');
         if (!$access) {
             throw new \Exception(sprintf('this function requires "%s" permission!', 'coreshop_permission_settings'));
         }
