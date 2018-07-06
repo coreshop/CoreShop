@@ -40,6 +40,10 @@ core_shop_workflow:
                         on: ['create']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
                         args: ['object', 'event', '"request_payment"', '"coreshop_order_payment"']
+                    increment_voucher_usages:
+                        on: ['create']
+                        do: ['@coreshop.voucher.modifier', 'increment']
+                        args: ['object']
                     cancel_payment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
@@ -64,6 +68,10 @@ core_shop_workflow:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
                         args: ['object', 'event', '"cancel"', '"coreshop_order_invoice"']
+                    decrement_voucher_usages:
+                        on: ['cancel']
+                        do: ['@coreshop.voucher.modifier', 'decrement']
+                        args: ['object']
                     add_to_history:
                           on: ['create', 'confirm', 'cancel', 'complete']
                           do: ['@coreshop.workflow.order_state_history_logger', 'log']
