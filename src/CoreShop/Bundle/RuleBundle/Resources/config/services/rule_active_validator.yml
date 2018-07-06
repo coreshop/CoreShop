@@ -1,0 +1,14 @@
+services:
+
+    coreshop.rule_availability_processor:
+        class: CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor
+        arguments:
+            - '@event_dispatcher'
+            - '@doctrine.orm.default_entity_manager'
+            - '@coreshop.registry.rule_availability_assessor'
+
+    coreshop.registry.rule_availability_assessor:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - 'CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface'
+            - 'rule-availability-assessor'

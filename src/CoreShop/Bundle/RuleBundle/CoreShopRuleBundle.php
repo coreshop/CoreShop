@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\RuleBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RuleAvailabilityAssessorPass;
 use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\TraceableValidationProcessorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -37,6 +38,7 @@ final class CoreShopRuleBundle extends AbstractResourceBundle
         parent::build($container);
 
         $container->addCompilerPass(new TraceableValidationProcessorPass());
+        $container->addCompilerPass(new RuleAvailabilityAssessorPass());
     }
 
     /**

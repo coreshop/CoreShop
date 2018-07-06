@@ -56,4 +56,3 @@ services:
             $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
         tags:
           - { name: console.command, command: 'coreshop:install' }
-

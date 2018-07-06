@@ -25,3 +25,5 @@ core_shop_order:
             anonymous: true
             customer: true
 ```
+
+Read more about automation [here](../../02_User_Documentation/10_Automation/README.md#expired-carts).

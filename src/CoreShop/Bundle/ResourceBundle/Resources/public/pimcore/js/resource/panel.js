@@ -87,6 +87,11 @@ coreshop.resource.panel = Class.create({
         return 'name';
     },
 
+    getGridDisplayColumnRenderer: function (value, metadata, record) {
+        metadata.tdAttr = 'data-qtip="ID: ' + record.get('id') + '"';
+        return value;
+    },
+
     getDefaultGridConfiguration: function () {
         return {
             region: 'west',
@@ -96,11 +101,7 @@ coreshop.resource.panel = Class.create({
                     text: '',
                     dataIndex: this.getDefaultGridDisplayColumnName(),
                     flex: 1,
-                    renderer: function (value, metadata, record) {
-                        metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
-
-                        return value;
-                    }
+                    renderer: this.getGridDisplayColumnRenderer
                 }
             ],
             listeners: this.getTreeNodeListeners(),
@@ -142,9 +143,9 @@ coreshop.resource.panel = Class.create({
                 )
             );
 
-            this.grid.getStore().on("load", function (store, records) {
+            this.grid.getStore().on('load', function (store, records) {
                 if (this.grid.rendered) {
-                    this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length));
+                    this.grid.down('#totalLabel').setText(t('coreshop_total_items').format(records.length));
                 }
             }.bind(this));
 

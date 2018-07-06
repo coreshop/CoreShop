@@ -190,9 +190,18 @@ services:
       tags:
           - { name: validator.constraint_validator, alias: 'coreshop_cart_rule_valid' }
 
+
+  coreshop.rule.availability_assessor.cart_price:
+      class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
+      arguments:
+          - '@coreshop.repository.cart_price_rule'
+      tags:
+          - { name: coreshop.registry.rule_availability_assessor, type: cart_price }
+
   # Modifier
   coreshop.voucher.modifier:
       class: CoreShop\Component\Order\Modifier\VoucherModifier
       arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.cart_price_rule_voucher_code'
+
