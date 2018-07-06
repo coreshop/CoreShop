@@ -18,8 +18,8 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 abstract class AbstractPimcoreExtension extends Extension
 {
     /**
-     * @param $applicationName
-     * @param $bundleResources
+     * @param                  $applicationName
+     * @param                  $bundleResources
      * @param ContainerBuilder $container
      */
     protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
@@ -27,26 +27,28 @@ abstract class AbstractPimcoreExtension extends Extension
         $resourceTypes = ['js', 'css', 'editmode_js', 'editmode_css'];
 
         foreach ($resourceTypes as $resourceType) {
-            if (!array_key_exists($resourceType, $bundleResources)) {
-                continue;
-            }
-
             $applicationParameter = sprintf('%s.pimcore.admin.%s', $applicationName, $resourceType);
             //$aliasParameter = sprintf('%s.pimcore.admin.%s', $this->getAlias(), $resourceType);
             $globalParameter = sprintf('coreshop.all.pimcore.admin.%s', $resourceType);
 
             $parameters = [
-                $applicationParameter, $globalParameter
+                $applicationParameter,
+                $globalParameter,
             ];
 
             foreach ($parameters as $containerParameter) {
                 $resources = [];
+                $bundleTypeResources = [];
+
+                if (array_key_exists($resourceType, $bundleResources)) {
+                    $bundleTypeResources = array_values($bundleResources[$resourceType]);
+                }
 
                 if ($container->hasParameter($containerParameter)) {
                     $resources = $container->getParameter($containerParameter);
                 }
 
-                $container->setParameter($containerParameter, array_merge($resources, array_values($bundleResources[$resourceType])));
+                $container->setParameter($containerParameter, array_merge($resources, $bundleTypeResources));
             }
         }
     }

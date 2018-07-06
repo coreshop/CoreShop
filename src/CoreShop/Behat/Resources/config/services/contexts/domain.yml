@@ -165,3 +165,15 @@ services:
             - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.pimcore:
+        class: CoreShop\Behat\Context\Domain\PimcoreContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '%__symfony__.kernel.root_dir%/../web'
+            - '%__symfony__.coreshop.all.pimcore.admin.js%'
+            - '%__symfony__.coreshop.all.pimcore.admin.css%'
+            - '%__symfony__.coreshop.all.pimcore.admin.editmode_js%'
+            - '%__symfony__.coreshop.all.pimcore.admin.editmode_css%'
+        tags:
+            - { name: fob.context_service }
