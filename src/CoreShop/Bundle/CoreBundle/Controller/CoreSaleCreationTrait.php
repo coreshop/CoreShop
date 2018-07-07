@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
@@ -74,9 +75,12 @@ trait CoreSaleCreationTrait
         /**
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
-        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
-        $this->get('coreshop.cart_processor')->process($cart);
+        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $store) {
+            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+            $this->get('coreshop.cart_processor')->process($cart);
 
+            return $cart;
+        });
         $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());
 
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
