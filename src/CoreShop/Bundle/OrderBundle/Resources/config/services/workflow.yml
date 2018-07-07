@@ -1,4 +1,7 @@
 parameters:
+    _defaults:
+        public: true
+
     coreshop.workflow.manager.order.history_log_state_identifier: !php/const CoreShop\Component\Order\Notes::ORDER_HISTORY_STATE_LOG
     coreshop.workflow.include_invoice_state_to_complete_order: false
 

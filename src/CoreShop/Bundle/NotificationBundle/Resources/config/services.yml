@@ -3,6 +3,9 @@ imports:
     - { resource: "services/listeners.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.notification_rule.applier:
         class: CoreShop\Component\Notification\Processor\RuleApplier
         arguments:

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.pimcore.document.tag:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:

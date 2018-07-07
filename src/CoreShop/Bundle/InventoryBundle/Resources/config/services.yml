@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.inventory.availability_checker.default:
         class: CoreShop\Component\Inventory\Checker\AvailabilityChecker
 

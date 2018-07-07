@@ -2,6 +2,9 @@ parameters:
     coreshop.customer_address.folder_path: addresses
 
 services:
+    _defaults:
+        public: true
+
     coreshop.customer.registration_service:
         class: CoreShop\Bundle\CoreBundle\Customer\RegistrationService
         arguments:

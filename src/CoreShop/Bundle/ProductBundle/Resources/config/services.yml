@@ -5,6 +5,9 @@ imports:
     - { resource: "services/specific-price-rules.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.product.retail_price_calculators:
         class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.context.shopper:
         class: CoreShop\Component\Core\Context\ShopperContext
         lazy: true

@@ -5,6 +5,9 @@ parameters:
     coreshop.form.type.tax_rate_translation.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.tax_rule_choice:
         class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateChoiceType
         arguments:

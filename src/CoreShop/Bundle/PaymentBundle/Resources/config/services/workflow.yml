@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.state_machine.marking_store.single_state.state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
         arguments:

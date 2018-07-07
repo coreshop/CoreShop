@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.payum_extension.update_payment_state:
         class: CoreShop\Bundle\PayumBundle\Extension\UpdatePaymentStateExtension
         arguments:

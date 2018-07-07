@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.cart_processor.rule_auto_remove:
         class: CoreShop\Component\Core\Order\Processor\CartRuleAutoRemoverProcessor
         arguments:

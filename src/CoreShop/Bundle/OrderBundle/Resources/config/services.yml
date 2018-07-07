@@ -14,6 +14,9 @@ imports:
     - { resource: "services/payment.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.order.configurator.session_cart:
         class: CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator
         tags:

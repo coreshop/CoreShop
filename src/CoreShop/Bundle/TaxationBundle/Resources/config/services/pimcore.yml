@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.pimcore.document.tag.tax_rate:
         class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
         arguments:

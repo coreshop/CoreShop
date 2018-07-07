@@ -2,6 +2,9 @@ parameters:
     coreshop.installer.resources: '@@CoreShopCoreBundle/Resources/install'
 
 services:
+    _defaults:
+        public: true
+
     coreshop.installer.checker.command_directory:
         class: CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker
         arguments:

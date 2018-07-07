@@ -26,6 +26,9 @@ imports:
     - { resource: "services/routing.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.core.key_transformer:
         class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
 

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.product.rules.fetcher:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:

@@ -46,6 +46,7 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         }
 
         $definition = new Definition($repositoryClass);
+        $definition->setPublic(true);
         $definition->setArguments([
             new Reference($metadata->getServiceId('manager')),
             $this->getClassMetadataDefinition($metadata),

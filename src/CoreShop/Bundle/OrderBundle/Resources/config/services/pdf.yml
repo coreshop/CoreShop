@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.order.renderer.pdf:
         class: CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf
         arguments:

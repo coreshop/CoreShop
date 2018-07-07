@@ -4,6 +4,9 @@ imports:
     - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.context.country.composite:
         class: CoreShop\Component\Address\Context\CompositeCountryContext
         public: false

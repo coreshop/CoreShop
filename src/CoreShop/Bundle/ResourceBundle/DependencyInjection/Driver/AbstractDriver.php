@@ -69,6 +69,7 @@ abstract class AbstractDriver implements DriverInterface
     {
         $definition = new Definition($metadata->getClass('admin_controller'));
         $definition
+            ->setPublic(true)
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
@@ -94,6 +95,7 @@ abstract class AbstractDriver implements DriverInterface
         $modelClass = $metadata->getClass('model');
 
         $definition = new Definition($factoryClass);
+        $definition->setPublic(true);
 
         $definitionArgs = [$modelClass];
         if (in_array(TranslatableFactoryInterface::class, class_implements($factoryClass))) {

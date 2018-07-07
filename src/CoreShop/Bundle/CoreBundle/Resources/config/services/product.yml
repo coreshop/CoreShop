@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.product.tax_factory:
         class: CoreShop\Component\Core\Product\ProductTaxCalculatorFactory
         arguments:

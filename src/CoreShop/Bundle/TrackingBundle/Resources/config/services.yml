@@ -1,17 +1,20 @@
 services:
     coreshop.registry.tracking.tracker:
         class: CoreShop\Component\Registry\ServiceRegistry
+        public: true
         arguments:
             - CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface
             - 'tracker'
 
     coreshop.tracking.item_builder:
         class: CoreShop\Bundle\TrackingBundle\Builder\ItemBuilder
+        public: true
         arguments:
             - '@coreshop.order.purchasable.price_calculator'
 
     coreshop.tracking.resolver.tracking_config:
         class: CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver
+        public: true
         arguments:
             - '@Pimcore\Analytics\SiteId\SiteIdProvider'
             - '@Pimcore\Analytics\Google\Config\ConfigProvider'
@@ -26,9 +29,11 @@ services:
 
     coreshop.tracking.event.gtm_code_tracker:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker
+        public: true
 
     coreshop.tracking.event.gtm_code_event:
         class: CoreShop\Bundle\TrackingBundle\EventListener\GtmDataLayerBlockListener
+        public: true
         arguments:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - '@Pimcore\Http\ResponseHelper'
@@ -42,6 +47,7 @@ services:
     coreshop.tracking.tracker.google.analytics.enhanced_ecommerce:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce
         parent: coreshop.tracking.tracker.ecommerce_tracker
+        public: true
         calls:
             - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
             - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
@@ -51,6 +57,7 @@ services:
     coreshop.tracking.tracker.google.analytics.universal_ecommerce:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce
         parent: coreshop.tracking.tracker.ecommerce_tracker
+        public: true
         calls:
             - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
             - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
@@ -60,6 +67,7 @@ services:
     coreshop.tracking.tracker.google.analytics.gtag_enhanced_ecommerce:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce
         parent: coreshop.tracking.tracker.ecommerce_tracker
+        public: true
         calls:
             - [setTracker, ['@Pimcore\Analytics\Google\Tracker']]
             - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
@@ -69,6 +77,7 @@ services:
     coreshop.tracking.tracker.google.analytics.gtm_classic_ecommerce:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce
         parent: coreshop.tracking.tracker.ecommerce_tracker
+        public: true
         calls:
             - [setCodeTracker, ['@coreshop.tracking.event.gtm_code_tracker']]
             - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
@@ -78,6 +87,7 @@ services:
     coreshop.tracking.tracker.google.analytics.gtm_enhanced_ecommerce:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce
         parent: coreshop.tracking.tracker.ecommerce_tracker
+        public: true
         calls:
             - [setCodeTracker, ['@coreshop.tracking.event.gtm_code_tracker']]
             - [setConfigResolver, ['@coreshop.tracking.resolver.tracking_config']]
@@ -87,6 +97,7 @@ services:
     coreshop.tracking.tracker.matomo:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo
         parent: coreshop.tracking.tracker.ecommerce_tracker
+        public: true
         calls:
             - [setTracker, ['@Pimcore\Analytics\Piwik\Tracker']]
         tags:
@@ -94,5 +105,6 @@ services:
 
     coreshop.tracking.manager:
         class: CoreShop\Bundle\TrackingBundle\Manager\TrackingManager
+        public: true
         arguments:
             - '@coreshop.registry.tracking.tracker'

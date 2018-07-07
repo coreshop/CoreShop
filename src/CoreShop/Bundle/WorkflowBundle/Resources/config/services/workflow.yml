@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.state_machine_manager:
         class: CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager
         arguments:

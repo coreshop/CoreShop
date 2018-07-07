@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.listener.cart_blamer:
         class: CoreShop\Bundle\CoreBundle\EventListener\CartBlamerListener
         arguments:

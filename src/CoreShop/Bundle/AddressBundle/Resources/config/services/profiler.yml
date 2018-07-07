@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.country_collector:
         class: CoreShop\Bundle\AddressBundle\Collector\CountryCollector
         arguments:

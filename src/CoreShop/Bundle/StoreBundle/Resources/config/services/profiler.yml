@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.store_collector:
         class: CoreShop\Bundle\StoreBundle\Collector\StoreCollector
         arguments:

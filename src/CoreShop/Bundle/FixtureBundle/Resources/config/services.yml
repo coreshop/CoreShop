@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.fixture.data.executor:
         class: CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor
         arguments:

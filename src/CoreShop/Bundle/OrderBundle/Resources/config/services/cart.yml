@@ -4,6 +4,9 @@ parameters:
     coreshop.form.type.cart_item.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.cart:
         class: CoreShop\Bundle\OrderBundle\Form\Type\CartType
         arguments:

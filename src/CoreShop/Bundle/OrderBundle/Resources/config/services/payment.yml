@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.order.payment_provider:
         class: CoreShop\Component\Order\Payment\OrderPaymentProvider
         arguments:

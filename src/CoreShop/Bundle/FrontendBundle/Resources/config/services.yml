@@ -12,60 +12,74 @@ services:
     coreshop.frontend.controller.index:
         class: '%coreshop.frontend.controller.index%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.register:
         class: '%coreshop.frontend.controller.register%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.customer:
         class: '%coreshop.frontend.controller.customer%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.currency:
         class: '%coreshop.frontend.controller.currency%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.language:
         class: '%coreshop.frontend.controller.language%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.search:
         class: '%coreshop.frontend.controller.search%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.cart:
         class: '%coreshop.frontend.controller.cart%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.checkout:
         class: '%coreshop.frontend.controller.checkout%'
         arguments:
             - '@coreshop.checkout_manager.factory'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.order:
         class: '%coreshop.frontend.controller.order%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.category:
         class: '%coreshop.frontend.controller.category%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.product:
         class: '%coreshop.frontend.controller.product%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.quote:
         class: '%coreshop.frontend.controller.quote%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.mail:
         class: '%coreshop.frontend.controller.mail%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.security:
         class: '%coreshop.frontend.controller.security%'
         parent: coreshop.frontend.controller.abstract
+        public: true
         arguments:
             - '@security.authentication_utils'
             - '@form.factory'
@@ -74,9 +88,11 @@ services:
     coreshop.frontend.controller.wishlist:
         class: '%coreshop.frontend.controller.wishlist%'
         parent: coreshop.frontend.controller.abstract
+        public: true
 
     coreshop.frontend.controller.payment:
         class: '%coreshop.frontend.controller.payment%'
+        public: true
         arguments:
             - '@coreshop.order.payment_provider'
             - '@coreshop.repository.order'
@@ -86,6 +102,7 @@ services:
 
     coreshop.frontend.template_configurator:
         class: CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator
+        public: true
         arguments:
             - '%coreshop.frontend.view_bundle%'
             - '%coreshop.frontend.view_suffix%'

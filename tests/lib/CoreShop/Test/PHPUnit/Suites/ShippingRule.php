@@ -74,10 +74,10 @@ class ShippingRule extends RuleTest
     private function createCarrier()
     {
         /**
-         * @var CarrierInterface
+         * @var $carrier CarrierInterface
          */
         $carrier = $this->getFactory('carrier')->createNew();
-        $carrier->setName('test');
+        $carrier->setIdentifier('test');
         $carrier->setTaxRule(Data::$taxRuleGroup);
 
         $this->getEntityManager()->persist($carrier);

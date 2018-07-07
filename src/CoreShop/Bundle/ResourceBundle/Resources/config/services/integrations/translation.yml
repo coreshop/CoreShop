@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.translation_locale_provider.pimcore:
         class: CoreShop\Component\Resource\Translation\Provider\PimcoreTranslationLocaleProvider
 

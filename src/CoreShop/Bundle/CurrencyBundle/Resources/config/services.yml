@@ -3,6 +3,9 @@ imports:
     - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.currency_converter:
         class: CoreShop\Component\Currency\Converter\CurrencyConverter
         arguments:

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.shipping_rule.conditions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:

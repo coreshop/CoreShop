@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.admin_controller.settings:
         class: CoreShop\Bundle\CoreBundle\Controller\SettingsController
         arguments:

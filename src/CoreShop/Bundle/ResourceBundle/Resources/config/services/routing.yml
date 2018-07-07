@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.routing.route.factory:
         class: CoreShop\Bundle\ResourceBundle\Routing\RouteFactory
         public: false

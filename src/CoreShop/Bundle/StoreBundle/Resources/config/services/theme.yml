@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.store.theme_resolver:
         class: CoreShop\Bundle\StoreBundle\Theme\ThemeResolver
         arguments:
