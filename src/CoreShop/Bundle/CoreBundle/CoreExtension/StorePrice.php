@@ -197,7 +197,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= '*/' . "\n";
         $code .= 'public function set' . ucfirst($key) . ' ($' . $key . ', \CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
         $code .= "\t" . 'if (is_null($' . $key . ')) {' . "\n";
-        $code .= "\t\t" . '$' . $key . ' = [];' . "\n";
+        $code .= "\t\t" . 'return $this;' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . "\n";
         $code .= "\t" . 'if (!is_int($' . $key . ') && !is_array($' . $key . ')) {' . "\n";
@@ -209,6 +209,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= "\t" . 'else if (!is_null($store)) {' . "\n";
         $code .= "\t\t" . '$this->' . $key . '[$store->getId()] = $' . $key . ';' . "\n";
         $code .= "\t" . '}' . "\n";
+        $code .= "\t" . '$this->' . $key . ' = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->preSetData($this, $this->' . $key . ');' . "\n";
         $code .= "\t" . 'return $this;' . "\n";
         $code .= "}\n\n";
 
@@ -228,25 +229,51 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     public function preGetData($object, $params = [])
     {
-        return $this->loadData($object);
+        $data = $object->{$this->getName()};
+        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+            $data = $this->load($object, ['force' => true]);
+
+            $setter = 'set' . ucfirst($this->getName());
+            if (method_exists($object, $setter)) {
+                $object->$setter($data);
+            }
+        }
+
+        return $data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function loadData($object)
+    public function preSetData($object, $data, $params = [])
     {
-        $prices = $this->getProductStorePriceRepository()->findForProductAndProperty($object, $this->getName());
-        $data = [];
-
-        /**
-         * @var $price ProductStorePriceInterface
-         */
-        foreach ($prices as $price) {
-            $data[$price->getStore()->getId()] = $price->getPrice();
+        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+            $object->addO__loadedLazyField($this->getName());
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function load($object, $params = [])
+    {
+        if (isset($params['force']) && $params['force']) {
+            $prices = $this->getProductStorePriceRepository()->findForProductAndProperty($object, $this->getName());
+            $data = [];
+
+            /**
+             * @var $price ProductStorePriceInterface
+             */
+            foreach ($prices as $price) {
+                $data[$price->getStore()->getId()] = $price->getPrice();
+            }
+
+            return $data;
+        }
+
+        return null;
     }
 
     /**

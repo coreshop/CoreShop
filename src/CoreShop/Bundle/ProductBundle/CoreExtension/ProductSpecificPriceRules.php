@@ -100,7 +100,29 @@ class ProductSpecificPriceRules extends Data
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        return $this->loadData($object);
+        $data = $object->{$this->getName()};
+        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+            $data = $this->load($object, ['force' => true]);
+
+            $setter = 'set' . ucfirst($this->getName());
+            if (method_exists($object, $setter)) {
+                $object->$setter($data);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preSetData($object, $data, $params = [])
+    {
+        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+            $object->addO__loadedLazyField($this->getName());
+        }
+
+        return $data;
     }
 
     /**
@@ -127,7 +149,7 @@ class ProductSpecificPriceRules extends Data
         ];
 
         if ($object instanceof ProductInterface) {
-            $prices = $this->loadData($object, $params);
+            $prices = $this->load($object, ['force' => true]);
 
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
@@ -191,7 +213,7 @@ class ProductSpecificPriceRules extends Data
             $getter = $this->getName();
             $existingPriceRules = $object->$getter;
 
-            $all = $this->loadData($object, $params);
+            $all = $this->load($object, ['force' => true]);
             $founds = [];
 
             if (is_array($existingPriceRules)) {
@@ -220,9 +242,13 @@ class ProductSpecificPriceRules extends Data
     /**
      * {@inheritdoc}
      */
-    public function loadData($object, $params = [])
+    public function load($object, $params = [])
     {
-        return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
+        if (isset($params['force']) && $params['force']) {
+            return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
+        }
+
+        return null;
     }
 
     /**
