@@ -77,31 +77,37 @@ final class IndexCommand extends Command
             }
         }
 
-        $classProgress = new ProgressBar($output, count($classesToUpdate));
-        $classProgress->setProgressCharacter('#');
-
         foreach ($classesToUpdate as $class) {
             $list = '\Pimcore\Model\DataObject\\'.$class.'\Listing';
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
-            $list = $list->load();
+            $total = $list->getTotalCount();
+            $perLoop = 10;
 
-            $steps = count($list);
-
-            $output->writeln(sprintf('<info>Found %s Objects ("%s") to index</info>', $steps, $class));
-
-            $progress = new ProgressBar($output, $steps);
+            $output->writeln(sprintf('<info>Processing %s Objects of class "%s"</info>', $total, $class));
+            $progress = new ProgressBar($output, $total);
+            $progress->setFormat(
+            '%current%/%max% [%bar%] %percent:3s%% (%elapsed:6s%/%estimated:-6s%) %memory:6s%: %message%'
+            );
             $progress->start();
 
-            foreach ($list as $object) {
-                $this->indexUpdater->updateIndices($object);
+            for ($i=0; $i < (ceil($total / $perLoop)); $i++) {
+                $list->setLimit($perLoop);
+                $list->setOffset($i * $perLoop);
+                $objects = $list->load();
 
-                $progress->advance();
+                foreach ($objects as $object) {
+                    $progress->setMessage(sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
+                    $progress->advance();
+
+                    $this->indexUpdater->updateIndices($object);
+                }
+
+                //\Pimcore::collectGarbage();
             }
 
             $progress->finish();
-            $classProgress->advance();
         }
 
         $output->writeln('');
