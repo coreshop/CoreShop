@@ -127,7 +127,7 @@ class ProductSpecificPriceRules extends Data
         ];
 
         if ($object instanceof ProductInterface) {
-            $prices = $this->load($object, $params);
+            $prices = $this->loadData($object, $params);
 
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
@@ -191,7 +191,7 @@ class ProductSpecificPriceRules extends Data
             $getter = $this->getName();
             $existingPriceRules = $object->$getter;
 
-            $all = $this->load($object, $params);
+            $all = $this->loadData($object, $params);
             $founds = [];
 
             if (is_array($existingPriceRules)) {
