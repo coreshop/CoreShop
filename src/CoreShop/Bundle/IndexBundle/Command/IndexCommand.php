@@ -85,7 +85,7 @@ final class IndexCommand extends Command
             $total = $list->getTotalCount();
             $perLoop = 10;
 
-            $output->writeln(sprintf('<info>Found %s Objects ("%s") to index</info>', $total, $class));
+            $output->writeln(sprintf('<info>Processing %s Objects of class "%s"</info>', $total, $class));
             $progress = new ProgressBar($output, $total);
             $progress->setFormat(
             '%current%/%max% [%bar%] %percent:3s%% (%elapsed:6s%/%estimated:-6s%) %memory:6s%: %message%'
@@ -99,11 +99,12 @@ final class IndexCommand extends Command
 
                 foreach ($objects as $object) {
                     $progress->setMessage(sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
+                    $progress->advance();
 
                     $this->indexUpdater->updateIndices($object);
                 }
 
-                $progress->advance();
+                //\Pimcore::collectGarbage();
             }
 
             $progress->finish();
