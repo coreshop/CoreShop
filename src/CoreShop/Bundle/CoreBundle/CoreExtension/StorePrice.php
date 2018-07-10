@@ -174,6 +174,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= '* @return ' . $this->getPhpdocType() . "\n";
         $code .= '*/' . "\n";
         $code .= 'public function get' . ucfirst($key) . ' (\CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
+        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
         $code .= "\t" . 'if (is_null($store)) {' . "\n";
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
@@ -214,11 +215,26 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         return $code;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDataFromResource($data, $object = null, $params = [])
+    {
+        return [];
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function load($object)
+    public function preGetData($object, $params = [])
+    {
+        return $this->loadData($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadData($object)
     {
         $prices = $this->getProductStorePriceRepository()->findForProductAndProperty($object, $this->getName());
         $data = [];

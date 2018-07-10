@@ -100,7 +100,15 @@ class ProductSpecificPriceRules extends Data
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
+        return $this->loadData($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDataFromResource($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
@@ -210,12 +218,9 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * @param $object
-     * @param array $params
-     *
-     * @return ProductSpecificPriceRuleInterface[]
+     * {@inheritdoc}
      */
-    public function load($object, $params = [])
+    public function loadData($object, $params = [])
     {
         return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
     }
