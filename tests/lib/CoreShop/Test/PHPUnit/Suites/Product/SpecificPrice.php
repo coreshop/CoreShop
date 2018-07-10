@@ -132,6 +132,8 @@ class SpecificPrice extends RuleTest
         $priceRule->setActive(true);
         $priceRule->setProduct($this->product->getId());
 
+        $this->product->setSpecificPriceRules([$priceRule]);
+
         return $priceRule;
     }
 
