@@ -44,6 +44,10 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('number_format'),
             ExpressionFunction::fromPHP('strip_tags'),
             ExpressionFunction::fromPHP('strrev'),
+            ExpressionFunction::fromPHP('intval'),
+            ExpressionFunction::fromPHP('doubleval'),
+            ExpressionFunction::fromPHP('floatval'),
+            ExpressionFunction::fromPHP('round'),
         );
     }
 }
