@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
-use Pimcore\Model\AbstractModel;
+use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
@@ -21,7 +21,12 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     /**
      * @var array
      */
-    protected $modelsToPersist = [];
+    protected $modelsToUpdate = [];
+
+    /**
+     * @var array
+     */
+    protected $modelsToInsert = [];
 
     /**
      * @var array
@@ -41,9 +46,16 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function persist($resource)
     {
-        Assert::isInstanceOf($resource, AbstractModel::class);
+        /**
+         * @var $resource AbstractObject
+         */
+        Assert::isInstanceOf($resource, AbstractObject::class);
 
-        $this->modelsToPersist[] = $resource;
+        if ($resource->getId() > 0) {
+            $this->modelsToUpdate[$resource->getClassName()][$resource->getId()] = $resource;
+        } else {
+            $this->modelsToInsert[$resource->getClassName()][] = $resource;
+        }
     }
 
     /**
@@ -51,9 +63,14 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function remove($resource)
     {
-        Assert::isInstanceOf($resource, AbstractModel::class);
+        /**
+         * @var $resource AbstractObject
+         */
+        Assert::isInstanceOf($resource, AbstractObject::class);
 
-        $this->modelsToRemove[] = $resource;
+        if ($resource->getId() > 0) {
+            $this->modelsToRemove[$resource->getClassName()][$resource->getId()] = $resource;
+        }
     }
 
     /**
@@ -71,14 +88,19 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     {
         if (null === $objectName) {
             $this->modelsToRemove = [];
-            $this->modelsToPersist = [];
+            $this->modelsToUpdate = [];
+            $this->modelsToInsert = [];
         } else {
             if (isset($this->modelsToRemove[$objectName])) {
                 $this->modelsToRemove[$objectName] = [];
             }
 
-            if (isset($this->modelsToPersist[$objectName])) {
-                $this->modelsToPersist[$objectName] = [];
+            if (isset($this->modelsToUpdate[$objectName])) {
+                $this->modelsToUpdate[$objectName] = [];
+            }
+
+            if (isset($this->modelsToInsert[$objectName])) {
+                $this->modelsToInsert[$objectName] = [];
             }
         }
     }
@@ -108,15 +130,23 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
             $model->delete();
         }
 
-        foreach ($this->modelsToPersist as $model) {
-            if ($model instanceof Concrete) {
-                if (!$model->getPublished()) {
-                    $model->setOmitMandatoryCheck(true);
+        foreach ([$this->modelsToInsert, $this->modelsToUpdate] as $modelsToSave) {
+            foreach ($modelsToSave as $className => $classTypeModels) {
+                foreach ($classTypeModels as $model) {
+                    if ($model instanceof Concrete) {
+                        if (!$model->getPublished()) {
+                            $model->setOmitMandatoryCheck(true);
+                        }
+                    }
+
+                    $model->save();
                 }
             }
-
-            $model->save();
         }
+
+        $this->modelsToUpdate =
+        $this->modelsToInsert =
+        $this->modelsToRemove = [];
     }
 
     /**
