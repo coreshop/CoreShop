@@ -13,6 +13,7 @@ services:
             - '@event_dispatcher'
             - '@security.token_storage'
             - '@coreshop.context.locale'
+            - '@pimcore.dao.object_manager'
             - '%coreshop.folder.customer%'
             - '%coreshop.folder.guest%'
             - '%coreshop.folder.address%'

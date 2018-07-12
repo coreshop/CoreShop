@@ -18,6 +18,8 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -52,6 +54,11 @@ final class RegistrationService implements RegistrationServiceInterface
     private $localeContext;
 
     /**
+     * @var ObjectManager
+     */
+    private $entityManager;
+
+    /**
      * @var string
      */
     private $customerFolder;
@@ -72,6 +79,7 @@ final class RegistrationService implements RegistrationServiceInterface
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorage $securityTokenStorage
      * @param LocaleContextInterface $localeContext
+     * @param ObjectManager $entityManager
      * @param string $customerFolder
      * @param string $guestFolder
      * @param string $addressFolder
@@ -82,6 +90,7 @@ final class RegistrationService implements RegistrationServiceInterface
         EventDispatcherInterface $eventDispatcher,
         TokenStorage $securityTokenStorage,
         LocaleContextInterface $localeContext,
+        ObjectManager $entityManager,
         $customerFolder,
         $guestFolder,
         $addressFolder)
@@ -91,6 +100,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->securityTokenStorage = $securityTokenStorage;
         $this->localeContext = $localeContext;
+        $this->entityManager = $entityManager;
         $this->customerFolder = $customerFolder;
         $this->guestFolder = $guestFolder;
         $this->addressFolder = $addressFolder;
@@ -113,12 +123,15 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
         $customer->setLocaleCode($this->localeContext->getLocaleCode());
-        $customer->save();
+
+        $this->entityManager->persist($customer);
+        $this->entityManager->flush();
 
         $address->setPublished(true);
         $address->setKey(uniqid());
         $address->setParent($this->objectService->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->addressFolder)));
-        $address->save();
+        $this->entityManager->persist($address);
+        $this->entityManager->flush();
 
         $customer->setDefaultAddress($address);
         $customer->addAddress($address);
@@ -128,7 +141,7 @@ final class RegistrationService implements RegistrationServiceInterface
 
         $this->eventDispatcher->dispatch('coreshop.customer.register', new CustomerRegistrationEvent($customer, $formData));
 
-        $customer->save();
+        $this->entityManager->persist($customer);
+        $this->entityManager->flush();
     }
-
 }

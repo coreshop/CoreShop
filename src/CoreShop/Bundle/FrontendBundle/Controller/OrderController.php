@@ -78,7 +78,9 @@ class OrderController extends FrontendController
                 return $this->redirectToRoute('coreshop_index');
             } else if ($form->isValid()) {
                 $order = $form->getData();
-                $order->save();
+
+                $this->get('coreshop.manager.order')->persist($order);
+                $this->get('coreshop.manager.order')->flush();
 
                 return $this->redirectToRoute('coreshop_order_revise_pay', ['token' => $token]);
             }

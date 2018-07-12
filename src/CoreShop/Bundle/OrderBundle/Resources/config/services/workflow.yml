@@ -46,6 +46,7 @@ services:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.order_payment_state'
+            - '@pimcore.dao.object_manager'
 
     coreshop.state_machine.marking_store.single_state.order_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
@@ -56,6 +57,7 @@ services:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.order_state'
+            - '@pimcore.dao.object_manager'
 
     coreshop.state_machine.marking_store.single_state.order_shipment_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
@@ -66,6 +68,7 @@ services:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.order_shipment_state'
+            - '@pimcore.dao.object_manager'
 
     coreshop.state_machine.marking_store.single_state.order_invoice_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
@@ -76,6 +79,7 @@ services:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
+            - '@pimcore.dao.object_manager'
 
     coreshop.state_machine.marking_store.single_state.shipment_state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
@@ -91,11 +95,13 @@ services:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.shipment_state'
+            - '@pimcore.dao.object_manager'
 
     coreshop.state_machine.marking_store.invoice_pimcore_marking_store:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.invoice_state'
+            - '@pimcore.dao.object_manager'
 
     coreshop.workflow.state_manager:
         class: CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager

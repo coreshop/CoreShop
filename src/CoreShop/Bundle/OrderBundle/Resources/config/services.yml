@@ -27,6 +27,7 @@ services:
         arguments:
             - '@coreshop.cart_processor'
             - '@coreshop.object_service'
+            - '@pimcore.dao.object_manager'
             - '%coreshop.folder.cart%'
 
     coreshop.cart.modifier:

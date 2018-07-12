@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\Version;
 
@@ -35,16 +36,24 @@ final class ProductAvailabilityEventListener
     private $cartItemRepository;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @param CartRepositoryInterface $cartRepository
      * @param CartItemRepositoryInterface $cartItemRepository
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         CartRepositoryInterface $cartRepository,
-        CartItemRepositoryInterface $cartItemRepository
+        CartItemRepositoryInterface $cartItemRepository,
+        ObjectManager $objectManager
     )
     {
         $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -135,8 +144,11 @@ final class ProductAvailabilityEventListener
 
             VersionHelper::useVersioning(function() use ($cart) {
                 $cart->setNeedsRecalculation(true);
-                $cart->save();
+
+                $this->objectManager->persist($cart);
             }, false);
         }
+
+        $this->objectManager->flush();
     }
 }

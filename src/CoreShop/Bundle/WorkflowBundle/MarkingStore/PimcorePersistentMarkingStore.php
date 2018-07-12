@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\MarkingStore;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
@@ -26,13 +27,21 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     private $originMarkingStore;
 
     /**
-     * OrmPersistentMarkingStore constructor.
-     *
-     * @param MarkingStoreInterface $originMarkingStore origin marking store
+     * @var ObjectManager
      */
-    public function __construct(MarkingStoreInterface $originMarkingStore)
+    private $objectManager;
+
+    /**
+     * @param MarkingStoreInterface $originMarkingStore origin marking store
+     * @param ObjectManager $objectManager
+     */
+    public function __construct(
+        MarkingStoreInterface $originMarkingStore,
+        ObjectManager $objectManager
+    )
     {
         $this->originMarkingStore = $originMarkingStore;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -49,8 +58,9 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     public function setMarking($subject, Marking $marking)
     {
         $this->originMarkingStore->setMarking($subject, $marking);
+
         if ($subject instanceof Concrete) {
-            $subject->save();
+            $this->objectManager->persist($subject);
         }
     }
 }

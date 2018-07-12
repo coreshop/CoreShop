@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Renderer;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\Asset;
 
 class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
@@ -24,13 +25,21 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $decoratedService;
 
     /**
-     * AssetOrderDocumentPdfRenderer constructor.
-     *
-     * @param OrderDocumentRendererInterface $decoratedService
+     * @var ObjectManager
      */
-    public function __construct(OrderDocumentRendererInterface $decoratedService)
+    private $objectManager;
+
+    /**
+     * @param OrderDocumentRendererInterface $decoratedService
+     * @param ObjectManager $objectManager
+     */
+    public function __construct(
+        OrderDocumentRendererInterface $decoratedService,
+        ObjectManager $objectManager
+    )
     {
         $this->decoratedService = $decoratedService;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -68,7 +77,9 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $document->save();
 
         $orderDocument->setRenderedAsset($document);
-        $orderDocument->save();
+
+        $this->objectManager->persist($orderDocument);
+        $this->objectManager->flush();
 
         return $document->getData();
     }

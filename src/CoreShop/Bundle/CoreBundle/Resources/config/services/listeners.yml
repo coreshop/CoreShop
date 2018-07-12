@@ -46,6 +46,7 @@ services:
         arguments:
             - '@coreshop.repository.cart'
             - '@coreshop.repository.cart_item'
+            - '@coreshop.manager.cart'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: checkCartsAfterUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: checkCartsAfterDelete }
