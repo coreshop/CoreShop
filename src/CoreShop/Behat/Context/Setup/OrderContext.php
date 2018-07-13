@@ -112,6 +112,7 @@ final class OrderContext implements Context
     public function iApplyTransitionToOrder($transition, OrderInterface $order)
     {
         $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, $transition);
+        $order->save();
     }
 
     /**
@@ -120,6 +121,7 @@ final class OrderContext implements Context
     public function iApplyTransitionToOrderInvoice($transition, OrderInterface $order)
     {
         $this->stateMachineApplier->apply($order, OrderInvoiceTransitions::IDENTIFIER, $transition);
+        $order->save();
     }
 
     /**
@@ -128,6 +130,7 @@ final class OrderContext implements Context
     public function iApplyTransitionToOrderShipment($transition, OrderInterface $order)
     {
         $this->stateMachineApplier->apply($order, OrderShipmentTransitions::IDENTIFIER, $transition);
+        $order->save();
     }
 
 }

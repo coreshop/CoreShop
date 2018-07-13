@@ -96,5 +96,6 @@ final class OrderInvoiceContext implements Context
     public function iApplyInvoiceTransitionToInvoice($invoiceTransition, OrderInvoiceInterface $invoice)
     {
         $this->stateMachineApplier->apply($invoice, InvoiceTransitions::IDENTIFIER, $invoiceTransition);
+        $invoice->save();
     }
 }

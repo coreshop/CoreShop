@@ -96,5 +96,6 @@ final class OrderShipmentContext implements Context
     public function iApplyShipmentTransitionToShipment($shipmentTransition, OrderShipmentInterface $shipment)
     {
         $this->stateMachineApplier->apply($shipment, ShipmentTransitions::IDENTIFIER, $shipmentTransition);
+        $shipment->save();
     }
 }
