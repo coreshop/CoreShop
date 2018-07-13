@@ -22,3 +22,4 @@ services:
         arguments:
             - '@coreshop.renderer.order.pdf.asset.inner'
             - '@pimcore.dao.object_manager'
+            - '%kernel.environment%'

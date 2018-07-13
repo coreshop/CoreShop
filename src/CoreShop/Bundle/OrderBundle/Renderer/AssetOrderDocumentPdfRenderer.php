@@ -30,16 +30,23 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $objectManager;
 
     /**
+     * @var string
+     */
+    private $environment;
+
+    /**
      * @param OrderDocumentRendererInterface $decoratedService
-     * @param ObjectManager $objectManager
+     * @param ObjectManager                  $objectManager
+     * @param string                         $environment
      */
     public function __construct(
         OrderDocumentRendererInterface $decoratedService,
-        ObjectManager $objectManager
-    )
-    {
+        ObjectManager $objectManager,
+        string $environment
+    ) {
         $this->decoratedService = $decoratedService;
         $this->objectManager = $objectManager;
+        $this->environment = $environment;
     }
 
     /**
@@ -48,13 +55,14 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
         // if in dev mode, do not store document
-        if (\Pimcore::getKernel()->getEnvironment() === 'dev') {
+        if ($this->environment === 'dev') {
             return $this->decoratedService->renderDocumentPdf($orderDocument);
         }
 
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
             // check if asset is outdated.
-            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate()) {
+            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate(
+                )) {
                 return $orderDocument->getRenderedAsset()->getData();
             }
         }
