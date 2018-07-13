@@ -61,6 +61,7 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
 
         if ($subject instanceof Concrete) {
             $this->objectManager->persist($subject);
+            $this->objectManager->flush();
         }
     }
 }
