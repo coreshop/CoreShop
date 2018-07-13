@@ -12,8 +12,9 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
-use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\Element\ElementInterface;
 use Webmozart\Assert\Assert;
 
 final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
@@ -47,14 +48,17 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     public function persist($resource)
     {
         /**
-         * @var $resource AbstractObject
+         * @var $resource AbstractModel
          */
-        Assert::isInstanceOf($resource, AbstractObject::class);
+        Assert::isInstanceOf($resource, AbstractModel::class);
 
-        if ($resource->getId() > 0) {
-            $this->modelsToUpdate[$resource->getClassName()][$resource->getId()] = $resource;
+        $id = $this->getResourceId($resource);
+        $className = $this->getResourceClassName($resource);
+
+        if ($id) {
+            $this->modelsToUpdate[$className][$id] = $resource;
         } else {
-            $this->modelsToInsert[$resource->getClassName()][] = $resource;
+            $this->modelsToInsert[$className][] = $resource;
         }
     }
 
@@ -63,13 +67,15 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function remove($resource)
     {
-        /**
-         * @var $resource AbstractObject
-         */
-        Assert::isInstanceOf($resource, AbstractObject::class);
+        $id = $this->getResourceId($resource);
+        $className = $this->getResourceClassName($resource);
 
-        if ($resource->getId() > 0) {
-            $this->modelsToRemove[$resource->getClassName()][$resource->getId()] = $resource;
+        if ($resource instanceof Concrete) {
+            $className = $resource->getClassName();
+        }
+
+        if ($id) {
+            $this->modelsToRemove[$className][$id] = $resource;
         }
     }
 
@@ -175,5 +181,52 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     public function contains($object)
     {
         // TODO
+    }
+
+    /**
+     * @param $resource
+     * @return int
+     */
+    protected function getResourceId($resource)
+    {
+        $id = spl_object_hash($resource);
+
+        if (method_exists($resource, 'getId')) {
+            $id = $resource->getId();
+        }
+
+        return $id;
+    }
+
+    /**
+     * @param $resource
+     * @return string
+     */
+    protected function getResourceClassName($resource)
+    {
+        $className = get_class($resource);
+
+        if ($resource instanceof Concrete) {
+            $className = $resource->getClassName();
+        }
+
+        return $className;
+    }
+
+    /**
+     * @param $resource
+     * @return bool
+     */
+    protected function isResourceNew($resource)
+    {
+        if ($resource instanceof ElementInterface) {
+            return is_null($resource->getId()) || $resource->getId() === 0;
+        }
+
+        if (method_exists($resource, 'getId')) {
+            return is_null($resource->getId()) || $resource->getId() === 0;
+        }
+
+        return true;
     }
 }
