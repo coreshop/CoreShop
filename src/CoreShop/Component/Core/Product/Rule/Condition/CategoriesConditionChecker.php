@@ -48,6 +48,10 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
 
         $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
 
+        if (!is_array($subject->getCategories())) {
+            return false;
+        }
+
         foreach ($subject->getCategories() as $category) {
             if ($category instanceof ResourceInterface) {
                 if (in_array($category->getId(), $categoryIdsToCheck)) {

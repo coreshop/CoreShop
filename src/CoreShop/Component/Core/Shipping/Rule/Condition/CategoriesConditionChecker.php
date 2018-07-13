@@ -48,6 +48,10 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
 
         foreach ($cartItems as $item) {
             if ($item->getProduct() instanceof ProductInterface) {
+                if (!is_array($item->getProduct()->getCategories())) {
+                    continue;
+                }
+
                 foreach ($item->getProduct()->getCategories() as $category) {
                     if ($category instanceof ResourceInterface) {
                         if (in_array($category->getId(), $categoryIdsToCheck)) {
