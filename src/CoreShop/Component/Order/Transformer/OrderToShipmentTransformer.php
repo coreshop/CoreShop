@@ -24,6 +24,7 @@ use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 
 class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
@@ -69,6 +70,11 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
     protected $eventDispatcher;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
      * @param OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -77,6 +83,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
      * @param PimcoreRepositoryInterface $orderItemRepository
      * @param PimcoreFactoryInterface $shipmentItemFactory
      * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
@@ -86,7 +93,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         ObjectServiceInterface $objectService,
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $shipmentItemFactory,
-        TransformerEventDispatcherInterface $eventDispatcher
+        TransformerEventDispatcherInterface $eventDispatcher,
+        ObjectManager $objectManager
     )
     {
         $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
@@ -97,6 +105,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $this->orderItemRepository = $orderItemRepository;
         $this->shipmentItemFactory = $shipmentItemFactory;
         $this->eventDispatcher = $eventDispatcher;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -129,11 +138,13 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipment->setShipmentDate(Carbon::now());
         $shipment->setWeight($order->getWeight());
 
+        $this->objectManager->persist($shipment);
+
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function() use ($shipment) {
-            $shipment->save();
+        VersionHelper::useVersioning(function() {
+            $this->objectManager->flush();
         }, false);
         $items = [];
 
@@ -151,8 +162,11 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         }
 
         $shipment->setItems($items);
-        VersionHelper::useVersioning(function() use ($shipment) {
-            $shipment->save();
+
+        $this->objectManager->persist($shipment);
+
+        VersionHelper::useVersioning(function() {
+            $this->objectManager->flush();
         }, false);
 
         $this->eventDispatcher->dispatchPostEvent('shipment', $shipment, ['order' => $order, 'items' => $itemsToTransform]);

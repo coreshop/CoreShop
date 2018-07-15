@@ -17,6 +17,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 
@@ -38,19 +39,27 @@ final class CustomerGroupContext implements Context
     private $customerGroupRepository;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $customerGroupFactory
      * @param RepositoryInterface $customerGroupRepository
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerGroupFactory,
-        RepositoryInterface $customerGroupRepository
+        RepositoryInterface $customerGroupRepository,
+        ObjectManager $objectManager
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->customerGroupFactory = $customerGroupFactory;
         $this->customerGroupRepository = $customerGroupRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -84,7 +93,8 @@ final class CustomerGroupContext implements Context
      */
     private function saveCustomerGroup(CustomerGroupInterface $group)
     {
-        $group->save();
+        $this->objectManager->persist($group);
+        $this->objectManager->flush();
 
         $this->sharedStorage->set('customer_group', $group);
     }

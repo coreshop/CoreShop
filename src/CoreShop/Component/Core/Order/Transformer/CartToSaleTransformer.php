@@ -11,6 +11,7 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 
 final class CartToSaleTransformer implements ProposalTransformerInterface
@@ -26,16 +27,24 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
     protected $currencyConverter;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
      * @param ProposalTransformerInterface $innerCartToOrderTransformer
      * @param CurrencyConverterInterface $currencyConverter
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         ProposalTransformerInterface $innerCartToOrderTransformer,
-        CurrencyConverterInterface $currencyConverter
+        CurrencyConverterInterface $currencyConverter,
+        ObjectManager $objectManager
     )
     {
         $this->innerCartToOrderTransformer = $innerCartToOrderTransformer;
         $this->currencyConverter = $currencyConverter;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -85,7 +94,8 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
                 $sale->setBaseShippingTax(0);
             }
 
-            $sale->save();
+            $this->objectManager->persist($sale);
+            $this->objectManager->flush();
         }
 
         return $sale;

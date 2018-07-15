@@ -23,6 +23,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -54,18 +55,25 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $taxItemFactory;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param FactoryInterface $taxRateFactory
      * @param FactoryInterface $taxItemFactory
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher,
         FactoryInterface $taxRateFactory,
-        FactoryInterface $taxItemFactory
+        FactoryInterface $taxItemFactory,
+        ObjectManager $objectManager
     )
     {
         $this->objectService = $objectService;
@@ -73,6 +81,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->eventDispatcher = $eventDispatcher;
         $this->taxRateFactory = $taxRateFactory;
         $this->taxItemFactory = $taxItemFactory;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -111,8 +120,10 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), false);
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), true);
 
-        VersionHelper::useVersioning(function() use ($invoiceItem) {
-            $invoiceItem->save();
+        $this->objectManager->persist($invoiceItem);
+
+        VersionHelper::useVersioning(function() {
+            $this->objectManager->flush();
         }, false);
 
         $this->eventDispatcher->dispatchPostEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);

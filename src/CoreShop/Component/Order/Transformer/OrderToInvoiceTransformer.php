@@ -29,6 +29,7 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -85,6 +86,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     protected $taxItemFactory;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManger;
+
+    /**
      * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -95,6 +101,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * @param OrderInvoiceRepositoryInterface $invoiceRepository
      * @param TransformerEventDispatcherInterface $eventDispatcher
      * @param FactoryInterface $taxItemFactory
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
@@ -106,7 +113,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         PimcoreFactoryInterface $invoiceItemFactory,
         OrderInvoiceRepositoryInterface $invoiceRepository,
         TransformerEventDispatcherInterface $eventDispatcher,
-        FactoryInterface $taxItemFactory
+        FactoryInterface $taxItemFactory,
+        ObjectManager $objectManager
     )
     {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
@@ -119,6 +127,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->invoiceRepository = $invoiceRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->taxItemFactory = $taxItemFactory;
+        $this->objectManger = $objectManager;
     }
 
     /**
@@ -150,11 +159,13 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoice->setPublished(true);
         $invoice->setInvoiceDate(Carbon::now());
 
+        $this->objectManger->persist($invoice);
+
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function() use ($invoice) {
-            $invoice->save();
+        VersionHelper::useVersioning(function() {
+            $this->objectManger->flush();
         }, false);
 
         $items = [];
@@ -174,11 +185,14 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoice->setItems($items);
 
-        VersionHelper::useVersioning(function() use ($invoice) {
-            $invoice->save();
+        $this->calculateInvoice($invoice);
+
+        $this->objectManger->persist($invoice);
+
+        VersionHelper::useVersioning(function() {
+            $this->objectManger->flush();
         }, false);
 
-        $this->calculateInvoice($invoice);
 
         $this->eventDispatcher->dispatchPostEvent('invoice', $invoice, ['order' => $order, 'items' => $itemsToTransform]);
 
@@ -198,10 +212,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->calculateDiscount($invoice, false);
         $this->calculateTotal($invoice, true);
         $this->calculateTotal($invoice, false);
-
-        VersionHelper::useVersioning(function() use ($invoice) {
-            $invoice->save();
-        }, false);
     }
 
     /**

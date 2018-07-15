@@ -22,6 +22,7 @@ services:
             - '@coreshop.transformer.event_dispatcher'
             - '@coreshop.currency_converter'
             - '@coreshop.translation_locale_provider'
+            - '@pimcore.dao.object_manager'
 
     coreshop.order.transformer.cart_to_order:
         class: CoreShop\Component\Order\Transformer\CartToOrderTransformer
@@ -36,6 +37,7 @@ services:
             - '@coreshop.currency_converter'
             - '@coreshop.object_cloner'
             - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@pimcore.dao.object_manager'
 
     coreshop.order.transformer.cart_to_order.workflow_applier:
         class: CoreShop\Component\Order\Transformer\CartToOrderTransformerWorkflowApplier
@@ -52,6 +54,7 @@ services:
             - '@coreshop.transformer.event_dispatcher'
             - '@coreshop.currency_converter'
             - '@coreshop.translation_locale_provider'
+            - '@pimcore.dao.object_manager'
 
     coreshop.order.transformer.cart_to_quote:
         class: CoreShop\Component\Order\Transformer\CartToQuoteTransformer
@@ -66,6 +69,7 @@ services:
             - '@coreshop.currency_converter'
             - '@coreshop.object_cloner'
             - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@pimcore.dao.object_manager'
 
     coreshop.templating.helper.order_state:
         class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper

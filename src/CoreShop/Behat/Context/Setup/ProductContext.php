@@ -20,6 +20,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 use Pimcore\Tool;
@@ -41,21 +42,28 @@ final class ProductContext implements Context
      */
     private $productRepository;
 
+    /**
+     * @var ObjectManager
+     */
+    private $objectManager;
 
     /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $productFactory
      * @param ProductRepositoryInterface $productRepository
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ObjectManager $objectManager
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -272,7 +280,9 @@ final class ProductContext implements Context
      */
     private function saveProduct(ProductInterface $product)
     {
-        $product->save();
+        $this->objectManager->persist($product);
+        $this->objectManager->flush();
+
         $this->sharedStorage->set('product', $product);
     }
 }

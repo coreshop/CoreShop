@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use Doctrine\Common\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 
 class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformerInterface
@@ -39,19 +40,27 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
     private $eventDispatcher;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
-        TransformerEventDispatcherInterface $eventDispatcher
+        TransformerEventDispatcherInterface $eventDispatcher,
+        ObjectManager $objectManager
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -86,8 +95,10 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
 
         $shipmentItem->setWeight($orderItem->getTotalWeight());
 
+        $this->objectManager->persist($shipmentItem);
+
         VersionHelper::useVersioning(function() use ($shipmentItem) {
-            $shipmentItem->save();
+            $this->objectManager->flush();
         }, false);
 
         $this->eventDispatcher->dispatchPostEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);

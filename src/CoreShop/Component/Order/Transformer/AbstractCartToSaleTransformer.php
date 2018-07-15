@@ -28,6 +28,7 @@ use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
@@ -84,6 +85,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     protected $voucherCodeRepository;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
      * @param ProposalItemTransformerInterface $cartItemToSaleItemTransformer
      * @param ItemKeyTransformerInterface $keyTransformer
      * @param NumberGeneratorInterface $numberGenerator
@@ -94,6 +100,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
      * @param CurrencyConverterInterface $currencyConverter
      * @param ObjectClonerInterface $objectCloner
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         ProposalItemTransformerInterface $cartItemToSaleItemTransformer,
@@ -105,7 +112,8 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter,
         ObjectClonerInterface $objectCloner,
-        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        ObjectManager $objectManager
     )
     {
         $this->cartItemToSaleItemTransformer = $cartItemToSaleItemTransformer;
@@ -118,6 +126,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $this->currencyConverter = $currencyConverter;
         $this->objectCloner = $objectCloner;
         $this->voucherCodeRepository = $voucherCodeRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -186,11 +195,12 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setKey($this->keyTransformer->transform($saleNumber));
         $sale->setSaleNumber($saleNumber);
 
+        $this->objectManager->persist($sale);
         /*
          * We need to save the sale twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function() use ($sale) {
-            $sale->save();
+        VersionHelper::useVersioning(function() {
+            $this->objectManager->flush();
         }, false);
 
         $shippingAddress = $this->objectCloner->cloneObject(
@@ -204,9 +214,11 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             'invoice'
         );
 
-        VersionHelper::useVersioning(function() use ($shippingAddress, $invoiceAddress) {
-            $shippingAddress->save();
-            $invoiceAddress->save();
+        $this->objectManager->persist($shippingAddress);
+        $this->objectManager->persist($invoiceAddress);
+
+        VersionHelper::useVersioning(function() {
+            $this->objectManager->flush();
         }, false);
 
         $sale->setShippingAddress($shippingAddress);
@@ -238,8 +250,10 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $this->eventDispatcher->dispatchPostEvent($type, $sale, ['cart' => $cart]);
 
-        VersionHelper::useVersioning(function() use ($sale) {
-            $sale->save();
+        $this->objectManager->persist($sale);
+        
+        VersionHelper::useVersioning(function() {
+            $this->objectManager->flush();
         }, false);
 
         //Necessary?
