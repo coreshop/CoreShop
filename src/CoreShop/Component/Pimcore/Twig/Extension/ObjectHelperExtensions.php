@@ -13,9 +13,13 @@
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Service;
 
 final class ObjectHelperExtensions extends \Twig_Extension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getTests()
     {
         return [
@@ -27,6 +31,18 @@ final class ObjectHelperExtensions extends \Twig_Extension
                 $className = 'Pimcore\\Model\\DataObject\\' . $className;
 
                 return class_exists($className) && $object instanceof $className;
+            })
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return [
+            new \Twig_function('object_select_options', function($object, $field) {
+                return Service::getOptionsForSelectField($object, $field);
             })
         ];
     }
