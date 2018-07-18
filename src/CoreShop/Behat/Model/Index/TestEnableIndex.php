@@ -41,4 +41,12 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexableName($language)
+    {
+        return $this->getName($language);
+    }
 }

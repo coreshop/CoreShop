@@ -151,7 +151,7 @@ abstract class AbstractWorker implements WorkerInterface
             ];
 
             foreach ($validLanguages as $language) {
-                $localizedData['values'][$language]['name'] = $object->getName($language);
+                $localizedData['values'][$language]['name'] = $object->getIndexableName($language);
             }
 
             $relationData = [];

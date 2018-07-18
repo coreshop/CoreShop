@@ -53,7 +53,7 @@ interface IndexableInterface
      * @param $language
      * @return string
      */
-    public function getName($language);
+    public function getIndexableName($language);
 
     /**
      * @return static|null

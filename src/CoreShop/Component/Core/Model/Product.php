@@ -222,4 +222,12 @@ class Product extends BaseProduct implements ProductInterface
     {
         return $this->getEnabled();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexableName($language)
+    {
+        return $this->getName($language);
+    }
 }
