@@ -19,11 +19,12 @@ use Pimcore\Model\DataObject;
 abstract class AbstractSaleController extends PimcoreController
 {
     /**
-     * @param mixed $data
+     * @param DataObject\Concrete $data
+     * @param array $loadedObjects
      *
      * @return array
      */
-    protected function getDataForObject($data)
+    protected function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
     {
         if (!$data instanceof DataObject\AbstractObject) {
             return [];
@@ -31,6 +32,8 @@ abstract class AbstractSaleController extends PimcoreController
 
         $objectData = [];
         DataObject\Service::loadAllObjectFields($data);
+
+        $loadedObjects[] = $data->getId();
 
         foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
             $getter = 'get'.ucfirst($key);
@@ -43,14 +46,22 @@ abstract class AbstractSaleController extends PimcoreController
 
             if ($def instanceof DataObject\ClassDefinition\Data\Href) {
                 if ($fieldData instanceof DataObject\Concrete) {
-                    $objectData[$key] = $this->getDataForObject($fieldData);
+                    if (!in_array($fieldData->getId(), $loadedObjects)) {
+                        $objectData[$key] = $this->getDataForObject($fieldData, $loadedObjects);
+                    }
                 }
             } elseif ($def instanceof DataObject\ClassDefinition\Data\Multihref) {
                 $objectData[$key] = [];
 
+                if (!is_array($fieldData)) {
+                    continue;
+                }
+
                 foreach ($fieldData as $object) {
                     if ($object instanceof DataObject\Concrete) {
-                        $objectData[$key][] = $this->getDataForObject($object);
+                        if (!in_array($object->getId(), $loadedObjects)) {
+                            $objectData[$key][] = $this->getDataForObject($object, $loadedObjects);
+                        }
                     }
                 }
             } elseif ($def instanceof DataObject\ClassDefinition\Data) {
