@@ -31,6 +31,14 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
      */
     public function getIndexableEnabled()
     {
+        return $this->getEnabled();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEnabled()
+    {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
