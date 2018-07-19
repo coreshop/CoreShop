@@ -10,7 +10,7 @@
     background: url(../img/filter-empty.svg) center center no-repeat !important;
 }
 
-.coreshop_filters_icon_conditions_select {
+.coreshop_filters_icon_conditions_select, .coreshop_filters_icon_conditions_relational_select {
     background: url(../img/filter-select.svg) center center no-repeat !important;
 }
 

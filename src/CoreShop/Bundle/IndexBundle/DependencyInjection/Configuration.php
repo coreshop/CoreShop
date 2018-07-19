@@ -180,6 +180,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('filter_condition_range')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/range.js')->end()
                             ->scalarNode('filter_condition_select')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/select.js')->end()
                             ->scalarNode('filter_condition_relational_multiselect')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/relational_multiselect.js')->end()
+                            ->scalarNode('filter_condition_relational_select')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/relational_select.js')->end()
                             ->scalarNode('filter_condition_category_select')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/conditions/category_select.js')->end()
                             ->scalarNode('filter_similarity_abstract')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/similarities/abstract.js')->end()
                             ->scalarNode('filter_similarity_field')->defaultValue('/bundles/coreshopindex/pimcore/js/filter/similarities/field.js')->end()

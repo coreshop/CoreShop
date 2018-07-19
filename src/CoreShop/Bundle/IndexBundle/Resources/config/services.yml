@@ -258,6 +258,11 @@ services:
         tags:
             - { name: coreshop.filter.condition_type, type: relational_multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
 
+    coreshop.filter.condition_type.relational_select:
+        class: CoreShop\Component\Index\Filter\RelationalSelectConditionProcessor
+        tags:
+            - { name: coreshop.filter.condition_type, type: relational_select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType}
+
     coreshop.filter.condition_type.category_select:
         class: CoreShop\Component\Index\Filter\CategorySelectConditionProcessor
         tags:
