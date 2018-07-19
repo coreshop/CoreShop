@@ -2,6 +2,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
+use CoreShop\Bundle\CoreBundle\CoreExtension\StorePrice;
+use CoreShop\Bundle\ProductBundle\CoreExtension\ProductSpecificPriceRules;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -21,7 +23,12 @@ class Version20180719151524 extends AbstractPimcoreMigration implements Containe
         $classes = $classes->load();
 
         foreach ($classes as $class) {
-            $class->save();
+            foreach ($class->getFieldDefinitions() as $definition) {
+                if ($definition instanceof StorePrice || $definition instanceof ProductSpecificPriceRules) {
+                    $class->save();
+                    break;
+                }
+            }
         }
 
     }
