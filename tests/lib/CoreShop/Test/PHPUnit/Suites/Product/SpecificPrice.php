@@ -132,6 +132,8 @@ class SpecificPrice extends RuleTest
         $priceRule->setActive(true);
         $priceRule->setProduct($this->product->getId());
 
+        $this->product->setSpecificPriceRules([$priceRule]);
+
         return $priceRule;
     }
 
@@ -307,6 +309,8 @@ class SpecificPrice extends RuleTest
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
+
+        $this->product->setSpecificPriceRules([]);
     }
 
     /**
@@ -335,6 +339,8 @@ class SpecificPrice extends RuleTest
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
+
+        $this->product->setSpecificPriceRules([]);
     }
 
     /**
@@ -364,6 +370,8 @@ class SpecificPrice extends RuleTest
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
+
+        $this->product->setSpecificPriceRules([]);
     }
 
     /**
@@ -395,5 +403,7 @@ class SpecificPrice extends RuleTest
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
+
+        $this->product->setSpecificPriceRules([]);
     }
 }
