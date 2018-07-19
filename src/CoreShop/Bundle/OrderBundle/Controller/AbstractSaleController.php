@@ -33,6 +33,8 @@ abstract class AbstractSaleController extends PimcoreController
         $objectData = [];
         DataObject\Service::loadAllObjectFields($data);
 
+        $loadedObjects[] = $data->getId();
+
         foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
             $getter = 'get'.ucfirst($key);
 
@@ -50,6 +52,10 @@ abstract class AbstractSaleController extends PimcoreController
                 }
             } elseif ($def instanceof DataObject\ClassDefinition\Data\Multihref) {
                 $objectData[$key] = [];
+
+                if (!is_array($fieldData)) {
+                    continue;
+                }
 
                 foreach ($fieldData as $object) {
                     if ($object instanceof DataObject\Concrete) {
