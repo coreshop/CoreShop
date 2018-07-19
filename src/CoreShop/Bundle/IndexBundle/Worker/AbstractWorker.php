@@ -108,7 +108,7 @@ abstract class AbstractWorker implements WorkerInterface
             $extensions = $this->getExtensions($index);
 
             $virtualObjectId = $object->getId();
-            $virtualObjectActive = $object->getEnabled();
+            $virtualObjectActive = $object->getIndexableEnabled();
 
             if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
                 $parent = $object->getParent();
@@ -118,7 +118,7 @@ abstract class AbstractWorker implements WorkerInterface
                 }
 
                 $virtualObjectId = $parent->getId();
-                $virtualObjectActive = $object->getEnabled();
+                $virtualObjectActive = $object->getIndexableEnabled();
             }
 
             $validLanguages = Tool::getValidLanguages();
@@ -139,7 +139,7 @@ abstract class AbstractWorker implements WorkerInterface
                 }
             }
 
-            $data['active'] = $object->getEnabled();
+            $data['active'] = $object->getIndexableEnabled();
 
             if (!is_bool($data['active'])) {
                 $data['active'] = false;

@@ -22,7 +22,7 @@ interface IndexableInterface
     /**
      * @return boolean
      */
-    public function getEnabled();
+    public function getIndexableEnabled();
 
     /**
      * @return boolean
