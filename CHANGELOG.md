@@ -11,6 +11,10 @@
  - **BC break** Shipment / Invoice Creation via API changed
     - Before adding a new Shipment / Invoice you need to dispatch a request state to your order. Read more about it [here](./docs/03_Development/06_Order/05_Invoice/01_Invoice_Creation.md) and [here](./docs/03_Development/06_Order/06_Shipment/01_Shipment_Creation.md).
 
+ - **BC break** getName in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableName` as `getName` could eventually conflict with a non localized Pimcore Field
+ - **BC break** getEnabled in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableEnabled` as `getEnabled` could eventually conflict with a localized Pimcore Field
+
+
 ## 2.0.0-beta.1 to 2.0.0-beta.2
  - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:
     - CoreShopProduct: add `@coreshop.object.link_generator.product` as Link Provider

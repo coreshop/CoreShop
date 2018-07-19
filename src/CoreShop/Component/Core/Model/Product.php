@@ -210,7 +210,7 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getEnabled()
+    public function getIndexableEnabled()
     {
         return $this->getActive() && $this->getPublished();
     }
@@ -220,6 +220,14 @@ class Product extends BaseProduct implements ProductInterface
      */
     public function getIndexable()
     {
-        return $this->getEnabled();
+        return $this->getIndexableEnabled();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexableName($language)
+    {
+        return $this->getName($language);
     }
 }

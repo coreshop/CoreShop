@@ -29,6 +29,14 @@ class TestIndex extends AbstractPimcoreModel implements IndexableInterface
     /**
      * {@inheritdoc}
      */
+    public function getIndexableEnabled()
+    {
+        return $this->getEnabled();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getEnabled()
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -40,5 +48,13 @@ class TestIndex extends AbstractPimcoreModel implements IndexableInterface
     public function getName($language)
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexableName($language)
+    {
+        return $this->getName($language);
     }
 }
