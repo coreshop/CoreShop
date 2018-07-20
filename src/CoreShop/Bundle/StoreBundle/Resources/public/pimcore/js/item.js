@@ -89,18 +89,8 @@ coreshop.store.item = Class.create(coreshop.resource.item, {
                             value: this.data.template
                         },
                         {
-                            xtype: 'combo',
-                            fieldLabel: t('coreshop_currency'),
-                            typeAhead: true,
-                            value: this.data.currency,
-                            mode: 'local',
-                            listWidth: 100,
-                            store: pimcore.globalmanager.get('coreshop_currencies'),
-                            displayField: 'name',
-                            valueField: 'id',
-                            forceSelection: true,
-                            triggerAction: 'all',
-                            name: 'currency'
+                            xtype: 'coreshop.currency',
+                            value: this.data.currency
                         },
                     ]
                 }
