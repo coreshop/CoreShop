@@ -17,7 +17,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
-final class IndexContext implements Context
+final class ManufacturerContext implements Context
 {
     /**
      * @var SharedStorageInterface
@@ -27,39 +27,39 @@ final class IndexContext implements Context
     /**
      * @var RepositoryInterface
      */
-    private $indexRepository;
+    private $manufacturerRepository;
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface    $manufacturerRepository
      */
-    public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $indexRepository)
+    public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $manufacturerRepository)
     {
         $this->sharedStorage = $sharedStorage;
-        $this->indexRepository = $indexRepository;
+        $this->manufacturerRepository = $manufacturerRepository;
     }
 
     /**
-     * @Transform /^index "([^"]+)"$/
+     * @Transform /^manufacturer "([^"]+)"$/
      */
-    public function getIndexByName($name)
+    public function getManufacturerByName($name)
     {
-        $indexes = $this->indexRepository->findBy(['name' => $name]);
+        $manufacturers = $this->manufacturerRepository->findBy(['name' => $name]);
 
         Assert::eq(
-            count($indexes),
+            count($manufacturers),
             1,
-            sprintf('%d indices have been found with name "%s".', count($indexes), $name)
+            sprintf('%d Manufacturers has been found with name "%s".', count($manufacturers), $name)
         );
 
-        return reset($indexes);
+        return reset($manufacturers);
     }
 
     /**
-     * @Transform /^index$/
+     * @Transform /^manufacturer/
      */
-    public function index()
+    public function manufacturer()
     {
-        return $this->sharedStorage->get('index');
+        return $this->sharedStorage->get('manufacturer');
     }
 }

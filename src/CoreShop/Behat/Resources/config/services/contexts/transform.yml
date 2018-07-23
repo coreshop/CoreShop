@@ -152,3 +152,19 @@ services:
             - '@__symfony__.coreshop.repository.payment_provider'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.filter:
+        class: CoreShop\Behat\Context\Transform\FilterContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.filter'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.manufacturer:
+        class: CoreShop\Behat\Context\Transform\ManufacturerContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.manufacturer'
+        tags:
+            - { name: fob.context_service }
