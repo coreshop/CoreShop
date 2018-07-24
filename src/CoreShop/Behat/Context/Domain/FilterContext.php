@@ -128,11 +128,12 @@ final class FilterContext implements Context
 
     /**
      * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_select) condition "([^"]+)"/
+     * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_multiselect) condition "([^"]+)"/
      */
     public function theFilterShouldHaveXValuesWithCountXForTypeAndField(FilterInterface $filter, $countOfValues, $countPerValue, $conditionType, $field)
     {
         $conditions = $this->prepareFilter($filter);
-        
+
 
         $field = reset(array_filter($filter->getConditions()->toArray(), function(FilterConditionInterface $condition) use ($field) {
             return $condition->getConfiguration()['field'] === $field;
