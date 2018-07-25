@@ -22,6 +22,7 @@ use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
+use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -115,6 +116,28 @@ final class FilterContext implements Context
 
             $this->objectManager->persist($condition);
         }
+
+        $this->saveFilter($filter);
+    }
+
+    /**
+     * @Given /the (filter) has a category condition without category$/
+     * @Given /the (filter) has a category condition with (category "[^"]+")$/
+     * @Given /the (filter) has a category condition with (category "[^"]+") and it (includes all subcategories)$/
+     */
+    public function theFilterHasACategoryConditionWithCategory(FilterInterface $filter, CategoryInterface $category = null, $includeAllChilds = '')
+    {
+        $condition = $this->filterConditionFactory->createNew();
+        $condition->setType('category_select');
+        $condition->setConfiguration([
+            'preSelect' => $category ? $category->getId() : null,
+            'includeSubCategories' => $includeAllChilds === 'includes all subcategories'
+        ]);
+        $condition->setLabel('Category');
+
+        $filter->addCondition($condition);
+
+        $this->objectManager->persist($condition);
 
         $this->saveFilter($filter);
     }

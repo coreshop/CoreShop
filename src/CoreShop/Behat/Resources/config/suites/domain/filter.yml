@@ -11,6 +11,7 @@ default:
                 - coreshop.behat.context.transform.shared_storage
                 - coreshop.behat.context.transform.pimcore_class
                 - coreshop.behat.context.transform.product
+                - coreshop.behat.context.transform.category
                 - coreshop.behat.context.transform.manufacturer
                 - coreshop.behat.context.transform.store
                 - coreshop.behat.context.transform.index
@@ -19,6 +20,7 @@ default:
                 - coreshop.behat.context.setup.index
                 - coreshop.behat.context.setup.filter
                 - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.category
                 - coreshop.behat.context.setup.manufacturer
                 - coreshop.behat.context.setup.store
                 - coreshop.behat.context.setup.pimcore_class

@@ -15,17 +15,12 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Webmozart\Assert\Assert;
 
@@ -86,7 +81,8 @@ final class FilterContext implements Context
     /**
      * @Then /^the (filter) should have (\d+) conditions$/
      */
-    public function theFilterShouldHaveXConditions(FilterInterface $filter, $count) {
+    public function theFilterShouldHaveXConditions(FilterInterface $filter, $count)
+    {
         Assert::eq(
             count($filter->getConditions()),
             $count,
@@ -98,8 +94,12 @@ final class FilterContext implements Context
      * @Then /the (filter) should have the values for (select) condition "([^"]+)":/
      * @Then /the (filter) should have the values for (multiselect) condition "([^"]+)":/
      */
-    public function theFilterShouldHaveFollowingValuesForSelect(FilterInterface $filter, $conditionType, $field, TableNode $values)
-    {
+    public function theFilterShouldHaveFollowingValuesForSelect(
+        FilterInterface $filter,
+        $conditionType,
+        $field,
+        TableNode $values
+    ) {
         $conditions = $this->prepareFilter($filter);
         $shouldHaveConditions = [];
 
@@ -107,18 +107,26 @@ final class FilterContext implements Context
             $shouldHaveConditions[] = $value['value'];
         }
 
-        $field = reset(array_filter($filter->getConditions()->toArray(), function(FilterConditionInterface $condition) use ($field) {
-            return $condition->getConfiguration()['field'] === $field;
-        }));
+        $field = reset(
+            array_filter(
+                $filter->getConditions()->toArray(),
+                function (FilterConditionInterface $condition) use ($field) {
+                    return $condition->getConfiguration()['field'] === $field;
+                }
+            )
+        );
 
         Assert::isInstanceOf($field, FilterConditionInterface::class);
         Assert::eq($field->getType(), $conditionType);
 
         Assert::eq(count($conditions[$field->getId()]['values']), count($shouldHaveConditions));
 
-        $values = array_map(function($value) {
-            return $value['value'];
-        }, $conditions[$field->getId()]['values']);
+        $values = array_map(
+            function ($value) {
+                return $value['value'];
+            },
+            $conditions[$field->getId()]['values']
+        );
 
         $diff = array_diff($shouldHaveConditions, $values);
 
@@ -130,25 +138,48 @@ final class FilterContext implements Context
      * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_select) condition "([^"]+)"/
      * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_multiselect) condition "([^"]+)"/
      */
-    public function theFilterShouldHaveXValuesWithCountXForTypeAndField(FilterInterface $filter, $countOfValues, $countPerValue, $conditionType, $field)
-    {
+    public function theFilterShouldHaveXValuesWithCountXForTypeAndField(
+        FilterInterface $filter,
+        $countOfValues,
+        $countPerValue,
+        $conditionType,
+        $field
+    ) {
         $conditions = $this->prepareFilter($filter);
 
 
-        $field = reset(array_filter($filter->getConditions()->toArray(), function(FilterConditionInterface $condition) use ($field) {
-            return $condition->getConfiguration()['field'] === $field;
-        }));
+        $field = reset(
+            array_filter(
+                $filter->getConditions()->toArray(),
+                function (FilterConditionInterface $condition) use ($field) {
+                    return $condition->getConfiguration()['field'] === $field;
+                }
+            )
+        );
 
         Assert::isInstanceOf($field, FilterConditionInterface::class);
         Assert::eq($field->getType(), $conditionType);
 
         Assert::eq(count($conditions[$field->getId()]['values']), $countOfValues);
 
-        $values = array_map(function($value) {
-            return $value['count'];
-        }, $conditions[$field->getId()]['values']);
+        $values = array_map(
+            function ($value) {
+                return $value['count'];
+            },
+            $conditions[$field->getId()]['values']
+        );
 
         Assert::eq($values[0], $countPerValue);
+    }
+
+    /**
+     * @Then /the (filter) should have (\d+) item(?:|s)$/
+     */
+    public function theFilterShouldHaveXItemsForCategoryCondition(FilterInterface $filter, $countOfValues)
+    {
+        $listing = $this->getFilterListing($filter);
+
+        Assert::eq($listing->count(), $countOfValues);
     }
 
     /**
@@ -167,5 +198,23 @@ final class FilterContext implements Context
         $currentFilter = $this->filterProcessor->processConditions($filter, $filteredList, $parameterBag);
 
         return $this->filterProcessor->prepareConditionsForRendering($filter, $filteredList, $currentFilter);
+    }
+
+    /**
+     * @param FilterInterface $filter
+     * @param array           $filterParams
+     * @return ListingInterface
+     */
+    protected function getFilterListing(FilterInterface $filter, $filterParams = [])
+    {
+        $parameterBag = new ParameterBag($filterParams);
+
+        $filteredList = $this->filterListFactory->createList($filter, $parameterBag);
+        $filteredList->setLocale('en');
+        $filteredList->setVariantMode(ListingInterface::VARIANT_MODE_HIDE);
+
+        $this->filterProcessor->processConditions($filter, $filteredList, $parameterBag);
+
+        return $filteredList;
     }
 }
