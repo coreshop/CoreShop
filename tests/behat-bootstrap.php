@@ -22,6 +22,7 @@ require_once PIMCORE_PROJECT_ROOT . '/pimcore/config/bootstrap.php';
 /**
  * @var $loader \Composer\Autoload\ClassLoader
  */
+$loader = \Pimcore::getAutoloader();
 $loader->add('CoreShop\Test', [__DIR__.'/lib']);
 $loader->add('Pimcore\Model\DataObject', [__DIR__ . '/tmp/var/classes/DataObject']);
 
