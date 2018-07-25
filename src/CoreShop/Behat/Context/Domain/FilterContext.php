@@ -20,6 +20,7 @@ use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Webmozart\Assert\Assert;
@@ -192,6 +193,36 @@ final class FilterContext implements Context
         foreach ($node as $row) {
             $params[$row['key']] = $row['value'];
         }
+
+        $listing = $this->getFilterListing($filter, $params);
+
+        Assert::eq($listing->count(), $countOfValues);
+    }
+
+    /**
+     * @Then /the (filter) should have (\d+) item(?:|s) for (manufacturer "[^"]+") in field "([^"]+)"$/
+     * @Then /the (filter) should have (\d+) item(?:|s) for value "([^"]+)" in field "([^"]+)"$/
+     */
+    public function theFilterShouldHaveXItemsForCategoryWithObjectCondition(FilterInterface $filter, $countOfValues, $value, $field)
+    {
+        if ($value instanceof ResourceInterface) {
+            $value = $value->getId();
+        }
+
+        if (strstr($field, '[]')) {
+            $field = str_replace('[]', '', $field);
+
+            if (strstr($value, ',')) {
+                $value = explode(',', $value);
+            }
+            else {
+                $value = [$value];
+            }
+        }
+
+        $params = [
+            $field => $value
+        ];
 
         $listing = $this->getFilterListing($filter, $params);
 

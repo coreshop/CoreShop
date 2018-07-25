@@ -34,3 +34,19 @@ Feature: Adding a filter for an index
       | SKU1    |
       | SKU2    |
       | SKU3    |
+
+  Scenario: Create 3 products that will be filtered for a specific SKU
+    Given the site has a product "Shoe" priced at 100
+    And the products sku is "SKU1"
+    And the product is active
+    And the product is published
+    And the site has a product "Shoe 2" priced at 100
+    And the products sku is "SKU1"
+    And the product is active
+    And the product is published
+    And the site has a product "Shoe 3" priced at 100
+    And the products sku is "SKU3"
+    And the product is active
+    And the product is published
+    Then the filter should have 2 items for value "SKU1" in field "sku"
+    Then the filter should have 1 items for value "SKU3" in field "sku"
