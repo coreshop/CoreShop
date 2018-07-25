@@ -19,6 +19,7 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
+use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
@@ -219,6 +220,17 @@ final class ProductContext implements Context
     public function theProductsSkuIs(ProductInterface $product, $sku)
     {
         $product->setSku($sku);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (manufacturer "[^"]+")$/
+     * @Given /^the (products) has (manufacturer "[^"]+")$/
+     */
+    public function theProductHasManufacturer(ProductInterface $product, ManufacturerInterface $manufacturer)
+    {
+        $product->setManufacturer($manufacturer);
 
         $this->saveProduct($product);
     }

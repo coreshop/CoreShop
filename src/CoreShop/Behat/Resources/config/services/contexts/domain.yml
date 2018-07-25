@@ -177,3 +177,13 @@ services:
             - '%__symfony__.coreshop.all.pimcore.admin.editmode_css%'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.filter:
+        class: CoreShop\Behat\Context\Domain\FilterContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.filter'
+            - '@__symfony__.coreshop.factory.filter.list'
+            - '@__symfony__.coreshop.filter.processor'
+        tags:
+            - { name: fob.context_service }

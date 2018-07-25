@@ -186,6 +186,18 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.setup.filter:
+        class: CoreShop\Behat\Context\Setup\FilterContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.behat.class_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.filter'
+            - '@__symfony__.coreshop.repository.filter'
+            - '@__symfony__.coreshop.factory.filter_condition'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.setup.pimcore_class:
         class: CoreShop\Behat\Context\Setup\PimcoreClassContext
         arguments:
@@ -244,5 +256,14 @@ services:
             - '@__symfony__.coreshop.factory.payment'
             - '@__symfony__.coreshop.factory.payment_provider'
             - '@__symfony__.coreshop.factory.gateway_config'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.manufacturer:
+        class: CoreShop\Behat\Context\Setup\ManufacturerContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.pimcore.dao.object_manager'
+            - '@__symfony__.coreshop.factory.manufacturer'
         tags:
             - { name: fob.context_service }

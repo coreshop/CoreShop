@@ -15,9 +15,8 @@ namespace CoreShop\Behat\Context\Transform;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Webmozart\Assert\Assert;
 
-final class IndexContext implements Context
+final class FilterContext implements Context
 {
     /**
      * @var SharedStorageInterface
@@ -27,39 +26,23 @@ final class IndexContext implements Context
     /**
      * @var RepositoryInterface
      */
-    private $indexRepository;
+    private $filterRepository;
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface $filterRepository
      */
-    public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $indexRepository)
+    public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $filterRepository)
     {
         $this->sharedStorage = $sharedStorage;
-        $this->indexRepository = $indexRepository;
+        $this->filterRepository = $filterRepository;
     }
 
     /**
-     * @Transform /^index "([^"]+)"$/
+     * @Transform /^filter$/
      */
-    public function getIndexByName($name)
+    public function filter()
     {
-        $indexes = $this->indexRepository->findBy(['name' => $name]);
-
-        Assert::eq(
-            count($indexes),
-            1,
-            sprintf('%d indices have been found with name "%s".', count($indexes), $name)
-        );
-
-        return reset($indexes);
-    }
-
-    /**
-     * @Transform /^index$/
-     */
-    public function index()
-    {
-        return $this->sharedStorage->get('index');
+        return $this->sharedStorage->get('filter');
     }
 }

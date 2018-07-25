@@ -12,3 +12,4 @@ imports:
     - suites/domain/seo.yml
     - suites/domain/placeholder.yml
     - suites/domain/cli.yml
+    - suites/domain/filter.yml
