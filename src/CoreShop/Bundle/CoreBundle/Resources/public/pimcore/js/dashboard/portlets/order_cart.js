@@ -153,7 +153,7 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
             }
         ];
 
-        this.layout = Ext.create('Portal.view.Portlet', Object.extend(defaultConf, {
+        this.layout = Ext.create('Portal.view.Portlet', Object.assign(defaultConf, {
             title: this.getName(),
             iconCls: this.getIcon(),
             height: 275,
