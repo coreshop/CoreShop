@@ -27,9 +27,9 @@ class QuoteController extends AbstractSaleDetailController
         $name = null;
         $folderId = null;
 
-        $orderClassId = $this->getParameter('coreshop.model.quote.pimcore_class_id');
+        $orderClassId = $this->getParameter('coreshop.model.quote.pimcore_class_name');
         $folderPath = $this->getParameter('coreshop.folder.quote');
-        $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
+        $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/'.$folderPath);
 
@@ -66,7 +66,7 @@ class QuoteController extends AbstractSaleDetailController
      */
     protected function getSaleClassName()
     {
-        return 'coreshop.model.quote.pimcore_class_id';
+        return 'coreshop.model.quote.pimcore_class_name';
     }
 
     /**

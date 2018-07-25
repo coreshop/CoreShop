@@ -42,31 +42,26 @@ final class StackClassesPass implements CompilerPassInterface
             $classStackPimcoreClassId[$alias] = [];
 
             foreach ($classes as $key => $definition) {
-                if (!@class_exists($definition['classes']['model'])) {
+                if (!@interface_exists($definition['classes']['interface'])) {
                     continue;
                 }
 
-                if (in_array($interface, class_implements($definition['classes']['model']))) {
+                if (in_array($interface, class_implements($definition['classes']['interface']))) {
                     $classStack[$alias][] = $definition['classes']['model'];
 
-                    if (is_subclass_of($definition['classes']['model'], Concrete::class)) {
-                        $fullClassName = $definition['classes']['model'];
-                        $class = str_replace('Pimcore\\Model\\DataObject\\', '', $fullClassName);
-                        $class = str_replace('\\', '', $class);
+                    $fullClassName = $definition['classes']['model'];
+                    $class = str_replace('Pimcore\\Model\\DataObject\\', '', $fullClassName);
+                    $class = str_replace('\\', '', $class);
 
-                        $classStackPimcoreClassName[$alias][] = $class;
-                        $classStackPimcoreClassId[$alias][] = $fullClassName::classId();
-                    }
+                    $classStackPimcoreClassName[$alias][] = $class;
                 }
             }
 
             $container->setParameter(sprintf('%s.stack.%s.fqcns', $applicationName, $name), $classStack[$alias]);
             $container->setParameter(sprintf('%s.stack.%s.pimcore_class_names', $applicationName, $name), $classStackPimcoreClassName[$alias]);
-            $container->setParameter(sprintf('%s.stack.%s.pimcore_class_ids', $applicationName, $name), $classStackPimcoreClassId[$alias]);
         }
 
         $container->setParameter('coreshop.all.stack.fqcns', $classStack);
         $container->setParameter('coreshop.all.stack.pimcore_class_names', $classStackPimcoreClassName);
-        $container->setParameter('coreshop.all.stack.pimcore_class_ids', $classStackPimcoreClassId);
     }
 }

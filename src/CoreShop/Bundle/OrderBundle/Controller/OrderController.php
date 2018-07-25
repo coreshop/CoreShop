@@ -46,7 +46,7 @@ class OrderController extends AbstractSaleDetailController
         $name = null;
         $folderId = null;
 
-        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_id');
+        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_name');
         $folderPath = $this->getParameter('coreshop.folder.order');
         $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
 
@@ -435,7 +435,7 @@ class OrderController extends AbstractSaleDetailController
      */
     protected function getSaleClassName()
     {
-        return 'coreshop.model.order.pimcore_class_id';
+        return 'coreshop.model.order.pimcore_class_name';
     }
 
     /**

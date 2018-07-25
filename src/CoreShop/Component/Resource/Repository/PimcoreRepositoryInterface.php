@@ -17,6 +17,11 @@ use Pimcore\Model\DataObject\Listing;
 interface PimcoreRepositoryInterface extends RepositoryInterface
 {
     /**
+     * @return string
+     */
+    public function getClassId();
+
+    /**
      * @return Listing
      */
     public function getList();

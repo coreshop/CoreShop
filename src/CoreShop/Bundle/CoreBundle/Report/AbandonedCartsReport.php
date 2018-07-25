@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -37,26 +38,34 @@ class AbandonedCartsReport implements ReportInterface
     private $db;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $pimcoreClasses;
+    private $cartRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
+    private $customerRepository;
 
     /**
      * AbandonedCartsReport constructor.
      *
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
-     * @param array $pimcoreClasses
+     * @param PimcoreRepositoryInterface $cartRepository,
+     * @param PimcoreRepositoryInterface $customerRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
-        array $pimcoreClasses
+        PimcoreRepositoryInterface $cartRepository,
+        PimcoreRepositoryInterface $customerRepository
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
-        $this->pimcoreClasses = $pimcoreClasses;
+        $this->cartRepository = $cartRepository;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -82,8 +91,8 @@ class AbandonedCartsReport implements ReportInterface
         $limit = $parameterBag->get('limit', 50);
         $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
 
-        $userClassId = $this->pimcoreClasses['customer'];
-        $cartClassId = $this->pimcoreClasses['cart'];
+        $userClassId = $this->customerRepository->getClassId();
+        $cartClassId = $this->cartRepository->getClassId();
 
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();

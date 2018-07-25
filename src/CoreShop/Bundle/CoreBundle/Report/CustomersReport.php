@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -43,22 +44,34 @@ class CustomersReport implements ReportInterface
     private $localeContext;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $pimcoreClasses;
+    private $orderRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
+    private $customerRepository;
 
     /**
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
+     * @param PimcoreRepositoryInterface $orderRepository
+     * @param PimcoreRepositoryInterface $customerRepository
      */
-    public function __construct(Connection $db, MoneyFormatterInterface $moneyFormatter, LocaleContextInterface $localeContext, array $pimcoreClasses)
-    {
+    public function __construct(
+        Connection $db,
+        MoneyFormatterInterface $moneyFormatter,
+        LocaleContextInterface $localeContext,
+        PimcoreRepositoryInterface $orderRepository,
+        PimcoreRepositoryInterface $customerRepository
+    ) {
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
-        $this->pimcoreClasses = $pimcoreClasses;
         $this->localeContext = $localeContext;
+        $this->orderRepository = $orderRepository;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -71,8 +84,8 @@ class CustomersReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
-        $orderClassId = $this->pimcoreClasses['order'];
-        $customerClassId = $this->pimcoreClasses['customer'];
+        $orderClassId = $this->orderRepository->getClassId();
+        $customerClassId = $this->customerRepository->getClassId();
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $query = "
@@ -90,7 +103,11 @@ class CustomersReport implements ReportInterface
 
         $customerSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
         foreach ($customerSales as &$sale) {
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], 'EUR', $this->localeContext->getLocaleCode());
+            $sale['salesFormatted'] = $this->moneyFormatter->format(
+                $sale['sales'],
+                'EUR',
+                $this->localeContext->getLocaleCode()
+            );
         }
 
         return array_values($customerSales);

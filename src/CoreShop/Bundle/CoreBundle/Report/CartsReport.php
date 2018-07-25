@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -38,26 +39,34 @@ class CartsReport implements ReportInterface, PortletInterface
     private $db;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $pimcoreClasses;
+    private $orderRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
+    private $cartRepository;
 
     /**
      * CartsReport constructor.
      *
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
-     * @param array $pimcoreClasses
+     * @param PimcoreRepositoryInterface $orderRepository,
+     * @param PimcoreRepositoryInterface $cartRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
-        array $pimcoreClasses
+        PimcoreRepositoryInterface $orderRepository,
+        PimcoreRepositoryInterface $cartRepository
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
-        $this->pimcoreClasses = $pimcoreClasses;
+        $this->orderRepository = $orderRepository;
+        $this->cartRepository = $cartRepository;
     }
 
 
@@ -93,8 +102,8 @@ class CartsReport implements ReportInterface, PortletInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        $orderClassId = $this->pimcoreClasses['order'];
-        $cartClassId = $this->pimcoreClasses['cart'];
+        $orderClassId = $this->orderRepository->getClassId();
+        $cartClassId = $this->cartRepository->getClassId();
 
         if (is_null($storeId)) {
             return [];

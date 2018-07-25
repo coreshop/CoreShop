@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -43,27 +44,27 @@ class PaymentProvidersReport implements ReportInterface
     private $paymentProviderRepository;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $pimcoreClasses;
+    private $orderRepository;
 
     /**
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param RepositoryInterface $paymentProviderRepository
-     * @param array $pimcoreClasses
+     * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         RepositoryInterface $paymentProviderRepository,
-        array $pimcoreClasses
+        PimcoreRepositoryInterface $orderRepository
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->paymentProviderRepository = $paymentProviderRepository;
-        $this->pimcoreClasses = $pimcoreClasses;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -89,7 +90,7 @@ class PaymentProvidersReport implements ReportInterface
             return [];
         }
 
-        $tableName = 'object_query_'.$this->pimcoreClasses['order']; ;
+        $tableName = 'object_query_'.$this->orderRepository->getClassId();
         $sql = "
             SELECT  paymentProvider, 
                     COUNT(1) as total, 
