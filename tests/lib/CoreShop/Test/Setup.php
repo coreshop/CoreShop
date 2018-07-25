@@ -59,12 +59,19 @@ class Setup
         $setup = new \Pimcore\Model\Tool\Setup();
         $setup->database();
 
-        $setup->contents([
-            'username' => 'admin',
-            'password' => microtime()
-        ]);
+        $setup->contents(
+            [
+                'username' => 'admin',
+                'password' => microtime(),
+            ]
+        );
 
         static::$pimcoreSetupDone = true;
+    }
+
+    public static function setupDone()
+    {
+        return getenv('CORESHOP_SKIP_DB_SETUP') || (static::$pimcoreSetupDone && static::$coreShopSetupDone);
     }
 
     public static function setupCoreShop()

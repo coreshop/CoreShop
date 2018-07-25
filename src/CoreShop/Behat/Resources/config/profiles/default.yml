@@ -12,6 +12,8 @@ default:
                 path: lib/CoreShop/tests/app/TestAppKernel.php
                 bootstrap: lib/CoreShop/tests/behat-bootstrap.php
 
+        CoreShop\Behat\Extension\CoreShopExtension: ~
+
         FriendsOfBehat\ContextServiceExtension:
             imports:
                 - "src/CoreShop/Behat/Resources/config/services.yml"
