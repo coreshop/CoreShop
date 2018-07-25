@@ -1,6 +1,6 @@
 default:
     suites:
-        domain_index:
+        domain_filter:
             contexts_services:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
