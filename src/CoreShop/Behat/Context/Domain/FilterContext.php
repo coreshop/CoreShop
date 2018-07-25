@@ -183,6 +183,22 @@ final class FilterContext implements Context
     }
 
     /**
+     * @Then /the (filter) should have (\d+) item(?:|s) with params:$/
+     */
+    public function theFilterShouldHaveXItemsForCategoryConditionWithParams(FilterInterface $filter, $countOfValues, TableNode $node)
+    {
+        $params = [];
+
+        foreach ($node as $row) {
+            $params[$row['key']] = $row['value'];
+        }
+
+        $listing = $this->getFilterListing($filter, $params);
+
+        Assert::eq($listing->count(), $countOfValues);
+    }
+
+    /**
      * @param FilterInterface $filter
      * @param array           $filterParams
      * @return array
