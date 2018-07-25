@@ -228,7 +228,7 @@ final class IndexContext implements Context
         }
 
         /**
-         * @var WorkerInterface
+         * @var $worker WorkerInterface
          */
         $worker = $this->workerServiceRegistry->get($worker);
         $worker->createOrUpdateIndexStructures($index);
