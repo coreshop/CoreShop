@@ -150,3 +150,7 @@
 .coreshop_rule_icon_action_storeOrderMail {
     background: url(../img/store-mail.svg) center center no-repeat !important;
 }
+
+.coreshop_rule_icon_condition_manuallyCreated {
+    background: url(../img/orders-manually.svg) center center no-repeat !important;
+}

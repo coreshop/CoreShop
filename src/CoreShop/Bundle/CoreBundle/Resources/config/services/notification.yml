@@ -82,6 +82,11 @@ services:
         tags:
             - { name: coreshop.notification_rule.condition, type: comment, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CommentConfigurationType }
 
+    coreshop.notification_rule.condition.order.manually_created:
+        class: CoreShop\Component\Core\Notification\Rule\Condition\Order\ManuallyCreatedChecker
+        tags:
+            - { name: coreshop.notification_rule.condition, type: manuallyCreated, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ManuallyCreatedConfigurationType }
+
     #### PAYMENT
     coreshop.notification_rule.condition.payment.payment_state:
           class: CoreShop\Component\Core\Notification\Rule\Condition\SimpleStateChecker

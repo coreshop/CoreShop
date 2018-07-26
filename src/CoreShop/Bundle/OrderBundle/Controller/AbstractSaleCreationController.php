@@ -18,6 +18,7 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
@@ -256,7 +257,11 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             return $cart;
         });
 
+        /**
+         * @var $sale SaleInterface
+         */
         $sale = $this->factory->createNew();
+        $sale->setManuallyCreated(true);
         $sale = $this->getTransformer()->transform($cart, $sale);
 
         $this->afterSaleCreation($sale);
