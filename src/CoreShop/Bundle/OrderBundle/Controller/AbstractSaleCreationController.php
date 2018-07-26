@@ -259,9 +259,18 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $sale = $this->factory->createNew();
         $sale = $this->getTransformer()->transform($cart, $sale);
 
-        $this->afterSaleCreation($sale);
+        $saleResponse = [
+            'success' => true,
+            'id' => $sale->getId()
+        ];
 
-        return $this->viewHandler->handle(['success' => true, 'id' => $sale->getId()]);
+        $additionalResponse = $this->afterSaleCreation($sale);
+
+        foreach ($additionalResponse as $key => $value) {
+            $saleResponse[$key] = $value;
+        }
+
+        return $this->viewHandler->handle($saleResponse);
     }
 
     protected function prepareCart(Request $request, CartInterface $cart)
@@ -353,6 +362,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
     /**
      * @param ProposalInterface $sale
+     * @returns array
      */
     protected abstract function afterSaleCreation(ProposalInterface $sale);
 }

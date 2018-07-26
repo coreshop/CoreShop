@@ -12,8 +12,10 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\OrderTransitions;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class OrderCreationController extends AbstractSaleCreationController
 {
@@ -30,7 +32,27 @@ class OrderCreationController extends AbstractSaleCreationController
      */
     protected function afterSaleCreation(ProposalInterface $sale)
     {
+        /**
+         * @var $sale OrderInterface
+         */
         $this->get('coreshop.state_machine_applier')->apply($sale, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
+
+        $routeParams = [
+            '_locale' => $sale->getLocaleCode(),
+            'token' => $sale->getToken(),
+        ];
+
+        if ($sale->getStore()->getSiteId() > 0) {
+            $routeParams['site'] = $sale->getStore()->getSiteId();
+        }
+
+        return [
+            'message' => $this->generateUrl(
+                'coreshop_order_revise',
+                $routeParams,
+                UrlGenerator::ABSOLUTE_URL
+            )
+        ];
     }
 
     /**

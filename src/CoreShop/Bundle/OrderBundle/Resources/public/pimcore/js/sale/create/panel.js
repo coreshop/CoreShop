@@ -220,6 +220,16 @@ coreshop.order.sale.create.panel = Class.create({
                     response = Ext.decode(response.responseText);
 
                     if (response.success) {
+                        var message = '<div style="text-align:center;">';
+
+                        message += t('coreshop_creating_' + this.type + '_finished_detail');
+
+                        if (response.hasOwnProperty('message') && response.message) {
+                            message += '<br/><br/>' + response.message;
+                        }
+
+                        message += '</div>';
+
                         var win = new Ext.Window({
                             modal: true,
                             iconCls: 'coreshop_icon_' + this.type + '_create',
@@ -241,7 +251,7 @@ coreshop.order.sale.create.panel = Class.create({
                                         {
                                             xtype: 'component',
                                             cls: Ext.baseCSSPrefix + 'message-box-icon-text',
-                                            html: '<div style="text-align:center;">' + t('coreshop_creating_' + this.type + '_finished_detail') + '</div>',
+                                            html: message,
                                         }
                                     ]
                                 }
@@ -263,7 +273,7 @@ coreshop.order.sale.create.panel = Class.create({
                                                 this.layout.destroy();
                                             }.bind(this),
                                             scope: this,
-                                            text: t('coreshop_sale_action_close'),
+                                            text: t('coreshop_sale_action_close_editor'),
                                             minWidth: 75
                                         },
                                         {
@@ -295,7 +305,7 @@ coreshop.order.sale.create.panel = Class.create({
                                                 coreshop.order.helper.openSale(response.id, this.type);
                                             }.bind(this),
                                             scope: this,
-                                            text: t('coreshop_sale_action_open'),
+                                            text: t('coreshop_sale_action_open_' + this.type),
                                             minWidth: 75
                                         }
                                     ]
