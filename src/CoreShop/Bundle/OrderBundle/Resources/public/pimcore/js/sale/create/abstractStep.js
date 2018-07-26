@@ -31,6 +31,10 @@ coreshop.order.sale.create.abstractStep = Class.create({
         return true;
     },
 
+    reset: function() {
+
+    },
+
     getPriority: function () {
         Ext.Error.raise('implement me');
     },

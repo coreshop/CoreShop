@@ -25,6 +25,10 @@ coreshop.order.sale.create.step.payment = Class.create(coreshop.order.sale.creat
         return this.panel.getForm().getFieldValues();
     },
 
+    reset: function() {
+        this.panel.getForm().reset();
+    },
+
     getPanel: function () {
         this.panel = Ext.create('Ext.form.Panel', {
             items: [

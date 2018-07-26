@@ -22,6 +22,10 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
         return 20;
     },
 
+    reset: function() {
+        this.panel.getForm().reset();
+    },
+
     getValues: function (parent) {
         return this.panel.getForm().getFieldValues();
     },
