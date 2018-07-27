@@ -16,7 +16,7 @@ use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\SaleInterface;
 use Webmozart\Assert\Assert;
 
-class ManuallyCreatedChecker extends AbstractConditionChecker
+class BackendCreatedChecker extends AbstractConditionChecker
 {
     /**
      * {@inheritdoc}
@@ -28,10 +28,10 @@ class ManuallyCreatedChecker extends AbstractConditionChecker
          */
         Assert::isInstanceOf($subject, SaleInterface::class);
 
-        if ($configuration['manuallyCreated']) {
-            return $subject->getManuallyCreated();
+        if ($configuration['backendCreated']) {
+            return $subject->getBackendCreated()();
         }
 
-        return !$subject->getManuallyCreated();
+        return !$subject->getBackendCreated();
     }
 }

@@ -261,7 +261,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
          * @var $sale SaleInterface
          */
         $sale = $this->factory->createNew();
-        $sale->setManuallyCreated(true);
+        $sale->setBackendCreated(true);
         $sale = $this->getTransformer()->transform($cart, $sale);
 
         $this->afterSaleCreation($sale);

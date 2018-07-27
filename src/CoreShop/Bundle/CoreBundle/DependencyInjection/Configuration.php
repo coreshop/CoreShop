@@ -158,7 +158,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule_condition_messaging_message_type')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/messaging/messageType.js')->end()
                             ->scalarNode('notification_rule_condition_order_carriers')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/carriers.js')->end()
                             ->scalarNode('notification_rule_condition_order_comment')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/comment.js')->end()
-                            ->scalarNode('notification_rule_condition_order_manually_created')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/manuallyCreated.js')->end()
+                            ->scalarNode('notification_rule_condition_order_backend_created')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/backendCreated.js')->end()
                             ->scalarNode('notification_rule_condition_order_order_state')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderState.js')->end()
                             ->scalarNode('notification_rule_condition_order_order_state_transition')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderTransition.js')->end()
                             ->scalarNode('notification_rule_condition_order_payment')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/payment.js')->end()

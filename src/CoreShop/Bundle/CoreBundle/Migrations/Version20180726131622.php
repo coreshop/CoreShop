@@ -17,14 +17,14 @@ class Version20180726131622 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
-        $manuallyCreatedField = [
+        $backendCreatedField = [
             "fieldtype" => "checkbox",
             "defaultValue" => 0,
             "queryColumnType" => "tinyint(1)",
             "columnType" => "tinyint(1)",
             "phpdocType" => "boolean",
-            "name" => "manuallyCreated",
-            "title" => "Manually Created",
+            "name" => "backendCreated",
+            "title" => "Backend Created",
             "tooltip" => "",
             "mandatory" => false,
             "noteditable" => false,
@@ -42,16 +42,16 @@ class Version20180726131622 extends AbstractPimcoreMigration implements Containe
         $order = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
         $classUpdater = new ClassUpdate($order);
 
-        if (!$classUpdater->hasField('manuallyCreated')) {
-            $classUpdater->insertFieldAfter('orderNumber', $manuallyCreatedField);
+        if (!$classUpdater->hasField('backendCreated')) {
+            $classUpdater->insertFieldAfter('backendCreated', $backendCreatedField);
             $classUpdater->save();
         }
 
         $quote = $this->container->getParameter('coreshop.model.quote.pimcore_class_name');
         $classUpdater = new ClassUpdate($quote);
 
-        if (!$classUpdater->hasField('manuallyCreated')) {
-            $classUpdater->insertFieldAfter('quoteNumber', $manuallyCreatedField);
+        if (!$classUpdater->hasField('backendCreated')) {
+            $classUpdater->insertFieldAfter('quoteNumber', $backendCreatedField);
             $classUpdater->save();
         }
     }

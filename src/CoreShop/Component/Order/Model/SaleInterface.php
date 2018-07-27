@@ -245,10 +245,10 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     /**
      * @return bool
      */
-    public function getManuallyCreated();
+    public function getBackendCreated();
 
     /**
-     * @param bool $manuallyCreated
+     * @param bool $backendCreated
      */
-    public function setManuallyCreated($manuallyCreated);
+    public function setBackendCreated($backendCreated);
 }

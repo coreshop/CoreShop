@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class ManuallyCreatedConfigurationType extends AbstractType
+final class BackendCreatedConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -25,6 +25,6 @@ final class ManuallyCreatedConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('manuallyCreated', CheckboxType::class);
+            ->add('backendCreated', CheckboxType::class);
     }
 }

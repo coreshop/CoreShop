@@ -613,7 +613,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     /**
      * {@inheritdoc}
      */
-    public function getManuallyCreated()
+    public function getBackendCreated()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -621,7 +621,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     /**
      * {@inheritdoc}
      */
-    public function setManuallyCreated($manuallyCreated)
+    public function setBackendCreated($backendCreated)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
