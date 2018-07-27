@@ -84,7 +84,7 @@ matrix:
 
 cache:
     directories:
-        - ~/.composer/cache/files
+        - $HOME/.cache/composer
         - vendor
 
 install:
