@@ -42,7 +42,22 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
             languageStore.push([websiteLanguages[i], pimcore.available_languages[websiteLanguages[i]] + " [" + websiteLanguages[i] + "]"]);
         }
 
+        var defaultStore = pimcore.globalmanager.get('coreshop_stores').findRecord('isDefault', true);
+
+        if (!defaultStore) {
+            defaultStore = pimcore.globalmanager.get('coreshop_stores').getAt(0);
+        }
+
         return [
+            Ext.create({
+                xtype: 'coreshop.store',
+                value: defaultStore.getId(),
+                listeners: {
+                    select: function () {
+                        this.eventManager.fireEvent('store.changed');
+                    }.bind(this)
+                }
+            }),
             {
                 xtype: 'coreshop.currency',
                 displayTpl: Ext.create('Ext.XTemplate', '<tpl for=".">', '{name} ({symbol})', '</tpl>'),
@@ -50,12 +65,12 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
                     itemTpl: Ext.create('Ext.XTemplate', '', '{name} ({symbol})', '')
                 },
                 listeners: {
-                    change: function () {
+                    select: function () {
                         this.eventManager.fireEvent('currency.changed');
                         this.eventManager.fireEvent('validation');
                     }.bind(this)
                 },
-                value: pimcore.globalmanager.get('coreshop_currencies').getAt(0)
+                value: defaultStore.get('currency')
             },
             new Ext.form.ComboBox({
                 fieldLabel: t('language'),
@@ -68,7 +83,7 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
                 emptyText: t('language'),
                 value: languageStore[0],
                 listeners: {
-                    change: function () {
+                    select: function () {
                         this.eventManager.fireEvent('language.changed');
                         this.eventManager.fireEvent('validation');
                     }.bind(this)

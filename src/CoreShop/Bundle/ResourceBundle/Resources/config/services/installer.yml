@@ -71,7 +71,8 @@ services:
         class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller
         arguments:
             - '@kernel'
-            - '%coreshop.all.pimcore_classes.ids%'
+            - '@coreshop.resource_registry'
+            - '@pimcore.dao.object_manager'
             - '@coreshop.grid_config_installer'
             - '@coreshop.resource.installer.classes'
         tags:

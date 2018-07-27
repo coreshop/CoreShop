@@ -70,6 +70,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         foreach ($models as $modelName => $modelConfig) {
             $alias = $applicationName . '.' . $modelName;
             $modelConfig = array_merge(['driver' => 'pimcore', 'alias' => $this->getAlias()], $modelConfig);
+            $modelConfig['pimcore_class'] = str_replace('Pimcore\Model\DataObject\\', '', $modelConfig['classes']['model']);
 
             foreach (['coreshop.all.pimcore_classes', sprintf('%s.pimcore_classes', $applicationName)] as $parameter) {
                 $models = $container->hasParameter($parameter) ? $container->getParameter($parameter) : [];

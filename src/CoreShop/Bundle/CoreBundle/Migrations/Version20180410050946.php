@@ -82,15 +82,15 @@ class Version20180410050946 extends AbstractPimcoreMigration implements Containe
         }
 
         $migrations = [
-            $this->container->getParameter('coreshop.model.customer.pimcore_class_id') => [
+            $this->container->get('coreshop.repository.customer')->getClassId() => [
                 'from' => 'locale',
                 'to' => 'localeCode'
             ],
-            $this->container->getParameter('coreshop.model.order.pimcore_class_id') => [
+            $this->container->get('coreshop.repository.order')->getClassId() => [
                 'from' => 'orderLanguage',
                 'to' => 'localeCode'
             ],
-            $this->container->getParameter('coreshop.model.quote.pimcore_class_id') => [
+            $this->container->get('coreshop.repository.quote')->getClassId() => [
                 'from' => 'quoteLanguage',
                 'to' => 'localeCode'
             ]

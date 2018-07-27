@@ -22,6 +22,11 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     /**
      * @var array
      */
+    protected $repositories = [];
+
+    /**
+     * @var array
+     */
     protected $modelsToUpdate = [];
 
     /**
@@ -160,7 +165,11 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function getRepository($className)
     {
-        //TODO
+        if (!array_key_exists($className, $this->repositories)) {
+            throw new \InvalidArgumentException(sprintf('Repository for class %s not found', $className));
+        }
+
+        return $this->repositories[$className];
     }
 
     public function getClassMetadata($className)
@@ -181,6 +190,15 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     public function contains($object)
     {
         // TODO
+    }
+
+    /**
+     * @param $className
+     * @param $repository
+     */
+    public function registerRepository($className, $repository)
+    {
+        $this->repositories[$className] = $repository;
     }
 
     /**

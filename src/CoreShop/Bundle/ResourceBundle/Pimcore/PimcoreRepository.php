@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -46,6 +47,16 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     public function remove(ResourceInterface $resource)
     {
         throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassId()
+    {
+        $class = $this->metadata->getClass('model');
+
+        return $class::classId();
     }
 
     /**

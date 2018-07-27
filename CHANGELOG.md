@@ -1,5 +1,8 @@
 # Within V2
 
+## 2.0.0-beta.3 to 2.0.0-beta.4
+ - **BC break** all occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
+
 ## 2.0.0-beta.2 to 2.0.0-beta.3
  - **BC break** Signature of following interfaces changed:
     - ```CoreShop\Component\Index\Interpreter\InterpreterInterface```: public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
@@ -13,7 +16,6 @@
 
  - **BC break** getName in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableName` as `getName` could eventually conflict with a non localized Pimcore Field
  - **BC break** getEnabled in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableEnabled` as `getEnabled` could eventually conflict with a localized Pimcore Field
-
 
 ## 2.0.0-beta.1 to 2.0.0-beta.2
  - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:
