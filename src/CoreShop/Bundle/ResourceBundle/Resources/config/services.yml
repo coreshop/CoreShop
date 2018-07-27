@@ -15,6 +15,9 @@ services:
     coreshop.resource_registry:
         class: CoreShop\Component\Resource\Metadata\Registry
 
+    pimcore.dao.object_manager:
+        class: CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager
+
     coreshop.jms_serializer.handler.relation:
         class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
         arguments:

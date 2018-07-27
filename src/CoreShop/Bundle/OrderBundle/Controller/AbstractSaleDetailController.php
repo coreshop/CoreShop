@@ -48,7 +48,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
         if ($request->get('filter', null)) {
             $conditionFilters = [];
-            $conditionFilters[] = DataObject\Service::getFilterCondition($this->getParam('filter'), DataObject\ClassDefinition::getById($this->getParameter($this->getSaleClassName())));
+            $conditionFilters[] = DataObject\Service::getFilterCondition($this->getParam('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
@@ -165,7 +165,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         $prefix = 'address'.ucfirst($type);
         $values = [];
         $fullAddress = [];
-        $classDefinition = DataObject\ClassDefinition::getById($this->getParameter('coreshop.model.address.pimcore_class_id'));
+        $classDefinition = DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.address.pimcore_class_name'));
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';

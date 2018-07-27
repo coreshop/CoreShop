@@ -17,6 +17,7 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
 use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\DependencyAnalysis\ReferenceValidator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -62,8 +63,8 @@ final class PimcoreDriver extends AbstractDriver
     {
         parent::setClassesParameters($container, $metadata);
 
-        if ($metadata->hasClass('model')) {
-            $container->setParameter(sprintf('%s.model.%s.pimcore_class_name', $metadata->getApplicationName(), $metadata->getName()), str_replace('Pimcore\Model\DataObject\\', '', $metadata->getClass('model')));
+        if ($metadata->hasParameter('pimcore_class')) {
+            $container->setParameter(sprintf('%s.model.%s.pimcore_class_name', $metadata->getApplicationName(), $metadata->getName()), $metadata->getParameter('pimcore_class'));
         }
     }
 
@@ -154,6 +155,7 @@ final class PimcoreDriver extends AbstractDriver
         $definition->setArguments([
             $this->getMetadataDefinition($metadata),
         ]);
+        $definition->addTag('coreshop.pimcore.repository', ['alias' => $metadata->getAlias()]);
 
         $container->setDefinition($metadata->getServiceId('repository'), $definition);
     }
@@ -163,18 +165,9 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $serviceName = 'pimcore.dao.object_manager';
-
-        if (!$container->has($serviceName)) {
-            $definition = new Definition(ObjectManager::class);
-            $definition->setPublic(true);
-
-            $container->setDefinition($serviceName, $definition);
-        }
-
         $container->setAlias(
             $metadata->getServiceId('manager'),
-            new Alias($serviceName)
+            new Alias('pimcore.dao.object_manager')
         );
     }
 }

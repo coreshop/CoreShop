@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -50,30 +51,30 @@ class VouchersReport implements ReportInterface
     private $localeContext;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $pimcoreClasses;
+    private $orderRepository;
 
     /**
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
+     * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
-        array $pimcoreClasses
+        PimcoreRepositoryInterface $orderRepository
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeContext = $localeContext;
-        $this->pimcoreClasses = $pimcoreClasses;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -93,7 +94,7 @@ class VouchersReport implements ReportInterface
         $limit = $parameterBag->get('limit', 25);
         $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
 
-        $classId = $this->pimcoreClasses['order'];
+        $classId = $this->orderRepository->getClassId();
 
         if (is_null($storeId)) {
             return [];

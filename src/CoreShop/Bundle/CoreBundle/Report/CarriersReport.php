@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use Doctrine\DBAL\Connection;
@@ -43,27 +44,27 @@ class CarriersReport implements ReportInterface
     private $carrierRepository;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $pimcoreClasses;
+    private $orderRepository;
 
     /**
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param RepositoryInterface $carrierRepository
-     * @param array $pimcoreClasses
+     * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         RepositoryInterface $carrierRepository,
-        array $pimcoreClasses
+        PimcoreRepositoryInterface $orderRepository
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->carrierRepository = $carrierRepository;
-        $this->pimcoreClasses = $pimcoreClasses;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -89,7 +90,7 @@ class CarriersReport implements ReportInterface
             return [];
         }
 
-        $tableName = 'object_query_'.$this->pimcoreClasses['order'];
+        $tableName = 'object_query_'.$this->orderRepository->getClassId();
         $sql = "
               SELECT carrier, 
                     COUNT(1) as total, 

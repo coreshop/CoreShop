@@ -13,7 +13,10 @@
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\GridConfigConfiguration;
+use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -29,14 +32,19 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     protected $kernel;
 
     /**
-     * @var array
+     * @var RegistryInterface
      */
-    protected $classIds;
+    protected $metaDataRegistry;
 
     /**
      * @var GridConfigInstallerInterface
      */
     protected $gridConfigInstaller;
+
+    /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
 
     /**
      * @var PimcoreClassInstallerInterface
@@ -45,19 +53,22 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
 
     /**
      * @param KernelInterface $kernel
-     * @param array $classIds
+     * @param RegistryInterface $metaDataRegistry
+     * @param ObjectManager $objectManager
      * @param GridConfigInstallerInterface $gridConfigInstaller
      * @param PimcoreClassInstallerInterface $classInstaller
      */
     public function __construct(
         KernelInterface $kernel,
-        array $classIds,
+        RegistryInterface $metaDataRegistry,
+        ObjectManager $objectManager,
         GridConfigInstallerInterface $gridConfigInstaller,
         PimcoreClassInstallerInterface $classInstaller
     )
     {
         $this->kernel = $kernel;
-        $this->classIds = $classIds;
+        $this->metaDataRegistry = $metaDataRegistry;
+        $this->objectManager = $objectManager;
         $this->gridConfigInstaller = $gridConfigInstaller;
         $this->pimcoreClassInstaller = $classInstaller;
     }
@@ -116,8 +127,17 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
      */
     protected function findClassId($classIdentifier)
     {
-        if (isset($this->classIds[$classIdentifier])) {
-            return $this->classIds[$classIdentifier];
+        $metadata = $this->metaDataRegistry->get($classIdentifier);
+
+        try {
+            $repository = $this->objectManager->getRepository($metadata->getParameter('model'));
+
+            if ($repository instanceof PimcoreRepositoryInterface) {
+                return $repository->getClassId();
+            }
+        }
+        catch (\InvalidArgumentException $ex) {
+
         }
 
         $freshlyInstalledClasses = $this->pimcoreClassInstaller->getInstalledClasses();

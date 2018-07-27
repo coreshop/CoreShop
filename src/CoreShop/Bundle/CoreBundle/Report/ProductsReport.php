@@ -13,11 +13,13 @@
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -50,38 +52,46 @@ class ProductsReport implements ReportInterface
     private $moneyFormatter;
 
     /**
-     * @var array
+     * @var StackRepository
      */
-    private $pimcoreClasses;
+    private $productStackRepository;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $productStackIds;
+    private $orderRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
+    private $orderItemRepository;
 
     /**
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
-     * @param array $productStackIds
+     * @param PimcoreRepositoryInterface $orderRepository,
+     * @param PimcoreRepositoryInterface $orderItemRepository
+     * @param StackRepository $productStackRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
-        array $pimcoreClasses,
-        array $productStackIds
+        PimcoreRepositoryInterface $orderRepository,
+        PimcoreRepositoryInterface $orderItemRepository,
+        StackRepository $productStackRepository
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeContext = $localeContext;
-        $this->pimcoreClasses = $pimcoreClasses;
-        $this->productStackIds = $productStackIds;
+        $this->orderRepository = $orderRepository;
+        $this->orderItemRepository = $orderItemRepository;
+        $this->productStackRepository = $productStackRepository;
     }
 
     /**
@@ -101,8 +111,8 @@ class ProductsReport implements ReportInterface
         $limit = $parameterBag->get('limit', 50);
         $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
 
-        $orderClassId = $this->pimcoreClasses['order'];
-        $orderItemClassId = $this->pimcoreClasses['order_item'];
+        $orderClassId = $this->orderRepository->getClassId();
+        $orderItemClassId = $this->orderItemRepository->getClassId();
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $locale = $this->localeContext->getLocaleCode();
@@ -118,7 +128,7 @@ class ProductsReport implements ReportInterface
 
         if ($objectTypeFilter === 'container') {
             $unionData = [];
-            foreach ($this->productStackIds as $id) {
+            foreach ($this->productStackRepository->getClassIds() as $id) {
                 $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_'.$id.'_'.$locale;
             }
 

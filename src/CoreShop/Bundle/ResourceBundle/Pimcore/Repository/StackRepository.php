@@ -20,8 +20,8 @@ class StackRepository extends PimcoreRepository
 
     /**
      * @param MetadataInterface $metadata
-     * @param $interface
-     * @param array $stackClasses
+     * @param                   $interface
+     * @param array             $stackClasses
      */
     public function __construct(MetadataInterface $metadata, $interface, array $stackClasses)
     {
@@ -32,6 +32,20 @@ class StackRepository extends PimcoreRepository
         foreach ($stackClasses as $class) {
             $this->stackClasses[] = '"'.$class.'"';
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getClassIds()
+    {
+        $ids = [];
+
+        foreach ($this->stackClasses as $stackClass) {
+            $ids[] = $stackClass::classId();
+        }
+
+        return $ids;
     }
 
     /**
@@ -75,7 +89,7 @@ class StackRepository extends PimcoreRepository
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $criteria[] = [
-            'variable' => implode(',', $this->stackClasses)
+            'variable' => implode(',', $this->stackClasses),
         ];
 
         return parent::findBy($criteria, $orderBy, $limit, $offset);
