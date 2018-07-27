@@ -173,6 +173,10 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $sale->setWeight($cart->getWeight());
 
+        if (null === $sale->getNotifyCustomer()) {
+            $sale->setNotifyCustomer(true);
+        }
+
         if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($cart->getPriceRuleItems() as $priceRule) {
                 if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {

@@ -75,6 +75,27 @@
                                 "visibleSearch": false
                             },
                             {
+                                "fieldtype": "checkbox",
+                                "defaultValue": 0,
+                                "queryColumnType": "tinyint(1)",
+                                "columnType": "tinyint(1)",
+                                "phpdocType": "boolean",
+                                "name": "notifyCustomer",
+                                "title": "Notify Customer",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
                                 "fieldtype": "input",
                                 "width": null,
                                 "queryColumnType": "varchar",

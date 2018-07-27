@@ -103,6 +103,10 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             return false;
         }
 
+        if (!$order->getNotifyCustomer()) {
+            return false;
+        }
+
         $attachments = [];
         $emailParameters = array_merge($order->getCustomer()->getObjectVars(), $params);
         $emailParameters['orderTotal'] = $this->priceFormatter->format($order->getTotal(), $order->getCurrency()->getIsoCode());

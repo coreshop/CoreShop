@@ -38,22 +38,53 @@ class Version20180726131622 extends AbstractPimcoreMigration implements Containe
             "visibleGridView" => false,
             "visibleSearch" => false
         ];
+        $notifyCustomerField = [
+            "fieldtype" => "checkbox",
+            "defaultValue" => 0,
+            "queryColumnType" => "tinyint(1)",
+            "columnType" => "tinyint(1)",
+            "phpdocType" => "boolean",
+            "name" => "notifyCustomer",
+            "title" => "Notify Customer",
+            "tooltip" => "",
+            "mandatory" => false,
+            "noteditable" => false,
+            "index" => false,
+            "locked" => false,
+            "style" => "",
+            "permissions" => null,
+            "datatype" => "data",
+            "relationType" => false,
+            "invisible" => false,
+            "visibleGridView" => false,
+            "visibleSearch" => false
+        ];
 
         $order = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
         $classUpdater = new ClassUpdate($order);
 
         if (!$classUpdater->hasField('backendCreated')) {
-            $classUpdater->insertFieldAfter('backendCreated', $backendCreatedField);
-            $classUpdater->save();
+            $classUpdater->insertFieldAfter('orderNumber', $backendCreatedField);
         }
+
+        if (!$classUpdater->hasField('notifyCustomer')) {
+            $classUpdater->insertFieldAfter('backendCreated', $notifyCustomerField);
+        }
+
+        $classUpdater->save();
 
         $quote = $this->container->getParameter('coreshop.model.quote.pimcore_class_name');
         $classUpdater = new ClassUpdate($quote);
 
         if (!$classUpdater->hasField('backendCreated')) {
             $classUpdater->insertFieldAfter('quoteNumber', $backendCreatedField);
-            $classUpdater->save();
         }
+
+        if (!$classUpdater->hasField('notifyCustomer')) {
+            $classUpdater->insertFieldAfter('backendCreated', $notifyCustomerField);
+        }
+
+        $classUpdater->save();
     }
 
     /**
