@@ -13,7 +13,7 @@
 
  - **BC break** getName in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableName` as `getName` could eventually conflict with a non localized Pimcore Field
  - **BC break** getEnabled in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableEnabled` as `getEnabled` could eventually conflict with a localized Pimcore Field
-
+ - **BC break** all occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
 
 ## 2.0.0-beta.1 to 2.0.0-beta.2
  - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:
