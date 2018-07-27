@@ -28,8 +28,14 @@ rm -rf $CS_HOME/{.[!.],}*
 ######### Clone Pimcore
 #########
 ##########################################################################################
-git clone https://github.com/pimcore/pimcore.git $CS_HOME
-git checkout ${PIMCORE_BRANCH} $CS_HOME
+if [ $PIMCORE_BRANCH == 'master' ]; then
+    git clone https://github.com/pimcore/skeleton.git $CS_HOME
+    git checkout ${PIMCORE_BRANCH}
+else
+    git clone https://github.com/pimcore/pimcore.git $CS_HOME
+    git checkout ${PIMCORE_BRANCH}
+fi
+
 
 ##########################################################################################
 #########
@@ -38,6 +44,13 @@ git checkout ${PIMCORE_BRANCH} $CS_HOME
 ##########################################################################################
 mkdir $CS_HOME/lib
 mv $CS_HOME/../lib/CoreShop $CS_HOME/lib/CoreShop
+
+##########################################################################################
+#########
+#########  Restore Composer Cache
+#########
+##########################################################################################
+mv $CS_HOME/lib/CoreShop/vendor $CS_HOME
 
 ##########################################################################################
 #########
@@ -61,22 +74,23 @@ cp app/config/parameters.example.yml app/config/parameters.yml
 #########  Install composer dependencies
 #########
 ##########################################################################################
-composer install --no-dev --no-scripts
-composer remove codeception/codeception --dev --no-scripts
+COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --no-scripts
+COMPOSER_MEMORY_LIMIT=-1 composer remove codeception/codeception --dev --no-scripts
 
 ##########################################################################################
 #########
 #########  Add path to CoreShop
 #########
 ##########################################################################################
-composer config repositories.coreshop path $CS_HOME/lib/CoreShop
+COMPOSER_MEMORY_LIMIT=-1 composer config repositories.coreshop path $CS_HOME/lib/CoreShop
 
 ##########################################################################################
 #########
 #########  Install CoreShop dependencies
 #########
 ##########################################################################################
-composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 coreshop/core-shop:dev-$CS_BRANCH#$CS_COMMIT
+COMPOSER_MEMORY_LIMIT=-1 composer require coreshop/core-shop:dev-$CS_BRANCH#$CS_COMMIT --no-scripts
+COMPOSER_MEMORY_LIMIT=-1 composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/phpunit:^6 --dev --no-scripts
 
 
 ##########################################################################################
@@ -85,7 +99,7 @@ composer require doctrine/instantiator:1.0.5 symfony/phpunit-bridge:^3 phpunit/p
 #########
 ##########################################################################################
 if [ $CORESHOP_RUN_BEHAT == 1 ]; then
-    composer require behat/behat:^3.3 friends-of-behat/context-service-extension:^1.1 friends-of-behat/cross-container-extension:^1.1 friends-of-behat/service-container-extension:^1.0 friends-of-behat/symfony-extension:^1.2 friends-of-behat/variadic-extension:^1.1 leanphp/behat-code-coverage:^3.2 --no-scripts
+    COMPOSER_MEMORY_LIMIT=-1 composer require behat/behat:^3.3 friends-of-behat/context-service-extension:^1.1 friends-of-behat/cross-container-extension:^1.1 friends-of-behat/service-container-extension:^1.0 friends-of-behat/symfony-extension:^1.2 friends-of-behat/variadic-extension:^1.1 leanphp/behat-code-coverage:^3.2 --no-scripts --dev
 fi
 
 ##########################################################################################
