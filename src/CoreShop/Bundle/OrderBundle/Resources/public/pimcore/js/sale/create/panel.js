@@ -208,6 +208,10 @@ coreshop.order.sale.create.panel = Class.create({
         this.eventManager.resumeEvents();
     },
 
+    prepareSuccessMessage: function(message, response) {
+        return message;
+    },
+
     createSale: function () {
         this.layout.setLoading(t('coreshop_creating_' + this.type));
 
@@ -220,15 +224,9 @@ coreshop.order.sale.create.panel = Class.create({
                     response = Ext.decode(response.responseText);
 
                     if (response.success) {
-                        var message = '<div style="text-align:center;">';
+                        var message = t('coreshop_creating_' + this.type + '_finished_detail');
 
-                        message += t('coreshop_creating_' + this.type + '_finished_detail');
-
-                        if (response.hasOwnProperty('message') && response.message) {
-                            message += '<br/><br/>' + response.message;
-                        }
-
-                        message += '</div>';
+                        message = this.prepareSuccessMessage(message, response);
 
                         var win = new Ext.Window({
                             modal: true,

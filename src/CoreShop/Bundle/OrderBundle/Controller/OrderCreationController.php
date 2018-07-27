@@ -47,7 +47,7 @@ class OrderCreationController extends AbstractSaleCreationController
         }
 
         return [
-            'message' => $this->generateUrl(
+            'reviseLink' => $this->generateUrl(
                 'coreshop_order_revise',
                 $routeParams,
                 UrlGenerator::ABSOLUTE_URL
