@@ -85,7 +85,6 @@ matrix:
 cache:
     directories:
         - $HOME/.cache/composer
-        - vendor
 
 install:
     - etc/travis/install
