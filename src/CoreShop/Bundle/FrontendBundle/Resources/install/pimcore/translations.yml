@@ -95,6 +95,12 @@ translations:
           en: 'There was an Error during the payment process.'
           de: 'Während dem Bezahlvorgang ist ein Fehler aufgetreten.'
 
+  coreshop.ui.checkout.thank_you:
+        languages:
+          de_CH: 'Vielen Dank für Ihre Bestellung'
+          en: 'Thank you for your Order'
+          de: 'Vielen Dank für Ihre Bestellung'
+
   coreshop.ui.back_to_home:
       languages:
           de_CH: 'Zurück zur Startseite'

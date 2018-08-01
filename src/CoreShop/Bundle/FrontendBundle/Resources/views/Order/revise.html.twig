@@ -8,6 +8,8 @@
 
 {% block order %}
 
+    {% include '@CoreShopFrontend/Common/order_detail.html.twig' with {order: order} only %}
+
     {% if order.paymentState in ['awaiting_payment'] %}
 
         {% if payment is not null %}
