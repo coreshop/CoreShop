@@ -30,12 +30,7 @@ build:
         analysis:
             dependencies:
                 after:
-                    - git clone https://github.com/pimcore/pimcore
-                    - cd ./pimcore
-                    - git reset --hard b132bb1b89d2b0318a188769aba0bc4e509dfa2f
-                    - composer install
-                    - cd ../
-                    - composer install
+                    - 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction'
 
             project_setup:
                 override:

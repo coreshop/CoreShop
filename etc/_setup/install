@@ -27,11 +27,4 @@ cp app/config/parameters.example.yml app/config/parameters.yml
 #########  Install composer dependencies
 #########
 ##########################################################################################
-COMPOSER_MEMORY_LIMIT=-1 composer install
-
-##########################################################################################
-#########
-#########  Clear Cache and install CoreShop Test config
-#########
-##########################################################################################
-rm -rf var/cache
+COMPOSER_MEMORY_LIMIT=-1 composer install -o
