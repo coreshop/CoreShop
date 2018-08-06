@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-rm -rf var/cache
-
 echo "BEHAT TESTS"
-vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.yml.dist
+vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist

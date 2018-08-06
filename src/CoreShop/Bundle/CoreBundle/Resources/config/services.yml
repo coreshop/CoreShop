@@ -30,7 +30,7 @@ services:
         public: true
 
     coreshop.core.key_transformer:
-        class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
+        class: CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer
 
     coreshop.taxation.factory.tax_calculator:
         class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory

@@ -88,7 +88,6 @@
     "liip/theme-bundle": "^1.4",
     "dachcom-digital/emailizr": "~1.0.0",
     "symfony/twig-bundle": "~3.2",
-    "symfony/intl": "^3.2",
     "doctrine/data-fixtures": "^1.0",
     "pimcore/pimcore": "^5.4.0"
   },
@@ -107,11 +106,19 @@
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Bundle\\": "src/CoreShop/Bundle",
-      "CoreShop\\Component\\": "src/CoreShop/Component",
-      "CoreShop\\Behat\\": "src/CoreShop/Behat/",
-      "CoreShop\\Test\\": "tests/lib/CoreShop/test"
-    }
+      "CoreShop\\Bundle\\": "src/CoreShop/Bundle/",
+      "CoreShop\\Component\\": "src/CoreShop/Component/",
+      "CoreShop\\Behat\\": "src/CoreShop/Behat/"
+    },
+    "exclude-from-classmap": [
+      "src/CoreShop/*/*/Tests/"
+    ]
+  },
+  "autoload-dev": {
+      "psr-4": {
+          "CoreShop\\Test\\": "tests/lib/CoreShop/Test"
+      },
+      "classmap": ["app/AppKernel.php"]
   },
   "extra": {
     "branch-alias": {

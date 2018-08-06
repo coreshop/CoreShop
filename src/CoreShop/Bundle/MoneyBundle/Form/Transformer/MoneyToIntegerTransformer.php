@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\MoneyBundle\Form\Transfomer;
+namespace CoreShop\Bundle\MoneyBundle\Form\Transformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
