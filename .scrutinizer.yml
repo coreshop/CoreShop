@@ -29,7 +29,7 @@ build:
 #                          format: 'clover'
         analysis:
             dependencies:
-                after:
+                override:
                     - 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction'
 
             project_setup:
