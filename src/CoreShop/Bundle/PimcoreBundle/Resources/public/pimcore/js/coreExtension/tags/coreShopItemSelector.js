@@ -9,7 +9,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-Ext.Loader.setPath('Ext.ux', '/pimcore/static6/js/lib/ext/ux');
+if (coreshop.pimcore.version.versionGreaterThanEqual('5.4.0')) {
+    Ext.Loader.setPath('Ext.ux', '/pimcore/static6/js/lib/ext/ux');
+}
+else {
+    Ext.Loader.setPath('Ext.ux', '/bundles/pimcoreadmin/js/lib/ext/ux');
+}
+
 Ext.require([
     'Ext.ux.form.ItemSelector'
 ]);
