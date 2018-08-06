@@ -60,18 +60,26 @@ class OrderState extends AbstractOperator
 
         $workflow = null;
 
-        //todo: get child attribute instead of silly string comparing!
-        if (strpos($result->label, 'orderState)') !== false) {
-            $workflow = 'coreshop_order';
-        } elseif (strpos($result->label, 'paymentState)') !== false) {
-            $workflow = 'coreshop_order_payment';
-        } elseif (strpos($result->label, 'shippingState)') !== false) {
-            $workflow = 'coreshop_order_shipment';
-        } elseif (strpos($result->label, 'invoiceState)') !== false) {
-            $workflow = 'coreshop_order_invoice';
-        } else {
-            $result->value = '--';
-            return $result;
+        switch ($result->def->name) {
+            case 'orderState':
+                $workflow = 'coreshop_order';
+                break;
+
+            case 'paymentState':
+                $workflow = 'coreshop_order_payment';
+                break;
+
+            case 'shippingState':
+                $workflow = 'coreshop_order_shipment';
+                break;
+
+            case 'invoiceState':
+                $workflow = 'coreshop_order_invoice';
+                break;
+
+            default:
+                $result->value = '--';
+                return $result;
         }
 
         $state = $this->workflowManager->getStateInfo($workflow, $result->value, false);
