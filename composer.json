@@ -90,7 +90,7 @@
     "symfony/twig-bundle": "~3.2",
     "symfony/intl": "^3.2",
     "doctrine/data-fixtures": "^1.0",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/pimcore": "^5.4.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6",

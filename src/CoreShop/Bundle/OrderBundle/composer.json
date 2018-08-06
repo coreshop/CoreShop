@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "php": "^7.0",
     "coreshop/currency-bundle": "^2.0",
     "coreshop/customer-bundle": "^2.0",
     "coreshop/payment-bundle": "^2.0",
@@ -28,7 +27,7 @@
     "coreshop/store-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
     "coreshop/workflow-bundle": "^2.0",
-    "pimcore/core-version": "^5.1.2"
+    "pimcore/pimcore": "^5.4.0"
   },
   "config": {
     "bin-dir": "bin"
