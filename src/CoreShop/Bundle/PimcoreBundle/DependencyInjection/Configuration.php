@@ -45,7 +45,6 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('broker')->defaultValue('/bundles/coreshoppimcore/pimcore/js/broker.js')->end()
-                            ->scalarNode('version')->defaultValue('/bundles/coreshoppimcore/pimcore/js/version.js')->end()
                             ->scalarNode('clear_button')->defaultValue('/bundles/coreshoppimcore/pimcore/js/ext/ClearButton.js')->end()
                             ->scalarNode('core_extension_tag_serializedData')->defaultValue('/bundles/coreshoppimcore/pimcore/js/coreExtension/tags/coreShopSerializedData.js')->end()
                             ->scalarNode('core_extension_data_serializedData')->defaultValue('/bundles/coreshoppimcore/pimcore/js/coreExtension/data/coreShopSerializedData.js')->end()
