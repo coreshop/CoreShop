@@ -30,7 +30,7 @@ build:
         analysis:
             dependencies:
                 override:
-                    - 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction'
+                    - 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-scripts'
 
             project_setup:
                 override:
