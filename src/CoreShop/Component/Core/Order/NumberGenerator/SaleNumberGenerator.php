@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
@@ -66,6 +67,8 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
             $store = $model->getStore();
         } else if ($model instanceof OrderDocumentInterface) {
             $store = $model->getOrder()->getStore();
+        } else if ($model instanceof StoreAwareInterface) {
+            $store = $model->getStore();
         }
 
         if ($store instanceof StoreInterface) {
