@@ -42,6 +42,12 @@ coreshop.order.sale.create.panel = Class.create({
             }
         });
 
+        this.loadSaleRelator();
+    },
+
+    loadSaleRelator: function() {
+        var me = this;
+
         pimcore.helpers.itemselector(
             false,
             function (customer) {
@@ -189,7 +195,7 @@ coreshop.order.sale.create.panel = Class.create({
         this.layout.setLoading(t('coreshop_creating_' + this.type));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/' + this.type + '-creation/create-sale',
+            url: '/admin/coreshop/' + this.type + '-creation/create',
             method: 'post',
             jsonData: this.getValues(),
             callback: function (request, success, response) {
