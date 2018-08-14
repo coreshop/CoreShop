@@ -22,6 +22,12 @@ interface ProposalItemInterface extends ResourceInterface
     public function getProduct();
 
     /**
+     * @param int $total
+     * @param bool $withTax
+     */
+    public function setTotal($total, $withTax = true);
+
+    /**
      * @param $product
      */
     public function setProduct($product);

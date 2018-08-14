@@ -17,12 +17,6 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
 {
     /**
-     * @param int $total
-     * @param bool $withTax
-     */
-    public function setTotal($total, $withTax = true);
-
-    /**
      * @param string $language
      * @return string
      */

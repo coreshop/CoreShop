@@ -23,6 +23,7 @@ services:
         class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
         arguments:
             - '@coreshop.product.taxed_price_calculator'
+            - '@coreshop.product.tax_factory'
         tags:
             - { name: coreshop.cart_processor, priority: 500 }
 
