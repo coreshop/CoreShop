@@ -15,6 +15,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
@@ -65,8 +66,13 @@ final class CartRuleAutoRemoverProcessor implements CartProcessorInterface
             return;
         }
 
-        foreach ($priceRuleItems->getItems() as $item) {
+        foreach ($priceRuleItems->getItems() as $index => $item) {
             if (!$item instanceof ProposalCartPriceRuleItemInterface) {
+                continue;
+            }
+
+            if (!$item->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                $priceRuleItems->remove($index);
                 continue;
             }
 

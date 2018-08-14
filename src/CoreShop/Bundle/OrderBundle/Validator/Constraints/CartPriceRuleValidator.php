@@ -74,6 +74,10 @@ final class CartPriceRuleValidator extends ConstraintValidator
                 return;
             }
 
+            if (!$cartRule->getIsVoucherRule()) {
+                continue;
+            }
+
             $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
 
             if (!$this->ruleValidationProcessor->isValidCartRule($value, $cartRule, $voucherCode)) {

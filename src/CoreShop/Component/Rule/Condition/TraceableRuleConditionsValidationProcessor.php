@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Rule\Condition;
 
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -52,6 +51,10 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, $params = [])
     {
+        if (!$rule->getActive()) {
+            return false;
+        }
+
         if (!count($conditions)) {
             $this->addProcessedRule($subject, $rule, true);
 
@@ -75,8 +78,12 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
     /**
      * {@inheritdoc}
      */
-    public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, $params = [])
-    {
+    public function isConditionValid(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        ConditionInterface $condition,
+        $params = []
+    ) {
         $isValid = $this->ruleConditionsValidationProcessor->isConditionValid($subject, $rule, $condition, $params);
 
         $this->addProcessedRule($subject, $rule, $isValid, $condition);
@@ -91,13 +98,18 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
      * @param ConditionInterface|null $condition
      * @param bool $conditionResult
      */
-    protected function addProcessedRule(ResourceInterface $subject, RuleInterface $rule, $ruleResult = false, ConditionInterface $condition = null, $conditionResult = false)
-    {
+    protected function addProcessedRule(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        $ruleResult = false,
+        ConditionInterface $condition = null,
+        $conditionResult = false
+    ) {
         if (!isset($this->processed[$subject->getId()])) {
             $this->processed[$subject->getId()] = [
                 'subject' => $subject,
                 'type' => get_class($subject),
-                'rules' => []
+                'rules' => [],
             ];
         }
 
@@ -116,7 +128,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
                 'rule' => $rule,
                 'result' => $ruleResult,
                 'conditions' => [],
-                'actions' => $actions
+                'actions' => $actions,
             ];
         }
 
@@ -126,7 +138,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
                 'condition' => $condition,
                 'configuration' => $condition->getConfiguration(),
                 'type' => $condition->getType(),
-                'result' => $conditionResult
+                'result' => $conditionResult,
             ];
         }
     }
