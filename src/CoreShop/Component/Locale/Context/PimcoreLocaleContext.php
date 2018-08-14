@@ -12,19 +12,19 @@
 
 namespace CoreShop\Component\Locale\Context;
 
-use Pimcore\Localization\Locale;
+use Pimcore\Localization\LocaleServiceInterface;
 
 class PimcoreLocaleContext implements LocaleContextInterface
 {
     /**
-     * @var Locale
+     * @var LocaleServiceInterface
      */
     private $pimcoreLocaleService;
 
     /**
-     * @param Locale $pimcoreLocaleService
+     * @param LocaleServiceInterface $pimcoreLocaleService
      */
-    public function __construct(Locale $pimcoreLocaleService)
+    public function __construct(LocaleServiceInterface $pimcoreLocaleService)
     {
         $this->pimcoreLocaleService = $pimcoreLocaleService;
     }
