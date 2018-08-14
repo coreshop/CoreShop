@@ -4,4 +4,4 @@ set -e
 rm -rf var/cache
 
 echo "BEHAT TESTS"
-vendor/bin/behat --strict --no-interaction -vvv -f progress --config lib/CoreShop/behat.coverage.yml.dist
+vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.coverage.yml.dist

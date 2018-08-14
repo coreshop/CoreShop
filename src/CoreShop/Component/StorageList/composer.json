@@ -18,9 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.0",
-    "coreshop/resource": "^2.0",
-    "symfony/http-foundation": "^3.3"
+    "coreshop/resource": "^2.0"
   },
   "config": {
     "bin-dir": "bin"

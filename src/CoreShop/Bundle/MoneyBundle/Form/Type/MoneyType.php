@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\MoneyBundle\Form\Type;
 
-use CoreShop\Bundle\MoneyBundle\Form\Transfomer\MoneyToIntegerTransformer;
+use CoreShop\Bundle\MoneyBundle\Form\Transformer\MoneyToIntegerTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;

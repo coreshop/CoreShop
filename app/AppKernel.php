@@ -12,7 +12,7 @@
 
 use Pimcore\Kernel;
 
-class TestAppKernel extends Kernel
+class AppKernel extends Kernel
 {
     /**
      * {@inheritdoc}

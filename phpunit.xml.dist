@@ -24,7 +24,7 @@
     <php>
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
 
-        <env name="KERNEL_CLASS" value="TestAppKernel" />
+        <env name="KERNEL_CLASS" value="AppKernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="100"/>
     </php>
     <listeners>

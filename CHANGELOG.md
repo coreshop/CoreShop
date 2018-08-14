@@ -2,6 +2,7 @@
 
 ## 2.0.0-beta.3 to 2.0.0-beta.4
  - **BC break** all occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
+ - **Pimcore** CoreShop now requires at least Pimcore 5.4.0. You need to update Pimcore to the at least 5.4.0 in order to update CoreShop.
 
 ## 2.0.0-beta.2 to 2.0.0-beta.3
  - **BC break** Signature of following interfaces changed:
