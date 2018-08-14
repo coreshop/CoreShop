@@ -30,7 +30,7 @@ build:
         analysis:
             dependencies:
                 override:
-                    - 'COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-scripts'
+                    - 'COMPOSER_MEMORY_LIMIT=-1 composer req doctrine/instantiator:1.0.5 --no-interaction --no-scripts'
 
             project_setup:
                 override:
