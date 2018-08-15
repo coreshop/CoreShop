@@ -41,7 +41,15 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     public function getTotal($withTax = true)
     {
-        return $this->getItemPrice($withTax) * $this->getQuantity();
+        return $withTax ? $this->getTotalGross() : $this->getTotalNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotal($total, $withTax = true)
+    {
+        $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
     /**
@@ -142,6 +150,39 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
 
         return $cart;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalNet($totalNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalGross($totalGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
 
     /**
      * {@inheritdoc}

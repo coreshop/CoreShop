@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -26,11 +27,20 @@ final class CartItemProcessor implements CartProcessorInterface
     private $productPriceCalculator;
 
     /**
-     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
+     * @var ProductTaxCalculatorFactoryInterface
      */
-    public function __construct(TaxedProductPriceCalculatorInterface $productPriceCalculator)
-    {
+    private $taxCalculator;
+
+    /**
+     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
+     * @param ProductTaxCalculatorFactoryInterface $taxCalculator
+     */
+    public function __construct(
+        TaxedProductPriceCalculatorInterface $productPriceCalculator,
+        ProductTaxCalculatorFactoryInterface $taxCalculator
+    ) {
         $this->productPriceCalculator = $productPriceCalculator;
+        $this->taxCalculator = $taxCalculator;
     }
 
     /**
@@ -44,11 +54,15 @@ final class CartItemProcessor implements CartProcessorInterface
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
 
+            $taxCalculator = $this->taxCalculator->getTaxCalculator($product);
+
             $itemNetPrice = $this->productPriceCalculator->getPrice($product, false);
             $itemGrossPrice = $this->productPriceCalculator->getPrice($product, true);
 
             $item->setItemPrice($itemNetPrice, false);
             $item->setItemPrice($itemGrossPrice, true);
+            $item->setTotal($itemNetPrice * $item->getQuantity(), false);
+            $item->setTotal($taxCalculator->applyTaxes($itemNetPrice * $item->getQuantity()), true);
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, false), false);
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, true), true);
             $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, false), false);
