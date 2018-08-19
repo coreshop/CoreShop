@@ -18,7 +18,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
-class DiscountApplier
+class DiscountApplier implements DiscountApplierInterface
 {
     /**
      * @var ProportionalIntegerDistributor
@@ -42,6 +42,9 @@ class DiscountApplier
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function applyDiscount(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
     {
         $totalAmount = [];
@@ -63,7 +66,12 @@ class DiscountApplier
                 continue;
             }
 
-            $item->setDiscount($applicableAmount, $withTax);
+            if ($withTax) {
+                $totalDiscountGross = $applicableAmount;
+            }
+            else {
+                $totalDiscountNet = $applicableAmount;
+            }
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
@@ -72,17 +80,18 @@ class DiscountApplier
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 if ($withTax) {
-                    $item->setDiscount($taxCalculator->removeTaxes($applicableAmount), !$withTax);
+                    $totalDiscountNet += $taxCalculator->removeTaxes($applicableAmount);
                 } else {
-                    $item->setDiscount($taxCalculator->applyTaxes($applicableAmount), !$withTax);
+                    $totalDiscountGross += $taxCalculator->applyTaxes($applicableAmount);
                 }
             }
             else {
-                $item->setDiscount($item->getDiscount($withTax), !$withTax);
+                if ($withTax) {
+                    $totalDiscountNet += $applicableAmount;
+                } else {
+                    $totalDiscountGross += $applicableAmount;
+                }
             }
-
-            $totalDiscountNet += $item->getDiscount(false);
-            $totalDiscountGross += $item->getDiscount(true);
         }
 
         $cartPriceRuleItem->setDiscount($totalDiscountNet, false);
