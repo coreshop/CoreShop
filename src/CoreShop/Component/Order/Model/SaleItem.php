@@ -17,6 +17,16 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterface
 {
+    public function getDiscount($withTax = true)
+    {
+        // TODO: Implement getDiscount() method.
+    }
+
+    public function setDiscount($discount, $withTax = true)
+    {
+        // TODO: Implement setDiscount() method.
+    }
+
     /**
      * {@inheritdoc}
      */

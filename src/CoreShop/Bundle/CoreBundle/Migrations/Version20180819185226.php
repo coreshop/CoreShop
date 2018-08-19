@@ -8,7 +8,7 @@ use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20180814081956 extends AbstractPimcoreMigration implements ContainerAwareInterface
+class Version20180819185226 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -18,7 +18,7 @@ class Version20180814081956 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $fields = [
-            "itemTotalGross" => [
+            "discountGross" => [
                 "fieldtype" => "coreShopMoney",
                 "width" => "",
                 "defaultValue" => null,
@@ -27,8 +27,8 @@ class Version20180814081956 extends AbstractPimcoreMigration implements Containe
                 "phpdocType" => "int",
                 "minValue" => null,
                 "maxValue" => null,
-                "name" => "totalGross",
-                "title" => "Total Gross",
+                "name" => "discountGross",
+                "title" => "Discount Gross",
                 "tooltip" => "",
                 "mandatory" => false,
                 "noteditable" => true,
@@ -42,7 +42,7 @@ class Version20180814081956 extends AbstractPimcoreMigration implements Containe
                 "visibleGridView" => false,
                 "visibleSearch" => false,
             ],
-            "itemTotalNet" => [
+            "discountNet" => [
                 "fieldtype" => "coreShopMoney",
                 "width" => "",
                 "defaultValue" => null,
@@ -51,8 +51,8 @@ class Version20180814081956 extends AbstractPimcoreMigration implements Containe
                 "phpdocType" => "int",
                 "minValue" => null,
                 "maxValue" => null,
-                "name" => "totalNet",
-                "title" => "Total Net",
+                "name" => "discountNet",
+                "title" => "Discount Net",
                 "tooltip" => "",
                 "mandatory" => false,
                 "noteditable" => true,

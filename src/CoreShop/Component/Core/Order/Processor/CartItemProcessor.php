@@ -59,6 +59,8 @@ final class CartItemProcessor implements CartProcessorInterface
             $itemNetPrice = $this->productPriceCalculator->getPrice($product, false);
             $itemGrossPrice = $this->productPriceCalculator->getPrice($product, true);
 
+            $item->setDiscount(0, false);
+            $item->setDiscount(0, true);
             $item->setItemPrice($itemNetPrice, false);
             $item->setItemPrice($itemGrossPrice, true);
             $item->setTotal($itemNetPrice * $item->getQuantity(), false);

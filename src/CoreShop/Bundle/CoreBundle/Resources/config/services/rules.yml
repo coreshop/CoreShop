@@ -131,6 +131,26 @@ services:
         tags:
             - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }
 
+    coreshop.cart_price_rule.action.discount_amount:
+        class: CoreShop\Component\Core\Cart\Rule\Action\DiscountAmountActionProcessor
+        arguments:
+            - '@coreshop.currency_converter'
+            - '@coreshop.repository.currency'
+            - '@coreshop.cart_price_rule.discount.applier'
+        tags:
+            - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+
+        coreshop.cart_price_rule.action.discount_percent:
+            class: CoreShop\Component\Core\Cart\Rule\Action\DiscountPercentActionProcessor
+            tags:
+                - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
+
+    coreshop.cart_price_rule.discount.applier:
+        class: CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier
+        arguments:
+            - '@coreshop.proportional_integer_distributor'
+            - '@coreshop.product.tax_factory'
+
     # Rules Availability Check
     coreshop.rule_availability_assessor.maintenance_listener:
         class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener
