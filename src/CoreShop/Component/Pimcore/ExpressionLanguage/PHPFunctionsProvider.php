@@ -48,6 +48,8 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('doubleval'),
             ExpressionFunction::fromPHP('floatval'),
             ExpressionFunction::fromPHP('round'),
+            ExpressionFunction::fromPHP('explode'),
+            ExpressionFunction::fromPHP('implode')
         );
     }
 }
