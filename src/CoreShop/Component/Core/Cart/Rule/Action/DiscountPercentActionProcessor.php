@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
+use CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -19,19 +20,30 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     /**
+     * @var DiscountApplierInterface
+     */
+    protected $discountApplier;
+
+    /**
+     * @param DiscountApplierInterface $discountApplier
+     */
+    public function __construct(DiscountApplierInterface $discountApplier)
+    {
+        $this->discountApplier = $discountApplier;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
-        $discountNet = $this->getDiscount($cart, false, $configuration);
-        $discountGross = $this->getDiscount($cart, true, $configuration);
+        $discount = $this->getDiscount($cart, $configuration);
 
-        if ($discountGross <= 0) {
+        if ($discount <= 0) {
             return false;
         }
 
-        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(false) + $discountNet, false);
-        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(true) + $discountGross, true);
+        $this->discountApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, false);
 
         return true;
     }
@@ -47,20 +59,19 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    protected function getDiscount(CartInterface $cart, $withTax, array $configuration)
+    protected function getDiscount(CartInterface $cart, array $configuration)
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
-            $total = $cart->getTotal($withTax);
+            $total = $cart->getTotal(false);
         } else {
-            $total = $cart->getSubtotal($withTax);
+            $total = $cart->getSubtotal(false);
         }
 
         $amount = (int) round(($configuration['percent'] / 100) * $total);
-        $cartAmount = $total - $cart->getDiscount($withTax);
 
-        return $this->getApplicableAmount($cartAmount, $amount);
+        return $this->getApplicableAmount($amount, $amount);
     }
 
     /**

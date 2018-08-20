@@ -12,12 +12,10 @@
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
-use CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
@@ -34,19 +32,19 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     protected $currencyRepository;
 
     /**
-     * @var DiscountApplier
+     * @var DiscountApplierInterface
      */
     protected $discountApplier;
 
     /**
      * @param CurrencyConverterInterface     $moneyConverter
      * @param CurrencyRepositoryInterface    $currencyRepository
-     * @param DiscountApplier $discountApplier
+     * @param DiscountApplierInterface $discountApplier
      */
     public function __construct(
         CurrencyConverterInterface $moneyConverter,
         CurrencyRepositoryInterface $currencyRepository,
-        DiscountApplier $discountApplier
+        DiscountApplierInterface $discountApplier
     ) {
         $this->moneyConverter = $moneyConverter;
         $this->currencyRepository = $currencyRepository;
@@ -62,12 +60,6 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
 
         if ($discount <= 0) {
             return false;
-        }
-
-        $totalAmount = [];
-
-        foreach ($cart->getItems() as $item) {
-            $totalAmount[] = $item->getTotal($configuration['gross']);
         }
 
         $this->discountApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $configuration['gross']);

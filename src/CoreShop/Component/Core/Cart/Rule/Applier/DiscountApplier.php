@@ -67,10 +67,10 @@ class DiscountApplier implements DiscountApplierInterface
             }
 
             if ($withTax) {
-                $totalDiscountGross = $applicableAmount;
+                $totalDiscountGross += $applicableAmount;
             }
             else {
-                $totalDiscountNet = $applicableAmount;
+                $totalDiscountNet += $applicableAmount;
             }
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
