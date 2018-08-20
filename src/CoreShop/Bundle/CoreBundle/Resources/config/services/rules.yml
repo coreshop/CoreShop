@@ -152,6 +152,7 @@ services:
         arguments:
             - '@coreshop.proportional_integer_distributor'
             - '@coreshop.product.tax_factory'
+            - '@coreshop.collector.taxes'
 
     # Rules Availability Check
     coreshop.rule_availability_assessor.maintenance_listener:

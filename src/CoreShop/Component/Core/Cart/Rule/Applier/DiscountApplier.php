@@ -17,6 +17,7 @@ use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 
 class DiscountApplier implements DiscountApplierInterface
 {
@@ -31,15 +32,23 @@ class DiscountApplier implements DiscountApplierInterface
     private $taxCalculatorFactory;
 
     /**
+     * @var TaxCollectorInterface
+     */
+    private $taxCollector;
+
+    /**
      * @param ProportionalIntegerDistributor       $distributor
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
+     * @param TaxCollectorInterface                $taxCollector
      */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
-        ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
+        ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
+        TaxCollectorInterface $taxCollector
     ) {
         $this->distributor = $distributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
+        $this->taxCollector = $taxCollector;
     }
 
     /**
@@ -50,7 +59,7 @@ class DiscountApplier implements DiscountApplierInterface
         $totalAmount = [];
 
         foreach ($cart->getItems() as $item) {
-            $totalAmount[] = $item->getTotal($withTax);
+            $totalAmount[] = $item->getTotal(false);
         }
 
         $distributedAmount = $this->distributor->distribute($totalAmount, $discount);
@@ -61,16 +70,18 @@ class DiscountApplier implements DiscountApplierInterface
 
         foreach ($cart->getItems() as $item) {
             $applicableAmount = $distributedAmount[$i++];
+            $itemDiscountGross = 0;
+            $itemDiscountNet = 0;
 
             if (0 === $applicableAmount) {
                 continue;
             }
 
             if ($withTax) {
-                $totalDiscountGross += $applicableAmount;
+                $itemDiscountGross = $applicableAmount;
             }
             else {
-                $totalDiscountNet += $applicableAmount;
+                $itemDiscountNet = $applicableAmount;
             }
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
@@ -80,21 +91,27 @@ class DiscountApplier implements DiscountApplierInterface
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 if ($withTax) {
-                    $totalDiscountNet += $taxCalculator->removeTaxes($applicableAmount);
+                    $itemDiscountNet = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
                 } else {
-                    $totalDiscountGross += $taxCalculator->applyTaxes($applicableAmount);
+                    $itemDiscountGross = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
                 }
+
+                $taxItems = $item->getTaxes();
+                $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, -1 * $itemDiscountNet, $taxItems->getItems()));
             }
             else {
                 if ($withTax) {
-                    $totalDiscountNet += $applicableAmount;
+                    $itemDiscountNet = $applicableAmount;
                 } else {
-                    $totalDiscountGross += $applicableAmount;
+                    $itemDiscountGross = $applicableAmount;
                 }
             }
+
+            $totalDiscountNet += $itemDiscountNet;
+            $totalDiscountGross += $itemDiscountGross;
         }
 
-        $cartPriceRuleItem->setDiscount($totalDiscountNet, false);
-        $cartPriceRuleItem->setDiscount($totalDiscountGross, true);
+        $cartPriceRuleItem->setDiscount((int)round($totalDiscountNet), false);
+        $cartPriceRuleItem->setDiscount((int)round($totalDiscountGross), true);
     }
 }
