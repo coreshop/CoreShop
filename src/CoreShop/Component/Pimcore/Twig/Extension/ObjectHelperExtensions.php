@@ -13,6 +13,8 @@
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Data\Hotspotimage;
+use Pimcore\Model\DataObject\Data\ImageGallery;
 use Pimcore\Model\DataObject\Service;
 
 final class ObjectHelperExtensions extends \Twig_Extension
@@ -31,6 +33,12 @@ final class ObjectHelperExtensions extends \Twig_Extension
                 $className = 'Pimcore\\Model\\DataObject\\' . $className;
 
                 return class_exists($className) && $object instanceof $className;
+            }),
+            new \Twig_Test('object_gallery', function ($object, $className) {
+                return $object instanceof ImageGallery;
+            }),
+            new \Twig_Test('object_hotspot_image', function ($object, $className) {
+                return $object instanceof Hotspotimage;
             })
         ];
     }
@@ -41,8 +49,26 @@ final class ObjectHelperExtensions extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_function('object_select_options', function($object, $field) {
+            new \Twig_Function('object_select_options', function($object, $field) {
                 return Service::getOptionsForSelectField($object, $field);
+            })
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        return [
+            new \Twig_Filter('object_gallery_images', function(ImageGallery $gallery = null) {
+                if (null === $gallery) {
+                    return [];
+                }
+
+                return array_map(function(Hotspotimage $item) {
+                    return $item->getImage();
+                }, $gallery->getItems());
             })
         ];
     }
