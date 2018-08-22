@@ -12,12 +12,12 @@
 
 namespace CoreShop\Bundle\MoneyBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopMoneyExtension extends AbstractModelExtension
+final class CoreShopMoneyExtension extends AbstractPimcoreExtension
 {
     /**
      * {@inheritdoc}
