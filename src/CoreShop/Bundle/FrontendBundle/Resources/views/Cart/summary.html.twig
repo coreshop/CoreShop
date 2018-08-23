@@ -4,7 +4,10 @@
 {% block content %}
 
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
-    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
+    
+    <div class="shopping-cart-table">
+        {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
+    </div>
 
     {% if cart.hasItems() %}
         <div class="cart-summary">
