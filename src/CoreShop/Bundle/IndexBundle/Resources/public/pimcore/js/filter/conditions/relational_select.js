@@ -21,7 +21,7 @@ coreshop.filter.conditions.relational_select = Class.create(coreshop.filter.cond
             {
                 xtype: 'combo',
                 fieldLabel: t('coreshop_filters_value'),
-                name: 'preSelects',
+                name: 'preSelect',
                 width: 400,
                 store: this.valueStore,
                 displayField: 'value',
