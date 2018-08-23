@@ -14,7 +14,7 @@ namespace CoreShop\Component\Resource\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use Pimcore\Model\DataObject;
+use Pimcore\Model\DataObject\AbstractObject;
 
 class PimcoreObject extends Type
 {
@@ -33,7 +33,7 @@ class PimcoreObject extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return DataObject::getById($value);
+        return AbstractObject::getById($value);
     }
 
     /**
@@ -41,7 +41,7 @@ class PimcoreObject extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if ($value instanceof DataObject) {
+        if ($value instanceof AbstractObject) {
             return $value->getId();
         }
 
