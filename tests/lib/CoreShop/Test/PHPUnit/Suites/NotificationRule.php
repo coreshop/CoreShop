@@ -163,7 +163,8 @@ class NotificationRule extends RuleTest
 
         $this->assertTrue($simpleStateChecker->isNotificationRuleValid($mock,
             [
-                'transition' => OrderShipmentTransitions::TRANSITION_SHIP
+                'transition' => OrderShipmentTransitions::TRANSITION_SHIP,
+                'workflow' => OrderShipmentTransitions::IDENTIFIER
             ], [
                 'transition' => OrderShipmentTransitions::TRANSITION_SHIP
             ]
