@@ -37,7 +37,9 @@ class Expression extends AbstractPlaceholder
             'value' => $this->getValue(),
             'key' => $this->getPlaceholderKey(),
             'config' => $this->getPlaceholderConfig()->toArray(),
-            'container' => \Pimcore::getContainer()
+            'container' => \Pimcore::getContainer(),
+            'params' => $this->getParams(),
+            'placeholder' => $this
         ]);
     }
 }
