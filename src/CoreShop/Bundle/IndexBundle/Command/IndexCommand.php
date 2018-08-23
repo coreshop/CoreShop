@@ -78,12 +78,19 @@ final class IndexCommand extends Command
         }
 
         foreach ($classesToUpdate as $class) {
+            $class = ucfirst($class);
+
             $list = '\Pimcore\Model\DataObject\\'.$class.'\Listing';
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
             $total = $list->getTotalCount();
             $perLoop = 10;
+
+            if (0 === $total) {
+                $output->writeln(sprintf('<info>No Object found for class %s</info>', $class));
+                continue;
+            }
 
             $output->writeln(sprintf('<info>Processing %s Objects of class "%s"</info>', $total, $class));
             $progress = new ProgressBar($output, $total);
@@ -108,6 +115,7 @@ final class IndexCommand extends Command
             }
 
             $progress->finish();
+            $output->writeln('');
         }
 
         $output->writeln('');
