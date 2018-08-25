@@ -28,13 +28,13 @@ class WeightConditionChecker extends AbstractConditionChecker
         $totalWeight = $shippable->getWeight();
 
         if ($minWeight > 0) {
-            if ($totalWeight <= $minWeight) {
+            if ($totalWeight < $minWeight) {
                 return false;
             }
         }
 
         if ($maxWeight > 0) {
-            if ($totalWeight >= $maxWeight) {
+            if ($totalWeight > $maxWeight) {
                 return false;
             }
         }

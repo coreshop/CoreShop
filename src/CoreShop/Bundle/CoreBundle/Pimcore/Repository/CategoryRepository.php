@@ -106,7 +106,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
      */
     private function setSortingForListing(Listing $list, CategoryInterface $category)
     {
-        //TODO: fix as soon as CoreShop requires pimcore/core-version:~5.2.2 as minimum
         if (method_exists($category, 'getChildrenSortBy')) {
             $list->setOrderKey(
                 sprintf('o_%s ASC', $category->getChildrenSortBy()),

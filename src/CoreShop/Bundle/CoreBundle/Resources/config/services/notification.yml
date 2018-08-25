@@ -15,6 +15,7 @@ services:
         class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
         arguments:
             - 'CoreShop\Component\Order\Model\OrderInterface'
+            - !php/const CoreShop\Component\Order\OrderInvoiceTransitions::IDENTIFIER
         tags:
             - { name: coreshop.notification_rule.condition, type: orderInvoiceTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
@@ -32,6 +33,7 @@ services:
         class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
         arguments:
             - 'CoreShop\Component\Order\Model\OrderInterface'
+            - !php/const CoreShop\Component\Order\OrderPaymentTransitions::IDENTIFIER
         tags:
             - { name: coreshop.notification_rule.condition, type: orderPaymentTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
@@ -50,6 +52,7 @@ services:
         class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
         arguments:
             - 'CoreShop\Component\Order\Model\OrderInterface'
+            - !php/const CoreShop\Component\Order\OrderShipmentTransitions::IDENTIFIER
         tags:
             - { name: coreshop.notification_rule.condition, type: orderShippingTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
@@ -67,6 +70,7 @@ services:
         class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
         arguments:
             - 'CoreShop\Component\Order\Model\OrderInterface'
+            - !php/const CoreShop\Component\Order\OrderTransitions::IDENTIFIER
         tags:
             - { name: coreshop.notification_rule.condition, type: orderTransition, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
@@ -101,6 +105,7 @@ services:
           class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
           arguments:
               - 'CoreShop\Component\Payment\Model\PaymentInterface'
+              - !php/const CoreShop\Component\Payment\PaymentTransitions::IDENTIFIER
           tags:
             - { name: coreshop.notification_rule.condition, type: paymentTransition, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
@@ -114,10 +119,11 @@ services:
           tags:
               - { name: coreshop.notification_rule.condition, type: invoiceState, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\InvoiceStateConfigurationType }
 
-    coreshop.notification_rule.condition.payment.invoice_tarnsition:
+    coreshop.notification_rule.condition.invoice.invoice_transition:
           class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
           arguments:
               - 'CoreShop\Component\Order\Model\OrderInvoiceInterface'
+              - !php/const CoreShop\Component\Order\InvoiceTransitions::IDENTIFIER
           tags:
             - { name: coreshop.notification_rule.condition, type: invoiceTransition, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 
@@ -131,10 +137,11 @@ services:
           tags:
               - { name: coreshop.notification_rule.condition, type: shipmentState, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\ShipmentStateConfigurationType }
 
-    coreshop.notification_rule.condition.payment.shipment_transition:
+    coreshop.notification_rule.condition.shipment.shipment_transition:
           class: CoreShop\Component\Core\Notification\Rule\Condition\StateTransitionChecker
           arguments:
               - 'CoreShop\Component\Order\Model\OrderShipmentInterface'
+              - !php/const CoreShop\Component\Order\ShipmentTransitions::IDENTIFIER
           tags:
             - { name: coreshop.notification_rule.condition, type: shipmentTransition, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StateTransitionConfigurationType }
 

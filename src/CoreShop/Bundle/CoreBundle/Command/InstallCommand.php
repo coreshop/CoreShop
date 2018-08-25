@@ -28,7 +28,7 @@ final class InstallCommand extends AbstractInstallCommand
      */
     private $commands = [
         [
-            'command' => 'classes',
+            'command' => 'resources',
             'message' => 'Install Pimcore Classes.',
         ],
         [

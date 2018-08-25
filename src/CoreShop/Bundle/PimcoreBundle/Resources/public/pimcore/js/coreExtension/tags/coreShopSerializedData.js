@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.object.tags.coreShopSerializedData');
-coreshop.object.tags.coreShopSerializedData = Class.create(pimcore.object.tags.data, {
+coreshop.object.tags.coreShopSerializedData = Class.create(pimcore.object.tags.abstract, {
 
     allowEmpty: false,
 

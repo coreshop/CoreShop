@@ -288,6 +288,8 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
 
         $data = $this->getDataFromObjectParam($object, $params);
 
+        $storePrices = $repo->findForProductAndProperty($object, $this->getName());
+
         if (is_array($data) && !empty($data)) {
             foreach ($data as $storeId => $price) {
                 $store = $storeRepo->find($storeId);
@@ -299,7 +301,17 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 /**
                  * @var $storePrice ProductStorePriceInterface
                  */
-                $storePrice = $repo->findForProductAndStoreAndProperty($object, $store, $this->getName());
+                $storePrice = null;
+
+                /**
+                 * @var $searchStorePrice ProductStorePriceInterface
+                 */
+                foreach ($storePrices as $searchStorePrice) {
+                    if ($searchStorePrice->getStore()->getId() === $storeId) {
+                        $storePrice = $searchStorePrice;
+                        break;
+                    }
+                }
 
                 if (null === $storePrice) {
                     $storePrice = $factory->createNew();

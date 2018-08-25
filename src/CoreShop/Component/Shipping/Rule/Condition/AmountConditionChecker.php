@@ -28,13 +28,13 @@ class AmountConditionChecker extends AbstractConditionChecker
         $totalAmount = $shippable->getSubtotal();
 
         if ($minAmount > 0) {
-            if ($totalAmount <= $minAmount) {
+            if ($totalAmount < $minAmount) {
                 return false;
             }
         }
 
         if ($maxAmount > 0) {
-            if ($totalAmount >= $maxAmount) {
+            if ($totalAmount > $maxAmount) {
                 return false;
             }
         }

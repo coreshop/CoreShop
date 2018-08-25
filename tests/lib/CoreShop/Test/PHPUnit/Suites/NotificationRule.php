@@ -159,11 +159,12 @@ class NotificationRule extends RuleTest
     {
         $mock = $this->createMock(OrderShipment::class);
 
-        $simpleStateChecker = new StateTransitionChecker(get_class($mock));
+        $simpleStateChecker = new StateTransitionChecker(get_class($mock), OrderShipmentTransitions::IDENTIFIER);
 
         $this->assertTrue($simpleStateChecker->isNotificationRuleValid($mock,
             [
-                'transition' => OrderShipmentTransitions::TRANSITION_SHIP
+                'transition' => OrderShipmentTransitions::TRANSITION_SHIP,
+                'workflow' => OrderShipmentTransitions::IDENTIFIER
             ], [
                 'transition' => OrderShipmentTransitions::TRANSITION_SHIP
             ]

@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
@@ -101,7 +102,10 @@ class OrderPaymentController extends PimcoreController
                 $payment->setTotalAmount($amount);
                 $payment->setState(PaymentInterface::STATE_NEW);
                 $payment->setDatePayment(Carbon::now());
-                $payment->setOrderId($order->getId());
+
+                if ($payment instanceof OrderPaymentInterface) {
+                    $payment->setOrder($order);
+                }
 
                 $this->getEntityManager()->persist($payment);
                 $this->getEntityManager()->flush();

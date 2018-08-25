@@ -18,10 +18,9 @@
     }
   ],
   "require": {
-    "php": "^7.0",
     "coreshop/address": "^2.0",
     "coreshop/resource-bundle": "^2.0",
-    "pimcore/core-version": "^5.1.2"
+    "pimcore/pimcore": "^5.4.0"
   },
   "config": {
     "bin-dir": "bin"

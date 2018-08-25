@@ -246,15 +246,6 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
         var productsMenu = [];
 
-        if (user.classes.indexOf(coreshop.class_map.coreshop.product) >= 0) {
-            productsMenu.push({
-                text: t('coreshop_product_list'),
-                iconCls: 'coreshop_icon_product_list',
-                handler: this.openProducts
-            });
-        }
-
-
         if (user.isAllowed('coreshop_permission_index')) {
             productsMenu.push({
                 text: t('coreshop_indexes'),
@@ -613,10 +604,6 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
     openProductFilters: function () {
         coreshop.global.resource.open('coreshop.index', 'filter');
-    },
-
-    openProducts: function () {
-        coreshop.global.resource.open('coreshop.product', 'products');
     },
 
     /*openMessagingContact: function () {

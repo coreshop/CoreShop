@@ -9,17 +9,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-Ext.Loader.setPath('Ext.ux', '/pimcore/static6/js/lib/ext/ux');
-Ext.require([
-    'Ext.ux.form.ItemSelector'
-]);
-
 pimcore.registerNS('pimcore.object.tags.coreShopItemSelector');
 pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.multiselect, {
     delimiter:',',
     type: 'coreShopItemSelector',
 
     getLayoutEdit: function() {
+        Ext.require([
+            'Ext.ux.form.ItemSelector'
+        ]);
+
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',

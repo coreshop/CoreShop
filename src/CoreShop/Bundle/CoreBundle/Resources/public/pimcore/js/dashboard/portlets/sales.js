@@ -198,6 +198,7 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
                                 this.config = storeValue;
                                 Ext.Ajax.request({
                                     url: '/admin/portal/update-portlet-config',
+                                    method: 'PUT',
                                     params: {
                                         key: this.portal.key,
                                         id: this.layout.portletId,

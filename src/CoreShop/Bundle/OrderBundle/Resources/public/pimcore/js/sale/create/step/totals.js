@@ -32,6 +32,10 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
         });
     },
 
+    reset: function() {
+        this.layout.hide();
+    },
+    
     isValid: function (parent) {
         return true;
     },

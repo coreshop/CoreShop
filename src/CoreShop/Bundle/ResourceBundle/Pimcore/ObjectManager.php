@@ -137,8 +137,10 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function flush()
     {
-        foreach ($this->modelsToRemove as $model) {
-            $model->delete();
+        foreach ($this->modelsToRemove as $className => $classTypeModels) {
+            foreach ($classTypeModels as $model) {
+                $model->delete();
+            }
         }
 
         foreach ([$this->modelsToInsert, $this->modelsToUpdate] as $modelsToSave) {

@@ -71,7 +71,7 @@
     "coreshop/pimcore-bundle": "self.version"
   },
   "require": {
-    "doctrine/orm": "^2.5",
+    "doctrine/orm": "~2.5",
     "jms/serializer-bundle": "^1.3",
     "friendsofsymfony/rest-bundle": "^2.1",
     "webmozart/assert": "^1.2",
@@ -88,9 +88,8 @@
     "liip/theme-bundle": "^1.4",
     "dachcom-digital/emailizr": "~1.0.0",
     "symfony/twig-bundle": "~3.2",
-    "symfony/intl": "^3.2",
     "doctrine/data-fixtures": "^1.0",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/pimcore": "^5.4.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6",
@@ -107,13 +106,49 @@
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Bundle\\": "src/CoreShop/Bundle",
-      "CoreShop\\Component\\": "src/CoreShop/Component",
-      "CoreShop\\Behat\\": "src/CoreShop/Behat/",
-      "CoreShop\\Test\\": "tests/lib/CoreShop/test"
-    }
+      "CoreShop\\Bundle\\": "src/CoreShop/Bundle/",
+      "CoreShop\\Component\\": "src/CoreShop/Component/",
+      "CoreShop\\Behat\\": "src/CoreShop/Behat/"
+    },
+    "exclude-from-classmap": [
+      "src/CoreShop/*/*/Tests/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CoreShop\\Test\\": "tests/lib/CoreShop/Test"
+    },
+    "classmap": [
+      "app/AppKernel.php"
+    ]
+  },
+  "scripts": {
+    "post-create-project-cmd": "Pimcore\\Composer::postCreateProject",
+    "post-install-cmd": [
+      "Pimcore\\Composer::postInstall",
+      "@symfony-scripts"
+    ],
+    "post-update-cmd": [
+      "Pimcore\\Composer::postUpdate",
+      "@symfony-scripts"
+    ],
+    "pre-package-update": [
+      "Pimcore\\Composer::prePackageUpdate"
+    ],
+    "symfony-scripts": [
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+    ]
   },
   "extra": {
+    "symfony-app-dir": "app",
+    "symfony-bin-dir": "bin",
+    "symfony-var-dir": "var",
+    "symfony-web-dir": "web",
+    "symfony-tests-dir": "tests",
+    "symfony-assets-install": "relative",
     "branch-alias": {
       "dev-master": "2.0-dev"
     }

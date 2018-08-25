@@ -183,10 +183,17 @@ class CartController extends FrontendController
         $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
 
         if ($product instanceof StockableInterface) {
-            $hasStock = $this->get('coreshop.inventory.availability_checker.default')->isStockSufficient($product, $quantity);
+            $item = $this->getCart()->getItemForProduct($product);
+            $quantityToCheckStock = $quantity;
+
+            if ($item instanceof CartItemInterface) {
+                $quantityToCheckStock += $item->getQuantity();
+            }
+
+            $hasStock = $this->get('coreshop.inventory.availability_checker.default')->isStockSufficient($product, $quantityToCheckStock);
 
             if (!$hasStock) {
-                $this->addFlash('error', 'coreshop.ui.item_is_out_of_stock');
+                $this->addFlash('error', $this->get('translator')->trans('coreshop.cart_item.not_sufficient_stock', ['%stockable%' => $product->getName()], 'validators'));
                 return $this->redirect($redirect);
             }
         }

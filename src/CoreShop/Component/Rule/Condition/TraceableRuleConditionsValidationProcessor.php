@@ -52,6 +52,10 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, $params = [])
     {
+        if (!$rule->getActive()) {
+            return false;
+        }
+
         if (!count($conditions)) {
             $this->addProcessedRule($subject, $rule, true);
 

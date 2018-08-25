@@ -29,13 +29,8 @@ build:
 #                          format: 'clover'
         analysis:
             dependencies:
-                after:
-                    - git clone https://github.com/pimcore/pimcore
-                    - cd ./pimcore
-                    - git reset --hard b132bb1b89d2b0318a188769aba0bc4e509dfa2f
-                    - composer install
-                    - cd ../
-                    - composer install
+                override:
+                    - 'COMPOSER_MEMORY_LIMIT=-1 composer req doctrine/instantiator:1.0.5 --no-interaction --no-scripts'
 
             project_setup:
                 override:
@@ -97,12 +92,9 @@ tools:
 checks:
     php: true
 filter:
-  dependency_paths:
-    - "pimcore/"
   excluded_paths:
     - "tests/"
     - "vendor/"
     - "docs/"
-    - "pimcore/"
     - "src/CoreShop/Behat"
     - "src/CoreShop/Bundle/CoreBundle/Migrations"
