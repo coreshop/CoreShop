@@ -60,32 +60,19 @@ coreshop.order.sale.detail.blocks.correspondence = Class.create(coreshop.order.s
                             flex: 2
                         },
                         {
-                            xtype: 'gridcolumn',
-                            text: t('coreshop_messaging_message_read'),
-                            width: 100,
-                            hidden: true,
-                            renderer: function (value, metaData, rec) {
-                                if (Ext.isDefined(rec.get('read'))) {
-                                    return rec.get('read') ? t('yes') : t('no');
-                                }
-
-                                return '';
-                            }
-                        },
-                        {
                             xtype: 'actioncolumn',
                             sortable: false,
                             width: 50,
                             dataIndex: 'emailLogExistsHtml',
-                            header: t('email_log_html'),
+                            header: t('coreshop_mail_correspondence_mail_log'),
                             items: [{
-                                tooltip: t('email_log_show_html_email'),
+                                tooltip: t('coreshop_mail_correspondence_mail_log_show'),
                                 handler: function (grid, rowIndex) {
                                     var rec = grid.getStore().getAt(rowIndex),
                                         iFrameSettings = {width: 700, height: 500},
                                         iFrame = new Ext.Window(
                                             {
-                                                title: t('email_log_iframe_title_html'),
+                                                title: t('coreshop_mail_correspondence_mail_log'),
                                                 width: iFrameSettings.width,
                                                 height: iFrameSettings.height,
                                                 layout: 'fit',
