@@ -29,7 +29,10 @@ class Version20180825163827 extends AbstractPimcoreMigration implements Containe
         $adjustmentFactory = $this->container->get('coreshop.factory.adjustment');
 
         foreach ([$orderRepo, $quoteRepo, $cartRepo] as $repo) {
-            $sales = $repo->getList()->load();
+            $list = $repo->getList();
+            $list->setUnpublished(true);
+            $sales = $list->load();
+
             $definition = ClassDefinition::getById($repo->getClassId());
             $fieldDefinitions = $definition->fieldDefinitions;
 
@@ -42,14 +45,16 @@ class Version20180825163827 extends AbstractPimcoreMigration implements Containe
 
                 if (array_key_exists('shippingNet', $fieldDefinitions) &&
                     array_key_exists('shippingGross', $fieldDefinitions)) {
-                    $sale->addAdjustment(
-                        $adjustmentFactory->createWithData(
-                            AdjustmentInterface::SHIPPING,
-                            '',
-                            $sale->getShippingGross() ?: 0,
-                            $sale->getShippingNet() ?: 0
-                        )
-                    );
+                    if ($sale->getShippingNet() > 0) {
+                        $sale->addAdjustment(
+                            $adjustmentFactory->createWithData(
+                                AdjustmentInterface::SHIPPING,
+                                '',
+                                $sale->getShippingGross() ?: 0,
+                                $sale->getShippingNet() ?: 0
+                            )
+                        );
+                    }
                 }
 
                 if ($sale instanceof CartInterface)
@@ -58,15 +63,17 @@ class Version20180825163827 extends AbstractPimcoreMigration implements Containe
                         /**
                          * @var $priceRuleItem ProposalCartPriceRuleItem
                          */
-                        foreach ($sale->getPriceRuleItems() as $priceRuleItem) {
-                            $sale->addAdjustment(
-                                $adjustmentFactory->createWithData(
-                                    AdjustmentInterface::CART_PRICE_RULE,
-                                    $priceRuleItem->getCartPriceRule() ? $priceRuleItem->getCartPriceRule()->getName() : '',
-                                    $priceRuleItem->getDiscount(true) ?: 0,
-                                    $priceRuleItem->getDiscount(true) ?: 0
-                                )
-                            );
+                        foreach ($sale->getPriceRuleItems()->getItems() as $priceRuleItem) {
+                            if ($priceRuleItem->getDiscount(false) > 0) {
+                                $sale->addAdjustment(
+                                    $adjustmentFactory->createWithData(
+                                        AdjustmentInterface::CART_PRICE_RULE,
+                                        $priceRuleItem->getCartPriceRule() ? $priceRuleItem->getCartPriceRule()->getName() : '',
+                                        $priceRuleItem->getDiscount(true) ?: 0,
+                                        $priceRuleItem->getDiscount(true) ?: 0
+                                    )
+                                );
+                            }
                         }
                     }
                 }
@@ -76,38 +83,44 @@ class Version20180825163827 extends AbstractPimcoreMigration implements Containe
 
                     if (array_key_exists('discountNet', $fieldDefinitions) &&
                         array_key_exists('discountGross', $fieldDefinitions)) {
-                        $sale->addAdjustment(
-                            $adjustmentFactory->createWithData(
-                                AdjustmentInterface::CART_PRICE_RULE,
-                                '',
-                                $sale->getDiscountGross() ?: 0,
-                                $sale->getDiscountNet() ?: 0
-                            )
-                        );
+                        if ($sale->getDiscountNet() > 0) {
+                            $sale->addAdjustment(
+                                $adjustmentFactory->createWithData(
+                                    AdjustmentInterface::CART_PRICE_RULE,
+                                    '',
+                                    $sale->getDiscountGross() ?: 0,
+                                    $sale->getDiscountNet() ?: 0
+                                )
+                            );
+                        }
                     }
 
                     if (array_key_exists('baseShippingNet', $fieldDefinitions) &&
                         array_key_exists('baseShippingGross', $fieldDefinitions)) {
-                        $sale->addBaseAdjustment(
-                            $adjustmentFactory->createWithData(
-                                AdjustmentInterface::SHIPPING,
-                                '',
-                                $sale->getBaseShippingGross() ?: 0,
-                                $sale->getBaseShippingNet() ?: 0
-                            )
-                        );
+                        if ($sale->getBaseShippingNet() > 0) {
+                            $sale->addBaseAdjustment(
+                                $adjustmentFactory->createWithData(
+                                    AdjustmentInterface::SHIPPING,
+                                    '',
+                                    $sale->getBaseShippingGross() ?: 0,
+                                    $sale->getBaseShippingNet() ?: 0
+                                )
+                            );
+                        }
                     }
 
                     if (array_key_exists('baseDiscountNet', $fieldDefinitions) &&
                         array_key_exists('baseDiscountGross', $fieldDefinitions)) {
-                        $sale->addBaseAdjustment(
-                            $adjustmentFactory->createWithData(
-                                AdjustmentInterface::CART_PRICE_RULE,
-                                '',
-                                $sale->getBaseDiscountGross() ?: 0,
-                                $sale->getBaseDiscountNet() ?: 0
-                            )
-                        );
+                        if ($sale->getBaseDiscountNet() > 0) {
+                            $sale->addBaseAdjustment(
+                                $adjustmentFactory->createWithData(
+                                    AdjustmentInterface::CART_PRICE_RULE,
+                                    '',
+                                    $sale->getBaseDiscountGross() ?: 0,
+                                    $sale->getBaseDiscountNet() ?: 0
+                                )
+                            );
+                        }
                     }
                 }
 
