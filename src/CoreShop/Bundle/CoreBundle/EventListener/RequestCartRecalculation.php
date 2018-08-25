@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
@@ -26,9 +27,9 @@ final class RequestCartRecalculation
     private $cartManager;
 
     /**
-     * @var CartContextInterface
+     * @var ShopperContextInterface
      */
-    private $cartContext;
+    private $shopperContext;
 
     /**
      * @var ConfigurationServiceInterface
@@ -42,19 +43,19 @@ final class RequestCartRecalculation
 
     /**
      * @param CartManagerInterface $cartManager
-     * @param CartContextInterface $cartContext
+     * @param ShopperContextInterface $shopperContext
      * @param ConfigurationServiceInterface $configurationService
      * @param RequestHelper $pimcoreRequestHelper
      */
     public function __construct(
         CartManagerInterface $cartManager,
-        CartContextInterface $cartContext,
+        ShopperContextInterface $shopperContext,
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper
     )
     {
         $this->cartManager = $cartManager;
-        $this->cartContext = $cartContext;
+        $this->shopperContext = $shopperContext;
         $this->configurationService = $configurationService;
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
@@ -74,7 +75,11 @@ final class RequestCartRecalculation
             return;
         }
 
-        $cart = $this->cartContext->getCart();
+        if (!$this->shopperContext->hasStore()) {
+            return;
+        }
+
+        $cart = $this->shopperContext->getCart();
 
         if ($cart->getId()) {
             if ($this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE') > $cart->getModificationDate()) {

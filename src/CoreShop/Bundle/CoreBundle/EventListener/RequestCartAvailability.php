@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,9 +29,9 @@ final class RequestCartAvailability
     private $cartManager;
 
     /**
-     * @var CartContextInterface
+     * @var ShopperContextInterface
      */
-    private $cartContext;
+    private $shopperContext;
 
     /**
      * @var ConfigurationServiceInterface
@@ -49,22 +49,21 @@ final class RequestCartAvailability
     private $session;
 
     /**
-     * @param CartManagerInterface $cartManager
-     * @param CartContextInterface $cartContext
+     * @param CartManagerInterface          $cartManager
+     * @param ShopperContextInterface       $shopperContext
      * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper $pimcoreRequestHelper
-     * @param SessionInterface $session
+     * @param RequestHelper                 $pimcoreRequestHelper
+     * @param SessionInterface              $session
      */
     public function __construct(
         CartManagerInterface $cartManager,
-        CartContextInterface $cartContext,
+        ShopperContextInterface $shopperContext,
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper,
         SessionInterface $session
-    )
-    {
+    ) {
         $this->cartManager = $cartManager;
-        $this->cartContext = $cartContext;
+        $this->shopperContext = $shopperContext;
         $this->configurationService = $configurationService;
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
         $this->session = $session;
@@ -85,8 +84,12 @@ final class RequestCartAvailability
             return;
         }
 
+        if (!$this->shopperContext->hasStore()) {
+            return;
+        }
+
         /** @var CartInterface $cart */
-        $cart = $this->cartContext->getCart();
+        $cart = $this->shopperContext->getCart();
 
         if ($cart->getId()) {
             if ($cart->getNeedsRecalculation() === true) {

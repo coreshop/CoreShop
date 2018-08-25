@@ -54,7 +54,7 @@ services:
         class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
         arguments:
            - '@coreshop.cart.manager'
-           - '@coreshop.context.cart'
+           - '@coreshop.context.shopper'
            - '@coreshop.configuration.service'
            - '@pimcore.http.request_helper'
         tags:
@@ -64,7 +64,7 @@ services:
         class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartAvailability
         arguments:
            - '@coreshop.cart.manager'
-           - '@coreshop.context.cart'
+           - '@coreshop.context.shopper'
            - '@coreshop.configuration.service'
            - '@pimcore.http.request_helper'
            - '@session'
