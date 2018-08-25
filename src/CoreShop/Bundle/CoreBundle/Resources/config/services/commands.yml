@@ -57,3 +57,10 @@ services:
             $installer: '@CoreShop\Bundle\CoreBundle\Installer'
         tags:
           - { name: console.command, command: 'coreshop:install' }
+
+    coreshop.command.migrate:
+        class: CoreShop\Bundle\CoreBundle\Command\MigrateCommand
+        public: true
+        tags:
+            - { name: console.command, command: 'coreshop:migrate' }
+
