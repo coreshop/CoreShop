@@ -1,11 +1,12 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
+    {% if country is defined %}
+        {% set icon %}
+            {{ include('@CoreShopAddress/Collector/Icon/country.svg') }}
+            <span class="sf-toolbar-value">{{ collector.country.name|default('Undefined') }}</span>
+        {% endset %}
 
-    {% set icon %}
-        {{ include('@CoreShopAddress/Collector/Icon/country.svg') }}
-        <span class="sf-toolbar-value">{{ collector.country.name|default('Undefined') }}</span>
-    {% endset %}
-
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false }) }}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false }) }}
+    {% endif %}
 {% endblock %}

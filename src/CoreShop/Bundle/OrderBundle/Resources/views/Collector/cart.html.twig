@@ -1,33 +1,35 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% set icon %}
-        {{ include('@CoreShopOrder/Collector/Icon/cart.svg') }}
+    {% if cart is defined %}
+        {% set icon %}
+            {{ include('@CoreShopOrder/Collector/Icon/cart.svg') }}
 
-        {% if collector.admin %}
-            <span class="sf-toolbar-value">
-                -
-            </span>
-        {% else %}
-            <span class="sf-toolbar-value">
-                {{ collector.cart.total|coreshop_format_money(collector.cart.getCurrency.getIsoCode, collector.locale) }}
-            </span>
-        {% endif %}
-    {% endset %}
+            {% if collector.admin %}
+                <span class="sf-toolbar-value">
+                    -
+                </span>
+            {% else %}
+                <span class="sf-toolbar-value">
+                    {{ collector.cart.total|coreshop_format_money(collector.cart.getCurrency.getIsoCode, collector.locale) }}
+                </span>
+            {% endif %}
+        {% endset %}
 
-    {% set text %}
-        {% if collector.admin %}
-            <div class="sf-toolbar-info-piece">
-                <b>status</b>
-                <span>disabled in backend</span>
-            </div>
-        {% else %}
-            <div class="sf-toolbar-info-piece">
-                <b>Cart ID</b>
-                <span class="sf-toolbar-status">{{ collector.cart.id|default('New Cart')}}</span>
-            </div>
-        {% endif %}
-    {% endset %}
+        {% set text %}
+            {% if collector.admin %}
+                <div class="sf-toolbar-info-piece">
+                    <b>status</b>
+                    <span>disabled in backend</span>
+                </div>
+            {% else %}
+                <div class="sf-toolbar-info-piece">
+                    <b>Cart ID</b>
+                    <span class="sf-toolbar-status">{{ collector.cart.id|default('New Cart')}}</span>
+                </div>
+            {% endif %}
+        {% endset %}
 
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false }) }}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false }) }}
+    {% endif %}
 {% endblock %}

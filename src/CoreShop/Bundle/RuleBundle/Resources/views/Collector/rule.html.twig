@@ -1,27 +1,28 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
+    {% if collector.getProcessedRules|length > 0 %}
+        {% set icon %}
+            {{ include('@CoreShopRule/Collector/Icon/rules.svg') }}
+            <span class="sf-toolbar-value">Processed {{ collector.getProcessedRules|length }}</span>
+        {% endset %}
 
-    {% set icon %}
-        {{ include('@CoreShopRule/Collector/Icon/rules.svg') }}
-        <span class="sf-toolbar-value">Processed {{ collector.getProcessedRules|length }}</span>
-    {% endset %}
-
-    {% set text %}
-        <div class="sf-toolbar-info-piece">
-            <b>Types</b>
-        </div>
-
-        {% for type in collector.types %}
+        {% set text %}
             <div class="sf-toolbar-info-piece">
-                <b>{{ type.name }}</b>
-                <span class="sf-toolbar-status">({{ type.count }})</span>
+                <b>Types</b>
             </div>
-        {% endfor %}
-    {% endset %}
+
+            {% for type in collector.types %}
+                <div class="sf-toolbar-info-piece">
+                    <b>{{ type.name }}</b>
+                    <span class="sf-toolbar-status">({{ type.count }})</span>
+                </div>
+            {% endfor %}
+        {% endset %}
 
 
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+    {% endif %}
 {% endblock %}
 
 

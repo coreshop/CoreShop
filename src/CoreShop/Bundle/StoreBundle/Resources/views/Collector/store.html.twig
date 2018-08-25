@@ -1,26 +1,28 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% set status_color = collector.store is null ? 'red' : '' %}
+    {% if store is defined %}
+        {% set status_color = collector.store is null ? 'red' : '' %}
 
-    {% set icon %}
-        {{ include('@CoreShopStore/Collector/Icon/store.svg') }}
-        <span class="sf-toolbar-value">{{ collector.store.name|default('Undefined') }}</span>
-    {% endset %}
+        {% set icon %}
+            {{ include('@CoreShopStore/Collector/Icon/store.svg') }}
+            <span class="sf-toolbar-value">{{ collector.store.name|default('Undefined') }}</span>
+        {% endset %}
 
-    {% set text %}
-        <div class="sf-toolbar-info-piece">
-            <b>Stores</b>
-            <span class="sf-toolbar-status {% if collector.stores is empty %}sf-toolbar-status-red{% endif %}">{{ collector.stores|length }}</span>
-        </div>
-
-        {% for store in collector.stores %}
+        {% set text %}
             <div class="sf-toolbar-info-piece">
-                <b>{{ store.name }}</b>
-                <span>({{ store.siteId }}){% if collector.isStoreChangeSupported %} (<a href="?_store_id={{ store.id }}">change</a>){% endif %}</span>
+                <b>Stores</b>
+                <span class="sf-toolbar-status {% if collector.stores is empty %}sf-toolbar-status-red{% endif %}">{{ collector.stores|length }}</span>
             </div>
-        {% endfor %}
-    {% endset %}
 
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false, status: status_color }) }}
+            {% for store in collector.stores %}
+                <div class="sf-toolbar-info-piece">
+                    <b>{{ store.name }}</b>
+                    <span>({{ store.siteId }}){% if collector.isStoreChangeSupported %} (<a href="?_store_id={{ store.id }}">change</a>){% endif %}</span>
+                </div>
+            {% endfor %}
+        {% endset %}
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false, status: status_color }) }}
+    {% endif %}
 {% endblock %}
