@@ -6,13 +6,6 @@ services:
             - '@kernel'
             - '@coreshop.installer.checker.command_directory'
 
-    coreshop.command.install.assets:
-        class: CoreShop\Bundle\CoreBundle\Command\AssetsInstallCommand
-        parent: coreshop.command.install.abstract
-        public: true
-        tags:
-          - { name: console.command, command: 'coreshop:install:assets' }
-
     coreshop.command.install.resources:
         class: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
         parent: coreshop.command.install.abstract
@@ -61,5 +54,6 @@ services:
         arguments:
             $migrationManager: '@Pimcore\Migrations\MigrationManager'
             $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
+            $installer: '@CoreShop\Bundle\CoreBundle\Installer'
         tags:
           - { name: console.command, command: 'coreshop:install' }
