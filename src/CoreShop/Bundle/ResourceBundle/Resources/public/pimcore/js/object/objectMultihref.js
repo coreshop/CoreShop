@@ -72,7 +72,7 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
                 items: [
                     {
                         tooltip: t('open'),
-                        icon: '/pimcore/static6/img/flat-color-icons/cursor.svg',
+                        iconCls: 'coreshop_icon_cursor',
                         handler: function (grid, rowIndex) {
                             var data = grid.getStore().getAt(rowIndex);
                             pimcore.helpers.openObject(data.data.id, 'object');
@@ -86,7 +86,7 @@ coreshop.object.objectMultihref = Class.create(pimcore.object.tags.objects, {
                 items: [
                     {
                         tooltip: t('remove'),
-                        icon: '/pimcore/static6/img/flat-color-icons/delete.svg',
+                        icon: 'pimcore_icon_delete',
                         handler: function (grid, rowIndex) {
                             grid.getStore().removeAt(rowIndex);
                         }.bind(this)
