@@ -12,7 +12,9 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -32,16 +34,24 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
     private $voucherCodeRepository;
 
     /**
+     * @var AdjustmentFactoryInterface
+     */
+    private $adjustmentFactory;
+
+    /**
      * @param ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param AdjustmentFactoryInterface $adjustmentFactory
      */
     public function __construct(
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,
-        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        AdjustmentFactoryInterface $adjustmentFactory
     )
     {
         $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
         $this->voucherCodeRepository = $voucherCodeRepository;
+        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     /**
@@ -49,8 +59,7 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
-        $cart->setDiscount(0, false);
-        $cart->setDiscount(0, true);
+        $cart->removeAdjustments(AdjustmentInterface::CART_PRICE_RULE);
 
         $priceRuleItems = $cart->getPriceRuleItems();
 
@@ -68,8 +77,7 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
             $rule = $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $item->getCartPriceRule(), $voucherCode);
 
             if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                $cart->setDiscount($cart->getDiscount(false) + $rule->getDiscount(false), false);
-                $cart->setDiscount($cart->getDiscount(true) + $rule->getDiscount(true), true);
+                $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::CART_PRICE_RULE, $item->getCartPriceRule()->getName(), -1 * $rule->getDiscount(true), -1 * $rule->getDiscount(false)));
             }
         }
     }

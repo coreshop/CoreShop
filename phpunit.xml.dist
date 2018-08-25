@@ -17,14 +17,13 @@
          bootstrap="tests/phpunit-bootstrap.php">
     <testsuites>
         <testsuite name="CoreShop Test Suite">
-            <directory suffix="AllTests.php">tests/</directory>
             <file>tests/lib/CoreShop/Test/PHPUnit/Suites/AllTests.php</file>
         </testsuite>
     </testsuites>
     <php>
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
 
-        <env name="KERNEL_CLASS" value="AppKernel" />
+        <env name="KERNEL_CLASS" value="TestAppKernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="100"/>
     </php>
     <listeners>

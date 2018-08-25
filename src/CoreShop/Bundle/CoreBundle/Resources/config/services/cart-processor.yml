@@ -26,6 +26,7 @@ services:
             - '@coreshop.shipping.carrier.validator'
             - '@coreshop.carrier.default_resolver'
             - '@coreshop.provider.store_based_default_address_provider'
+            - '@coreshop.factory.adjustment'
         tags:
             - { name: coreshop.cart_processor, priority: 500 }
 
@@ -50,6 +51,7 @@ services:
         arguments:
             - '@coreshop.proposal.cart_price_rule.calculator'
             - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@coreshop.factory.adjustment'
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
 

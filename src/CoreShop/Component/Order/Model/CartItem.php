@@ -17,9 +17,10 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
+    use AdjustableTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -407,5 +408,14 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     public function setTaxes($taxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateAfterAdjustmentChange()
+    {
+        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(true), true);
+        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(false), false);
     }
 }

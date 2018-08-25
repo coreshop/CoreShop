@@ -13,10 +13,12 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface as CoreCartInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
@@ -46,22 +48,30 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $defaultAddressProvider;
 
     /**
+     * @var AdjustmentFactoryInterface
+     */
+    private $adjustmentFactory;
+
+    /**
      * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
      * @param ShippableCarrierValidatorInterface $carrierValidator
      * @param DefaultCarrierResolverInterface $defaultCarrierResolver
      * @param AddressProviderInterface $defaultAddressProvider
+     * @param AdjustmentFactoryInterface $adjustmentFactory
      */
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
         ShippableCarrierValidatorInterface $carrierValidator,
         DefaultCarrierResolverInterface $defaultCarrierResolver,
-        AddressProviderInterface $defaultAddressProvider
+        AddressProviderInterface $defaultAddressProvider,
+        AdjustmentFactoryInterface $adjustmentFactory
     )
     {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->carrierValidator = $carrierValidator;
         $this->defaultCarrierResolver = $defaultCarrierResolver;
         $this->defaultAddressProvider = $defaultAddressProvider;
+        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     /**
@@ -69,6 +79,8 @@ final class CartShippingProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
+        $cart->removeAdjustments(AdjustmentInterface::SHIPPING);
+
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return;
         }
@@ -82,8 +94,6 @@ final class CartShippingProcessor implements CartProcessorInterface
         if ($cart->getCarrier() instanceof CarrierInterface) {
             if (!$this->carrierValidator->isCarrierValid($cart->getCarrier(), $cart, $address)) {
                 $cart->setCarrier(null);
-                $cart->setShipping(0, true);
-                $cart->setShipping(0, false);
             }
         }
 
@@ -98,8 +108,7 @@ final class CartShippingProcessor implements CartProcessorInterface
         $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, true);
         $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, false);
 
-        $cart->setShipping($priceWithTax, true);
-        $cart->setShipping($priceWithoutTax, false);
+        $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::SHIPPING, '', $priceWithTax, $priceWithoutTax));
     }
 
     /**

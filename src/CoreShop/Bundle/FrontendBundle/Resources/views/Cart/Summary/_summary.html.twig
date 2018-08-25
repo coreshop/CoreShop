@@ -36,13 +36,13 @@
         {{ currency.convertAndFormat(cart.getSubtotal(false)) }}
     </td>
 </tr>
-{% if discount > 0 %}
+{% if discount != 0 %}
     <tr>
         <td class="text-right">
             <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
-            -{{ currency.convertAndFormat(discountIt) }}
+            {{ currency.convertAndFormat(discountIt) }}
         </td>
     </tr>
     <tr>
@@ -50,7 +50,7 @@
             <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
-            -{{ currency.convertAndFormat(discount) }}
+            {{ currency.convertAndFormat(discount) }}
         </td>
     </tr>
 {% endif %}
