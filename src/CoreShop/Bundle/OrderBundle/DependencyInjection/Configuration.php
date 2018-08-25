@@ -30,6 +30,7 @@ use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderInvoiceRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRule;
@@ -381,6 +382,23 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopQuoteItem.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('adjustment')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\Fieldcollection\Data\CoreShopAdjustment')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(AdjustmentInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/fieldcollections/CoreShopAdjustment.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()
                             ->end()

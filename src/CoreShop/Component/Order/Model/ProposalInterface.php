@@ -65,12 +65,6 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
     public function getDiscount($withTax = true);
 
     /**
-     * @param int $discount
-     * @param bool $withTax
-     */
-    public function setDiscount($discount, $withTax = true);
-
-    /**
      * @return ProposalItemInterface[]
      */
     public function getItems();
