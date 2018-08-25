@@ -14,6 +14,7 @@ services:
             - '@coreshop.object_service'
             - '%coreshop.folder.order_shipment_item%'
             - '@coreshop.transformer.event_dispatcher'
+            - '@pimcore.dao.object_manager'
 
     coreshop.order.transformer.order_to_shipment:
         class: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
@@ -26,6 +27,7 @@ services:
             - '@coreshop.repository.order_item'
             - '@coreshop.factory.order_shipment_item'
             - '@coreshop.transformer.event_dispatcher'
+            - '@pimcore.dao.object_manager'
 
     coreshop.order.transformer.order_to_shipment.state_applier:
         class: CoreShop\Component\Order\Transformer\OrderToOrderDocumentTransformerWorkflowApplier

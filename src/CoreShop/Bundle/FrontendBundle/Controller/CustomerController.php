@@ -161,7 +161,8 @@ class CustomerController extends FrontendController
                 $address->setPublished(true);
                 $address->setKey(uniqid());
                 $address->setParent($this->get('coreshop.object_service')->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->getParameter('coreshop.folder.address'))));
-                $address->save();
+
+                $this->get('coreshop.manager.address')->persist($address);
 
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($address, ['request' => $request]);
@@ -171,7 +172,9 @@ class CustomerController extends FrontendController
                 );
 
                 $customer->addAddress($address);
-                $customer->save();
+                $this->get('coreshop.manager.customer')->persist($customer);
+
+                $this->get('coreshop.manager.address')->flush();
 
                 $this->addFlash('success', sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated'));
                 return $this->redirect($handledForm->get('_redirect')->getData() ?: $this->generateCoreShopUrl($customer, 'coreshop_customer_addresses'));
@@ -243,7 +246,6 @@ class CustomerController extends FrontendController
 
             if ($handledForm->isValid()) {
                 $customer = $handledForm->getData();
-                $customer->save();
 
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($customer, ['request' => $request]);
@@ -251,6 +253,9 @@ class CustomerController extends FrontendController
                     sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'update'),
                     $event
                 );
+
+                $this->get('coreshop.manager.customer')->persist($customer);
+                $this->get('coreshop.manager.customer')->flush();
 
                 $this->addFlash('success', 'coreshop.ui.customer.profile_successfully_updated');
                 return $this->redirectToRoute('coreshop_customer_profile');
@@ -284,7 +289,6 @@ class CustomerController extends FrontendController
 
                 $formData = $handledForm->getData();
                 $customer->setPassword($formData['password']);
-                $customer->save();
 
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($customer, ['request' => $request]);
@@ -292,6 +296,8 @@ class CustomerController extends FrontendController
                     sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'change_password'),
                     $event
                 );
+
+                $this->get('coreshop.manager.customer')->persist($customer);
 
                 $this->addFlash('success', 'coreshop.ui.customer.password_successfully_changed');
                 return $this->redirectToRoute('coreshop_customer_profile');
@@ -326,15 +332,16 @@ class CustomerController extends FrontendController
             $customer->setNewsletterConfirmed(true);
             $customer->setNewsletterToken(null);
 
-            VersionHelper::useVersioning(function() use ($customer) {
-                $customer->save();
-            }, false);
-
             $event = new ResourceControllerEvent($customer, ['request' => $request]);
             $this->get('event_dispatcher')->dispatch(
                 sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'newsletter_confirm'),
                 $event
             );
+
+            VersionHelper::useVersioning(function() use ($customer) {
+                $this->get('coreshop.manager.customer')->persist($customer);
+                $this->get('coreshop.manager.customer')->flush();
+            }, false);
 
             $this->addFlash('success', 'coreshop.ui.newsletter_confirmed');
         } else {

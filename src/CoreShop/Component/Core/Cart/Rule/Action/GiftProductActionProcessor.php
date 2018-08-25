@@ -51,7 +51,6 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         if ($product instanceof PurchasableInterface) {
             $item = $this->cartModifier->updateItemQuantity($cart, $product, 1, false);
             $item->setIsGiftItem(true);
-            $item->save();
 
             return true;
         }

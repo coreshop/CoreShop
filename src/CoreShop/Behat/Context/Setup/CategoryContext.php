@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 
@@ -39,15 +40,27 @@ final class CategoryContext implements Context
     private $categoryRepository;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param ObjectManager $objectManager
      */
-    public function __construct(SharedStorageInterface $sharedStorage, FactoryInterface $categoryFactory, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        FactoryInterface $categoryFactory,
+        CategoryRepositoryInterface $categoryRepository,
+        ObjectManager $objectManager
+    )
     {
         $this->sharedStorage = $sharedStorage;
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -114,7 +127,9 @@ final class CategoryContext implements Context
      */
     private function saveCategory(CategoryInterface $category)
     {
-        $category->save();
+        $this->objectManager->persist($category);
+        $this->objectManager->flush();
+
         $this->sharedStorage->set('category', $category);
     }
 }

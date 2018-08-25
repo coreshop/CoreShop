@@ -21,4 +21,5 @@ services:
         decorates: coreshop.renderer.order.pdf
         arguments:
             - '@coreshop.renderer.order.pdf.asset.inner'
+            - '@pimcore.dao.object_manager'
             - '%kernel.environment%'

@@ -5,6 +5,7 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.factory.product'
             - '@__symfony__.coreshop.repository.product'
+            - '@__symfony__.pimcore.dao.object_manager'
         tags:
             - { name: fob.context_service }
 
@@ -40,6 +41,7 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.factory.category'
             - '@__symfony__.coreshop.repository.category'
+            - '@__symfony__.pimcore.dao.object_manager'
         tags:
             - { name: fob.context_service }
 
@@ -73,6 +75,7 @@ services:
             - '@__symfony__.coreshop.repository.customer'
             - '@__symfony__.coreshop.context.customer.fixed'
             - '@__symfony__.coreshop.factory.address'
+            - '@__symfony__.pimcore.dao.object_manager'
         tags:
             - { name: fob.context_service }
 
@@ -82,6 +85,7 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.factory.customer_group'
             - '@__symfony__.coreshop.repository.customer_group'
+            - '@__symfony__.pimcore.dao.object_manager'
         tags:
             - { name: fob.context_service }
 
@@ -170,6 +174,7 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.factory.address'
             - '@__symfony__.coreshop.repository.address'
+            - '@__symfony__.pimcore.dao.object_manager'
         tags:
             - { name: fob.context_service }
 

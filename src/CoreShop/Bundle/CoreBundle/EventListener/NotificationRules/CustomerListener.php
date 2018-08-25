@@ -14,8 +14,11 @@ namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
+use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Notification\Rule\Condition\User\UserTypeChecker;
+use CoreShop\Component\Notification\Processor\RulesProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -93,15 +96,6 @@ final class CustomerListener extends AbstractNotificationRuleListener
         if (!$user instanceof Concrete) {
             return;
         }
-
-        $user->setNewsletterToken(hash('md5', $user->getId().$user->getEmail().mt_rand().time()));
-
-        VersionHelper::useVersioning(
-            function () use ($user) {
-                $user->save();
-            },
-            false
-        );
 
         $confirmLink = $event->getConfirmLink();
         $confirmLink = $confirmLink.(parse_url(

@@ -66,8 +66,10 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
 
                 Service::getUniqueKey($category);
 
-                $category->save();
+                $this->container->get('coreshop.manager.category')->persist($category);
             }
+
+            $this->container->get('coreshop.manager.category')->flush();
         }
     }
 }

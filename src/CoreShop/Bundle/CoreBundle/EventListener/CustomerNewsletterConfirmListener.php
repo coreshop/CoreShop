@@ -78,6 +78,8 @@ final class CustomerNewsletterConfirmListener
             return;
         }
 
+        $user->setNewsletterToken(hash('md5', $user->getId().$user->getEmail().mt_rand().time()));
+
         $confirmEvent = new RequestNewsletterConfirmationEvent(
             $user,
             $this->linkGenerator->generate($event->getSubject(), 'coreshop_customer_confirm_newsletter', ['_locale' => $this->requestStack->getMasterRequest()->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL)

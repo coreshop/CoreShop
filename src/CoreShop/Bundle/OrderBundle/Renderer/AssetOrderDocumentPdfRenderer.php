@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Renderer;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\Asset;
 
 class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
@@ -24,17 +25,27 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $decoratedService;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @var string
      */
     private $environment;
 
     /**
      * @param OrderDocumentRendererInterface $decoratedService
-     * @param string $environment
+     * @param ObjectManager                  $objectManager
+     * @param string                         $environment
      */
-    public function __construct(OrderDocumentRendererInterface $decoratedService, string $environment)
-    {
+    public function __construct(
+        OrderDocumentRendererInterface $decoratedService,
+        ObjectManager $objectManager,
+        string $environment
+    ) {
         $this->decoratedService = $decoratedService;
+        $this->objectManager = $objectManager;
         $this->environment = $environment;
     }
 
@@ -50,7 +61,8 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
             // check if asset is outdated.
-            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate()) {
+            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate(
+                )) {
                 return $orderDocument->getRenderedAsset()->getData();
             }
         }
@@ -73,7 +85,9 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $document->save();
 
         $orderDocument->setRenderedAsset($document);
-        $orderDocument->save();
+
+        $this->objectManager->persist($orderDocument);
+        $this->objectManager->flush();
 
         return $document->getData();
     }

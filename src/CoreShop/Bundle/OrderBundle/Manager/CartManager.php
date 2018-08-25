@@ -17,6 +17,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 final class CartManager implements CartManagerInterface
 {
@@ -36,18 +37,26 @@ final class CartManager implements CartManagerInterface
     protected $cartProcessor;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
      * @param CartProcessorInterface $cartProcessor
      * @param ObjectServiceInterface $objectService
+     * @param ObjectManager $objectManager
      * @param string $cartFolderPath
      */
     public function __construct(
         CartProcessorInterface $cartProcessor,
         ObjectServiceInterface $objectService,
+        ObjectManager $objectManager,
         $cartFolderPath
     )
     {
         $this->cartProcessor = $cartProcessor;
         $this->objectService = $objectService;
+        $this->objectManager = $objectManager;
         $this->cartFolderPath = $cartFolderPath;
     }
 
@@ -64,22 +73,28 @@ final class CartManager implements CartManagerInterface
             if (!$cart->getId()) {
                 $cart->setItems([]);
                 $cart->setParent($cartsFolder);
-                $cart->save();
+
+                $this->objectManager->persist($cart);
+                $this->objectManager->flush();
             }
 
             foreach ($tempItems as $index => $item) {
                 $item->setParent($cart);
-                $item->save();
+
+                $this->objectManager->persist($item);
+                $this->objectManager->flush();
             }
 
             $cart->setItems($tempItems);
             $this->cartProcessor->process($cart);
 
             foreach ($cart->getItems() as $cartItem) {
-                $cartItem->save();
+                $this->objectManager->persist($cartItem);
+                $this->objectManager->flush();
             }
 
-            $cart->save();
+            $this->objectManager->persist($cart);
+            $this->objectManager->flush();
         }, false);
     }
 }

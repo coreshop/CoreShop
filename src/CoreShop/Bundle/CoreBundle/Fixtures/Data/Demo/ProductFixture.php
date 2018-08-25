@@ -139,8 +139,10 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
 
                 Service::getUniqueKey($product);
 
-                $product->save();
+                $this->container->get('coreshop.manager.product')->persist($product);
             }
+
+            $this->container->get('coreshop.manager.product')->flush();
         }
     }
 }

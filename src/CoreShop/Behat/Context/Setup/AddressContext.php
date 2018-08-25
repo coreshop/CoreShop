@@ -18,6 +18,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Folder;
 
 final class AddressContext implements Context
@@ -38,19 +39,27 @@ final class AddressContext implements Context
     private $addressRepository;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $addressFactory
      * @param PimcoreRepositoryInterface $addressRepository
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $addressFactory,
-        PimcoreRepositoryInterface $addressRepository
+        PimcoreRepositoryInterface $addressRepository,
+        ObjectManager $objectManager
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->addressFactory = $addressFactory;
         $this->addressRepository = $addressRepository;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -95,7 +104,8 @@ final class AddressContext implements Context
      */
     private function saveAddress(AddressInterface $address)
     {
-        $address->save();
+        $this->objectManager->persist($address);
+        $this->objectManager->flush();
 
         $this->sharedStorage->set('address', $address);
     }

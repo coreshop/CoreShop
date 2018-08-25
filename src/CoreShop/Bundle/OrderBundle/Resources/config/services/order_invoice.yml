@@ -14,6 +14,7 @@ services:
             - '@coreshop.transformer.event_dispatcher'
             - '@coreshop.factory.tax_rate'
             - '@coreshop.factory.tax_item'
+            - '@pimcore.dao.object_manager'
 
     coreshop.order.transformer.order_to_invoice:
         class: CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer
@@ -28,6 +29,7 @@ services:
             - '@coreshop.repository.order_invoice'
             - '@coreshop.transformer.event_dispatcher'
             - '@coreshop.factory.tax_item'
+            - '@pimcore.dao.object_manager'
 
     coreshop.order.transformer.order_to_invoice.state_applier:
         class: CoreShop\Component\Order\Transformer\OrderToOrderDocumentTransformerWorkflowApplier

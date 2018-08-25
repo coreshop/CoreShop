@@ -21,6 +21,7 @@ use CoreShop\Component\Customer\Context\FixedCustomerContext;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Folder;
 
@@ -52,18 +53,25 @@ final class CustomerContext implements Context
     private $addressFactory;
 
     /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $customerFactory
      * @param CustomerRepositoryInterface $customerRepository
      * @param FixedCustomerContext $fixedCustomerContext
      * @param FactoryInterface $addressFactory
+     * @param ObjectManager $objectManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerFactory,
         CustomerRepositoryInterface $customerRepository,
         FixedCustomerContext $fixedCustomerContext,
-        FactoryInterface $addressFactory
+        FactoryInterface $addressFactory,
+        ObjectManager $objectManager
     )
     {
         $this->sharedStorage = $sharedStorage;
@@ -71,6 +79,7 @@ final class CustomerContext implements Context
         $this->customerRepository = $customerRepository;
         $this->fixedCustomerContext = $fixedCustomerContext;
         $this->addressFactory = $addressFactory;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -125,10 +134,13 @@ final class CustomerContext implements Context
         $address->setKey(uniqid());
         $address->setPublished(true);
         $address->setParent($customer);
-        $address->save();
 
         $customer->addAddress($address);
-        $customer->save();
+
+        $this->objectManager->persist($address);
+        $this->objectManager->persist($customer);
+
+        $this->objectManager->flush();
     }
 
     /**
@@ -154,7 +166,8 @@ final class CustomerContext implements Context
      */
     private function saveCustomer(CustomerInterface $customer)
     {
-        $customer->save();
+        $this->objectManager->persist($customer);
+        $this->objectManager->flush();
 
         $this->sharedStorage->set('customer', $customer);
     }
