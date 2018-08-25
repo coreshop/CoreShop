@@ -82,7 +82,15 @@ final class UpdateOrderStateExtension implements ExtensionInterface
 
         $context->getGateway()->execute($status = new GetStatus($payment));
         $value = $status->getValue();
-        if (PaymentInterface::STATE_UNKNOWN !== $value) {
+
+        if($value === $payment->getState()) {
+            return;
+        }
+
+        if (
+            $value === PaymentInterface::STATE_COMPLETED ||
+            $value === PaymentInterface::STATE_PROCESSING
+        ) {
             $order = $payment->getOrder();
             if ($order instanceof OrderInterface) {
                 $this->confirmOrderState($order);
