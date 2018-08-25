@@ -30,11 +30,6 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     public function setName($name, $language = null);
 
     /**
-     * @param int $totalTax
-     */
-    public function setTotalTax($totalTax);
-
-    /**
      * @return bool
      */
     public function getIsGiftItem();
@@ -111,9 +106,4 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
      * @param bool $withTax
      */
     public function setBaseTotal($total, $withTax = true);
-
-    /**
-     * @param int $totalTax
-     */
-    public function setBaseTotalTax($totalTax);
 }

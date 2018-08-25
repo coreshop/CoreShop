@@ -19,14 +19,12 @@ services:
         decoration_priority: 10
         arguments:
             - '@coreshop.core.order.transformer.cart_to_order.inner'
-            - '@coreshop.currency_converter'
 
     coreshop.core.order.transformer.cart_to_quote:
         class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
         decorates: coreshop.order.transformer.cart_to_quote
         arguments:
             - '@coreshop.core.order.transformer.cart_to_quote.inner'
-            - '@coreshop.currency_converter'
 
     coreshop.core.order.transformer.cart_item_to_order_item:
         class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer

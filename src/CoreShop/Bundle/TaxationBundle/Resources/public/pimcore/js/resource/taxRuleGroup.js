@@ -4,6 +4,7 @@ Ext.define('CoreShop.store.TaxRuleGroup', {
 
     name: 'taxRule',
     storeId: 'coreshop_taxrulegroups',
+    fieldLabel: t('coreshop_tax_rule_group'),
     listeners: {
         beforerender: function () {
             if (!this.getStore().isLoaded() && !this.getStore().isLoading())

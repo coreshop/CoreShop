@@ -47,6 +47,10 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         });
     },
 
+    getTitleText: function () {
+        return this.data.identifier;
+    },
+
     getItems: function () {
         return [
             this.getSettings(),

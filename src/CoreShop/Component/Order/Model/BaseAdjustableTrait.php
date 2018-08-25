@@ -158,7 +158,7 @@ trait BaseAdjustableTrait
                 }
             }
 
-            $this->setABasedjustmentItems($items);
+            $this->setBaseAdjustmentItems($items);
             $this->recalculateBaseAdjustmentsTotal();
         }
 

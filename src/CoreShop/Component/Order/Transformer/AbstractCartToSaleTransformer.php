@@ -156,21 +156,13 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
 
         $sale->setTotal($this->currencyConverter->convert($cart->getTotal(true), $fromCurrencyCode, $toCurrencyCode), true);
         $sale->setTotal($this->currencyConverter->convert($cart->getTotal(false), $fromCurrencyCode, $toCurrencyCode), false);
-        $sale->setTotalTax($this->currencyConverter->convert($cart->getTotalTax(), $fromCurrencyCode, $toCurrencyCode));
         $sale->setSubtotal($this->currencyConverter->convert($cart->getSubtotal(true), $fromCurrencyCode, $toCurrencyCode), true);
         $sale->setSubtotal($this->currencyConverter->convert($cart->getSubtotal(false), $fromCurrencyCode, $toCurrencyCode), false);
-        $sale->setSubtotalTax($this->currencyConverter->convert($cart->getSubtotalTax(), $fromCurrencyCode, $toCurrencyCode));
-        $sale->setDiscount($this->currencyConverter->convert($cart->getDiscount(true), $fromCurrencyCode, $toCurrencyCode), true);
-        $sale->setDiscount($this->currencyConverter->convert($cart->getDiscount(false), $fromCurrencyCode, $toCurrencyCode), false);
 
         $sale->setBaseTotal($cart->getTotal(true), true);
         $sale->setBaseTotal($cart->getTotal(false), false);
-        $sale->setBaseTotalTax($cart->getTotalTax());
         $sale->setBaseSubtotal($cart->getSubtotal(true), true);
         $sale->setBaseSubtotal($cart->getSubtotal(false), false);
-        $sale->setBaseSubtotalTax($cart->getSubtotalTax());
-        $sale->setBaseDiscount($cart->getDiscount(true), true);
-        $sale->setBaseDiscount($cart->getDiscount(false), false);
 
         foreach ($cart->getAdjustments() as $adjustment) {
             $sale->addAdjustment($adjustment);
