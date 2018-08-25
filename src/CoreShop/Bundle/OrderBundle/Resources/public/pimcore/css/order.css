@@ -35,7 +35,7 @@
 }
 
 .x-tool-coreshop-open, .coreshop_icon_open {
-    background: url(/pimcore/static6/img/flat-color-icons/cursor.svg) center center no-repeat !important;
+    background: url(../img/cursor.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_amount {

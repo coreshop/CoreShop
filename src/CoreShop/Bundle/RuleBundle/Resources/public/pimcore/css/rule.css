@@ -12,7 +12,7 @@
 }
 
 .pimcore_rule_disabled {
-    background: url(/pimcore/static6/img/flat-color-icons/warning.svg) center right no-repeat !important;
+    background: url(../img/warning.svg) center right no-repeat !important;
     background-size: 10% 60% !important;
     color: #717171;
     font-style: italic;
