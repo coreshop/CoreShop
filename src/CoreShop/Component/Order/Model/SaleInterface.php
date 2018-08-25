@@ -251,14 +251,4 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @param bool $backendCreated
      */
     public function setBackendCreated($backendCreated);
-
-    /**
-     * @return bool
-     */
-    public function getNotifyCustomer();
-
-    /**
-     * @param bool $notifyCustomer
-     */
-    public function setNotifyCustomer($notifyCustomer);
 }

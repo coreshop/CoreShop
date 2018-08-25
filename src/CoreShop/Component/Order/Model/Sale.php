@@ -625,20 +625,4 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNotifyCustomer()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNotifyCustomer($notifyCustomer)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 }

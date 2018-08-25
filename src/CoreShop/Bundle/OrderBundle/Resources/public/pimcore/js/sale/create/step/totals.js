@@ -45,18 +45,6 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
     },
 
     getPanel: function () {
-        this.dataPanel = Ext.create('Ext.form.Panel', {
-            items: [
-               {
-                    xtype: 'checkbox',
-                   labelWidth: 150,
-                    fieldLabel: t('coreshop_sale_create_notify_customer'),
-                    name: 'notifyCustomer',
-                    checked: true
-                }
-            ]
-        });
-
         this.totalPanel = Ext.create('Ext.panel.Panel', {
             items: [
                 {
@@ -84,7 +72,6 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
                         }
                     ]
                 },
-                this.dataPanel,
             ]
         });
 

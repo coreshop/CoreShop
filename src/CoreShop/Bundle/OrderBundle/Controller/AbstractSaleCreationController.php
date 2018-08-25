@@ -262,7 +262,6 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
          */
         $sale = $this->factory->createNew();
         $sale->setBackendCreated(true);
-        $sale->setNotifyCustomer($request->get('notifyCustomer', true));
         $sale = $this->getTransformer()->transform($cart, $sale);
 
         $this->afterSaleCreation($sale);
