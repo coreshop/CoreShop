@@ -41,7 +41,7 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
     },
 
     getValues: function () {
-        return this.dataPanel.getForm().getFieldValues();
+        return [];
     },
 
     getPanel: function () {
