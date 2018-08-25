@@ -29,7 +29,7 @@ class BackendCreatedChecker extends AbstractConditionChecker
         Assert::isInstanceOf($subject, SaleInterface::class);
 
         if ($configuration['backendCreated']) {
-            return $subject->getBackendCreated()();
+            return $subject->getBackendCreated();
         }
 
         return !$subject->getBackendCreated();
