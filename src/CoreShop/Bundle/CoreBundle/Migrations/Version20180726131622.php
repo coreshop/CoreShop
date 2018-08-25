@@ -27,7 +27,7 @@ class Version20180726131622 extends AbstractPimcoreMigration implements Containe
             "title" => "Backend Created",
             "tooltip" => "",
             "mandatory" => false,
-            "noteditable" => false,
+            "noteditable" => true,
             "index" => false,
             "locked" => false,
             "style" => "",
