@@ -130,7 +130,7 @@ coreshop_order_get_totals:
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getTotalsAction'}
 
 coreshop_order_create:
-    path: /%coreshop.admin.route.base%/order-creation/creates
+    path: /%coreshop.admin.route.base%/order-creation/create
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:createSaleAction'}
 
 ##### QUOTES
