@@ -8,7 +8,7 @@
 > **BC break / New Feature**
 
 There are several deprecated class fields.
-After you have migrated to the latest version you're able to remove them safely:
+After you have migrated to the latest version you also have to remove them:
 
 #### CoreShopOrder / CoreShopQuote
 - shippingGross
