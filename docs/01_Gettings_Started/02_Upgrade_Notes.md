@@ -4,6 +4,37 @@ Always check this page for some important upgrade notes before updating to the l
 
 ## Within V2
 
+# 2.0.0-beta.3 to 2.0.0-beta.4
+ - **BC break** all occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
+ - **Pimcore** CoreShop now requires at least Pimcore 5.4.0. You need to update Pimcore to the at least 5.4.0 in order to update CoreShop.
+
+## 2.0.0-beta.2 to 2.0.0-beta.3
+ - **BC break** Signature of following interfaces changed:
+    - ```CoreShop\Component\Index\Interpreter\InterpreterInterface```: public function interpret($value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
+    - ```CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface```: public function interpretForLanguage($language, $value, IndexableInterface $object, IndexColumnInterface $config, $interpreterConfig = []);
+    - ```CoreShop\Component\Index\Interpreter\RelationInterpreterInterface```: public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
+    - ```CoreShop\Component\Customer\Model\UserInterface::ROLE_DEFAULT``` renamed ```CoreShop\Component\Customer\Model\UserInterface::CORESHOP_ROLE_DEFAULT```
+    - ```CoreShop\Component\Customer\Model\UserInterface::ROLE_SUPER_ADMIN``` renamed ```CoreShop\Component\Customer\Model\UserInterface::CORESHOP_ROLE_SUPER_ADMIN```
+
+ - **BC break** Shipment / Invoice Creation via API changed
+    - Before adding a new Shipment / Invoice you need to dispatch a request state to your order. Read more about it [here](./docs/03_Development/06_Order/05_Invoice/01_Invoice_Creation.md) and [here](./docs/03_Development/06_Order/06_Shipment/01_Shipment_Creation.md).
+
+ - **BC break** getName in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableName` as `getName` could eventually conflict with a non localized Pimcore Field
+ - **BC break** getEnabled in ```CoreShop\Component\Index\Model\IndexableInterface``` has been changed to `getIndexableEnabled` as `getEnabled` could eventually conflict with a localized Pimcore Field
+
+## 2.0.0-beta.1 to 2.0.0-beta.2
+ - Link Generator implemented. If you want to use nice urls, you need to add the link generator service:
+    - CoreShopProduct: add `@coreshop.object.link_generator.product` as Link Provider
+    - CoreShopCategory: add `@coreshop.object.link_generator.category` as Link Provider
+    - Change `{{ path('') }}` to `{{ coreshop_path('') }}`. You may want to checkout the FrontendBundle to get a deeper insight.
+ - Deprecated Field Names in - ```CoreShop\Component\Payment\Model\PaymentInterface```:
+    - getName is now getTitle
+    - getOrderId is now getOrder and directly returns a OrderInterface
+ - Deprecated Field Names in - ```CoreShop\Component\Shipping\Model\CarrierInterface```:
+    - getLabel is not getTitle
+    - getName is now getIdentifier
+
+
 ### 2.0.0-alpha.4 to 2.0.0-beta.1
  - **BC break** CoreShop now takes advantage of the dependent bundle feature introduced in Pimcore 5.1.2. Therefore,
  all bundles are now automatically loaded. This is a BC break, as when updating, you might run into issues.
