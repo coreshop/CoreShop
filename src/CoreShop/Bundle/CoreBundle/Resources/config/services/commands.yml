@@ -13,12 +13,12 @@ services:
         tags:
           - { name: console.command, command: 'coreshop:install:assets' }
 
-    coreshop.command.install.classes:
-        class: CoreShop\Bundle\CoreBundle\Command\InstallClassesCommand
+    coreshop.command.install.resources:
+        class: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
         parent: coreshop.command.install.abstract
         public: true
         tags:
-          - { name: console.command, command: 'coreshop:install:classes' }
+          - { name: console.command, command: 'coreshop:install:resources' }
 
     coreshop.command.install.database:
         class: CoreShop\Bundle\CoreBundle\Command\InstallDatabaseCommand

@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-final class InstallClassesCommand extends AbstractInstallCommand
+final class InstallResourcesCommand extends AbstractInstallCommand
 {
     /**
      * {@inheritdoc}
@@ -24,10 +24,10 @@ final class InstallClassesCommand extends AbstractInstallCommand
     protected function configure()
     {
         $this
-            ->setName('coreshop:install:classes')
-            ->setDescription('Install CoreShop Classes.')
+            ->setName('coreshop:install:resources')
+            ->setDescription('Install CoreShop Resources.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> command creates CoreShop Classes.
+The <info>%command.name%</info> command creates CoreShop Resources.
 EOT
             );
     }
