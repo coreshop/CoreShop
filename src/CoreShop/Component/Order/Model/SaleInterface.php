@@ -44,32 +44,10 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function setTotal($total, $withTax = true);
 
     /**
-     * @param int $total
-     * @param bool $withTax
-     */
-    public function setDiscount($total, $withTax = true);
-
-    /**
-     * @param int $totalTax
-     */
-    public function setTotalTax($totalTax);
-
-    /**
      * @param int $subtotal
      * @param bool $withTax
      */
     public function setSubtotal($subtotal, $withTax = true);
-
-    /**
-     * @param int $subtotalTax
-     */
-    public function setSubtotalTax($subtotalTax);
-
-    /**
-     * @param int $shipping
-     * @param bool $withTax
-     */
-    public function setShipping($shipping, $withTax = true);
 
     /**
      * @param int $taxRate
@@ -80,11 +58,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
      * @return int
      */
     public function getShippingTax();
-
-    /**
-     * @param int $shippingTax
-     */
-    public function setShippingTax($shippingTax);
 
     /**
      * @return Carbon
@@ -178,11 +151,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function getBaseTotalTax();
 
     /**
-     * @param int $totalTax
-     */
-    public function setBaseTotalTax($totalTax);
-
-    /**
      * @param bool $withTax
      * @return int
      */
@@ -200,21 +168,10 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function getBaseSubtotalTax();
 
     /**
-     * @param int $subtotalTax
-     */
-    public function setBaseSubtotalTax($subtotalTax);
-
-    /**
      * @param bool $withTax
      * @return int
      */
     public function getBaseDiscount($withTax = true);
-
-    /**
-     * @param int $discount
-     * @param bool $withTax
-     */
-    public function setBaseDiscount($discount, $withTax = true);
 
     /**
      * @return Fieldcollection
@@ -233,20 +190,9 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function getBaseShipping($withTax = true);
 
     /**
-     * @param int $shipping
-     * @param bool $withTax
-     */
-    public function setBaseShipping($shipping, $withTax = true);
-
-    /**
      * @return int
      */
     public function getBaseShippingTax();
-
-    /**
-     * @param int $shippingTax
-     */
-    public function setBaseShippingTax($shippingTax);
 
     /**
      * @return bool

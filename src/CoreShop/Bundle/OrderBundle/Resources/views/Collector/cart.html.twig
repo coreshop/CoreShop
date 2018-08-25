@@ -1,7 +1,7 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% if cart is defined %}
+    {% if collector.cart is not null %}
         {% set icon %}
             {{ include('@CoreShopOrder/Collector/Icon/cart.svg') }}
 

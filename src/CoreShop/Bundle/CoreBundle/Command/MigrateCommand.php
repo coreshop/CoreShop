@@ -12,10 +12,12 @@
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
+use CoreShop\Bundle\CoreBundle\Installer\Executor\CommandExecutor;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class AssetsInstallCommand extends AbstractInstallCommand
+final class MigrateCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -23,10 +25,11 @@ final class AssetsInstallCommand extends AbstractInstallCommand
     protected function configure()
     {
         $this
-            ->setName('coreshop:install:assets')
-            ->setDescription('Install CoreShop Assets.')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command install CoreShop Assets.
+            ->setName('coreshop:migrate')
+            ->setDescription('Execute CoreShop migrations.')
+            ->setHelp(
+                <<<EOT
+The <info>%command.name%</info> executes all CoreShop migrations.
 EOT
             );
     }
@@ -36,7 +39,11 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->runCommands(['assets:install' => ['--symlink']], $output);
+        $application = $this->getApplication();
+        $application->setCatchExceptions(false);
+
+        $commandExecutor = new CommandExecutor($input, $output, $application);
+        $commandExecutor->runCommand('pimcore:migrations:migrate', ['--bundle' => 'CoreShopCoreBundle'], $output);
 
         return 0;
     }

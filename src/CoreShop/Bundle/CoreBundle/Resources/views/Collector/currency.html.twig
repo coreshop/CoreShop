@@ -1,7 +1,7 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% if currency is defined %}
+    {% if collector.currency is not null %}
         {% set status_color = collector.currency is null ? 'red' : '' %}
 
         {% set icon %}
