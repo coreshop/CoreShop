@@ -13,5 +13,16 @@
 pimcore.registerNS('coreshop.order.order.create');
 pimcore.registerNS('coreshop.order.order.create.panel');
 coreshop.order.order.create.panel = Class.create(coreshop.order.sale.create.panel, {
-    type: 'order'
+    type: 'order',
+
+    prepareSuccessMessage: function(message, response) {
+        if (response.hasOwnProperty('reviseLink') && response.reviseLink) {
+            message += '<div class="coreshop-order-create-revise">';
+            message += '<span class="coreshop-order-create-revise-desc">' + t('coreshop_creating_order_finished_revise_link') + '</span>';
+            message += '<span class="coreshop-order-create-revise-link">' + response.reviseLink + '</span>';
+            message += '</div>';
+        }
+
+        return message;
+    },
 });

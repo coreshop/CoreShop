@@ -241,3 +241,17 @@
     color: #D27C82;
     border-radius: 5px;
 }
+
+.coreshop-order-create-revise {
+    padding: 10px;
+    margin: 10px 0 0 0;
+    background: #eee;
+}
+
+.coreshop-order-create-revise-desc {
+    display: block;
+}
+
+.coreshop-order-create-revise-link {
+    font-weight: bold;
+}

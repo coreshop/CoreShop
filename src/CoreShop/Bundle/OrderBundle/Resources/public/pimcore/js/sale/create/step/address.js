@@ -34,6 +34,10 @@ coreshop.order.sale.create.step.address = Class.create(coreshop.order.sale.creat
         return true;
     },
 
+    reset: function() {
+        this.panel.getForm().reset();
+    },
+
     getPriority: function () {
         return 40;
     },
@@ -96,9 +100,12 @@ coreshop.order.sale.create.step.address = Class.create(coreshop.order.sale.creat
                                 var address = this.addressStore.getById(value);
 
                                 this[addressDetailPanelKey].removeAll();
-                                this[addressDetailPanelKey].add(this.getAddressPanelForAddress(address.data));
 
-                                this[addressKey] = address.data;
+                                if (address) {
+                                    this[addressDetailPanelKey].add(this.getAddressPanelForAddress(address.data));
+
+                                    this[addressKey] = address.data;
+                                }
 
                                 this.eventManager.fireEvent('address.changed');
                                 this.eventManager.fireEvent('validation');
