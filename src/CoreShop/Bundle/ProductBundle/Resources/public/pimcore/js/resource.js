@@ -17,19 +17,8 @@ coreshop.product.resource = Class.create(coreshop.resource, {
     },
 
     openResource: function (item) {
-        if (item === 'products') {
-            this.openProducts();
-        } else if (item === 'product_price_rule') {
+        if (item === 'product_price_rule') {
             this.openProductPriceRule();
-        }
-    },
-
-    openProducts: function () {
-        try {
-            pimcore.globalmanager.get('coreshop_products').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('coreshop_products', new coreshop.product.grid());
         }
     },
 

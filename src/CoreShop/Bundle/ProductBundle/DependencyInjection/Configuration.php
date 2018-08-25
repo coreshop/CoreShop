@@ -195,7 +195,6 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopproduct/pimcore/js/resource.js')->end()
-                            ->scalarNode('product_grid')->defaultValue('/bundles/coreshopproduct/pimcore/js/grid.js')->end()
                             ->scalarNode('product_price_rule_panel')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/panel.js')->end()
                             ->scalarNode('product_price_rule_item')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/item.js')->end()
                             ->scalarNode('product_price_rule_action')->defaultValue('/bundles/coreshopproduct/pimcore/js/product/pricerule/action.js')->end()
