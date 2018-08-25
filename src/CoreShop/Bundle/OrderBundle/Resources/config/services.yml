@@ -68,3 +68,6 @@ services:
         arguments:
              - '@coreshop.repository.order'
              - '@coreshop.state_machine_applier'
+
+    coreshop.proportional_integer_distributor:
+        class: CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor

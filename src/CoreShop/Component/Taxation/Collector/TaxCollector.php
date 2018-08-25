@@ -85,20 +85,26 @@ class TaxCollector implements TaxCollectorInterface
          */
         $tax = $this->taxRateRepository->find($taxId);
 
-        if ($amount > 0 && $tax) {
-            if (!array_key_exists($tax->getId(), $usedTaxes)) {
-                /**
-                 * @var $item TaxItemInterface
-                 */
-                $item = $this->taxItemFactory->createNew();
-                $item->setName($tax->getName());
-                $item->setRate($tax->getRate());
-                $item->setAmount($amount);
+        if ($amount === 0) {
+            return;
+        }
 
-                $usedTaxes[$tax->getId()] = $item;
-            } else {
-                $usedTaxes[$tax->getId()]->setAmount($usedTaxes[$tax->getId()]->getAmount() + $amount);
-            }
+        if (!$tax instanceof TaxRateInterface) {
+            return;
+        }
+
+        if (!array_key_exists($tax->getId(), $usedTaxes)) {
+            /**
+             * @var $item TaxItemInterface
+             */
+            $item = $this->taxItemFactory->createNew();
+            $item->setName($tax->getName());
+            $item->setRate($tax->getRate());
+            $item->setAmount($amount);
+
+            $usedTaxes[$tax->getId()] = $item;
+        } else {
+            $usedTaxes[$tax->getId()]->setAmount($usedTaxes[$tax->getId()]->getAmount() + $amount);
         }
     }
 }

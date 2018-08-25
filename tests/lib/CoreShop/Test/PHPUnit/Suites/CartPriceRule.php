@@ -27,7 +27,6 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfiguratio
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
-use CoreShop\Component\Order\Cart\Calculator\CartDiscountCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
@@ -365,7 +364,7 @@ class CartPriceRule extends RuleTest
         $discountWt = $cart->getDiscount(true);
 
         $this->assertEquals(500, $discount);
-        $this->assertEquals(583, $discountWt);
+        $this->assertEquals(600, $discountWt);
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();
@@ -410,7 +409,7 @@ class CartPriceRule extends RuleTest
         $discount = $cart->getDiscount(false);
         $discountWt = $cart->getDiscount(true);
 
-        $this->assertEquals(428, $discount);
+        $this->assertEquals(417, $discount);
         $this->assertEquals(500, $discountWt);
 
         $this->getEntityManager()->remove($rule);

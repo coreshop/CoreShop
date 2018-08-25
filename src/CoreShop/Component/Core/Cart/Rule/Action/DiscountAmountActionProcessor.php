@@ -10,11 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\Cart\Rule\Action;
+namespace CoreShop\Component\Core\Cart\Rule\Action;
 
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
@@ -31,37 +32,37 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     protected $currencyRepository;
 
     /**
-     * @var CurrencyContextInterface
+     * @var DiscountApplierInterface
      */
-    protected $currencyContext;
+    protected $discountApplier;
 
     /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface $moneyConverter
-     * @param CurrencyContextInterface $currencyContext
+     * @param CurrencyConverterInterface     $moneyConverter
+     * @param CurrencyRepositoryInterface    $currencyRepository
+     * @param DiscountApplierInterface $discountApplier
      */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
-    {
-        $this->currencyRepository = $currencyRepository;
+    public function __construct(
+        CurrencyConverterInterface $moneyConverter,
+        CurrencyRepositoryInterface $currencyRepository,
+        DiscountApplierInterface $discountApplier
+    ) {
         $this->moneyConverter = $moneyConverter;
-        $this->currencyContext = $currencyContext;
+        $this->currencyRepository = $currencyRepository;
+        $this->discountApplier = $discountApplier;
     }
-
 
     /**
      * {@inheritdoc}
      */
     public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
-        $discountNet = $this->getDiscount($cart, false, $configuration);
-        $discountGross = $this->getDiscount($cart, true, $configuration);
+        $discount = $this->getDiscount($cart, $configuration);
 
-        if ($discountGross <= 0) {
+        if ($discount <= 0) {
             return false;
         }
 
-        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(false) + $discountNet, false);
-        $cartPriceRuleItem->setDiscount($cartPriceRuleItem->getDiscount(true) + $discountGross, true);
+        $this->discountApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $configuration['gross']);
 
         return true;
     }
@@ -77,34 +78,20 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    protected function getDiscount(CartInterface $cart, $withTax, array $configuration)
+    protected function getDiscount(CartInterface $cart, array $configuration)
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
-            $cartAmount = $cart->getTotal($withTax);
+            $cartAmount = $cart->getTotal(false);
         } else {
-            $cartAmount = $cart->getSubtotal($withTax);
+            $cartAmount = $cart->getSubtotal(false);
         }
 
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
 
-        if ($cart->getSubtotalTax() > 0) {
-            $cartAverageTax = $cart->getSubtotalTax() / $cart->getSubtotal(true);
-
-            if ($configuration['gross']) {
-                if (!$withTax) {
-                    $amount /= 1 + $cartAverageTax;
-                }
-            } else {
-                if ($withTax) {
-                    $amount *= 1 + $cartAverageTax;
-                }
-            }
-        }
-
-        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
     }
 
     /**
