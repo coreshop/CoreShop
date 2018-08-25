@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\Cart as BaseCart;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
@@ -25,15 +26,7 @@ class Cart extends BaseCart implements CartInterface
      */
     public function getShipping($withTax = true)
     {
-        return $withTax ? $this->getShippingGross() : $this->getShippingNet();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShipping($shipping, $withTax = true)
-    {
-        $withTax ? $this->setShippingGross($shipping) : $this->setShippingNet($shipping);
+        return $withTax ? $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, true) : $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, false);
     }
 
     /**
@@ -41,7 +34,7 @@ class Cart extends BaseCart implements CartInterface
      */
     public function getShippingTax()
     {
-        return $this->getShippingGross() - $this->getShippingNet();
+        return $this->getShipping(true) - $this->getShipping(false);
     }
 
     /**
@@ -59,50 +52,6 @@ class Cart extends BaseCart implements CartInterface
         }
 
         return $shippable;
-    }
-
-    /**
-     * calculates the total without discount.
-     *
-     * @param bool $withTax
-     *
-     * @return float
-     */
-    public function getTotalWithoutDiscount($withTax = true)
-    {
-        return parent::getTotalWithoutDiscount($withTax) + $this->getShipping($withTax);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShippingNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingNet($shippingNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShippingGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingGross($shippingGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

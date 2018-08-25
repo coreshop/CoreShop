@@ -145,6 +145,18 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setItemWeight($cartItem->getItemWeight());
         $saleItem->setTotalWeight($cartItem->getTotalWeight());
 
+        foreach ($cartItem->getAdjustments() as $adjustment) {
+            $saleItem->addAdjustment($adjustment);
+
+            $baseAdjustment = clone $adjustment;
+            $baseAdjustmentGross = $this->currencyConverter->convert($baseAdjustment->getAmount(true), $fromCurrency, $toCurrency);
+            $baseAdjustmentNet = $this->currencyConverter->convert($baseAdjustment->getAmount(false), $fromCurrency, $toCurrency);
+
+            $baseAdjustment->setAmount($baseAdjustmentGross, $baseAdjustmentNet);
+
+            $saleItem->addBaseAdjustment($baseAdjustment);
+        }
+
         foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
             $saleItem->setName($cartItem->getProduct()->getName($locale), $locale);
         }

@@ -18,6 +18,7 @@ use Pimcore\Model\DataObject\Fieldcollection;
 abstract class Sale extends AbstractProposal implements SaleInterface
 {
     use ProposalPriceRuleTrait;
+    use BaseAdjustableTrait;
 
     /**
      * {@inheritdoc}
@@ -624,5 +625,13 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     public function setBackendCreated($backendCreated)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateBaseAfterAdjustmentChange()
+    {
+
     }
 }

@@ -71,3 +71,11 @@ services:
 
     coreshop.proportional_integer_distributor:
         class: CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor
+
+    coreshop.custom_factory.adjustment:
+        class: CoreShop\Component\Order\Factory\AdjustmentFactory
+        decorates: coreshop.factory.adjustment
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@coreshop.custom_factory.adjustment.inner'

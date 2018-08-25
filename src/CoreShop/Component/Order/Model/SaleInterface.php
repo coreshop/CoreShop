@@ -17,7 +17,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface SaleInterface extends ProposalInterface, PimcoreModelInterface
+interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAdjustableInterface
 {
     /**
      * @param PurchasableInterface $product
@@ -42,6 +42,12 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @param bool $withTax
      */
     public function setTotal($total, $withTax = true);
+
+    /**
+     * @param int $total
+     * @param bool $withTax
+     */
+    public function setDiscount($total, $withTax = true);
 
     /**
      * @param int $totalTax

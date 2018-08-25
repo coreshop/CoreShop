@@ -14,7 +14,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
+interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface, BaseAdjustableInterface
 {
     /**
      * @param string $language

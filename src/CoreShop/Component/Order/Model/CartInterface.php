@@ -16,7 +16,10 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 
-interface CartInterface extends ProposalInterface, PimcoreModelInterface, StorageListInterface
+interface CartInterface extends
+    ProposalInterface,
+    PimcoreModelInterface,
+    StorageListInterface
 {
     /**
      * @param $order
@@ -64,15 +67,6 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
      * @return bool
      */
     public function hasPriceRule($priceRule);
-
-    /**
-     * calculates the total without discount.
-     *
-     * @param bool $withTax
-     *
-     * @return float
-     */
-    public function getTotalWithoutDiscount($withTax = true);
 
     /**
      * @return int

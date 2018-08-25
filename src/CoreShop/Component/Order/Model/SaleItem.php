@@ -17,6 +17,9 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterface
 {
+    use AdjustableTrait;
+    use BaseAdjustableTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -632,5 +635,21 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
     public function setBaseTotalTax($totalTax)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateAfterAdjustmentChange()
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateBaseAfterAdjustmentChange()
+    {
+
     }
 }
