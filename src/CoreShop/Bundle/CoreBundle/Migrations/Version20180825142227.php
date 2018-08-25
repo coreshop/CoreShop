@@ -151,7 +151,7 @@ class Version20180825142227 extends AbstractPimcoreMigration implements Containe
                 "visibleGridView" => false,
                 "visibleSearch" => false,
             ],
-            "basePdjustmentItems" => [
+            "baseAdjustmentItems" => [
                 "fieldtype" => "fieldcollections",
                 "phpdocType" => "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                 "allowedTypes" => [
