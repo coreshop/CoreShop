@@ -273,8 +273,27 @@ coreshop.order.sale.list = Class.create({
                         var label = new Ext.Toolbar.TextItem({
                             text: t('coreshop_order_list_filter') + ':'
                         });
+                        var toolbar = layout.down('toolbar');
 
-                        layout.down('toolbar').insert(2, [
+                        try {
+                            var searchAndMove = toolbar.down('[iconCls*=pimcore_icon_search]');
+                            var justChildrenCheckbox = toolbar.down('[name=onlyDirectChildren]');
+
+                            if (searchAndMove) {
+                                searchAndMove.next().destroy();
+                                searchAndMove.destroy();
+                            }
+
+                            if (justChildrenCheckbox) {
+                                justChildrenCheckbox.next().destroy();
+                                justChildrenCheckbox.destroy();
+                            }
+                        }
+                        catch (ex) {
+
+                        }
+
+                        toolbar.insert(2, [
                             label,
                             {
                                 xtype: 'combo',
