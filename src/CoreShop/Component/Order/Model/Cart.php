@@ -25,7 +25,6 @@ class Cart extends AbstractProposal implements CartInterface
     use ProposalPriceRuleTrait;
     use StoreAwareTrait;
     use CurrencyAwareTrait;
-    use AdjustableTrait;
 
     /**
      * {@inheritdoc}
@@ -177,13 +176,5 @@ class Cart extends AbstractProposal implements CartInterface
     public function setPaymentProvider($paymentProvider)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function recalculateAfterAdjustmentChange()
-    {
-
     }
 }

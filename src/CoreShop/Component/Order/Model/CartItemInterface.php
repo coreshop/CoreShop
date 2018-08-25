@@ -18,8 +18,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 interface CartItemInterface extends
     ProposalItemInterface,
     PimcoreModelInterface,
-    StorageListItemInterface,
-    AdjustableInterface
+    StorageListItemInterface
 {
     /**
      * @return bool

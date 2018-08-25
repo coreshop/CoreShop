@@ -19,8 +19,7 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 interface CartInterface extends
     ProposalInterface,
     PimcoreModelInterface,
-    StorageListInterface,
-    AdjustableInterface
+    StorageListInterface
 {
     /**
      * @param $order

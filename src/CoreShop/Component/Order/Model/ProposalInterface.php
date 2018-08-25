@@ -19,7 +19,12 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface
+interface ProposalInterface extends
+    ResourceInterface,
+    CurrencyAwareInterface,
+    StoreAwareInterface,
+    LocaleAwareInterface,
+    AdjustableInterface
 {
 
     /**

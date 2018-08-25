@@ -14,7 +14,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface ProposalItemInterface extends ResourceInterface
+interface ProposalItemInterface extends ResourceInterface, AdjustableInterface
 {
     /**
      * @return PurchasableInterface

@@ -127,6 +127,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
     {
         /**
          * @var $cart CartInterface
+         * @var $sale SaleInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($sale, SaleInterface::class);
@@ -170,6 +171,18 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setBaseSubtotalTax($cart->getSubtotalTax());
         $sale->setBaseDiscount($cart->getDiscount(true), true);
         $sale->setBaseDiscount($cart->getDiscount(false), false);
+
+        foreach ($cart->getAdjustments() as $adjustment) {
+            $sale->addAdjustment($adjustment);
+
+            $baseAdjustment = clone $adjustment;
+            $baseAdjustmentGross = $this->currencyConverter->convert($baseAdjustment->getAmount(true), $fromCurrencyCode, $toCurrencyCode);
+            $baseAdjustmentNet = $this->currencyConverter->convert($baseAdjustment->getAmount(false), $fromCurrencyCode, $toCurrencyCode);
+
+            $baseAdjustment->setAmount($baseAdjustmentGross, $baseAdjustmentNet);
+
+            $sale->addBaseAdjustment($baseAdjustment);
+        }
 
         $sale->setWeight($cart->getWeight());
 
