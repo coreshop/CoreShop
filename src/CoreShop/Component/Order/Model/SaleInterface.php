@@ -241,4 +241,14 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @param int $shippingTax
      */
     public function setBaseShippingTax($shippingTax);
+
+    /**
+     * @return bool
+     */
+    public function getBackendCreated();
+
+    /**
+     * @param bool $backendCreated
+     */
+    public function setBackendCreated($backendCreated);
 }
