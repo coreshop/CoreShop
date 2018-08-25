@@ -1,7 +1,7 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% if country is defined %}
+    {% if collector.country is not null %}
         {% set icon %}
             {{ include('@CoreShopAddress/Collector/Icon/country.svg') }}
             <span class="sf-toolbar-value">{{ collector.country.name|default('Undefined') }}</span>
