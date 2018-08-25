@@ -139,6 +139,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
             foreach ($configuration as $index => $config) {
                 $rule = $this->container->get('coreshop.factory.shipping_rule')->createNew();
                 $rule->setName($config['name']);
+                $rule->setActive(true);
 
                 foreach ($config['conditions'] as $cond) {
                     $condition = new Condition();
