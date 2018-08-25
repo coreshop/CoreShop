@@ -61,5 +61,6 @@ services:
         arguments:
             $migrationManager: '@Pimcore\Migrations\MigrationManager'
             $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
+            $installer: '@CoreShop\Bundle\CoreBundle\Installer'
         tags:
           - { name: console.command, command: 'coreshop:install' }
