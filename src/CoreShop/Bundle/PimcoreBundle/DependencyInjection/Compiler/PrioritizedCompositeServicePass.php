@@ -88,7 +88,7 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
             return;
         }
 
-        $container->setAlias($this->serviceId, $this->compositeId);
+        $container->setAlias($this->serviceId, $this->compositeId)->setPublic(true);
     }
 
     /**
