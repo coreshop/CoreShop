@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\InventoryBundle\Validator\Constraints;
 
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
+use CoreShop\Component\Inventory\Model\StockableInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\Constraint;
@@ -50,6 +51,10 @@ final class InStockValidator extends ConstraintValidator
 
         $stockable = $this->accessor->getValue($value, $constraint->stockablePath);
         if (null === $stockable) {
+            return;
+        }
+
+        if (!$stockable instanceof StockableInterface) {
             return;
         }
 
