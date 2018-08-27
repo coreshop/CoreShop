@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -30,6 +31,7 @@ final class AmountConfigurationType extends AbstractType
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
                 ],
             ])
             ->add('maxAmount', MoneyType::class, [

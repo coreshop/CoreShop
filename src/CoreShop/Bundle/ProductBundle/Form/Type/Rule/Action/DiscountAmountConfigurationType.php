@@ -18,6 +18,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -33,6 +34,7 @@ final class DiscountAmountConfigurationType extends AbstractType
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
                 ],
             ])
             ->add('currency', CurrencyChoiceType::class, [
