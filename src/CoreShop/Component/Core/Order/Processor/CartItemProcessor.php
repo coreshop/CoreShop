@@ -59,10 +59,23 @@ final class CartItemProcessor implements CartProcessorInterface
             $itemNetPrice = $this->productPriceCalculator->getPrice($product, false);
             $itemGrossPrice = $this->productPriceCalculator->getPrice($product, true);
 
+            if ($cart->getStore()->getUseGrossPrice()) {
+                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemGrossPrice * $item->getQuantity());
+
+                $item->setTotal($itemGrossPrice * $item->getQuantity(), true);
+                $item->setTotal($item->getTotal(true) - $totalTaxAmount, false);
+            }
+            else {
+                $totalTaxAmount = $taxCalculator->getTaxesAmount($itemNetPrice * $item->getQuantity());
+
+                $item->setTotal($itemNetPrice * $item->getQuantity(), false);
+                $item->setTotal($itemNetPrice * $item->getQuantity() + $totalTaxAmount, true);
+            }
+
+
             $item->setItemPrice($itemNetPrice, false);
             $item->setItemPrice($itemGrossPrice, true);
-            $item->setTotal($itemNetPrice * $item->getQuantity(), false);
-            $item->setTotal($taxCalculator->applyTaxes($itemNetPrice * $item->getQuantity()), true);
+            //$item->setTotal($itemNetPrice * $item->getQuantity() + $totalTaxAmount, true);
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, false), false);
             $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, true), true);
             $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, false), false);
