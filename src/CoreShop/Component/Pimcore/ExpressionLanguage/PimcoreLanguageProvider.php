@@ -20,17 +20,10 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 class PimcoreLanguageProvider implements ExpressionFunctionProviderInterface
 {
-    private $serviceCompiler;
-
-    public function __construct(callable $serviceCompiler = null)
-    {
-        $this->serviceCompiler = $serviceCompiler;
-    }
-
     public function getFunctions()
     {
         return array(
-            new ExpressionFunction('object', $this->serviceCompiler ?: function ($arg) {
+            new ExpressionFunction('object', function ($arg) {
                 return sprintf('\\Pimcore\\Model\\DataObject::getById(%s)', $arg);
             }, function (array $variables, $value) {
                 return DataObject::getById($value);

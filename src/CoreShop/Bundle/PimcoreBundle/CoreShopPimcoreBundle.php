@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\PimcoreBundle;
 
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\ExpressionLanguageServicePass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagImplementationLoaderPass;
@@ -72,6 +73,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         $container->addCompilerPass(new RegisterGridFilterPass());
         $container->addCompilerPass(new RegisterPimcoreDocumentTagImplementationLoaderPass());
         $container->addCompilerPass(new RegisterPimcoreDocumentTagPass());
+        $container->addCompilerPass(new ExpressionLanguageServicePass());
     }
 
     /**

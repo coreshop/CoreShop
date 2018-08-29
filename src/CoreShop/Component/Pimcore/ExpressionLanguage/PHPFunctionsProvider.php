@@ -17,13 +17,6 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
 {
-    private $serviceCompiler;
-
-    public function __construct(callable $serviceCompiler = null)
-    {
-        $this->serviceCompiler = $serviceCompiler;
-    }
-
     public function getFunctions()
     {
         return array(

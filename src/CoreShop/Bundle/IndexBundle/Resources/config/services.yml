@@ -168,6 +168,7 @@ services:
     coreshop.index.interpreter.expression:
         class: CoreShop\Component\Index\Interpreter\ExpressionInterpreter
         arguments:
+            - '@coreshop.expression_language'
             - '@service_container'
         tags:
           - { name: coreshop.index.interpreter, type: expression, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ExpressionInterpreterFormType}
