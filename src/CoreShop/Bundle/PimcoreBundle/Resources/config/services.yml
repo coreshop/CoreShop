@@ -53,3 +53,22 @@ services:
         class: CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor
         arguments:
             - '@event_dispatcher'
+
+    coreshop.expression_language:
+        class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
+
+    coreshop.expression_language.provider.pimcore:
+        class: CoreShop\Component\Pimcore\ExpressionLanguage\PimcoreLanguageProvider
+        tags:
+            - { name: coreshop.expression_language_provider }
+
+    coreshop.expression_language.provider.php:
+        class: CoreShop\Component\Pimcore\ExpressionLanguage\PHPFunctionsProvider
+        tags:
+            - { name: coreshop.expression_language_provider }
+
+    coreshop.expression_language.provider.symfony_container:
+        class: Symfony\Component\DependencyInjection\ExpressionLanguageProvider
+        tags:
+            - { name: coreshop.expression_language_provider }
+

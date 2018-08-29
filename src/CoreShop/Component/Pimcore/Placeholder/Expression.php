@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Pimcore\Placeholder;
 
-use CoreShop\Component\Pimcore\ExpressionLanguage\ExpressionLanguage;
 use Pimcore\Placeholder\AbstractPlaceholder;
 
 class Expression extends AbstractPlaceholder
@@ -30,7 +29,7 @@ class Expression extends AbstractPlaceholder
      */
     public function getReplacement()
     {
-        $expr = new ExpressionLanguage();
+        $expr = \Pimcore::getContainer()->get('coreshop.expression_language');
         $expression = $this->getPlaceholderConfig()->expression;
 
         return $expr->evaluate($expression, [

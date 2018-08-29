@@ -15,20 +15,27 @@ namespace CoreShop\Component\Index\Interpreter;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class ExpressionInterpreter implements InterpreterInterface
 {
+    /**
+     * @var ExpressionLanguage
+     */
+    protected $expressionLanguage;
+
     /**
      * @var ContainerInterface
      */
     protected $container;
 
     /**
+     * @param ExpressionLanguage $expressionLanguage
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
     {
+        $this->expressionLanguage = $expressionLanguage;
         $this->container = $container;
     }
 
@@ -39,9 +46,7 @@ class ExpressionInterpreter implements InterpreterInterface
     {
         $expression = $interpreterConfig['expression'];
 
-        $expr = new ExpressionLanguage();
-
-        return $expr->evaluate($expression, [
+        return $this->expressionLanguage->evaluate($expression, [
             'value' => $value,
             'object' => $indexable,
             'config' => $config,
