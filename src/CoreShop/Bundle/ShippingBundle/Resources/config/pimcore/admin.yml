@@ -1,0 +1,30 @@
+core_shop_shipping:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshopshipping/pimcore/js/resource.js'
+            carrier_item: '/bundles/coreshopshipping/pimcore/js/carrier/item.js'
+            carrier_panel: '/bundles/coreshopshipping/pimcore/js/carrier/panel.js'
+            shipping_rule_item: '/bundles/coreshopshipping/pimcore/js/shippingrule/item.js'
+            shipping_rule_panel: '/bundles/coreshopshipping/pimcore/js/shippingrule/panel.js'
+            shipping_rule_action: '/bundles/coreshopshipping/pimcore/js/shippingrule/action.js'
+            shipping_rule_condition: '/bundles/coreshopshipping/pimcore/js/shippingrule/condition.js'
+            shipping_rule_actions_addition_amount: '/bundles/coreshopshipping/pimcore/js/shippingrule/actions/additionAmount.js'
+            shipping_rule_actions_addition_percent: '/bundles/coreshopshipping/pimcore/js/shippingrule/actions/additionPercent.js'
+            shipping_rule_actions_discount_amount: '/bundles/coreshopshipping/pimcore/js/shippingrule/actions/discountAmount.js'
+            shipping_rule_actions_discount_percent: '/bundles/coreshopshipping/pimcore/js/shippingrule/actions/discountPercent.js'
+            shipping_rule_actions_price: '/bundles/coreshopshipping/pimcore/js/shippingrule/actions/price.js'
+            shipping_rule_actions_shipping_rule: '/bundles/coreshopshipping/pimcore/js/shippingrule/actions/shippingRule.js'
+            shipping_rule_conditions_amount: '/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/amount.js'
+            shipping_rule_conditions_dimension: '/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/dimension.js'
+            shipping_rule_conditions_nested: '/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/nested.js'
+            shipping_rule_conditions_postcodes: '/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/postcodes.js'
+            shipping_rule_conditions_shippingRule: '/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/shippingRule.js'
+            shipping_rule_conditions_weight: '/bundles/coreshopshipping/pimcore/js/shippingrule/conditions/weight.js'
+            core_extension_data_carrier: '/bundles/coreshopshipping/pimcore/js/coreExtension/data/coreShopCarrier.js'
+            core_extension_tag_carrier: '/bundles/coreshopshipping/pimcore/js/coreExtension/tags/coreShopCarrier.js'
+            core_extension_data_carrier_multiselect: '/bundles/coreshopshipping/pimcore/js/coreExtension/data/coreShopCarrierMultiselect.js'
+            core_extension_tag_carrier_multiselect: '/bundles/coreshopshipping/pimcore/js/coreExtension/tags/coreShopCarrierMultiselect.js'
+        css:
+            shipping: '/bundles/coreshopshipping/pimcore/css/shipping.css'
+        editmode_js:
+            core_extension_document_tag_carrier: '/bundles/coreshopshipping/pimcore/js/coreExtension/document/coreShopCarrier.js'

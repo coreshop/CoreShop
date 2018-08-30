@@ -1,0 +1,25 @@
+core_shop_address:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshopaddress/pimcore/js/resource.js'
+            resource_country: '/bundles/coreshopaddress/pimcore/js/resource/country.js'
+            resource_state: '/bundles/coreshopaddress/pimcore/js/resource/state.js'
+            resource_zone: '/bundles/coreshopaddress/pimcore/js/resource/zone.js'
+            country_item: '/bundles/coreshopaddress/pimcore/js/country/item.js'
+            country_panel: '/bundles/coreshopaddress/pimcore/js/country/panel.js'
+            state_item: '/bundles/coreshopaddress/pimcore/js/state/item.js'
+            state_panel: '/bundles/coreshopaddress/pimcore/js/state/panel.js'
+            zone_item: '/bundles/coreshopaddress/pimcore/js/zone/item.js'
+            zone_panel: '/bundles/coreshopaddress/pimcore/js/zone/panel.js'
+            core_extension_data_country: '/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopCountry.js'
+            core_extension_tag_country: '/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopCountry.js'
+            core_extension_data_country_multiselect: '/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopCountryMultiselect.js'
+            core_extension_tag_country_multiselect: '/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopCountryMultiselect.js'
+            core_extension_data_state: '/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopState.js'
+            core_extension_tag_state: '/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopState.js'
+        css:
+            address: '/bundles/coreshopaddress/pimcore/css/address.css'
+        editmode_js:
+            core_extension_document_tag_country: '/bundles/coreshopaddress/pimcore/js/coreExtension/document/coreShopCountry.js'
+            core_extension_document_tag_state: '/bundles/coreshopaddress/pimcore/js/coreExtension/document/coreShopState.js'
+            core_extension_document_tag_zone: '/bundles/coreshopaddress/pimcore/js/coreExtension/document/coreShopZone.js'

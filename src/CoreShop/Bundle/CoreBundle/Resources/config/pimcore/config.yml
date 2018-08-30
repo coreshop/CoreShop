@@ -1,4 +1,5 @@
 imports:
+    - { resource: "admin.yml" }
     - { resource: "coreshop.yml" }
     - { resource: "security.yml" }
     - { resource: "payum.yml" }
