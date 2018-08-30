@@ -49,7 +49,7 @@ Feature: In Order to make checkout easier
     Then the cart shipping should be "2000" excluding tax
 
   Scenario: When I change my cart, It should automatically invalidate the carrier and resolve a new default carrier
-    Given the shipping rule "post" has a condition amount from "0" to "150"
+    Given the shipping rule "post" has a condition amount from "1" to "150"
     And the site has another carrier "DPD"
     And adding a shipping rule named "DPD"
     And the shipping rule is active
