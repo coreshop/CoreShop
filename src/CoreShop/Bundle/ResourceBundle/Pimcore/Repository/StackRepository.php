@@ -11,12 +11,7 @@ class StackRepository extends PimcoreRepository
     /**
      * @var array
      */
-    private $classNames = [];
-
-    /**
-     * @var array
-     */
-    private $fqnStackClasses = [];
+    private $stackClasses = [];
 
     /**
      * @var string
@@ -33,12 +28,9 @@ class StackRepository extends PimcoreRepository
         parent::__construct($metadata);
 
         $this->interface = $interface;
-        $this->fqnStackClasses = $stackClasses;
 
         foreach ($stackClasses as $class) {
-            $namespaces = explode('\\', $class);
-           
-            $this->classNames[] = '"'.end($namespaces).'"';
+            $this->stackClasses[] = '"'.$class.'"';
         }
     }
 
@@ -49,7 +41,7 @@ class StackRepository extends PimcoreRepository
     {
         $ids = [];
 
-        foreach ($this->fqnStackClasses as $stackClass) {
+        foreach ($this->stackClasses as $stackClass) {
             $ids[] = $stackClass::classId();
         }
 
@@ -72,7 +64,7 @@ class StackRepository extends PimcoreRepository
     public function getList()
     {
         $list = DataObject::getList();
-        $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));
+        $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->stackClasses)));
 
         return $list;
     }
@@ -97,7 +89,7 @@ class StackRepository extends PimcoreRepository
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $criteria[] = [
-            'variable' => implode(',', $this->classNames),
+            'variable' => implode(',', $this->stackClasses),
         ];
 
         return parent::findBy($criteria, $orderBy, $limit, $offset);
