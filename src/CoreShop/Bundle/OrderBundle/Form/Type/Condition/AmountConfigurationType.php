@@ -15,6 +15,9 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 final class AmountConfigurationType extends AbstractType
 {
@@ -24,8 +27,20 @@ final class AmountConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('minAmount', MoneyType::class)
-            ->add('maxAmount', MoneyType::class);
+            ->add('minAmount', MoneyType::class, [
+                'constraints' => [
+                    new NotBlank(['groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
+                ],
+            ])
+            ->add('maxAmount', MoneyType::class, [
+                'constraints' => [
+                    new NotBlank(['groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
+                ],
+            ]);
     }
 
     /**

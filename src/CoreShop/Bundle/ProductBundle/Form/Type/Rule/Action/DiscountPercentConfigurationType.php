@@ -31,7 +31,7 @@ final class DiscountPercentConfigurationType extends AbstractType
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new Range(['min' => 0, 'max' => 100]),
+                    new Range(['min' => 0, 'max' => 100, 'groups' => ['coreshop']]),
                 ],
             ]);
     }
