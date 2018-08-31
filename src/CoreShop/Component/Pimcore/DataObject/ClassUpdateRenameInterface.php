@@ -12,8 +12,9 @@
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
-use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
-
+/**
+ * @experimental Use with caution only, this is a new experimental feature
+ */
 interface ClassUpdateRenameInterface
 {
     /**

@@ -19,6 +19,9 @@ use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Objectbrick;
 use Pimcore\Tool;
 
+/**
+ * @experimental Use with caution only, this is a new experimental feature
+ */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {
     /**

@@ -16,6 +16,9 @@ use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Objectbrick;
 
+/**
+ * @experimental Use with caution only, this is a new experimental feature
+ */
 interface DefinitionFieldReNamerInterface
 {
     /**
@@ -23,8 +26,14 @@ interface DefinitionFieldReNamerInterface
      */
     public function rename();
 
+    /**
+     * @return string
+     */
     public function getOldFieldName();
 
+    /**
+     * @return mixedstring
+     */
     public function getNewFieldName();
 
     /**
