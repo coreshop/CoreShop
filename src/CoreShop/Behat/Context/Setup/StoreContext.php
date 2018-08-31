@@ -95,6 +95,7 @@ final class StoreContext implements Context
     {
         $store = $this->createStore('Austria');
 
+        $this->fixedStoreContext->setStore($store);
         $this->saveStore($store);
     }
 
@@ -109,7 +110,7 @@ final class StoreContext implements Context
     }
 
     /**
-     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$
+     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$/
      */
     public function siteHasAStoreWithCountryAndCurrency($name, CountryInterface $country, CurrencyInterface $currency)
     {
@@ -119,7 +120,7 @@ final class StoreContext implements Context
     }
 
     /**
-     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+") and gross values$
+     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+") and gross values$/
      */
     public function siteHasAStoreWithCountryAndCurrencyAndGrossValues($name, CountryInterface $country, CurrencyInterface $currency)
     {
@@ -190,7 +191,5 @@ final class StoreContext implements Context
         $this->entityManager->flush();
 
         $this->sharedStorage->set('store', $store);
-
-        $this->fixedStoreContext->setStore($store);
     }
 }

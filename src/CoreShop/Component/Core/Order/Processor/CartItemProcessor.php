@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 final class CartItemProcessor implements CartProcessorInterface
 {
@@ -59,17 +60,22 @@ final class CartItemProcessor implements CartProcessorInterface
             $itemNetPrice = $this->productPriceCalculator->getPrice($product, false);
             $itemGrossPrice = $this->productPriceCalculator->getPrice($product, true);
 
-            if ($cart->getStore()->getUseGrossPrice()) {
-                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemGrossPrice * $item->getQuantity());
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                if ($cart->getStore()->getUseGrossPrice()) {
+                    $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemGrossPrice * $item->getQuantity());
 
-                $item->setTotal($itemGrossPrice * $item->getQuantity(), true);
-                $item->setTotal($item->getTotal(true) - $totalTaxAmount, false);
+                    $item->setTotal($itemGrossPrice * $item->getQuantity(), true);
+                    $item->setTotal($item->getTotal(true) - $totalTaxAmount, false);
+                } else {
+                    $totalTaxAmount = $taxCalculator->getTaxesAmount($itemNetPrice * $item->getQuantity());
+
+                    $item->setTotal($itemNetPrice * $item->getQuantity(), false);
+                    $item->setTotal($itemNetPrice * $item->getQuantity() + $totalTaxAmount, true);
+                }
             }
             else {
-                $totalTaxAmount = $taxCalculator->getTaxesAmount($itemNetPrice * $item->getQuantity());
-
                 $item->setTotal($itemNetPrice * $item->getQuantity(), false);
-                $item->setTotal($itemNetPrice * $item->getQuantity() + $totalTaxAmount, true);
+                $item->setTotal($itemGrossPrice * $item->getQuantity(), true);
             }
 
 
