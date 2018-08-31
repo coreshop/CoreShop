@@ -91,12 +91,22 @@ final class StoreContext implements Context
     /**
      * @Given the site operates on a store in "Austria"
      */
-    public function storeOperatesOnASingleChannelInAustria()
+    public function storeOperatesOnASingleStoreInAustria()
     {
         $store = $this->createStore('Austria');
 
         $this->fixedStoreContext->setStore($store);
+        $this->saveStore($store);
+    }
 
+    /**
+     * @Given the site operates on a store in "Austria" with gross values
+     */
+    public function storeOperatesOnASingleStoreInAustriaWithGrossValues()
+    {
+        $store = $this->createStore('Austria', null, null, true);
+
+        $this->fixedStoreContext->setStore($store);
         $this->saveStore($store);
     }
 
@@ -111,12 +121,22 @@ final class StoreContext implements Context
     }
 
     /**
+     * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+") and gross values$/
+     */
+    public function siteHasAStoreWithCountryAndCurrencyAndGrossValues($name, CountryInterface $country, CurrencyInterface $currency)
+    {
+        $store = $this->createStore($name, $currency, $country, true);
+
+        $this->saveStore($store);
+    }
+
+    /**
      * @param $name
      * @param CurrencyInterface|null $currency
      * @param CountryInterface|null $country
      * @return StoreInterface
      */
-    private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null)
+    private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null, $grossValues = false)
     {
         /**
          * @var $store StoreInterface
@@ -158,6 +178,7 @@ final class StoreContext implements Context
         $store->setCurrency($currency);
         $store->setBaseCountry($country);
         $store->addCountry($country);
+        $store->setUseGrossPrice($grossValues);
 
         return $store;
     }

@@ -15,6 +15,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroup;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -31,20 +32,28 @@ final class CartTaxProcessor implements CartProcessorInterface
     private $taxCollector;
 
     /**
+     * @var AddressProviderInterface
+     */
+    private $defaultAddressProvider;
+
+    /**
      * @var TaxCalculatorFactoryInterface
      */
     private $taxCalculationFactory;
 
     /**
      * @param TaxCollectorInterface $taxCollector
+     * @param AddressProviderInterface $defaultAddressProvider
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
      */
     public function __construct(
         TaxCollectorInterface $taxCollector,
+        AddressProviderInterface $defaultAddressProvider,
         TaxCalculatorFactoryInterface $taxCalculatorFactory
     )
     {
         $this->taxCollector = $taxCollector;
+        $this->defaultAddressProvider = $defaultAddressProvider;
         $this->taxCalculationFactory = $taxCalculatorFactory;
     }
 
@@ -86,14 +95,20 @@ final class CartTaxProcessor implements CartProcessorInterface
             return $usedTaxes;
         }
 
-        if (null === $cart->getShippingAddress()) {
+        $address = $cart->getShippingAddress();
+
+        if (null === $address) {
+            $address = $this->defaultAddressProvider->getAddress($cart);
+        }
+
+        if (null === $address) {
             return $usedTaxes;
         }
 
         $carrier = $cart->getCarrier();
 
         if ($carrier instanceof Carrier && $carrier->getTaxRule() instanceof TaxRuleGroup) {
-            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($cart->getCarrier()->getTaxRule(), $cart->getShippingAddress());
+            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($cart->getCarrier()->getTaxRule(), $address);
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 $cart->setShippingTaxRate($taxCalculator->getTotalRate());
