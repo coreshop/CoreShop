@@ -106,6 +106,7 @@ final class StoreContext implements Context
     {
         $store = $this->createStore('Austria', null, null, true);
 
+        $this->fixedStoreContext->setStore($store);
         $this->saveStore($store);
     }
 
