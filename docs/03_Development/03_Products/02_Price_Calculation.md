@@ -9,6 +9,14 @@ These two are only the default implementations, if you need a custom Calculator,
 [```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Product/Calculator/ProductPriceCalculatorInterface.php) and register your service with the tag
 ```coreshop.product.price_calculator```, a ```type``` attribute and a ```priority```
 
+## What prices does CoreShop calculate?
+
+CoreShop Price Calculation consists of 3 different prices:
+
+ - **Retail Price**: Base Price without any discounts
+ - **Discount Price**: Special Price for promotions. Needs to return a price smaller than retail price, otherwise retail price is valid
+ - **Price**: Retail Price or Discount Price (if available) minus discount rules
+
 ## Calculator Service
 If you want to calculate the Price for a Product, you need to use a special service to do that. There are two options:
 
@@ -25,15 +33,11 @@ If you want to calculate the price within a Template, you can do so by using the
 ```php
 <?php
 echo $this->coreshop_product_price($product);
-
-?>
 ```
 
 ```twig
 {{ (product|coreshop_product_price(true)) }}
 ```
-
-</div>
 
 ## Custom Price Calculator Example
 
@@ -50,14 +54,28 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 final class CustomPriceCalculator implements ProductPriceCalculatorInterface
 {
+    /**
+     * Used to determine a retail price
+     */
     public function getPrice(ProductInterface $subject)
     {
         return $subject->getPrice() - 1;
     }
 
+    /**
+     * Used to determine a discount
+     */
     public function getDiscount(ProductInterface $subject, $price)
     {
         return -1;
+    }
+
+    /**
+     * Used to determine a discounted price
+     */
+    public function getDiscountPrice(ProductInterface $subject)
+    {
+        return null;
     }
 }
 ```

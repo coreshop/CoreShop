@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.order_invoice.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments: ['@coreshop.sequence.generator', 'invoice']

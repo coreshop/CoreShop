@@ -63,6 +63,28 @@
                                 "invisible": false,
                                 "visibleGridView": true,
                                 "visibleSearch": true
+                            },
+                            {
+                                "fieldtype": "textarea",
+                                "width": "",
+                                "height": "",
+                                "queryColumnType": "longtext",
+                                "columnType": "longtext",
+                                "phpdocType": "string",
+                                "name": "description",
+                                "title": "Description",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "name": "localizedfields",

@@ -1,18 +1,11 @@
 jms_serializer:
     metadata:
         directories:
-            pimcore:
+            coreshop-resource:
                 namespace_prefix: "Pimcore"
                 path: "@CoreShopResourceBundle/Resources/config/serializer"
 
-pimcore:
-    objects:
-        class_definitions:
-            data:
-                map:
-                    coreShopSerializedData: CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData
-
-
-framework:
-    workflows:
-        enabled: true
+doctrine:
+    dbal:
+        types:
+            pimcoreObject: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject

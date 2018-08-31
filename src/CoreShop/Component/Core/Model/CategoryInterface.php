@@ -8,15 +8,19 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface as BaseCategoryInterface;
+use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
+use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 
-
-interface CategoryInterface extends BaseCategoryInterface
+interface CategoryInterface extends
+    BaseCategoryInterface,
+    PimcoreSEOAwareInterface,
+    SEOOpenGraphAwareInterface
 {
     /**
      * @return FilterInterface

@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -49,12 +51,32 @@ class OrderController extends FrontendController
         }
 
         $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
-            'store' => $order->getStore(),
+            'payment_subject' => $order,
         ]);
 
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);
-            if ($form->isValid()) {
+
+            if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
+                $this->get('coreshop.state_machine_applier')->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
+                $cart = $this->get('coreshop.repository.cart')->findCartByOrder($order);
+
+                if ($cart instanceof CartInterface) {
+                    $cart->setOrder(null);
+
+                    $this->get('coreshop.cart.manager')->persistCart($cart);
+
+                    $session = $request->getSession();
+                    $session->set(
+                        sprintf('%s.%s', $this->getParameter('coreshop.session.cart'), $cart->getStore()->getId()),
+                        $cart->getId()
+                    );
+
+                    return $this->redirectToRoute('coreshop_cart_summary');
+                }
+
+                return $this->redirectToRoute('coreshop_index');
+            } else if ($form->isValid()) {
                 $order = $form->getData();
                 $order->save();
 
@@ -63,12 +85,12 @@ class OrderController extends FrontendController
         }
 
         $args = [
-            'order'   => $order,
+            'order' => $order,
             'payment' => $payment,
-            'form'    => $form->createView()
+            'form' => $form->createView()
         ];
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Order:revise.html.twig', $args);
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
     }
 
     /**

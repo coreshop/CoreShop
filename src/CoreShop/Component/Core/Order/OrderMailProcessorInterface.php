@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Order;
 
@@ -19,9 +19,9 @@ interface OrderMailProcessorInterface
     /**
      * @param $emailDocument
      * @param OrderInterface $order
-     * @param bool           $sendInvoices
-     * @param bool           $sendShipments
-     * @param array          $params
+     * @param bool $sendInvoices
+     * @param bool $sendShipments
+     * @param array $params
      */
     public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = []);
 }

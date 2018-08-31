@@ -8,15 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 
-class CurrenciesConditionChecker implements ConditionCheckerInterface
+final class CurrenciesConditionChecker implements ConditionCheckerInterface
 {
     /**
      * @var CurrencyContextInterface
@@ -34,7 +36,7 @@ class CurrenciesConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
         $currency = $this->currencyContext->getCurrency();
 

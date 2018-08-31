@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
@@ -29,9 +29,10 @@ final class UserTypeConfigurationType extends AbstractType
                 'choices' => [
                     UserTypeChecker::TYPE_PASSWORD_RESET,
                     UserTypeChecker::TYPE_REGISTER,
+                    UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
+                    UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED
                 ],
-            ])
-        ;
+            ]);
     }
 
     /**

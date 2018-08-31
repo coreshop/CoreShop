@@ -17,11 +17,11 @@
         {{ form_row(form.acceptTerms) }}
 
         <div class="row">
-            <div class="col-xs-12 col-sm-1 col-sm-push-10">
-                <button type="submit" name="checkout_finisher" value="{{ path('coreshop_cart_create_qoute') }}" class="btn btn-main w-100">{{ 'coreshop.ui.quote'|trans }}</button>
+            <div class="col-12 col-sm-1 offset-sm-10">
+                <button type="submit" name="checkout_finisher" value="{{ coreshop_path(cart, 'coreshop_cart_create_qoute') }}" class="btn btn-success w-100">{{ 'coreshop.ui.quote'|trans }}</button>
             </div>
-            <div class="col-xs-12 col-sm-1 col-sm-push-10">
-                <button type="submit" name="checkout_finisher" value="{{ path('coreshop_checkout_do') }}" class="btn btn-main w-100">{{ 'coreshop.ui.buy'|trans }}</button>
+            <div class="col-12 col-sm-1">
+                <button type="submit" name="checkout_finisher" value="{{ coreshop_path(cart, 'coreshop_checkout_do') }}" class="btn btn-success w-100">{{ 'coreshop.ui.buy'|trans }}</button>
             </div>
         </div>
 

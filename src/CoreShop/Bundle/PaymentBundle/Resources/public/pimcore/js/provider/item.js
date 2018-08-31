@@ -23,6 +23,10 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         return [this.getFormPanel()];
     },
 
+    getTitleText: function () {
+        return this.data.identifier;
+    },
+
     getFormPanel: function () {
         var data = this.data,
             langTabs = [];
@@ -34,10 +38,10 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 layout: 'form',
                 items: [{
                     xtype: 'textfield',
-                    name: 'translations.' + lang + '.name',
-                    fieldLabel: t('name'),
+                    name: 'translations.' + lang + '.title',
+                    fieldLabel: t('title'),
                     width: 400,
-                    value: data.translations[lang] ? data.translations[lang].name : ''
+                    value: data.translations[lang] ? data.translations[lang].title : ''
                 }, {
                     xtype: 'textarea',
                     name: 'translations.' + lang + '.description',
@@ -75,6 +79,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             },
             {
                 xtype: 'combobox',
+                itemId: 'paymentFactory',
                 fieldLabel: t('coreshop_payment_provider_factory'),
                 name: 'gatewayConfig.factoryName',
                 length: 255,
@@ -83,6 +88,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 valueField: 'type',
                 displayField: 'name',
                 queryMode: 'local',
+                readOnly: this.data.gatewayConfig && this.data.gatewayConfig.factoryName ? true : false,
                 listeners: {
                     change: function (combo, newValue) {
                         this.getGatewayConfigPanel().removeAll();
@@ -114,7 +120,11 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             buttons: [
                 {
                     text: t('save'),
-                    handler: this.save.bind(this),
+                    handler: this.save.bind(this, function(res) {
+                        if (res.success) {
+                            this.formPanel.down('#paymentFactory').setReadOnly(true);
+                        }
+                    }.bind(this)),
                     iconCls: 'pimcore_icon_apply'
                 }
             ],

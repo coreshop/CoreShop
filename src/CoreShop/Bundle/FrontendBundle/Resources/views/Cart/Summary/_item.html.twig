@@ -1,12 +1,13 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
+{% set productUrl = coreshop_path(item.getProduct(), 'coreshop_product_detail') %}
 
 <tr class="shopping-cart-item">
     <td class="text-center">
         {% if item.getProduct and item.getProduct.getImage() %}
             <a class="" href="{{ productUrl }}">
-                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
             </a>
         {% endif %}
     </td>
@@ -27,22 +28,22 @@
     </td>
     <td class="text-right cart-item-price">
         {% set price = item.getItemPrice %}
+        {% set discount = item.getItemDiscount %}
+        {% set discountPrice = item.getItemDiscountPrice %}
         {% set retailPrice = item.getItemRetailPrice %}
 
-        {% if price != retailPrice %}
-            <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+        <span class="price-new">{{ currency.convertAndFormat(price) }}</span>
+        {% if price < discountPrice %}
+            <span class="price-old">{{ currency.convertAndFormat(discountPrice) }} {% if discount > 0 %}(-{{ currency.convertAndFormat(discount) }}{% endif %})</span>
         {% endif %}
-
-        {{ currency.convertAndFormat(price) }}
     </td>
     <td class="text-right cart-item-total-price">
         {{ currency.convertAndFormat(item.getTotal) }}
     </td>
     <td class="text-center">
         {% if not item.getIsGiftItem %}
-            <a href="{{ path('coreshop_cart_remove', {cartItem: item.getId}) }}" type="button"
-               title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromCart"
-               data-id="{{ item.getId }}">
+            <a href="{{ coreshop_path(cart, 'coreshop_cart_remove', {cartItem: item.getId}) }}"
+               title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ item.getId }}">
                 <i class="fa fa-times-circle"></i>
             </a>
         {% endif %}

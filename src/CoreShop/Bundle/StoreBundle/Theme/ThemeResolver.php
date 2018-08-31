@@ -42,8 +42,8 @@ final class ThemeResolver implements ThemeResolverInterface
     public function __construct(
         ActiveTheme $activeTheme,
         StoreContextInterface $storeContext,
-        RepositoryInterface $storeRepository)
-
+        RepositoryInterface $storeRepository
+    )
     {
         $this->activeTheme = $activeTheme;
         $this->storeContext = $storeContext;
@@ -65,6 +65,10 @@ final class ThemeResolver implements ThemeResolverInterface
             }
         }
 
+        if (!in_array('standard', $themes)) {
+            $themes[] = 'standard';
+        }
+
         $this->activeTheme->setThemes($themes);
 
         try {
@@ -73,8 +77,7 @@ final class ThemeResolver implements ThemeResolverInterface
             if ($theme = $store->getTemplate()) {
                 $this->activeTheme->setName($theme);
             }
-        }
-        catch (StoreNotFoundException $exception) {
+        } catch (StoreNotFoundException $exception) {
 
         }
     }

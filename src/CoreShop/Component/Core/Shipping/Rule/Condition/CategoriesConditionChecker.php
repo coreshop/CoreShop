@@ -8,19 +8,35 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 
-class CategoriesConditionChecker extends AbstractConditionChecker
+final class CategoriesConditionChecker extends AbstractConditionChecker
 {
+    use CategoriesConditionCheckerTrait {
+        CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
+    }
+
+    /**
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param StoreContextInterface $storeContext
+     */
+    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    {
+        $this->__traitConstruct($categoryRepository, $storeContext);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,11 +44,17 @@ class CategoriesConditionChecker extends AbstractConditionChecker
     {
         $cartItems = $shippable->getItems();
 
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
+
         foreach ($cartItems as $item) {
             if ($item->getProduct() instanceof ProductInterface) {
+                if (!is_array($item->getProduct()->getCategories())) {
+                    continue;
+                }
+
                 foreach ($item->getProduct()->getCategories() as $category) {
                     if ($category instanceof ResourceInterface) {
-                        if (in_array($category->getId(), $configuration['categories'])) {
+                        if (in_array($category->getId(), $categoryIdsToCheck)) {
                             return true;
                         }
                     }

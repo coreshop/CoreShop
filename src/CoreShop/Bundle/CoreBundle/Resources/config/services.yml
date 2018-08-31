@@ -9,7 +9,6 @@ imports:
     - { resource: "services/rules.yml" }
     - { resource: "services/installer.yml" }
     - { resource: "services/notification.yml" }
-    - { resource: "services/cart-price-rules.yml" }
     - { resource: "services/profiler.yml" }
     - { resource: "services/order.yml" }
     - { resource: "services/tracking.yml" }
@@ -23,10 +22,15 @@ imports:
     - { resource: "services/commands.yml" }
     - { resource: "services/locale.yml" }
     - { resource: "services/payment.yml" }
+    - { resource: "services/grid_config.yml" }
+    - { resource: "services/routing.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.core.key_transformer:
-        class: CoreShop\Component\Core\Transformer\PimcoreKeyTransformer
+        class: CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer
 
     coreshop.taxation.factory.tax_calculator:
         class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
@@ -46,7 +50,7 @@ services:
             - '@coreshop.taxation.factory.cached_tax_calculator.inner'
 
     coreshop.security.customer.user_provider:
-        class: CoreShop\Bundle\CoreBundle\ObjectUserProvider
+        class: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
         arguments:
             - '%coreshop.model.customer.class%'
             - 'email'
@@ -57,13 +61,16 @@ services:
             - Pimcore\Security\Encoder\PasswordFieldEncoder
             - ['password']
 
-    coreshop.configuration.service:
+    coreshop.core.configuration.service:
         class: CoreShop\Component\Core\Configuration\ConfigurationService
+        decorates: coreshop.configuration.service
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@coreshop.repository.configuration'
             - '@coreshop.factory.configuration'
             - '@coreshop.context.store'
 
-
-
+    coreshop.provider.store_based_default_address_provider:
+        class: CoreShop\Component\Core\Provider\StoreBasedAddressProvider
+        arguments:
+            - '@coreshop.factory.address'

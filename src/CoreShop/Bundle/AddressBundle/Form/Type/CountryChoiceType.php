@@ -8,13 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -36,11 +38,21 @@ final class CountryChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['multiple']) {
+            $builder->addModelTransformer(new CollectionToArrayTransformer());
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => function(Options $options) {
                     if (null === $options['active']) {
                         $countries = $this->countryRepository->findAll();
                     } else {
@@ -51,7 +63,7 @@ final class CountryChoiceType extends AbstractType
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($countries, function ($a, $b) {
+                    @usort($countries, function($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 
@@ -61,8 +73,7 @@ final class CountryChoiceType extends AbstractType
                 'choice_label' => 'name',
                 'choice_translation_domain' => false,
                 'active' => true,
-            ])
-        ;
+            ]);
     }
 
     /**

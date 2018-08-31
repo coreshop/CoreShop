@@ -91,25 +91,28 @@ coreshop.rules.action = Class.create({
 
             var actionItem = actions[i];
             var actionClass = actionItem.xparent;
-            var form = actionClass.form;
 
             if (Ext.isFunction(actionClass['getValues'])) {
                 configuration = actionClass.getValues();
             } else {
-                if (Ext.isFunction(form.getValues)) {
-                    configuration = form.getValues();
-                }
-                else {
-                    for (var c = 0; c < form.items.length; c++) {
-                        var item = form.items.get(c);
+                var form = actionClass.form;
 
-                        try {
-                            configuration[item.getName()] = item.getValue();
+                if (form) {
+                    if (Ext.isFunction(form.getValues)) {
+                        configuration = form.getValues();
+                    }
+                    else {
+                        for (var c = 0; c < form.items.length; c++) {
+                            var item = form.items.get(c);
+
+                            try {
+                                configuration[item.getName()] = item.getValue();
+                            }
+                            catch (e) {
+
+                            }
+
                         }
-                        catch (e) {
-
-                        }
-
                     }
                 }
             }

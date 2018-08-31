@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -e
+
+
+##########################################################################################
+#########
+######### Setup Mysql
+#########
+##########################################################################################
+
+mysql --version
+mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
+mysql -e "SET GLOBAL innodb_large_prefix=1;"
+mysql -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+
+##########################################################################################
+#########
+#########  add config templates
+#########
+##########################################################################################
+mkdir -p $CS_HOME/var/config
+cp $CS_HOME/etc/_config/system.template.php var/config/system.php
+cp app/config/parameters.example.yml app/config/parameters.yml
+
+##########################################################################################
+#########
+#########  Install composer dependencies
+#########
+##########################################################################################
+COMPOSER_MEMORY_LIMIT=-1 composer req doctrine/instantiator:1.0.5 --no-interaction --no-scripts
+COMPOSER_MEMORY_LIMIT=-1 composer install -o

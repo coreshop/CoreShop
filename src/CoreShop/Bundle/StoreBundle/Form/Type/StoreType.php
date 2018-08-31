@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\StoreBundle\Form\Type;
 
@@ -29,8 +29,7 @@ final class StoreType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('template', TextType::class)
             ->add('siteId', IntegerType::class)
-            ->add('currency', CurrencyChoiceType::class);
-        ;
+            ->add('currency', CurrencyChoiceType::class); ;
     }
 
     /**

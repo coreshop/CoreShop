@@ -1,30 +1,12 @@
+| Q                | A
+| ---------------- | -----
+| Bug report?      | yes/no
+| Feature request? | yes/no
+| BC Break report? | yes/no
+| RFC?             | yes/no
 
-# Bug Report
-## Please make sure all the following boxes are checked before submitting your issue - thank you!
-- [ ] This is not a security issue / vulnerability -> send them to info@coreshop.org instead
-or on a clean install of the latest build (out of your project, to avoid problems with custom code, plugins, ...) 
-- [ ] You're not able to fix the problem yourself and send us a pull request instead of an issue. 
-- [ ] There's no existing ticket for the same issue
-- [ ] Remove unused sections from below and this bullet points
-
-## Please answer the following questions 
-  
-### Expected behavior 
-  
-### Actual behavior  
-  
-### Steps to reproduce  
-  
-### Code example 
-```php
-// your code
-```
-
-
-# Feature Request 
-## Please make sure all the following boxes are checked before submitting your feature request - thank you!
-- [ ] There is no existing issue regarding the same topic
-
-## Feature description 
-  
-  
+<!--
+- Please fill in this template according to your issue.
+- For support request or how-tos, visit https://gitter.im/coreshop/CoreShop
+- Otherwise, replace this comment by the description of your issue.
+-->

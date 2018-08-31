@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
@@ -28,7 +28,7 @@ abstract class AbstractResourceType extends AbstractType
     protected $validationGroups = [];
 
     /**
-     * @param string   $dataClass        FQCN
+     * @param string $dataClass FQCN
      * @param string[] $validationGroups
      */
     public function __construct($dataClass, array $validationGroups = [])

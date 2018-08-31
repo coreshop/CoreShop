@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
@@ -42,31 +42,30 @@ final class CarrierChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => function(Options $options) {
                     $carriers = $this->carrierRepository->findAll();
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($carriers, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                    @usort($carriers, function($a, $b) {
+                        return $a->getIdentifier() < $b->getIdentifier() ? -1 : 1;
                     });
 
                     return $carriers;
                 },
                 'choice_value' => 'id',
-                'choice_label' => 'name',
+                'choice_label' => 'identifier',
                 'choice_translation_domain' => false,
                 'active' => true,
-            ])
-        ;
+            ]);
     }
 
     /**
-     * @param FormView      $view
+     * @param FormView $view
      * @param FormInterface $form
-     * @param array         $options
+     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -74,8 +73,8 @@ final class CarrierChoiceType extends AbstractType
 
         $description = [];
         $carriers = $form->getConfig()->getOption('choices');
-        foreach($carriers as $carrier) {
-            if(!empty($carrier->getDescription())) {
+        foreach ($carriers as $carrier) {
+            if (!empty($carrier->getDescription())) {
                 $description[$carrier->getId()] = $carrier->getDescription();
             }
         }

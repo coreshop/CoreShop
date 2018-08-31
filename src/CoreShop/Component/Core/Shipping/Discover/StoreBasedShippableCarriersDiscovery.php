@@ -14,12 +14,12 @@ namespace CoreShop\Component\Core\Shipping\Discover;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
-use CoreShop\Component\Shipping\Discover\ShippableCarriersDiscoveryInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 
-final class StoreBasedShippableCarriersDiscovery implements ShippableCarriersDiscoveryInterface
+final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInterface
 {
     /**
      * @var CarrierRepositoryInterface
@@ -55,7 +55,7 @@ final class StoreBasedShippableCarriersDiscovery implements ShippableCarriersDis
     /**
      * {@inheritdoc}
      */
-    public function discoverCarriers(ShippableInterface $shippable, AddressInterface $address)
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
     {
         $carriers = $this->carrierRepository->findForStore($this->storeContext->getStore());
         $availableCarriers = [];

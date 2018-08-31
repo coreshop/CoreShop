@@ -1,0 +1,42 @@
+framework:
+    workflows:
+        coreshop_order_invoice:
+            type: 'state_machine'
+            marking_store:
+                service: coreshop.state_machine.marking_store.order_invoice_pimcore_marking_store
+            supports: CoreShop\Component\Order\Model\Order
+
+core_shop_workflow:
+    state_machine:
+        coreshop_order_invoice:
+            places:
+                - new
+                - ready
+                - cancelled
+                - partially_invoiced
+                - invoiced
+            transitions:
+                request_invoice:
+                    from: [new]
+                    to: ready
+                partially_invoice:
+                    from: [ready]
+                    to: partially_invoiced
+                cancel:
+                    from: [new, ready]
+                    to: cancelled
+                invoice:
+                    from: [ready, partially_invoiced]
+                    to: invoiced
+            place_colors:
+                new: '#61c2cb'
+                ready: '#feb624'
+                partially_invoiced: '#f27024'
+                invoiced: '#5b981a'
+                cancelled: '#f2583e'
+            callbacks:
+                after:
+                    resolve_state:
+                        on: ['invoice']
+                        do: ['@coreshop.state_machine_resolver.order', 'resolve']
+                        args: ['object']

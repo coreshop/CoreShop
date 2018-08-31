@@ -3,18 +3,11 @@
 You can setup your own example:
 
  - Install with composer ```composer require coreshop/core-shop dev-master```
- - Add Following Call to AppKernel's registerBundlesToCollection function
-    ```php
-        \CoreShop\Bundle\CoreBundle\Application\RegisterBundleHelper::registerBundles($collection);
-    ```
- - Add Following to your app/config/config.yml
-    ```yaml
-        imports:
-            - { resource: "@CoreShopCoreBundle/Resources/config/app/config.yml" }
-    ```
+ - Run enable Bundle command
+    ```php bin/console pimcore:bundle:enable CoreShopCoreBundle```
  - Run Install Command
-    ```php bin/console coreshop:install```
- - Optional: Install Demo Data ```php bin/console coreshop:install:demo```
+    `php bin/console coreshop:install`
+ - Optional: Install Demo Data `php bin/console coreshop:install:demo`
 
 ## Payment
 CoreShop uses Payum for Payment. Checkout Payums Documentation on how to add payment providers.

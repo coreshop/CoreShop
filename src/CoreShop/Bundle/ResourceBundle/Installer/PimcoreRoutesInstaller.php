@@ -38,9 +38,9 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
-        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.routes', $applicationName) : 'resources.admin.install.routes';
+        $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.routes', $applicationName) : 'coreshop.all.pimcore.admin.install.routes';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $routeFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
@@ -64,6 +64,9 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
                     $routes = $routes['routes'];
 
                     foreach ($routes as $name => $routeData) {
+                        if (isset($options['allowed']) && is_array($options['allowed']) && !in_array($name, $options['allowed'])) {
+                            continue;
+                        }
                         $routesToInstall[$name] = $routeData;
                     }
                 }

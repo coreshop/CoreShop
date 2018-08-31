@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.shipping_rule.conditions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
@@ -23,6 +26,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.shipping_rule.conditions'
+            - 'Shipping Rules'
 
     coreshop.shipping_rule.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
@@ -39,7 +43,7 @@ services:
     coreshop.shipping_rule.condition.postcodes:
         class: CoreShop\Component\Shipping\Rule\Condition\PostcodeConditionChecker
         tags:
-            - { name: coreshop.shipping_rule.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodesConfigurationType }
+            - { name: coreshop.shipping_rule.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType }
 
     coreshop.shipping_rule.condition.weight:
         class: CoreShop\Component\Shipping\Rule\Condition\WeightConditionChecker
@@ -130,3 +134,11 @@ services:
         class: CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker
         arguments:
             - '@coreshop.shipping_rule.processor'
+
+    # Rule Assessor
+    coreshop.rule.availability_assessor.shipping_rule:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
+        arguments:
+             - '@coreshop.repository.shipping_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_assessor, type: shipping_rule }

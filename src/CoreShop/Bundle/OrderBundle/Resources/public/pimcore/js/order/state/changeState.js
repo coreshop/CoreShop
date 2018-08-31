@@ -42,6 +42,9 @@ coreshop.order.order.state.changeState = {
                             } else {
                                 Ext.Msg.alert(t('error'), res.message);
                             }
+                        }.bind(this),
+                        failure: function (response) {
+                            btn.setDisabled(false);
                         }.bind(this)
                     });
                 }
@@ -51,6 +54,7 @@ coreshop.order.order.state.changeState = {
         window = new Ext.window.Window({
             width: 450,
             height: 170,
+            modal: true,
             resizeable: false,
             title: t('coreshop_change_state'),
             layout: 'fit',

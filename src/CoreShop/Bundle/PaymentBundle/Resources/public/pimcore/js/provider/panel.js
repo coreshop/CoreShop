@@ -19,7 +19,7 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_payment_providers_panel',
     storeId: 'coreshop_payment_providers',
     iconCls: 'coreshop_icon_payment_provider',
-    type: 'payment_provider',
+    type: 'coreshop_payment_provider',
 
     url: {
         add: '/admin/coreshop/payment_providers/add',
@@ -52,6 +52,10 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
             ]),
             autoload: true
         });
+    },
+
+    getTitleText: function () {
+        return this.data.identifier;
     },
 
     getConfig: function () {
@@ -87,6 +91,10 @@ coreshop.provider.panel = Class.create(coreshop.resource.panel, {
         return {
             store: this.store
         };
+    },
+
+    getDefaultGridDisplayColumnName: function() {
+        return 'identifier';
     },
 
     prepareAdd: function (object) {

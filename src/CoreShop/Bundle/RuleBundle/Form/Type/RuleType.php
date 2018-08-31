@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
@@ -26,8 +26,7 @@ class RuleType extends AbstractResourceType
         $builder
             ->add('name', TextType::class)
             ->add('conditions', RuleConditionCollectionType::class)
-            ->add('actions', RuleActionCollectionType::class)
-        ;
+            ->add('actions', RuleActionCollectionType::class);
     }
 
     /**

@@ -13,7 +13,9 @@
 coreshop.store.item = Class.create(coreshop.store.item, {
 
     getFormPanel: function ($super) {
-        var panel = $super();
+        var me = this,
+            store = pimcore.globalmanager.get('coreshop_countries'),
+            panel = $super();
 
         panel.down('fieldset').add(
             [
@@ -36,6 +38,31 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     fieldLabel: t('coreshop_base_use_gross_prices'),
                     value: this.data.useGrossPrice,
                     name: 'useGrossPrice'
+                },
+                {
+                    xtype: 'multiselect',
+                    fieldLabel: t('coreshop_allowed_countries'),
+                    typeAhead: true,
+                    listWidth: 100,
+                    width: 500,
+                    store: store,
+                    displayField: 'name',
+                    valueField: 'id',
+                    forceSelection: true,
+                    multiselect: true,
+                    triggerAction: 'all',
+                    name: 'countries',
+                    height: 400,
+                    delimiter: false,
+                    listeners: {
+                        beforerender: function () {
+                            if (!store.isLoaded() && !store.isLoading())
+                                store.load();
+
+                            if (me.data && me.data.countries)
+                                this.setValue(me.data.countries);
+                        }
+                    }
                 }
             ]
         );

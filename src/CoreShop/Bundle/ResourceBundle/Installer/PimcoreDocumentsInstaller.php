@@ -14,6 +14,9 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\DocumentConfiguration;
 use Pimcore\Model\Document;
+use Pimcore\Model\Element\Service;
+use Pimcore\Model\Site;
+use Pimcore\Tool;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,9 +41,12 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
-        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.documents', $applicationName) : 'resources.admin.install.documents';
+        $parameter = $applicationName ? sprintf(
+            '%s.pimcore.admin.install.documents',
+            $applicationName
+        ) : 'coreshop.all.pimcore.admin.install.documents';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $documentFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
@@ -60,7 +66,10 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
                 if (file_exists($file)) {
                     $documents = Yaml::parse(file_get_contents($file));
-                    $documents = $processor->processConfiguration($configurationDefinition, ['documents' => $documents]);
+                    $documents = $processor->processConfiguration(
+                        $configurationDefinition,
+                        ['documents' => $documents]
+                    );
                     $documents = $documents['documents'];
 
                     foreach ($documents as $docData) {
@@ -70,29 +79,51 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
             }
 
             $progress->start(count($docsToInstall));
-            $validLanguages = explode(",", \Pimcore\Config::getSystemConfig()->general->validLanguages);
+            $validLanguages = Tool::getValidLanguages();
             $languagesDone = [];
 
+            $sites = new Site\Listing();
+            $sites->load();
+            $sites = $sites->getSites();
+            $rootDocument = null;
+
+            if (count($sites) > 0) {
+                /**
+                 * @var $site Site
+                 */
+                $site = $sites[0];
+                $rootDocument = $site->getRootDocument();
+            }
+
+            if (!$rootDocument instanceof Document) {
+                $rootDocument = Document::getById(1);
+            }
+
             foreach ($docsToInstall as $docData) {
-                $progress->setMessage(sprintf('<error>Install Document %s/%s</error>', $docData['path'], $docData['key']));
+                $progress->setMessage(
+                    sprintf('<error>Install Document %s/%s</error>', $docData['path'], $docData['key'])
+                );
 
                 foreach ($validLanguages as $language) {
-                    $languageDocument = Document::getByPath("/" . $language);
+                    $languageDocument = Document::getByPath($rootDocument->getRealFullPath().'/'.$language);
 
                     if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
-                        $languageDocument->setParent(Document::getById(1));
+                        $languageDocument->setParent($rootDocument);
                         $languageDocument->setProperty('language', 'text', $language);
-                        $languageDocument->setKey($language);
+                        $languageDocument->setKey(Service::getValidKey($language, 'document'));
                         $languageDocument->save();
                     }
 
-                    $doc = $this->installDocument($language, $docData);
+                    $doc = $this->installDocument($rootDocument, $language, $docData);
 
                     if ($doc instanceof Document) {
                         //Link translations
                         foreach ($languagesDone as $doneLanguage) {
-                            $translatedDocument = Document::getByPath("/" . $doneLanguage . "/" . $docData['path'] . "/" . $docData['key']);
+                            $translatedDocument = Document::getByPath(
+                                $rootDocument->getRealFullPath(
+                                ).'/'.$doneLanguage.'/'.$docData['path'].'/'.$docData['key']
+                            );
 
                             if ($translatedDocument) {
                                 $service = new Document\Service();
@@ -110,23 +141,26 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     }
 
     /**
-     * @param $language
-     * @param $properties
+     * @param Document $rootDocument
+     * @param          $language
+     * @param          $properties
      * @return Document
      */
-    private function installDocument($language, $properties)
+    private function installDocument(Document $rootDocument, $language, $properties)
     {
-        $path = "/" . $language . "/" . $properties['path'] . "/" . $properties['key'];
+        $path = $rootDocument->getRealFullPath().'/'.$language.'/'.$properties['path'].'/'.$properties['key'];
 
         if (!Document\Service::pathExists($path)) {
-            $class = "Pimcore\\Model\\Document\\" . ucfirst($properties['type']);
+            $class = "Pimcore\\Model\\Document\\".ucfirst($properties['type']);
 
             if (\Pimcore\Tool::classExists($class)) {
                 /** @var Document $document */
                 $document = new $class();
-                $document->setParent(Document::getByPath("/" . $language . "/" . $properties['path']));
+                $document->setParent(
+                    Document::getByPath($rootDocument->getRealFullPath().'/'.$language.'/'.$properties['path'])
+                );
 
-                $document->setKey($properties['key']);
+                $document->setKey(Service::getValidKey($properties['key'], 'document'));
                 $document->setProperty("language", $language, 'text', true);
 
                 if (isset($properties['name'])) {
@@ -156,7 +190,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
                         foreach ($fields as $key => $field) {
                             $type = $field['type'];
-                            $content = NULL;
+                            $content = null;
 
                             if (array_key_exists('value', $field)) {
                                 $content = $field['value'];

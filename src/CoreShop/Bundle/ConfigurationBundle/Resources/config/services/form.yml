@@ -2,6 +2,9 @@ parameters:
     coreshop.form.type.configuration.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.configuration:
         class: CoreShop\Bundle\ConfigurationBundle\Form\Type\ConfigurationType
         arguments:

@@ -54,7 +54,8 @@ final class PaymentType extends AbstractResourceType
         FormTypeRegistryInterface $formTypeRegistry,
         PaymentProviderRepositoryInterface $paymentProviderRepository,
         array $gatewayFactories
-    ) {
+    )
+    {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
@@ -70,10 +71,10 @@ final class PaymentType extends AbstractResourceType
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
-                'label'       => 'coreshop.ui.payment_provider',
-                'store'       => $options['store'],
+                'label' => 'coreshop.ui.payment_provider',
+                'subject' => $options['payment_subject']
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -85,7 +86,7 @@ final class PaymentType extends AbstractResourceType
                     $this->removeConfigurationFields($event->getForm());
                 }
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
                 $data = $event->getData();
 
                 if (!isset($data['paymentProvider'])) {
@@ -142,12 +143,14 @@ final class PaymentType extends AbstractResourceType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('store', null);
+        parent::configureOptions($resolver);
+
+        $resolver->setDefault('payment_subject', null);
     }
 
     /**
      * @param FormInterface $form
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -165,12 +168,13 @@ final class PaymentType extends AbstractResourceType
             return;
         }
 
+        $form->getData()->setPaymentSettings(null);
         $form->remove('paymentSettings');
     }
 
     /**
      * @param FormInterface $form
-     * @param mixed         $data
+     * @param mixed $data
      *
      * @return string|null
      */

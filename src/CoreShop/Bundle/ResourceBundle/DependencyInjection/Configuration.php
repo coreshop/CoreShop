@@ -16,7 +16,6 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -34,7 +33,6 @@ final class Configuration implements ConfigurationInterface
         $this->addTranslationsSection($rootNode);
         $this->addDriversSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
-        $this->addStateMachineSection($rootNode);
 
         return $treeBuilder;
     }
@@ -131,8 +129,9 @@ final class Configuration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->ignoreExtraKeys(false)
                         ->children()
-                            ->scalarNode('broker')->defaultValue('/bundles/coreshopresource/pimcore/js/broker.js')->end()
                             ->scalarNode('global')->defaultValue('/bundles/coreshopresource/pimcore/js/global.js')->end()
+                            ->scalarNode('plugin')->defaultValue('/bundles/coreshopresource/pimcore/js/plugin.js')->end()
+                            ->scalarNode('event_manager')->defaultValue('/bundles/coreshopresource/pimcore/js/eventManager.js')->end()
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/js/resource.js')->end()
                             ->scalarNode('resource_panel')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/panel.js')->end()
                             ->scalarNode('resource_item')->defaultValue('/bundles/coreshopresource/pimcore/js/resource/item.js')->end()
@@ -144,8 +143,6 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_data_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/select.js')->end()
                             ->scalarNode('core_extension_tag_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/select.js')->end()
                             ->scalarNode('core_extension_tag_multiselect')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js')->end()
-                            ->scalarNode('core_extension_tag_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/tags/coreShopSerializedData.js')->end()
-                            ->scalarNode('core_extension_data_serializedData')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/data/coreShopSerializedData.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')
@@ -155,78 +152,15 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('resource')->defaultValue('/bundles/coreshopresource/pimcore/css/resource.css')->end()
                         ->end()
                     ->end()
-                ->end()
-            ->end()
-        ->end();
-    }
-
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addStateMachineSection(ArrayNodeDefinition $node)
-    {
-        $stateMachineNode = $node
-            ->children()
-                ->arrayNode('state_machine')
-                    ->children();
-
-        $this->addColorSection($stateMachineNode);
-        $this->addCallBackSection($stateMachineNode);
-
-        $stateMachineNode->end()->end()->end();
-
-    }
-
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addColorSection(NodeBuilder $node)
-    {
-        $node
-            ->arrayNode('colors')
-                ->useAttributeAsKey('name')
-                ->arrayPrototype('array')
-                ->prototype('scalar')->end()
-                ->end()
-            ->end();
-    }
-
-    /**
-     * @param NodeBuilder $node
-     */
-    private function addCallBackSection(NodeBuilder $node)
-    {
-        $callbacks = $node
-            ->arrayNode('callbacks')
-                ->useAttributeAsKey('name')
-                ->prototype('array')
-                ->children();
-
-        $this->addSubCallbackSection($callbacks, 'guard');
-        $this->addSubCallbackSection($callbacks, 'before');
-        $this->addSubCallbackSection($callbacks, 'after');
-
-        $callbacks->end()->end();
-    }
-
-    /**
-     * @param NodeBuilder $callbacks
-     * @param string      $type
-     */
-    protected function addSubCallbackSection(NodeBuilder $callbacks, $type)
-    {
-        $callbacks
-            ->arrayNode($type)
-                ->useAttributeAsKey('name')
-                ->prototype('array')
-                    ->children()
-                        ->variableNode('on')->end()
-                        ->variableNode('do')->end()
-                        ->scalarNode('priority')->defaultValue(0)->end()
-                        ->arrayNode('args')->performNoDeepMerging()->prototype('scalar')->end()
+                    ->arrayNode('editmode_js')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('core_extension_document:tag_select')->defaultValue('/bundles/coreshopresource/pimcore/js/coreExtension/document/select.js')->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()
-        ;
+        ->end();
     }
 }

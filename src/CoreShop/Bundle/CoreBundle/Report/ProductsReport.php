@@ -13,11 +13,13 @@
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -50,38 +52,46 @@ class ProductsReport implements ReportInterface
     private $moneyFormatter;
 
     /**
-     * @var array
+     * @var StackRepository
      */
-    private $pimcoreClasses;
+    private $productStackRepository;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $productImplementations;
+    private $orderRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
+    private $orderItemRepository;
 
     /**
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface $localeContext
-     * @param array $pimcoreClasses
-     * @param array $productImplementations
+     * @param PimcoreRepositoryInterface $orderRepository,
+     * @param PimcoreRepositoryInterface $orderItemRepository
+     * @param StackRepository $productStackRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
-        array $pimcoreClasses,
-        array $productImplementations
+        PimcoreRepositoryInterface $orderRepository,
+        PimcoreRepositoryInterface $orderItemRepository,
+        StackRepository $productStackRepository
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeContext = $localeContext;
-        $this->pimcoreClasses = $pimcoreClasses;
-        $this->productImplementations = $productImplementations;
+        $this->orderRepository = $orderRepository;
+        $this->orderItemRepository = $orderItemRepository;
+        $this->productStackRepository = $productStackRepository;
     }
 
     /**
@@ -101,8 +111,8 @@ class ProductsReport implements ReportInterface
         $limit = $parameterBag->get('limit', 50);
         $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
 
-        $orderClassId = $this->pimcoreClasses['order'];
-        $orderItemClassId = $this->pimcoreClasses['order_item'];
+        $orderClassId = $this->orderRepository->getClassId();
+        $orderItemClassId = $this->orderItemRepository->getClassId();
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $locale = $this->localeContext->getLocaleCode();
@@ -117,16 +127,9 @@ class ProductsReport implements ReportInterface
         }
 
         if ($objectTypeFilter === 'container') {
-
-            $objectClassArray = [];
-            foreach ($this->productImplementations as $productClass) {
-                $obj = new $productClass();
-                $objectClassArray[] = $obj->getClassId();
-            }
-
             $unionData = [];
-            foreach ($objectClassArray as $id) {
-                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
+            foreach ($this->productStackRepository->getClassIds() as $id) {
+                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_'.$id.'_'.$locale;
             }
 
             $union = join(' UNION ALL ', $unionData);
@@ -171,7 +174,7 @@ class ProductsReport implements ReportInterface
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
-                INNER JOIN object_localized_query_" . $orderItemClassId . "_" . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
+                INNER JOIN object_localized_query_".$orderItemClassId."_".$locale." AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
@@ -180,13 +183,13 @@ class ProductsReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $this->totalRecords = (int)$this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
+            $sale['name'] = $sale['productName'].' (Id: '.$sale['productId'].')';
         }
 
         return array_values($productSales);

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Calculator;
 
@@ -33,7 +33,7 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable)
+    public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false)
     {
         $price = false;
 
@@ -41,7 +41,7 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
          * @var $calculator PurchasablePriceCalculatorInterface
          */
         foreach ($this->calculators->all() as $calculator) {
-            $actionPrice = $calculator->getPrice($purchasable);
+            $actionPrice = $calculator->getPrice($purchasable, $includingDiscounts);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

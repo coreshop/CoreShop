@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\InventoryBundle\Templating\Helper;
 
@@ -42,7 +42,7 @@ class InventoryHelper extends Helper implements InventoryHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function isStockSufficient(StockableInterface $stockable, $quantity)
+    public function isStockSufficient(StockableInterface $stockable, $quantity = 1)
     {
         return $this->checker->isStockSufficient($stockable, $quantity);
     }

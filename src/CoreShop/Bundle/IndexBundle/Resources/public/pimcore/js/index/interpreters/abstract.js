@@ -15,8 +15,27 @@ pimcore.registerNS('coreshop.index.interpreters.abstract');
 
 coreshop.index.interpreters.abstract = Class.create({
 
-    getLayout: function () {
+    getLayout: function (record, interpreterConfig) {
         return [];
-    }
+    },
 
+    getForm: function(record, interpreterConfig) {
+        if (!this.form) {
+            this.form = new Ext.form.FormPanel({
+                defaults: {anchor: '90%'},
+                layout: 'form',
+                items: this.getLayout(record, interpreterConfig)
+            });
+        }
+
+        return this.form;
+    },
+
+    isValid: function() {
+        return this.getForm().getForm().isValid()
+    },
+
+    getInterpreterData: function() {
+        return this.form.getForm().getFieldValues();
+    },
 });

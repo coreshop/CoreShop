@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Resource\Metadata;
 
@@ -44,7 +44,7 @@ final class Metadata implements MetadataInterface
     /**
      * @param string $name
      * @param string $applicationName
-     * @param array  $parameters
+     * @param array $parameters
      */
     private function __construct($name, $applicationName, array $parameters)
     {
@@ -59,7 +59,7 @@ final class Metadata implements MetadataInterface
 
     /**
      * @param string $alias
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return self
      */

@@ -1,30 +1,38 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block checkout_title %}
     {{ 'coreshop.ui.shipping'|trans }}
 {% endblock %}
 
 {% block checkout %}
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_errors(form) }}
-
-        {{ form_row(form.carrier) }}
-        {{ form_row(form.comment) }}
-        <div class="row">
-            {% set previousStep = coreshop_checkout_steps_get_previous() %}
-            {% if previousStep is not null %}
-                <div class="col-xs-12 col-sm-6">
-                    <a href="{{ path('coreshop_checkout', {'stepIdentifier': previousStep}) }}" class="btn">
-                        {{ 'coreshop.ui.back'|trans }}
-                    </a>
-                </div>
-            {% endif %}
-            <div class="col-xs-12 {{ previousStep is not null ? 'col-sm-6' : '' }}">
-                <button type="submit" class="btn btn-default pull-right">
-                    {{ 'coreshop.ui.proceed'|trans }}
-                </button>
-            </div>
+    <div class="card">
+        <div class="card-header">
+            {{ 'coreshop.ui.shipping'|trans }}
         </div>
-    {{ form_end(form) }}
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_errors(form) }}
+
+            {{ form_widget(form.carrier) }}
+            {{ form_row(form.comment) }}
+            <div class="row">
+                {% set previousStep = coreshop_checkout_steps_get_previous() %}
+                {% if previousStep is not null %}
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ coreshop_path(cart, 'coreshop_checkout', {'stepIdentifier': previousStep}) }}"
+                           class="btn btn-secondary">
+                            {{ 'coreshop.ui.back'|trans }}
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="col-12 {{ previousStep is not null ? 'col-sm-6' : '' }}">
+                    <button type="submit" class="btn btn-success pull-right">
+                        {{ 'coreshop.ui.proceed'|trans }}
+                    </button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

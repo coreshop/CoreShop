@@ -8,11 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Currency\Context;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CachedCurrencyContext implements CurrencyContextInterface
 {
@@ -27,11 +29,18 @@ final class CachedCurrencyContext implements CurrencyContextInterface
     private $currency;
 
     /**
-     * @param CurrencyContextInterface $inner
+     * @var RequestStack
      */
-    public function __construct(CurrencyContextInterface $inner)
+    private $requestStack;
+
+    /**
+     * @param CurrencyContextInterface $inner
+     * @param RequestStack $requestStack
+     */
+    public function __construct(CurrencyContextInterface $inner, RequestStack $requestStack)
     {
         $this->inner = $inner;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -39,12 +48,16 @@ final class CachedCurrencyContext implements CurrencyContextInterface
      */
     public function getCurrency()
     {
-        if (null === $this->currency) {
-            $this->currency = $this->inner->getCurrency();
+        if ($this->requestStack->getMasterRequest() instanceof Request) {
+            if (null === $this->currency) {
+                $this->currency = $this->inner->getCurrency();
+
+                return $this->currency;
+            }
 
             return $this->currency;
         }
 
-        return $this->currency;
+        return $this->currency = $this->inner->getCurrency();
     }
 }

@@ -12,15 +12,18 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 interface InterpreterInterface
 {
     /**
      * @param $value
+     * @param IndexableInterface        $indexable
      * @param IndexColumnInterface|null $config
+     * @param array $interpreterConfig
      *
      * @return mixed
      */
-    public function interpret($value, IndexColumnInterface $config = null);
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
 }

@@ -35,4 +35,6 @@ coreshop.notification.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.notification.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.notification.resource();
+});

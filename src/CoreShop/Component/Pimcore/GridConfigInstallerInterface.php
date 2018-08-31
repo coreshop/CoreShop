@@ -12,13 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-interface GridConfigInstallerInterface
-{
+if (interface_exists(\CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface::class)) {
+    @trigger_error('Interface CoreShop\Component\Pimcore\GridConfigInstallerInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param $config
-     * @param $name
-     * @param $class
-     * @param $overwrite
+     * @deprecated Interface CoreShop\Component\Pimcore\GridConfigInstallerInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface instead.
      */
-    public function installGridConfig($config, $name, $class, $overwrite = false);
+    interface GridConfigInstallerInterface
+    {
+
+    }
 }

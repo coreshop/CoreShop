@@ -1,6 +1,6 @@
 {
   "name": "coreshop/product-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Product Bundle",
   "keywords": [
     "coreshop",
@@ -18,13 +18,12 @@
     }
   ],
   "require": {
-    "php": "^7.0",
     "coreshop/product": "^2.0",
     "coreshop/registry": "^2.0",
     "coreshop/rule-bundle": "^2.0",
     "coreshop/resource-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/pimcore": "^5.4.0"
   },
   "config": {
     "bin-dir": "bin"

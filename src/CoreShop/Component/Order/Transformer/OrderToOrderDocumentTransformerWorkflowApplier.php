@@ -2,18 +2,9 @@
 
 namespace CoreShop\Component\Order\Transformer;
 
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderInvoiceInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderPaymentStates;
-use CoreShop\Component\Order\OrderShipmentStates;
-use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 
 final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocumentTransformerInterface
 {
@@ -23,7 +14,7 @@ final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocum
     protected $innerTransformer;
 
     /**
-     * @var StateMachineManager
+     * @var StateMachineManagerInterface
      */
     protected $stateMachineManager;
 
@@ -45,12 +36,12 @@ final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocum
     /**
      * OrderToInvoiceTransformerWorkflowApplier constructor.
      * @param OrderDocumentTransformerInterface $innerTransformer
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManagerInterface $stateMachineManager
      * @param string $initialState
      * @param string $workflowName
      * @param string $transition
      */
-    public function __construct(OrderDocumentTransformerInterface $innerTransformer, StateMachineManager $stateMachineManager, string $initialState, string $workflowName, string $transition)
+    public function __construct(OrderDocumentTransformerInterface $innerTransformer, StateMachineManagerInterface $stateMachineManager, string $initialState, string $workflowName, string $transition)
     {
         $this->innerTransformer = $innerTransformer;
         $this->stateMachineManager = $stateMachineManager;

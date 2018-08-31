@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
@@ -27,9 +27,9 @@ class PaymentProviderRepository extends BasePaymentProviderRepository implements
             ->innerJoin('o.stores', 's')
             ->andWhere('o.active = true')
             ->andWhere('s.id = :storeId')
+            ->addOrderBy('o.position')
             ->setParameter('storeId', $store->getId())
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

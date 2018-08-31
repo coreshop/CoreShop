@@ -19,6 +19,6 @@ final class PimcoreSharedTranslationsInstaller extends AbstractTranslationInstal
      */
     protected function getIdentifier($applicationName = null)
     {
-        return $applicationName ? sprintf('%s.application.pimcore.admin.install.translations', $applicationName) : 'resources.admin.install.translations';
+        return $applicationName ? sprintf('%s.pimcore.admin.install.translations', $applicationName) : 'coreshop.all.pimcore.admin.install.translations';
     }
 }

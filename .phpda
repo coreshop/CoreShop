@@ -1,15 +1,18 @@
 mode: 'usage'
-source: '.'
+source: './src/CoreShop/Component'
 filePattern: '*.php'
 ignore: 'tests'
 formatter: 'PhpDA\Writer\Strategy\Html'
-target: './phpda.html'
-groupLength: 1
+target: './phpda2.html'
+groupLength: 3
+referenceValidator: 'CoreShop\DependencyAnalysis\ReferenceValidator'
 visitor:
   - PhpDA\Parser\Visitor\TagCollector
   - PhpDA\Parser\Visitor\SuperglobalCollector
 visitorOptions:
   PhpDA\Parser\Visitor\Required\DeclaredNamespaceCollector: {minDepth: 3, sliceLength: 3}
-  PhpDA\Parser\Visitor\Required\MetaNamespaceCollector: {minDepth: 3, sliceLength: 3, excludePattern: '/^(?!.*CoreShop).*$/'}
-  PhpDA\Parser\Visitor\Required\UsedNamespaceCollector: {minDepth: 3, sliceLength: 3, excludePattern: '/^(?!.*CoreShop).*$/'}
-  PhpDA\Parser\Visitor\TagCollector: {minDepth: 3, sliceLength: 3, excludePattern: '/^(?!.*CoreShop).*$/'}
+  PhpDA\Parser\Visitor\Required\MetaNamespaceCollector: {minDepth: 3, sliceLength: 3, excludePattern: '/^(CoreShop\\Component\\Core.*|(?!CoreShop).*)$/'}
+  PhpDA\Parser\Visitor\Required\UsedNamespaceCollector: {minDepth: 3, sliceLength: 3, excludePattern: '/^(CoreShop\\Component\\Core.*|(?!CoreShop).*)$/'}
+  PhpDA\Parser\Visitor\TagCollector: {minDepth: 3, sliceLength: 3, excludePattern: '/^(CoreShop\\Component\\Core.*|(?!CoreShop).*)$/'}
+classMap:
+  CoreShop\DependencyAnalysis\ReferenceValidator: './src/CoreShop/DependencyAnalysis/ReferenceValidator.php'

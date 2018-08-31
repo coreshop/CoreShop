@@ -8,29 +8,18 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Resource\Pimcore;
 
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Pimcore\Model\Element\ElementInterface;
-
-interface ObjectServiceInterface
-{
+if (interface_exists(\CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface::class)) {
+    @trigger_error('Interface CoreShop\Component\Resource\Pimcore\ObjectServiceInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param $path
-     *
-     * @return ElementInterface
+     * @deprecated Interface CoreShop\Component\Resource\Pimcore\ObjectServiceInterface is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface instead.
      */
-    public function createFolderByPath($path);
+    interface ObjectServiceInterface
+    {
 
-    /**
-     * Copy all fields from $from to $to.
-     *
-     * @param PimcoreModelInterface $fromObject
-     * @param PimcoreModelInterface $toObject
-     *
-     * @return mixed
-     */
-    public function copyObject(PimcoreModelInterface $fromObject, PimcoreModelInterface $toObject);
+    }
 }

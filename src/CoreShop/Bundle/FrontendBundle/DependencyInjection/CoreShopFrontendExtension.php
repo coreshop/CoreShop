@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection;
 
@@ -35,6 +35,9 @@ final class CoreShopFrontendExtension extends AbstractModelExtension
                 $container->setParameter(sprintf('coreshop.frontend.controller.%s', $key), $value);
             }
         }
+
+        $container->setParameter('coreshop.frontend.view_bundle', $config['view_bundle']);
+        $container->setParameter('coreshop.frontend.view_suffix', $config['view_suffix']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

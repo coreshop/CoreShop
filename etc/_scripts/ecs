@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+echo "RUNNING ECS CHECK"
+
+vendor/bin/ecs check -c easy-coding-standard.yml src -n --show-performance --no-progress-bar

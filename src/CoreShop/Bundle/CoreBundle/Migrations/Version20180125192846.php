@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
-use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
@@ -19,25 +19,25 @@ class Version20180125192846 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $needsRecalculation = [
-            'fieldtype'       => 'checkbox',
-            'defaultValue'    => 0,
+            'fieldtype' => 'checkbox',
+            'defaultValue' => 0,
             'queryColumnType' => 'tinyint(1)',
-            'columnType'      => 'tinyint(1)',
-            'phpdocType'      => 'boolean',
-            'name'            => 'needsRecalculation',
-            'title'           => 'Needs Recalculation',
-            'tooltip'         => '',
-            'mandatory'       => false,
-            'noteditable'     => true,
-            'index'           => false,
-            'locked'          => null,
-            'style'           => '',
-            'permissions'     => null,
-            'datatype'        => 'data',
-            'relationType'    => false,
-            'invisible'       => true,
+            'columnType' => 'tinyint(1)',
+            'phpdocType' => 'boolean',
+            'name' => 'needsRecalculation',
+            'title' => 'Needs Recalculation',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => true,
             'visibleGridView' => false,
-            'visibleSearch'   => false,
+            'visibleSearch' => false,
         ];
 
         $cart = $this->container->getParameter('coreshop.model.cart.pimcore_class_name');

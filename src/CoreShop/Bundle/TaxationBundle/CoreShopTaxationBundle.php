@@ -8,12 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\TaxationBundle;
 
+use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopTaxationBundle extends AbstractResourceBundle
 {
@@ -25,6 +27,16 @@ final class CoreShopTaxationBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
     }
 
     /**

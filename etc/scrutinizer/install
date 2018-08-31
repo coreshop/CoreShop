@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+export CS_HOME=/home/scrutinizer/build
+
+$CS_HOME/etc/_setup/install

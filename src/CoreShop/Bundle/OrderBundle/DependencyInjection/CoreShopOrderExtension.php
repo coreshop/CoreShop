@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
@@ -34,9 +34,15 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
-        $container->setParameter('coreshop.cart.cleanup.expiration_days', $config['cleanup']['expiration_days']);
-        $container->setParameter('coreshop.cart.cleanup.anonymous', $config['cleanup']['anonymous']);
-        $container->setParameter('coreshop.cart.cleanup.user', $config['cleanup']['user']);
+        if (array_key_exists('stack', $config)) {
+            $this->registerStack('coreshop', $config['stack'], $container);
+        }
+
+        $container->setParameter('coreshop.cart.expiration.days', $config['expiration']['cart']['days']);
+        $container->setParameter('coreshop.cart.expiration.anonymous', $config['expiration']['cart']['anonymous']);
+        $container->setParameter('coreshop.cart.expiration.customer', $config['expiration']['cart']['customer']);
+
+        $container->setParameter('coreshop.order.expiration.days', $config['expiration']['order']['days']);
 
         $loader->load('services.yml');
     }

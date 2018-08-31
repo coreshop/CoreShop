@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Address\Model;
 
@@ -50,6 +50,11 @@ class Country extends AbstractResource implements CountryInterface
      * @var string
      */
     protected $addressFormat = '';
+
+    /**
+     * @var array
+     */
+    protected $salutations = [];
 
     public function __construct()
     {
@@ -122,6 +127,24 @@ class Country extends AbstractResource implements CountryInterface
     public function setAddressFormat($addressFormat)
     {
         $this->addressFormat = $addressFormat;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSalutations()
+    {
+        return $this->salutations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSalutations($salutations)
+    {
+        $this->salutations = $salutations;
 
         return $this;
     }

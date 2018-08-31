@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Installer\Provider;
 
@@ -41,15 +41,14 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
     public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
         return array_merge($this->getRequiredCommands($input, $output, $questionHelper), [
-            'cache:warmup',
             'coreshop:install:fixtures'
         ]);
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param QuestionHelper  $questionHelper
+     * @param QuestionHelper $questionHelper
      *
      * @return array
      */
@@ -63,9 +62,9 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param QuestionHelper  $questionHelper
+     * @param QuestionHelper $questionHelper
      *
      * @return array
      */

@@ -14,6 +14,7 @@ pimcore.registerNS('coreshop.object.tags.select');
 coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
 
     allowEmpty: false,
+    displayField: 'name',
 
     initialize: function (data, fieldConfig) {
         this.data = data;
@@ -26,10 +27,10 @@ coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
         var store = [];
         var validValues = [];
 
-        if (pimcore.globalmanager.exists('coreshop_' + this.storeName)) {
-            store = pimcore.globalmanager.get('coreshop_' + this.storeName);
+        if (pimcore.globalmanager.exists(this.storeName)) {
+            store = pimcore.globalmanager.get(this.storeName);
         } else {
-            throw 'coreshop_' + this.storeName + ' should be added as valid store';
+            throw this.storeName + ' should be added as valid store';
         }
 
         var comboBoxStore = new Ext.data.Store({
@@ -68,7 +69,7 @@ coreshop.object.tags.select = Class.create(pimcore.object.tags.select, {
             componentCls: 'object_field',
             width: 250,
             labelWidth: 100,
-            displayField: 'name',
+            displayField: this.displayField,
             valueField: 'id',
             queryMode: 'local',
             value: this.data ? parseInt(this.data) : null,

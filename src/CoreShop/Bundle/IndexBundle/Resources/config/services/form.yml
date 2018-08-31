@@ -8,6 +8,9 @@ parameters:
     coreshop.form.type.filter.filter_condition.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.index:
         class: CoreShop\Bundle\IndexBundle\Form\Type\IndexType
         arguments:
@@ -63,6 +66,24 @@ services:
         tags:
             - { name: form.type }
 
+
+    coreshop.form.type.index.interpreter_type:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterType
+        arguments: ['@coreshop.form_registry.index.interpreter']
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.index.interpreter_collection:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterCollectionType
+        arguments: ['@coreshop.registry.index.interpreter']
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.index_nested:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType
+        tags:
+            - { name: form.type }
+
     # Filter Forms
     coreshop.form.type.filter:
         class: CoreShop\Bundle\IndexBundle\Form\Type\FilterType
@@ -101,3 +122,12 @@ services:
           - '@coreshop.repository.index'
         tags:
           -  { name: form.type }
+
+    # Condition Config Types
+
+    coreshop.form.type.filter.condition.nested:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionNestedType
+        arguments:
+            - '@coreshop.repository.filter_condition'
+        tags:
+          - { name: form.type }

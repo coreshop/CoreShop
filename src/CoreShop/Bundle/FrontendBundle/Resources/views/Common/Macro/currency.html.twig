@@ -37,3 +37,13 @@
     
     {{- convertAndFormat(product|coreshop_product_discount(with_tax)) }}
 {%- endmacro -%}
+
+{%- macro getDiscountPrice(product, with_tax) -%}
+    {% from _self import convertAndFormat %}
+
+    {% if with_tax is null %}
+        {% set with_tax = true %}
+    {% endif %}
+
+    {{- convertAndFormat(product|coreshop_product_discount_price(with_tax)) }}
+{%- endmacro -%}

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Customer\Model;
 
@@ -30,6 +30,22 @@ class CustomerGroup extends AbstractPimcoreModel implements CustomerGroupInterfa
      * {@inheritdoc}
      */
     public function setName($name)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRoles($roles)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

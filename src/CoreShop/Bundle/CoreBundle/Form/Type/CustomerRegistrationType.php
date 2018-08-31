@@ -16,10 +16,10 @@ use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class CustomerRegistrationType extends AbstractType
 {
@@ -33,21 +33,26 @@ class CustomerRegistrationType extends AbstractType
                 'label' => 'coreshop.form.customer_registration.customer',
                 'label_attr' => [
                     'class' => 'cs-customer'
+                ],
+                'allow_password_field' => true,
+                'constraints' => [
+                    new Valid(['groups' => ['coreshop']])
                 ]
             ])
             ->add('address', AddressType::class, [
                 'label' => 'coreshop.form.customer_registration.address',
                 'label_attr' => [
                     'class' => 'cs-address'
+                ],
+                'constraints' => [
+                    new Valid(['groups' => ['coreshop']])
                 ]
             ])
             ->add('termsAccepted', CheckboxType::class, array(
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
-                'constraints' => new IsTrue(),
-            ))
-            ->add('_redirect', HiddenType::class, array(
-                'mapped' => false,
+                'validation_groups' => ['coreshop'],
+                'constraints' => new IsTrue(['groups' => ['coreshop']]),
             ))
             ->add('submit', SubmitType::class);
     }

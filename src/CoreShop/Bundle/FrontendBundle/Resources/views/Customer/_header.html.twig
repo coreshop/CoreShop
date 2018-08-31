@@ -1,51 +1,33 @@
 {%  if customer and not customer.isGuest() %}
-    <li>
-        <a href="{{ path('coreshop_customer_profile') }}">
-            <i class="fa fa-user hidden-lg hidden-md" title="{{ 'coreshop.ui.account'|trans }}"></i>
-            <span class="hidden-sm hidden-xs">
-                {{ 'coreshop.ui.account'|trans }}
-            </span>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">
+            {{ 'coreshop.ui.account'|trans }}
         </a>
     </li>
-    <li>
-        <a href="{{ path('coreshop_cart_summary') }}">
-            <i class="fa fa-shopping-cart hidden-lg hidden-md" title="{{ 'coreshop.ui.shopping_cart'|trans }}"></i>
-            <span class="hidden-sm hidden-xs">
-                {{ 'coreshop.ui.shopping_cart'|trans }}
-            </span>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ coreshop_path(coreshop.cart, 'coreshop_cart_summary') }}">
+            {{ 'coreshop.ui.shopping_cart'|trans }}
         </a>
     </li>
-    <li>
-        <a href="{{ path('coreshop_checkout', {'stepIdentifier': 'cart'}) }}">
-            <i class="fa fa-crosshairs hidden-lg hidden-md" title="{{ 'coreshop.ui.checkout'|trans }}"></i>
-            <span class="hidden-sm hidden-xs">
-                {{ 'coreshop.ui.checkout'|trans }}
-            </span>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ coreshop_path(coreshop.cart, 'coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}">
+            {{ 'coreshop.ui.checkout'|trans }}
         </a>
     </li>
-    <li>
-        <a href="{{ path('coreshop_logout') }}">
-            <i class="fa fa-crosshairs hidden-lg hidden-md" title="{{ 'coreshop.ui.logout'|trans }}"></i>
-            <span class="hidden-sm hidden-xs">
-                {{ 'coreshop.ui.logout'|trans }}
-            </span>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ coreshop_path('coreshop_logout') }}">
+            {{ 'coreshop.ui.logout'|trans }}
         </a>
     </li>
 {% else %}
-    <li>
-        <a href="{{ path('coreshop_register') }}">
-            <i class="fa fa-unlock hidden-lg hidden-md" title="{{ 'coreshop.ui.register'|trans }}"></i>
-            <span class="hidden-sm hidden-xs">
-                {{ 'coreshop.ui.register'|trans }}
-            </span>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ coreshop_path('coreshop_register') }}">
+            {{ 'coreshop.ui.register'|trans }}
         </a>
     </li>
-    <li>
-        <a href="{{ path('coreshop_login') }}">
-            <i class="fa fa-lock hidden-lg hidden-md" title="{{ 'coreshop.ui.login'|trans }}"></i>
-            <span class="hidden-sm hidden-xs">
-                {{ 'coreshop.ui.login'|trans }}
-            </span>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ coreshop_path('coreshop_login') }}">
+            {{ 'coreshop.ui.login'|trans }}
         </a>
     </li>
 {% endif %}

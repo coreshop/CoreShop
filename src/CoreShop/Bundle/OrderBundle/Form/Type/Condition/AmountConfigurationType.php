@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
 
@@ -25,8 +25,7 @@ final class AmountConfigurationType extends AbstractType
     {
         $builder
             ->add('minAmount', MoneyType::class)
-            ->add('maxAmount', MoneyType::class)
-        ;
+            ->add('maxAmount', MoneyType::class);
     }
 
     /**

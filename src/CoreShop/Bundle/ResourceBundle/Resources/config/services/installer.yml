@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.resource.installers:
         class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
@@ -68,8 +71,10 @@ services:
         class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller
         arguments:
             - '@kernel'
-            - '%coreshop.resource.pimcore_class_ids%'
+            - '@coreshop.resource_registry'
+            - '@pimcore.dao.object_manager'
             - '@coreshop.grid_config_installer'
+            - '@coreshop.resource.installer.classes'
         tags:
             - { name: 'coreshop.resource.installer', type: 'grid_config', priority: 200}
 

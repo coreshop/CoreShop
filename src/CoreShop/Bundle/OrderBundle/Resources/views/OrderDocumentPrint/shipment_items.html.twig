@@ -31,10 +31,10 @@
                             {% endif %}
                         </td>
                         <td class="text-right">
-                            {{ item.getTotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            {{ item.getTotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                         <td class="text-right">
-                            {{ item.getTotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.orderLanguage) }}
+                            {{ item.getTotal(true)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                         </td>
                     </tr>
                 {% endfor %}

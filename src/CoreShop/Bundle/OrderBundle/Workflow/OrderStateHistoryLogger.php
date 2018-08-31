@@ -13,31 +13,20 @@
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\Pimcore\DataObjectNoteService;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
 
-/**
- * Class WorkflowManager
- *
- * @package CoreShop\Bundle\OrderBundle\Workflow
- */
 final class OrderStateHistoryLogger
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
     /**
      * @var StateMachineManager
      */
     private $stateMachineManager;
 
     /**
-     * @var StateMachineManager
+     * @var NoteServiceInterface
      */
     private $noteService;
 
@@ -52,20 +41,18 @@ final class OrderStateHistoryLogger
     private $noteIdentifier;
 
     /**
-     * @param OrderRepositoryInterface $orderRepository
-     * @param StateMachineManager      $stateMachineManager
-     * @param DataObjectNoteService    $noteService
-     * @param TranslatorInterface      $translator
-     * @param string                   $noteIdentifier
+     * @param StateMachineManager $stateMachineManager
+     * @param NoteServiceInterface $noteService
+     * @param TranslatorInterface $translator
+     * @param string $noteIdentifier
      */
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
         StateMachineManager $stateMachineManager,
-        DataObjectNoteService $noteService,
+        NoteServiceInterface $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
-    ) {
-        $this->orderRepository = $orderRepository;
+    )
+    {
         $this->stateMachineManager = $stateMachineManager;
         $this->noteService = $noteService;
         $this->translator = $translator;
@@ -73,35 +60,30 @@ final class OrderStateHistoryLogger
     }
 
     /**
+     * @param OrderInterface $order
      * @param Event $event
-     * @param       $orderId
      */
-    public function log($orderId = null, Event $event)
+    public function log(OrderInterface $order, Event $event)
     {
-        $order = $this->orderRepository->find($orderId);
-        if(!$order instanceof OrderInterface) {
-            return;
-        }
-
         $subject = $event->getSubject();
         $transition = $event->getTransition();
 
         $from = $this->getFrom($transition->getFroms());
         $to = $this->getTo($transition->getTos());
 
-        $fromValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $from;
-        $toValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $to;
+        $fromValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$from;
+        $toValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$to;
 
         $objectIdInfo = '';
         // add id if it's not an order (since payment/shipping/invoice could be more than one)
-        if(!$subject instanceof OrderInterface) {
-            $objectIdInfo = ' (Id ' . $subject->getId() . ')';
+        if (!$subject instanceof OrderInterface) {
+            $objectIdInfo = ' (Id '.$subject->getId().')';
         }
 
         $note = $this->noteService->createPimcoreNoteInstance($order, $this->noteIdentifier);
         $note->setTitle(
             sprintf('%s%s: %s %s %s %s',
-                $this->translator->trans('coreshop_workflow_name_' . $event->getWorkflowName(), [], 'admin'),
+                $this->translator->trans('coreshop_workflow_name_'.$event->getWorkflowName(), [], 'admin'),
                 $objectIdInfo,
                 $this->translator->trans('coreshop_workflow_state_changed_from', [], 'admin'),
                 $this->translator->trans($fromValue, [], 'admin'),

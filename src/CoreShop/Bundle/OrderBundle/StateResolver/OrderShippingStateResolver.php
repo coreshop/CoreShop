@@ -16,10 +16,11 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderShipmentTransitions;
+use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderShippingStateResolver implements StateResolverInterface
 {
@@ -34,16 +35,24 @@ final class OrderShippingStateResolver implements StateResolverInterface
     protected $orderShipmentRepository;
 
     /**
+     * @var ProcessableInterface
+     */
+    protected $processable;
+
+    /**
      * @param StateMachineManager $stateMachineManager
      * @param OrderShipmentRepositoryInterface $orderShipmentRepository
+     * @param ProcessableInterface $processable
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
-        OrderShipmentRepositoryInterface $orderShipmentRepository
+        OrderShipmentRepositoryInterface $orderShipmentRepository,
+        ProcessableInterface $processable
     )
     {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderShipmentRepository = $orderShipmentRepository;
+        $this->processable = $processable;
     }
 
     /**
@@ -59,7 +68,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
         $workflow = $this->stateMachineManager->get($order, OrderShipmentTransitions::IDENTIFIER);
 
         if ($this->allShipmentsInStateButOrderStateNotUpdated($order, ShipmentStates::STATE_SHIPPED, OrderShipmentStates::STATE_SHIPPED)) {
-            $workflow->apply($order,OrderShipmentTransitions::TRANSITION_SHIP);
+            $workflow->apply($order, OrderShipmentTransitions::TRANSITION_SHIP);
         }
 
         if ($this->isPartiallyShippedButOrderStateNotUpdated($order)) {
@@ -80,9 +89,8 @@ final class OrderShippingStateResolver implements StateResolverInterface
 
         $items = 0;
         /** @var OrderShipmentInterface $shipment */
-        foreach($shipments as $shipment)
-        {
-            if($shipment->getState() === $shipmentState) {
+        foreach ($shipments as $shipment) {
+            if ($shipment->getState() === $shipmentState) {
                 $items++;
             }
         }
@@ -101,11 +109,14 @@ final class OrderShippingStateResolver implements StateResolverInterface
         OrderInterface $order,
         string $shipmentState,
         string $orderShippingState
-    ): bool {
+    ): bool
+    {
         $shipmentInStateAmount = $this->countOrderShipmentsInState($order, $shipmentState);
         $shipmentAmount = count($this->orderShipmentRepository->getDocuments($order));
 
-        return $shipmentAmount === $shipmentInStateAmount && $orderShippingState !== $order->getShippingState();
+        return $shipmentAmount === $shipmentInStateAmount &&
+            $orderShippingState !== $order->getShippingState() &&
+            $this->processable->isFullyProcessed($order);
     }
 
     /**
@@ -116,12 +127,10 @@ final class OrderShippingStateResolver implements StateResolverInterface
     private function isPartiallyShippedButOrderStateNotUpdated(OrderInterface $order): bool
     {
         $shipmentInShippedStateAmount = $this->countOrderShipmentsInState($order, ShipmentStates::STATE_SHIPPED);
-        $shipmentAmount = count($this->orderShipmentRepository->getDocuments($order));
 
         return
-            1 <= $shipmentInShippedStateAmount &&
-            $shipmentInShippedStateAmount < $shipmentAmount &&
-            OrderShipmentStates::STATE_PARTIALLY_SHIPPED !== $order->getShippingState()
-        ;
+            $shipmentInShippedStateAmount > 0 &&
+            !$this->processable->isFullyProcessed($order) &&
+            OrderShipmentStates::STATE_PARTIALLY_SHIPPED !== $order->getShippingState();
     }
 }

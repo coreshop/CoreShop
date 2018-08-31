@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryType;
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -26,9 +25,6 @@ final class CountryTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('currency', CurrencyChoiceType::class);
-        $builder->add('stores', StoreChoiceType::class, [
-            'multiple' => true,
-        ]);
     }
 
     /**

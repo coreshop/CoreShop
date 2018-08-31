@@ -1,13 +1,13 @@
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% import "@CoreShopFrontend/Common/Macro/messages.html.twig" as messages %}
 
 <div class="row">
     <div class="col-sm-6">
-        <div class="panel panel-smart">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ 'coreshop.ui.login'|trans }}</h3>
+        <div class="card card-smart">
+            <div class="card-header">
+                <h3 class="card-title">{{ 'coreshop.ui.login'|trans }}</h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 {% if last_error %}
                     {{ messages.error(last_error.messageKey|trans(last_error.messageData, 'security')) }}
                 {% endif %}
@@ -15,7 +15,7 @@
                     {{ 'coreshop.ui.login_with_existing_account'|trans }}
                 </p>
 
-                {{ form_start(form, {'action': path('coreshop_login_check'), 'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_start(form, {'action': coreshop_path('coreshop_login_check'), 'attr': {'novalidate': 'novalidate'}}) }}
 
                     {{ form_row(form._username) }}
                     {{ form_row(form._password) }}
@@ -25,23 +25,23 @@
                         <input type="hidden" name="_target_path" value="{{ target }}" />
                     {% endif %}
 
-                    <button type="submit" class="ui blue submit button">{{ 'coreshop.ui.login'|trans }}</button>
+                    <button type="submit" class="btn-success btn submit button">{{ 'coreshop.ui.login'|trans }}</button>
 
-                    <a class="pull-right" href="{{ path('coreshop_customer_password_reset_request') }}">{{ 'coreshop.ui.reset_password'|trans }}</a>
+                    <a class="pull-right" href="{{ coreshop_path('coreshop_customer_password_reset_request') }}">{{ 'coreshop.ui.reset_password'|trans }}</a>
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
         </div>
     </div>
     <div class="col-sm-6">
-        <div class="panel panel-smart">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ 'coreshop.ui.create_new_account'|trans }}</h3>
+        <div class="card card-smart">
+            <div class="card-header">
+                <h3 class="card-title">{{ 'coreshop.ui.create_new_account'|trans }}</h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <p>
                     {{ 'coreshop.ui.registration_text'|trans }}
                 </p>
-                <a href="{{ path('coreshop_register', {'_redirect': target}) }}" class="btn btn-black">{{ 'coreshop.ui.register'|trans }}</a>
+                <a href="{{ coreshop_path('coreshop_register', {'_redirect': target}) }}" class="btn btn-success">{{ 'coreshop.ui.register'|trans }}</a>
             </div>
         </div>
     </div>

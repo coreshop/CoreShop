@@ -18,6 +18,7 @@ coreshop.order.order.editPayment = {
             width: 600,
             height: 450,
             resizeable: false,
+            modal: true,
             layout: 'fit',
             items: [{
                 xtype: 'form',
@@ -30,42 +31,11 @@ coreshop.order.order.editPayment = {
                 },
                 buttons: [
                     {
-                        text: t('save'),
+                        text: t('OK'),
                         handler: function (btn) {
-                            var form = btn.up('window').down('form').getForm();
-
-                            if (form.isValid()) {
-                                var formValues = form.getFieldValues();
-
-                                formValues['id'] = payment.getId();
-
-                                Ext.Ajax.request({
-                                    url: '/admin/coreshop/order-payment/update-payment',
-                                    method: 'post',
-                                    params: formValues,
-                                    callback: function (request, success, response) {
-                                        try {
-                                            response = Ext.decode(response.responseText);
-
-                                            if (response.success === true) {
-                                                window.close();
-                                                window.destroy();
-
-                                                if (callback) {
-                                                    callback(response);
-                                                }
-                                            } else if(response.success === false) {
-                                                Ext.Msg.alert(t('error'), response.message);
-                                            }
-                                        }
-                                        catch (e) {
-                                            Ext.Msg.alert(t('error'), e);
-                                        }
-                                    }
-                                });
-                            }
+                            window.close();
+                            window.destroy();
                         },
-
                         iconCls: 'pimcore_icon_apply'
                     }
                 ],
@@ -93,21 +63,35 @@ coreshop.order.order.editPayment = {
                     },
                     {
                         xtype: 'numberfield',
-                        name: 'amount',
+                        name: 'total_amount',
                         fieldLabel: t('coreshop_quantity'),
-                        disabled: false,
+                        disabled: true,
                         value: payment.get('amount') / 100
                     },
                     {
                         xtype: 'gridpanel',
                         title: t('details'),
+                        viewConfig: {
+                        enableTextSelection: true
+                        },
                         store: new Ext.data.ArrayStore({
                             data: payment.get('details'),
                             fields: ['name', 'value']
                         }),
                         columns: [
-                            {text: 'Name', dataIndex: 'name', flex: 1 },
-                            {text: 'Value', dataIndex: 'value', flex: 2 }
+                            {
+                                text: 'Name',
+                                dataIndex: 'name',
+                                flex: 1
+                            },
+                            {
+                                text: 'Value',
+                                dataIndex: 'value',
+                                flex: 2,
+                                renderer: function arg(val, test, test2){
+                                    return '<div style="white-space: normal;">' + val + '</div>';
+                                }
+                            }
                         ]
                     }
                 ]

@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Bundle\ShippingBundle\Controller\ShippingRuleController;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierTranslationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType;
@@ -47,6 +48,14 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
             ->end()
         ;
+
+        $rootNode
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('default_resolver')->defaultValue('coreshop.shipping.default_resolver.cheapest')->cannotBeEmpty()->end()
+            ->end()
+        ;
+
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -109,7 +118,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(ShippingRuleInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ShippingRuleController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(RuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ShippingRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
@@ -180,6 +189,13 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('shipping')->defaultValue('/bundles/coreshopshipping/pimcore/css/shipping.css')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('editmode_js')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('core_extension_document_tag_carrier')->defaultValue('/bundles/coreshopshipping/pimcore/js/coreExtension/document/coreShopCarrier.js')->end()
                         ->end()
                     ->end()
                     ->scalarNode('permissions')

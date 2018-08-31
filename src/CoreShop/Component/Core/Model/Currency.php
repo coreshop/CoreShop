@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Currency\Model\Currency as BaseCurrency;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Currency extends BaseCurrency implements CurrencyInterface
@@ -21,6 +22,11 @@ class Currency extends BaseCurrency implements CurrencyInterface
      * @var Collection|CountryInterface[]
      */
     protected $countries;
+
+    public function __construct()
+    {
+        $this->countries = new ArrayCollection();
+    }
 
     /**
      * {@inheritdoc}

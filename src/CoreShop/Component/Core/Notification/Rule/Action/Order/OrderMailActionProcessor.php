@@ -38,6 +38,11 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
      */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
     {
+        if (!array_key_exists('doNotSendToDesignatedRecipient', $configuration)) {
+            $configuration['doNotSendToDesignatedRecipient'] = false;
+        }
+
+        $params['doNotSendToDesignatedRecipient'] = $configuration['doNotSendToDesignatedRecipient'];
         $order = null;
 
         if ($subject instanceof OrderInterface) {
@@ -47,10 +52,10 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
         }
 
         if ($order instanceof OrderInterface) {
-            $language = $order->getOrderLanguage();
+            $language = $order->getLocaleCode();
 
             if (is_null($language)) {
-                throw new \Exception('Language is not set');
+                throw new \Exception('OrderMailActionProcessor: Language is not set.');
             }
 
             if (array_key_exists($language, $configuration['mails'])) {

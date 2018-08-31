@@ -65,11 +65,13 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
     public function load(ObjectManager $manager)
     {
         $countries = CountryLoader::countries(true, true);
+        $store = $this->container->get('coreshop.repository.store')->findStandard();
 
         $addressFormatReplaces = [
             'recipient' => [
                 '%Text(company);',
                 PHP_EOL,
+                '%Text(salutation);',
                 '%Text(firstname);',
                 '%Text(lastname);',
             ],
@@ -86,6 +88,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             'region' => ''
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
+        $defaultSalutations = ['mrs', 'mr'];
         $languages = Tool::getValidLanguages();
         $alpha3CodeMap = [];
 
@@ -117,7 +120,6 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 $newCountry->setIsoCode($country->getIsoAlpha2());
                 $newCountry->setActive($country->getIsoAlpha2() === 'AT');
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
-                $newCountry->addStore($this->container->get('coreshop.repository.store')->findStandard());
                 $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
 
                 $extra = $country->getExtra();
@@ -133,12 +135,13 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));
-                    $replaceFrom = '{{' . $replaceKey . '}}';
+                    $replaceFrom = '{{'.$replaceKey.'}}';
 
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }
 
                 $newCountry->setAddressFormat($addressFormat);
+                $newCountry->setSalutations($defaultSalutations);
                 $manager->persist($newCountry);
 
                 if ($country->getIsoAlpha2() === 'AT') {
@@ -165,9 +168,12 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                         }
                     }
                 }
+
+                $store->addCountry($newCountry);
             }
         }
 
+        $manager->persist($store);
         $manager->flush();
 
         $store = $this->container->get('coreshop.repository.store')->findStandard();

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -27,7 +27,7 @@ class CurrencyController extends FrontendController
     {
         $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get('coreshop.context.shopper')->getStore());
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Currency:_widget.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
             'currencies' => $currencies,
         ]);
     }

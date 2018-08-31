@@ -40,6 +40,10 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
         };
     },
 
+    reset: function() {
+        this.cartPanelStore.setData([]);
+    },
+
     getPanel: function () {
         var me = this;
         var modelName = 'CoreShopCreateOrderCart';
@@ -209,7 +213,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                                 object: ['object', 'variant']
                             },
                             specific: {
-                                classes: coreshop.implementations['coreshop.product']
+                                classes: coreshop.stack.coreshop.product
                             }
                         }
                     );

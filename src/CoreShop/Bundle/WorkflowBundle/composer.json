@@ -1,0 +1,49 @@
+{
+  "name": "coreshop/workflow-bundle",
+  "type": "pimcore-bundle",
+  "description": "CoreShop - Workflow Bundle",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce",
+    "workflow"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    },
+    {
+      "name": "Stefan Hagspiel",
+      "email": "shagspiel@dachcom.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "coreshop/pimcore": "^2.0",
+    "coreshop/registry": "^2.0",
+    "symfony/config": "^3.3",
+    "symfony/workflow": "~3.3|~4.0",
+    "symfony/yaml": "^3.3",
+    "pimcore/pimcore": "^5.4.0"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Bundle\\WorkflowBundle\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0-dev"
+    }
+  }
+}

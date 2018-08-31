@@ -1,10 +1,12 @@
 {% extends '@CoreShopFrontend/layout.html.twig' %}
 
 {% block content %}
-     <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-        <li class="active">{{ 'coreshop.ui.error'|trans }}</a></li>
-    </ol>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item active">{{ 'coreshop.ui.error'|trans }}</a></li>
+        </ol>
+    </nav>
 
     <h2 class="main-heading text-center">
         {{ 'coreshop.ui.error'|trans }}
@@ -19,12 +21,12 @@
         {% if lastPayment.state == 'cancelled' %}
             <p>{{ 'coreshop.ui.checkout.error.cancelled'|trans }}</p>
             <p>
-                <a href="{{ path('coreshop_cart_summary') }}" class="btn btn-black text-uppercase">{{ 'coreshop.ui.cart'|trans }}</a>
+                <a href="{{ coreshop_path(cart, 'coreshop_cart_summary') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.cart'|trans }}</a>
             </p>
         {% else %}
             <p>{{ 'coreshop.ui.checkout.error.default'|trans }}</p>
             <p>
-                <a href="{{ path('coreshop_index') }}" class="btn btn-black text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
+                <a href="{{ coreshop_path('coreshop_index') }}" class="btn btn-secondary text-uppercase">{{ 'coreshop.ui.back_to_home'|trans }}</a>
             </p>
         {% endif %}
     </div>

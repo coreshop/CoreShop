@@ -8,57 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
-use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
-use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
 class Order extends Sale implements OrderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalPayed()
-    {
-        $totalPayed = 0;
-
-        foreach ($this->getPayments() as $payment) {
-            if ($payment->getTotalAmount()) {
-                $totalPayed += $payment->getTotalAmount();
-            }
-        }
-
-        return $totalPayed;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIsPayed()
-    {
-        return $this->getTotal() === $this->getTotalPayed();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSaleLanguage()
-    {
-        return $this->getOrderLanguage();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSaleLanguage($saleLanguage)
-    {
-        return $this->setOrderLanguage($saleLanguage);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -159,22 +116,6 @@ class Order extends Sale implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrderLanguage()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOrderLanguage($orderLanguage)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOrderDate()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -218,54 +159,6 @@ class Order extends Sale implements OrderInterface
     public function setToken($token)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return PaymentRepositoryInterface
-     */
-    private function getPaymentRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.payment');
-    }
-
-    /**
-     * @return OrderInvoiceRepositoryInterface
-     */
-    private function getOrderInvoiceRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.order_invoice');
-    }
-
-    /**
-     * @return OrderShipmentRepositoryInterface
-     */
-    private function getOrderShipmentRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.order_shipment');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPayments()
-    {
-        return $this->getPaymentRepository()->findForOrderId($this->getId());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShipments()
-    {
-        return $this->getOrderShipmentRepository()->getDocuments($this);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInvoices()
-    {
-        return $this->getOrderInvoiceRepository()->getDocuments($this);
     }
 
     /**

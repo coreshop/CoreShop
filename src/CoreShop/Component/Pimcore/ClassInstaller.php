@@ -12,99 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\DataObject;
-
-class ClassInstaller implements ClassInstallerInterface
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\ClassInstaller::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\ClassInstaller is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassInstaller class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * {@inheritdoc}
+     * @deprecated Class CoreShop\Component\Pimcore\ClassInstaller is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ClassInstaller class instead.
      */
-    public function createBrick($jsonFile, $brickName)
+    class ClassInstaller
     {
-        try {
-            $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
-        } catch (\Exception $e) {
-            $objectBrick = new DataObject\Objectbrick\Definition();
-            $objectBrick->setKey($brickName);
-        }
 
-        $json = file_get_contents($jsonFile);
-
-        DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
-
-        ClassLoader::forceLoadBrick($brickName);
-
-        return $objectBrick;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createClass($jsonFile, $className, $updateClass = false)
-    {
-        $tempClass = new DataObject\ClassDefinition();
-        $id = $tempClass->getDao()->getIdByName($className);
-        $class = null;
-
-        if ($id) {
-            $class = DataObject\ClassDefinition::getById($id);
-        }
-
-        if (!$class || $updateClass) {
-            $json = file_get_contents($jsonFile);
-
-            if (!$class) {
-                $class = DataObject\ClassDefinition::create();
-            }
-
-            $class->setName($className);
-            $class->setUserOwner(0);
-
-            DataObject\ClassDefinition\Service::importClassDefinitionFromJson($class, $json, true);
-
-            /**
-             * Fixes Object Brick Stuff.
-             */
-            $list = new DataObject\Objectbrick\Definition\Listing();
-            $list = $list->load();
-
-            if (!empty($list)) {
-                foreach ($list as $brickDefinition) {
-                    $clsDefs = $brickDefinition->getClassDefinitions();
-                    if (!empty($clsDefs)) {
-                        foreach ($clsDefs as $cd) {
-                            if ($cd['classname'] == $class->getId()) {
-                                $brickDefinition->save();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        ClassLoader::forceLoadDataObjectClass($className);
-
-        return $class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createFieldCollection($jsonFile, $name)
-    {
-        try {
-            $fieldCollection = DataObject\Fieldcollection\Definition::getByKey($name);
-        } catch (\Exception $e) {
-            $fieldCollection = new DataObject\Fieldcollection\Definition();
-            $fieldCollection->setKey($name);
-        }
-
-        $json = file_get_contents($jsonFile);
-
-        DataObject\ClassDefinition\Service::importFieldCollectionFromJson($fieldCollection, $json, true);
-
-        ClassLoader::forceLoadFieldCollection($name);
-
-        return $fieldCollection;
     }
 }

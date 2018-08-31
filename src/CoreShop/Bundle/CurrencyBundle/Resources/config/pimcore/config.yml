@@ -5,3 +5,10 @@ pimcore:
                 map:
                     coreShopCurrency: CoreShop\Bundle\CurrencyBundle\CoreExtension\Currency
                     coreShopCurrencyMultiselect: CoreShop\Bundle\CurrencyBundle\CoreExtension\CurrencyMultiselect
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-currency:
+                namespace_prefix: "CoreShop\\Component\\Currency"
+                path: "@CoreShopCurrencyBundle/Resources/config/serializer"

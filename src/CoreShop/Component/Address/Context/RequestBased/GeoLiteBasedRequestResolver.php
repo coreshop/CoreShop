@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Address\Context\RequestBased;
 
@@ -38,7 +38,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     public function findCountry(Request $request)
     {
-        $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
+        $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY.'/GeoLite2-City.mmdb';
         $record = null;
 
         if (file_exists($geoDbFile)) {

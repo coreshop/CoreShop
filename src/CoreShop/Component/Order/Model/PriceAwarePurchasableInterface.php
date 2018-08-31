@@ -8,10 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
+/**
+ * @deprecated Interface CoreShop\Component\Order\Model\PriceAwarePurchasableInterface is deprecated since version 2.0.0-beta.4 and will be removed in 2.0.
+ */
 interface PriceAwarePurchasableInterface
 {
     /**
@@ -19,3 +22,5 @@ interface PriceAwarePurchasableInterface
      */
     public function getPrice();
 }
+
+@trigger_error('Interface CoreShop\Component\Order\Model\PriceAwarePurchasableInterface is deprecated since version 2.0.0-beta.4 and will be removed in 2.0.', E_USER_DEPRECATED);

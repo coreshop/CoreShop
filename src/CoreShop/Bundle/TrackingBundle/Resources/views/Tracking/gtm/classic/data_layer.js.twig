@@ -1,0 +1,1 @@
+window.dataLayer = window.dataLayer || [];

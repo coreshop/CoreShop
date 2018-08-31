@@ -8,22 +8,22 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\InvoiceStates;
-use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -45,8 +45,8 @@ class OrderInvoiceController extends PimcoreController
 
         $itemsToReturn = [];
 
-        if (count($order->getPayments()) === 0) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Can\'t create Invoice without valid order payment']);
+        if (!$this->getProcessableHelper()->isProcessable($order)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'The current order state does not allow to create invoices']);
         }
 
         try {
@@ -91,11 +91,17 @@ class OrderInvoiceController extends PimcoreController
         }
 
         try {
-            $items = $this->decodeJson($items);
+
+            // request invoice ready state from order, if it's our first invoice.
+            $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_invoice');
+            if ($workflow->can($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE)) {
+                $workflow->apply($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE);
+            }
 
             $invoice = $this->getInvoiceFactory()->createNew();
             $invoice->setState(InvoiceStates::STATE_NEW);
 
+            $items = $this->decodeJson($items);
             $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
 
             return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);
@@ -139,14 +145,20 @@ class OrderInvoiceController extends PimcoreController
         $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
 
         if ($invoice instanceof OrderInvoiceInterface) {
-            return new Response(
-                $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
-                200,
-                [
-                    'Content-Type' => 'application/pdf',
+
+            try {
+                $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice);
+                $header = [
+                    'Content-Type'        => 'application/pdf',
                     'Content-Disposition' => 'inline; filename="invoice-'.$invoice->getId().'.pdf"',
-                ]
-            );
+                ];
+            } catch (\Exception $e) {
+                $responseData = '<strong>'.$e->getMessage().'</strong><br>trace: '.$e->getTraceAsString();
+                $header = ['Content-Type' => 'text/html'];
+            }
+
+            return new Response($responseData, 200, $header);
+
         }
 
         throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));

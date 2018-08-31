@@ -95,6 +95,12 @@ translations:
           en: 'There was an Error during the payment process.'
           de: 'Während dem Bezahlvorgang ist ein Fehler aufgetreten.'
 
+  coreshop.ui.checkout.thank_you:
+        languages:
+          de_CH: 'Vielen Dank für Ihre Bestellung'
+          en: 'Thank you for your Order'
+          de: 'Vielen Dank für Ihre Bestellung'
+
   coreshop.ui.back_to_home:
       languages:
           de_CH: 'Zurück zur Startseite'
@@ -209,11 +215,17 @@ translations:
           en: 'Item added'
           de: 'Produkt hinzugefügt'
 
+  coreshop.ui.item_removed:
+      languages:
+          de_CH: 'Produkt entfernt'
+          en: 'Item removed'
+          de: 'Produkt entfernt'
+
   coreshop.ui.cart_updated:
       languages:
           de_CH: 'Warenkorb wurde aktualisiert'
           en: 'Cart has been updated'
-          de: 'Warenkorb wurde aktiviert'
+          de: 'Warenkorb wurde aktualisiert'
 
   coreshop.ui.cart_update_error:
       languages:
@@ -226,6 +238,30 @@ translations:
           de_CH: 'Warenkorb aktualisieren'
           en: 'Update Cart'
           de: 'Warenkorb aktualisieren'
+
+  coreshop.ui.cart.shipment.available_carriers:
+      languages:
+          de_CH: 'Verfügbare Versanddienste'
+          en: 'Available Carriers'
+          de: 'Verfügbare Versanddienste'
+
+  coreshop.ui.cart.shipment.is_free_shipping:
+      languages:
+          de_CH: 'Kostenlose Lieferung'
+          en: 'Free Shipping'
+          de: 'Kostenlose Lieferung'
+
+  coreshop.ui.cart.shipment.no_valid_carrier_found:
+      languages:
+          de_CH: 'Es wurden keine Versanddienste gefunden'
+          en: 'No valid carrier found'
+          de: 'Es wurden keine Versanddienste gefunden'
+
+  coreshop.ui.cart.shipment.search_for_carrier:
+      languages:
+          de_CH: 'Passenden Versanddienst finden'
+          en: 'Search for Carrier'
+          de: 'Passenden Versanddienst finden'
 
   coreshop.ui.items:
       languages:
@@ -268,6 +304,12 @@ translations:
           de_CH: 'Abmelden'
           en: 'Logout'
           de: 'Abmelden'
+          
+  coreshop.ui.order:
+        languages:
+          de_CH: 'Bestellung'
+          en: 'Order'
+          de: 'Bestellung'
 
   coreshop.ui.order_history_and_details:
       languages:
@@ -280,6 +322,12 @@ translations:
           de_CH: 'Bestellnummer'
           en: 'Order Number'
           de: 'Bestellnummer'
+          
+  coreshop.ui.remove:
+      languages:
+          de_CH: 'Entfernen'
+          en: 'Remove'
+          de: 'Entfernen'
 
   coreshop.ui.shipment_number:
       languages:
@@ -347,6 +395,12 @@ translations:
           en: 'Personal Information'
           de: 'Persönliche Informationen'
 
+  coreshop.ui.change_password:
+      languages:
+          de_CH: 'Passwort ändern'
+          en: 'Change Password'
+          de: 'Passwort ändern'
+
   coreshop.ui.price:
       languages:
           de_CH: 'Preis'
@@ -397,9 +451,9 @@ translations:
 
   coreshop.ui.registration_text:
       languages:
-          de_CH: ''
-          en: ''
-          de: ''
+          de_CH: 'Einen neuen Account anlegen'
+          en: 'Create a new account'
+          de: 'Einen neuen Account anlegen'
 
   coreshop.ui.reset_password:
       languages:
@@ -527,6 +581,12 @@ translations:
           en: 'Initialized'
           de: 'Initialisiert'
 
+  coreshop.ui.workflow.state.coreshop_order.confirmed:
+      languages:
+          de_CH: 'Bestätigt'
+          en: 'Confirmed'
+          de: 'Bestätigt'
+          
   coreshop.ui.workflow.state.coreshop_order.cancelled:
       languages:
           de_CH: 'Storniert'
@@ -671,6 +731,12 @@ translations:
           en: 'Total Tax'
           de: 'Gesamt Steuer'
 
+  coreshop.ui.tax_name:
+      languages:
+          de_CH: 'Steuer %s'
+          en: 'Tax %s'
+          de: 'Steuer %s'
+
   coreshop.ui.comment:
       languages:
           de_CH: 'Kommentar'
@@ -806,8 +872,14 @@ translations:
   coreshop.form.customer_registration.address:
       languages:
           de_CH: 'Adressinformationen'
-          en: 'Addres Information'
+          en: 'Address Information'
           de: 'Adressinformationen'
+
+  coreshop.form.address.salutation:
+      languages:
+          de_CH: 'Anrede'
+          en: 'Salutation'
+          de: 'Anrede'
 
   coreshop.form.address.company:
       languages:
@@ -863,6 +935,66 @@ translations:
           en: 'Phone Number'
           de: 'Telefonnummer'
 
+  coreshop.ui.customer.password_successfully_changed:
+      languages:
+          de_CH: 'Passwort wurde erfolgreich geändert'
+          en: 'Password has been successfully changed'
+          de: 'Passwort wurde erfolgreich geändert'
+
+  coreshop.ui.customer.profile_successfully_updated:
+      languages:
+          de_CH: 'Profil wurde erfolgreich gespeichert'
+          en: 'Profile has been successfully saved'
+          de: 'Profil wurde erfolgreich gespeichert'
+
+  coreshop.ui.customer.address_successfully_added:
+      languages:
+          de_CH: 'Neue Adresse wurde erfolgreich erstellt'
+          en: 'New Address has been successfully created'
+          de: 'Neue Adresse wurde erfolgreich erstellt'
+
+  coreshop.ui.customer.address_successfully_updated:
+      languages:
+          de_CH: 'Adresse wurde erfolgreich aktualisiert'
+          en: 'Address has been successfully updated'
+          de: 'Adresse wurde erfolgreich aktualisiert'
+
+  coreshop.ui.customer.address_successfully_deleted:
+      languages:
+          de_CH: 'Adresse wurde gelöscht'
+          en: 'Address has been removed'
+          de: 'Adresse wurde gelöscht'
+
+  coreshop.ui.newsletter_confirmed:
+      languages:
+          de_CH: 'Vielen Dank. Ihre E-Mail-Adresse ist nun bestätigt.'
+          en: 'Thank you. Your e-mail address is now confirmed.'
+          de: 'Vielen Dank. Ihre E-Mail-Adresse ist nun bestätigt.'
+
+  coreshop.ui.newsletter_confirmation_error:
+      languages:
+          de_CH: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
+          en: 'Error confirming your e-mail address.'
+          de: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
+
+  coreshop.form.customer.salutation:
+      languages:
+          de_CH: 'Anrede'
+          en: 'Salutation'
+          de: 'Anrede'
+
+  coreshop.form.customer.salutation.mr:
+      languages:
+          de_CH: 'Herr'
+          en: 'Mr.'
+          de: 'Herr'
+
+  coreshop.form.customer.salutation.mrs:
+      languages:
+          de_CH: 'Frau'
+          en: 'Mrs.'
+          de: 'Frau'
+
   coreshop.form.customer.firstname:
       languages:
           de_CH: 'Vorname'
@@ -887,6 +1019,12 @@ translations:
           en: 'Repeat Email Addres'
           de: 'E-Mail-Adresse wiederholen'
 
+  coreshop.form.customer.current_password:
+      languages:
+          de_CH: 'Aktuelles Passwort'
+          en: 'Current Password'
+          de: 'Aktuelles Passwort'
+
   coreshop.form.customer.password:
       languages:
           de_CH: 'Passwort'
@@ -898,6 +1036,18 @@ translations:
           de_CH: 'Passwort wiederholen'
           en: 'Repeat Password'
           de: 'Passwort wiederholen'
+
+  coreshop.form.customer.new_password:
+      languages:
+          de_CH: 'Neues Passwort'
+          en: 'New Password'
+          de: 'Neues Passwort'
+
+  coreshop.form.customer.new_password_repeat:
+      languages:
+          de_CH: 'Neues Passwort wiederholen'
+          en: 'New Repeat Password'
+          de: 'Neues Passwort wiederholen'
 
   coreshop.form.customer.default_address:
       languages:
@@ -922,6 +1072,18 @@ translations:
           de_CH: 'Weiblich'
           en: 'Female'
           de: 'Weiblich'
+
+  coreshop.form.customer.newsletter:
+      languages:
+          de_CH: 'Newsletter'
+          en: 'Newsletter'
+          de: 'Newsletter'
+          
+  coreshop.form.customer.newsletter.subscribe:
+      languages:
+          de_CH: 'Ja, ich möchte den Newsletter abonnieren'
+          en: 'I would like to subscribe to the newsletter'
+          de: 'Ja, ich möchte den Newsletter abonnieren'
 
   coreshop.form.login.username:
       languages:
@@ -953,10 +1115,45 @@ translations:
           en: 'Search'
           de: 'Suchen'
 
+  coreshop.form.order.revise.cancel:
+      languages:
+          de_CH: 'Bestellung stornieren und Warenkorb wiederherstellen'
+          en: 'Cancel order and restore cart'
+          de: 'Bestellung stornieren und Warenkorb wiederherstellen'
+
+  coreshop.form.order.revise.submit_payment:
+      languages:
+          de_CH: 'Bezahlung erneut durchführen'
+          en: 'Process payment'
+          de: 'Bezahlung erneut durchführen'
+
+  coreshop.form.cart.carrier.country:
+      languages:
+          de_CH: 'Land'
+          en: 'Country'
+          de: 'Land'
+
+  coreshop.form.cart.carrier.zip:
+      languages:
+          de_CH: 'PLZ'
+          en: 'Post Code'
+          de: 'PLZ'
+
+  coreshop.form.cart.carrier.submit:
+      languages:
+          de_CH: 'Suchen'
+          en: 'Search'
+          de: 'Suchen'
+
   coreshop.global_error.cart_has_changed:
       languages:
           de_CH: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
           en: 'Some Products are not available anymore. Please check your cart for completeness.'
           de: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
-
+          
+  coreshop.product.tax.inc:
+        languages:
+          de_CH: 'inkl. %s%% Steuer'
+          en: 'incl. %s%% Tax'
+          de: 'inkl. %s%% Steuer'
 

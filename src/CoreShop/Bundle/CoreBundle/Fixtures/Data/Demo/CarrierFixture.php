@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
@@ -62,6 +62,8 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
     public function load(ObjectManager $manager)
     {
         if (!count($this->container->get('coreshop.repository.carrier')->findAll())) {
+            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
+
             $faker = Factory::create();
             $faker->addProvider(new Lorem($faker));
 
@@ -69,14 +71,15 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
              * @var $carrier CarrierInterface
              */
             $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
-            $carrier->setName('Standard');
-            $carrier->setRangeBehaviour(\CoreShop\Component\Shipping\Model\CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
+            $carrier->setIdentifier('Standard');
             $carrier->setTrackingUrl('https://coreshop.at/track/%s');
             $carrier->setIsFree(false);
             $carrier->setTaxRule($this->getReference('taxRule'));
+            $carrier->addStore($defaultStore);
 
             foreach (Tool::getValidLanguages() as $lang) {
                 $carrier->setDescription(implode(PHP_EOL, $faker->paragraphs(3)), $lang);
+                $carrier->setTitle('Standard - ' . strtoupper($lang), $lang);
             }
 
             $manager->persist($carrier);

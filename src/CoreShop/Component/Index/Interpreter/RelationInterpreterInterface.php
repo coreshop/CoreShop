@@ -8,19 +8,22 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 interface RelationInterpreterInterface extends InterpreterInterface
 {
     /**
      * @param $value
-     * @param IndexColumnInterface|null $config
+     * @param IndexableInterface $indexable
+     * @param IndexColumnInterface $config
+     * @param array $interpreterConfig
      *
-     * @return mixed
+     * @return array|RelationalValueInterface[]
      */
-    public function interpretRelational($value, IndexColumnInterface $config = null);
+    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
 }

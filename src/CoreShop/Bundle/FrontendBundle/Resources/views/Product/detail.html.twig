@@ -1,19 +1,20 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
 
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
 {% block center %}
-    <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-        {% if product.getCategories|length > 0 %}
-            {% for cat in product.getCategories|first.getHierarchy() %}
-                <li class="active"><a href="{{ path('coreshop_category_list', {name: cat.getName, category: cat.getId}) }}">{{ cat.getName }}</a></li>
-            {% endfor %}
-        {% endif %}
-
-        <li class="active"><a href="{{ path('coreshop_product_detail', {name: product.getName, product: product.getId}) }}">{{ product.getName }}</a></li>
-    </ol>
-
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            {% if product.getCategories|length > 0 %}
+                {% for cat in product.getCategories|first.getHierarchy() %}
+                    <li class="breadcrumb-item"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.getName }}</a></li>
+                {% endfor %}
+            {% endif %}
+            <li class="breadcrumb-item active">{{ product.getName }}</li>
+        </ol>
+    </nav>
 
     <div class="row product-info">
 
@@ -23,13 +24,13 @@
             {% endif %}
 
             {% if product.getImages|length > 0 %}
-                <ul class="list-unstyled list-inline">
+                <div class="row">
                     {% for image in product.getImages %}
-                        <li>
+                        <div class="col-12 col-sm-6">
                             {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive thumbnail"})|raw }}
-                        </li>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             {% endif %}
         </div>
 
@@ -79,7 +80,7 @@
                     <div class="form-group">
                         <select name="variant" class="form-control selectpicker btn-white">
                             {% for variantValue in variant['variantValues'] %}
-                                <option data-href="{{ path('coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
+                                <option data-href="{{ coreshop_path(variant, 'coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -90,29 +91,27 @@
 
             <div class="price">
                 <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
-                <span class="price-new">{{ currency.getPrice(product) }}</span>
-                {#TODO: savings#}
+                {{ product_price.display_product_price(product) }}
             </div>
             <div class="tax">
-                {{ 'incl. %s%% Tax'|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+                {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
             </div>
 
             <hr/>
 
             <div class="options">
-                <div class="cart-button button-group">
-                    <a href="{{ path('coreshop_wishlist_add', {product: product.id}) }}" type="button" title="{{ 'coreshop.ui.wishlist'|trans }}" class="btn btn-wishlist">
+                <div class="cart-button btn-group">
+                    <a href="{{ coreshop_path('coreshop_wishlist_add', {product: product.id}) }}" class="btn btn-wishlist">
                         <i class="fa fa-heart"></i>
                     </a>
-                    <button type="button" title="{{ 'coreshop.ui.compare'|trans }}" class="btn btn-compare" data-id="{{ product.getId }}">
-                        <i class="fa fa-bar-chart-o"></i>
-                    </button>
-
                     {% if coreshop_inventory_is_available(product) %}
-                        <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart" rel="nofollow">
-                            {{ 'coreshop.ui.add_to_cart'|trans }}
-                            <i class="fa fa-shopping-cart"></i>
-                        </a>
+                        <form action="{{ coreshop_path(coreshop.cart, 'coreshop_cart_add', {product: product.id}) }}" method="post">
+                            <button type="submit" class="btn btn-cart"
+                               rel="nofollow">
+                                {{ 'coreshop.ui.add_to_cart'|trans }}
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                        </form>
                     {% endif %}
                 </div>
             </div>
@@ -121,10 +120,10 @@
         </div>
     </div>
 
-    <div class="tabs-panel panel-smart">
+    <div class="tabs-panel card-smart">
         <ul class="nav nav-tabs">
-            <li class="active">
-                <a href="#tab-description">{{ 'coreshop.ui.description'|trans }}</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#tab-description">{{ 'coreshop.ui.description'|trans }}</a>
             </li>
         </ul>
 

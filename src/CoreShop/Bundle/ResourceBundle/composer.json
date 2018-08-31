@@ -18,13 +18,12 @@
     }
   ],
   "require": {
-    "php": "^7.0",
     "doctrine/orm": "^2.5",
     "doctrine/doctrine-bundle": "^1.6",
     "friendsofsymfony/rest-bundle": "^2.1",
     "jms/serializer-bundle": "^1.1",
     "stof/doctrine-extensions-bundle": "^1.2",
-    "coreshop/pimcore": "^2.0",
+    "coreshop/pimcore-bundle": "^2.0",
     "coreshop/registry": "^2.0",
     "coreshop/resource": "^2.0",
     "symfony/config": "^3.3",
@@ -37,7 +36,7 @@
     "symfony/validator": "^3.3",
     "symfony/yaml": "^3.3",
     "gedmo/doctrine-extensions": "^2.4.12",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/pimcore": "^5.4.0"
   },
   "config": {
     "bin-dir": "bin"

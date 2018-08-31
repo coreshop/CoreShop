@@ -1,0 +1,78 @@
+framework:
+    workflows:
+        coreshop_order:
+            type: 'state_machine'
+            marking_store:
+                service: coreshop.state_machine.marking_store.order_pimcore_marking_store
+            supports: CoreShop\Component\Order\Model\Order
+
+core_shop_workflow:
+    state_machine:
+        coreshop_order:
+            places:
+                - initialized
+                - new
+                - confirmed
+                - cancelled
+                - complete
+            transitions:
+                create:
+                    from: [initialized]
+                    to: new
+                confirm:
+                    from: new
+                    to: confirmed
+                cancel:
+                    from: [new, confirmed]
+                    to:   cancelled
+                complete:
+                    from: confirmed
+                    to:   complete
+            place_colors:
+                initialized: '#d6e1dd'
+                new: '#61c2cb'
+                confirmed: '#919d7f'
+                cancelled: '#f2583e'
+                complete: '#5b981a'
+            callbacks:
+                after:
+                    request_payment:
+                        on: ['create']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object', 'event', '"request_payment"', '"coreshop_order_payment"']
+                    increment_voucher_usages:
+                        on: ['create']
+                        do: ['@coreshop.voucher.modifier', 'increment']
+                        args: ['object']
+                    cancel_payment:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ["service('coreshop.repository.payment').findForOrder(object)", 'event', '"cancel"', '"coreshop_payment"']
+                    cancel_shipment:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ["service('coreshop.repository.order_shipment').getDocuments(object)", 'event', '"cancel"', '"coreshop_shipment"']
+                    cancel_invoice:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ["service('coreshop.repository.order_invoice').getDocuments(object)", 'event', '"cancel"', '"coreshop_invoice"']
+                    cancel_order_payment:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object', 'event', '"cancel"', '"coreshop_order_payment"']
+                    cancel_order_shipment:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object', 'event', '"cancel"', '"coreshop_order_shipment"']
+                    cancel_order_invoice:
+                        on: ['cancel']
+                        do: ['@coreshop.state_machine_cascade_transition', 'apply']
+                        args: ['object', 'event', '"cancel"', '"coreshop_order_invoice"']
+                    decrement_voucher_usages:
+                        on: ['cancel']
+                        do: ['@coreshop.voucher.modifier', 'decrement']
+                        args: ['object']
+                    add_to_history:
+                          on: ['create', 'confirm', 'cancel', 'complete']
+                          do: ['@coreshop.workflow.order_state_history_logger', 'log']
+                          args: ['object', 'event']

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Model;
 
@@ -22,7 +22,7 @@ interface IndexableInterface
     /**
      * @return boolean
      */
-    public function getEnabled();
+    public function getIndexableEnabled();
 
     /**
      * @return boolean
@@ -53,7 +53,7 @@ interface IndexableInterface
      * @param $language
      * @return string
      */
-    public function getName($language);
+    public function getIndexableName($language);
 
     /**
      * @return static|null

@@ -8,19 +8,21 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,9 +34,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class PaymentController extends Controller
 {
     /**
-     * @var FactoryInterface
+     * @var OrderPaymentProviderInterface
      */
-    private $paymentFactory;
+    private $orderPaymentProvider;
 
     /**
      * @var PimcoreRepositoryInterface
@@ -47,36 +49,21 @@ class PaymentController extends Controller
     private $pimcoreObjectService;
 
     /**
-     * @var CurrencyContextInterface
-     */
-    private $currencyContext;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * PaymentController constructor.
      *
-     * @param FactoryInterface           $paymentFactory
+     * @param OrderPaymentProviderInterface $orderPaymentProvider,
      * @param PimcoreRepositoryInterface $orderRepository
-     * @param ObjectServiceInterface     $pimcoreObjectService
-     * @param CurrencyContextInterface   $currencyContext
-     * @param EntityManagerInterface     $entityManager
+     * @param ObjectServiceInterface $pimcoreObjectService
      */
     public function __construct(
-        FactoryInterface $paymentFactory,
+        OrderPaymentProviderInterface $orderPaymentProvider,
         PimcoreRepositoryInterface $orderRepository,
-        ObjectServiceInterface $pimcoreObjectService,
-        CurrencyContextInterface $currencyContext,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->paymentFactory = $paymentFactory;
+        ObjectServiceInterface $pimcoreObjectService
+    )
+    {
+        $this->orderPaymentProvider = $orderPaymentProvider;
         $this->orderRepository = $orderRepository;
         $this->pimcoreObjectService = $pimcoreObjectService;
-        $this->currencyContext = $currencyContext;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -88,7 +75,7 @@ class PaymentController extends Controller
         /**
          * @var $order OrderInterface
          */
-        if($request->attributes->has('token')) {
+        if ($request->attributes->has('token')) {
             $property = 'token';
             $identifier = $request->attributes->get('token');
         } else {
@@ -102,41 +89,7 @@ class PaymentController extends Controller
             throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
         }
 
-        /**
-         * Create Payum Payment.
-         * @todo: transfer this to a payum capture action?
-         *
-         * @var $payment PaymentInterface
-         */
-        $tokenGenerator = new UniqueTokenGenerator(true);
-        $uniqueId = $tokenGenerator->generate(15);
-        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
-
-        $payment = $this->paymentFactory->createNew();
-        $payment->setNumber($orderNumber);
-        $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setTotalAmount($order->getTotal());
-        $payment->setState(PaymentInterface::STATE_NEW);
-        $payment->setDatePayment(Carbon::now());
-        $payment->setOrderId($order->getId());
-        $payment->setCurrency($this->currencyContext->getCurrency());
-
-        if ($order instanceof PaymentSettingsAwareInterface) {
-            $payment->setDetails($order->getPaymentSettings());
-        }
-
-        $description = sprintf(
-            'Payment contains %s item(s) for a total of %s.',
-            count($order->getItems()),
-            round($order->getTotal() / 100, 2)
-        );
-
-        //payum setters
-        $payment->setCurrencyCode($this->currencyContext->getCurrency()->getIsoCode());
-        $payment->setDescription($description);
-
-        $this->entityManager->persist($payment);
-        $this->entityManager->flush();
+        $payment = $this->orderPaymentProvider->provideOrderPayment($order);
 
         $request->getSession()->set('coreshop_order_id', $order->getId());
 
@@ -167,6 +120,10 @@ class PaymentController extends Controller
 
         $status = new GetStatus($token);
         $this->getPayum()->getGateway($token->getGatewayName())->execute($status);
+
+        $confirmOrderRequest = new ConfirmOrder($status->getFirstModel());
+        $this->getPayum()->getGateway($token->getGatewayName())->execute($confirmOrderRequest);
+
         $resolveNextRoute = new ResolveNextRoute($status->getFirstModel());
         $this->getPayum()->getGateway($token->getGatewayName())->execute($resolveNextRoute);
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
@@ -179,7 +136,7 @@ class PaymentController extends Controller
 
         /**
          * Further process the status here, kick-off the pimcore workflow for orders?
-        */
+         */
         return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 

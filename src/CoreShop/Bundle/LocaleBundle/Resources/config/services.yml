@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.context.locale.composite:
         class: CoreShop\Component\Locale\Context\CompositeLocaleContext
         decorates: coreshop.context.locale

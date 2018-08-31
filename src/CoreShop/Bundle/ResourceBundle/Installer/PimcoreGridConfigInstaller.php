@@ -8,16 +8,20 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\GridConfigConfiguration;
-use CoreShop\Component\Pimcore\GridConfigInstallerInterface;
+use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
+use CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Pimcore\Model\DataObject\ClassDefinition;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
@@ -28,9 +32,9 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     protected $kernel;
 
     /**
-     * @var array
+     * @var RegistryInterface
      */
-    protected $classIds;
+    protected $metaDataRegistry;
 
     /**
      * @var GridConfigInstallerInterface
@@ -38,27 +42,43 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     protected $gridConfigInstaller;
 
     /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+
+    /**
+     * @var PimcoreClassInstallerInterface
+     */
+    protected $pimcoreClassInstaller;
+
+    /**
      * @param KernelInterface $kernel
-     * @param array $classIds
+     * @param RegistryInterface $metaDataRegistry
+     * @param ObjectManager $objectManager
      * @param GridConfigInstallerInterface $gridConfigInstaller
+     * @param PimcoreClassInstallerInterface $classInstaller
      */
     public function __construct(
         KernelInterface $kernel,
-        array $classIds,
-        GridConfigInstallerInterface $gridConfigInstaller
+        RegistryInterface $metaDataRegistry,
+        ObjectManager $objectManager,
+        GridConfigInstallerInterface $gridConfigInstaller,
+        PimcoreClassInstallerInterface $classInstaller
     )
     {
         $this->kernel = $kernel;
-        $this->classIds = $classIds;
+        $this->metaDataRegistry = $metaDataRegistry;
+        $this->objectManager = $objectManager;
         $this->gridConfigInstaller = $gridConfigInstaller;
+        $this->pimcoreClassInstaller = $classInstaller;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
-        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.grid_config', $applicationName) : 'resources.admin.install.grid_config';
+        $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $routeFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);
@@ -92,12 +112,44 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             foreach ($gridConfigsToInstall as $name => $gridData) {
                 $progress->setMessage(sprintf('<error>Install Grid Config %s</error>', $name));
 
-                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->classIds[$gridData['class']], true);
+                $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->findClassId($gridData['class']), true);
 
                 $progress->advance();
             }
 
             $progress->finish();
         }
+    }
+
+    /**
+     * @param $classIdentifier
+     * @return int
+     */
+    protected function findClassId($classIdentifier)
+    {
+        $metadata = $this->metaDataRegistry->get($classIdentifier);
+
+        try {
+            $repository = $this->objectManager->getRepository($metadata->getParameter('model'));
+
+            if ($repository instanceof PimcoreRepositoryInterface) {
+                return $repository->getClassId();
+            }
+        }
+        catch (\InvalidArgumentException $ex) {
+
+        }
+
+        $freshlyInstalledClasses = $this->pimcoreClassInstaller->getInstalledClasses();
+
+        if (isset($freshlyInstalledClasses[$classIdentifier])) {
+            $class = $freshlyInstalledClasses[$classIdentifier];
+
+            if ($class instanceof ClassDefinition) {
+                return $class->getId();
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('Could\'nt find ClassID for Identifier %s', $classIdentifier));
     }
 }

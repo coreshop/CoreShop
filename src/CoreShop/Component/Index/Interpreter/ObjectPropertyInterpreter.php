@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 
@@ -20,13 +21,11 @@ class ObjectPropertyInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexColumnInterface $config = null)
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
-        $config = isset($config) ? $config->getInterpreterConfig() : [];
-
         if ($value instanceof AbstractObject) {
-            if (array_key_exists('property', $config)) {
-                $name = $config['property'];
+            if (array_key_exists('property', $interpreterConfig)) {
+                $name = $interpreterConfig['property'];
                 $getter = 'get'.ucfirst($name);
 
                 if (method_exists($value, $getter)) {

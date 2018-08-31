@@ -339,6 +339,12 @@ coreshop.core.settings = Class.create({
                             value: this.getValue(shopId, 'system.category.list.per_page.default')
                         },
                         {
+                            fieldLabel: t('coreshop_category_list_include_subcategories'),
+                            name: 'system.category.list.include_subcategories',
+                            xtype: 'checkbox',
+                            checked: this.getValue(shopId, 'system.category.list.include_subcategories')
+                        },
+                        {
                             xtype: 'tagfield',
                             fieldLabel: t('coreshop_category_grid_per_page'),
                             store: new Ext.data.ArrayStore({
@@ -433,12 +439,6 @@ coreshop.core.settings = Class.create({
                     defaults: {width: 600},
                     items: [
                         {
-                            fieldLabel: t('coreshop_invoice_create'),
-                            xtype: 'checkbox',
-                            name: 'system.invoice.create',
-                            checked: this.getValue(shopId, 'system.invoice.create')
-                        },
-                        {
                             fieldLabel: t('coreshop_prefix'),
                             name: 'system.invoice.prefix',
                             value: this.getValue(shopId, 'system.invoice.prefix')
@@ -465,12 +465,6 @@ coreshop.core.settings = Class.create({
                     defaultType: 'textfield',
                     defaults: {width: 600},
                     items: [
-                        {
-                            fieldLabel: t('coreshop_shipment_create'),
-                            xtype: 'checkbox',
-                            name: 'system.shipment.create',
-                            checked: this.getValue(shopId, 'system.shipment.create')
-                        },
                         {
                             fieldLabel: t('coreshop_prefix'),
                             name: 'system.shipment.prefix',

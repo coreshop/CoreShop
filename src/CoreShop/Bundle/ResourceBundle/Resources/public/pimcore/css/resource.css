@@ -1,3 +1,7 @@
 .pimcore_icon_data_group_coreshop {
     background: url(../img/logo.svg) center center no-repeat !important;
 }
+
+.coreshop_icon_cursor {
+    background: url(../img/cursor.svg) center center no-repeat !important;
+}

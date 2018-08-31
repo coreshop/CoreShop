@@ -27,12 +27,12 @@
             <tbody>
             {% for item in wishlist.getItems %}
                 {% set product = item.getProduct %}
-                {% set productUrl = path('coreshop_product_detail', {name: product.getName, product: product.getId}) %}
+                {% set productUrl = coreshop_path(product, 'coreshop_product_detail') %}
                 <tr class="shopping-wishlist-item shopping-wishlist-item-{{ item.getId }}">
                     <td class="text-center">
                         {% if item.getProduct and item.getProduct.getImage() %}
                             <a class="" href="{{ productUrl }}">
-                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
                             </a>
                         {% endif %}
                     </td>
@@ -45,7 +45,7 @@
                         {{ currency.getPrice(product) }}
                     </td>
                     <td class="text-center">
-                        <a href="{{ path('coreshop_wishlist_remove', {product: product.getId}) }}" type="button" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-default tool-tip removeFromWishlist" data-id="{{ product.getId }}">
+                        <a href="{{ coreshop_path('coreshop_wishlist_remove', {product: product.getId}) }}" title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ product.getId }}">
                             <i class="fa fa-times-circle"></i>
                         </a>
                     </td>

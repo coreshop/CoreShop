@@ -110,4 +110,6 @@ coreshop.order.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.order.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.order.resource();
+});

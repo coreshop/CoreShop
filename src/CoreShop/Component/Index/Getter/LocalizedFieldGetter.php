@@ -8,27 +8,28 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Getter;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
-use Pimcore\Localization\Locale;
+use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
+use Pimcore\Model\DataObject;
 
 class LocalizedFieldGetter implements GetterInterface
 {
     /**
-     * @var Locale
+     * @var TranslationLocaleProviderInterface
      */
-    protected $localeService;
+    protected $localeProvider;
 
     /**
      * @param Locale $localeService
      */
-    public function __construct(Locale $localeService)
+    public function __construct(TranslationLocaleProviderInterface $localeProvider)
     {
-        $this->localeService = $localeService;
+        $this->localeProvider = $localeProvider;
     }
 
     /**
@@ -36,14 +37,18 @@ class LocalizedFieldGetter implements GetterInterface
      */
     public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
-        $language = null;
+        $getter = 'get'.ucfirst($config->getObjectKey());
 
-        if ($this->localeService->getLocale()) {
-            $language = $this->localeService->getLocale();
+        $fallbackMemory = DataObject\Localizedfield::getGetFallbackValues();
+        DataObject\Localizedfield::setGetFallbackValues(true);
+
+        $values = [];
+        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+            $values[$locale] = $object->$getter($locale);
         }
 
-        $getter = 'get'.ucfirst($config->getConfiguration()['key']);
+        DataObject\Localizedfield::setGetFallbackValues($fallbackMemory);
 
-        return $object->$getter($language);
+        return $values;
     }
 }

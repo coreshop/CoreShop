@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Customer\Repository;
 
@@ -24,6 +24,14 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      * @return CustomerInterface|null
      */
     public function findByResetToken($resetToken);
+
+    /**
+     * Find customer by newsletter token
+     *
+     * @param $newsletterToken
+     * @return CustomerInterface|null
+     */
+    public function findByNewsletterToken($newsletterToken);
 
     /**
      * Find Customer by email.

@@ -16,7 +16,7 @@ coreshop.shippingrule.conditions.weight = Class.create(coreshop.rules.conditions
     type: 'weight',
 
     getForm: function () {
-        var minWeightValue = null;
+        var minWeightValue = 0;
         var maxWeightValue = 0;
 
         if (this.data && this.data.minWeight) {
@@ -32,7 +32,7 @@ coreshop.shippingrule.conditions.weight = Class.create(coreshop.rules.conditions
             name: 'minWeight',
             value: minWeightValue,
             minValue: 0,
-            decimalPrecision: 0,
+            decimalPrecision: 5,
             step: 1
         });
 
@@ -41,7 +41,7 @@ coreshop.shippingrule.conditions.weight = Class.create(coreshop.rules.conditions
             name: 'maxWeight',
             value: maxWeightValue,
             minValue: 0,
-            decimalPrecision: 0,
+            decimalPrecision: 5,
             step: 1
         });
 

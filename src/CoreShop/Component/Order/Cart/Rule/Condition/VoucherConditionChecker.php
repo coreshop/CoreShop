@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
@@ -37,7 +37,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucher = null, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
         Assert::isInstanceOf($cart, CartInterface::class);
 
@@ -61,12 +61,12 @@ class VoucherConditionChecker extends AbstractConditionChecker
         if ($onlyOnePerCart === true) {
             $valid = true;
             if ($cart->hasPriceRules()) {
-               foreach ($cart->getPriceRuleItems() as $rule) {
-                   if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                       if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode() !== $storedCode->getCode()) {
-                           $valid = false;
-                           break;
-                       }
+                foreach ($cart->getPriceRuleItems() as $rule) {
+                    if ($rule instanceof ProposalCartPriceRuleItemInterface) {
+                        if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode() !== $storedCode->getCode()) {
+                            $valid = false;
+                            break;
+                        }
                     }
                 }
             }

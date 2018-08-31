@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -95,5 +96,49 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findExpiredCarts($days, $anonymous, $customer)
+    {
+        $list = $this->getList();
+
+        $conditions = [];
+        $groupCondition = [];
+        $params = [];
+
+        $daysTimestamp = Carbon::now();
+        $daysTimestamp->subDay($days);
+
+        $conditions[] = 'o_creationDate < ?';
+        $params[] = $daysTimestamp->getTimestamp();
+
+        //Never delete carts with a order
+        $conditions[] = 'order__id IS NULL';
+
+        if (true === $anonymous) {
+            $groupCondition[] = 'customer__id IS NULL';
+        }
+
+        if (true === $customer) {
+            $groupCondition[] = 'customer__id IS NOT NULL';
+        }
+
+        $bind = ' AND ';
+        $groupBind = ' OR ';
+
+        $sql = implode($bind, $conditions);
+
+        if (count($groupCondition) > 1) {
+            $groupBind = ' OR ';
+        }
+
+        $sql .= ' AND ('.implode($groupBind, $groupCondition).') ';
+
+        $list->setCondition($sql, $params);
+
+        return $list->load();
     }
 }

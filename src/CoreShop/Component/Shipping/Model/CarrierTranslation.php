@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Model;
 
@@ -23,6 +23,11 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
      * @var mixed
      */
     protected $id;
+
+    /**
+     * @var string
+     */
+    protected $title = '';
 
     /**
      * @var string
@@ -44,6 +49,42 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel()
+    {
+        @trigger_error('getLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
+
+        return $this->getTitle();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLabel($label)
+    {
+        @trigger_error('setLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
+
+        $this->setTitle($label);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     /**

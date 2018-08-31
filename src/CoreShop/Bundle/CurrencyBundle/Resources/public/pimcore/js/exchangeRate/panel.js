@@ -19,7 +19,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_exchange_rates_panel',
     storeId: 'coreshop_exchange_rates',
     iconCls: 'coreshop_icon_exchange_rate',
-    type: 'exchange_rate',
+    type: 'coreshop_exchange_rate',
 
     url: {
         add: '/admin/coreshop/exchange_rates/add',
@@ -88,7 +88,7 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
                     dataIndex: 'exchangeRate',
                     editor: {
                         xtype: 'numberfield',
-                        decimalPrecision: 2,
+                        decimalPrecision: 10,
                         required: true
                     }
                 },

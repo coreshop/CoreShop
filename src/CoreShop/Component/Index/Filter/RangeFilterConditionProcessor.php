@@ -8,11 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\Condition;
+use CoreShop\Component\Index\Condition\RangeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -26,7 +26,8 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        $rawValues = $list->getGroupByValues($condition->getField(), true);
+        $field = $condition->getConfiguration()['field'];
+        $rawValues = $list->getGroupByValues($field, true);
 
         $minValue = count($rawValues) > 0 ? $rawValues[0]['value'] : 0;
         $maxValue = count($rawValues) > 0 ? $rawValues[count($rawValues) - 1]['value'] : 0;
@@ -36,10 +37,10 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             'label' => $condition->getLabel(),
             'minValue' => $minValue,
             'maxValue' => $maxValue,
-            'currentValueMin' => $currentFilter[$condition->getField().'-min'] ? $currentFilter[$condition->getField().'-min'] : $minValue,
-            'currentValueMax' => $currentFilter[$condition->getField().'-max'] ? $currentFilter[$condition->getField().'-max'] : $maxValue,
+            'currentValueMin' => $currentFilter[$field.'-min'] ? $currentFilter[$field.'-min'] : $minValue,
+            'currentValueMax' => $currentFilter[$field.'-max'] ? $currentFilter[$field.'-max'] : $maxValue,
             'values' => array_values($rawValues),
-            'fieldName' => $condition->getField(),
+            'fieldName' => $field,
             'stepCount' => $condition->getConfiguration()['stepCount'],
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
@@ -50,15 +51,17 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
      */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
     {
-        if ($parameterBag->has($condition->getField())) {
-            $values = explode(',', $parameterBag->get($condition->getField()));
+        $field = $condition->getConfiguration()['field'];
 
-            $parameterBag->set($condition->getField().'-min', $values[0]);
-            $parameterBag->set($condition->getField().'-max', $values[0]);
+        if ($parameterBag->has($field)) {
+            $values = explode(',', $parameterBag->get($field));
+
+            $parameterBag->set($field.'-min', $values[0]);
+            $parameterBag->set($field.'-max', $values[0]);
         }
 
-        $valueMin = $parameterBag->get($condition->getField().'-min');
-        $valueMax = $parameterBag->get($condition->getField().'-max');
+        $valueMin = $parameterBag->get($field.'-min');
+        $valueMax = $parameterBag->get($field.'-max');
 
         if (empty($valueMax)) {
             $valueMax = $condition->getConfiguration()['preSelectMax'];
@@ -76,17 +79,17 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             $valueMin = null;
         }
 
-        $currentFilter[$condition->getField().'-min'] = $valueMin;
-        $currentFilter[$condition->getField().'-max'] = $valueMax;
+        $currentFilter[$field.'-min'] = $valueMin;
+        $currentFilter[$field.'-max'] = $valueMax;
 
         if (!empty($valueMin) && !empty($valueMax)) {
-            $fieldName = $condition->getField();
+            $fieldName = $field;
 
             if ($isPrecondition) {
                 $fieldName = 'PRECONDITION_'.$fieldName;
             }
 
-            $list->addCondition(Condition::range($condition->getField(), $valueMin, $valueMax), $fieldName);
+            $list->addCondition(new RangeCondition($field, $valueMin, $valueMax), $fieldName);
         }
 
         return $currentFilter;

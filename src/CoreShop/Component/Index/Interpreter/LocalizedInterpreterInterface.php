@@ -8,18 +8,23 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
+
+use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 interface LocalizedInterpreterInterface extends InterpreterInterface
 {
     /**
      * @param $language
      * @param $value
-     * @param null $config
+     * @param IndexableInterface   $indexable
+     * @param IndexColumnInterface $config
+     * @param array $interpreterConfig
      *
      * @return mixed
      */
-    public function interpretForLanguage($language, $value, $config = null);
+    public function interpretForLanguage($language, $value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
 }

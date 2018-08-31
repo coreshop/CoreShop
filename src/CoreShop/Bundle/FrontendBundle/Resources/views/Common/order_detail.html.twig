@@ -1,0 +1,231 @@
+{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+
+<h2 class="main-heading text-center">
+    {{ 'coreshop.ui.order'|trans }} {{ order.getOrderNumber }}
+</h2>
+
+<div class="row">
+    <div class="col-12 col-sm-6">
+        <div class="card card-smart">
+            <div class="card-header">
+                <h4 class="card-title">
+                    {{ 'coreshop.ui.shipping_address'|trans }}
+                </h4>
+            </div>
+            <div class="card-body panel-delivery-address">
+                {{ order.getShippingAddress|coreshop_format_address }}
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6">
+        <div class="card card-smart">
+            <div class="card-header">
+                <h4 class="card-title">
+                    {{ 'coreshop.ui.invoice_address'|trans }}
+                </h4>
+            </div>
+            <div class="card-body panel-delivery-address">
+                {{ order.getInvoiceAddress|coreshop_format_address }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if order.hasItems() %}
+    <div class="table-responsive order-table">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td class="text-center">
+                    {{ 'coreshop.ui.image'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.product_details'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.quantity'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.price'|trans }}
+                </td>
+                <td class="text-center">
+                    {{ 'coreshop.ui.total'|trans }}
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in order.getItems %}
+
+                {% set productIsAvailable = item.getProduct and item.getProduct.isPublished and item.getProduct.getActive != false %}
+                {% set productUrl = '/' %}
+
+                {% if productIsAvailable %}
+                    {% set productUrl = coreshop_path(item.getProduct, 'coreshop_product_detail') %}
+                {% endif %}
+
+                <tr class="shopping-cart-item shopping-cart-item-{{ item.getId }}">
+                    <td class="text-center">
+                        {% if productIsAvailable and item.getProduct.getImage() %}
+                            <a class="" href="{{ productUrl }}">
+                                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if productIsAvailable %}
+                            <a href="{{ productUrl }}">{{ item.getName() }}</a>
+                        {% else %}
+                            {{ item.getName() }}
+                        {% endif %}
+
+                        {% if item.getIsGiftItem %}
+                            <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <span>{{ item.getQuantity }}</span>
+                    </td>
+                    <td class="text-right cart-item-price">
+                        {% set price = item.getItemPrice %}
+                        {% set retailPrice = item.getItemRetailPrice %}
+
+                        {% if price != retailPrice %}
+                            <span class="price-old">{{ currency.format(retailPrice, order.getCurrency.isoCode) }}</span>
+                        {% endif %}
+
+                        {{ currency.format(price, order.getCurrency.isoCode) }}
+                    </td>
+                    <td class="text-right cart-item-total-price">
+                        {{ currency.format(item.getTotal, order.getCurrency.isoCode) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% if order.hasPriceRules %}
+                {% for priceRule in order.getPriceRuleItems %}
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            {{ priceRule.cartPriceRule.getName }}
+                        </td>
+                        <td class="text-center">
+
+                        </td>
+                        <td class="text-right">
+                            -{{ currency.format(priceRule.getDiscount(true), order.getCurrency.isoCode) }}
+                        </td>
+                        <td class="text-right">
+                            -{{ currency.format(priceRule.getDiscount(false), order.getCurrency.isoCode) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+
+            </tbody>
+            <tfoot>
+            {% set shipping = order.getShipping(false) %}
+            {% set shippingIt = order.getShipping(true) %}
+            {% set discount = order.getDiscount(false) %}
+            {% set discountIt = order.getDiscount(true) %}
+            {% set taxes = order.getTaxes() %}
+            {% set rowspan = 10 + taxes|length %}
+
+            {% if shipping == 0 %}
+                {% set rowspan = rowspan - 1 %}
+            {% endif %}
+
+            {% if discount == 0 %}
+                {% set rowspan = rowspan - 2 %}
+            {% endif %}
+
+            <tr>
+                <td colspan="3" rowspan="{{ rowspan }}">
+
+                </td>
+                <td class="text-right">
+                    <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
+                </td>
+                <td colspan="1" class="text-right cart-sub-total">
+                    {{ currency.format(order.getSubtotal(true), order.getCurrency.isoCode) }}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">
+                    <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
+                </td>
+                <td colspan="1" class="text-right cart-discount">
+                    {{ currency.format(order.getSubtotal(false), order.getCurrency.isoCode) }}
+                </td>
+            </tr>
+            {% if discount > 0 %}
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
+                    </td>
+                    <td colspan="1"
+                        class="text-right cart-discount">
+                        -{{ currency.format(discountIt, order.getCurrency.isoCode) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
+                    </td>
+                    <td colspan="1"
+                        class="text-right cart-discount">
+                        -{{ currency.format(discount, order.getCurrency.isoCode) }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if shipping > 0 %}
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
+                    </td>
+                    <td colspan="1"
+                        class="text-right cart-shipping">
+                        {{ currency.format(shippingIt, order.getCurrency.isoCode) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
+                    </td>
+                    <td colspan="1"
+                        class="text-right cart-shipping">
+                        {{ currency.format(shipping, order.getCurrency.isoCode) }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% for taxItem in taxes %}
+                <tr>
+                    <td class="text-right cart-tax-detail">
+                        <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
+                    </td>
+                    <td colspan="1"
+                        class="text-right cart-tax-detail">
+                        {{ currency.format(taxItem.amount, order.getCurrency.isoCode) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td class="text-right">
+                    <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
+                </td>
+                <td colspan="1" class="text-right cart-tax">
+                    {{ currency.format(order.getTotalTax, order.getCurrency.isoCode) }}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">
+                    <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
+                </td>
+                <td colspan="1"
+                    class="text-right cart-total-price">
+                    {{ currency.format(order.getTotal, order.getCurrency.isoCode) }}
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+{% else %}
+    <p>{{ 'coreshop.ui.order_empty'|trans }}</p>
+{% endif %}

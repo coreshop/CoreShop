@@ -1,0 +1,26 @@
+services:
+    coreshop.behat.context.hook.doctrine_orm:
+        class: CoreShop\Behat\Context\Hook\DoctrineORMContext
+        arguments:
+            - '@__symfony_shared__.doctrine.orm.entity_manager'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.hook.pimcore_dao:
+        class: CoreShop\Behat\Context\Hook\PimcoreDaoContext
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.hook.pimcore_setup:
+        class: CoreShop\Behat\Context\Hook\PimcoreSetupContext
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.hook.coreshop_setup:
+        class: CoreShop\Behat\Context\Hook\CoreShopSetupContext
+        arguments:
+            - '@__symfony_shared__.doctrine.orm.entity_manager'
+            - '@coreshop.behat.notification_rule_listener'
+            - '@__symfony__.event_dispatcher'
+        tags:
+            - { name: fob.context_service }

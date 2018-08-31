@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.registry.product.rules.fetcher:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
@@ -25,3 +28,18 @@ services:
             - '@coreshop.templating.helper.product_valid_rules'
         tags:
             - { name: twig.extension }
+
+    # Rule Assessor
+    coreshop.rule.availability_assessor.product_price:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
+        arguments:
+             - '@coreshop.repository.product_price_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_assessor, type: product_price }
+
+    coreshop.rule.availability_assessor.product_specific_price:
+        class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
+        arguments:
+             - '@coreshop.repository.product_specific_price_rule'
+        tags:
+            - { name: coreshop.registry.rule_availability_assessor, type: product_specific_price }

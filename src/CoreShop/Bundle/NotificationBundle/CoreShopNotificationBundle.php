@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\NotificationBundle;
 
@@ -16,6 +16,8 @@ use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\Notification
 use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopNotificationBundle extends AbstractResourceBundle
@@ -30,6 +32,9 @@ final class CoreShopNotificationBundle extends AbstractResourceBundle
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -37,6 +42,19 @@ final class CoreShopNotificationBundle extends AbstractResourceBundle
         $container->addCompilerPass(new NotificationRuleActionPass());
         $container->addCompilerPass(new NotificationRuleConditionPass());
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundles([
+            new CoreShopRuleBundle()
+        ], 3500);
+    }
+
 
     /**
      * {@inheritdoc}

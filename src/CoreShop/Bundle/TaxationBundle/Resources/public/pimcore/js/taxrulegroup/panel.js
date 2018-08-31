@@ -19,7 +19,7 @@ coreshop.taxrulegroup.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_tax_rule_groups_panel',
     storeId: 'coreshop_taxrulegroups',
     iconCls: 'coreshop_icon_tax_rule_groups',
-    type: 'taxrulegroups',
+    type: 'coreshop_taxrulegroups',
 
     url: {
         add: '/admin/coreshop/tax_rule_groups/add',

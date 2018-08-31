@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.context.cart.fixed:
         class: CoreShop\Component\Order\Context\FixedCartContext
         tags:
@@ -10,6 +13,7 @@ services:
             - '@coreshop.context.customer'
             - '@coreshop.context.store'
             - '@coreshop.repository.cart'
+            - '@pimcore.http.request_helper'
         tags:
             - { name: coreshop.context.cart, priority: -777 }
 
@@ -17,7 +21,7 @@ services:
         class: CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext
         arguments:
             - '@session'
-            - 'coreshop.cart'
+            - '%coreshop.session.cart%'
             - '@coreshop.repository.cart'
             - '@coreshop.context.store'
         tags:
@@ -38,6 +42,6 @@ services:
         arguments:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - '@coreshop.context.cart'
-            - 'coreshop.cart'
+            - '%coreshop.session.cart%'
         tags:
             - { name: kernel.event_subscriber }

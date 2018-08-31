@@ -1,31 +1,25 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
 
 namespace CoreShop\Component\Resource\Pimcore;
 
-use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\DataObject\Service;
-
-final class ObjectCloner
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\ObjectCloner::class)) {
+    @trigger_error('Class CoreShop\Component\Resource\Pimcore\ObjectCloner is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ObjectCloner class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * Clones an object and returns it unsaved
-     *
-     * @param Concrete $object
-     * @param $parent
-     * @param $key
-     *
-     * @return Concrete
+     * @deprecated Class CoreShop\Component\Resource\Pimcore\ObjectCloner is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ObjectCloner class instead.
      */
-    public function cloneObject(Concrete $object, $parent, $key)
+    class ObjectCloner
     {
-        Service::loadAllObjectFields($object);
 
-        $newObject = clone $object;
-        $newObject->setId(null);
-        $newObject->setParent($parent);
-        $newObject->setKey($key);
-        $newObject->save();
-
-        return $newObject;
     }
 }

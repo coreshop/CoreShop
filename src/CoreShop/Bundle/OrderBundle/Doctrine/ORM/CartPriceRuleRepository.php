@@ -8,14 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
-class CartPriceRuleRepository extends EntityRepository implements CartPriceRuleRepositoryInterface
+class CartPriceRuleRepository extends RuleRepository implements CartPriceRuleRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -26,7 +26,6 @@ class CartPriceRuleRepository extends EntityRepository implements CartPriceRuleR
             ->andWhere('o.isVoucherRule = :isVoucherRule')
             ->setParameter('isVoucherRule', false)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

@@ -32,6 +32,10 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
         });
     },
 
+    reset: function() {
+        this.layout.hide();
+    },
+    
     isValid: function (parent) {
         return true;
     },
@@ -41,7 +45,7 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
     },
 
     getValues: function () {
-        return {};
+        return [];
     },
 
     getPanel: function () {
@@ -71,7 +75,7 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
                             }.bind(this)
                         }
                     ]
-                }
+                },
             ]
         });
 

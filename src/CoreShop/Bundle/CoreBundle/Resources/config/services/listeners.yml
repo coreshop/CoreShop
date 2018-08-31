@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.listener.cart_blamer:
         class: CoreShop\Bundle\CoreBundle\EventListener\CartBlamerListener
         arguments:
@@ -25,6 +28,13 @@ services:
             - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
             - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }
 
+    coreshop.listener.order.mail_sent:
+        class: CoreShop\Bundle\CoreBundle\EventListener\Order\OrderMailNoteEventListener
+        arguments:
+            - '@coreshop.object_note_service'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.mail.post_send, method: onOrderMailSent }
+
     coreshop.listener.product_update:
         class: CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener
         arguments: ['@coreshop.configuration.service']
@@ -44,7 +54,7 @@ services:
         class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
         arguments:
            - '@coreshop.cart.manager'
-           - '@coreshop.context.cart'
+           - '@coreshop.context.shopper'
            - '@coreshop.configuration.service'
            - '@pimcore.http.request_helper'
         tags:
@@ -54,9 +64,9 @@ services:
         class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartAvailability
         arguments:
            - '@coreshop.cart.manager'
-           - '@coreshop.context.cart'
+           - '@coreshop.context.shopper'
            - '@coreshop.configuration.service'
            - '@pimcore.http.request_helper'
            - '@session'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 10 }
+            - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }

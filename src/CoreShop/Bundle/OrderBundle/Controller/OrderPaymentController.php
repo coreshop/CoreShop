@@ -14,50 +14,20 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
-
 
 class OrderPaymentController extends PimcoreController
 {
-    /**
-     * @param Request $request
-     * @return mixed
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function updatePaymentAction(Request $request)
-    {
-        $payment = $this->getPaymentRepository()->find($request->get('id'));
-        $order = $this->getSaleRepository()->find($payment->getOrderId());
-
-        if (!$payment instanceof PaymentInterface) {
-            return $this->viewHandler->handle(['success' => false]);
-        }
-
-        if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false]);
-        }
-
-        $values = $request->request->all();
-        unset($values['state']);
-
-        $payment->setValues($values);
-
-        $this->getEntityManager()->persist($payment);
-        $this->getEntityManager()->flush();
-
-        return $this->viewHandler->handle(['success' => true]);
-    }
-
     /**
      * @param Request $request
      * @return mixed
@@ -83,48 +53,39 @@ class OrderPaymentController extends PimcoreController
     }
 
     /**
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getPaymentProvidersAction()
-    {
-        $providers = $this->getPaymentProviderRepository()->findAll();
-        $result = [];
-        foreach ($providers as $provider) {
-            if ($provider instanceof PaymentProviderInterface) {
-                $result[] = [
-                    'name' => $provider->getName(),
-                    'id'   => $provider->getId(),
-                ];
-            }
-        }
-        return $this->viewHandler->handle(['success' => true, 'data' => $result]);
-    }
-
-    /**
      * @param Request $request
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function addPaymentAction(Request $request)
     {
+        //TODO: Use Form here
+
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = doubleval($request->get('amount', 0));
+        $amount = doubleval($request->get('amount', 0)) * 100;
 
         $paymentProviderId = $request->get('paymentProvider');
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
+        $payments = $this->getPaymentRepository()->findForPayable($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
+        $totalPayed = array_sum(array_map(function(PaymentInterface $payment) {
+            if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
+                $payment->getState() === PaymentInterface::STATE_REFUNDED) {
+                return 0;
+            }
+
+            return $payment->getTotalAmount();
+        }, $payments));
 
         if ($paymentProvider instanceof PaymentProviderInterface) {
-            $payedTotal = $order->getTotalPayed();
+            $totalPaymentWouldBe = $totalPayed + $amount;
 
-            $payedTotal += $amount;
-
-            if ($payedTotal > $order->getTotal()) {
+            if ($totalPaymentWouldBe > $order->getTotal()) {
                 return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
                 /**
@@ -132,26 +93,29 @@ class OrderPaymentController extends PimcoreController
                  */
                 $tokenGenerator = new UniqueTokenGenerator(true);
                 $uniqueId = $tokenGenerator->generate(15);
-                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())).'_'.$uniqueId;
 
                 $payment = $this->getPaymentFactory()->createNew();
                 $payment->setNumber($orderNumber);
                 $payment->setPaymentProvider($paymentProvider);
                 $payment->setCurrency($order->getCurrency());
-                $payment->setTotalAmount($order->getTotal());
+                $payment->setTotalAmount($amount);
                 $payment->setState(PaymentInterface::STATE_NEW);
                 $payment->setDatePayment(Carbon::now());
-                $payment->setOrderId($order->getId());
+
+                if ($payment instanceof OrderPaymentInterface) {
+                    $payment->setOrder($order);
+                }
 
                 $this->getEntityManager()->persist($payment);
                 $this->getEntityManager()->flush();
 
                 $workflow = $this->getStateMachineManager()->get($payment, 'coreshop_payment');
-                $workflow->apply($payment, PaymentTransitions::TRANSITION_CREATE);
+                $workflow->apply($payment, PaymentTransitions::TRANSITION_PROCESS);
 
                 return $this->viewHandler->handle([
-                    'success'    => true,
-                    'totalPayed' => $order->getTotalPayed()
+                    'success' => true,
+                    'totalPayed' => $totalPayed
                 ]);
             }
         } else {
@@ -160,7 +124,7 @@ class OrderPaymentController extends PimcoreController
     }
 
     /**
-     * @return RepositoryInterface
+     * @return PaymentRepositoryInterface
      */
     private function getPaymentRepository()
     {

@@ -106,18 +106,20 @@ coreshop.rules.condition = Class.create({
             } else {
                 var form = conditionClass.form;
 
-                if (Ext.isFunction(form.getValues)) {
-                    configuration = form.getValues();
-                }
-                else {
-                    for (var c = 0; c < form.items.length; c++) {
-                        var item = form.items.get(c);
+                if (form) {
+                    if (Ext.isFunction(form.getValues)) {
+                        configuration = form.getValues();
+                    }
+                    else {
+                        for (var c = 0; c < form.items.length; c++) {
+                            var item = form.items.get(c);
 
-                        try {
-                            configuration [item.getName()] = item.getValue();
-                        }
-                        catch (e) {
+                            try {
+                                configuration [item.getName()] = item.getValue();
+                            }
+                            catch (e) {
 
+                            }
                         }
                     }
                 }

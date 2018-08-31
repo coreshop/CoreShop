@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Test;
 
@@ -152,11 +152,12 @@ abstract class RuleTest extends Base
     /**
      * @param $subject
      * @param RuleInterface $rule
-     * @param bool          $trueOrFalse
+     * @param array $params
+     * @param bool $trueOrFalse
      */
-    protected function assertPriceRuleCondition($subject, RuleInterface $rule, $trueOrFalse = true)
+    protected function assertPriceRuleCondition($subject, RuleInterface $rule, $params = [], $trueOrFalse = true)
     {
-        $result = $this->getConditionValidator()->isValid($subject, $rule);
+        $result = $this->getConditionValidator()->isValid($subject, $rule, $params);
         if ($trueOrFalse) {
             $this->assertTrue($result);
         } else {
@@ -167,14 +168,15 @@ abstract class RuleTest extends Base
     /**
      * @param $subject
      * @param ConditionInterface $condition
-     * @param bool               $trueOrFalse
+     * @param array $params
+     * @param bool $trueOrFalse
      */
-    protected function assertRuleCondition($subject, ConditionInterface $condition, $trueOrFalse = true)
+    protected function assertRuleCondition($subject, ConditionInterface $condition, $params = [], $trueOrFalse = true)
     {
         $rule = $this->createRule();
         $rule->addCondition($condition);
 
-        $this->assertPriceRuleCondition($subject, $rule, $trueOrFalse);
+        $this->assertPriceRuleCondition($subject, $rule, $params, $trueOrFalse);
     }
 
     /**

@@ -19,7 +19,7 @@ final class ExchangeRateType extends AbstractResourceType
         $builder
             ->add('exchangeRate', NumberType::class, [
                 'required' => true,
-                'scale' => 5,
+                'scale' => 10,
                 'rounding_mode' => $options['rounding_mode'],
             ])
             ->add('fromCurrency', CurrencyChoiceType::class, [
@@ -29,8 +29,7 @@ final class ExchangeRateType extends AbstractResourceType
             ->add('toCurrency', CurrencyChoiceType::class, [
                 'required' => true,
                 'empty_data' => false
-            ])
-        ;
+            ]);
     }
 
     /**

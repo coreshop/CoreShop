@@ -25,7 +25,6 @@ class ExchangeRateRepository extends EntityRepository implements ExchangeRateRep
             ->getQuery()
             ->useResultCache(true)
             ->useQueryCache(true)
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 }

@@ -22,7 +22,7 @@ class SearchController extends FrontendController
     {
         $form = $this->createSearchForm();
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Search:_widget.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/_widget.html'), [
             'form' => $form->createView()
         ]);
     }
@@ -39,27 +39,27 @@ class SearchController extends FrontendController
             $itemsPerPage = 10;
 
             $query = [
-                'active = 1',
                 'name LIKE ?',
                 'description LIKE ?',
                 'shortDescription LIKE ?',
                 'sku LIKE ?'
             ];
             $queryParams = [
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%'
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$this->container->get('coreshop.context.store')->getStore()->getId().'%'
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
-            $list->setCondition(implode(' OR ', $query), $queryParams);
+            $list->setCondition('active = 1 AND ('.implode(' OR ', $query).') AND stores LIKE ?', $queryParams);
 
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);
             $paginator->setItemCountPerPage($itemsPerPage);
 
-            return $this->renderTemplate('CoreShopFrontendBundle:Search:search.html.twig', [
+            return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
                 'searchText' => $text
             ]);
@@ -70,7 +70,7 @@ class SearchController extends FrontendController
     protected function createSearchForm()
     {
         return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
-            'action' => $this->generateUrl('coreshop_search'),
+            'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
             'method' => 'GET'
         ]);
     }

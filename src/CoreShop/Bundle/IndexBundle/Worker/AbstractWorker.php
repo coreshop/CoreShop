@@ -12,18 +12,20 @@
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
-use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
+use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
+use CoreShop\Component\Index\Interpreter\RelationalValueInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
-use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
@@ -38,7 +40,7 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @var ServiceRegistryInterface
      */
-    protected $classHelperRegistry;
+    protected $extensions;
 
     /**
      * @var ServiceRegistryInterface
@@ -56,22 +58,39 @@ abstract class AbstractWorker implements WorkerInterface
     protected $filterGroupHelper;
 
     /**
-     * @param ServiceRegistryInterface $classHelperRegistry
+     * @param ServiceRegistryInterface $extensions
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
-        ServiceRegistryInterface $classHelperRegistry,
+        ServiceRegistryInterface $extensions,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper
     )
     {
-        $this->classHelperRegistry = $classHelperRegistry;
+        $this->extensions = $extensions;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
         $this->filterGroupHelper = $filterGroupHelper;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtensions(IndexInterface $index)
+    {
+        $extensions = $this->extensions->all();
+        $eligibleExtensions = [];
+
+        foreach ($extensions as $extension) {
+            if ($extension instanceof IndexExtensionInterface && $extension->supports($index)) {
+                $eligibleExtensions[] = $extension;
+            }
+        }
+
+        return $eligibleExtensions;
     }
 
     /**
@@ -84,11 +103,12 @@ abstract class AbstractWorker implements WorkerInterface
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
         AbstractObject::setHideUnpublished(false);
 
+
         $result = InheritanceHelper::useInheritedValues(function () use ($index, $object) {
-            $classHelper = $this->classHelperRegistry->has($object->getClassName()) ? $this->classHelperRegistry->get($object->getClassName()) : null;
+            $extensions = $this->getExtensions($index);
 
             $virtualObjectId = $object->getId();
-            $virtualObjectActive = $object->getEnabled();
+            $virtualObjectActive = $object->getIndexableEnabled();
 
             if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
                 $parent = $object->getParent();
@@ -98,7 +118,7 @@ abstract class AbstractWorker implements WorkerInterface
                 }
 
                 $virtualObjectId = $parent->getId();
-                $virtualObjectActive = $object->getEnabled();
+                $virtualObjectActive = $object->getIndexableEnabled();
             }
 
             $validLanguages = Tool::getValidLanguages();
@@ -113,11 +133,13 @@ abstract class AbstractWorker implements WorkerInterface
                 'o_type' => $object->getType()
             ];
 
-            if ($classHelper instanceof ClassHelperInterface) {
-                $data = array_merge($data, $classHelper->getIndexColumns($object));
+            foreach ($extensions as $extension) {
+                if ($extension instanceof IndexColumnsExtensionInterface) {
+                    $data = array_merge($data, $extension->getIndexColumns($object));
+                }
             }
 
-            $data['active'] = $object->getEnabled();
+            $data['active'] = $object->getIndexableEnabled();
 
             if (!is_bool($data['active'])) {
                 $data['active'] = false;
@@ -129,7 +151,7 @@ abstract class AbstractWorker implements WorkerInterface
             ];
 
             foreach ($validLanguages as $language) {
-                $localizedData['values'][$language]['name'] = $object->getName($language);
+                $localizedData['values'][$language]['name'] = $object->getIndexableName($language);
             }
 
             $relationData = [];
@@ -140,37 +162,32 @@ abstract class AbstractWorker implements WorkerInterface
 
                 try {
                     $value = null;
-                    $getter = $column->getGetter();
-
-                    if ($column->getObjectType() === 'localizedfields') {
-                        list ($columnLocalizedData, $columnRelationData) = $this->prepareLocalizedFields($column, $object, $virtualObjectId);
-
-                        $relationData = array_merge_recursive($relationData, $columnRelationData);
-                        $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
+                    if ($column->hasGetter()) {
+                        $value = $this->processGetter($column, $object);
                     } else {
-                        if (!empty($getter)) {
-                            $value = $this->processGetter($column, $object);
-                        } else {
-                            $getter = 'get' . ucfirst($column->getObjectKey());
+                        $getter = 'get' . ucfirst($column->getObjectKey());
 
-                            if (method_exists($object, $getter)) {
-                                $value = $object->$getter();
-                            }
-                        }
-
-                        list ($columnLocalizedData, $columnRelationData, $value) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
-
-                        $relationData = array_merge_recursive($relationData, $columnRelationData);
-                        $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
-
-                        if ($value) {
-                            if (is_array($value)) {
-                                $value = ',' . implode($value, ',') . ',';
-                            }
-
-                            $data[$column->getName()] = $value;
+                        if (method_exists($object, $getter)) {
+                            $value = $object->$getter();
                         }
                     }
+
+                    list ($columnLocalizedData, $columnRelationData, $value, $isLocalizedValue) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+
+                    $relationData = array_merge_recursive($relationData, $columnRelationData);
+                    $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
+
+
+                    if (!$isLocalizedValue) {
+                        if (is_array($value)) {
+                            $value = ',' . implode($value, ',') . ',';
+                        }
+
+                        $value = $this->typeCastValues($column, $value);
+
+                        $data[$column->getName()] = $value;
+                    }
+
                 } catch (\Exception $e) {
                     $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
                     throw $e;
@@ -193,42 +210,50 @@ abstract class AbstractWorker implements WorkerInterface
         return $result;
     }
 
-    protected function prepareLocalizedFields(IndexColumnInterface $column, IndexableInterface $object, $virtualObjectId)
+    /**
+     * @param IndexColumnInterface $column
+     * @param $value
+     * @return mixed
+     */
+    protected function typeCastValues(IndexColumnInterface $column, $value)
     {
-        $getter = 'get' . ucfirst($column->getObjectKey());
+        switch ($column->getColumnType()) {
+            case IndexColumnInterface::FIELD_TYPE_INTEGER:
+                return intval($value);
 
-        $validLanguages = Tool::getValidLanguages();
+            case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
+                return filter_var($value, FILTER_VALIDATE_BOOLEAN);
 
-        $localizedData = [];
-        $relationData = [];
-
-        if (method_exists($object, $getter)) {
-            foreach ($validLanguages as $language) {
-                $value = $object->$getter($language);
-
-                $interpreterClass = $this->getInterpreterObject($column);
-
-                if ($interpreterClass instanceof InterpreterInterface) {
-                    $value = $interpreterClass->interpret($value, $column);
-
-                    if ($interpreterClass instanceof RelationInterpreterInterface) {
-                        $relationalValue = $interpreterClass->interpretRelational($value, $column);
-
-                        $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
-                    }
+            case IndexColumnInterface::FIELD_TYPE_DATE:
+                if ($value instanceof \DateTime) {
+                    return $value->format('Y-m-d H:i:s');
                 }
 
-                if (is_array($value)) {
-                    $value = ',' . implode($value, ',') . ',';
-                }
+                return null;
 
-                $localizedData['values'][$language][$column->getName()] = $value;
-            }
+            case IndexColumnInterface::FIELD_TYPE_DOUBLE:
+                return doubleval($value);
+
+            case IndexColumnInterface::FIELD_TYPE_STRING:
+                return strval($value);
+
+            case IndexColumnInterface::FIELD_TYPE_TEXT:
+                return strval($value);
         }
 
-        return [
-            $localizedData, $relationData
-        ];
+
+        throw new \InvalidArgumentException(sprintf(
+            'Unknown type %s given, valid types are %s',
+            $column->getColumnType(),
+            implode(', ', [
+                IndexColumnInterface::FIELD_TYPE_STRING,
+                IndexColumnInterface::FIELD_TYPE_DOUBLE,
+                IndexColumnInterface::FIELD_TYPE_INTEGER,
+                IndexColumnInterface::FIELD_TYPE_BOOLEAN,
+                IndexColumnInterface::FIELD_TYPE_DATE,
+                IndexColumnInterface::FIELD_TYPE_TEXT
+            ])
+        ));
     }
 
     /**
@@ -240,16 +265,30 @@ abstract class AbstractWorker implements WorkerInterface
      */
     protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
     {
-        Assert::isArray($value);
+        if (is_null($value)) {
+            return [];
+        }
+
         $relationData = [];
 
         foreach ($value as $v) {
             $relData = [];
             $relData['src'] = $object->getId();
             $relData['src_virtualObjectId'] = $virtualObjectId;
-            $relData['dest'] = $v['dest'];
             $relData['fieldname'] = $column->getName();
-            $relData['type'] = $v['type'];
+
+            if ($v instanceof RelationalValueInterface) {
+                $relData['dest'] = $v->getDestinationId();
+                $relData['type'] = $v->getType();
+            }
+            elseif (is_array($v) && array_key_exists('dest', $v) && array_key_exists('type', $v)) {
+                $relData['dest'] = $v['dest'];
+                $relData['type'] = $v['type'];
+            }
+            else {
+                throw new \InvalidArgumentException(sprintf("Result needs either be instanceof %s or an array with `id` and `type`", RelationalValueInterface::class));
+            }
+
             $relationData[] = $relData;
         }
 
@@ -285,28 +324,30 @@ abstract class AbstractWorker implements WorkerInterface
         $value = $originalValue;
         $relationData = [];
         $localizedData = [];
+        $isLocalizedValue = false;
 
         $interpreterClass = $this->getInterpreterObject($column);
 
-        if ($interpreterClass instanceof InterpreterInterface) {
-            $value = $interpreterClass->interpret($originalValue, $column);
+        if ($interpreterClass instanceof LocalizedInterpreterInterface) {
+            $validLanguages = Tool::getValidLanguages();
+            foreach ($validLanguages as $language) {
+                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig());
+            }
+            //reset value here, we only populate localized values here
+            $value = null;
+            $isLocalizedValue = true;
+        } elseif ($interpreterClass instanceof InterpreterInterface) {
+            $value = $interpreterClass->interpret($originalValue, $object, $column, $column->getInterpreterConfig());
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
-                $relationalValue = $interpreterClass->interpretRelational($originalValue, $column);
+                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column, $column->getInterpreterConfig());
 
                 $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
-            }
-        } elseif ($interpreterClass instanceof LocalizedInterpreterInterface) {
-            $validLanguages = Tool::getValidLanguages();
-            $value = null;
-
-            foreach ($validLanguages as $language) {
-                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $column);
             }
         }
 
         return [
-            $localizedData, $relationData, $value
+            $localizedData, $relationData, $value, $isLocalizedValue
         ];
     }
 
@@ -372,7 +413,7 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function renderCondition(ConditionInterface $condition);
+    abstract public function renderCondition(ConditionInterface $condition, $prefix = null);
 
     /**
      * {@inheritdoc}

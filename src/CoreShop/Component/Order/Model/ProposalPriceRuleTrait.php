@@ -107,9 +107,11 @@ trait ProposalPriceRuleTrait
 
         if ($items instanceof Fieldcollection) {
             foreach ($items as $item) {
-                if ($item instanceof CartPriceRuleInterface) {
-                    if ($item->getId() === $priceRule->getId()) {
-                        return true;
+                if ($item instanceof ProposalCartPriceRuleItem) {
+                    if ($item->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                        if ($item->getCartPriceRule()->getId() === $priceRule->getId()) {
+                            return true;
+                        }
                     }
                 }
             }

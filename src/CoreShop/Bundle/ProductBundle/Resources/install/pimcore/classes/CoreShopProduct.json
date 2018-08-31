@@ -188,8 +188,25 @@
                                         "visibleSearch": true
                                     },
                                     {
-                                        "fieldtype": "checkbox",
-                                        "defaultValue": 0,
+                                        "fieldtype": "booleanSelect",
+                                        "yesLabel": "active",
+                                        "noLabel": "inactive",
+                                        "emptyLabel": null,
+                                        "options": [
+                                            {
+                                                "key": "empty",
+                                                "value": 0
+                                            },
+                                            {
+
+                                                "key": "active",
+                                                "value": 1
+                                            },
+                                            {
+                                                "key": "inactive",
+                                                "value": -1
+                                            }
+                                        ],
                                         "queryColumnType": "tinyint(1)",
                                         "columnType": "tinyint(1)",
                                         "phpdocType": "boolean",

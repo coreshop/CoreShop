@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Model;
 
@@ -34,6 +34,11 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
      * @var int
      */
     private $priority;
+
+    /**
+     * @var bool
+     */
+    private $stopPropagation = false;
 
     /**
      * @var ShippingRuleInterface
@@ -78,6 +83,22 @@ class ShippingRuleGroup implements ShippingRuleGroupInterface
     public function setPriority($priority)
     {
         $this->priority = $priority;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStopPropagation()
+    {
+        return $this->stopPropagation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStopPropagation($stopPropagation)
+    {
+        $this->stopPropagation = $stopPropagation;
     }
 
     /**

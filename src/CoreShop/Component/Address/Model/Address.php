@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Address\Model;
 
@@ -17,16 +17,21 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class Address extends AbstractPimcoreModel implements AddressInterface
 {
-    public $firstname;
-    public $lastname;
-    public $company;
-    public $street;
-    public $number;
-    public $postcode;
-    public $city;
-    public $country;
-    public $state;
-    public $phoneNumber;
+    /**
+     * {@inheritdoc}
+     */
+    public function getSalutation()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSalutation($salutation)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
     /**
      * {@inheritdoc}

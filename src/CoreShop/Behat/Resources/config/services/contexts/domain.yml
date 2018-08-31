@@ -1,0 +1,189 @@
+services:
+    coreshop.behat.context.domain.product:
+        class: CoreShop\Behat\Context\Domain\ProductContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.product'
+            - '@__symfony__.coreshop.product.price_calculator'
+            - '@__symfony__.coreshop.product.taxed_price_calculator'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.product_specific_price_rule:
+        class: CoreShop\Behat\Context\Domain\ProductSpecificPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.product_specific_price_rule.processor'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.product_price_rule:
+        class: CoreShop\Behat\Context\Domain\ProductPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.product_price_rule.processor'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.customer:
+        class: CoreShop\Behat\Context\Domain\CustomerContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.customer'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.currency:
+        class: CoreShop\Behat\Context\Domain\CurrencyContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.currency'
+            - '@__symfony__.coreshop.context.currency'
+            - '@__symfony__.coreshop.money_formatter'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.exchange_rate:
+        class: CoreShop\Behat\Context\Domain\ExchangeRateContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.currency_converter'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.tax_rate:
+        class: CoreShop\Behat\Context\Domain\TaxRateContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.tax_rate'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.tax_rule_group:
+        class: CoreShop\Behat\Context\Domain\TaxRuleGroupContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.factory.address'
+            - '@__symfony__.coreshop.repository.tax_rule_group'
+            - '@__symfony__.coreshop.repository.tax_rule'
+            - '@__symfony__.coreshop.taxation.factory.tax_calculator'
+            - '@__symfony__.coreshop.context.country'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.cart:
+        class: CoreShop\Behat\Context\Domain\CartContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.cart'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.category:
+        class: CoreShop\Behat\Context\Domain\CategoryContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.category'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.shipping:
+        class: CoreShop\Behat\Context\Domain\ShippingContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.carrier'
+            - '@__symfony__.coreshop.shipping_rule.processor'
+            - '@__symfony__.coreshop.factory.address'
+            - '@__symfony__.coreshop.carrier.price_calculator'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.country:
+        class: CoreShop\Behat\Context\Domain\CountryContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.country'
+            - '@__symfony__.coreshop.context.country'
+            - '@__symfony__.coreshop.address.formatter'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.index:
+        class: CoreShop\Behat\Context\Domain\IndexContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.index'
+            - '@__symfony__.doctrine.orm.entity_manager'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.pimcore_class:
+        class: CoreShop\Behat\Context\Domain\PimcoreClassContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.behat.class_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.order:
+        class: CoreShop\Behat\Context\Domain\OrderContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.state_machine_manager'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.notification_rule:
+        class: CoreShop\Behat\Context\Domain\NotificationContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.behat.notification_rule_listener'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.seo:
+        class: CoreShop\Behat\Context\Domain\SEOContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.seo.presentation'
+            - '@__symfony__.Pimcore\Templating\Helper\HeadTitle'
+            - '@__symfony__.Pimcore\Templating\Helper\HeadMeta'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.link_generator:
+        class: CoreShop\Behat\Context\Domain\LinkGeneratorContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.link_generator'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.placeholder:
+        class: CoreShop\Behat\Context\Domain\PlaceholderContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.pimcore:
+        class: CoreShop\Behat\Context\Domain\PimcoreContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '%__symfony__.kernel.root_dir%/../web'
+            - '%__symfony__.coreshop.all.pimcore.admin.js%'
+            - '%__symfony__.coreshop.all.pimcore.admin.css%'
+            - '%__symfony__.coreshop.all.pimcore.admin.editmode_js%'
+            - '%__symfony__.coreshop.all.pimcore.admin.editmode_css%'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.filter:
+        class: CoreShop\Behat\Context\Domain\FilterContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.filter'
+            - '@__symfony__.coreshop.factory.filter.list'
+            - '@__symfony__.coreshop.filter.processor'
+        tags:
+            - { name: fob.context_service }

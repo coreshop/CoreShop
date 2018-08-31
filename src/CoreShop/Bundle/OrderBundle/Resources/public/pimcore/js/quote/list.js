@@ -15,11 +15,13 @@ coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
     type: 'quote',
 
     setupContextMenuPlugin: function () {
-        this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
+        this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
+            'coreshop_quote',
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map['quote']]
+            [coreshop.class_map.coreshop.quote],
+            this.getGridPaginator()
         );
     },
 

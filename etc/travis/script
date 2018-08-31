@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+export CS_HOME=$TRAVIS_BUILD_DIR
+
+if [ $CORESHOP_RUN_ECS == 0 ]; then
+    $CS_HOME/etc/travis/scripts/tests
+else
+    $CS_HOME/etc/_scripts/ecs
+fi

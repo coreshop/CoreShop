@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use CoreShop\Bundle\ResourceBundle\Generator\PimcoreResourceClassGenerator;
-use CoreShop\Component\Pimcore\Migrate;
+use CoreShop\Component\Pimcore\DataObject\Migrate;
 use Pimcore\Cache;
 use Sensio\Bundle\GeneratorBundle\Command\GeneratorCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -82,7 +82,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
     {
         $dirs = parent::getSkeletonDirs($bundle);
 
-        array_unshift($dirs, __DIR__ . '/../Resources/skeleton');
+        array_unshift($dirs, __DIR__.'/../Resources/skeleton');
 
         return $dirs;
     }
@@ -129,7 +129,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
         $availableClasses = $this->classes;
 
         if (!array_key_exists($classType, $availableClasses)) {
-            throw new \Exception("Class Type $classType not found. Found these: " . implode(', ', array_keys($availableClasses)));
+            throw new \Exception("Class Type $classType not found. Found these: ".implode(', ', array_keys($availableClasses)));
         }
 
         list($applicationName, $shortClassType) = explode('.', $classType);
@@ -140,14 +140,14 @@ final class CreateObjectClassCommand extends GeneratorCommand
         $oldPimcoreClassName = end($oldPimcoreClassName);
         $parentClass = get_parent_class($fullOldClassName);
         $oldClassNameArray = explode('\\', $parentClass);
-        $className = $prefix . end($oldClassNameArray);
+        $className = $prefix.end($oldClassNameArray);
 
-        $newParentClass = $pluginName . "\\Model\\" . $className;
+        $newParentClass = $pluginName."\\Model\\".$className;
 
         $namespacePath = explode("\\", $newParentClass);
         array_pop($namespacePath);
 
-        $pathForFile = $bundle->getPath() . "/Model/" . $className . ".php";
+        $pathForFile = $bundle->getPath()."/Model/".$className.".php";
 
         $question = new ConfirmationQuestion("<info>You are going to create a new PHP File $pathForFile and a new Object-Class ($oldPimcoreClassName) for ($className) Are you sure? (y/n)</info>", true);
 
@@ -174,7 +174,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
                 'pimcore' => [
                     $shortClassType => [
                         'classes' => [
-                            'model' => 'Pimcore\Model\DataObject\\' . $className
+                            'model' => 'Pimcore\Model\DataObject\\'.$className
                         ]
                     ]
                 ]

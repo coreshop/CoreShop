@@ -35,7 +35,8 @@ class Cart extends AbstractProposal implements CartInterface
 
         foreach ($this->getItems() as $item) {
             if ($item instanceof CartItemInterface) {
-                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
+                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId(
+                    ) === $product->getId()) {
                     return $item;
                 }
             }
@@ -71,10 +72,9 @@ class Cart extends AbstractProposal implements CartInterface
      */
     public function getTotal($withTax = true)
     {
-        $total = $this->getTotalWithoutDiscount($withTax);
-        $discount = $this->getDiscount($withTax);
+        $total = $this->getSubtotal($withTax);
 
-        return $total - $discount;
+        return $total + $this->getAdjustmentsTotal(null, $withTax);
     }
 
     /**
@@ -83,22 +83,13 @@ class Cart extends AbstractProposal implements CartInterface
     public function getDiscountPercentage()
     {
         $totalDiscount = $this->getDiscount();
-        $totalWithoutDiscount = $this->getTotalWithoutDiscount();
+        $totalWithoutDiscount = $this->getSubtotal();
 
         if ($totalWithoutDiscount > 0) {
             return $totalDiscount / $totalWithoutDiscount;
         }
-        
-        return 0;
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalWithoutDiscount($withTax = true)
-    {
-        $subtotal = $this->getSubtotal($withTax);
-        return $subtotal;
+        return 0;
     }
 
     /**
@@ -152,47 +143,7 @@ class Cart extends AbstractProposal implements CartInterface
      */
     public function getDiscount($withTax = true)
     {
-        return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscount($discount, $withTax = true)
-    {
-        $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscountNet($discountNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscountGross($discountGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        return $withTax ? $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, true) : $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, false);
     }
 
     /**

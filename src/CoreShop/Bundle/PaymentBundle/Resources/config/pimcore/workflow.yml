@@ -1,0 +1,49 @@
+framework:
+    workflows:
+        coreshop_payment:
+            type: 'state_machine'
+            marking_store:
+                service: coreshop.state_machine.marking_store.payment_orm_marketing_store
+            supports: CoreShop\Component\Payment\Model\Payment
+
+core_shop_workflow:
+    state_machine:
+        coreshop_payment:
+            places:
+                - new
+                - processing
+                - completed
+                - failed
+                - cancelled
+                - refunded
+            transitions:
+                process:
+                    from: [new]
+                    to: processing
+                complete:
+                    from: [new, processing]
+                    to: completed
+                fail:
+                    from: [new, processing]
+                    to: failed
+                cancel:
+                    from: [new, processing]
+                    to: cancelled
+                refund:
+                    from: [completed]
+                    to: refunded
+            place_colors:
+                new: '#61c2cb'
+                processing: '#feb624'
+                completed: '#5b981a'
+                failed: '#83002e'
+                cancelled: '#f2583e'
+                refunded: '#004966'
+            transition_colors:
+                create: '#61c2cb'
+                process: '#feb624'
+                complete: '#5b981a'
+                fail: '#83002e'
+                cancel: '#f2583e'
+                refund: '#004966'
+                void: '#000000'

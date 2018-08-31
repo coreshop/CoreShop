@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopTaxRuleGroup');
 pimcore.object.tags.coreShopTaxRuleGroup = Class.create(coreshop.object.tags.select, {
 
     type: 'coreShopTaxRuleGroup',
-    storeName: 'taxrulegroups'
+    storeName: 'coreshop_taxrulegroups'
 });

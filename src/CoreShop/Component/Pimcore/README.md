@@ -1,52 +1,24 @@
 CoreShop Pimcore Component
-==================
+==========================
 
-# CoreShop
-This Component is part of the CoreShop Project (https://www.github.com/coreshop/CoreShop). But it's designed to be used
-without as well.
+CoreShop
+------
 
-# Features
-## Class Converter and Data Migrate
-Class converter is a small utility, which lets you migrate all Data from one class to another. Usage:
+![CoreShop](http://www.coreshop.org/assets/img/coreshop-logo.svg)
 
-```php
-<?php
+CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled components to get highest quality of code. [Read more on coreshop.org](http://www.coreshop.org)
 
-use CoreShop\Component\Pimcore\Migrate;
+Documentation
+-------------
 
-$currentClassName = 'Product';
-$newClassName = 'NewProduct';
-$options = [
-    'delete_existing_class' => true,
-    'parentClass' => 'AppBundle\Model\MyProduct'
-];
+Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.0.0/Components/PimcoreComponent.html).
 
-//Copies $currentClassName Definition to $newClassName
-//$options can overwrite some properties like parentClass
-Migrate::migrateClass($currentClassName, $newClassName, $options);
+Bug tracking
+------------
 
-//This function migrates all data from $currentClassName to $newClassName
-//It uses SQL Commands to increase performance of migration
-Migrate::migrateData($currentClassName, $newClassName);
-```
+CoreShop uses [GitHub issues](https://github.com/CoreShop/coreshop/issues).
 
-## Class Installer
+GPL License
+-----------
 
-Class Installer helps you importing Classes/FieldCollections/ObjectBricks into Pimcore based of a JSON Definition:
-
-```php
-
-use CoreShop\Component\Pimcore\ClassInstaller;
-
-$installer = new ClassInstaller();
-
-// For Bricks use
-$installer->createBrick($pathToJson, $brickName);
-
-// For Classes use
-$installer->createClass($pathToJson, $className, $updateExistingClass);
-
-// For FieldCollections use
-$installer->createFieldCollection($pathToJson, $fcName);
-
-```
+License can be found [here](https://github.com/coreshop/CoreShop/blob/master/LICENSE.md).

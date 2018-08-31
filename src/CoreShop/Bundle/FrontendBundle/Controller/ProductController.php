@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -27,7 +27,7 @@ class ProductController extends FrontendController
     {
         $productRepository = $this->get('coreshop.repository.product');
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Product:_latest.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/_latest.html'), [
             'products' => $productRepository->findLatestByStore($this->get('coreshop.context.store')->getStore()),
         ]);
     }
@@ -47,10 +47,15 @@ class ProductController extends FrontendController
         if (!$product->isPublished() || $product->getActive() !== true) {
             throw new NotFoundHttpException('product not found');
         }
+        
+        if (!in_array($this->get('coreshop.context.store')->getStore()->getId(), $product->getStores())) {
+            throw new NotFoundHttpException('product not found');
+        }
 
+        $this->get('coreshop.seo.presentation')->updateSeoMetadata($product);
         $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
 
-        return $this->renderTemplate('CoreShopFrontendBundle:Product:detail.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,
         ]);
     }
@@ -61,6 +66,6 @@ class ProductController extends FrontendController
      */
     private function getProductByRequest(Request $request)
     {
-        return $product = DataObject::getById($request->get('product'));
+        return $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
     }
 }

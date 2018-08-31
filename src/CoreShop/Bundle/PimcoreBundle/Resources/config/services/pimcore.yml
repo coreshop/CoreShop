@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.registry.pimcore.document.tag:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface
+            - document-tag-factories
+
+    coreshop.pimcore.implementation_loader.document.tag.di:
+        class: CoreShop\Bundle\PimcoreBundle\Loader\DependencyInjectionImplementationLoader
+        arguments:
+            - '@coreshop.registry.pimcore.document.tag'
+        tags:
+            - { name: coreshop.pimcore.implementation_loader.document.tag }

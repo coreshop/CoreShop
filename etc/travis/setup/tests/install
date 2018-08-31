@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+phpenv config-add $CS_HOME/etc/_config/php.ini
+
+$CS_HOME/etc/_setup/install

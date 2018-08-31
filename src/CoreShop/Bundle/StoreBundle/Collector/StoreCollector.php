@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\StoreBundle\Collector;
 
@@ -29,14 +29,15 @@ final class StoreCollector extends DataCollector
 
     /**
      * @param StoreRepositoryInterface $storeRepository
-     * @param StoreContextInterface    $storeContext
-     * @param bool                     $storeChangeSupport
+     * @param StoreContextInterface $storeContext
+     * @param bool $storeChangeSupport
      */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         StoreContextInterface $storeContext,
         $storeChangeSupport = false
-    ) {
+    )
+    {
         $this->storeContext = $storeContext;
 
         $this->data = [
@@ -77,7 +78,7 @@ final class StoreCollector extends DataCollector
     {
         try {
             $this->data['store'] = $this->storeContext->getStore();
-        } catch (StoreNotFoundException $exception) {
+        } catch (\Exception $exception) {
             //If some goes wrong, we just ignore it
         }
     }

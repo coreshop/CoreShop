@@ -19,7 +19,7 @@ coreshop.zone.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_zones_panel',
     storeId: 'coreshop_zones',
     iconCls: 'coreshop_icon_zone',
-    type: 'zones',
+    type: 'coreshop_zones',
 
     url: {
         add: '/admin/coreshop/zones/add',

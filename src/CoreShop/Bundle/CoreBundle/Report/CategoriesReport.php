@@ -19,7 +19,8 @@ use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Pimcore\InheritanceHelper;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
@@ -53,31 +54,40 @@ class CategoriesReport implements ReportInterface
     private $localeService;
 
     /**
-     * @var array
+     * @var PimcoreRepositoryInterface
      */
-    private $pimcoreClasses;
+    private $orderRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
+    private $orderItemRepository;
 
     /**
      * CategoriesReport constructor.
      *
-     * @param RepositoryInterface     $storeRepository
-     * @param Connection              $db
+     * @param RepositoryInterface $storeRepository
+     * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface  $localeService
-     * @param array                   $pimcoreClasses
+     * @param LocaleContextInterface $localeService
+     * @param PimcoreRepositoryInterface $orderRepository,
+     * @param PimcoreRepositoryInterface $orderItemRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
-        array $pimcoreClasses
-    ) {
+        PimcoreRepositoryInterface $orderRepository,
+        PimcoreRepositoryInterface $orderItemRepository
+    )
+    {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
-        $this->pimcoreClasses = $pimcoreClasses;
+        $this->orderRepository = $orderRepository;
+        $this->orderItemRepository = $orderItemRepository;
     }
 
     /**
@@ -91,8 +101,8 @@ class CategoriesReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
-        $orderClassId = $this->pimcoreClasses['order'];
-        $orderItemClassId = $this->pimcoreClasses['order_item'];
+        $orderClassId = $this->orderRepository->getClassId();
+        $orderItemClassId = $this->orderItemRepository->getClassId();
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         if (is_null($storeId)) {
@@ -122,7 +132,7 @@ class CategoriesReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $catSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
+        $catSales = InheritanceHelper::useInheritedValues(function() use ($productSales) {
 
             $catSales = [];
             foreach ($productSales as $productSale) {
@@ -150,7 +160,7 @@ class CategoriesReport implements ReportInterface
 
         });
 
-        usort($catSales, function ($a, $b) {
+        usort($catSales, function($a, $b) {
             return $b['orderCount'] <=> $a['orderCount'];
         });
 

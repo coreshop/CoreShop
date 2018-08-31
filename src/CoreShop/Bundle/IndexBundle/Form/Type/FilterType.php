@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -29,7 +29,7 @@ class FilterType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('orderKey', TextType::class)
             ->add('orderDirection', ChoiceType::class, [
-                'choices'  => array(
+                'choices' => array(
                     'ASC' => 'asc',
                     'DESC' => 'desc'
                 ),
@@ -37,8 +37,7 @@ class FilterType extends AbstractResourceType
             ->add('preConditions', FilterConditionCollectionType::class)
             ->add('conditions', FilterConditionCollectionType::class)
             ->add('resultsPerPage', IntegerType::class)
-            ->add('index', IndexChoiceType::class)
-        ;
+            ->add('index', IndexChoiceType::class);
     }
 
     /**

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.listeners.notification_rule.pre_create:
         class: CoreShop\Bundle\NotificationBundle\EventListener\NotificationRuleEventListener
         arguments:

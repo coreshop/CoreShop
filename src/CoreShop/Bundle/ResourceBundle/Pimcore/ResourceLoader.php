@@ -8,28 +8,18 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
-final class ResourceLoader
-{
-    protected $loadedResources = [];
-
+if (class_exists(\CoreShop\Component\Pimcore\ResourceLoader::class)) {
+    @trigger_error('Class CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\ResourceLoader class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param $resources
-     * @return array
+     * @deprecated Class CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\ResourceLoader class instead.
      */
-    public function loadResources($resources)
+    class ResourceLoader
     {
-        $resourcesToLoad = [];
 
-        foreach ($resources as $resource) {
-            if (!in_array($resource, $this->loadedResources)) {
-                $resourcesToLoad[] = $resource;
-            }
-        }
-
-        return $resourcesToLoad;
     }
 }

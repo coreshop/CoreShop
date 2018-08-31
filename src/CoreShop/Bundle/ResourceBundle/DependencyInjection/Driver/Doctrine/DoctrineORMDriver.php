@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine;
 
@@ -46,6 +46,7 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         }
 
         $definition = new Definition($repositoryClass);
+        $definition->setPublic(true);
         $definition->setArguments([
             new Reference($metadata->getServiceId('manager')),
             $this->getClassMetadataDefinition($metadata),

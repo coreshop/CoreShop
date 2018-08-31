@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -31,6 +31,17 @@ interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterfac
      * @param OrderInterface $order
      */
     public function setOrder($order);
+
+    /**
+     * @return string
+     */
+    public function getState();
+
+    /**
+     * @param string $state
+     */
+    public function setState($state);
+
 
     /**
      * @return \DateTime

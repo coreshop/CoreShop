@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
@@ -26,6 +26,7 @@ final class TranslatableEntityLocalePass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $translatableEntityLocaleAssignerDefinition = new Definition(TranslatableEntityPimcoreLocaleAssigner::class);
+        $translatableEntityLocaleAssignerDefinition->setPublic(true);
         $translatableEntityLocaleAssignerDefinition->addArgument(new Reference('pimcore.locale'));
 
         $container->setDefinition('coreshop.translatable_entity_locale_assigner', $translatableEntityLocaleAssignerDefinition);

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Routing;
 
@@ -33,7 +33,7 @@ final class ResourceLoader implements LoaderInterface
     private $routeFactory;
 
     /**
-     * @param RegistryInterface     $modelRegistry
+     * @param RegistryInterface $modelRegistry
      * @param RouteFactoryInterface $routeFactory
      */
     public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
@@ -93,7 +93,7 @@ final class ResourceLoader implements LoaderInterface
         //$rootPath = sprintf('/%s/', isset($configuration['path']) ? $configuration['path'] : Urlizer::urlize($metadata->getPluralName()));
         //$identifier = sprintf('{%s}', $configuration['identifier']);
 
-        $rootPath = '/admin/' . $metadata->getApplicationName();
+        $rootPath = '/admin/'.$metadata->getApplicationName();
         $rootPath .= '/'.$metadata->getPluralName().'/';
 
         foreach ($routesToGenerate as $route) {
@@ -130,10 +130,10 @@ final class ResourceLoader implements LoaderInterface
 
     /**
      * @param MetadataInterface $metadata
-     * @param array             $configuration
-     * @param string            $path
-     * @param string            $actionName
-     * @param array             $methods
+     * @param array $configuration
+     * @param string $path
+     * @param string $actionName
+     * @param array $methods
      *
      * @return Route
      */
@@ -148,8 +148,8 @@ final class ResourceLoader implements LoaderInterface
 
     /**
      * @param MetadataInterface $metadata
-     * @param array             $configuration
-     * @param string            $actionName
+     * @param array $configuration
+     * @param string $actionName
      *
      * @return string
      */

@@ -1,7 +1,0 @@
-{% if products %}
-    {% for prItem in products %}
-        ga('ec:addProduct', {{ prItem|json_encode|raw }});
-    {% endfor %}
-{% endif %}
-ga('ec:setAction', 'checkout', {{ actionData|json_encode|raw }});
-ga('send','event','Checkout','Step');

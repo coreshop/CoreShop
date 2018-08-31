@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+
+echo "PHP UNIT TESTS"
+vendor/bin/phpunit

@@ -46,8 +46,7 @@ coreshop.filter.conditions.abstract = Class.create(coreshop.filter.abstract, {
                 value: this.data.quantityUnit ? this.data.quantityUnit : 0,
                 displayField: 'abbreviation',
                 valueField: 'id'
-            },
-            this.getFieldsComboBox()
+            }
         ];
     }
 });

@@ -12,36 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\GridConfig;
-
-class GridConfigInstaller implements GridConfigInstallerInterface
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\GridConfigInstaller::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\GridConfigInstaller is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\GridConfigInstaller class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * {@inheritdoc}
+     * @deprecated Class CoreShop\Component\Pimcore\GridConfigInstaller is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\GridConfigInstaller class instead.
      */
-    public function installGridConfig($config, $name, $classId, $overwrite = false)
+    class GridConfigInstaller
     {
-        $list = new GridConfig\Listing();
-        $list->addConditionParam('name = ?', $name);
-        $elements = $list->load();
 
-        if (count($elements) === 0) {
-            $gridConfig = new GridConfig();
-        } else if ($overwrite) {
-            $gridConfig = $elements[0];
-        } else {
-            return;
-        }
-
-        $config['classId'] = $classId;
-
-        $configDataEncoded = json_encode($config);
-        $gridConfig->setName($name);
-        $gridConfig->setShareGlobally(true);
-        $gridConfig->setConfig($configDataEncoded);
-        $gridConfig->setOwnerId(0);
-        $gridConfig->setSearchType('folder');
-        $gridConfig->setClassId($classId);
-        $gridConfig->save();
     }
 }

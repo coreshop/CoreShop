@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\MoneyBundle\Formatter;
 
@@ -31,6 +31,6 @@ final class MoneyFormatter implements MoneyFormatterInterface
             sprintf('The amount "%s" of type %s cannot be formatted to currency "%s".', $amount, gettype($amount), $currency)
         );
 
-        return $amount >= 0 ? $result : '-' . $result;
+        return $amount >= 0 ? $result : '-'.$result;
     }
 }

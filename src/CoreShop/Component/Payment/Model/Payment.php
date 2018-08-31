@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Payment\Model;
 
@@ -170,6 +170,8 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      */
     public function getOrderId()
     {
+        @trigger_error('getOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getOrder from Core Component instead', E_USER_DEPRECATED);
+
         return $this->orderId;
     }
 
@@ -178,6 +180,8 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      */
     public function setOrderId($orderId)
     {
+        @trigger_error('setOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setOrder from Core Component instead', E_USER_DEPRECATED);
+
         $this->orderId = $orderId;
     }
 }

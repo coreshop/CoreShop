@@ -65,7 +65,7 @@ final class Configuration implements ConfigurationInterface
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopSetProduct')->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\ProductSet')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductRepository::class)->cannotBeEmpty()->end()
@@ -117,4 +117,4 @@ class AppExtension extends AbstractModelExtension
  >  - CoreShopOrderItem
  >  - CoreShopQuoteItem
  >
- > Check for the product field and add your new SetProduct there as allowed references.
+ > Check for the product field and add your new ProductSet there as allowed references.

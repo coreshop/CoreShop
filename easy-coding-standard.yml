@@ -1,0 +1,2 @@
+imports:
+    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/symfony.yml' }

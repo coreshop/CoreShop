@@ -1,6 +1,6 @@
 {
   "name": "coreshop/tracking-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Tracking Bundle",
   "keywords": [
     "coreshop",
@@ -18,10 +18,9 @@
     }
   ],
   "require": {
-    "php": "^7.0",
     "coreshop/order-bundle": "^2.0",
     "coreshop/registry": "^2.0",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/pimcore": "^5.4.0"
   },
   "config": {
     "bin-dir": "bin"

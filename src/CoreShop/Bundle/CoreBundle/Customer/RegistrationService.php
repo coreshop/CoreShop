@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
@@ -17,7 +17,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -102,8 +102,8 @@ final class RegistrationService implements RegistrationServiceInterface
     public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false)
     {
         $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
-
-        if ($existingCustomer instanceof CustomerInterface) {
+        
+        if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();
         }
 
@@ -112,7 +112,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
-        $customer->setLocale($this->localeContext->getLocaleCode());
+        $customer->setLocaleCode($this->localeContext->getLocaleCode());
         $customer->save();
 
         $address->setPublished(true);
@@ -123,7 +123,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setDefaultAddress($address);
         $customer->addAddress($address);
 
-        $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getCustomerGroups());
+        $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getRoles());
         $this->securityTokenStorage->setToken($token);
 
         $this->eventDispatcher->dispatch('coreshop.customer.register', new CustomerRegistrationEvent($customer, $formData));

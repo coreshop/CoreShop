@@ -25,6 +25,10 @@ coreshop.order.sale.create.step.payment = Class.create(coreshop.order.sale.creat
         return this.panel.getForm().getFieldValues();
     },
 
+    reset: function() {
+        this.panel.getForm().reset();
+    },
+
     getPanel: function () {
         this.panel = Ext.create('Ext.form.Panel', {
             items: [
@@ -35,7 +39,7 @@ coreshop.order.sale.create.step.payment = Class.create(coreshop.order.sale.creat
                     mode: 'local',
                     listWidth: 100,
                     store: pimcore.globalmanager.get('coreshop_payment_provider'),
-                    displayField: 'name',
+                    displayField: 'identifier',
                     valueField: 'id',
                     triggerAction: 'all',
                     labelWidth: 150,

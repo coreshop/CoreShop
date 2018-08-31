@@ -58,8 +58,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                     $id = intval($id);
                     $obj = Concrete::getById($id);
 
-                    if ($obj)
-                    {
+                    if ($obj) {
                         $name = $obj->getKey();
 
                         if (method_exists($obj, 'getName')) {

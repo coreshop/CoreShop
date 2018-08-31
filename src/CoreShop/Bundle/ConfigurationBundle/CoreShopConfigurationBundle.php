@@ -8,13 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ConfigurationBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopConfigurationBundle extends AbstractResourceBundle
 {
@@ -26,11 +25,6 @@ final class CoreShopConfigurationBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
-    }
-
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
     }
 
     /**

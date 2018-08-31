@@ -17,7 +17,7 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-     /**
+    /**
      * @var RuleValidationProcessorInterface
      */
     protected $ruleValidationProcessor;
@@ -43,10 +43,6 @@ final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInt
         }
 
         foreach ($rules as $rule) {
-            if (!$rule->getActive()) {
-                continue;
-            }
-
             if (!$this->ruleValidationProcessor->isValid($product, $rule)) {
                 continue;
             }

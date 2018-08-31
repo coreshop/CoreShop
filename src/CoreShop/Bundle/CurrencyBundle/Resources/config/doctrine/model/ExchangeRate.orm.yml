@@ -14,8 +14,8 @@ CoreShop\Component\Currency\Model\ExchangeRate:
         exchangeRate:
             type: decimal
             column: exchangeRate
-            precision: 10
-            scale: 5
+            precision: 15
+            scale: 10
         creationDate:
             type: datetime
             gedmo:

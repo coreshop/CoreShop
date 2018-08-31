@@ -1,7 +1,20 @@
 services:
-    coreshop.command.order.cart_cleanup:
-        class: CoreShop\Bundle\OrderBundle\Command\CartCleanupCommand
+    _defaults:
+        public: true
+
+    coreshop.command.cart.expire:
+        class: CoreShop\Bundle\OrderBundle\Command\CartExpireCommand
         arguments:
-          - '@coreshop.cart.cleanup'
+            - '@coreshop.cart.expire'
+            - '%coreshop.cart.expiration.days%'
+            - { anonymous: '%coreshop.cart.expiration.anonymous%', customer: '%coreshop.cart.expiration.customer%'}
         tags:
-          - { name: console.command, command: 'coreshop:cart:cleanup' }
+          - { name: console.command, command: 'coreshop:cart:expire' }
+
+    coreshop.command.order.expire:
+        class: CoreShop\Bundle\OrderBundle\Command\OrderExpireCommand
+        arguments:
+            - '@coreshop.order.expire'
+            - '%coreshop.order.expiration.days%'
+        tags:
+          - { name: console.command, command: 'coreshop:order:expire' }

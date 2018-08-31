@@ -52,6 +52,14 @@ coreshop.rules.panel = Class.create(coreshop.resource.panel, {
         this.panels = [];
     },
 
+    getGridDisplayColumnRenderer: function (value, metadata, record) {
+        metadata.tdAttr = 'data-qtip="ID: ' + record.get('id') + '"';
+        if(record.get('active') === false) {
+            metadata.tdCls = 'pimcore_rule_disabled';
+        }
+        return value;
+    },
+
     getItemClass: function () {
         return coreshop.rules.item;
     },

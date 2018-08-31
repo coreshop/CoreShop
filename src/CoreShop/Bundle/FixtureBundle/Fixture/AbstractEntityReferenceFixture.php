@@ -21,14 +21,14 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture implements
     protected function getObjectReferences(ObjectManager $objectManager, $className)
     {
         $identifier = $objectManager->getClassMetadata($className)->getIdentifier();
-        $idField    = reset($identifier);
+        $idField = reset($identifier);
 
         /** @var EntityRepository $objectRepository */
         $objectRepository = $objectManager->getRepository($className);
 
         $idsResult = $objectRepository
             ->createQueryBuilder('t')
-            ->select('t.' . $idField)
+            ->select('t.'.$idField)
             ->getQuery()
             ->getArrayResult();
 

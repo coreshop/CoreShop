@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
@@ -51,7 +51,7 @@ final class FixedCollectionType extends AbstractType
         $resolver->setRequired('entry_name');
         $resolver->setAllowedTypes('entry_name', ['callable']);
 
-        $resolver->setDefault('entry_options', function () {
+        $resolver->setDefault('entry_options', function() {
             return [];
         });
         $resolver->setAllowedTypes('entry_options', ['array', 'callable']);
@@ -71,12 +71,12 @@ final class FixedCollectionType extends AbstractType
      */
     private function optionalCallableNormalizer()
     {
-        return function (Options $options, $value) {
+        return function(Options $options, $value) {
             if (is_callable($value)) {
                 return $value;
             }
 
-            return function () use ($value) {
+            return function() use ($value) {
                 return $value;
             };
         };

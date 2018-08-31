@@ -12,12 +12,13 @@
 
 namespace CoreShop\Bundle\OrderBundle\StateResolver;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Webmozart\Assert\Assert;
 
 final class OrderStateResolver implements StateResolverInterface
@@ -28,11 +29,18 @@ final class OrderStateResolver implements StateResolverInterface
     protected $stateMachineManager;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @var bool
      */
-    public function __construct(StateMachineManager $stateMachineManager)
+    protected $includeInvoiceStateToComplete;
+
+    /**
+     * @param StateMachineManager $stateMachineManager
+     * @param bool $includeInvoiceStateToComplete
+     */
+    public function __construct(StateMachineManager $stateMachineManager, $includeInvoiceStateToComplete)
     {
         $this->stateMachineManager = $stateMachineManager;
+        $this->includeInvoiceStateToComplete = $includeInvoiceStateToComplete;
     }
 
     /**
@@ -58,8 +66,13 @@ final class OrderStateResolver implements StateResolverInterface
          */
         Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
 
-        return
-            OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&
+        $coreStates = OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&
             OrderShipmentStates::STATE_SHIPPED === $order->getShippingState();
+
+        if ($this->includeInvoiceStateToComplete === true) {
+            return $coreStates === true && OrderInvoiceStates::STATE_INVOICED === $order->getInvoiceState();
+        }
+
+        return $coreStates === true;
     }
 }

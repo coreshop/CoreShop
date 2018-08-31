@@ -15,11 +15,13 @@ coreshop.order.order.list = Class.create(coreshop.order.sale.list, {
     type: 'order',
 
     setupContextMenuPlugin: function () {
-        this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
+        this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
+            'coreshop_order',
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map['order']]
+            [coreshop.class_map.coreshop.order],
+            this.getGridPaginator()
         );
     },
 

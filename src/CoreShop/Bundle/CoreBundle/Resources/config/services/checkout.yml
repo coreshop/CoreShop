@@ -4,11 +4,14 @@ parameters:
     coreshop.form.type.checkout.payment.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.templating.helper.checkout_identifier:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper
         arguments:
             - '@request_stack'
-            - '@router'
+            - '@coreshop.link_generator'
             - '@coreshop.checkout_manager.factory'
             - '@coreshop.context.cart'
         tags:
@@ -39,7 +42,7 @@ services:
     coreshop.checkout.step.shipping:
         class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
         arguments:
-            - '@coreshop.carrier.discovery'
+            - '@coreshop.carrier.resolver'
             - '@coreshop.shipping.carrier.validator'
             - '@form.factory'
             - '@coreshop.context.store'

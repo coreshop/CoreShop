@@ -12,38 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-final class Db extends \Pimcore\Db
-{
+if (class_exists(\CoreShop\Component\Pimcore\Db\Db::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\Db is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\Db\Db class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param string $table
-     * @return array
+     * @deprecated Class CoreShop\Component\Pimcore\Db is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\Db\Db class instead.
      */
-    public static function getColumns($table)
+    final class Db
     {
-        $db = static::get();
 
-        $data = $db->fetchAll("SHOW COLUMNS FROM " . $table);
-        $columns = [];
-
-        foreach ($data as $d) {
-            $columns[] = $d["Field"];
-        }
-
-        return $columns;
-    }
-
-    /**
-     * Check if table exists
-     *
-     * @param $table
-     * @return bool
-     */
-    public static function tableExists($table)
-    {
-        $db = static::get();
-
-        $result = $db->fetchAll("SHOW TABLES LIKE '$table'");
-
-        return count($result) > 0;
     }
 }

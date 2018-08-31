@@ -13,8 +13,10 @@
 pimcore.registerNS('coreshop.index.objecttype.abstract');
 
 coreshop.index.objecttype.abstract = Class.create({
-    initialize: function () {
+    parent: null,
 
+    initialize: function (parent) {
+        this.parent = parent;
     },
 
     getObjectTypeItems: function (record) {
@@ -54,11 +56,22 @@ coreshop.index.objecttype.abstract = Class.create({
             allowBlank: false
         }));
 
+        var getterDisabled = false;
+
+        if(!record.data.getter && record.data.objectType === 'localizedfields') {
+            record.set('getter', 'localizedfield');
+            getterDisabled = true;
+        } else if(!record.data.getter && record.data.objectType === 'classificationstore') {
+            record.set('getter', 'classificationstore');
+            getterDisabled = true;
+        }
+
         fieldSetItems.push(new Ext.form.ComboBox({
             fieldLabel: t('coreshop_index_field_getter'),
             name: 'getter',
             length: 255,
             value: record.data.getter,
+            disabled: getterDisabled,
             store: pimcore.globalmanager.get('coreshop_index_getters'),
             valueField: 'type',
             displayField: 'name',
@@ -66,8 +79,7 @@ coreshop.index.objecttype.abstract = Class.create({
             listeners: {
                 change: function (combo, newValue) {
                     this.getGetterPanel().removeAll();
-                    this.record.set("getterConfig", null)
-
+                    this.record.set('getterConfig', null);
                     this.getGetterPanelLayout(newValue);
                 }.bind(this)
             }
@@ -83,10 +95,14 @@ coreshop.index.objecttype.abstract = Class.create({
             displayField: 'name',
             queryMode: 'local',
             listeners: {
+                afterrender: function(combo) {
+                    if(!record.data.interpreter && record.data.objectType === 'localizedfields') {
+                        this.setValue('localeMapping');
+                    }
+                },
                 change: function (combo, newValue) {
                     this.getInterpreterPanel().removeAll();
-                    this.record.set("interpreterConfig", null)
-
+                    this.record.set('interpreterConfig', null)
                     this.getInterpreterPanelLayout(newValue);
                 }.bind(this)
             }
@@ -125,10 +141,10 @@ coreshop.index.objecttype.abstract = Class.create({
         });
 
         this.window = new Ext.Window({
-            width: 400,
-            height: 400,
+            width: 800,
+            height: 600,
             resizeable: true,
-            modal: true,
+            modal: false,
             title: t('coreshop_index_field') + ' (' + this.record.data.key + ')',
             layout: 'fit',
             items: [this.configPanel]
@@ -143,25 +159,30 @@ coreshop.index.objecttype.abstract = Class.create({
     commitData: function () {
         var form = this.configForm.getForm();
         var getterForm = this.getGetterPanel().getForm();
-        var interpreterForm = this.getInterpreterPanel().getForm();
+        var interpreterPanelClass = this.interpreterPanelClass;
 
-        if (form.isValid() && getterForm.isValid() && interpreterForm.isValid()) {
-            Ext.Object.each(form.getFieldValues(), function (key, value) {
-                this.record.set(key, value);
-            }.bind(this));
+        if (form.isValid() && getterForm.isValid()) {
+            if (interpreterPanelClass) {
+                if (!interpreterPanelClass.isValid()) {
+                    return;
+                }
+
+                this.record.set('interpreterConfig', interpreterPanelClass.getInterpreterData());
+            }
 
             if (this.getGetterPanel().isVisible()) {
                 this.record.set('getterConfig', getterForm.getFieldValues());
             }
 
-            if (this.getInterpreterPanel().isVisible()) {
-                this.record.set('interpreterConfig', interpreterForm.getFieldValues());
-            }
+            Ext.Object.each(form.getFieldValues(), function (key, value) {
+                this.record.set(key, value);
+            }.bind(this));
 
             if (this.record.data.name !== this.record.data.text) {
                 this.record.set('text', this.record.data.name);
             }
 
+            this.parent.selectionPanel.fireEvent('record_changed');
             this.window.close();
         }
     },
@@ -198,8 +219,7 @@ coreshop.index.objecttype.abstract = Class.create({
 
     getInterpreterPanel: function () {
         if (!this.interpreterPanel) {
-            this.interpreterPanel = new Ext.form.FormPanel({
-                defaults: {anchor: '90%'},
+            this.interpreterPanel = new Ext.panel.Panel({
                 layout: 'form',
                 title: t('coreshop_index_interpreter_settings')
             });
@@ -214,14 +234,17 @@ coreshop.index.objecttype.abstract = Class.create({
 
             //Check if some class for getterPanel is available
             if (coreshop.index.interpreters[type]) {
-                var getter = new coreshop.index.interpreters[type];
+                var interpreter = new coreshop.index.interpreters[type];
 
-                this.getInterpreterPanel().add(getter.getLayout(this.record));
+                this.interpreterPanelClass = interpreter;
+                this.getInterpreterPanel().add(interpreter.getForm(this.record, this.record.data.interpreterConfig));
                 this.getInterpreterPanel().show();
             } else {
+                this.interpreterPanelClass = null;
                 this.getInterpreterPanel().hide();
             }
         } else {
+            this.interpreterPanelClass = null;
             this.getInterpreterPanel().hide();
         }
     }

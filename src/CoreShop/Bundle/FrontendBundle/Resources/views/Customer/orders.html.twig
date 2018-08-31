@@ -2,13 +2,15 @@
 {% extends '@CoreShopFrontend/layout-full.html.twig' %}
 
 {% block center %}
-    <div id="main-container" class="container">
+    <div id="main-container" class="container p-0">
 
-        <ol class="breadcrumb">
-            <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-            <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
-            <li class="active"><a href="{{ path('coreshop_customer_orders') }}">{{ 'coreshop.ui.orders'|trans }}</a></li>
-        </ol>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+                <li class="breadcrumb-item active">{{ 'coreshop.ui.orders'|trans }}</li>
+            </ol>
+        </nav>
 
         <h2 class="main-heading text-center">
             {{ 'coreshop.ui.orders'|trans }}
@@ -36,10 +38,10 @@
                         {{ currency.format(order.getTotal, order.getCurrency.getIsoCode) }}
                     </td>
                     <td>
-                        <span class="label label-default">{{ order|coreshop_order_state.calculatedState }}</span>
+                        <span class="badge badge-info">{{ order|coreshop_order_state.calculatedState }}</span>
                     </td>
                     <td>
-                        <a class="btn btn-black" href="{{ path('coreshop_customer_order_detail', {order: order.getId}) }}">
+                        <a class="btn btn-secondary" href="{{ coreshop_path(order, 'coreshop_customer_order_detail', {order: order.getId}) }}">
                             {{ 'coreshop.ui.show_detail'|trans }}
                         </a>
                     </td>

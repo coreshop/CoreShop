@@ -25,7 +25,7 @@ coreshop.notification.rule.conditions.carriers = Class.create(coreshop.rules.con
             listWidth: 100,
             width: 500,
             store: store,
-            displayField: 'name',
+            displayField: 'identifier',
             valueField: 'id',
             forceSelection: true,
             multiSelect: true,

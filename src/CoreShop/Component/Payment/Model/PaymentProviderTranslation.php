@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Payment\Model;
 
@@ -27,7 +27,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
     /**
      * @var string
      */
-    protected $name;
+    protected $title;
 
     /**
      * @var string
@@ -60,7 +60,9 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
      */
     public function getName()
     {
-        return $this->name;
+        @trigger_error('getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
+
+        return $this->getTitle();
     }
 
     /**
@@ -68,7 +70,25 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
      */
     public function setName($name)
     {
-        $this->name = $name;
+        @trigger_error('setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead', E_USER_DEPRECATED);
+
+        $this->setTitle($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     /**

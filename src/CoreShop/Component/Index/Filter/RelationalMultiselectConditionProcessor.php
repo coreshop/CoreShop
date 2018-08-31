@@ -8,11 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Filter;
 
-use CoreShop\Component\Index\Condition\Condition;
+use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
@@ -27,56 +27,53 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
      */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
     {
-        $rawValues = $list->getGroupByRelationValues($condition->getField(), false);
+        $field = $condition->getConfiguration()['field'];
+
+        $rawValues = $list->getGroupByRelationValues($field, true);
         $objects = [];
 
-        foreach ($rawValues as $id) {
-            $object = Concrete::getById($id);
-
+        foreach ($rawValues as $value) {
+            $object = Concrete::getById($value['value']);
             if ($object instanceof Concrete) {
                 $objects[] = $object;
             }
         }
 
         return [
-            'type'          => 'relational_multiselect',
-            'label'         => $condition->getLabel(),
-            'currentValues' => $currentFilter[$condition->getField()],
-            'values'        => array_values($rawValues),
-            'objects'       => $objects,
-            'fieldName'     => $condition->getField(),
-            'quantityUnit'  => Unit::getById($condition->getQuantityUnit()),
+            'type' => 'relational_multiselect',
+            'label' => $condition->getLabel(),
+            'currentValues' => $currentFilter[$field],
+            'values' => $rawValues,
+            'objects' => $objects,
+            'fieldName' => $field,
+            'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addCondition(
-        FilterConditionInterface $condition,
-        FilterInterface $filter,
-        ListingInterface $list,
-        $currentFilter,
-        ParameterBag $parameterBag,
-        $isPrecondition = false
-    ) {
-        $values = $parameterBag->get($condition->getField());
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    {
+        $field = $condition->getConfiguration()['field'];
+
+        $values = $parameterBag->get($field);
 
         if (empty($values)) {
             $values = $condition->getConfiguration()['preSelects'];
         }
 
-        $currentFilter[$condition->getField()] = $values;
+        $currentFilter[$field] = $values;
 
         if ($values === static::EMPTY_STRING) {
             $values = null;
         }
 
         if (!empty($values)) {
-            $fieldName = $isPrecondition ? 'PRECONDITION_' . $condition->getField() : $condition->getField();
+            $fieldName = $isPrecondition ? 'PRECONDITION_'.$field : $field;
 
             if (!empty($values)) {
-                $list->addRelationCondition(Condition::in('dest', $values), $fieldName);
+                $list->addRelationCondition(new InCondition('dest', $values), $fieldName);
             }
         }
 

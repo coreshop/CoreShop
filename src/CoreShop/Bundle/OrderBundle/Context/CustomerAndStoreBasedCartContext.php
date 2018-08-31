@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
+use Pimcore\Http\RequestHelper;
 
 final class CustomerAndStoreBasedCartContext implements CartContextInterface
 {
@@ -38,19 +39,27 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
     private $cartRepository;
 
     /**
+     * @var RequestHelper
+     */
+    private $pimcoreRequestHelper;
+
+    /**
      * @param CustomerContextInterface $customerContext
      * @param StoreContextInterface $storeContext
      * @param CartRepositoryInterface $cartRepository
+     * @param RequestHelper $pimcoreRequestHelper
      */
     public function __construct(
         CustomerContextInterface $customerContext,
         StoreContextInterface $storeContext,
-        CartRepositoryInterface $cartRepository
+        CartRepositoryInterface $cartRepository,
+        RequestHelper $pimcoreRequestHelper
     )
     {
         $this->customerContext = $customerContext;
         $this->storeContext = $storeContext;
         $this->cartRepository = $cartRepository;
+        $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
 
     /**
@@ -58,16 +67,21 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
      */
     public function getCart()
     {
+        if ($this->pimcoreRequestHelper->hasMasterRequest()) {
+            if ($this->pimcoreRequestHelper->getMasterRequest()->get('_route') !== 'coreshop_login_check') {
+                throw new CartNotFoundException('CustomerAndStoreBasedCartContext can only be applied in coreshop_login_check route.');
+            }
+        }
+
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
-            throw new CartNotFoundException('Corehop was not able to find the cart, as there is no current store.');
+            throw new CartNotFoundException('CoreShop was not able to find the cart, as there is no current store.');
         }
 
         try {
             $customer = $this->customerContext->getCustomer();
-        }
-        catch (CustomerNotFoundException $exception) {
+        } catch (CustomerNotFoundException $exception) {
             throw new CartNotFoundException('CoreShop was not able to find the cart, as there is no logged in user.');
         }
 

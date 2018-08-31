@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Address\Model;
 
@@ -31,7 +31,7 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
      */
     public function setIsoCode($isoCode);
 
-   /**
+    /**
      * @param $language
      *
      * @return mixed
@@ -74,4 +74,16 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
      * @return static
      */
     public function setAddressFormat($addressFormat);
+
+    /**
+     * @return array
+     */
+    public function getSalutations();
+
+    /**
+     * @param array $salutations
+     *
+     * @return static
+     */
+    public function setSalutations($salutations);
 }

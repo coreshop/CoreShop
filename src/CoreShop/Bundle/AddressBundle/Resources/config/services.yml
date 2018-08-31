@@ -1,8 +1,12 @@
 imports:
     - { resource: "services/form.yml" }
     - { resource: "services/profiler.yml" }
+    - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.context.country.composite:
         class: CoreShop\Component\Address\Context\CompositeCountryContext
         public: false
@@ -31,10 +35,12 @@ services:
         arguments:
             - '@coreshop.repository.country'
         tags:
-            - { name: coreshop.context.country.request_based.resolver, priority: 10 } #Highest Priority, is more like the fallback
+            - { name: coreshop.context.country.request_based.resolver, priority: 10 }
 
     coreshop.address.formatter:
         class: CoreShop\Component\Address\Formatter\AddressFormatter
+        arguments:
+            - '@pimcore.translator'
 
     coreshop.templating.helper.format_address:
         class: CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper

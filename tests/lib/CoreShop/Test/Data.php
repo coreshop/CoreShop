@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Model\Product;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
-use CoreShop\Component\Core\Model\CustomerGroupInterface;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
@@ -31,6 +31,9 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class Data
@@ -64,11 +67,6 @@ class Data
      * @var CarrierInterface
      */
     public static $carrier1;
-
-    /**
-     * @var CarrierInterface
-     */
-    public static $carrier2;
 
     /**
      * @var TaxRuleGroupInterface
@@ -120,6 +118,19 @@ class Data
      */
     public static function createData()
     {
+        //Clear Database
+        $purger = new PurgeDatabase(\Pimcore::getContainer()->get('doctrine.orm.entity_manager'));
+        $purger->purge();
+
+        //Install Fixtures
+        $parameters = array_merge(
+            ['command' => 'coreshop:install:fixtures']
+        );
+
+        $application = new Application(\Pimcore::getKernel());
+        $application->setAutoExit(false);
+        $application->run(new ArrayInput($parameters), new ConsoleOutput());
+
         self::$store = $standardStore = self::get('coreshop.repository.store')->findStandard();
 
         self::createGrossStore();
@@ -204,9 +215,8 @@ class Data
              * @var $carrier CarrierInterface
              */
             $carrier = $carrierFactory->createNew();
-            $carrier->setName('Test-Carrier-Weight');
-            $carrier->setLabel('Test-Carrier-Weight');
-            $carrier->setRangeBehaviour(CarrierInterface::RANGE_BEHAVIOUR_DEACTIVATE);
+            $carrier->setIdentifier('Test-Carrier-Weight');
+            $carrier->setTitle('Test-Carrier-Weight', 'en');
             $carrier->setTaxRule(self::$taxRuleGroup);
             $carrier->setIsFree(false);
             $carrier->setDescription('TEST', 'en');
@@ -236,6 +246,7 @@ class Data
              * @var $rule1 ShippingRuleInterface
              */
             $rule1 = $shippingRuleFactory->createNew();
+            $rule1->setActive(true);
             $rule1->setName('carrier1-rule');
             $rule1->addAction($priceAct);
             $rule1->addCondition($weightCond);
@@ -373,6 +384,8 @@ class Data
         $cart->setParent(Service::createFolderByPath('/'));
         $cart->setCustomer(self::get('coreshop.context.customer')->getCustomer());
         $cart->setStore(self::get('coreshop.context.store')->getStore());
+        $cart->setCurrency(Data::$store->getCurrency());
+        
         self::get('coreshop.cart.manager')->persistCart($cart);
 
         return $cart;
@@ -385,9 +398,9 @@ class Data
     {
         $cart = self::createCart();
 
-        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product1);
-        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product2);
-        self::get('coreshop.cart.modifier')->addCartItem($cart, self::$product3);
+        self::get('coreshop.cart.modifier')->addItem($cart, self::$product1);
+        self::get('coreshop.cart.modifier')->addItem($cart, self::$product2);
+        self::get('coreshop.cart.modifier')->addItem($cart, self::$product3);
 
         $cart->setShippingAddress(self::$address);
         $cart->setInvoiceAddress(self::$address);
@@ -410,8 +423,6 @@ class Data
              */
             $customerGroup1 = $customerGroupFactory->createNew();
             $customerGroup1->setName('Group1');
-            $customerGroup1->addStore(self::$store);
-            $customerGroup1->addStore(self::$storeGrossPrices);
             $customerGroup1->setKey('group1');
             $customerGroup1->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup1->save();
@@ -425,8 +436,6 @@ class Data
              */
             $customerGroup2 = $customerGroupFactory->createNew();
             $customerGroup2->setName('Group2');
-            $customerGroup2->addStore(self::$store);
-            $customerGroup2->addStore(self::$storeGrossPrices);
             $customerGroup2->setKey('group2');
             $customerGroup2->setParent(Service::createFolderByPath('/customer-groups'));
             $customerGroup2->save();

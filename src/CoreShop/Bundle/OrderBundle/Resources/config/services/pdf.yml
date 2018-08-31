@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.order.renderer.pdf:
         class: CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf
         arguments:
@@ -11,9 +14,11 @@ services:
             - '@fragment.renderer.inline'
             - '@event_dispatcher'
             - '@coreshop.order.renderer.pdf'
+            - '@coreshop.store.theme_helper'
 
     coreshop.renderer.order.pdf.asset:
         class: CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer
         decorates: coreshop.renderer.order.pdf
         arguments:
             - '@coreshop.renderer.order.pdf.asset.inner'
+            - '%kernel.environment%'

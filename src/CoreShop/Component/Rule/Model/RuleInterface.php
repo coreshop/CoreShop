@@ -8,15 +8,16 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Rule\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\ToggleableInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface RuleInterface extends ResourceInterface, TimestampableInterface
+interface RuleInterface extends ResourceInterface, TimestampableInterface, ToggleableInterface
 {
     /**
      * @return mixed

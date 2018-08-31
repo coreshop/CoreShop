@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
 
@@ -58,11 +58,9 @@ class ConfigurationFixture extends AbstractFixture implements ContainerAwareInte
             'system.order.suffix' => '',
             'system.quote.prefix' => 'Q',
             'system.quote.suffix' => '',
-            'system.invoice.create' => true,
             'system.invoice.prefix' => 'IN',
             'system.invoice.suffix' => '',
             'system.invoice.wkhtml' => '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5',
-            'system.shipment.create' => true,
             'system.shipment.prefix' => 'SH',
             'system.shipment.suffix' => '',
             'system.shipment.wkhtml' => '-T 40mm -B 15mm -L 10mm -R 10mm --header-spacing 5 --footer-spacing 5',

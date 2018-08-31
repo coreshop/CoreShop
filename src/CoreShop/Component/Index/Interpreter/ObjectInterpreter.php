@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 
@@ -20,7 +21,7 @@ class ObjectInterpreter implements RelationInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpretRelational($value, IndexColumnInterface $config = null)
+    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $result = [];
 
@@ -46,7 +47,7 @@ class ObjectInterpreter implements RelationInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexColumnInterface $config = null)
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $result = [];
 

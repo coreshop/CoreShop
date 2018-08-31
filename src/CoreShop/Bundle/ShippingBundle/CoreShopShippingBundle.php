@@ -8,16 +8,21 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle;
 
+use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
+use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
+use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\CompositeShippableValidatorPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleActionPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleConditionPass;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopShippingBundle extends AbstractResourceBundle
@@ -32,6 +37,9 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -40,6 +48,19 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ShippingRuleActionPass());
         $container->addCompilerPass(new ShippingPriceCalculatorsPass());
         $container->addCompilerPass(new CompositeShippableValidatorPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundle(new CoreShopAddressBundle(), 2800);
+        $collection->addBundle(new CoreShopRuleBundle(), 3500);
+        $collection->addBundle(new CoreShopMoneyBundle(), 3600);
+        $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
     }
 
     /**

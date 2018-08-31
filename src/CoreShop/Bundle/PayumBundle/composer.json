@@ -1,6 +1,6 @@
 {
   "name": "coreshop/payum-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Payment Bundle",
   "keywords": [
     "coreshop",
@@ -18,15 +18,15 @@
     }
   ],
   "require": {
-    "php": "^7.0",
     "coreshop/order-bundle": "^2.0",
     "coreshop/payment-bundle": "^2.0",
+    "coreshop/core": "^2.0",
     "payum/payum-bundle": "^2.2",
     "payum/offline": "^1.4",
     "payum/sofort": "^1.4",
     "payum/paypal-express-checkout-nvp": "^1.4",
     "php-http/guzzle6-adapter": "^1.1",
-    "pimcore/core-version": "^5.1.0"
+    "pimcore/pimcore": "^5.4.0"
   },
   "config": {
     "bin-dir": "bin"

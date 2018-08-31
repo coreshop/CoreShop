@@ -16,6 +16,7 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
@@ -30,7 +31,6 @@ final class CartItemTaxProcessor implements CartProcessorInterface
      * @var TaxCollectorInterface
      */
     private $taxCollector;
-
 
     /**
      * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
@@ -59,11 +59,13 @@ final class CartItemTaxProcessor implements CartProcessorInterface
             $total = $item->getTotal(false);
 
             $fieldCollection = new Fieldcollection();
-            $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $total));
 
-            $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $total));
+                $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
+            }
+
             $item->setTaxes($fieldCollection);
-            $item->save();
         }
     }
 }

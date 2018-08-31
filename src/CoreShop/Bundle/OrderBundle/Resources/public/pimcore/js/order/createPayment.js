@@ -19,19 +19,20 @@ coreshop.order.order.createPayment = {
         var paymentProvidersStore = new Ext.data.Store({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/order-payment/get-payment-providers',
+                url: '/admin/coreshop/payment_providers/list',
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
                 }
             },
-            fields: ['id', 'name']
+            fields: ['id', 'identifier']
         });
         paymentProvidersStore.load();
 
         var window = new Ext.window.Window({
             width: 380,
             height: 380,
+            modal: true,
             resizeable: false,
             layout: 'fit',
             items: [{
@@ -54,11 +55,15 @@ coreshop.order.order.createPayment = {
 
                                 formValues['o_id'] = orderId;
 
+                                window.setLoading(t('loading'));
+
                                 Ext.Ajax.request({
                                     url: '/admin/coreshop/order-payment/add-payment',
                                     method: 'post',
                                     params: formValues,
                                     callback: function (request, success, response) {
+                                        window.setLoading(false);
+
                                         try {
                                             response = Ext.decode(response.responseText);
 
@@ -104,7 +109,7 @@ coreshop.order.order.createPayment = {
                         mode: 'local',
                         listWidth: 100,
                         store: paymentProvidersStore,
-                        displayField: 'name',
+                        displayField: 'identifier',
                         valueField: 'id',
                         forceSelection: true,
                         triggerAction: 'all',

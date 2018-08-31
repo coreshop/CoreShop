@@ -1,8 +1,12 @@
 parameters:
+    coreshop.session.cart: 'coreshop.cart'
     coreshop.form.type.cart.validation_groups: [coreshop]
     coreshop.form.type.cart_item.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.cart:
         class: CoreShop\Bundle\OrderBundle\Form\Type\CartType
         arguments:
@@ -10,7 +14,6 @@ services:
             - '%coreshop.form.type.cart.validation_groups%'
         tags:
             - { name: form.type }
-
 
     coreshop.form.type.cart_item:
         class: CoreShop\Bundle\OrderBundle\Form\Type\CartItemType

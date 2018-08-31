@@ -20,7 +20,7 @@ coreshop.cart.pricerules.panel = Class.create(coreshop.rules.panel, {
     layoutId: 'coreshop_price_rules_panel',
     storeId: 'coreshop_cart_price_rules',
     iconCls: 'coreshop_icon_price_rule',
-    type: 'cart_pricerules',
+    type: 'coreshop_cart_pricerules',
 
     url: {
         add: '/admin/coreshop/cart_price_rules/add',

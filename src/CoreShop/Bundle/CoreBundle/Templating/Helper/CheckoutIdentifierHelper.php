@@ -17,8 +17,8 @@ use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelperInterface
@@ -29,9 +29,9 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     private $requestStack;
 
     /**
-     * @var UrlGeneratorInterface
+     * @var LinkGeneratorInterface
      */
-    protected $router;
+    protected $linkGenerator;
 
     /**
      * @var CheckoutManagerFactoryInterface
@@ -44,19 +44,20 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     protected $cartContext;
 
     /**
-     * @param RequestStack                    $requestStack
-     * @param UrlGeneratorInterface           $router
+     * @param RequestStack $requestStack
+     * @param LinkGeneratorInterface $linkGenerator
      * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
-     * @param CartContextInterface            $cartContext
+     * @param CartContextInterface $cartContext
      */
     public function __construct(
         RequestStack $requestStack,
-        UrlGeneratorInterface $router,
+        LinkGeneratorInterface $linkGenerator,
         CheckoutManagerFactoryInterface $checkoutManagerFactory,
         CartContextInterface $cartContext
-    ) {
+    )
+    {
         $this->requestStack = $requestStack;
-        $this->router = $router;
+        $this->linkGenerator = $linkGenerator;
         $this->checkoutManagerFactory = $checkoutManagerFactory;
         $this->cartContext = $cartContext;
     }
@@ -80,10 +81,10 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
         $shopSteps = [
             'cart' => [
                 'waiting' => false,
-                'done'    => !is_null($stepIdentifier),
+                'done' => !is_null($stepIdentifier),
                 'current' => $requestAttributes->get('_route') === 'coreshop_cart_summary',
-                'valid'   => !is_null($stepIdentifier),
-                'url'     => $this->router->generate('coreshop_cart_summary')
+                'valid' => !is_null($stepIdentifier),
+                'url' => $this->linkGenerator->generate($cart, 'coreshop_cart_summary')
 
             ]
         ];
@@ -95,10 +96,10 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
 
             $shopSteps[(string)$identifier] = [
                 'waiting' => is_null($stepIdentifier) || (int)$currentStep < $stepIndex,
-                'done'    => !is_null($stepIdentifier) && (int)$currentStep > $stepIndex,
+                'done' => !is_null($stepIdentifier) && (int)$currentStep > $stepIndex,
                 'current' => !is_null($stepIdentifier) && (int)$currentStep === $stepIndex,
-                'valid'    => $isValid,
-                'url'     => $this->router->generate('coreshop_checkout', ['stepIdentifier' => (string)$identifier])
+                'valid' => $isValid,
+                'url' => $this->linkGenerator->generate($cart, 'coreshop_checkout', ['stepIdentifier' => (string)$identifier])
             ];
         }
 
@@ -128,8 +129,8 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
+     * @param CartInterface $cart
+     * @param string $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
      * @return mixed
      */
@@ -140,8 +141,8 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
+     * @param CartInterface $cart
+     * @param string $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
      * @return mixed
      */
@@ -153,8 +154,8 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
+     * @param CartInterface $cart
+     * @param string $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
      * @return mixed
      */
@@ -165,8 +166,8 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
+     * @param CartInterface $cart
+     * @param string $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
      * @return mixed
      */
@@ -185,8 +186,8 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
+     * @param CartInterface $cart
+     * @param string $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
      * @return mixed
      */

@@ -45,11 +45,6 @@ coreshop.report.monitoring.reports.disabledProducts = Class.create(coreshop.repo
                         text: t('coreshop_monitoring_disableProducts_enabled'),
                         dataIndex: 'enabled',
                         width: 100
-                    },
-                    {
-                        text: t('coreshop_monitoring_disableProducts_available_for_order'),
-                        dataIndex: 'availableForOrder',
-                        width: 100
                     }
                 ],
                 listeners: {

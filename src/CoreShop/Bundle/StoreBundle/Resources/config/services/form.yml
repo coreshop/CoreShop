@@ -2,6 +2,9 @@ parameters:
     coreshop.form.type.store.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.store_choice:
         class: CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType
         arguments:

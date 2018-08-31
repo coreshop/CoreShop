@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Payment\Model;
 
@@ -29,6 +29,8 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
     public function setIdentifier($identifier);
 
     /**
+     * @deprecated getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead
+     *
      * @param null $language
      *
      * @return string
@@ -36,10 +38,25 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
     public function getName($language = null);
 
     /**
+     * @deprecated setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead
+     *
      * @param string $name
-     * @param null   $language
+     * @param null $language
      */
     public function setName($name, $language = null);
+
+    /**
+     * @param null $language
+     *
+     * @return string
+     */
+    public function getTitle($language = null);
+
+    /**
+     * @param string $title
+     * @param null $language
+     */
+    public function setTitle($title, $language = null);
 
     /**
      * @param null $language
@@ -50,7 +67,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $description
-     * @param null   $language
+     * @param null $language
      */
     public function setDescription($description, $language = null);
 
@@ -63,7 +80,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $instructions
-     * @param null   $language
+     * @param null $language
      */
     public function setInstructions($instructions, $language = null);
 

@@ -12,27 +12,49 @@
 
 namespace CoreShop\Component\Core\Cart\Rule\Condition;
 
+use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
+use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class CategoriesConditionChecker extends AbstractConditionChecker
 {
+    use CategoriesConditionCheckerTrait {
+        CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
+    }
+
+    /**
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param StoreContextInterface $storeContext
+     */
+    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    {
+        $this->__traitConstruct($categoryRepository, $storeContext);
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucher = null, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
+
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
 
             if ($product instanceof ProductInterface) {
+                if (!is_array($product->getCategories())) {
+                    continue;
+                }
+
                 foreach ($product->getCategories() as $category) {
                     if ($category instanceof ResourceInterface) {
-                        if (in_array($category->getId(), $configuration['categories'])) {
+                        if (in_array($category->getId(), $categoryIdsToCheck)) {
                             return true;
                         }
                     }

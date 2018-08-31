@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Listing;
 
@@ -16,8 +16,8 @@ use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Zend\Paginator\Adapter\AdapterInterface;
 use Zend\Paginator\AdapterAggregateInterface;
+use Zend\Paginator\Adapter\AdapterInterface;
 
 interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
 {
@@ -47,7 +47,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * Listing constructor.
      *
-     * @param IndexInterface  $index
+     * @param IndexInterface $index
      * @param WorkerInterface $worker
      */
     public function __construct(IndexInterface $index, WorkerInterface $worker);
@@ -65,7 +65,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * and exclude functionality in group by results.
      *
      * @param ConditionInterface $condition
-     * @param string             $fieldName
+     * @param string $fieldName
      */
     public function addCondition(ConditionInterface $condition, $fieldName);
 
@@ -75,7 +75,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * and exclude functionality in group by results.
      *
      * @param ConditionInterface $condition
-     * @param string             $fieldName
+     * @param string $fieldName
      */
     public function addQueryCondition(ConditionInterface $condition, $fieldName);
 
@@ -83,7 +83,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * Adds relation condition to product list.
      *
      * @param ConditionInterface $condition
-     * @param string             $fieldName
+     * @param string $fieldName
      */
     public function addRelationCondition(ConditionInterface $condition, $fieldName);
 

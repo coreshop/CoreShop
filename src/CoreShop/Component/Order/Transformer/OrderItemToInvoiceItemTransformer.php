@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -17,9 +17,9 @@ use CoreShop\Component\Order\Model\OrderDocumentItemInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
@@ -54,11 +54,11 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $taxItemFactory;
 
     /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
+     * @param ObjectServiceInterface $objectService
+     * @param string $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param FactoryInterface                    $taxRateFactory
-     * @param FactoryInterface                    $taxItemFactory
+     * @param FactoryInterface $taxRateFactory
+     * @param FactoryInterface $taxItemFactory
      */
     public function __construct(
         ObjectServiceInterface $objectService,
@@ -66,7 +66,8 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         TransformerEventDispatcherInterface $eventDispatcher,
         FactoryInterface $taxRateFactory,
         FactoryInterface $taxItemFactory
-    ) {
+    )
+    {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -110,7 +111,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), false);
         $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), true);
 
-        VersionHelper::useVersioning(function () use ($invoiceItem) {
+        VersionHelper::useVersioning(function() use ($invoiceItem) {
             $invoiceItem->save();
         }, false);
 
@@ -132,8 +133,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
 
         if ($base) {
             $orderTaxes = $orderItem->getBaseTaxes();
-        }
-        else {
+        } else {
             $orderTaxes = $orderItem->getTaxes();
         }
 
@@ -166,8 +166,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         if ($base) {
             $docItem->setBaseTotalTax($totalTax);
             $docItem->setBaseTaxes($itemTaxes);
-        }
-        else {
+        } else {
             $docItem->setTotalTax($totalTax);
             $docItem->setTaxes($itemTaxes);
         }

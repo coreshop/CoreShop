@@ -1,7 +1,7 @@
 {% extends '@CoreShopFrontend/layout.html.twig' %}
 
 {% block content %}
-THANK YOU :)
+    <p>{{ 'coreshop.ui.checkout.thank_you'|trans }}</p>
 
-    {{ order.getId }}
+    {% include '@CoreShopFrontend/Common/order_detail.html.twig' with {order: order} only %}
 {% endblock %}

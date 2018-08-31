@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CurrencyBundle\Form\Type;
 
@@ -29,8 +29,7 @@ final class CurrencyType extends AbstractResourceType
             ->add('isoCode', TextType::class)
             ->add('numericIsoCode', NumberType::class)
             ->add('symbol', TextType::class)
-            ->add('exchangeRate', NumberType::class)
-        ;
+            ->add('exchangeRate', NumberType::class);
     }
 
     /**

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.carrier.price_calculator.free_shipping_rule:
         class: CoreShop\Component\Core\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
         tags:
@@ -6,6 +9,9 @@ services:
 
     coreshop.shipping_rule.condition.categories:
         class: CoreShop\Component\Core\Shipping\Rule\Condition\CategoriesConditionChecker
+        arguments:
+            - '@coreshop.repository.category'
+            - '@coreshop.context.store'
         tags:
             - { name: coreshop.shipping_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
 
@@ -19,6 +25,11 @@ services:
         tags:
             - { name: coreshop.shipping_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
 
+    coreshop.shipping_rule.condition.zones:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\ZonesConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
+
     coreshop.carrier.price_calculator.taxed:
         class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
         arguments:
@@ -26,9 +37,9 @@ services:
             - '@coreshop.taxation.factory.tax_calculator'
             - '@coreshop.taxation.tax_applicator'
 
-    coreshop.carrier.cart.store_based_processor:
+    coreshop.carrier.cart.store_based_resolver:
         class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery
-        decorates: coreshop.carrier.discovery
+        decorates: coreshop.carrier.resolver
         arguments:
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'

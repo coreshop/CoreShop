@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Customer\Model;
 
@@ -27,4 +27,14 @@ interface CustomerGroupInterface extends ResourceInterface
      * @return static
      */
     public function setName($name);
+
+    /**
+     * @return array
+     */
+    public function getRoles();
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles($roles);
 }

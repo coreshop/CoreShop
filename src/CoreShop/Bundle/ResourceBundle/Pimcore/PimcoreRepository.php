@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -51,6 +52,16 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
+    public function getClassId()
+    {
+        $class = $this->metadata->getClass('model');
+
+        return $class::classId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getClassName()
     {
         return $this->metadata->getClass('model');
@@ -64,7 +75,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
         $className = $this->metadata->getClass('model');
 
         //Refactor as soon as Pimcore introduces changes to $className::getList()
-        $listClass = $className . '\\Listing';
+        $listClass = $className.'\\Listing';
         $list = \Pimcore::getContainer()->get('pimcore.model.factory')->build($listClass);
 
         return $list;
@@ -107,7 +118,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
 
         if (is_array($criteria) && count($criteria) > 0) {
             foreach ($criteria as $criterion) {
-                $list->setCondition($criterion['condition'], array_key_exists('variable', $criterion) ? $criterion['variable'] : null);
+                $list->addConditionParam($criterion['condition'], array_key_exists('variable', $criterion) ? $criterion['variable'] : null);
             }
         }
 
@@ -189,7 +200,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                         $normalizedCriterion['condition'] = $criterion;
                     }
                 } else {
-                    $normalizedCriterion['condition'] = $key . " = ?";
+                    $normalizedCriterion['condition'] = $key." = ?";
                     $normalizedCriterion['variable'] = [$criterion];
                 }
 
@@ -220,7 +231,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     private function normalizeOrderBy($orderBy)
     {
         $normalized = [
-            'key'       => '',
+            'key' => '',
             'direction' => 'ASC'
         ];
 

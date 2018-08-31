@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -25,9 +26,9 @@ final class ShippingRuleType extends RuleType
     {
         $builder
             ->add('name', TextareaType::class)
+            ->add('active', CheckboxType::class)
             ->add('conditions', ShippingRuleConditionCollectionType::class)
-            ->add('actions', ShippingRuleActionCollectionType::class)
-        ;
+            ->add('actions', ShippingRuleActionCollectionType::class);
     }
 
     /**

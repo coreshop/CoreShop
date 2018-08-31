@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.resource');
-coreshop.resource = Class.create({
+pimcore.registerNS('coreshop.resources');
+coreshop.resources = Class.create({
     resources: {},
 
     initialize: function () {
@@ -21,7 +21,7 @@ coreshop.resource = Class.create({
                 var resp = Ext.decode(response.responseText);
 
                 coreshop.class_map = resp.classMap;
-                coreshop.implementations = resp.implementations;
+                coreshop.stack = resp.stack;
 
                 coreshop.broker.fireEvent("afterClassMap", coreshop.class_map);
             }.bind(this)
@@ -53,4 +53,6 @@ coreshop.deepCloneStore = function (source) {
     return target;
 };
 
-coreshop.global.resource = new coreshop.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    coreshop.global.resource = new coreshop.resources();
+});

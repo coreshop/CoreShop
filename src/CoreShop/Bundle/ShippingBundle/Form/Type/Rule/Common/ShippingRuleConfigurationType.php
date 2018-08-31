@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common;
 
@@ -31,25 +31,24 @@ final class ShippingRuleConfigurationType extends AbstractType
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
-            ])
-        ;
+            ]);
 
         $builder->get('shippingRule')->addModelTransformer(new CallbackTransformer(
-                function ($shippingRule) {
-                    if ($shippingRule instanceof ShippingRuleInterface) {
-                        return $shippingRule->getId();
-                    }
-
-                    return null;
-                },
-                function ($shippingRule) {
-                    if ($shippingRule instanceof ShippingRuleInterface) {
-                        return $shippingRule->getId();
-                    }
-
-                    return null;
+            function($shippingRule) {
+                if ($shippingRule instanceof ShippingRuleInterface) {
+                    return $shippingRule->getId();
                 }
-            ));
+
+                return null;
+            },
+            function($shippingRule) {
+                if ($shippingRule instanceof ShippingRuleInterface) {
+                    return $shippingRule->getId();
+                }
+
+                return null;
+            }
+        ));
     }
 
     /**

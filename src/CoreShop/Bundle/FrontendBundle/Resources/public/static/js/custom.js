@@ -18,13 +18,6 @@ $(document).ready(function() {
 
     "use strict";
 
-    // TOOLTIP  
-    $(".header-links .fa, .tool-tip").tooltip({
-        placement: "bottom"
-    });
-    
-    $(".btn-wishlist, .btn-compare, .display .fa").tooltip('hide');
-
     // Product Owl Carousel
     $("#owl-product").owlCarousel({
         autoPlay: false, //Set AutoPlay to 3 seconds

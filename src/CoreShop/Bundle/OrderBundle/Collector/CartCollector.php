@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Collector;
 use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Order\Model\CartInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,8 +98,8 @@ final class CartCollector extends DataCollector
         try {
             $this->data['cart'] = $this->cartContext->getCart();
             $this->data['locale'] = $this->localeContext->getLocaleCode();
-        } catch (CountryNotFoundException $exception) {
-            //If something went wrong, we don't have any country, which we can safely ignore
+        } catch (\Exception $exception) {
+            //If something went wrong, we don't have any cart, which we can safely ignore
         }
     }
 

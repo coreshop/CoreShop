@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Model;
 
@@ -30,6 +30,21 @@ interface CategoryInterface extends PimcoreModelInterface
      * @return mixed
      */
     public function setName($name, $language = null);
+
+    /**
+     * @param null $language
+     *
+     * @return mixed
+     */
+    public function getDescription($language = null);
+
+    /**
+     * @param $description
+     * @param null $language
+     *
+     * @return mixed
+     */
+    public function setDescription($description, $language = null);
 
     /**
      * @return CategoryInterface

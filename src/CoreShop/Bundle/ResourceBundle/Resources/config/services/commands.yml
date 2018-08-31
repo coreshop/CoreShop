@@ -1,9 +1,12 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.command.create_object_class:
         class: CoreShop\Bundle\ResourceBundle\Command\CreateObjectClassCommand
         arguments:
             - '@kernel'
-            - '%coreshop.pimcore%'
+            - '%coreshop.all.pimcore_classes%'
         tags:
             - { name: console.command, command: 'coreshop:generate:class' }
 

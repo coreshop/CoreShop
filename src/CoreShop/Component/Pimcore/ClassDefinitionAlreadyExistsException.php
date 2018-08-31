@@ -12,6 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-final class ClassDefinitionAlreadyExistsException extends \Exception {
+if (class_exists(\CoreShop\Component\Pimcore\Exception\ClassDefinitionAlreadyExistsException::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\ClassDefinitionAlreadyExistsException is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\Exception\ClassDefinitionAlreadyExistsException class instead.', E_USER_DEPRECATED);
+} else {
+    /**
+     * @deprecated Class CoreShop\Component\Pimcore\ClassDefinitionAlreadyExistsException is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\Exception\ClassDefinitionAlreadyExistsException class instead.
+     */
+    final class ClassDefinitionAlreadyExistsException extends \Exception
+    {
 
+    }
 }

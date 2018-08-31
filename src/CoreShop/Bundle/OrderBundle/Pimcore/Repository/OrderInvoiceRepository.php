@@ -8,21 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 
-class OrderInvoiceRepository extends PimcoreRepository implements OrderInvoiceRepositoryInterface
+class OrderInvoiceRepository extends AbstractOrderDocumentRepository implements OrderInvoiceRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDocuments(OrderInterface $order)
-    {
-        return $this->findBy(['order__id' => $order->getId()]);
-    }
+
 }

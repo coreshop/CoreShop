@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PayumBundle\DependencyInjection;
 
@@ -31,6 +31,9 @@ final class CoreShopPayumExtension extends AbstractModelExtension implements Pre
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
         $loader->load('services.yml');
+
+        $container->setParameter('payum.template.layout', $config['template']['layout']);
+        $container->setParameter('payum.template.obtain_credit_card', $config['template']['obtain_credit_card']);
     }
 
     /**

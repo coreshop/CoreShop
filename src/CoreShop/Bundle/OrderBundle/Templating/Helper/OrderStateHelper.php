@@ -61,10 +61,10 @@ class OrderStateHelper extends Helper implements OrderStateHelperInterface
         }
 
         return [
-            'orderState'      => $orderState['label'],
-            'paymentState'    => $paymentState['label'],
-            'shippingState'   => $shippingState['label'],
-            'invoiceState'    => $invoiceState['label'],
+            'orderState' => $orderState['label'],
+            'paymentState' => $paymentState['label'],
+            'shippingState' => $shippingState['label'],
+            'invoiceState' => $invoiceState['label'],
             'calculatedState' => $calculatedState,
         ];
     }

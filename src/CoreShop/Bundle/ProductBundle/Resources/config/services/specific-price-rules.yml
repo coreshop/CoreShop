@@ -6,6 +6,9 @@ parameters:
     coreshop.form.type.product_specific_price_rule.promotion_coupon.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
   # Forms
     coreshop.form.type.product_specific_price_rule:
         class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType
@@ -74,7 +77,7 @@ services:
     coreshop.registry.product_specific_price_rule.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface
+            - CoreShop\Component\Product\Rule\Action\ActionProcessorInterface
             - product-price-rule-actions
 
     coreshop.form_registry.product_specific_price_rule.actions:
@@ -86,6 +89,7 @@ services:
         shared: false
         arguments:
             - '@coreshop.registry.product_specific_price_rule.conditions'
+            - 'Product Specific Price Rules'
 
     coreshop.product_specific_price_rule.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
@@ -100,10 +104,19 @@ services:
         tags:
             - { name: coreshop.product.rules.fetcher, type: product-specific-rules }
 
+    coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher.memory_cached:
+        class: CoreShop\Component\Product\Rule\Fetcher\MemoryCachedValidRuleFetcher
+        decorates: 'coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher'
+        arguments:
+            - '@coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher.memory_cached.inner'
+            - '@request_stack'
+
     coreshop.product.price_calculator.product_specific_price_rules:
-      class: CoreShop\Component\Product\Calculator\PriceRuleCalculator
+      class: CoreShop\Component\Product\Rule\Calculator\ProductPriceRuleCalculator
       arguments:
-        - '@coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher'
-        - '@coreshop.registry.product_specific_price_rule.actions'
+          - '@coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher'
+          - '@coreshop.registry.product_specific_price_rule.actions'
       tags:
-        - { name: coreshop.product.price_calculator, type: product_specific_price_rules, priority: 30 }
+          - { name: coreshop.product.retail_price_calculator, type: product_specific_price_rules, priority: 30 }
+          - { name: coreshop.product.discount_price_calculator, type: product_specific_price_rules, priority: 30 }
+          - { name: coreshop.product.discount_calculator, type: product_specific_price_rules, priority: 30 }

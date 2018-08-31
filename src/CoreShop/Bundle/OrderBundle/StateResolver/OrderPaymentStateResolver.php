@@ -16,7 +16,8 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\Workflow\Workflow;
 
 final class OrderPaymentStateResolver implements StateResolverInterface
@@ -27,11 +28,18 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     protected $stateMachineManager;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @var PaymentRepositoryInterface
      */
-    public function __construct(StateMachineManager $stateMachineManager)
+    protected $paymentRepository;
+
+    /**
+     * @param StateMachineManager $stateMachineManager
+     * @param PaymentRepositoryInterface $paymentRepository
+     */
+    public function __construct(StateMachineManager $stateMachineManager, PaymentRepositoryInterface $paymentRepository)
     {
         $this->stateMachineManager = $stateMachineManager;
+        $this->paymentRepository = $paymentRepository;
     }
 
     /**
@@ -50,7 +58,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     /**
      * @param Workflow $workflow
      * @param          $subject
-     * @param string   $transition
+     * @param string $transition
      */
     private function applyTransition(Workflow $workflow, $subject, string $transition)
     {
@@ -89,7 +97,9 @@ final class OrderPaymentStateResolver implements StateResolverInterface
             $completedPaymentTotal += $payment->getTotalAmount();
         }
 
-        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getTotal()) || count($order->getPayments()) === 0) {
+        $payments = $this->paymentRepository->findForPayable($order);
+
+        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getTotal()) || count($payments) === 0) {
             return OrderPaymentTransitions::TRANSITION_PAY;
         }
 
@@ -102,14 +112,15 @@ final class OrderPaymentStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string         $state
+     * @param string $state
      *
      * @return PaymentInterface[]
      */
     private function getPaymentsWithState(OrderInterface $order, string $state)
     {
+        $payments = $this->paymentRepository->findForPayable($order);
         $filteredPayments = [];
-        foreach ($order->getPayments() as $payment) {
+        foreach ($payments as $payment) {
             if ($payment->getState() === $state) {
                 $filteredPayments[] = $payment;
             }

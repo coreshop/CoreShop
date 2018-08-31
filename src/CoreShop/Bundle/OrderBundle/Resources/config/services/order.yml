@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.order.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments:
@@ -28,12 +31,10 @@ services:
             - '@coreshop.order.number_generator.default'
             - '%coreshop.folder.order%'
             - '@coreshop.object_service'
-            - '@coreshop.context.locale'
             - '@coreshop.factory.order_item'
-            - '@coreshop.context.store'
             - '@coreshop.transformer.event_dispatcher'
             - '@coreshop.currency_converter'
-            - '@coreshop.resource.object_cloner'
+            - '@coreshop.object_cloner'
             - '@coreshop.repository.cart_price_rule_voucher_code'
 
     coreshop.order.transformer.cart_to_order.workflow_applier:
@@ -60,20 +61,11 @@ services:
             - '@coreshop.quote.number_generator.default'
             - '%coreshop.folder.quote%'
             - '@coreshop.object_service'
-            - '@coreshop.context.locale'
             - '@coreshop.factory.quote_item'
-            - '@coreshop.context.store'
             - '@coreshop.transformer.event_dispatcher'
             - '@coreshop.currency_converter'
-            - '@coreshop.resource.object_cloner'
+            - '@coreshop.object_cloner'
             - '@coreshop.repository.cart_price_rule_voucher_code'
-
-    coreshop.factory.cart:
-        class: CoreShop\Component\Order\Factory\CartFactory
-        arguments:
-            - '%coreshop.model.cart.class%'
-            - '@coreshop.context.currency'
-            - '@coreshop.context.store'
 
     coreshop.templating.helper.order_state:
         class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper

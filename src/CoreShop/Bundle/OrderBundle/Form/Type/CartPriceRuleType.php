@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
@@ -31,8 +31,7 @@ final class CartPriceRuleType extends RuleType
             ->add('active', CheckboxType::class)
             ->add('description', TextareaType::class)
             ->add('conditions', CartPriceRuleConditionCollectionType::class)
-            ->add('actions', CartPriceRuleActionCollectionType::class)
-        ;
+            ->add('actions', CartPriceRuleActionCollectionType::class);
     }
 
     /**

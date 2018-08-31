@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
@@ -40,14 +40,14 @@ class AdditionAmountActionConfigurationType extends AbstractType
             ]);
 
         $builder->get('currency')->addModelTransformer(new CallbackTransformer(
-            function ($currency) {
+            function($currency) {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }
 
                 return null;
             },
-            function ($currency) {
+            function($currency) {
                 if ($currency instanceof CurrencyInterface) {
                     return $currency->getId();
                 }

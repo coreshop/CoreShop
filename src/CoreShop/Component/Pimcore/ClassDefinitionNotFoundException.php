@@ -12,6 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-final class ClassDefinitionNotFoundException extends \Exception {
+if (class_exists(\CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\ClassDefinitionNotFoundException is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException class instead.', E_USER_DEPRECATED);
+} else {
+    /**
+     * @deprecated Class CoreShop\Component\Pimcore\ClassDefinitionNotFoundException is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException class instead.
+     */
+    final class ClassDefinitionNotFoundException extends \Exception
+    {
 
+    }
 }

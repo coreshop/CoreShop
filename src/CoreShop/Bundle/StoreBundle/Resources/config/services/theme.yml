@@ -1,10 +1,19 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.store.theme_resolver:
         class: CoreShop\Bundle\StoreBundle\Theme\ThemeResolver
         arguments:
             - '@liip_theme.active_theme'
             - '@coreshop.context.store'
             - '@coreshop.repository.store'
+
+    coreshop.store.theme_helper:
+        class: CoreShop\Bundle\StoreBundle\Theme\ThemeHelper
+        arguments:
+            - '@coreshop.store.theme_resolver'
+            - '@liip_theme.active_theme'
 
     coreshop.listener.theme_request:
         class: CoreShop\Bundle\StoreBundle\EventListener\ThemeRequestListener

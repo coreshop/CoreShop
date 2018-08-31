@@ -8,15 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 
-interface OrderInterface extends SaleInterface
+interface OrderInterface extends SaleInterface, PayableInterface
 {
     /**
      * @return string
@@ -59,16 +59,6 @@ interface OrderInterface extends SaleInterface
     public function setPaymentState($paymentState);
 
     /**
-     * @return string
-     */
-    public function getOrderLanguage();
-
-    /**
-     * @param $orderLanguage
-     */
-    public function setOrderLanguage($orderLanguage);
-
-    /**
      * @return Carbon
      */
     public function getOrderDate();
@@ -97,31 +87,6 @@ interface OrderInterface extends SaleInterface
      * @param string $token
      */
     public function setToken($token);
-
-    /**
-     * @return PaymentInterface[]
-     */
-    public function getPayments();
-
-    /**
-     * @return OrderShipmentInterface[]
-     */
-    public function getShipments();
-
-    /**
-     * @return OrderInvoiceInterface[]
-     */
-    public function getInvoices();
-
-    /**
-     * @return int
-     */
-    public function getTotalPayed();
-
-    /**
-     * @return bool
-     */
-    public function getIsPayed();
 
     /**
      * @return PaymentProviderInterface

@@ -17,9 +17,10 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
+use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\StateResolver\StateResolverInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 
 final class OrderInvoiceStateResolver implements StateResolverInterface
 {
@@ -34,15 +35,24 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
     protected $orderInvoiceRepository;
 
     /**
-     * @param StateMachineManager             $stateMachineManager
+     * @var ProcessableInterface
+     */
+    protected $processable;
+
+    /**
+     * @param StateMachineManager $stateMachineManager
      * @param OrderInvoiceRepositoryInterface $orderInvoiceRepository
+     * @param ProcessableInterface $processable
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
-        OrderInvoiceRepositoryInterface $orderInvoiceRepository
-    ) {
+        OrderInvoiceRepositoryInterface $orderInvoiceRepository,
+        ProcessableInterface $processable
+    )
+    {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderInvoiceRepository = $orderInvoiceRepository;
+        $this->processable = $processable;
     }
 
     /**
@@ -68,7 +78,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string         $invoiceState
+     * @param string $invoiceState
      *
      * @return int
      */
@@ -89,8 +99,8 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string         $invoiceState
-     * @param string         $orderInvoiceState
+     * @param string $invoiceState
+     * @param string $orderInvoiceState
      *
      * @return bool
      */
@@ -98,11 +108,14 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         OrderInterface $order,
         string $invoiceState,
         string $orderInvoiceState
-    ): bool {
+    ): bool
+    {
         $invoiceInStateAmount = $this->countOrderInvoicesInState($order, $invoiceState);
         $invoiceAmount = count($this->orderInvoiceRepository->getDocuments($order));
 
-        return $invoiceAmount === $invoiceInStateAmount && $orderInvoiceState !== $order->getInvoiceState();
+        return $invoiceAmount === $invoiceInStateAmount &&
+            $orderInvoiceState !== $order->getInvoiceState() &&
+            $this->processable->isFullyProcessed($order);
     }
 
     /**
@@ -113,11 +126,10 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
     private function isPartiallyInvoicedButOrderStateNotUpdated(OrderInterface $order): bool
     {
         $invoiceInCompleteStateAmount = $this->countOrderInvoicesInState($order, InvoiceStates::STATE_COMPLETE);
-        $invoiceAmount = count($this->orderInvoiceRepository->getDocuments($order));
 
         return
-            1 <= $invoiceInCompleteStateAmount &&
-            $invoiceInCompleteStateAmount < $invoiceAmount &&
+            $invoiceInCompleteStateAmount > 0 &&
+            !$this->processable->isFullyProcessed($order) &&
             OrderInvoiceStates::STATE_PARTIALLY_INVOICED !== $order->getInvoiceState();
     }
 }

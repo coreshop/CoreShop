@@ -1,0 +1,11 @@
+core_shop_customer:
+    pimcore:
+        customer_group:
+            path: coreshop/customer_groups
+        customer:
+            path:
+                customer: coreshop/customers
+                guest: coreshop/guests
+            classes:
+                interface: CoreShop\Component\Core\Model\CustomerInterface
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomer.json'

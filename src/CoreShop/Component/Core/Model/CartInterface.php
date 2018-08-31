@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
@@ -30,12 +30,6 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
      * @return float
      */
     public function getShipping($withTax = true);
-
-    /**
-     * @param $shipping
-     * @param bool $withTax
-     */
-    public function setShipping($shipping, $withTax = true);
 
     /**
      * @return int

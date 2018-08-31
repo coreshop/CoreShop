@@ -33,7 +33,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
     getPanel: function () {
         return new Ext.TabPanel({
             activeTab: 0,
-            title: this.data.name,
+            title: this.data.identifier,
             closable: true,
             deferredRender: false,
             forceLayout: true,
@@ -45,6 +45,10 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             }],
             items: this.getItems()
         });
+    },
+
+    getTitleText: function () {
+        return this.data.identifier;
     },
 
     getItems: function () {
@@ -68,6 +72,12 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
                 layout: 'form',
                 items: [{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.title',
+                    fieldLabel: t('title'),
+                    value: data.translations && data.translations[lang] ? data.translations[lang].title : '',
+                    required: true
+                }, {
                     xtype: 'textarea',
                     name: 'translations.' + lang + '.description',
                     fieldLabel: t('description'),
@@ -94,10 +104,15 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 items: [
                     {
                         xtype: 'textfield',
-                        name: 'name',
-                        fieldLabel: t('name'),
-                        value: data.name,
+                        name: 'identifier',
+                        fieldLabel: t('coreshop_identifier'),
+                        value: data.identifier,
                         required: true
+                    }, {
+                        xtype: 'textfield',
+                        name: 'trackingUrl',
+                        fieldLabel: t('coreshop_carrier_trackingUrl'),
+                        value: data.trackingUrl
                     }, {
                         xtype: 'tabpanel',
                         activeTab: 0,
@@ -106,17 +121,6 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                             bodyStyle: 'padding:10px;'
                         },
                         items: langTabs
-                    }, {
-                        xtype: 'textfield',
-                        name: 'label',
-                        fieldLabel: t('coreshop_carrier_label'),
-                        value: data.label,
-                        required: true
-                    }, {
-                        xtype: 'textfield',
-                        name: 'trackingUrl',
-                        fieldLabel: t('coreshop_carrier_trackingUrl'),
-                        value: data.trackingUrl
                     }
                 ]
             }]
@@ -138,7 +142,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             columns: [
                 {
                     header: t('coreshop_carriers_shipping_rule'),
-                    flex: 1,
+                    flex: 2,
                     dataIndex: 'shippingRule',
                     editor: new Ext.form.ComboBox({
                         store: pimcore.globalmanager.get('coreshop_carrier_shipping_rules'),
@@ -168,6 +172,25 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                     }
                 },
                 {
+                    header: t('coreshop_carriers_stop_propagation'),
+                    dataIndex: 'stopPropagation',
+                    flex: 1,
+                    xtype: 'checkcolumn',
+                    listeners: {
+                        checkchange: function (column, rowIndex, checked, eOpts) {
+                            var grid = column.up('grid'),
+                                store = grid.getStore();
+                            if (checked) {
+                                store.each(function (record, index) {
+                                    if (rowIndex !== index) {
+                                        record.set('stopPropagation', false);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                },
+                {
                     xtype: 'actioncolumn',
                     width: 40,
                     items: [{
@@ -189,6 +212,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                             id: null,
                             carrier: this.data.id,
                             shippingRule: null,
+                            stopPropagation: false,
                             priority: 100
                         });
                     }.bind(this),
@@ -219,18 +243,6 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
                 value: parseInt(this.data.isFree)
-            }, {
-                fieldLabel: t('coreshop_carrier_rangeBehaviour'),
-                name: 'rangeBehaviour',
-                value: this.data.rangeBehaviour,
-                width: 500,
-                xtype: 'combo',
-                store: [['largest', t('coreshop_carrier_rangeBehaviour_largest')], ['deactivate', t('coreshop_carrier_rangeBehaviour_deactivate')]],
-                triggerAction: 'all',
-                typeAhead: false,
-                editable: false,
-                forceSelection: true,
-                mode: 'local'
             }, this.getShippingRulesGrid()]
         });
 
@@ -250,6 +262,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         Ext.each(ruleGroups, function (group) {
             var rule = {
                 priority: group.get('priority'),
+                stopPropagation: group.get('stopPropagation'),
                 shippingRule: group.get('shippingRule'),
                 carrier: this.data.id
             };

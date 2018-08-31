@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -16,22 +16,6 @@ use CoreShop\Component\Resource\ImplementedByPimcoreException;
 
 class Quote extends Sale implements QuoteInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getSaleLanguage()
-    {
-        return $this->getQuoteLanguage();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSaleLanguage($saleLanguage)
-    {
-        return $this->setQuoteLanguage($saleLanguage);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -62,22 +46,6 @@ class Quote extends Sale implements QuoteInterface
     public function setSaleNumber($saleNumber)
     {
         return $this->setQuoteNumber($saleNumber);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getQuoteLanguage()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQuoteLanguage($quoteLanguage)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

@@ -11,6 +11,9 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
         priority:
             type: integer
             column: priority
+        stopPropagation:
+            type: boolean
+            column: stopPropagation
         creationDate:
             type: datetime
             gedmo:

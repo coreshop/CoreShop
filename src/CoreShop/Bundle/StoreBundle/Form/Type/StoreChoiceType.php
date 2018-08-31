@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\StoreBundle\Form\Type;
 
@@ -52,14 +52,14 @@ final class StoreChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => function(Options $options) {
                     $stores = $this->storeRepository->findAll();
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($stores, function ($a, $b) {
+                    @usort($stores, function($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 
@@ -68,8 +68,7 @@ final class StoreChoiceType extends AbstractType
                 'choice_value' => 'id',
                 'choice_label' => 'name',
                 'choice_translation_domain' => false,
-            ])
-        ;
+            ]);
     }
 
     /**

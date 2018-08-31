@@ -65,17 +65,9 @@ coreshop_order_payment_add:
     path: /%coreshop.admin.route.base%/order-payment/add-payment
     defaults: { _controller: 'coreshop.pimcore_controller.order_payment:addPaymentAction'}
 
-coreshop_order_payment_update:
-    path: /%coreshop.admin.route.base%/order-payment/update-payment
-    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updatePaymentAction'}
-
 coreshop_order_payment_update_state:
     path: /%coreshop.admin.route.base%/order-payment/update-payment-state
     defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updateStateAction'}
-
-coreshop_order_get_payment_providers:
-    path: /%coreshop.admin.route.base%/order-payment/get-payment-providers
-    defaults: { _controller: 'coreshop.pimcore_controller.order_payment:getPaymentProvidersAction'}
 
 ##### ORDER INVOICE
 coreshop_order_invoice_get_processable_items:
@@ -94,6 +86,19 @@ coreshop_order_invoice_render:
     path: /%coreshop.admin.route.base%/order-invoice/render
     defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:renderAction'}
 
+##### ORDER Comments
+coreshop_order_comments_list:
+    path: /%coreshop.admin.route.base%/order-comment/list
+    defaults: { _controller: 'coreshop.pimcore_controller.order_comment:listAction'}
+
+coreshop_order_comments_add:
+    path: /%coreshop.admin.route.base%/order-comment/add
+    defaults: { _controller: 'coreshop.pimcore_controller.order_comment:addAction'}
+
+coreshop_order_comments_delete:
+    path: /%coreshop.admin.route.base%/order-comment/delete
+    defaults: { _controller: 'coreshop.pimcore_controller.order_comment:deleteAction'}
+
 ##### ORDER SHIPMENT
 coreshop_order_shipment_get_processable_items:
     path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
@@ -102,10 +107,6 @@ coreshop_order_shipment_get_processable_items:
 coreshop_order_shipment_create:
     path: /%coreshop.admin.route.base%/order-shipment/create-shipment
     defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:createShipmentAction'}
-
-coreshop_order_shipment_update:
-    path: /%coreshop.admin.route.base%/order-shipment/update-shipment
-    defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateShipmentAction'}
 
 coreshop_order_shipment_update_state:
     path: /%coreshop.admin.route.base%/order-shipment/update-shipment-state
@@ -129,7 +130,7 @@ coreshop_order_get_totals:
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getTotalsAction'}
 
 coreshop_order_create:
-    path: /%coreshop.admin.route.base%/order-creation/create-sale
+    path: /%coreshop.admin.route.base%/order-creation/create
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:createSaleAction'}
 
 ##### QUOTES
@@ -169,5 +170,5 @@ coreshop_quote_get_totals:
     defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getTotalsAction'}
 
 coreshop_quote_create:
-    path: /%coreshop.admin.route.base%/quote-creation/create-sale
+    path: /%coreshop.admin.route.base%/quote-creation/create
     defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:createSaleAction'}

@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
+use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Webmozart\Assert\Assert;
 
@@ -40,7 +40,7 @@ final class PaymentWorkflowListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getSubject(), PaymentInterface::class);
 
         $this->rulesProcessor->applyRules('payment', $event->getSubject(), [
-            'order' => $this->orderRepository->find($event->getSubject()->getOrderId()),
+            'order' => $event->getSubject()->getOrder(),
             'paymentState' => $event->getSubject()->getState()
         ]);
     }

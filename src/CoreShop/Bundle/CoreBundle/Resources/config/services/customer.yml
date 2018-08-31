@@ -2,6 +2,9 @@ parameters:
     coreshop.customer_address.folder_path: addresses
 
 services:
+    _defaults:
+        public: true
+
     coreshop.customer.registration_service:
         class: CoreShop\Bundle\CoreBundle\Customer\RegistrationService
         arguments:
@@ -14,3 +17,13 @@ services:
             - '%coreshop.folder.guest%'
             - '%coreshop.folder.address%'
 
+
+    coreshop.customer.request_newsletter_confirm.listener:
+        class: CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener
+        arguments:
+            - '@coreshop.link_generator'
+            - '@request_stack'
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.customer.register, method: checkCustomerNewsletterConfirmation }
+            - { name: kernel.event_listener, event: coreshop.customer.update_post, method: checkCustomerNewsletterConfirmation }

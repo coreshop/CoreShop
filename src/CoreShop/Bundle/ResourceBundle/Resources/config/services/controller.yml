@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.resource_controller.view_handler:
         class: CoreShop\Bundle\ResourceBundle\Controller\ViewHandler
         public: false

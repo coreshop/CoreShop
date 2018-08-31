@@ -1,7 +1,11 @@
 imports:
     - { resource: "services/form.yml" }
+    - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.currency_converter:
         class: CoreShop\Component\Currency\Converter\CurrencyConverter
         arguments:
@@ -34,6 +38,7 @@ services:
         decoration_priority: 255
         arguments:
             - '@coreshop.context.currency.cached.inner'
+            - '@request_stack'
 
     coreshop.context.currency.fixed:
         class: CoreShop\Component\Currency\Context\FixedCurrencyContext

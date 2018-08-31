@@ -1,0 +1,24 @@
+default:
+    suites:
+        domain_index:
+            contexts_services:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+                - coreshop.behat.context.transform.pimcore_class
+                - coreshop.behat.context.transform.product
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.index
+
+                - coreshop.behat.context.setup.index
+                - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.pimcore_class
+
+                - coreshop.behat.context.domain.index
+            filters:
+                tags: "@index"

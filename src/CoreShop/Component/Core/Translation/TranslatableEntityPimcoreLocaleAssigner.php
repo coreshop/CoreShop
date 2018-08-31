@@ -8,27 +8,27 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Translation;
 
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Pimcore\Cache\Runtime;
-use Pimcore\Localization\Locale;
+use Pimcore\Localization\LocaleServiceInterface;
 use Pimcore\Tool;
 
 final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
     /**
-     * @var Locale
+     * @var LocaleServiceInterface
      */
     private $pimcoreServiceLocale;
 
     /**
-     * @param Locale $pimcoreServiceLocale
+     * @param LocaleServiceInterface $pimcoreServiceLocale
      */
-    public function __construct(Locale $pimcoreServiceLocale)
+    public function __construct(LocaleServiceInterface $pimcoreServiceLocale)
     {
         $this->pimcoreServiceLocale = $pimcoreServiceLocale;
     }

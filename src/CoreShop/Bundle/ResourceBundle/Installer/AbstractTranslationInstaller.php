@@ -50,7 +50,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
         $parameter = $this->getIdentifier($applicationName);
 
@@ -96,7 +96,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
     }
 
     /**
-     * @param null $applicationName
+     * @param $applicationName
      * @return mixed
      */
     protected abstract function getIdentifier($applicationName = null);
@@ -114,9 +114,9 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
         $coreShopTranslationData = $properties['languages'];
 
         //no data found. set translation.
-        if(empty($translationData)) {
+        if (empty($translationData)) {
             $translation->setTranslations($coreShopTranslationData);
-        //there are already some translations. only update empty ones!
+            //there are already some translations. only update empty ones!
         } else {
             $mergedData = array_merge($coreShopTranslationData, array_filter($translationData));
             $translation->setTranslations($mergedData);

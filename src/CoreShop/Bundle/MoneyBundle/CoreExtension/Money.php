@@ -93,7 +93,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
         if ($this->defaultValue !== null) {
             return $this->toNumeric($this->defaultValue);
         }
-        
+
         return 0;
     }
 
@@ -148,7 +148,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (is_numeric($data)) {
+        if (is_numeric($data) && !is_int($data)) {
+            $data = (int) $data;
+        }
+
+        if (is_int($data)) {
             return $data;
         }
 
@@ -212,7 +216,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        return $data * 100;
+        if (is_numeric($data)) {
+            return (int) round((round($data, 2) * 100), 0);
+        }
+
+        return $data;
     }
 
     /**
@@ -244,7 +252,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
         }
 
         if (!$this->isEmpty($data) && !is_numeric($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
+            throw new Model\Element\ValidationException('invalid numeric data ['.$data.']');
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
@@ -255,11 +263,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
             }
 
             if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
-                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is not at least ' . $this->getMinValue());
+                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is not at least '.$this->getMinValue());
             }
 
             if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
-                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is bigger than ' . $this->getMaxValue());
+                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is bigger than '.$this->getMaxValue());
             }
         }
     }

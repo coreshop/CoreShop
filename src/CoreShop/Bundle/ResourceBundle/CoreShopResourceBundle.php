@@ -8,21 +8,26 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ImplementationClassesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreRepositoriesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreResourcesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterResourcesPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
+use JMS\SerializerBundle\JMSSerializerBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopResourceBundle extends AbstractPimcoreBundle
+final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
     use PackageVersionTrait;
 
@@ -44,7 +49,21 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle
         $container->addCompilerPass(new RegisterPimcoreResourcesPass());
         $container->addCompilerPass(new DoctrineTargetEntitiesResolverPass());
         $container->addCompilerPass(new RegisterInstallersPass());
-        $container->addCompilerPass(new ImplementationClassesPass());
+        $container->addCompilerPass(new StackClassesPass());
+        $container->addCompilerPass(new StackRepositoryPass());
+        $container->addCompilerPass(new RegisterPimcoreRepositoriesPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        $collection->addBundle(new JMSSerializerBundle(), 3900);
+        $collection->addBundle(new \CoreShop\Bundle\PimcoreBundle\CoreShopPimcoreBundle(), 3850);
+        $collection->addBundle(new \FOS\RestBundle\FOSRestBundle(), 1500);
+        $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
+        $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
     }
 
     /**
@@ -52,7 +71,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle
      */
     public function getNiceName()
     {
-        return 'CoreShop Resource Bundle';
+        return 'CoreShop - Resource';
     }
 
     /**
@@ -60,7 +79,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle
      */
     public function getDescription()
     {
-        return 'CoreShop ResourceBundle is a base Bundle';
+        return 'CoreShop - Resource Bundle';
     }
 
     /**
@@ -73,34 +92,6 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle
         }
 
         return 'coreshop/core-shop';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsPaths()
-    {
-        $jsFiles = [];
-
-        if ($this->container->hasParameter('resources.admin.js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('resources.admin.js'));
-        }
-
-        return $jsFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssPaths()
-    {
-        $cssFiles = [];
-
-        if ($this->container->hasParameter('resources.admin.css')) {
-            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('resources.admin.css'));
-        }
-
-        return $cssFiles;
     }
 
     /**

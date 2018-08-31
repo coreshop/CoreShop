@@ -1,30 +1,36 @@
 {% extends '@CoreShopFrontend/layout-full.html.twig' %}
 
 {% block center %}
-<div id="main-container" class="container">
+<div id="main-container" class="container p-0">
 
-    <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-        <li><a href="{{ path('coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
-        <li class="active"><a href="{{ path('coreshop_customer_addresses') }}">{{ 'coreshop.ui.addresses'|trans }}</a></li>
-    </ol>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">{{ 'coreshop.ui.profile'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ coreshop_path(customer, 'coreshop_customer_addresses') }}">{{ 'coreshop.ui.addresses'|trans }}</a></li>
+            <li class="breadcrumb-item active">{{ 'coreshop.ui.address'|trans }}</li>
+        </ol>
+    </nav>
 
     <h2 class="main-heading text-center">
         {{ 'coreshop.ui.addresses'|trans }}
     </h2>
 
+    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
+
     <section class="addresses-area">
-        <div class="row">
+        <div class="row mb-4">
             {% for address in customer.getAddresses %}
-            <div class="col-xs-6">
-                <div class="panel panel-smart">
-                    <div class="panel-body">
+            <div class="col-6">
+                <div class="card card-smart">
+                    <div class="card-body">
                         {{ address|coreshop_format_address }}
                         <br/>
-                        <a href="{{ path('coreshop_customer_address_edit', {name: address.getStreet, address: address.getId}) }}" class="btn btn-default">
+                        <br/>
+                        <a href="{{ coreshop_path(address, 'coreshop_customer_address_edit', {name: address.getStreet, address: address.getId}) }}" class="btn btn-success">
                             {{ 'coreshop.ui.edit'|trans }}
                         </a>
-                        <a href="{{ path('coreshop_customer_address_delete', {address: address.getId}) }}" class="btn btn-default">
+                        <a href="{{ coreshop_path(address, 'coreshop_customer_address_delete', {address: address.getId}) }}" class="btn btn-danger">
                             {{ 'coreshop.ui.delete'|trans }}
                         </a>
                     </div>
@@ -33,8 +39,8 @@
             {% endfor %}
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                <a href="{{ path('coreshop_customer_address_new') }}" class="btn btn-default">
+            <div class="col-12">
+                <a href="{{ coreshop_path('coreshop_customer_address_new') }}" class="btn btn-success">
                     {{ 'coreshop.ui.add_new_address'|trans }}
                 </a>
             </div>

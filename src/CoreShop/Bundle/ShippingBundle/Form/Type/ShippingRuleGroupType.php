@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -25,9 +26,9 @@ class ShippingRuleGroupType extends AbstractResourceType
     {
         $builder
             ->add('priority', NumberType::class)
+            ->add('stopPropagation', CheckboxType::class)
             ->add('shippingRule', ShippingRuleChoiceType::class)
-            ->add('carrier', CarrierChoiceType::class)
-        ;
+            ->add('carrier', CarrierChoiceType::class);
     }
 
     /**

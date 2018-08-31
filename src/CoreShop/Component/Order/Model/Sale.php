@@ -18,6 +18,7 @@ use Pimcore\Model\DataObject\Fieldcollection;
 abstract class Sale extends AbstractProposal implements SaleInterface
 {
     use ProposalPriceRuleTrait;
+    use BaseAdjustableTrait;
 
     /**
      * {@inheritdoc}
@@ -33,6 +34,54 @@ abstract class Sale extends AbstractProposal implements SaleInterface
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalTax()
+    {
+        return $this->getTotal(true) - $this->getTotal(false);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseTotalTax()
+    {
+        return $this->getBaseTotal(true) - $this->getBaseTotal(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubtotalTax()
+    {
+        return $this->getSubtotal(true) - $this->getSubtotal(false);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseSubtotalTax()
+    {
+        return $this->getBaseSubtotal(true) - $this->getBaseSubtotal(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingTax()
+    {
+        return $this->getShipping(true) - $this->getShipping(false);
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseShippingTax()
+    {
+        return $this->getBaseShipping(true) - $this->getBaseShipping(false);
     }
 
     /**
@@ -58,17 +107,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
      */
     public function getDiscount($withTax = true)
     {
-        return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setDiscount($discount, $withTax = true)
-    {
-        return $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
+        return $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
 
     /**
@@ -118,17 +157,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
      */
     public function getShipping($withTax = true)
     {
-        return $withTax ? $this->getShippingGross() : $this->getShippingNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setShipping($shipping, $withTax = true)
-    {
-        return $withTax ? $this->setShippingGross($shipping) : $this->setShippingNet($shipping);
+        return $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
     }
 
     /**
@@ -197,22 +226,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalTax($totalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSubtotalNet()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -245,62 +258,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     /**
      * {@inheritdoc}
      */
-    public function getSubtotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSubtotalTax($subtotalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShippingNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingNet($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingGross($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShippingTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingTax($shippingTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getShippingTaxRate()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -315,55 +272,13 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDiscountNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscountNet($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscountGross($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
      * Wrapper Method for Pimcore Object.
      *
      * {@inheritdoc}
      */
     public function getBaseDiscount($withTax = true)
     {
-        return $withTax ? $this->getBaseDiscountGross() : $this->getBaseDiscountNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setBaseDiscount($discount, $withTax = true)
-    {
-        $withTax ? $this->setBaseDiscountGross($discount) : $this->setBaseDiscountNet($discount);
+        return $this->getBaseAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
 
     /**
@@ -413,17 +328,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
      */
     public function getBaseShipping($withTax = true)
     {
-        return $withTax ? $this->getBaseShippingGross() : $this->getBaseShippingNet();
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
-    public function setBaseShipping($shipping, $withTax = true)
-    {
-        $withTax ? $this->setBaseShippingGross($shipping) : $this->setBaseShippingNet($shipping);
+        return $this->getBaseAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
     }
 
     /**
@@ -461,22 +366,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     /**
      * @return float
      */
-    public function getBaseTotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param $totalTax
-     */
-    public function setBaseTotalTax($totalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return float
-     */
     public function getBaseSubtotalNet()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -507,94 +396,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
-     */
-    public function getBaseSubtotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return float
-     */
-    public function getBaseShippingNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param $subtotalTax
-     */
-    public function setBaseSubtotalTax($subtotalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param $total
-     */
-    public function setBaseShippingNet($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param $total
-     */
-    public function setBaseShippingGross($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return float
-     */
-    public function getBaseShippingTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param $shippingTax
-     */
-    public function setBaseShippingTax($shippingTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return float
-     */
-    public function getBaseDiscountNet()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param $total
-     */
-    public function setBaseDiscountNet($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return float
-     */
-    public function getBaseDiscountGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return float
-     */
-    public function setBaseDiscountGross($total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
      * @return Fieldcollection
      */
     public function getBaseTaxes()
@@ -608,5 +409,29 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     public function setBaseTaxes($taxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBackendCreated()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBackendCreated($backendCreated)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateBaseAfterAdjustmentChange()
+    {
+
     }
 }

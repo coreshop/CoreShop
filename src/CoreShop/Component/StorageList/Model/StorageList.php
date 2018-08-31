@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\StorageList\Model;
 
@@ -90,7 +90,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
             }
         }
 
-        $this->setItems($items);
+        $this->setItems(array_values($items));
     }
 
     /**

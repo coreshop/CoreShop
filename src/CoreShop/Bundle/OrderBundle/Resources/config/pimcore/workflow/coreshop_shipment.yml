@@ -1,0 +1,45 @@
+framework:
+    workflows:
+        coreshop_shipment:
+            type: 'state_machine'
+            marking_store:
+                service: coreshop.state_machine.marking_store.shipment_pimcore_marking_store
+            supports: CoreShop\Component\Order\Model\OrderShipment
+
+core_shop_workflow:
+    state_machine:
+        coreshop_shipment:
+            places:
+                - new
+                - ready
+                - cancelled
+                - shipped
+            transitions:
+                create:
+                    from: [new]
+                    to: ready
+                ship:
+                    from: [ready]
+                    to: shipped
+                cancel:
+                    from: [ready]
+                    to: cancelled
+            place_colors:
+                new: '#61c2cb'
+                ready: '#feb624'
+                cancelled: '#f2583e'
+                shipped: '#5b981a'
+            transition_colors:
+                create: '#feb624'
+                ship: '#5b981a'
+                cancel: '#f2583e'
+            callbacks:
+                after:
+                    resolve_state:
+                        on: ['ship']
+                        do: ['@coreshop.state_machine_resolver.order_shipment', 'resolve']
+                        args: ['object.getOrder()']
+                    add_to_history:
+                        on: ['ship', 'cancel']
+                        do: ['@coreshop.workflow.order_state_history_logger', 'log']
+                        args: ['object.getOrder()', 'event']

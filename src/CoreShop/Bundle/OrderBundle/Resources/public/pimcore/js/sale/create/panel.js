@@ -23,7 +23,7 @@ coreshop.order.sale.create.panel = Class.create({
     initialize: function () {
         var me = this;
 
-        me.eventManager = new CoreShop.order.sale.create.EventManager();
+        me.eventManager = new CoreShop.resource.EventManager();
         me.eventManager.on('validation', function () {
             var valid = true;
 
@@ -42,6 +42,12 @@ coreshop.order.sale.create.panel = Class.create({
             }
         });
 
+        this.loadSaleRelator();
+    },
+
+    loadSaleRelator: function() {
+        var me = this;
+
         pimcore.helpers.itemselector(
             false,
             function (customer) {
@@ -53,7 +59,7 @@ coreshop.order.sale.create.panel = Class.create({
                     object: ['object']
                 },
                 specific: {
-                    classes: coreshop.implementations['coreshop.customer']
+                    classes: coreshop.stack.coreshop.customer
                 }
             }
         );
@@ -103,6 +109,13 @@ coreshop.order.sale.create.panel = Class.create({
                 handler: this.createSale.bind(this)
             });
 
+            this.resetButton = new Ext.button.Button({
+                iconCls: 'pimcore_icon_refresh',
+                text: t('reset'),
+                disabled: false,
+                handler: this.reset.bind(this)
+            });
+
             // create new panel
             this.layout = new Ext.panel.Panel({
                 id: this.layoutId,
@@ -119,6 +132,12 @@ coreshop.order.sale.create.panel = Class.create({
                     items: [
                         '->',
                         this.createButton
+                    ]
+                }, {
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                        this.resetButton
                     ]
                 }]
             });
@@ -165,7 +184,7 @@ coreshop.order.sale.create.panel = Class.create({
         this.panel = Ext.create('Ext.container.Container', {
             border: false,
             items: stepLayouts,
-            padding: 20,
+            padding: '5 20 20 20',
             region: 'center',
             defaults: defaults
         });
@@ -185,11 +204,25 @@ coreshop.order.sale.create.panel = Class.create({
         return values;
     },
 
+    reset: function() {
+        this.eventManager.suspendEvents();
+
+        Ext.Object.each(this.steps, function (key, step) {
+            step.reset();
+        });
+
+        this.eventManager.resumeEvents();
+    },
+
+    prepareSuccessMessage: function(message, response) {
+        return message;
+    },
+
     createSale: function () {
         this.layout.setLoading(t('coreshop_creating_' + this.type));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/' + this.type + '-creation/create-sale',
+            url: '/admin/coreshop/' + this.type + '-creation/create',
             method: 'post',
             jsonData: this.getValues(),
             callback: function (request, success, response) {
@@ -197,7 +230,92 @@ coreshop.order.sale.create.panel = Class.create({
                     response = Ext.decode(response.responseText);
 
                     if (response.success) {
-                        coreshop.order.helper.openSale(response.id, this.type);
+                        var message = t('coreshop_creating_' + this.type + '_finished_detail');
+
+                        message = this.prepareSuccessMessage(message, response);
+
+                        var win = new Ext.Window({
+                            modal: true,
+                            iconCls: 'coreshop_icon_' + this.type + '_create',
+                            title: t('coreshop_creating_' + this.type + '_finished'),
+                            width: 600,
+                            minWidth: 250,
+                            minHeight: 110,
+                            maxHeight: 500,
+                            closable: false,
+                            resizable: false,
+                            items: [
+                                {
+                                    xtype: 'container',
+                                    padding: 10,
+                                    style: {
+                                        overflow: 'hidden'
+                                    },
+                                    items: [
+                                        {
+                                            xtype: 'component',
+                                            cls: Ext.baseCSSPrefix + 'message-box-icon-text',
+                                            html: message,
+                                        }
+                                    ]
+                                }
+                            ],
+                            dockedItems: [
+                                {
+                                    xtype: 'toolbar',
+                                    ui: 'footer',
+                                    dock: 'bottom',
+                                    focusableContainer: false,
+                                    ariaRole: null,
+                                    layout: {
+                                        pack: 'center'
+                                    },
+                                    items: [
+                                        {
+                                            handler: function() {
+                                                win.close();
+                                                this.layout.destroy();
+                                            }.bind(this),
+                                            scope: this,
+                                            text: t('coreshop_sale_action_close_editor'),
+                                            minWidth: 75
+                                        },
+                                        {
+                                            handler: function() {
+                                                win.close();
+                                                this.layout.destroy();
+
+                                                this.__proto__.constructor();
+                                            },
+                                            scope: this,
+                                            text: t('coreshop_sale_action_add_another'),
+                                            minWidth: 75
+                                        },
+                                        {
+                                            handler: function() {
+                                                win.close();
+
+                                                this.reset();
+                                            }.bind(this),
+                                            scope: this,
+                                            text: t('coreshop_sale_action_add_another_same_customer'),
+                                            minWidth: 75
+                                        },
+                                        {
+                                            handler: function() {
+                                                win.close();
+                                                this.layout.destroy();
+
+                                                coreshop.order.helper.openSale(response.id, this.type);
+                                            }.bind(this),
+                                            scope: this,
+                                            text: t('coreshop_sale_action_open_' + this.type),
+                                            minWidth: 75
+                                        }
+                                    ]
+                                }
+                            ],
+                        }).show();
                     } else {
                         Ext.Msg.alert(t('error'), response.message);
                     }

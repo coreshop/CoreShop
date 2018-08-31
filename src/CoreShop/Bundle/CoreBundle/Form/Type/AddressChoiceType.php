@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
@@ -43,7 +43,7 @@ final class AddressChoiceType extends AbstractType
         $resolver->setRequired('customer');
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => function(Options $options) {
                     $customer = $this->customerRepository->find($options['customer']);
 
                     if (!$customer instanceof CustomerInterface) {
@@ -53,7 +53,7 @@ final class AddressChoiceType extends AbstractType
                     return $customer->getAddresses();
                 },
                 'choice_value' => 'o_id',
-                'choice_label' => function ($value, $key, $index) {
+                'choice_label' => function($value, $key, $index) {
                     if ($value instanceof AddressInterface) {
                         return sprintf('%s %s', $value->getStreet(), $value->getNumber());
                     }
@@ -63,8 +63,7 @@ final class AddressChoiceType extends AbstractType
                 'choice_translation_domain' => false,
                 'active' => true,
                 'placeholder' => 'coreshop.form.address.choose_address',
-            ])
-        ;
+            ]);
     }
 
     /**

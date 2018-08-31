@@ -1,20 +1,20 @@
 # Tax Rules
 
 ## Create
-If you want to create a Zone via API, you can do following:
+If you want to create a Tax Rule via API, you can do following:
 
 ```php
-$newZone = $container->get('coreshop.factory.tax_rule')->createNew();
+$newTaxRule = $container->get('coreshop.factory.tax_rule')->createNew();
 ```
 
-Now you have a new Zone, if you want to persist it, you need to do following:
+Now you have a new Tax Rule, if you want to persist it, you need to do following:
 
 ```php
-$container->get('coreshop.manager.tax_rule')->persist($newZone);
+$container->get('coreshop.manager.tax_rule')->persist($newTaxRule);
 $container->get('coreshop.manager.tax_rule')->flush();
 ```
 
-You now have a new persisted Zone.
+You now have a new persisted Tax Rule.
 
 ## Read
 
@@ -35,10 +35,10 @@ $rules = $queryBuilder->getQuery()->getResult();
 
 ## Update
 
-If you want to update and existing Zone, you need to do following:
+If you want to update and existing Tax Rule, you need to do following:
 
 ```php
-// Fetch Zone
+// Fetch Tax Rule
 
 $rule = $ruleRepository->findById(1);
 $rule->setName('Euro');
@@ -49,10 +49,10 @@ $container->get('coreshop.manager.tax_rule')->flush();
 ```
 
 ## Delete
-If you want to update and existing Zone, you need to do following:
+If you want to update and existing Tax Rule, you need to do following:
 
 ```php
-// Fetch Zone
+// Fetch Tax Rule
 
 $rule = $ruleRepository->findById(1);
 

@@ -1,11 +1,14 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.state_machine.marking_store.single_state.state:
         class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
         arguments:
             - state
 
     coreshop.state_machine.marking_store.payment_orm_marketing_store:
-        class: CoreShop\Component\Resource\Workflow\MarkingStore\OrmPersistentMarkingStore
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\OrmPersistentMarkingStore
         arguments:
             - '@coreshop.state_machine.marking_store.single_state.state'
             - '@doctrine'

@@ -1,0 +1,121 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% if collector.getProcessedRules|length > 0 %}
+        {% set icon %}
+            {{ include('@CoreShopRule/Collector/Icon/rules.svg') }}
+            <span class="sf-toolbar-value">Processed {{ collector.getProcessedRules|length }}</span>
+        {% endset %}
+
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>Types</b>
+            </div>
+
+            {% for type in collector.types %}
+                <div class="sf-toolbar-info-piece">
+                    <b>{{ type.name }}</b>
+                    <span class="sf-toolbar-status">({{ type.count }})</span>
+                </div>
+            {% endfor %}
+        {% endset %}
+
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+    {% endif %}
+{% endblock %}
+
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">
+            {{ include('@CoreShopRule/Collector/Icon/rules.svg') }}
+        </span>
+        <strong>CoreShop: Rules</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>CoreShop Rule</h2>
+
+    <div class="sf-tabs">
+        {% for type, subjects in collector.processedConditions %}
+            <div class="tab {{ subjects|length <= 0 ? 'disabled' }}">
+                <h3 class="tab-title">{{ type }} <span class="badge">{{ subjects|length }}</span></h3>
+
+                <div class="tab-content">
+                    {% for subject in subjects %}
+                        <h4><strong>{{ subject.type }}</strong> ({{ subject.subject.getId }})</h4>
+
+
+                        {% for rule in subject.rules %}
+                            <h5 class="">
+                                 <span class="label status-{{ rule.result ? 'success' : 'error' }}">
+                                     {{ rule.rule.getName }} ({{ rule.rule.getId }})
+                                 </span>
+                            </h5>
+
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                    <th>Configuration</th>
+                                    <th>Result</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Conditions</th>
+                                    </tr>
+                                    {% if rule.conditions|length > 0 %}
+                                        {% for condition in rule.conditions %}
+                                            <tr>
+                                                <td>{{ condition.condition.getId }}</td>
+                                                <td>{{ condition.type }}</td>
+                                                <td>{{ dump(condition.configuration) }}</td>
+                                                <td>{{ (condition.result ? 'true' : 'false') }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="empty">
+                                                    <p>Rule has no conditions and therefore is valid.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>Actions</th>
+                                    </tr>
+                                    {% if rule.actions|length > 0 %}
+                                        {% for action in rule.actions %}
+                                            <tr>
+                                                <td>{{ action.action.getId }}</td>
+                                                <td>{{ action.type }}</td>
+                                                <td colspan="2">{{ dump(action.configuration) }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="empty">
+                                                    <p>Rule has no actions.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+
+                        {% endfor %}
+
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

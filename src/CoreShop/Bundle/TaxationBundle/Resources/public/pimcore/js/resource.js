@@ -52,4 +52,6 @@ coreshop.taxation.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.taxation.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.taxation.resource();
+});

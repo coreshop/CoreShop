@@ -58,6 +58,11 @@ coreshop.shippingrule.item = Class.create(coreshop.rules.item, {
                 fieldLabel: t('name'),
                 width: 250,
                 value: data.name
+            }, {
+                xtype: 'checkbox',
+                name: 'active',
+                fieldLabel: t('active'),
+                checked: data.active
             }]
         });
 

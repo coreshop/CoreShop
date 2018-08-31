@@ -19,8 +19,8 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -94,7 +94,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $this->eventDispatcher->dispatchPreEvent($type, $cartItem, ['sale' => $sale, 'cart' => $cartItem->getCart(), 'item' => $saleItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath() . '/' . $this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath().'/'.$this->pathForItems);
 
         $this->objectService->copyObject($cartItem, $saleItem);
 
@@ -122,11 +122,14 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(true), $fromCurrency, $toCurrency), true);
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(false), $fromCurrency, $toCurrency), false);
+        $saleItem->setItemDiscountPrice($this->currencyConverter->convert($cartItem->getItemDiscountPrice(true), $fromCurrency, $toCurrency), true);
+        $saleItem->setItemDiscountPrice($this->currencyConverter->convert($cartItem->getItemDiscountPrice(false), $fromCurrency, $toCurrency), false);
+        $saleItem->setItemDiscount($this->currencyConverter->convert($cartItem->getItemDiscount(true), $fromCurrency, $toCurrency), true);
+        $saleItem->setItemDiscount($this->currencyConverter->convert($cartItem->getItemDiscount(false), $fromCurrency, $toCurrency), false);
         $saleItem->setTotal($this->currencyConverter->convert($cartItem->getTotal(true), $fromCurrency, $toCurrency), true);
         $saleItem->setTotal($this->currencyConverter->convert($cartItem->getTotal(false), $fromCurrency, $toCurrency), false);
         $saleItem->setItemPrice($this->currencyConverter->convert($cartItem->getItemPrice(true), $fromCurrency, $toCurrency), true);
         $saleItem->setItemPrice($this->currencyConverter->convert($cartItem->getItemPrice(false), $fromCurrency, $toCurrency), false);
-        $saleItem->setTotalTax($this->currencyConverter->convert($cartItem->getTotalTax(), $fromCurrency, $toCurrency));
         $saleItem->setItemTax($this->currencyConverter->convert($cartItem->getItemTax(), $fromCurrency, $toCurrency));
 
         $saleItem->setBaseItemRetailPrice($cartItem->getItemRetailPrice(true), true);
@@ -135,17 +138,28 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setBaseTotal($cartItem->getTotal(false), false);
         $saleItem->setBaseItemPrice($cartItem->getItemPrice(true), true);
         $saleItem->setBaseItemPrice($cartItem->getItemPrice(false), false);
-        $saleItem->setBaseTotalTax($cartItem->getTotalTax());
         $saleItem->setBaseItemTax($cartItem->getItemTax());
 
         $saleItem->setItemWeight($cartItem->getItemWeight());
         $saleItem->setTotalWeight($cartItem->getTotalWeight());
 
-        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
-            $saleItem->setName($cartItem->getProduct()->getName($locale));
+        foreach ($cartItem->getAdjustments() as $adjustment) {
+            $saleItem->addAdjustment($adjustment);
+
+            $baseAdjustment = clone $adjustment;
+            $baseAdjustmentGross = $this->currencyConverter->convert($baseAdjustment->getAmount(true), $fromCurrency, $toCurrency);
+            $baseAdjustmentNet = $this->currencyConverter->convert($baseAdjustment->getAmount(false), $fromCurrency, $toCurrency);
+
+            $baseAdjustment->setAmount($baseAdjustmentGross, $baseAdjustmentNet);
+
+            $saleItem->addBaseAdjustment($baseAdjustment);
         }
 
-        VersionHelper::useVersioning(function () use ($saleItem) {
+        foreach ($this->localeProvider->getDefinedLocalesCodes() as $locale) {
+            $saleItem->setName($cartItem->getProduct()->getName($locale), $locale);
+        }
+
+        VersionHelper::useVersioning(function() use ($saleItem) {
             $saleItem->save();
         }, false);
 

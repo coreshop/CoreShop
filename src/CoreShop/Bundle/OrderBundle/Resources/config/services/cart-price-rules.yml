@@ -110,6 +110,7 @@ services:
       shared: false
       arguments:
           - '@coreshop.registry.cart_price_rule.conditions'
+          - 'Cart Price Rules'
 
   coreshop.cart_price_rule.rule_validation.processor:
       class: CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor
@@ -140,22 +141,6 @@ services:
       class: CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker
       tags:
           - { name: coreshop.cart_price_rule.condition, type: amount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType }
-
-  # Product Price Rule ACTIONS
-
-  coreshop.cart_price_rule.action.discount_amount:
-      class: CoreShop\Component\Order\Cart\Rule\Action\DiscountAmountActionProcessor
-      arguments:
-          - '@coreshop.repository.currency'
-          - '@coreshop.currency_converter'
-          - '@coreshop.context.currency'
-      tags:
-          - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
-
-  coreshop.cart_price_rule.action.discount_percent:
-      class: CoreShop\Component\Order\Cart\Rule\Action\DiscountPercentActionProcessor
-      tags:
-          - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
   # Voucher Code Generator
   coreshop.generator.cart_price_rule_voucher_codes:
@@ -188,3 +173,19 @@ services:
           - '@coreshop.repository.cart_price_rule_voucher_code'
       tags:
           - { name: validator.constraint_validator, alias: 'coreshop_cart_rule_valid' }
+
+
+  coreshop.rule.availability_assessor.cart_price:
+      class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor
+      arguments:
+          - '@coreshop.repository.cart_price_rule'
+      tags:
+          - { name: coreshop.registry.rule_availability_assessor, type: cart_price }
+
+  # Modifier
+  coreshop.voucher.modifier:
+      class: CoreShop\Component\Order\Modifier\VoucherModifier
+      arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Shipping\Calculator;
 
@@ -34,7 +34,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
      */
     private $taxCalculatorFactory;
 
-     /**
+    /**
      * @var TaxApplicatorInterface
      */
     private $taxApplicator;
@@ -48,7 +48,8 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
         TaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxApplicatorInterface $taxApplicator
-    ) {
+    )
+    {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxApplicator = $taxApplicator;

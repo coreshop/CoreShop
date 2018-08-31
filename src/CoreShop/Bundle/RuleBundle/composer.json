@@ -1,6 +1,6 @@
 {
   "name": "coreshop/rule-bundle",
-  "type": "symfony-bundle",
+  "type": "pimcore-bundle",
   "description": "CoreShop - Rule Bundle",
   "keywords": [
     "coreshop",

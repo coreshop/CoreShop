@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.rule.condition.customers:
         class: CoreShop\Component\Core\Product\Rule\Condition\CustomersConditionChecker
         arguments:
@@ -30,7 +33,6 @@ services:
         arguments:
             - '@coreshop.context.country'
         tags:
-            - { name: coreshop.shipping_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
             - { name: coreshop.product_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
             - { name: coreshop.product_specific_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 
@@ -52,7 +54,35 @@ services:
             - { name: coreshop.product_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
             - { name: coreshop.product_specific_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
 
+    coreshop.product_price_rule.condition.categories:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CategoriesConditionChecker
+        arguments:
+            - '@coreshop.repository.category'
+            - '@coreshop.context.store'
+        tags:
+            - { name: coreshop.product_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+
+    coreshop.product_price_rule.condition.quantity:
+        class: CoreShop\Component\Core\Product\Rule\Condition\QuantityConditionChecker
+        arguments:
+            - '@coreshop.context.cart'
+        tags:
+            - { name: coreshop.product_price_rule.condition, type: quantity, form-type: CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType }
+
     # Cart Price Rules
+    coreshop.cart_price_rule.condition.categories:
+        class: CoreShop\Component\Core\Cart\Rule\Condition\CategoriesConditionChecker
+        arguments:
+            - '@coreshop.repository.category'
+            - '@coreshop.context.store'
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
+
+    coreshop.cart_price_rule.condition.products:
+        class: CoreShop\Component\Core\Cart\Rule\Condition\ProductsConditionChecker
+        tags:
+            - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+
     coreshop.rule.cart_price_rule.condition.customers:
         class: CoreShop\Component\Core\Cart\Rule\Condition\CustomersConditionChecker
         tags:
@@ -100,3 +130,35 @@ services:
             - '@coreshop.cart.modifier'
         tags:
             - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }
+
+    coreshop.cart_price_rule.action.discount_amount:
+        class: CoreShop\Component\Core\Cart\Rule\Action\DiscountAmountActionProcessor
+        arguments:
+            - '@coreshop.currency_converter'
+            - '@coreshop.repository.currency'
+            - '@coreshop.cart_price_rule.discount.applier'
+        tags:
+            - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
+
+    coreshop.cart_price_rule.action.discount_percent:
+        class: CoreShop\Component\Core\Cart\Rule\Action\DiscountPercentActionProcessor
+        arguments:
+            - '@coreshop.cart_price_rule.discount.applier'
+        tags:
+            - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
+
+    coreshop.cart_price_rule.discount.applier:
+        class: CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier
+        arguments:
+            - '@coreshop.proportional_integer_distributor'
+            - '@coreshop.product.tax_factory'
+            - '@coreshop.collector.taxes'
+
+    # Rules Availability Check
+    coreshop.rule_availability_assessor.maintenance_listener:
+        class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener
+        arguments:
+            - '@coreshop.configuration.service'
+            - '@coreshop.rule_availability_processor'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerAvailabilityCheck }

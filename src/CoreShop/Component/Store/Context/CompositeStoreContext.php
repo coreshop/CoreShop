@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Store\Context;
 
@@ -28,7 +28,7 @@ final class CompositeStoreContext implements StoreContextInterface
 
     /**
      * @param StoreContextInterface $storeContext
-     * @param int                   $priority
+     * @param int $priority
      */
     public function addContext(StoreContextInterface $storeContext, $priority = 0)
     {

@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Renderer;
 
 use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
 use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
+use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,15 +40,27 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $renderer;
 
     /**
+     * @var ThemeHelperInterface
+     */
+    private $themeHelper;
+
+    /**
      * @param FragmentRendererInterface $fragmentRenderer
      * @param EventDispatcherInterface $eventDispatcher
      * @param PdfRendererInterface $renderer
+     * @param ThemeHelperInterface $themeHelper
      */
-    public function __construct(FragmentRendererInterface $fragmentRenderer, EventDispatcherInterface $eventDispatcher, PdfRendererInterface $renderer)
+    public function __construct(
+        FragmentRendererInterface $fragmentRenderer,
+        EventDispatcherInterface $eventDispatcher,
+        PdfRendererInterface $renderer,
+        ThemeHelperInterface $themeHelper
+    )
     {
         $this->fragmentRenderer = $fragmentRenderer;
         $this->eventDispatcher = $eventDispatcher;
         $this->renderer = $renderer;
+        $this->themeHelper = $themeHelper;
     }
 
     /**
@@ -55,39 +68,39 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
-        $params = [
-            'id' => $orderDocument->getId(),
-            'order' => $orderDocument->getOrder(),
-            'document' => $orderDocument,
-            'language' => (string)$orderDocument->getOrder()->getOrderLanguage(),
-            'type' => $orderDocument::getDocumentType(),
-            $orderDocument::getDocumentType() => $orderDocument,
-        ];
+        return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function() use ($orderDocument) {
+            $params = [
+                'id' => $orderDocument->getId(),
+                'order' => $orderDocument->getOrder(),
+                'document' => $orderDocument,
+                'language' => (string) $orderDocument->getOrder()->getLocaleCode(),
+                'type' => $orderDocument::getDocumentType(),
+                $orderDocument::getDocumentType() => $orderDocument,
+            ];
 
-        $request = new Request($params);
-        $request->setLocale($orderDocument->getOrder()->getOrderLanguage());
+            $request = new Request($params);
+            $request->setLocale($orderDocument->getOrder()->getLocaleCode());
 
-        $printBundle = 'CoreShopOrderBundle';
-        $printController = 'OrderDocumentPrint';
+            $printBundle = 'CoreShopOrderBundle';
+            $printController = 'OrderDocumentPrint';
 
-        $printContentAction = $orderDocument::getDocumentType();
-        $printFooterAction = 'footer';
-        $printHeaderAction = 'header';
+            $printContentAction = $orderDocument::getDocumentType();
+            $printFooterAction = 'footer';
+            $printHeaderAction = 'header';
 
-        $referenceFooter = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printFooterAction), $params);
-        $referenceHeader = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printHeaderAction), $params);
-        $referenceContent = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printContentAction), $params);
+            $referenceFooter = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printFooterAction), $params);
+            $referenceHeader = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printHeaderAction), $params);
+            $referenceContent = new ControllerReference(sprintf('%s:%s:%s', $printBundle, $printController, $printContentAction), $params);
 
-        $contentHeader = $this->fragmentRenderer->render($referenceHeader, $request)->getContent();
-        $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
-        $content = $this->fragmentRenderer->render($referenceContent, $request)->getContent();
+            $contentHeader = $this->fragmentRenderer->render($referenceHeader, $request)->getContent();
+            $contentFooter = $this->fragmentRenderer->render($referenceFooter, $request)->getContent();
+            $content = $this->fragmentRenderer->render($referenceContent, $request)->getContent();
 
-        $event = new WkhtmlOptionsEvent($orderDocument);
+            $event = new WkhtmlOptionsEvent($orderDocument);
 
-        $this->eventDispatcher->dispatch(sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType()), $event);
+            $this->eventDispatcher->dispatch(sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType()), $event);
 
-        $pdfContent = $this->renderer->fromString($content, $contentHeader, $contentFooter, ['options' => [$event->getOptions()]]);
-
-        return $pdfContent;
+            return $this->renderer->fromString($content, $contentHeader, $contentFooter, ['options' => [$event->getOptions()]]);
+        });
     }
 }

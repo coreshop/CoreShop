@@ -8,14 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\NotificationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
 
-class NotificationRuleRepository extends EntityRepository implements NotificationRuleRepositoryInterface
+class NotificationRuleRepository extends RuleRepository implements NotificationRuleRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -28,7 +29,6 @@ class NotificationRuleRepository extends EntityRepository implements Notificatio
             ->setParameter('type', $type)
             ->setParameter('active', true)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

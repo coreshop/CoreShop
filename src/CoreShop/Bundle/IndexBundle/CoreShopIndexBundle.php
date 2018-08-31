@@ -8,11 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle;
 
-use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterClassHelperPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
@@ -34,6 +34,9 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -43,7 +46,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterInterpreterPass());
         $container->addCompilerPass(new RegisterGetterPass());
         $container->addCompilerPass(new RegisterFilterConditionTypesPass());
-        $container->addCompilerPass(new RegisterClassHelperPass());
+        $container->addCompilerPass(new RegisterExtensionsPass());
     }
 
     /**

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Model;
 
@@ -173,6 +173,14 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
     /**
      * {@inheritdoc}
      */
+    public function hasGetter()
+    {
+        return !empty($this->getter);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGetter()
     {
         return $this->getter;
@@ -222,6 +230,14 @@ class IndexColumn extends AbstractResource implements IndexColumnInterface
         $this->dataType = $dataType;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasInterpreter()
+    {
+        return !empty($this->interpreter);
     }
 
     /**

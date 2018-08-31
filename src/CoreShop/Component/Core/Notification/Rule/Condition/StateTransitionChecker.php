@@ -23,13 +23,19 @@ final class StateTransitionChecker extends AbstractConditionChecker
      */
     private $interface;
 
+    /**
+     * @var string
+     */
+    private $workflowName;
 
     /**
      * @param string $interface
+     * @param string $workflowName
      */
-    public function __construct(string $interface)
+    public function __construct(string $interface, string $workflowName)
     {
         $this->interface = $interface;
+        $this->workflowName = $workflowName;
     }
 
     /**
@@ -39,6 +45,16 @@ final class StateTransitionChecker extends AbstractConditionChecker
     {
         Assert::isInstanceOf($subject, $this->interface);
 
-        return $configuration['transition'] === $params['transition'];
+        if (isset($params['workflow'])) {
+            if ($params['workflow'] !== $this->workflowName) {
+                return false;
+            }
+        }
+
+        if (isset($params['transition'])) {
+            return $configuration['transition'] === $params['transition'];
+        }
+
+        return false;
     }
 }

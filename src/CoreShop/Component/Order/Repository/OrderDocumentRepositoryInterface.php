@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Repository;
 
@@ -24,4 +24,20 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      * @return OrderDocumentInterface[]
      */
     public function getDocuments(OrderInterface $order);
+
+    /**
+     * @param OrderInterface $order
+     * @param string $state
+     *
+     * @return OrderDocumentInterface[]
+     */
+    public function getDocumentsInState(OrderInterface $order, $state);
+
+    /**
+     * @param OrderInterface $order
+     * @param string $state
+     *
+     * @return OrderDocumentInterface[]
+     */
+    public function getDocumentsNotInState(OrderInterface $order, $state);
 }

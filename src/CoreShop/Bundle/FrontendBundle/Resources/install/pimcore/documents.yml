@@ -15,7 +15,7 @@ documents:
     key: 'user-registered'
     type: 'email'
     action: 'mail'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -52,7 +52,7 @@ documents:
     key: 'user-reset-password'
     type: 'email'
     action: 'mail'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -88,10 +88,88 @@ documents:
           value: 'Reset Password'
 
   -
+    key: 'user-newsletter-confirm'
+    type: 'email'
+    action: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
+    module: 'CoreShopFrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hallo %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              bitte klicken Sie auf folgenden Link, um Ihre Newsletter Anmeldung zu bestätigen: %Text(confirmLink);
+            </p>
+        head:
+          type: 'input'
+          value: 'Newsletter Anmeldung'
+        subject:
+          type: 'objectProperty'
+          value: 'Newsletter Anmeldung'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hi %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              please click on the link to confirm your newsletter subscription: %Text(confirmLink);
+            </p>
+        head:
+          type: 'input'
+          value: 'Confirm Newsletter'
+        subject:
+          type: 'objectProperty'
+          value: 'Confirm Newsletter'
+
+  -
+    key: 'user-newsletter-confirmed'
+    type: 'email'
+    action: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
+    module: 'CoreShopFrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hallo %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              Ihre Newsletter Anmeldung ist nun bestätigt.
+            </p>
+        head:
+          type: 'input'
+          value: 'Newsletter Anmeldung bestätigt'
+        subject:
+          type: 'objectProperty'
+          value: 'Newsletter Anmeldung bestätigt'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Hi %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              your newsletter subscription is now confirmed.
+            </p>
+        head:
+          type: 'input'
+          value: 'Newsletter subscription confirmed'
+        subject:
+          type: 'objectProperty'
+          value: 'Newsletter subscription confirmed'
+
+  -
     key: 'order-confirmation'
     type: 'email'
     action: 'order-confirmation'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -124,12 +202,11 @@ documents:
           type: 'objectProperty'
           value: 'Order Confirmation %Text(orderNumber);'
 
-
   -
     key: 'order-shipped'
     type: 'email'
     action: 'mail'
-    controller: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
     module: 'CoreShopFrontendBundle'
     path: 'shop/email'
     content:
@@ -161,3 +238,35 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Your order has been shipped %Text(orderNumber);'
+  -
+    key: 'user-order-comment'
+    type: 'email'
+    action: 'mail'
+    controller: '@coreshop.frontend.controller.mail'
+    module: 'CoreShopFrontendBundle'
+    path: 'shop/email'
+    content:
+      de:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>Hinweise zu Ihrer Bestellung:</p>
+            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+        head:
+          type: 'input'
+          value: 'Hinweise zu Ihrer Bestellung %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Hinweise zu Ihrer Bestellung %Text(orderNumber);'
+      en:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>Notes on your order:</p>
+            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+        head:
+          type: 'input'
+          value: 'Notes on your order %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Notes on your order %Text(orderNumber);'

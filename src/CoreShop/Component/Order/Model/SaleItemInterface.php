@@ -14,14 +14,8 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
+interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface, BaseAdjustableInterface
 {
-    /**
-     * @param int $total
-     * @param bool $withTax
-     */
-    public function setTotal($total, $withTax = true);
-
     /**
      * @param string $language
      * @return string
@@ -34,11 +28,6 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
      * @return mixed
      */
     public function setName($name, $language = null);
-
-    /**
-     * @param int $totalTax
-     */
-    public function setTotalTax($totalTax);
 
     /**
      * @return bool
@@ -117,9 +106,4 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
      * @param bool $withTax
      */
     public function setBaseTotal($total, $withTax = true);
-
-    /**
-     * @param int $totalTax
-     */
-    public function setBaseTotalTax($totalTax);
 }

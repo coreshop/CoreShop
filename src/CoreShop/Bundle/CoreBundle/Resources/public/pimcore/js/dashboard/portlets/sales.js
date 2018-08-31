@@ -126,7 +126,7 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
             }
         ];
 
-        this.layout = Ext.create('Portal.view.Portlet', Object.extend(defaultConf, {
+        this.layout = Ext.create('Portal.view.Portlet', Object.assign(defaultConf, {
             title: this.getName(),
             iconCls: this.getIcon(),
             height: 275,
@@ -198,6 +198,7 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
                                 this.config = storeValue;
                                 Ext.Ajax.request({
                                     url: '/admin/portal/update-portlet-config',
+                                    method: 'PUT',
                                     params: {
                                         key: this.portal.key,
                                         id: this.layout.portletId,

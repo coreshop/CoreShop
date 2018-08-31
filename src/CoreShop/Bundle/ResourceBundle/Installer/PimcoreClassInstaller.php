@@ -8,18 +8,33 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\Pimcore\ClassInstallerInterface;
+use CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-final class PimcoreClassInstaller implements ResourceInstallerInterface
+final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
+    /**
+     * @var array
+     */
+    protected $installedClasses = [];
+
+    /**
+     * @var array
+     */
+    protected $installedCollections = [];
+
+    /**
+     * @var array
+     */
+    protected $installedBricks = [];
+
     /**
      * @var KernelInterface
      */
@@ -46,9 +61,9 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
-        $parameter = $applicationName ? sprintf('%s.pimcore.classes', $applicationName) : 'coreshop.pimcore';
+        $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $pimcoreClasses = $this->kernel->getContainer()->getParameter($parameter);
@@ -56,7 +71,7 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
             $bricks = [];
             $classes = [];
 
-            foreach ($pimcoreClasses as $pimcoreModel) {
+            foreach ($pimcoreClasses as $identifier => $pimcoreModel) {
                 $modelName = explode('\\', $pimcoreModel['classes']['model']);
                 $modelName = $modelName[count($modelName) - 1];
 
@@ -68,17 +83,17 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
 
                         if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT) {
                             //$this->createClass($file, $modelName, true);
-                            $classes[] = [
+                            $classes[$identifier] = [
                                 'model' => $modelName,
                                 'file' => $file
                             ];
                         } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION) {
-                            $fieldCollections[] = [
+                            $fieldCollections[$identifier] = [
                                 'model' => $modelName,
                                 'file' => $file
                             ];
                         } else if ($type === CoreShopResourceBundle::PIMCORE_MODEL_TYPE_BRICK) {
-                            $bricks[] = [
+                            $bricks[$identifier] = [
                                 'model' => $modelName,
                                 'file' => $file
                             ];
@@ -98,31 +113,55 @@ final class PimcoreClassInstaller implements ResourceInstallerInterface
 
             $progress->start(count($pimcoreClasses));
 
-            foreach ($fieldCollections as $fc) {
+            foreach ($fieldCollections as $identifier => $fc) {
                 $progress->setMessage(sprintf('<error>Install Fieldcollection %s (%s)</error>', $fc['model'], $fc['file']));
 
-                $this->classInstaller->createFieldCollection($fc['file'], $fc['model']);
+                $this->installedCollections[$identifier] = $this->classInstaller->createFieldCollection($fc['file'], $fc['model']);
 
                 $progress->advance();
             }
 
-            foreach ($classes as $class) {
+            foreach ($classes as $identifier => $class) {
                 $progress->setMessage(sprintf('<error>Install Class %s (%s)</error>', $class['model'], $class['file']));
 
-                $this->classInstaller->createClass($class['file'], $class['model']);
+                $this->installedClasses[$identifier] = $this->classInstaller->createClass($class['file'], $class['model']);
 
                 $progress->advance();
             }
 
-            foreach ($bricks as $brick) {
+            foreach ($bricks as $identifier => $brick) {
                 $progress->setMessage(sprintf('<error>Install Brick %s (%s)</error>', $brick['model'], $brick['file']));
 
-                $this->classInstaller->createBrick($brick['file'], $brick['model']);
+                $this->installedBricks[$identifier] = $this->classInstaller->createBrick($brick['file'], $brick['model']);
 
                 $progress->advance();
             }
 
             $progress->finish();
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getInstalledClasses()
+    {
+        return $this->installedClasses;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInstalledCollections()
+    {
+        return $this->installedCollections;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInstalledBricks()
+    {
+        return $this->installedBricks;
     }
 }

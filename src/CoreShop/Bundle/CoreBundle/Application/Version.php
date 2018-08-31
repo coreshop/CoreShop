@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Application;
 
@@ -17,7 +17,7 @@ final class Version
     const MAJOR_VERSION = '2';
     const MINOR_VERSION = '0';
     const RELEASE_VERSION = '0';
-    const EXTRA_VERSION = 'alpha.5';
+    const EXTRA_VERSION = 'beta.3';
 
     /**
      * @return string

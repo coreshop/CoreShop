@@ -1,0 +1,27 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.pimcore_controller.grid:
+        class: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController
+
+    coreshop.data_object.grid_column_config.list.listener.before_filter_prepare:
+        class: CoreShop\Bundle\PimcoreBundle\EventListener\Grid\ObjectListFilterListener
+        arguments:
+            - '@coreshop.registry.grid.filter'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }
+
+    coreshop.registry.grid.filter:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        public: true
+        arguments:
+            - 'CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface'
+            - 'coreshop-grid-filter'
+
+    coreshop.registry.grid.action:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        public: true
+        arguments:
+            - 'CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface'
+            - 'coreshop-grid-action'

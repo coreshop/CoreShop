@@ -1,0 +1,12 @@
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopEmbeddedClass: CoreShop\Bundle\PimcoreBundle\CoreExtension\EmbeddedClass
+                    coreShopSerializedData: CoreShop\Bundle\PimcoreBundle\CoreExtension\SerializedData
+                    coreShopDynamicDropdown: CoreShop\Bundle\PimcoreBundle\CoreExtension\DynamicDropdown
+                    coreShopDynamicDropdownMultiple: CoreShop\Bundle\PimcoreBundle\CoreExtension\DynamicDropdownMultiple
+                    coreShopItemSelector: CoreShop\Bundle\PimcoreBundle\CoreExtension\ItemSelector
+                    coreShopSuperBoxSelect: CoreShop\Bundle\PimcoreBundle\CoreExtension\SuperBoxSelect
+  

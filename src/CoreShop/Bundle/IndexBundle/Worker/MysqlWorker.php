@@ -13,13 +13,16 @@
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
-use CoreShop\Component\Index\ClassHelper\ClassHelperInterface;
+use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
+use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Db;
 use Pimcore\Tool;
 
@@ -33,19 +36,19 @@ class MysqlWorker extends AbstractWorker
     protected $database;
 
     /**
-     * @param ServiceRegistryInterface $classHelperRegistry
+     * @param ServiceRegistryInterface $extensionsRegistry
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      */
     public function __construct(
-        ServiceRegistryInterface $classHelperRegistry,
+        ServiceRegistryInterface $extensionsRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper
     )
     {
-        parent::__construct($classHelperRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
+        parent::__construct($extensionsRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
 
         $this->database = Db::get();
     }
@@ -55,223 +58,178 @@ class MysqlWorker extends AbstractWorker
      */
     public function createOrUpdateIndexStructures(IndexInterface $index)
     {
-        $this->createTables($index);
-        $this->processTable($index);
-        $this->processLocalizedTable($index);
-        $this->createLocalizedViews($index);
+        $schemaManager = $this->database->getSchemaManager();
+
+        $tableName = $this->getTablename($index);
+        $localizedTableName = $this->getLocalizedTablename($index);
+        $relationalTableName = $this->getRelationTablename($index);
+
+        $oldTables = [];
+
+        foreach ([$tableName, $localizedTableName, $relationalTableName] as $searchTableName) {
+            if ($schemaManager->tablesExist([$searchTableName])) {
+                $oldTables[] = $schemaManager->listTableDetails($searchTableName);
+            }
+        }
+
+        $newSchema = new Schema();
+        $oldSchema = new Schema($oldTables);
+
+        $this->createTableSchema($index, $newSchema);
+        $this->createLocalizedTableSchema($index, $newSchema);
+        $this->createRelationalTableSchema($index, $newSchema);
+
+        $queries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
+
+        $this->database->transactional(function () use ($queries, $index) {
+            foreach ($queries as $qry) {
+                $this->database->executeQuery($qry);
+            }
+
+            foreach ($this->createLocalizedViews($index) as $qry) {
+                $this->database->executeQuery($qry);
+            }
+        });
     }
 
     /**
-     * Process Table - delete/add missing/new columns.
-     *
      * @param IndexInterface $index
+     * @param Schema $tableSchema
+     * @return Schema
+     * @throws \Exception
      */
-    protected function processTable(IndexInterface $index)
+    protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
     {
-        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+        $table = $tableSchema->createTable($this->getTablename($index));
 
-        $columns = $this->getTableColumns($this->getTablename($index));
-        $columnsToDelete = $columns;
-        $columnsToAdd = [];
+        $table->addColumn('o_id', 'integer');
+        $table->addColumn('o_key', 'string');
+        $table->addColumn('o_virtualObjectId', 'integer');
+        $table->addColumn('o_virtualObjectActive', 'boolean');
+        $table->addColumn('o_classId', 'integer');
+        $table->addColumn('o_className', 'string');
+        $table->addColumn('o_type', 'string');
+        $table->addColumn('active', 'boolean');
+        $table->setPrimaryKey(['o_id']);
 
-        $columnConfig = $index->getColumns();
-
-        foreach ($columnConfig as $column) {
+        foreach ($index->getColumns() as $column) {
             if ($column instanceof IndexColumnInterface) {
                 $type = $column->getObjectType();
-                $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
-
-                if ($type !== 'localizedfields') {
-                    if (!array_key_exists($column->getName(), $columns)) {
-                        $columnsToAdd[$column->getName()] = $columnTypeForIndex;
-                    }
+                $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
+                if ($type !== 'localizedfields' && !$interpreterClass instanceof LocalizedInterpreterInterface) {
+                    $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), ['notnull' => false]);
                 }
-
-                unset($columnsToDelete[$column->getName()]);
             }
         }
 
-        if ($classHelper instanceof ClassHelperInterface) {
-            foreach ($classHelper->getSystemColumns() as $name => $type) {
-                if (!array_key_exists($name, $columns)) {
-                    $columnTypeForIndex = $this->renderFieldType($type);
-                    $columnsToAdd[$name] = $columnTypeForIndex;
+        foreach ($this->getExtensions($index) as $extension) {
+            if ($extension instanceof IndexColumnsExtensionInterface) {
+                foreach ($extension->getSystemColumns() as $name => $type) {
+                    $table->addColumn($name, $this->renderFieldType($type), ['notnull' => false]);
                 }
-
-                unset($columnsToDelete[$name]);
             }
         }
 
-        $this->dropColumns($this->getTablename($index), $columnsToDelete);
-        $this->addColumns($this->getTablename($index), $columnsToAdd);
+        if (array_key_exists('indexes', $index->getConfiguration())) {
+            /**
+             * @var $tableIndex TableIndex
+             */
+            foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
+                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                    $table->addUniqueIndex($tableIndex->getColumns());
+                } else {
+                    $table->addIndex($tableIndex->getColumns());
+                }
+            }
+        }
+
+        return $tableSchema;
     }
 
     /**
-     * Process Localized Table - delete/add missing/new columns.
-     *
      * @param IndexInterface $index
+     * @param Schema $tableSchema
+     * @return Schema
+     * @throws \Exception
      */
-    protected function processLocalizedTable(IndexInterface $index)
+    protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
     {
-        $classHelper = $this->classHelperRegistry->has($index->getClass()) ? $this->classHelperRegistry->get($index->getClass()) : null;
+        $table = $tableSchema->createTable($this->getLocalizedTablename($index));
+        $table->addColumn('oo_id', 'integer');
+        $table->addColumn('language', 'string');
+        $table->addColumn('name', 'string', ['notnull' => false]);
+        $table->setPrimaryKey(['oo_id', 'language']);
+        $table->addIndex(['oo_id']);
+        $table->addIndex(['language']);
 
-        $localizedColumns = $this->getTableColumns($this->getLocalizedTablename($index));
-        $localizedColumnsToAdd = [];
-        $localizedColumnsToDelete = $localizedColumns;
+        foreach ($index->getColumns() as $column) {
+            $type = $column->getObjectType();
+            $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
+            if ($type === 'localizedfields' || $interpreterClass instanceof LocalizedInterpreterInterface) {
+                $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), ['notnull' => false]);
+            }
+        }
 
-        $columnConfig = $index->getColumns();
-
-        foreach ($columnConfig as $column) {
-            $type = $column->getType();
-
-            if ($type === 'localizedfield') {
-                $columnTypeForIndex = $this->renderFieldType($column->getColumnType());
-
-                if (!array_key_exists($column->getName(), $localizedColumns)) {
-                    $localizedColumnsToAdd[$column->getName()] = $columnTypeForIndex;
+        foreach ($this->getExtensions($index) as $extension) {
+            if ($extension instanceof IndexColumnsExtensionInterface) {
+                foreach ($extension->getLocalizedSystemColumns() as $name => $type) {
+                    $table->addColumn($name, $this->renderFieldType($type), ['notnull' => false]);
                 }
-
-                unset($localizedColumnsToDelete[$column->getName()]);
             }
         }
 
-        if ($classHelper instanceof ClassHelperInterface) {
-            foreach ($classHelper->getLocalizedSystemColumns() as $name => $type) {
-                if (!array_key_exists($name, $localizedColumns)) {
-                    $columnTypeForIndex = $this->renderFieldType($type);
-                    $localizedColumnsToAdd[$name] = $columnTypeForIndex;
+        if (array_key_exists('localizedIndexes', $index->getConfiguration())) {
+            /**
+             * @var $tableIndex TableIndex
+             */
+            foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
+                if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
+                    $table->addUniqueIndex($tableIndex->getColumns());
+                } else {
+                    $table->addIndex($tableIndex->getColumns());
                 }
-
-                unset($localizedColumnsToDelete[$name]);
             }
         }
 
-        $this->dropColumns($this->getLocalizedTablename($index), $localizedColumnsToDelete);
-        $this->addColumns($this->getLocalizedTablename($index), $localizedColumnsToAdd);
+        return $tableSchema;
     }
 
     /**
-     * get all columns from table.
-     *
-     * @param $table
-     *
-     * @return array
-     */
-    protected function getTableColumns($table)
-    {
-        $data = $this->database->fetchAll('SHOW COLUMNS FROM ' . $table);
-
-        $columns = [];
-
-        foreach ($data as $d) {
-            $columns[$d['Field']] = $d['Field'];
-        }
-
-        return $columns;
-    }
-
-    /**
-     * @param $table
-     * @param $columns
-     */
-    protected function addColumns($table, $columns)
-    {
-        foreach ($columns as $c => $type) {
-            $this->addColumn($table, $c, $type);
-        }
-    }
-
-    /**
-     * @param $table
-     * @param $columns
-     */
-    protected function dropColumns($table, $columns)
-    {
-        $systemColumns = $this->getSystemAttributes();
-        $systemLocalizedColumns = $this->getLocalizedSystemAttributes();
-
-        foreach ($columns as $c) {
-            if (!array_key_exists($c, $systemColumns) && !array_key_exists($c, $systemLocalizedColumns)) {
-                $this->dropColumn($table, $c);
-            }
-        }
-    }
-
-    /**
-     * @param $table
-     * @param $column
-     */
-    protected function dropColumn($table, $column)
-    {
-        $this->database->query('ALTER TABLE `' . $table . '` DROP COLUMN `' . $column . '`;');
-    }
-
-    /**
-     * @param $table
-     * @param $column
-     * @param $type
-     */
-    protected function addColumn($table, $column, $type)
-    {
-        $this->database->query('ALTER TABLE `' . $table . '` ADD `' . $column . '` ' . $type . ';');
-    }
-
-    /**
-     * Create Tables of not exists.
-     *
      * @param IndexInterface $index
+     * @param Schema $tableSchema
+     * @return Schema
      */
-    protected function createTables(IndexInterface $index)
+    protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
     {
-        $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getTablename($index) . "` (
-          `o_id` INT(11) NOT NULL DEFAULT '0',
-          `o_key` VARCHAR(255) NOT NULL,
-          `o_virtualObjectId` INT(11) NOT NULL,
-          `o_virtualObjectActive` TINYINT(1) NOT NULL,
-          `o_classId` INT(11) NOT NULL,
-          `o_className` VARCHAR(255) NOT NULL,
-          `o_type` VARCHAR(20) NOT NULL,
-          `active` TINYINT(1) NOT NULL,
-          PRIMARY KEY  (`o_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+        $table = $tableSchema->createTable($this->getRelationTablename($index));
+        $table->addColumn('src', 'integer');
+        $table->addColumn('src_virtualObjectId', 'integer');
+        $table->addColumn('dest', 'integer');
+        $table->addColumn('fieldname', 'string');
+        $table->addColumn('type', 'string');
+        $table->setPrimaryKey(['src', 'dest', 'fieldname', 'type']);
 
-        $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getLocalizedTablename($index) . "` (
-		  `oo_id` INT(11) NOT NULL DEFAULT '0',
-		  `language` VARCHAR(10) NOT NULL DEFAULT '',
-		  `name` VARCHAR(255) NULL,
-		  PRIMARY KEY (`oo_id`,`language`),
-          INDEX `ooo_id` (`oo_id`),
-          INDEX `language` (`language`)
-		) DEFAULT CHARSET=utf8;");
-
-        $this->database->query('CREATE TABLE IF NOT EXISTS `' . $this->getRelationTablename($index) . "` (
-          `src` INT(11) NOT NULL DEFAULT '0',
-          `src_virtualObjectId` INT(11) NOT NULL,
-          `dest` INT(11) NOT NULL,
-          `fieldname` VARCHAR(255) COLLATE utf8_bin NOT NULL,
-          `type` VARCHAR(20) COLLATE utf8_bin NOT NULL,
-          PRIMARY KEY (`src`,`dest`,`fieldname`,`type`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;");
+        return $tableSchema;
     }
 
     /**
      * Create Localized Views.
      *
      * @param IndexInterface $index
+     * @return array
      */
     protected function createLocalizedViews(IndexInterface $index)
     {
-        // init
+        $queries = [];
         $languages = Tool::getValidLanguages(); //TODO: Use Locale Service
 
         foreach ($languages as $language) {
-            try {
-                $localizedTable = $this->getLocalizedTablename($index);
-                $localizedViewName = $this->getLocalizedViewName($index, $language);
-                $tableName = $this->getTableName($index);
+            $localizedTable = $this->getLocalizedTablename($index);
+            $localizedViewName = $this->getLocalizedViewName($index, $language);
+            $tableName = $this->getTableName($index);
 
-                // create view
-                $viewQuery = <<<QUERY
+            // create view
+            $viewQuery = <<<QUERY
 CREATE OR REPLACE VIEW `{$localizedViewName}` AS
 
 SELECT *
@@ -283,11 +241,10 @@ LEFT JOIN {$localizedTable}
     )
 QUERY;
 
-                $this->database->query($viewQuery);
-            } catch (\Exception $e) {
-                $this->logger->error($e);
-            }
+            $queries[] = $viewQuery;
         }
+
+        return $queries;
     }
 
     /**
@@ -402,8 +359,8 @@ QUERY;
                 $language,
             ];
             $insertStatement = [
-                'oo_id=?',
-                'language=?',
+                'oo_id = ?',
+                'language = ?',
             ];
             $insertData = [
                 $data['oo_id'],
@@ -428,11 +385,11 @@ QUERY;
     /**
      * {@inheritdoc}
      */
-    public function renderCondition(ConditionInterface $condition)
+    public function renderCondition(ConditionInterface $condition, $prefix = null)
     {
         $renderer = new MysqlRenderer();
 
-        return $renderer->render($condition);
+        return $renderer->render($condition, $prefix);
     }
 
     /**
@@ -442,22 +399,22 @@ QUERY;
     {
         switch ($type) {
             case IndexColumnInterface::FIELD_TYPE_INTEGER:
-                return 'INT(11)';
+                return 'integer';
 
             case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
-                return 'INT(1)';
+                return 'boolean';
 
             case IndexColumnInterface::FIELD_TYPE_DATE:
-                return 'DATETIME';
+                return 'datetime';
 
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                return 'DOUBLE';
+                return 'double';
 
             case IndexColumnInterface::FIELD_TYPE_STRING:
-                return 'VARCHAR(255)';
+                return 'string';
 
             case IndexColumnInterface::FIELD_TYPE_TEXT:
-                return 'TEXT';
+                return 'text';
         }
 
         throw new \Exception($type . ' is not supported by MySQL Index');

@@ -19,18 +19,32 @@ coreshop.cart.pricerules.actions.discountAmount = Class.create(coreshop.rules.ac
         var amountValue = 0;
         var currency = null;
         var grossValue = false;
+        var applyOnValue = 'total';
 
         if (this.data) {
             amountValue = this.data.amount / 100;
             currency = this.data.currency;
             grossValue = this.data.gross;
+            applyOnValue = this.data.applyOn;
         }
 
         var amount = new Ext.form.NumberField({
-            fieldLabel: t('coreshop_action_discountAmount_amount'),
+            fieldLabel: t('coreshop_action_discount_amount_amount'),
             name: 'amount',
             value: amountValue,
             decimalPrecision: 2
+        });
+
+        var applyOn = new Ext.form.ComboBox({
+            store: [['total', t('coreshop_action_discount_apply_on_total')], ['subtotal', t('coreshop_action_discount_apply_on_subtotal')]],
+            triggerAction: 'all',
+            typeAhead: false,
+            editable: false,
+            forceSelection: true,
+            queryMode: 'local',
+            fieldLabel: t('coreshop_action_discount_apply_on'),
+            name: 'applyOn',
+            value: applyOnValue
         });
 
         var gross = new Ext.form.Checkbox({
@@ -43,6 +57,7 @@ coreshop.cart.pricerules.actions.discountAmount = Class.create(coreshop.rules.ac
             items: [
                 amount,
                 gross,
+                applyOn,
                 {
                     xtype: 'coreshop.currency',
                     value: currency

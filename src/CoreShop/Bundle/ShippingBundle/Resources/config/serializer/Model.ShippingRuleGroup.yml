@@ -15,6 +15,10 @@ CoreShop\Component\Shipping\Model\ShippingRuleGroup:
             expose: true
             type: integer
             groups: [Detailed]
+        stopPropagation:
+            expose: true
+            type: boolean
+            groups: [Detailed]
         shippingRule:
             expose: true
             type: relation

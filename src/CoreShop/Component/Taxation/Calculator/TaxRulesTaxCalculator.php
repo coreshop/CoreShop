@@ -33,7 +33,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {
         $this->taxRates = $taxRates;
-        $this->computationMethod = (int)$computationMethod;
+        $this->computationMethod = (int) $computationMethod;
     }
 
     /**
@@ -72,7 +72,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
             }
         }
 
-        return (float)$taxes;
+        return (float) $taxes;
     }
 
     /**

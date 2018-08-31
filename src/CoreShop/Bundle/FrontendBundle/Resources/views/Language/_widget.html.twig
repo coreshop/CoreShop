@@ -1,14 +1,10 @@
-<div class="btn-group">
-    <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{ 'coreshop.ui.language'|trans }}
-        <i class="fa fa-caret-down"></i>
-    </button>
-    <ul class="pull-right dropdown-menu">
+    </a>
+    <div class="dropdown-menu" aria-labelledby="languageDropdown">
         {% for language in languages %}
-        <li>
-            <!-- TODO: URL -->
-            <a tabindex="-1" href="">{{ 'locale_' ~ language|trans }}</a>
-        </li>
+            <a class="dropdown-item" href="#">{{ 'locale_' ~ language|trans }}</a>
         {% endfor %}
-    </ul>
-</div>
+    </div>
+</li>

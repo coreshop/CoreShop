@@ -4,7 +4,10 @@
 {% block content %}
 
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
-    {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
+    
+    <div class="shopping-cart-table">
+        {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
+    </div>
 
     {% if cart.hasItems() %}
         <div class="cart-summary">
@@ -15,14 +18,14 @@
     {% endif %}
 
     <div class="row">
-        <div class="col-xs-12 col-sm-2">
-            <a href="{{ path('coreshop_index') }}" class="btn btn-default w-100">
+        <div class="col-12 col-sm-2 offset-sm-8">
+            <a href="{{ coreshop_path('coreshop_index') }}" class="btn btn-secondary w-100">
                 {{ 'coreshop.ui.continue_shopping'|trans }}
             </a>
         </div>
         {% if cart.hasItems() %}
-            <div class="col-xs-12 col-sm-1 col-sm-push-9">
-                <a href="{{ path('coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}" class="btn btn-main w-100">
+            <div class="col-12 col-sm-2">
+                <a href="{{ coreshop_path(cart, 'coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}" class="btn btn-success w-100">
                     {{ 'coreshop.ui.checkout'|trans }}
                 </a>
             </div>

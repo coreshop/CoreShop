@@ -49,6 +49,10 @@ class CheckoutController extends FrontendController
      */
     public function processAction(Request $request)
     {
+        if (!$this->getCart()->hasItems()) {
+            return $this->redirectToRoute('coreshop_cart_summary');
+        }
+
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
 
         /**
@@ -85,8 +89,7 @@ class CheckoutController extends FrontendController
 
                     if ($step instanceof RedirectCheckoutStepInterface) {
                         $response = $step->getResponse($cart, $request);
-                    }
-                    else {
+                    } else {
                         $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
                         if ($nextStep) {
@@ -106,7 +109,8 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $step);
+        $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
+        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -128,7 +132,9 @@ class CheckoutController extends FrontendController
      */
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
     {
-        return $this->renderTemplate(sprintf('@CoreShopFrontend/Checkout/steps/%s.html.twig', $stepIdentifier), $dataForStep);
+        $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
+
+        return $this->renderTemplate($template, $dataForStep);
     }
 
     /**
@@ -160,15 +166,13 @@ class CheckoutController extends FrontendController
         /**
          * @var $step CheckoutStepInterface
          */
-        foreach ($checkoutManager->getSteps($this->getCart()) as $stepIdentifier) {
+        foreach ($checkoutManager->getSteps() as $stepIdentifier) {
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
-
-        $this->get('coreshop.tracking.manager')->trackCheckoutAction($this->getCart(), count($checkoutManager->getSteps($this->getCart())));
 
         /**
          * If everything is valid, we continue with Order-Creation.
@@ -208,10 +212,10 @@ class CheckoutController extends FrontendController
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
 
-        $payments = $order->getPayments();
+        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
-        return $this->renderTemplate('@CoreShopFrontend/Checkout/error.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [
             'order' => $order,
             'payments' => $payments,
             'lastPayment' => $lastPayment
@@ -243,7 +247,7 @@ class CheckoutController extends FrontendController
             $this->get('security.token_storage')->setToken(null);
         }
 
-        return $this->renderTemplate('@CoreShopFrontend/Checkout/thank-you.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
     }

@@ -8,23 +8,23 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Locale\Context;
 
-use Pimcore\Localization\Locale;
+use Pimcore\Localization\LocaleServiceInterface;
 
 class PimcoreLocaleContext implements LocaleContextInterface
 {
     /**
-     * @var Locale
+     * @var LocaleServiceInterface
      */
     private $pimcoreLocaleService;
 
     /**
-     * @param Locale $pimcoreLocaleService
+     * @param LocaleServiceInterface $pimcoreLocaleService
      */
-    public function __construct(Locale $pimcoreLocaleService)
+    public function __construct(LocaleServiceInterface $pimcoreLocaleService)
     {
         $this->pimcoreLocaleService = $pimcoreLocaleService;
     }
@@ -34,7 +34,7 @@ class PimcoreLocaleContext implements LocaleContextInterface
      */
     public function getLocaleCode()
     {
-        $pimcoreLocale = $this->pimcoreLocaleService->getLocale();
+        $pimcoreLocale = $this->pimcoreLocaleService->findLocale();
 
         if (null === $pimcoreLocale) {
             throw new LocaleNotFoundException();

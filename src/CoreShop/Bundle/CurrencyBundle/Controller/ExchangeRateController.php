@@ -33,7 +33,7 @@ class ExchangeRateController extends ResourceController
             if (!$resource->getId()) {
                 $this->manager->persist($resource);
             }
-            
+
             $this->manager->flush();
 
             $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);

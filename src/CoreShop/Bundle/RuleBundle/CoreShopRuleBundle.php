@@ -8,12 +8,15 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\RuleBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RuleAvailabilityAssessorPass;
+use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\TraceableValidationProcessorPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopRuleBundle extends AbstractResourceBundle
 {
@@ -25,6 +28,17 @@ final class CoreShopRuleBundle extends AbstractResourceBundle
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new TraceableValidationProcessorPass());
+        $container->addCompilerPass(new RuleAvailabilityAssessorPass());
     }
 
     /**

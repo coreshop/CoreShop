@@ -1,12 +1,12 @@
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
-{% set productUrl = path('coreshop_product_detail', {name: item.getProduct().getName, product: item.getProduct().getId}) %}
+{% set productUrl = coreshop_path(item.getProduct(), 'coreshop_product_detail') %}
 
 <tr class="shopping-cart-item">
     <td class="text-center">
         {% if item.getProduct and item.getProduct.getImage() %}
             <a class="" href="{{ productUrl }}">
-                {{ item.getProduct.getImage.getThumbnail('coreshop_productCart').getHtml({'class': 'img-responsive', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+                {{ item.getProduct.getImage.getThumbnail('coreshop_productCart').getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
             </a>
         {% endif %}
     </td>

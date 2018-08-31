@@ -8,11 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,23 +33,24 @@ class SecurityController extends FrontendController
     protected $formFactory;
 
     /**
-     * @var EngineInterface
+     * @var ShopperContextInterface
      */
-    protected $templatingEngine;
+    protected $shopperContext;
 
     /**
-     * @param AuthenticationUtils  $authenticationUtils
+     * @param AuthenticationUtils $authenticationUtils
      * @param FormFactoryInterface $formFactory
-     * @param EngineInterface      $templatingEngine
+     * @param ShopperContextInterface $shopperContext
      */
     public function __construct(
         AuthenticationUtils $authenticationUtils,
         FormFactoryInterface $formFactory,
-        EngineInterface $templatingEngine
-    ) {
+        ShopperContextInterface $shopperContext
+    )
+    {
         $this->authenticationUtils = $authenticationUtils;
         $this->formFactory = $formFactory;
-        $this->templatingEngine = $templatingEngine;
+        $this->shopperContext = $shopperContext;
     }
 
     /**
@@ -58,6 +60,10 @@ class SecurityController extends FrontendController
      */
     public function loginAction(Request $request)
     {
+        if ($this->shopperContext->hasCustomer() && $this->shopperContext->getCustomer()->getIsGuest() === false) {
+            return $this->redirectToRoute('coreshop_index');
+        }
+
         $lastError = $this->authenticationUtils->getLastAuthenticationError();
         $lastUsername = $this->authenticationUtils->getLastUsername();
 
@@ -65,7 +71,10 @@ class SecurityController extends FrontendController
 
         $renderLayout = $request->get('renderLayout', true);
 
-        return $this->renderTemplate($renderLayout ? '@CoreShopFrontend/Security/login.html.twig' : '@CoreShopFrontend/Security/_login-form.html.twig', [
+        $viewWithLayout = $this->templateConfigurator->findTemplate('Security/login.html');
+        $viewWithoutLayout = $this->templateConfigurator->findTemplate('Security/_login-form.html');
+
+        return $this->renderTemplate($renderLayout ? $viewWithLayout : $viewWithoutLayout, [
             'form' => $form->createView(),
             'last_username' => $lastUsername,
             'last_error' => $lastError,

@@ -32,8 +32,7 @@ coreshop.shippingrule.conditions.amount = Class.create(coreshop.rules.conditions
             name: 'minAmount',
             value: minAmountValue,
             minValue: 0,
-            decimalPrecision: 0,
-            step: 1
+            decimalPrecision: 2
         });
 
         var maxAmount = new Ext.form.NumberField({
@@ -41,8 +40,7 @@ coreshop.shippingrule.conditions.amount = Class.create(coreshop.rules.conditions
             name: 'maxAmount',
             value: maxAmountValue,
             minValue: 0,
-            decimalPrecision: 0,
-            step: 1
+            decimalPrecision: 2
         });
 
         this.form = Ext.create('Ext.form.Panel', {

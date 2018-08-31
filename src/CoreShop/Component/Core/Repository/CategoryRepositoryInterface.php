@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Repository;
 
@@ -37,4 +37,19 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
      * @return CategoryInterface[]
      */
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
+
+    /**
+     * @param CategoryInterface $category
+     * @param StoreInterface $store
+     * @return int[]
+     */
+    public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store);
+
+    /**
+     * @param CategoryInterface $category
+     * @param StoreInterface $store
+     *
+     * @return CategoryInterface[]
+     */
+    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
 }

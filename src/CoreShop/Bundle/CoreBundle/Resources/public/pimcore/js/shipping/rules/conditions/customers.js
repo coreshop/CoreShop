@@ -18,7 +18,7 @@ coreshop.shippingrule.conditions.customers = Class.create(coreshop.rules.conditi
 
     getForm: function () {
         this.customers = new coreshop.object.objectMultihref(this.data ? this.data.customers : [], {
-            classes: this.getFormattedImplementationsClasses(coreshop.implementations['coreshop.customer']),
+            classes: this.getFormattedStackClasses(coreshop.stack.coreshop.customer),
             name: 'customers',
             title: '',
             height: 200,

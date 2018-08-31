@@ -1,0 +1,13 @@
+imports:
+    - { resource: "services/contexts.yml" }
+
+
+services:
+    coreshop.behat.shared_storage:
+        class: CoreShop\Behat\Service\SharedStorage
+
+    coreshop.behat.class_storage:
+        class: CoreShop\Behat\Service\ClassStorage
+
+    coreshop.behat.notification_rule_listener:
+        class: CoreShop\Behat\Service\NotificationRuleListener

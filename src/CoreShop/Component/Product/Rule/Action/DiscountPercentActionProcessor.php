@@ -8,14 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use Webmozart\Assert\Assert;
 
-class DiscountPercentActionProcessor implements ProductPriceActionProcessorInterface
+class DiscountPercentActionProcessor implements ProductDiscountActionProcessorInterface
 {
     /**
      * {@inheritdoc}
@@ -25,13 +25,5 @@ class DiscountPercentActionProcessor implements ProductPriceActionProcessorInter
         Assert::isInstanceOf($subject, ProductInterface::class);
 
         return (int) round(($configuration['percent'] / 100) * $price);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice($subject, array $configuration)
-    {
-        return null;
     }
 }

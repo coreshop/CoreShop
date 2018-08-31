@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PayumBundle\Form\Type;
 
@@ -49,11 +49,10 @@ final class PaypalGatewayConfigurationType extends AbstractType
                     ]),
                 ],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
                 $data = $event->getData();
 
                 $data['payum.http_client'] = '@coreshop.payum.http_client';
-            })
-        ;
+            });
     }
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
@@ -73,7 +73,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string           $key
+     * @param string $key
      *
      * @return string
      *
@@ -96,7 +96,7 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param string           $key
+     * @param string $key
      *
      * @return string
      *

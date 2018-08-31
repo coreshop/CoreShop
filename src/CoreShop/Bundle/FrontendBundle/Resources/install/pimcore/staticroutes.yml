@@ -62,6 +62,15 @@ routes:
     variables: _locale
     priority: 3
 
+  coreshop_cart_check_shipment:
+    pattern: "/(\\w+)\\/shop\\/cart\\/shipment-calculation/"
+    reverse: "/%_locale/shop/cart/shipment-calculation"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.cart"
+    action: shipmentCalculation
+    variables: _locale
+    priority: 3
+
   coreshop_login:
     pattern: "/(\\w+)\\/shop\\/login/"
     reverse: "/%_locale/shop/login"
@@ -131,7 +140,7 @@ routes:
     module: FrontendBundle
     controller: "@coreshop.frontend.controller.payment"
     action: prepareCapture
-    variables: _locale,order
+    variables: _locale,token
     priority: 3
 
   coreshop_checkout_do:
@@ -249,7 +258,7 @@ routes:
     controller: "@coreshop.frontend.controller.customer"
     action: addressDelete
     variables: _locale,address
-    priority: 2
+    priority: 4
 
   coreshop_customer_settings:
     pattern: "/(\\w+)\\/shop\\/customer\\/settings/"
@@ -260,6 +269,15 @@ routes:
     variables: _locale
     priority: 2
 
+  coreshop_customer_change_password:
+    pattern: "/(\\w+)\\/shop\\/customer\\/change-password/"
+    reverse: "/%_locale/shop/customer/change-password"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.customer"
+    action: changePassword
+    variables: _locale
+    priority: 2
+
   coreshop_customer_password_reset_request:
     pattern: "/(\\w+)\\/shop\\/password-reset-request/"
     reverse: "/%_locale/shop/password-reset-request"
@@ -267,7 +285,7 @@ routes:
     controller: "@coreshop.frontend.controller.register"
     action: passwordResetRequest
     variables: _locale
-    priority: 2
+    priority: 6
 
   coreshop_customer_password_reset:
     pattern: "/(\\w+)\\/shop\\/password-reset/"
@@ -276,7 +294,16 @@ routes:
     controller: "@coreshop.frontend.controller.register"
     action: passwordReset
     variables: _locale
-    priority: 3
+    priority: 5
+
+  coreshop_customer_confirm_newsletter:
+    pattern: "/(\\w+)\\/shop\\/customer\\/confirm-newsletter/"
+    reverse: "/%_locale/shop/customer/confirm-newsletter"
+    module: FrontendBundle
+    controller: "@coreshop.frontend.controller.customer"
+    action: confirmNewsletter
+    variables: _locale
+    priority: 2
 
   coreshop_search:
     pattern: "/(\\w+)\\/shop\\/search/"

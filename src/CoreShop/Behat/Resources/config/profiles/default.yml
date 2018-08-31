@@ -1,0 +1,21 @@
+default:
+    formatters:
+        pretty:
+            verbose: true
+            paths: false
+            snippets: false
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                class: AppKernel
+                path: app/AppKernel.php
+                bootstrap: tests/behat-bootstrap.php
+
+        FriendsOfBehat\ContextServiceExtension:
+            imports:
+                - "src/CoreShop/Behat/Resources/config/services.yml"
+
+        FriendsOfBehat\CrossContainerExtension: ~
+
+        FriendsOfBehat\VariadicExtension: ~

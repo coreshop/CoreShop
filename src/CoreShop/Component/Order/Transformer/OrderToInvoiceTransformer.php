@@ -20,11 +20,12 @@ use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
+use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
@@ -135,6 +136,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoiceFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->invoiceFolderPath));
 
+        $invoice->setOrder($order);
+
         $invoiceNumber = $this->numberGenerator->generate($invoice);
 
         /**
@@ -146,12 +149,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoice->setParent($invoiceFolder);
         $invoice->setPublished(true);
         $invoice->setInvoiceDate(Carbon::now());
-        $invoice->setOrder($order);
 
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -172,7 +174,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoice->setItems($items);
 
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -197,7 +199,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->calculateTotal($invoice, true);
         $this->calculateTotal($invoice, false);
 
-        VersionHelper::useVersioning(function () use ($invoice) {
+        VersionHelper::useVersioning(function() use ($invoice) {
             $invoice->save();
         }, false);
     }
@@ -307,8 +309,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         if ($base) {
             $totalDiscount = $invoice->getOrder()->getBaseDiscount();
             $invoicedDiscount = $this->getProcessedValue('baseDiscount', $invoice->getOrder());
-        }
-        else {
+        } else {
             $totalDiscount = $invoice->getOrder()->getDiscount();
             $invoicedDiscount = $this->getProcessedValue('discount', $invoice->getOrder());
         }
@@ -323,8 +324,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $invoice->setBaseDiscount($discountWithTax);
             $invoice->setBaseDiscount($discountWithoutTax, false);
             $invoice->setBaseDiscountTax($discountTax);
-        }
-        else {
+        } else {
             $invoice->setDiscount($discountWithTax);
             $invoice->setDiscount($discountWithoutTax, false);
             $invoice->setDiscountTax($discountTax);
@@ -351,8 +351,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $subtotalWithoutTax = $invoice->getBaseSubtotal(false);
             $shippingWithoutTax = $invoice->getBaseShipping(false);
             $discountWithoutTax = $invoice->getBaseDiscount(false);
-        }
-        else {
+        } else {
             $subtotalTax = $invoice->getSubtotalTax();
             $shippingTax = $invoice->getShippingTax();
             $discountTax = $invoice->getDiscountTax();
@@ -374,8 +373,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $invoice->setBaseTotalTax($totalTax);
             $invoice->setBaseTotal($total);
             $invoice->setBaseTotal($totalWithoutTax, false);
-        }
-        else {
+        } else {
             $invoice->setTotalTax($totalTax);
             $invoice->setTotal($total);
             $invoice->setTotal($totalWithoutTax, false);
@@ -390,7 +388,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     private function getProcessedValue($field, OrderInterface $order)
     {
-        $invoices = $this->invoiceRepository->getDocuments($order);
+        $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
         $processedValue = 0;
 
         foreach ($invoices as $invoice) {

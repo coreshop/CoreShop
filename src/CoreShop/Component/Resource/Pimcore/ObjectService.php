@@ -8,47 +8,18 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Resource\Pimcore;
 
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\DataObject\Service;
-use Webmozart\Assert\Assert;
-
-class ObjectService implements ObjectServiceInterface
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\ObjectService::class)) {
+    @trigger_error('Class CoreShop\Component\Resource\Pimcore\ObjectService is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ObjectService class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * {@inheritdoc}
+     * @deprecated Class CoreShop\Component\Resource\Pimcore\ObjectService is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\ObjectService class instead.
      */
-    public function createFolderByPath($path)
+    class ObjectService
     {
-        return Service::createFolderByPath($path);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function copyObject(PimcoreModelInterface $fromObject, PimcoreModelInterface $toObject)
-    {
-        /**
-         * @var $fromObject Concrete
-         * @var $toObject Concrete
-         */
-        Assert::isInstanceOf($fromObject, Concrete::class);
-        Assert::isInstanceOf($toObject, Concrete::class);
-
-        //load all in case of lazy loading fields
-        $toFd = $toObject->getClass()->getFieldDefinitions();
-
-        foreach ($toFd as $def) {
-            $fromGetter = 'get'.ucfirst($def->getName());
-            $toSetter = 'set'.ucfirst($def->getName());
-
-            if (method_exists($fromObject, $fromGetter) && method_exists($toObject, $toSetter)) {
-                $toObject->$toSetter($fromObject->$fromGetter());
-            }
-        }
     }
 }

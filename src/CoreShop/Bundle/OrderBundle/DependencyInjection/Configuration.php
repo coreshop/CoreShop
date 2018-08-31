@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
+use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderInvoiceController;
@@ -29,6 +30,7 @@ use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderInvoiceRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRule;
@@ -42,6 +44,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\Model\OrderShipmentItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\Model\QuoteItemInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -68,6 +71,7 @@ final class Configuration implements ConfigurationInterface
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCartCleanupSection($rootNode);
+        $this->addStack($rootNode);
 
         return $treeBuilder;
     }
@@ -79,16 +83,41 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->arrayNode('cleanup')
+                ->arrayNode('expiration')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('expiration_days')->defaultValue(30)->end()
-                        ->booleanNode('anonymous')->defaultValue(true)->end()
-                        ->booleanNode('user')->defaultValue(true)->end()
+                        ->arrayNode('cart')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->integerNode('days')->defaultValue(0)->end()
+                                ->booleanNode('anonymous')->defaultValue(true)->end()
+                                ->booleanNode('customer')->defaultValue(true)->end()
+                            ->end()
+                        ->end()
+                            ->arrayNode('order')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->integerNode('days')->defaultValue(20)->end()
+                            ->end()
+                        ->end()
                     ->end()
+                ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addStack(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('stack')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('purchasable')->defaultValue(PurchasableInterface::class)->cannotBeEmpty()->end()
+
                 ->end()
             ->end()
-        ;
+        ->end();
     }
 
     /**
@@ -198,6 +227,7 @@ final class Configuration implements ConfigurationInterface
                                                 ->scalarNode('default')->defaultValue(OrderController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(OrderCreationController::class)->end()
                                                 ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
+                                                ->scalarNode('comment')->defaultValue(OrderCommentController::class)->end()
                                             ->end()
                                         ->end()
                                     ->end()
@@ -356,6 +386,23 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                        ->arrayNode('adjustment')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\Fieldcollection\Data\CoreShopAdjustment')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(AdjustmentInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/fieldcollections/CoreShopAdjustment.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_FIELD_COLLECTION)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()
@@ -386,10 +433,14 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('cart_pricerule_condition_nested')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/nested.js')->end()
                             ->scalarNode('cart_pricerule_condition_timespan')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/timespan.js')->end()
                             ->scalarNode('cart_pricerule_condition_voucher')->defaultValue('/bundles/coreshoporder/pimcore/js/cart/pricerules/conditions/voucher.js')->end()
-                            ->scalarNode('sale_list_plugin')->defaultValue('/bundles/coreshoporder/pimcore/js/plugin/salesListContextMenu.js')->end()
-                            ->scalarNode('sale_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail.js')->end()
+                            ->scalarNode('sale_detail_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/panel.js')->end()
+                            ->scalarNode('sale_detail_abstract_block')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/abstractBlock.js')->end()
+                            ->scalarNode('sale_detail_abstract_block_header')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/blocks/header.js')->end()
+                            ->scalarNode('sale_detail_abstract_block_info')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/blocks/info.js')->end()
+                            ->scalarNode('sale_detail_abstract_block_correspondence')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/blocks/correspondence.js')->end()
+                            ->scalarNode('sale_detail_abstract_block_customer')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/blocks/customer.js')->end()
+                            ->scalarNode('sale_detail_abstract_block_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/detail/blocks/detail.js')->end()
                             ->scalarNode('sale_list')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/list.js')->end()
-                            ->scalarNode('sale_creation_event_manager')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/eventManager.js')->end()
                             ->scalarNode('sale_creation_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/panel.js')->end()
                             ->scalarNode('sale_creation_abstract_step')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/abstractStep.js')->end()
                             ->scalarNode('sale_creation_step_preparation')->defaultValue('/bundles/coreshoporder/pimcore/js/sale/create/step/preparation.js')->end()
@@ -402,7 +453,16 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order_list')->defaultValue('/bundles/coreshoporder/pimcore/js/order/list.js')->end()
                             ->scalarNode('order_creation')->defaultValue('/bundles/coreshoporder/pimcore/js/order/create/panel.js')->end()
                             ->scalarNode('order_helper')->defaultValue('/bundles/coreshoporder/pimcore/js/helper.js')->end()
-                            ->scalarNode('order_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail.js')->end()
+                            ->scalarNode('order_detail_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/panel.js')->end()
+                            ->scalarNode('order_detail_block_header')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/header.js')->end()
+                            ->scalarNode('order_detail_block_info')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/info.js')->end()
+                            ->scalarNode('order_detail_block_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/shipment.js')->end()
+                            ->scalarNode('order_detail_block_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/invoice.js')->end()
+                            ->scalarNode('order_detail_block_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/payment.js')->end()
+                            ->scalarNode('order_detail_block_correspondence')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/correspondence.js')->end()
+                            ->scalarNode('order_detail_block_customer')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/customer.js')->end()
+                            ->scalarNode('order_detail_block_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/detail.js')->end()
+                            ->scalarNode('order_detail_block_comments')->defaultValue('/bundles/coreshoporder/pimcore/js/order/detail/blocks/comments.js')->end()
                             ->scalarNode('order_invoice')->defaultValue('/bundles/coreshoporder/pimcore/js/order/invoice.js')->end()
                             ->scalarNode('order_shipment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment.js')->end()
                             ->scalarNode('order_create_payment')->defaultValue('/bundles/coreshoporder/pimcore/js/order/createPayment.js')->end()
@@ -413,7 +473,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('order_shipment_render')->defaultValue('/bundles/coreshoporder/pimcore/js/order/shipment/render.js')->end()
                             ->scalarNode('order_change_state')->defaultValue('/bundles/coreshoporder/pimcore/js/order/state/changeState.js')->end()
                             ->scalarNode('quote_list')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/list.js')->end()
-                            ->scalarNode('quote_detail')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/detail.js')->end()
+                            ->scalarNode('quote_detail_panel')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/detail/panel.js')->end()
                             ->scalarNode('quote_create')->defaultValue('/bundles/coreshoporder/pimcore/js/quote/create/panel.js')->end()
                             ->scalarNode('core_extension_data_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/data/coreShopCartPriceRule.js')->end()
                             ->scalarNode('core_extension_tag_cart_price_rule')->defaultValue('/bundles/coreshoporder/pimcore/js/coreExtension/tags/coreShopCartPriceRule.js')->end()
@@ -435,8 +495,16 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
                         ->children()
-                            ->scalarNode('admin_translations')->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/admin-translations.yml'])->end()
-                            ->scalarNode('grid_config')->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/grid-config.yml'])->end()
+                            ->arrayNode('admin_translations')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/admin-translations.yml'])
+                            ->end()
+                            ->arrayNode('grid_config')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopOrderBundle/Resources/install/pimcore/grid-config.yml'])
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

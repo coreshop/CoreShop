@@ -35,6 +35,13 @@ final class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->arrayNode('template')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('layout')->defaultValue('CoreShopPayumBundle::layout.html.twig')->end()
+                            ->scalarNode('obtain_credit_card')->defaultValue('CoreShopPayumBundle:Action:obtainCreditCard.html.twig')->end()
+                        ->end()
+                    ->end()
             ->end()
         ;
 

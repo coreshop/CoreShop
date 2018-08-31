@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ProductBundle\Pimcore\Repository;
 
@@ -36,6 +36,19 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     {
         $list = $this->getList();
         $list->setCondition("parentCategory__id = ?", [$category->getId()]);
+
+        if (method_exists($category, 'getChildrenSortBy')) {
+            $list->setOrderKey(
+                sprintf('o_%s ASC', $category->getChildrenSortBy()),
+                false
+            );
+        }
+        else {
+            $list->setOrderKey(
+                'o_key ASC',
+                false
+            );
+        }
 
         return $list->getObjects();
     }

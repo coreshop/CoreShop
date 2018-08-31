@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.money:
         class: CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType
         tags:

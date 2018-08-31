@@ -13,14 +13,28 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
+use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
-final class ShopUserLogoutHandler extends DefaultLogoutSuccessHandler
+final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
+    /**
+     * @var LinkGeneratorInterface
+     */
+    private $linkGenerator;
+
+    /**
+     * @var string
+     */
+    private $routeName;
+
     /**
      * @var SessionInterface
      */
@@ -32,20 +46,20 @@ final class ShopUserLogoutHandler extends DefaultLogoutSuccessHandler
     private $storeContext;
 
     /**
-     * {@inheritdoc}
-     *
+     * @param LinkGeneratorInterface $linkGenerator
+     * @param $routeName
      * @param SessionInterface $session
      * @param StoreContextInterface $storeContext
      */
     public function __construct(
-        HttpUtils $httpUtils,
-        $targetUrl,
+        LinkGeneratorInterface $linkGenerator,
+        $routeName,
         SessionInterface $session,
         StoreContextInterface $storeContext
     )
     {
-        parent::__construct($httpUtils, $targetUrl);
-
+        $this->linkGenerator = $linkGenerator;
+        $this->routeName = $routeName;
         $this->session = $session;
         $this->storeContext = $storeContext;
     }
@@ -58,9 +72,9 @@ final class ShopUserLogoutHandler extends DefaultLogoutSuccessHandler
         $store = $this->storeContext->getStore();
 
         if ($store instanceof StoreInterface) {
-            $this->session->remove('coreshop.cart.' . $store->getId());
+            $this->session->remove('coreshop.cart.'.$store->getId());
         }
 
-        return parent::onLogoutSuccess($request);
+        return new RedirectResponse($this->linkGenerator->generate(null, $this->routeName, ['_locale' => $request->getLocale()]));
     }
 }

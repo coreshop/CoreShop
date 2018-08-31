@@ -38,9 +38,9 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null)
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
-        $parameter = $applicationName ? sprintf('%s.application.pimcore.admin.install.image_thumbnails', $applicationName) : 'resources.admin.install.image_thumbnails';
+        $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.image_thumbnails', $applicationName) : 'coreshop.all.pimcore.admin.install.image_thumbnails';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
             $thumbnailFilesToInstall = $this->kernel->getContainer()->getParameter($parameter);

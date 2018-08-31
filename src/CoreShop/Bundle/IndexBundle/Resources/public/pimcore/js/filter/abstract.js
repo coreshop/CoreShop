@@ -18,7 +18,6 @@ coreshop.filter.abstract = Class.create({
      * coreshop.filter.item
      */
     parent: {},
-
     data: {},
 
     type: 'abstract',
@@ -26,7 +25,7 @@ coreshop.filter.abstract = Class.create({
 
     form: null,
 
-    initialize: function (parent, data) {
+    initialize: function (parent, data, index) {
         this.parent = parent;
         this.data = data;
 
@@ -62,7 +61,7 @@ coreshop.filter.abstract = Class.create({
         });
     },
 
-    getData: function() {
+    getData: function () {
         var data = this.form.getForm().getFieldValues();
 
         data['configuration'] = this.configurationForm.getForm().getFieldValues();
@@ -96,17 +95,17 @@ coreshop.filter.abstract = Class.create({
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.field,
+                value: this.data.configuration.hasOwnProperty('field') ? this.data.configuration.field : null,
                 listeners: {
                     change: function (combo, newValue) {
                         this.onFieldChange.call(this, combo, newValue);
                     }.bind(this)
                 }
             });
+        }
 
-            if (this.data.field) {
-                this.onFieldChange(this.fieldsCombo, this.data.field);
-            }
+        if (this.data.configuration.hasOwnProperty('field') && this.data.configuration.field) {
+            this.onFieldChange(this.fieldsCombo, this.data.configuration.field);
         }
 
         return this.fieldsCombo;

@@ -1,0 +1,7 @@
+{% for dependency in dependencies %}
+ga('require', '{{ dependency|raw }}');
+{% endfor %}
+
+{% if currency is not null %}
+    ga('set', 'currencyCode', '{{ currency }}');
+{% endif %}

@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
-use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
@@ -19,28 +19,28 @@ class Version20180113114947 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $stateField = [
-            'fieldtype'       => 'input',
-            'width'           => null,
+            'fieldtype' => 'input',
+            'width' => null,
             'queryColumnType' => 'varchar',
-            'columnType'      => 'varchar',
-            'columnLength'    => 190,
-            'phpdocType'      => 'string',
-            'regex'           => '',
-            'unique'          => false,
-            'name'            => 'state',
-            'title'           => 'State',
-            'tooltip'         => '',
-            'mandatory'       => false,
-            'noteditable'     => true,
-            'index'           => false,
-            'locked'          => null,
-            'style'           => '',
-            'permissions'     => null,
-            'datatype'        => 'data',
-            'relationType'    => false,
-            'invisible'       => false,
+            'columnType' => 'varchar',
+            'columnLength' => 190,
+            'phpdocType' => 'string',
+            'regex' => '',
+            'unique' => false,
+            'name' => 'state',
+            'title' => 'State',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch'   => false,
+            'visibleSearch' => false,
         ];
 
         $orderShipment = $this->container->getParameter('coreshop.model.order_shipment.pimcore_class_name');

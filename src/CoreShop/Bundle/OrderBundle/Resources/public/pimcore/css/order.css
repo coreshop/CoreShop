@@ -35,7 +35,7 @@
 }
 
 .x-tool-coreshop-open, .coreshop_icon_open {
-    background: url(/pimcore/static6/img/flat-color-icons/cursor.svg) center center no-repeat !important;
+    background: url(../img/cursor.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_amount {
@@ -62,6 +62,10 @@
     background: url(../img/info.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_order_comments {
+    background: url(../img/comments.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_operator_priceformatter {
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
@@ -80,8 +84,43 @@
     background: url(../img/add.svg) center center no-repeat !important;
 }
 
+.x-tool-coreshop-remove {
+    background: url(../img/remove.svg) center center no-repeat !important;
+}
+
 .x-tool-coreshop-add-product {
     background: url(../img/product-add.svg) center center no-repeat !important;
+}
+
+.x-panel.coreshop-panel .coreshop-order-comment-block .published-by {
+    font-weight: 300;
+    font-style: italic;
+}
+
+.x-panel.coreshop-panel .coreshop-order-comment-block .x-panel-header-default {
+    border-bottom: none !important;
+    padding: 5px 0 0 10px;
+}
+
+.x-panel.coreshop-panel .coreshop-order-comment-block .comment_meta {
+    font-size:11px;
+    margin:7px 0;
+    display: block;
+    padding: 0 0 0 20px;
+}
+
+.x-panel.coreshop-panel .coreshop-order-comment-block .internal {
+    background: url(../img/comment_internal.svg) 0 0 no-repeat !important;
+}
+
+.x-panel.coreshop-panel .coreshop-order-comment-block .external {
+    background: url(../img/comment_external.svg) 0 0 no-repeat !important;
+}
+
+.coreshop-order-comments-nothing-found {
+    padding:10px 10px 10px 0;
+    color:#999999;
+    font-style: italic;
 }
 
 .rounded-color {
@@ -129,6 +168,7 @@
     font-size: 18px;
     font-weight: bold;
 }
+
 .coreshop_order_big.order_state {
     margin-top: 2px;
 }
@@ -200,4 +240,18 @@
     background: #FFE2E4;
     color: #D27C82;
     border-radius: 5px;
+}
+
+.coreshop-order-create-revise {
+    padding: 10px;
+    margin: 10px 0 0 0;
+    background: #eee;
+}
+
+.coreshop-order-create-revise-desc {
+    display: block;
+}
+
+.coreshop-order-create-revise-link {
+    font-weight: bold;
 }

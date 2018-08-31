@@ -14,18 +14,18 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
+use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
-use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
-use CoreShop\Component\Pimcore\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -43,17 +43,13 @@ class OrderShipmentController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
         }
 
         $itemsToReturn = [];
 
-        if (count($order->getPayments()) === 0) {
-            return $this->viewHandler->handle([
-                'success' => false,
-                'message' => 'Can\'t create Shipment without valid order payment'
-            ]);
+        if (!$this->getProcessableHelper()->isProcessable($order)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'The current order state does not allow to create shipments']);
         }
 
         try {
@@ -66,15 +62,15 @@ class OrderShipmentController extends PimcoreController
             $orderItem = $item['item'];
             if ($orderItem instanceof OrderItemInterface) {
                 $itemsToReturn[] = [
-                    'orderItemId'     => $orderItem->getId(),
-                    'price'           => $orderItem->getItemPrice(),
-                    'maxToShip'       => $item['quantity'],
-                    'quantity'        => $orderItem->getQuantity(),
+                    'orderItemId' => $orderItem->getId(),
+                    'price' => $orderItem->getItemPrice(),
+                    'maxToShip' => $item['quantity'],
+                    'quantity' => $orderItem->getQuantity(),
                     'quantityShipped' => $orderItem->getQuantity() - $item['quantity'],
-                    'toShip'          => $item['quantity'],
-                    'tax'             => $orderItem->getTotalTax(),
-                    'total'           => $orderItem->getTotal(),
-                    'name'            => $orderItem->getName(),
+                    'toShip' => $item['quantity'],
+                    'tax' => $orderItem->getTotalTax(),
+                    'total' => $orderItem->getTotal(),
+                    'name' => $orderItem->getName(),
                 ];
             }
         }
@@ -110,7 +106,12 @@ class OrderShipmentController extends PimcoreController
             }
 
             try {
-                $items = $resource['items'];
+
+                // request shipment ready state from order, if it's our first shipment.
+                $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_shipment');
+                if ($workflow->can($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT)) {
+                    $workflow->apply($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT);
+                }
 
                 /**
                  * @var OrderShipmentInterface
@@ -126,6 +127,7 @@ class OrderShipmentController extends PimcoreController
                     $shipment->setValue($key, $value);
                 }
 
+                $items = $resource['items'];
                 $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
 
                 return $this->viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
@@ -135,43 +137,6 @@ class OrderShipmentController extends PimcoreController
         }
 
         return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function updateShipmentAction(Request $request)
-    {
-        $shipmentId = $request->get('id');
-        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
-
-        if (!$shipment instanceof OrderShipmentInterface) {
-            return $this->viewHandler->handle(['success' => false]);
-        }
-
-        //apply state machine
-        $workflow = $this->getStateMachineManager()->get($shipment, ShipmentStates::IDENTIFIER);
-        if (null !== $transition = $this->getStateMachineManager()->getTransitionToState($workflow, $shipment, $request->request->get('state'))) {
-            $workflow->apply($shipment, $transition);
-        } else {
-            if ($request->request->get('state') !== $shipment->getState()) {
-                return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
-            }
-        }
-
-        $values = $request->request->all();
-        unset($values['state']);
-
-        $shipment->setValues($values);
-
-        VersionHelper::useVersioning(function () use ($shipment) {
-            $shipment->save();
-        }, false);
-
-        return $this->viewHandler->handle(['success' => true]);
-
     }
 
     /**
@@ -204,21 +169,24 @@ class OrderShipmentController extends PimcoreController
      */
     public function renderAction(Request $request)
     {
-        $invoiceId = $request->get('id');
-        $invoice = $this->getOrderShipmentRepository()->find($invoiceId);
+        $shipmentId = $request->get('id');
+        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
 
-        if ($invoice instanceof OrderShipmentInterface) {
-            return new Response(
-                $this->getOrderDocumentRenderer()->renderDocumentPdf($invoice),
-                200,
-                [
-                    'Content-Type'        => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="invoice-' . $invoice->getId() . '.pdf"',
-                ]
-            );
+        if ($shipment instanceof OrderShipmentInterface) {
+            try {
+                $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($shipment);
+                $header = [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="shipment-'.$shipment->getId().'.pdf"',
+                ];
+            } catch (\Exception $e) {
+                $responseData = '<strong>'.$e->getMessage().'</strong><br>trace: '.$e->getTraceAsString();
+                $header = ['Content-Type' => 'text/html'];
+            }
+            return new Response($responseData, 200, $header);
         }
 
-        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $invoiceId));
+        throw new NotFoundHttpException(sprintf('Invoice with Id %s not found', $shipmentId));
     }
 
     /**
@@ -230,7 +198,7 @@ class OrderShipmentController extends PimcoreController
     }
 
     /**
-     * @return PimcoreRepositoryInterface
+     * @return OrderShipmentRepositoryInterface
      */
     protected function getOrderShipmentRepository()
     {

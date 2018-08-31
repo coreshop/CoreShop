@@ -8,12 +8,14 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Rule\Condition;
 
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 use Webmozart\Assert\Assert;
 
 class ProductsConditionChecker implements ConditionCheckerInterface
@@ -21,7 +23,7 @@ class ProductsConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid($subject, array $configuration)
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 

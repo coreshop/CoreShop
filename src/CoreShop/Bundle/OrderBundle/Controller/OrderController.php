@@ -13,14 +13,14 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\InvoiceTransitions;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
-use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
-use Pimcore\Model\DataObject;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
@@ -28,15 +28,14 @@ use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentTransitions;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Component\Resource\Workflow\StateMachineApplier;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends AbstractSaleDetailController
 {
-     /**
+    /**
      * @return mixed
      * @throws \Exception
      */
@@ -47,13 +46,13 @@ class OrderController extends AbstractSaleDetailController
         $name = null;
         $folderId = null;
 
-        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_id');
+        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_name');
         $folderPath = $this->getParameter('coreshop.folder.order');
-        $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
+        $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/' . $folderPath);
 
-        if($folder instanceof DataObject\Folder) {
+        if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
         }
 
@@ -166,14 +165,13 @@ class OrderController extends AbstractSaleDetailController
         $manager = $this->getWorkflowStateManager();
         $history = $manager->getStateHistory($order);
 
-        $date = Carbon::now();
         $statesHistory = [];
 
         if (is_array($history)) {
             foreach ($history as $note) {
                 $user = User::getById($note->getUser());
                 $avatar = $user ? sprintf('/admin/user/get-image?id=%d', $user->getId()) : null;
-
+                $date = Carbon::createFromTimestamp($note->getDate());
                 $statesHistory[] = [
                     'icon' => 'coreshop_icon_orderstates',
                     'type' => $note->getType(),
@@ -197,26 +195,21 @@ class OrderController extends AbstractSaleDetailController
      */
     protected function getPayments(OrderInterface $order)
     {
-        $payments = $order->getPayments();
+        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
         $return = [];
 
         foreach ($payments as $payment) {
-            //TODO: Whatever this was for
-            //TODO: Actually, this was not bad at all, it saved history for payments, but needs to be different now
-            //TODO: Payment Model has a detail array, where it can store any info
-            /*$noteList = new \Pimcore\Model\Element\Note\Listing();
-            $noteList->addConditionParam('type = ?', \CoreShop\Model\Order\Payment::NOTE_TRANSACTION);
-            $noteList->addConditionParam('cid = ?', $payment->getId());
-            $noteList->setOrderKey('date');
-            $noteList->setOrder('desc');*/
-
             $details = [];
             if (is_array($payment->getDetails()) && count($payment->getDetails()) > 0) {
                 foreach ($payment->getDetails() as $detailName => $detailValue) {
                     if (empty($detailValue) && $detailValue != 0) {
                         continue;
                     }
-                    $details[] = [$detailName, $detailValue];
+                    if (is_array($detailValue)) {
+                        $detailValue = join(', ', $detailValue);
+                    }
+
+                    $details[] = [$detailName, htmlentities($detailValue)];
                 }
             }
 
@@ -232,7 +225,6 @@ class OrderController extends AbstractSaleDetailController
                 'provider' => $payment->getPaymentProvider()->getName(),
                 'paymentNumber' => $payment->getNumber(),
                 'details' => $details,
-                //'transactionNotes' => $noteList->load(),
                 'amount' => $payment->getTotalAmount(),
                 'stateInfo' => $this->getWorkflowStateManager()->getStateInfo('coreshop_payment', $payment->getState(), false),
                 'transitions' => $availableTransitions
@@ -269,8 +261,9 @@ class OrderController extends AbstractSaleDetailController
             $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
             $order['invoices'] = $this->getInvoices($sale);
             $order['shipments'] = $this->getShipments($sale);
-            $order['invoiceCreationAllowed'] = !$this->getInvoiceProcessableHelper()->isFullyProcessed($sale) && $sale->getPaymentState() === OrderPaymentStates::STATE_PAID;
-            $order['shipmentCreationAllowed'] = !$this->getShipmentProcessableHelper()->isFullyProcessed($sale) && $sale->getPaymentState() === OrderPaymentStates::STATE_PAID;
+            $order['paymentCreationAllowed'] = !in_array($sale->getOrderState(), [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE]);
+            $order['invoiceCreationAllowed'] = $this->getInvoiceProcessableHelper()->isProcessable($sale);
+            $order['shipmentCreationAllowed'] = $this->getShipmentProcessableHelper()->isProcessable($sale);
         }
 
         return $order;
@@ -344,12 +337,9 @@ class OrderController extends AbstractSaleDetailController
             $data['carrierName'] = $shipment->getCarrier()->getName();
 
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
-                'hold',
-                'release',
-                'prepare',
+                'create',
                 'ship',
-                'cancel',
-                'return'
+                'cancel'
             ], false);
 
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
@@ -366,12 +356,15 @@ class OrderController extends AbstractSaleDetailController
         return $shipmentArray;
     }
 
+    /**
+     * @param SaleInterface $sale
+     * @return array
+     */
     protected function getSummary(SaleInterface $sale)
     {
         $summary = parent::getSummary($sale);
         return $summary;
     }
-
 
     /**
      * @return ProcessableInterface
@@ -414,14 +407,6 @@ class OrderController extends AbstractSaleDetailController
     }
 
     /**
-     * @return StateMachineApplier
-     */
-    private function getStateMachineApplier()
-    {
-        return $this->get('coreshop.state_machine_applier');
-    }
-
-    /**
      * @return StateMachineManager
      */
     protected function getStateMachineManager()
@@ -450,7 +435,7 @@ class OrderController extends AbstractSaleDetailController
      */
     protected function getSaleClassName()
     {
-        return 'coreshop.model.order.pimcore_class_id';
+        return 'coreshop.model.order.pimcore_class_name';
     }
 
     /**

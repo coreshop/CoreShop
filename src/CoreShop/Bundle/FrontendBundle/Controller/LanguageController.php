@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
@@ -18,7 +18,7 @@ class LanguageController extends FrontendController
 {
     public function widgetAction(Request $request)
     {
-        return $this->renderTemplate('CoreShopFrontendBundle:Language:_widget.html.twig', [
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Language/_widget.html'), [
             'languages' => ['de', 'en'], //$this->get('pimcore.locale')->getLocaleList()
         ]);
     }

@@ -43,4 +43,9 @@
 
         {{ form_row(form._token) }}
     {{ form_end(form, {'render_rest': false}) }}
+
 </div>
+
+{% if cart.getShipping(false) is null %}
+    {{ render(controller('coreshop.frontend.controller.cart:shipmentCalculationAction')) }}
+{% endif %}

@@ -15,15 +15,19 @@ namespace CoreShop\Component\Order\Calculator;
 use CoreShop\Component\Order\Model\PriceAwarePurchasableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-final class PriceAwarePurchasableCalculator implements PurchasablePriceCalculatorInterface
+/**
+ * @deprecated Class CoreShop\Component\Order\Calculator\PriceAwarePurchasableCalculator is deprecated since version 2.0.0-beta.4 and will be removed in 2.0.
+ */
+final class PriceAwarePurchasableCalculator implements PurchasableRetailPriceCalculatorInterface
 {
     /**
-     * @param PurchasableInterface $purchasable
-     * @return int
+     * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable)
+    public function getRetailPrice(PurchasableInterface $purchasable)
     {
         if ($purchasable instanceof PriceAwarePurchasableInterface) {
+            @trigger_error('Class CoreShop\Component\Order\Calculator\PriceAwarePurchasableCalculator is deprecated since version 2.0.0-beta.4 and will be removed in 2.0.', E_USER_DEPRECATED);
+
             return $purchasable->getPrice();
         }
 

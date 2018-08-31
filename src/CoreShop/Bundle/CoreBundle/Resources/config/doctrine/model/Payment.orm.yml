@@ -1,0 +1,7 @@
+CoreShop\Component\Core\Model\Payment:
+    type: mappedSuperclass
+    table: coreshop_payment
+    fields:
+        order:
+            column: '`order`'
+            type: pimcoreObject

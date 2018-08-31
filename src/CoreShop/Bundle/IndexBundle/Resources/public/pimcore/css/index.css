@@ -10,7 +10,7 @@
     background: url(../img/filter-empty.svg) center center no-repeat !important;
 }
 
-.coreshop_filters_icon_conditions_select {
+.coreshop_filters_icon_conditions_select, .coreshop_filters_icon_conditions_relational_select {
     background: url(../img/filter-select.svg) center center no-repeat !important;
 }
 
@@ -30,6 +30,10 @@
     background: url(../img/filter-combined.svg) center center no-repeat !important;
 }
 
+.coreshop_filters_icon_conditions_category_select {
+    background: url(../img/filter-category-select.svg) center center no-repeat !important;
+}
+
 .coreshop_filters_preConditions {
     background: url(../img/search.svg) center center no-repeat !important;
 }
@@ -43,5 +47,5 @@
 }
 
 .coreshop_icon_settings {
-    background:url(/pimcore/static6/img/flat-color-icons/services.svg) center center no-repeat !important;
+    background:url(../img/services.svg) center center no-repeat !important;
 }

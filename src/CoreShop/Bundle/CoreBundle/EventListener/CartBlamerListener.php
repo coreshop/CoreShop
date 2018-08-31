@@ -12,11 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
+use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
@@ -56,11 +56,11 @@ final class CartBlamerListener
     }
 
     /**
-     * @param GenericEvent $event
+     * @param CustomerRegistrationEvent $event
      */
-    public function onRegisterEvent(GenericEvent $event)
+    public function onRegisterEvent(CustomerRegistrationEvent $event)
     {
-        $user = $event->getSubject();
+        $user = $event->getCustomer();
 
         if (!$user instanceof CustomerInterface) {
             return;
@@ -81,6 +81,14 @@ final class CartBlamerListener
         }
 
         $cart->setCustomer($user);
+
+        if (null === $cart->getShippingAddress()) {
+            $cart->setShippingAddress($user->getDefaultAddress());
+        }
+
+        if (null === $cart->getInvoiceAddress()) {
+            $cart->setInvoiceAddress($user->getDefaultAddress());
+        }
 
         $this->cartManager->persistCart($cart);
     }

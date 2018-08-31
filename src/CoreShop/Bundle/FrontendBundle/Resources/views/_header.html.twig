@@ -1,66 +1,51 @@
 <header id="header-area">
     <div class="header-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-xs-12">
-                    <div class="header-links">
-
-                        <ul class="nav navbar-nav pull-left">
-                            <li>
-                                <a href="{{ path('coreshop_index') }}">
-                                    <i class="fa fa-home hidden-lg hidden-md" title="{{ 'coreshop.ui.home'|trans }}"></i>
-                                    <span class="hidden-sm hidden-xs">
-                                        {{ 'coreshop.ui.home'|trans }}
-                                    </span>
-                                </a>
-                            </li>
-                            {{ render(controller('coreshop.frontend.controller.customer:headerAction')) }}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-xs-12">
-
-                    <div class="pull-right">
-
-                        <div class="btn-group">
-                            <!-- TOOD -->
-                            <a class="btn btn-link" href="#">
-                                {{ 'Compare' }}
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ coreshop_path('coreshop_index') }}">
+                                {{ 'coreshop.ui.home'|trans }}
                             </a>
-                        </div>
-
-                        <div class="btn-group">
-                            <a href="{{ path('coreshop_wishlist_summary') }}" class="btn btn-link">
+                        </li>
+                        {{ render(controller('coreshop.frontend.controller.customer:headerAction')) }}
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ coreshop_path('coreshop_wishlist_summary') }}">
                                 {{ 'coreshop.ui.wishlist'|trans }}
                             </a>
-                        </div>
+                            {{ render(controller('coreshop.frontend.controller.currency:widgetAction')) }}
+                            {{ render(controller('coreshop.frontend.controller.language:widgetAction')) }}
+                        </li>
+                    </ul>
 
-                        {{ render(controller('coreshop.frontend.controller.currency:widgetAction')) }}
-                        {{ render(controller('coreshop.frontend.controller.language:widgetAction')) }}
-
-                    </div>
                 </div>
             </div>
-        </div>
+        </nav>
     </div>
 
     <div class="main-header">
         <div class="container">
             <div class="row">
-
                 {{ render(controller('coreshop.frontend.controller.search:widgetAction')) }}
 
                 <div class="col-md-6">
                     <div id="logo">
-                        <a href="{{ path('coreshop_index') }}">
-                            <img src="/bundles/coreshopfrontend/static/images/logo.png" title="CoreShop" alt="CoreShop" class="img-responsive" />
+                        <a href="{{ coreshop_path('coreshop_index') }}">
+                            <img src="/bundles/coreshopfrontend/static/images/logo.png" title="CoreShop" alt="CoreShop"
+                                 class="img-fluid"/>
                             {{ 'Core<span class="black">Shop</span>' }}
                         </a>
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 p-sm-2">
                     {{ render(controller('coreshop.frontend.controller.cart:widgetAction')) }}
                 </div>
             </div>

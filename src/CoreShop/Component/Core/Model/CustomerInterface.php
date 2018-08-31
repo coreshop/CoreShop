@@ -8,12 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;
 
 interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface
@@ -27,4 +27,34 @@ interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterfa
      * @param AddressInterface $address
      */
     public function setDefaultAddress($address);
+
+    /**
+     * @return boolean
+     */
+    public function getNewsletterActive();
+
+    /**
+     * @param boolean $newsletterActive
+     */
+    public function setNewsletterActive($newsletterActive);
+
+    /**
+     * @return boolean
+     */
+    public function getNewsletterConfirmed();
+
+    /**
+     * @param boolean $newsletterConfirmed
+     */
+    public function setNewsletterConfirmed($newsletterConfirmed);
+
+    /**
+     * @return string
+     */
+    public function getNewsletterToken();
+
+    /**
+     * @param string $newsletterToken
+     */
+    public function setNewsletterToken($newsletterToken);
 }

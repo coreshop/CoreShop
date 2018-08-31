@@ -17,7 +17,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface SaleInterface extends ProposalInterface, PimcoreModelInterface
+interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAdjustableInterface
 {
     /**
      * @param PurchasableInterface $product
@@ -25,16 +25,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @return CartItemInterface|null
      */
     public function getItemForProduct(PurchasableInterface $product);
-
-    /**
-     * @return string
-     */
-    public function getSaleLanguage();
-
-    /**
-     * @param $saleLanguage
-     */
-    public function setSaleLanguage($saleLanguage);
 
     /**
      * @return CurrencyInterface
@@ -54,26 +44,10 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function setTotal($total, $withTax = true);
 
     /**
-     * @param int $totalTax
-     */
-    public function setTotalTax($totalTax);
-
-    /**
      * @param int $subtotal
      * @param bool $withTax
      */
     public function setSubtotal($subtotal, $withTax = true);
-
-    /**
-     * @param int $subtotalTax
-     */
-    public function setSubtotalTax($subtotalTax);
-
-    /**
-     * @param int $shipping
-     * @param bool $withTax
-     */
-    public function setShipping($shipping, $withTax = true);
 
     /**
      * @param int $taxRate
@@ -84,11 +58,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
      * @return int
      */
     public function getShippingTax();
-
-    /**
-     * @param int $shippingTax
-     */
-    public function setShippingTax($shippingTax);
 
     /**
      * @return Carbon
@@ -182,11 +151,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function getBaseTotalTax();
 
     /**
-     * @param int $totalTax
-     */
-    public function setBaseTotalTax($totalTax);
-
-    /**
      * @param bool $withTax
      * @return int
      */
@@ -204,21 +168,10 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function getBaseSubtotalTax();
 
     /**
-     * @param int $subtotalTax
-     */
-    public function setBaseSubtotalTax($subtotalTax);
-
-    /**
      * @param bool $withTax
      * @return int
      */
     public function getBaseDiscount($withTax = true);
-
-    /**
-     * @param int $discount
-     * @param bool $withTax
-     */
-    public function setBaseDiscount($discount, $withTax = true);
 
     /**
      * @return Fieldcollection
@@ -237,18 +190,17 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface
     public function getBaseShipping($withTax = true);
 
     /**
-     * @param int $shipping
-     * @param bool $withTax
-     */
-    public function setBaseShipping($shipping, $withTax = true);
-
-    /**
      * @return int
      */
     public function getBaseShippingTax();
 
     /**
-     * @param int $shippingTax
+     * @return bool
      */
-    public function setBaseShippingTax($shippingTax);
+    public function getBackendCreated();
+
+    /**
+     * @param bool $backendCreated
+     */
+    public function setBackendCreated($backendCreated);
 }

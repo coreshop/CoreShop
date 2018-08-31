@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\Event;
 
@@ -50,8 +50,8 @@ class ResourceControllerEvent extends GenericEvent
     /**
      * @param string $message
      * @param string $type
-     * @param array  $parameters
-     * @param int    $errorCode
+     * @param array $parameters
+     * @param int $errorCode
      */
     public function stop($message, $type = self::TYPE_ERROR, $parameters = [], $errorCode = 500)
     {

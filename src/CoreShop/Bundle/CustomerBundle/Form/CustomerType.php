@@ -12,24 +12,49 @@
 
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
-use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerType extends AbstractResourceType
 {
+    /**
+     * @var string[]
+     */
+    protected $guestValidationGroups = [];
+
+    /**
+     * @param string $dataClass FQCN
+     * @param string[] $validationGroups
+     * @param string[] $guestValidationGroups
+     */
+    public function __construct($dataClass, array $validationGroups = [], array $guestValidationGroups = [])
+    {
+        parent::__construct($dataClass, $validationGroups);
+
+        $this->guestValidationGroups = $guestValidationGroups;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('gender', ChoiceType::class, [
+                'label' => 'coreshop.form.customer.gender',
+                'choices' => array(
+                    'coreshop.form.customer.gender.male' => 'male',
+                    'coreshop.form.customer.gender.female' => 'female'
+                ),
+            ])
             ->add('firstname', TextType::class, [
                 'label' => 'coreshop.form.customer.firstname'
             ])
@@ -38,44 +63,27 @@ class CustomerType extends AbstractResourceType
             ])
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
+                'invalid_message' => 'coreshop.form.customer.email.must_match',
                 'first_options' => ['label' => 'coreshop.form.customer.email'],
                 'second_options' => ['label' => 'coreshop.form.customer.email_repeat']
             ]);
 
-        if (!$options['guest']) {
+        if (!$options['guest'] && $options['allow_password_field']) {
             $builder
                 ->add('password', RepeatedType::class, [
                     'type' => PasswordType::class,
+                    'invalid_message' => 'coreshop.form.customer.password.must_match',
                     'first_options' => ['label' => 'coreshop.form.customer.password'],
                     'second_options' => ['label' => 'coreshop.form.customer.password_repeat']
                 ]);
         }
 
-        if ($options['allow_default_address'] && $options['customer']) {
-            $builder->add('defaultAddress', AddressChoiceType::class, [
-                'customer' => $options['customer'],
-                'label' => 'coreshop.form.customer.default_address',
-            ]);
-        }
-
-        $builder
-            ->add('gender', ChoiceType::class, [
-                'label' => 'coreshop.form.customer.gender',
-                'choices' => array(
-                    'coreshop.form.customer.gender.male' => 'male',
-                    'coreshop.form.customer.gender.female' => 'female'
-                ),
-            ]);
 
         if (!$options['guest']) {
             $builder
-                ->add('newsletterActive', ChoiceType::class, [
-                    'label' => 'coreshop.form.customer.newsletter',
-                    'choices' => array(
-                        'coreshop.form.customer.newsletter.subscribe' => true,
-                        'coreshop.form.customer.gender.un_subscribe' => false
-                    ),
-                    'expanded' => true
+                ->add('newsletterActive', CheckboxType::class, [
+                    'label' => 'coreshop.form.customer.newsletter.subscribe',
+                    'required' => false,
                 ]);
         }
     }
@@ -88,8 +96,21 @@ class CustomerType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefault('guest', false);
-        $resolver->setDefault('allow_default_address', false);
+        $resolver->setDefault('allow_password_field', false);
         $resolver->setDefault('customer', false);
+        $resolver->setDefaults(array(
+            'validation_groups' => function (FormInterface $form) {
+                $isGuest = $form->getConfig()->getOption('guest');
+                $validationGroups = $this->validationGroups;
+
+                if ($isGuest) {
+                    return $this->guestValidationGroups;
+                }
+
+                return $validationGroups;
+            },
+        ));
+
     }
 
     /**

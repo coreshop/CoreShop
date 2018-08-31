@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Model;
 
@@ -49,16 +49,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param int $wholesalePrice
      */
     public function setWholesalePrice($wholesalePrice);
-
-    /**
-     * @return mixed
-     */
-    public function getAvailableForOrder();
-
-    /**
-     * @param $availableForOrder
-     */
-    public function setAvailableForOrder($availableForOrder);
 
     /**
      * @return CategoryInterface[]
@@ -104,20 +94,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param string $ean
      */
     public function setEan($ean);
-
-    /**
-     * @deprecated has been refactored and now uses the Inventory Bundle
-     * @deprecated To be removed with 2.0.0-Beta.1
-     * @return bool
-     */
-    public function getIsAvailableWhenOutOfStock();
-
-    /**
-     * @deprecated has been refactored and now uses the Inventory Bundle
-     * @deprecated To be removed with 2.0.0-Beta.1
-     * @param bool $isAvailableWhenOutOfStock
-     */
-    public function setIsAvailableWhenOutOfStock($isAvailableWhenOutOfStock);
 
     /**
      * @return ProductInterface

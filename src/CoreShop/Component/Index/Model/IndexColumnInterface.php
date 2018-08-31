@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Model;
 
@@ -100,6 +100,11 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
     public function setObjectType($objectType);
 
     /**
+     * @return bool
+     */
+    public function hasGetter();
+
+    /**
      * @return string
      */
     public function getGetter();
@@ -128,6 +133,11 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
      * @param string $dataType
      */
     public function setDataType($dataType);
+
+    /**
+     * @return bool
+     */
+    public function hasInterpreter();
 
     /**
      * @return string

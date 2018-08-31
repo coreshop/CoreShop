@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
@@ -47,11 +47,10 @@ class IndexType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('worker', IndexWorkerChoiceType::class)
             ->add('class', PimcoreClassChoiceType::class)
-            ->add('columns', IndexColumnCollectionType::class)
-        ;
+            ->add('columns', IndexColumnCollectionType::class);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -59,7 +58,7 @@ class IndexType extends AbstractResourceType
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -67,7 +66,7 @@ class IndexType extends AbstractResourceType
 
                 $event->getForm()->get('worker')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
                 $data = $event->getData();
 
                 if (!isset($data['worker'])) {
@@ -75,13 +74,12 @@ class IndexType extends AbstractResourceType
                 }
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['worker'], 'default'));
-            })
-        ;
+            });
     }
 
     /**
      * @param FormInterface $form
-     * @param string        $configurationType
+     * @param string $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -90,7 +88,7 @@ class IndexType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed         $data
+     * @param mixed $data
      *
      * @return string|null
      */

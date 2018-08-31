@@ -8,12 +8,12 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Getter;
 
-use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 class FieldCollectionGetter implements GetterInterface
@@ -30,7 +30,7 @@ class FieldCollectionGetter implements GetterInterface
         $collectionContainerGetter = 'get'.ucfirst($collectionField);
         $collectionContainer = $object->$collectionContainerGetter();
         $validItems = [];
-        $fieldGetter = 'get'.ucfirst($columnConfig['key']);
+        $fieldGetter = 'get'.ucfirst($config->getObjectKey());
 
         if ($collectionContainer instanceof Fieldcollection) {
             foreach ($collectionContainer->getItems() as $item) {

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
@@ -61,12 +61,15 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     public function load(ObjectManager $manager)
     {
         if (!count($this->container->get('coreshop.repository.tax_rule_group')->findAll())) {
+            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
+
             /**
              * @var $taxRuleGroup TaxRuleGroupInterface
              */
             $taxRuleGroup = $this->container->get('coreshop.factory.tax_rule_group')->createNew();
             $taxRuleGroup->setName('AT');
             $taxRuleGroup->setActive(true);
+            $taxRuleGroup->addStore($defaultStore);
 
             /**
              * @var $taxRule TaxRuleInterface

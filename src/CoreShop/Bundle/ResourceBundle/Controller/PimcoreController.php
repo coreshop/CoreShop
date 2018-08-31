@@ -63,7 +63,7 @@ class PimcoreController extends AdminController
         if ($this->getPermission()) {
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
 
-            if ($user->getPermission($this->getPermission())) {
+            if ($user->isAllowed($this->getPermission())) {
                 return;
             }
 

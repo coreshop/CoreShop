@@ -1,11 +1,11 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
-{% set href = path('coreshop_product_detail', {name: product.getName, product: product.getId}) %}
+{% set href = coreshop_path(product, 'coreshop_product_detail') %}
 
 <div class="product-col">
     <div class="image">
         {% if product.getImage() %}
             <a href="{{ href }}">
-                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-responsive', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
+                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-fluid', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
             </a>
         {% endif %}
     </div>
@@ -21,10 +21,13 @@
 
         {% if coreshop_inventory_is_available(product) %}
         <div class="cart-button">
-            <a href="{{ path('coreshop_cart_add', {product: product.id}) }}" type="button" class="btn btn-cart" rel="nofollow">
-                {{ 'coreshop.ui.add_to_cart'|trans }}
-                <i class="fa fa-shopping-cart"></i>
-            </a>
+            <form action="{{ coreshop_path(coreshop.cart, 'coreshop_cart_add', {product: product.id}) }}" method="post">
+                <button type="submit" class="btn btn-cart"
+                   rel="nofollow">
+                    {{ 'coreshop.ui.add_to_cart'|trans }}
+                    <i class="fa fa-shopping-cart"></i>
+                </button>
+            </form>
         </div>
         {% endif %}
     </div>

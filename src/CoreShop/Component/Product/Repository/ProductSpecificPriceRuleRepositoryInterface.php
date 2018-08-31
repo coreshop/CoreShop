@@ -8,15 +8,16 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Product\Repository;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
-interface ProductSpecificPriceRuleRepositoryInterface extends RepositoryInterface
+interface ProductSpecificPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
     /**
      * @param ProductInterface $product

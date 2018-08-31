@@ -13,26 +13,12 @@
 namespace CoreShop\Bundle\PayumBundle\Action;
 
 use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use Payum\Core\Action\ActionInterface;
 
 final class ResolveNextRouteAction implements ActionInterface
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     */
-    public function __construct(OrderRepositoryInterface $orderRepository)
-    {
-        $this->orderRepository = $orderRepository;
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -42,11 +28,11 @@ final class ResolveNextRouteAction implements ActionInterface
     {
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
-        $order = $this->orderRepository->find($payment->getOrderId());
+        $order = $payment->getOrder();
 
         if ($order instanceof OrderInterface) {
             $request->setRouteParameters([
-                '_locale' => $order->getOrderLanguage()
+                '_locale' => $order->getLocaleCode()
             ]);
 
             if (

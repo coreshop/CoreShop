@@ -93,7 +93,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
     }
-    
+
     /**
      * @param ArrayNodeDefinition $node
      */

@@ -16,6 +16,7 @@ final class OrderStates
 {
     const STATE_INITIALIZED = 'initialized';
     const STATE_NEW = 'new';
+    const STATE_CONFIRMED = 'confirmed';
     const STATE_CANCELLED = 'cancelled';
     const STATE_COMPLETE = 'complete';
 }

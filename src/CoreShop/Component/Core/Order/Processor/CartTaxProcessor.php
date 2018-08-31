@@ -68,17 +68,6 @@ final class CartTaxProcessor implements CartProcessorInterface
 
         $fieldCollection = new Fieldcollection();
         $fieldCollection->setItems($usedTaxes);
-
-        if ($cart->getDiscountPercentage() > 0) {
-            foreach ($usedTaxes as $taxItem) {
-                if (!$taxItem instanceof TaxItemInterface) {
-                    continue;
-                }
-
-                $taxItem->setAmount($taxItem->getAmount() - ($taxItem->getAmount() * $cart->getDiscountPercentage()));
-            }
-        }
-
         $cart->setTaxes($fieldCollection);
     }
 
@@ -94,6 +83,10 @@ final class CartTaxProcessor implements CartProcessorInterface
         }
 
         if (null === $cart->getCarrier()) {
+            return $usedTaxes;
+        }
+
+        if (null === $cart->getShippingAddress()) {
             return $usedTaxes;
         }
 

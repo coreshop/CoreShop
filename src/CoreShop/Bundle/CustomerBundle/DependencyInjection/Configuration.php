@@ -37,7 +37,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        $this->addImplementations($rootNode);
+        $this->addStack($rootNode);
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -47,9 +47,9 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addImplementations(ArrayNodeDefinition $node) {
+    private function addStack(ArrayNodeDefinition $node) {
         $node->children()
-            ->arrayNode('implementations')
+            ->arrayNode('stack')
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('customer')->defaultValue(CustomerInterface::class)->cannotBeEmpty()->end()
@@ -116,9 +116,9 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
-     /**
-     * @param ArrayNodeDefinition $node
-     */
+        /**
+         * @param ArrayNodeDefinition $node
+         */
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()
@@ -142,7 +142,11 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
                         ->children()
-                            ->scalarNode('admin_translations')->defaultValue(['@CoreShopCustomerBundle/Resources/install/pimcore/admin-translations.yml'])->end()
+                            ->arrayNode('admin_translations')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopCustomerBundle/Resources/install/pimcore/admin-translations.yml'])
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

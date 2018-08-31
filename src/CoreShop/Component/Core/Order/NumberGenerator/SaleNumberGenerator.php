@@ -8,13 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Core\Order\NumberGenerator;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Order\Model\OrderDocumentInterface;
+use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
@@ -57,6 +61,20 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
      */
     public function generate(ResourceInterface $model)
     {
-        return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey));
+        $store = null;
+
+        if ($model instanceof SaleInterface) {
+            $store = $model->getStore();
+        } else if ($model instanceof OrderDocumentInterface) {
+            $store = $model->getOrder()->getStore();
+        } else if ($model instanceof StoreAwareInterface) {
+            $store = $model->getStore();
+        }
+
+        if ($store instanceof StoreInterface) {
+            return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey, $store), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey, $store));
+        }
+
+        return $this->numberGenerator->generate($model);
     }
 }

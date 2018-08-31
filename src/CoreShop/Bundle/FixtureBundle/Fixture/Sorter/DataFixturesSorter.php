@@ -29,10 +29,10 @@ final class DataFixturesSorter
      */
     public function sort(array $fixtures)
     {
-        $this->fixtures        = $fixtures;
+        $this->fixtures = $fixtures;
         $this->orderedFixtures = [];
 
-        $usePrioritySorting     = $this->usePrioritySorting($fixtures);
+        $usePrioritySorting = $this->usePrioritySorting($fixtures);
         $useDependenciesSorting = $this->useDependenciesSorting($fixtures);
 
 
@@ -61,7 +61,7 @@ final class DataFixturesSorter
         $this->orderedFixtures = $this->fixtures;
         usort(
             $this->orderedFixtures,
-            function ($a, $b) {
+            function($a, $b) {
                 if ($a instanceof OrderedFixtureInterface && $b instanceof OrderedFixtureInterface) {
                     if ($a->getOrder() === $b->getOrder()) {
                         return 0;
@@ -100,7 +100,7 @@ final class DataFixturesSorter
         if ($usedPrioritySorting) {
             $this->orderedFixtures = array_filter(
                 $this->orderedFixtures,
-                function ($fixture) {
+                function($fixture) {
                     return $fixture instanceof OrderedFixtureInterface;
                 }
             );
@@ -126,14 +126,14 @@ final class DataFixturesSorter
         }
 
         // Now we order fixtures by sequence
-        $sequence  = 1;
+        $sequence = 1;
         $lastCount = -1;
 
         while (($count = count($unsequencedClasses = $this->getUnsequencedClasses($sequenceForClasses))) > 0
             && $count !== $lastCount) {
             foreach ($unsequencedClasses as $key => $class) {
-                $fixture                 = $this->fixtures[$class];
-                $dependencies            = $fixture->getDependencies();
+                $fixture = $this->fixtures[$class];
+                $dependencies = $fixture->getDependencies();
                 $unsequencedDependencies = $this->getUnsequencedClasses($sequenceForClasses, $dependencies);
 
                 if (count($unsequencedDependencies) === 0) {
@@ -168,7 +168,7 @@ final class DataFixturesSorter
 
     /**
      * @param string $fixtureClass
-     * @param mixed  $dependenciesClasses
+     * @param mixed $dependenciesClasses
      *
      * @return bool
      */
@@ -207,7 +207,7 @@ final class DataFixturesSorter
     }
 
     /**
-     * @param array      $sequences
+     * @param array $sequences
      * @param null|array $classes
      *
      * @return array

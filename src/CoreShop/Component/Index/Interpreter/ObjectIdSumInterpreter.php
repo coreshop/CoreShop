@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Interpreter;
 
+use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use Pimcore\Model\Element\ElementInterface;
 
@@ -20,13 +21,13 @@ class ObjectIdSumInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexColumnInterface $config = null)
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
         $sum = 0;
         if (is_array($value)) {
-            foreach ($value as $object) {
-                if ($object instanceof ElementInterface) {
-                    $sum += $object->getId();
+            foreach ($value as $indexable) {
+                if ($indexable instanceof ElementInterface) {
+                    $sum += $indexable->getId();
                 }
             }
         }

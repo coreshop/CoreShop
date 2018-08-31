@@ -29,7 +29,7 @@ class QuoteCreationController extends AbstractSaleCreationController
      */
     protected function afterSaleCreation(ProposalInterface $sale)
     {
-
+        return [];
     }
 
     /**

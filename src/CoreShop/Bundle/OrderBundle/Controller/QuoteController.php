@@ -16,7 +16,7 @@ use Pimcore\Model\DataObject;
 
 class QuoteController extends AbstractSaleDetailController
 {
-     /**
+    /**
      * @return mixed
      * @throws \Exception
      */
@@ -27,13 +27,13 @@ class QuoteController extends AbstractSaleDetailController
         $name = null;
         $folderId = null;
 
-        $orderClassId = $this->getParameter('coreshop.model.quote.pimcore_class_id');
+        $orderClassId = $this->getParameter('coreshop.model.quote.pimcore_class_name');
         $folderPath = $this->getParameter('coreshop.folder.quote');
-        $orderClassDefinition = DataObject\ClassDefinition::getById($orderClassId);
+        $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
-        $folder = DataObject::getByPath('/' . $folderPath);
+        $folder = DataObject::getByPath('/'.$folderPath);
 
-        if($folder instanceof DataObject\Folder) {
+        if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
         }
 
@@ -66,7 +66,7 @@ class QuoteController extends AbstractSaleDetailController
      */
     protected function getSaleClassName()
     {
-        return 'coreshop.model.quote.pimcore_class_id';
+        return 'coreshop.model.quote.pimcore_class_name';
     }
 
     /**

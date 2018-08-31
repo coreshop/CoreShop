@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 interface DriverInterface
 {
     /**
-     * @param ContainerBuilder  $container
+     * @param ContainerBuilder $container
      * @param MetadataInterface $metadata
      */
     public function load(ContainerBuilder $container, MetadataInterface $metadata);

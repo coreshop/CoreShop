@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Notification\Processor;
 
@@ -35,14 +35,15 @@ class RulesProcessor implements RulesProcessorInterface
 
     /**
      * @param NotificationRuleRepositoryInterface $ruleRepository
-     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
-     * @param RuleApplierInterface                $ruleApplier
+     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param RuleApplierInterface $ruleApplier
      */
     public function __construct(
         NotificationRuleRepositoryInterface $ruleRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         RuleApplierInterface $ruleApplier
-    ) {
+    )
+    {
         $this->ruleRepository = $ruleRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->ruleApplier = $ruleApplier;
@@ -59,7 +60,7 @@ class RulesProcessor implements RulesProcessorInterface
          * @var $rule NotificationRuleInterface
          */
         foreach ($rules as $rule) {
-            if ($rule->getActive() && $this->ruleValidationProcessor->isValid(['subject' => $subject, 'params' => $params], $rule)) {
+            if ($this->ruleValidationProcessor->isValid($subject, $rule, ['params' => $params])) {
                 $this->ruleApplier->applyRule($rule, $subject, $params);
             }
         }

@@ -5,8 +5,7 @@ namespace CoreShop\Bundle\PayumBundle\Extension;
 use CoreShop\Bundle\PayumBundle\Request\GetStatus;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Component\Resource\Workflow\StateMachineManager;
-use Doctrine\ORM\EntityManagerInterface;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\Generic;
@@ -21,18 +20,11 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
     private $stateMachineManager;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @param StateMachineManager $stateMachineManager
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(StateMachineManager $stateMachineManager, EntityManagerInterface $entityManager)
+    public function __construct(StateMachineManager $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -92,8 +84,6 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
         $value = $status->getValue();
         if ($payment->getState() !== $value && PaymentInterface::STATE_UNKNOWN !== $value) {
             $this->updatePaymentState($payment, $value);
-            $this->entityManager->persist($payment);
-            $this->entityManager->flush();
         }
     }
 

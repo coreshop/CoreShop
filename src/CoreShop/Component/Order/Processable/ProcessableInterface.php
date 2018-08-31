@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Processable;
 
@@ -36,4 +36,11 @@ interface ProcessableInterface
      * @return bool
      */
     public function isFullyProcessed(OrderInterface $order);
+
+    /**
+     * @param OrderInterface $order
+     *
+     * @return bool
+     */
+    public function isProcessable(OrderInterface $order);
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Registry;
 
@@ -35,8 +35,8 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Add new item to map.
      *
-     * @param string $key      name
-     * @param string $value    value
+     * @param string $key name
+     * @param string $value value
      * @param int $priority priority
      *
      * @return PriorityMap

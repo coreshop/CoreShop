@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CustomerBundle\Pimcore\Repository;
 
@@ -24,6 +24,22 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     {
         $list = $this->getList();
         $list->setCondition('passwordResetHash = ?', [$resetToken]);
+        $objects = $list->load();
+
+        if (count($objects) === 1) {
+            return $objects[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByNewsletterToken($newsletterToken)
+    {
+        $list = $this->getList();
+        $list->setCondition('newsletterToken = ?', [$newsletterToken]);
         $objects = $list->load();
 
         if (count($objects) === 1) {

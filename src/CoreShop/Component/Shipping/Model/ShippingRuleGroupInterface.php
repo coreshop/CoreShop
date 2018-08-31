@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Model;
 
@@ -36,6 +36,16 @@ interface ShippingRuleGroupInterface extends ResourceInterface, TimestampableInt
      * @param int $priority
      */
     public function setPriority($priority);
+
+    /**
+     * @return bool
+     */
+    public function getStopPropagation();
+
+    /**
+     * @param bool $stopPropagation
+     */
+    public function setStopPropagation($stopPropagation);
 
     /**
      * @return ShippingRuleInterface

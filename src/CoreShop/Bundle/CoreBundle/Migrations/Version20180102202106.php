@@ -3,7 +3,7 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
-use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Product\Model\ProductInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
@@ -20,69 +20,69 @@ class Version20180102202106 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionFieldNotFoundException
+     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
      * @throws \Exception
      */
     public function up(Schema $schema)
     {
         $objectIdField = [
-            'fieldtype'        => 'numeric',
-            'width'            => '',
-            'defaultValue'     => null,
-            'queryColumnType'  => 'double',
-            'columnType'       => 'double',
-            'phpdocType'       => 'float',
-            'integer'          => false,
-            'unsigned'         => false,
-            'minValue'         => null,
-            'maxValue'         => null,
-            'unique'           => false,
-            'decimalSize'      => null,
+            'fieldtype' => 'numeric',
+            'width' => '',
+            'defaultValue' => null,
+            'queryColumnType' => 'double',
+            'columnType' => 'double',
+            'phpdocType' => 'float',
+            'integer' => false,
+            'unsigned' => false,
+            'minValue' => null,
+            'maxValue' => null,
+            'unique' => false,
+            'decimalSize' => null,
             'decimalPrecision' => null,
-            'name'             => 'objectId',
-            'title'            => 'Object Id',
-            'tooltip'          => '',
-            'mandatory'        => false,
-            'noteditable'      => true,
-            'index'            => false,
-            'locked'           => null,
-            'style'            => '',
-            'permissions'      => null,
-            'datatype'         => 'data',
-            'relationType'     => false,
-            'invisible'        => false,
-            'visibleGridView'  => false,
-            'visibleSearch'    => false,
+            'name' => 'objectId',
+            'title' => 'Object Id',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
         ];
 
         $mainObjectIdField = [
-            'fieldtype'        => 'numeric',
-            'width'            => '',
-            'defaultValue'     => null,
-            'queryColumnType'  => 'double',
-            'columnType'       => 'double',
-            'phpdocType'       => 'float',
-            'integer'          => false,
-            'unsigned'         => false,
-            'minValue'         => null,
-            'maxValue'         => null,
-            'unique'           => false,
-            'decimalSize'      => null,
+            'fieldtype' => 'numeric',
+            'width' => '',
+            'defaultValue' => null,
+            'queryColumnType' => 'double',
+            'columnType' => 'double',
+            'phpdocType' => 'float',
+            'integer' => false,
+            'unsigned' => false,
+            'minValue' => null,
+            'maxValue' => null,
+            'unique' => false,
+            'decimalSize' => null,
             'decimalPrecision' => null,
-            'name'             => 'mainObjectId',
-            'title'            => 'Main Object Id',
-            'tooltip'          => '',
-            'mandatory'        => false,
-            'noteditable'      => true,
-            'index'            => false,
-            'locked'           => null,
-            'style'            => '',
-            'permissions'      => null,
-            'datatype'         => 'data',
-            'relationType'     => false,
-            'invisible'        => false,
-            'visibleGridView'  => false,
-            'visibleSearch'    => false,
+            'name' => 'mainObjectId',
+            'title' => 'Main Object Id',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
         ];
 
         $orderItem = $this->container->getParameter('coreshop.model.order_item.pimcore_class_name');

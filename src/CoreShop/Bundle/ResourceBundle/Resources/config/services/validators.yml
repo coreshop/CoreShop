@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.validator.unique_entity:
+        class: CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntityValidator
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop.unique_entity }

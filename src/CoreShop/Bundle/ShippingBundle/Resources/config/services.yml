@@ -1,16 +1,20 @@
 imports:
     - { resource: "services/form.yml" }
     - { resource: "services/shipping-rules.yml" }
+    - { resource: "services/pimcore.yml" }
 
 services:
+    _defaults:
+        public: true
+
   # Carrier Validator
     coreshop.shipping.carrier.validator.composite:
         class: CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator
         public: false
 
     # Carrier Processor
-    coreshop.carrier.discovery:
-        class: CoreShop\Component\Shipping\Discover\ShippableCarriersDiscovery
+    coreshop.carrier.resolver:
+        class: CoreShop\Component\Shipping\Resolver\CarriersResolver
         arguments:
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'
@@ -39,3 +43,9 @@ services:
         class: CoreShop\Component\Shipping\Calculator\CompositePriceCalculator
         arguments:
             - ['@coreshop.carrier.price_calculator']
+
+    coreshop.shipping.default_resolver.cheapest:
+        class: CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver
+        arguments:
+            - '@coreshop.carrier.resolver'
+            - '@coreshop.carrier.price_calculator'

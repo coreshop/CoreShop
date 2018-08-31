@@ -1,0 +1,17 @@
+{% if conditions|length > 0 %}
+<div class="list-group">
+    {% if label %}
+    <div class="list-group-item">
+        {{ label|trans }}
+    </div>
+    {% endif %}
+
+    <div class="list-group-item">
+        <div class="filter-group">
+            {% for condition in conditions %}
+                {% include '@CoreShopFrontend/Category/filter/_'~condition['type']~'.html.twig' with condition only %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

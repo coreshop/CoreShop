@@ -3,6 +3,9 @@ parameters:
     coreshop.form.type.exchange_rate.validation_groups: [coreshop]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.currency_choice:
         class: CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType
         arguments:

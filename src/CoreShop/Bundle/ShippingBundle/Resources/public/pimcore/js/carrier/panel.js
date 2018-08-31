@@ -19,7 +19,7 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_carriers_panel',
     storeId: 'coreshop_carriers',
     iconCls: 'coreshop_icon_carriers',
-    type: 'carriers',
+    type: 'coreshop_carriers',
 
     url: {
         add: '/admin/coreshop/carriers/add',
@@ -28,8 +28,11 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
         list: '/admin/coreshop/carriers/list'
     },
 
-
     getItemClass: function() {
         return coreshop.carrier.item;
+    },
+
+    getDefaultGridDisplayColumnName: function() {
+        return 'identifier';
     }
 });

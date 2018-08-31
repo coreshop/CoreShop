@@ -3,10 +3,12 @@
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
 {% block center %}
-    <ol class="breadcrumb">
-        <li><a href="{{ path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-        <li class="active">{{ 'coreshop.ui.search'|trans }}</li>
-    </ol>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+            <li class="breadcrumb-item active">{{ 'coreshop.ui.search'|trans }}</li>
+        </ol>
+    </nav>
 
     <h2 class="main-heading2">
         {{ 'coreshop.ui.search_results_for'|trans }} {{ searchText }}

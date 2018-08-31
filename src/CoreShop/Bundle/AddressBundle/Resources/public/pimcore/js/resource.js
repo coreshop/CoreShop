@@ -73,4 +73,6 @@ coreshop.address.resource = Class.create(coreshop.resource, {
     }
 });
 
-new coreshop.address.resource();
+coreshop.broker.addListener('pimcore.ready', function() {
+    new coreshop.address.resource();
+});

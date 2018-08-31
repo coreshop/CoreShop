@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
@@ -36,6 +37,7 @@ trait CoreSaleCreationTrait
         $shippingAddressId = $request->get("shippingAddress");
         $invoiceAddressId = $request->get("invoiceAddress");
         $storeId = $request->get('store');
+        $language = $request->get('language');
 
         /**
          * @var $currency CurrencyInterface
@@ -73,10 +75,13 @@ trait CoreSaleCreationTrait
         /**
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
-        $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $productIds);
-        $this->get('coreshop.cart.manager')->persistCart($cart);
+        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $store) {
+            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+            $this->get('coreshop.cart_processor')->process($cart);
 
-        $carriers = $this->get('coreshop.carrier.discovery')->discoverCarriers($cart, $cart->getShippingAddress());
+            return $cart;
+        });
+        $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());
 
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
 
@@ -90,13 +95,11 @@ trait CoreSaleCreationTrait
 
             $result[] = [
                 'id' => $carrier->getId(),
-                'name' => $carrier->getName(),
+                'name' => $carrier->getIdentifier(),
                 'price' => $price,
                 'priceFormatted' => $priceFormatted
             ];
         }
-
-        $cart->delete();
 
         return $this->viewHandler->handle(['success' => true, 'carriers' => $result]);
     }
@@ -141,7 +144,7 @@ trait CoreSaleCreationTrait
             $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
 
             if (!$carrier instanceof CarrierInterface) {
-                throw new \InvalidArgumentException('Carrier with ID ' . $carrierId . ' not found');
+                throw new \InvalidArgumentException('Carrier with ID '.$carrierId.' not found');
             }
 
             $cart->setCarrier($carrier);

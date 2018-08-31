@@ -12,6 +12,7 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
 {
     use StoreAwareTrait;
     use CurrencyAwareTrait;
+    use AdjustableTrait;
 
     /**
      * {@inheritdoc}
@@ -50,7 +51,7 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
             }
         }
 
-        $this->setItems($items);
+        $this->setItems(array_values($items));
     }
 
     /**
@@ -221,5 +222,30 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     public function setAdditionalData($additionalData)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocaleCode()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocaleCode($localeCode)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateAfterAdjustmentChange()
+    {
+
     }
 }

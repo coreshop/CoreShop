@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Transformer;
 
@@ -19,9 +19,9 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
-use CoreShop\Component\Pimcore\VersionHelper;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
-use CoreShop\Component\Resource\Pimcore\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use Webmozart\Assert\Assert;
@@ -70,13 +70,13 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer
-     * @param ItemKeyTransformerInterface           $keyTransformer
-     * @param NumberGeneratorInterface              $numberGenerator
-     * @param string                                $shipmentFolderPath
-     * @param ObjectServiceInterface                $objectService
-     * @param PimcoreRepositoryInterface            $orderItemRepository
-     * @param PimcoreFactoryInterface               $shipmentItemFactory
-     * @param TransformerEventDispatcherInterface   $eventDispatcher
+     * @param ItemKeyTransformerInterface $keyTransformer
+     * @param NumberGeneratorInterface $numberGenerator
+     * @param string $shipmentFolderPath
+     * @param ObjectServiceInterface $objectService
+     * @param PimcoreRepositoryInterface $orderItemRepository
+     * @param PimcoreFactoryInterface $shipmentItemFactory
+     * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
@@ -87,7 +87,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $shipmentItemFactory,
         TransformerEventDispatcherInterface $eventDispatcher
-    ) {
+    )
+    {
         $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -113,6 +114,8 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         $shipmentFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), $this->shipmentFolderPath));
 
+        $shipment->setOrder($order);
+
         $shipmentNumber = $this->numberGenerator->generate($shipment);
 
         /**
@@ -124,13 +127,12 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipment->setParent($shipmentFolder);
         $shipment->setPublished(true);
         $shipment->setShipmentDate(Carbon::now());
-        $shipment->setOrder($order);
         $shipment->setWeight($order->getWeight());
 
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function () use ($shipment) {
+        VersionHelper::useVersioning(function() use ($shipment) {
             $shipment->save();
         }, false);
         $items = [];
@@ -149,7 +151,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         }
 
         $shipment->setItems($items);
-        VersionHelper::useVersioning(function () use ($shipment) {
+        VersionHelper::useVersioning(function() use ($shipment) {
             $shipment->save();
         }, false);
 

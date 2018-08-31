@@ -17,7 +17,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
     layoutId: 'coreshop_indexes_panel',
     storeId: 'coreshop_indexes',
     iconCls: 'coreshop_icon_indexes',
-    type: 'indexes',
+    type: 'coreshop_indexes',
 
     url: {
         add: '/admin/coreshop/indices/add',
@@ -56,12 +56,24 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
     },
 
     getConfig: function () {
+        var modelName = 'coreshop.model.index.interpreter';
+
+        if (!Ext.ClassManager.get(modelName)) {
+            Ext.define(modelName, {
+                    extend: 'Ext.data.Model',
+                    fields: ['type', 'name', 'localized', 'relation'],
+                    idProperty: 'type'
+                }
+            );
+        }
+
         this.getterStore = new Ext.data.JsonStore({
             data: []
         });
 
         this.interpreterStore = new Ext.data.JsonStore({
-            data: []
+            data: [],
+            model: modelName
         });
 
         this.fieldTypeStore = new Ext.data.JsonStore({
@@ -98,7 +110,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
         });
     },
 
-    getItemClass: function() {
+    getItemClass: function () {
         return coreshop.index.item;
     }
 });

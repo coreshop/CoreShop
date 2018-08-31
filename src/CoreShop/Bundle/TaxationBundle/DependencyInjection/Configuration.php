@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\TaxationBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\TaxationBundle\Controller\TaxRuleGroupController;
+use CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRateRepository;
+use CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRuleRepository;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateTranslationType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateType;
 use CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType;
@@ -78,7 +80,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(TaxRateInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(TaxRateRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(TaxRateType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
@@ -128,7 +130,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(TaxRule::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(TaxRuleInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(TaxRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(TaxRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
@@ -191,6 +193,14 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('tax_item')->defaultValue('/bundles/coreshoptaxation/pimcore/css/taxation.css')->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('editmode_js')
+                        ->addDefaultsIfNotSet()
+                        ->ignoreExtraKeys(false)
+                        ->children()
+                            ->scalarNode('core_extension_document_tag_tax_rate')->defaultValue('/bundles/coreshoptaxation/pimcore/js/coreExtension/document/coreShopTaxRate.js')->end()
+                            ->scalarNode('core_extension_document_tag_tax_rule_group')->defaultValue('/bundles/coreshoptaxation/pimcore/js/coreExtension/document/coreShopTaxRuleGroup.js')->end()
                         ->end()
                     ->end()
                     ->scalarNode('permissions')

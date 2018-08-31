@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
@@ -32,6 +32,8 @@ final class CoreShopShippingExtension extends AbstractModelExtension
         if (array_key_exists('pimcore_admin', $config)) {
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
+
+        $container->setAlias('coreshop.carrier.default_resolver', $config['default_resolver']);
 
         $loader->load('services.yml');
     }

@@ -8,18 +8,21 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\ResourceBundle;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Exception\UnknownDriverException;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use PackageVersions\Versions;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-abstract class AbstractResourceBundle extends Bundle implements ResourceBundleInterface
+abstract class AbstractResourceBundle extends Bundle implements ResourceBundleInterface, DependentBundleInterface
 {
     /**
      * Configure format of mapping files.
@@ -67,6 +70,42 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        $collection->addBundle(new CoreShopResourceBundle(), 3800);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersion()
+    {
+        if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion()." (".$this->getComposerVersion().")";
+        }
+
+        return $this->getComposerVersion();
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerVersion()
+    {
+        $version = '';
+
+        if ($this instanceof ComposerPackageBundleInterface && isset(Versions::VERSIONS[$this->getPackageName()])) {
+            $version = Versions::getVersion($this->getPackageName());
+        } else if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+            $version = Versions::getVersion('coreshop/core-shop');
+        }
+
+        return $version;
     }
 
     /**

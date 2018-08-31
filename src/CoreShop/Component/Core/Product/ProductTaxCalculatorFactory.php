@@ -66,6 +66,6 @@ class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterfac
             return $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
         }
 
-        throw new \InvalidArgumentException('Product has no valid TaxRuleGroup');
+        throw new \InvalidArgumentException(sprintf('Product %s has no valid TaxRuleGroup', $product->getId()));
     }
 }

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.listeners.index.post_save:
         class: CoreShop\Bundle\IndexBundle\EventListener\CreateIndexListener
         arguments:

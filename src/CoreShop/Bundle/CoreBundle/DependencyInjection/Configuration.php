@@ -12,7 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
+use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStorePriceRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Core\Model\ProductStorePrice;
+use CoreShop\Component\Core\Model\ProductStorePriceInterface;
+use CoreShop\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -32,12 +36,45 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->scalarNode('send_usage_log')->defaultValue(true)->end()
                 ->scalarNode('checkout_manager_factory')->cannotBeEmpty()->end()
+                ->scalarNode('after_logout_redirect_route')->defaultValue('coreshop_index')->cannotBeEmpty()->end()
             ->end()
         ;
+        $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCheckoutConfigurationSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addModelsSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('resources')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('product_store_price')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(ProductStorePrice::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ProductStorePriceInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ProductStorePriceRepository::class)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
     }
 
     /**
@@ -54,9 +91,8 @@ final class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                         ->children()
                             ->scalarNode('provider_item')->defaultValue('/bundles/coreshopcore/pimcore/js/payment/provider/item.js')->end()
-                            ->scalarNode('order_detail')->defaultValue('/bundles/coreshopcore/pimcore/js/order/detail.js')->end()
+                            ->scalarNode('order_detail_carriage')->defaultValue('/bundles/coreshopcore/pimcore/js/order/detail/blocks/carriage.js')->end()
                             ->scalarNode('order_shipment')->defaultValue('/bundles/coreshopcore/pimcore/js/order/shipment.js')->end()
-                            ->scalarNode('order_create_step_base')->defaultValue('/bundles/coreshopcore/pimcore/js/sale/create/step/base.js')->end()
                             ->scalarNode('order_create_step_shipping')->defaultValue('/bundles/coreshopcore/pimcore/js/sale/create/step/shipping.js')->end()
                             ->scalarNode('quote_list')->defaultValue('/bundles/coreshopcore/pimcore/js/quote/list.js')->end()
                             ->scalarNode('sale_item')->defaultValue('/bundles/coreshopcore/pimcore/js/store/item.js')->end()
@@ -94,6 +130,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('product_price_rule_condition_quantity')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/quantity.js')->end()
                             ->scalarNode('product_price_rule_condition_stores')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/stores.js')->end()
                             ->scalarNode('product_price_rule_condition_zones')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/zones.js')->end()
+                            ->scalarNode('product_price_rule_condition_categories')->defaultValue('/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/categories.js')->end()
                             ->scalarNode('product_specific_price_rule_condition_countries')->defaultValue('/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/countries.js')->end()
                             ->scalarNode('product_specific_price_rule_condition_currencies')->defaultValue('/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/currencies.js')->end()
                             ->scalarNode('product_specific_price_rule_condition_customer_groups')->defaultValue('/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/customerGroups.js')->end()
@@ -116,8 +153,12 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core_extension_tag_store_price')->defaultValue('/bundles/coreshopcore/pimcore/js/coreExtension/tags/coreShopStorePrice.js')->end()
                             ->scalarNode('notification_rule_condition_abstract_transition')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/abstractTransition.js')->end()
                             ->scalarNode('notification_rule_action_order_mail')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/actions/orderMail.js')->end()
+                            ->scalarNode('notification_rule_action_store_mail')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/actions/storeMail.js')->end()
+                            ->scalarNode('notification_rule_action_store_order_mail')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/actions/storeOrderMail.js')->end()
                             ->scalarNode('notification_rule_condition_messaging_message_type')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/messaging/messageType.js')->end()
                             ->scalarNode('notification_rule_condition_order_carriers')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/carriers.js')->end()
+                            ->scalarNode('notification_rule_condition_order_comment')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/comment.js')->end()
+                            ->scalarNode('notification_rule_condition_order_backend_created')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/backendCreated.js')->end()
                             ->scalarNode('notification_rule_condition_order_order_state')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderState.js')->end()
                             ->scalarNode('notification_rule_condition_order_order_state_transition')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/orderTransition.js')->end()
                             ->scalarNode('notification_rule_condition_order_payment')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/order/payment.js')->end()
@@ -134,9 +175,11 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('notification_rule_condition_invoice_state')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/invoice/invoiceState.js')->end()
                             ->scalarNode('notification_rule_condition_invoice_transition')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/invoice/invoiceTransition.js')->end()
                             ->scalarNode('notification_rule_condition_user_user_type')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/user/userType.js')->end()
+                            ->scalarNode('notification_rule_condition_all_stores')->defaultValue('/bundles/coreshopcore/pimcore/js/notification/conditions/all/stores.js')->end()
+                            ->scalarNode('object_grid_column_store_price')->defaultValue('/bundles/coreshopcore/pimcore/js/object/gridcolumn/operator/storePrice.js')->end()
                             ->scalarNode('settings')->defaultValue('/bundles/coreshopcore/pimcore/js/settings.js')->end()
                             ->scalarNode('helpers')->defaultValue('/bundles/coreshopcore/pimcore/js/helpers.js')->end()
-                            ->scalarNode('coreshop')->defaultValue('/bundles/coreshopcore/pimcore/js/coreshop.js')->end()
+                            ->scalarNode('resource')->defaultValue('/bundles/coreshopcore/pimcore/js/resource.js')->end()
                         ->end()
                     ->end()
                     ->arrayNode('css')
@@ -173,10 +216,10 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->validate()
-                                ->ifTrue(function ($array) {
+                                ->ifTrue(function($array) {
                                     $notValid = false;
                                     foreach ($array as $key => $value) {
-                                        if($key === 'cart') {
+                                        if ($key === 'cart') {
                                             $notValid = true;
                                             break;
                                         }

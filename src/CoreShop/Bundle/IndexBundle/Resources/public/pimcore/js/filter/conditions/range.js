@@ -18,6 +18,7 @@ coreshop.filter.conditions.range = Class.create(coreshop.filter.conditions.abstr
 
     getItems: function () {
         return [
+            this.getFieldsComboBox(),
             {
                 fieldLabel: t('coreshop_filters_step_count'),
                 xtype: 'numberfield',

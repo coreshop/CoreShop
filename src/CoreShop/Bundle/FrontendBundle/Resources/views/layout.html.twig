@@ -1,52 +1,54 @@
 <!DOCTYPE html>
-
 <html lang="{{ app.request.locale|slice(0, 2) }}">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{% block title %}{% endblock %} CoreShop</title>
+    {%- spaceless -%}
+        {% do pimcore_head_link().appendStylesheet(asset('bundles/coreshopfrontend/static/css/shop.css')) %}
+        {% do pimcore_head_link().appendStylesheet(asset('bundles/coreshopfrontend/static/css/owl.carousel.css')) %}
 
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/jquery-1.11.1.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/popper.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/bootstrap.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/vendor/owl.carousel.min.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/handle-prototypes.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/custom.js')) %}
+        {% do pimcore_head_script().appendFile(asset('bundles/coreshopfrontend/static/js/shop.js')) %}
 
-    {% block metatags %}
+        {% do pimcore_head_title().setSeparator(' | ') %}
+    {%- endspaceless -%}
+
+    {% block layout_head_meta deferred %}
+        {{ pimcore_head_title('CoreShop') }}
+        {{ pimcore_head_meta() }}
     {% endblock %}
 
-    {% block stylesheets %}
-        {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': '/bundles/coreshopfrontend/static/css/shop.css'} %}
-        {% include '@CoreShopFrontend/_stylesheets.html.twig' with {'path': '/bundles/coreshopfrontend/static/css/owl.carousel.css'} %}
+    {% block head_stylesheets deferred %}
+        {{ pimcore_head_link() }}
     {% endblock %}
 </head>
 
-<body class="pushable">
-<div class="pusher">
-    <div class="ui container">
-        {% block header %}
-            <header>
-                {% include '@CoreShopFrontend/_header.html.twig' %}
+<body>
+{% block header %}
+    <header>
+        {% include '@CoreShopFrontend/_header.html.twig' %}
+    </header>
+{% endblock %}
 
-                <!-- TODO: Render Url -->
-            </header>
-        {% endblock %}
+<div class="main-container container">
+    {% include '@CoreShopFrontend/Common/global_flash_messages.html.twig' %}
 
-         {% include '@CoreShopFrontend/Common/global_flash_messages.html.twig' %}
-
-        {% block content %}
-        {% endblock %}
-    </div>
-
-    {% block footer %}
-        {% include '@CoreShopFrontend/_footer.html.twig' %}
+    {% block content %}
     {% endblock %}
 </div>
 
-{% block javascripts %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/jquery-1.11.1.min.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/bootstrap.min.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/vendor/owl.carousel.min.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/handle-prototypes.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/custom.js'} %}
-    {% include '@CoreShopFrontend/_javascripts.html.twig' with {'path': 'bundles/coreshopfrontend/static/js/shop.js'} %}
+{% block footer %}
+    {% include '@CoreShopFrontend/_footer.html.twig' %}
+{% endblock %}
+
+{% block scripts deferred %}
+    {{ pimcore_head_script() }}
 {% endblock %}
 </body>
 </html>

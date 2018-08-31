@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Processable;
 
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
@@ -24,11 +25,18 @@ class ProcessableOrderItems implements ProcessableInterface
     private $documentsRepository;
 
     /**
-     * @param OrderDocumentRepositoryInterface $documentsRepository
+     * @var string
      */
-    public function __construct(OrderDocumentRepositoryInterface $documentsRepository)
+    private $stateCancelled;
+
+    /**
+     * @param OrderDocumentRepositoryInterface $documentsRepository
+     * @param string $stateCancelled
+     */
+    public function __construct(OrderDocumentRepositoryInterface $documentsRepository, $stateCancelled)
     {
         $this->documentsRepository = $documentsRepository;
+        $this->stateCancelled = $stateCancelled;
     }
 
     /**
@@ -68,7 +76,7 @@ class ProcessableOrderItems implements ProcessableInterface
      */
     public function getProcessedItems(OrderInterface $order)
     {
-        $documents = $this->documentsRepository->getDocuments($order);
+        $documents = $this->documentsRepository->getDocumentsNotInState($order, $this->stateCancelled);
         $processedItems = [];
 
         foreach ($documents as $document) {
@@ -97,5 +105,13 @@ class ProcessableOrderItems implements ProcessableInterface
     public function isFullyProcessed(OrderInterface $order)
     {
         return count($this->getProcessableItems($order)) === 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isProcessable(OrderInterface $order)
+    {
+        return !$this->isFullyProcessed($order) && $order->getOrderState() !== OrderStates::STATE_CANCELLED;
     }
 }

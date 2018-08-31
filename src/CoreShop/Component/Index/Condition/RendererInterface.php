@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Condition;
 
@@ -18,8 +18,9 @@ interface RendererInterface
      * Renders the condition.
      *
      * @param ConditionInterface $condition
+     * @param string $prefix
      *
      * @return mixed
      */
-    public function render(ConditionInterface $condition);
+    public function render(ConditionInterface $condition, $prefix = null);
 }

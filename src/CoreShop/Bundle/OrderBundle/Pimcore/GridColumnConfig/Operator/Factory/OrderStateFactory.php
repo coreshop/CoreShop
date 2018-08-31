@@ -37,7 +37,7 @@ class OrderStateFactory implements OperatorFactoryInterface
 
     /**
      * @param \stdClass $configElement
-     * @param null      $context
+     * @param null $context
      * @return OperatorInterface
      */
     public function build(\stdClass $configElement, $context = null): OperatorInterface

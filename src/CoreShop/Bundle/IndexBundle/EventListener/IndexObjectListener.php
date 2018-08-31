@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
@@ -16,6 +16,8 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Event\Model\ElementEventInterface;
+use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexObjectListener
 {
@@ -23,6 +25,11 @@ final class IndexObjectListener
      * @var IndexUpdaterServiceInterface
      */
     private $indexUpdaterService;
+
+    /**
+     * @var array
+     */
+    private $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
 
     /**
      * @param IndexUpdaterServiceInterface $indexUpdaterService
@@ -45,6 +52,30 @@ final class IndexObjectListener
             }
 
             $this->indexUpdaterService->updateIndices($object);
+
+            $classDefinition = ClassDefinition::getById($object->getClassId());
+            if ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants()) {
+                $this->updateInheritableChildren($object);
+            }
+        }
+    }
+
+    /**
+     * @param AbstractObject $object
+     */
+    protected function updateInheritableChildren(AbstractObject $object)
+    {
+        if (!$object->hasChildren($this->validObjectTypes)) {
+            return;
+        }
+
+        $children = $object->getChildren($this->validObjectTypes);
+        /** @var AbstractObject $child */
+        foreach ($children as $child) {
+            if (get_class($child) === get_class($object)) {
+                $this->indexUpdaterService->updateIndices($child);
+                $this->updateInheritableChildren($child);
+            }
         }
     }
 

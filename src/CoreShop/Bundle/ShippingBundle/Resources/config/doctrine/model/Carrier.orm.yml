@@ -8,11 +8,8 @@ CoreShop\Component\Shipping\Model\Carrier:
             id: true
             generator:
                 strategy: AUTO
-        name:
-            column: name
-            type: string
-        label:
-            column: label
+        identifier:
+            column: identifier
             type: string
             nullable: true
         trackingUrl:
@@ -22,9 +19,6 @@ CoreShop\Component\Shipping\Model\Carrier:
         isFree:
             column: isFree
             type: boolean
-        rangeBehaviour:
-            column: rangeBehaviour
-            type: string
         creationDate:
             type: datetime
             gedmo:

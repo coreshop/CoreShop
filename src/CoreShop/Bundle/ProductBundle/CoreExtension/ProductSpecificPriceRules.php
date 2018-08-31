@@ -100,7 +100,37 @@ class ProductSpecificPriceRules extends Data
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
+        $data = $object->{$this->getName()};
+        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+            $data = $this->load($object, ['force' => true]);
+
+            $setter = 'set' . ucfirst($this->getName());
+            if (method_exists($object, $setter)) {
+                $object->$setter($data);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preSetData($object, $data, $params = [])
+    {
+        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+            $object->addO__loadedLazyField($this->getName());
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDataFromResource($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
@@ -119,7 +149,7 @@ class ProductSpecificPriceRules extends Data
         ];
 
         if ($object instanceof ProductInterface) {
-            $prices = $this->load($object, $params);
+            $prices = $this->load($object, ['force' => true]);
 
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
@@ -183,7 +213,7 @@ class ProductSpecificPriceRules extends Data
             $getter = $this->getName();
             $existingPriceRules = $object->$getter;
 
-            $all = $this->load($object, $params);
+            $all = $this->load($object, ['force' => true]);
             $founds = [];
 
             if (is_array($existingPriceRules)) {
@@ -210,14 +240,15 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * @param $object
-     * @param array $params
-     *
-     * @return ProductSpecificPriceRuleInterface[]
+     * {@inheritdoc}
      */
     public function load($object, $params = [])
     {
-        return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
+        if (isset($params['force']) && $params['force']) {
+            return $this->getProductSpecificPriceRuleRepository()->findForProduct($object);
+        }
+
+        return null;
     }
 
     /**
@@ -260,12 +291,12 @@ class ProductSpecificPriceRules extends Data
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array)$value);
+                    $array[$key] = $this->arrayCastRecursive((array) $value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array)$array);
+            return $this->arrayCastRecursive((array) $array);
         }
 
         return $array;

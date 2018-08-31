@@ -12,39 +12,14 @@
 
 namespace CoreShop\Component\Pimcore;
 
-use Pimcore\Model\Version;
-
-class VersionHelper
-{
+if (class_exists(\CoreShop\Component\Pimcore\DataObject\VersionHelper::class)) {
+    @trigger_error('Class CoreShop\Component\Pimcore\VersionHelper is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\VersionHelper class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * This function enables usage of versioning in Pimcore and resets the state of versioning automatically
-     * after your functions is finished.
-     *
-     * @param \Closure $function
-     * @param bool $enabled
-     *
-     * @return mixed
+     * @deprecated Class CoreShop\Component\Pimcore\VersionHelper is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CoreShop\Component\Pimcore\DataObject\VersionHelper class instead.
      */
-    public static function useVersioning(\Closure $function, $enabled = true)
+    class VersionHelper
     {
-        $backup = Version::$disabled;
 
-        if ($enabled) {
-            Version::enable();
-        }
-        else {
-            Version::disable();
-        }
-
-        $result = $function();
-
-        if ($backup) {
-            Version::disable();
-        }
-        else {
-            Version::enable();
-        }
-
-        return $result;
     }
 }

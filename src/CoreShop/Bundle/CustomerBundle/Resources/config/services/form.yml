@@ -1,12 +1,22 @@
 parameters:
     coreshop.form.type.customer.validation_groups: [coreshop]
+    coreshop.form.type.customer_guest.validation_groups: [coreshop_customer_guest]
 
 services:
+    _defaults:
+        public: true
+
     coreshop.form.type.customer:
         class: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType
         arguments:
             - '%coreshop.model.customer.class%'
             - '%coreshop.form.type.customer.validation_groups%'
+            - '%coreshop.form.type.customer_guest.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.change_password:
+        class: CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType
         tags:
             - { name: form.type }
 

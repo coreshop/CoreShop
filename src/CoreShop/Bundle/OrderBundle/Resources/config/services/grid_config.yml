@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.data_object.grid_column_config.operator.factory.order_state:
         class: CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory\OrderStateFactory
         arguments:

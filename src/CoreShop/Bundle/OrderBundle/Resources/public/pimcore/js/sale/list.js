@@ -16,6 +16,7 @@ coreshop.order.sale.list = Class.create({
     type: '',
     search: null,
     grid: null,
+    gridPaginator: null,
     gridConfig: {},
     store: null,
     contextMenuPlugin: null,
@@ -32,17 +33,15 @@ coreshop.order.sale.list = Class.create({
                 this.setClassFolder()
             }.bind(this)
         });
+    },
 
-        this.setupContextMenuPlugin();
+    activate: function () {
+        var tabPanel = Ext.getCmp('pimcore_panel_tabs');
+        tabPanel.setActiveItem('coreshop_' + this.type);
     },
 
     setupContextMenuPlugin: function () {
-        this.contextMenuPlugin = new coreshop.sales.plugin.salesListContextMenu(
-            function (id) {
-                this.open(id);
-            }.bind(this),
-            []
-        );
+        throw new Error('Please implement me');
     },
 
     setClassFolder: function () {
@@ -51,25 +50,41 @@ coreshop.order.sale.list = Class.create({
             params: {id: this.gridConfig.folderId},
             ignoreErrors: true,
             success: function (response) {
-                var data = Ext.decode(response.responseText),
-                    folderClass = [];
+                var data = Ext.decode(response.responseText);
 
-                Ext.Array.each(data.classes, function (objectClass) {
-                    if (objectClass.name === this.gridConfig.className) {
-                        folderClass.push(objectClass);
-                    }
-                }.bind(this));
-
-                data.classes = folderClass;
-                this.search = new pimcore.object.search({data: data, id: this.gridConfig.folderId}, 'folder');
-                this.getLayout();
+                // unlock order overview silently
+                // since multiple user may want to have access to it at the same time
+                if (typeof data.editlock === 'object') {
+                    Ext.Ajax.request({
+                        url: '/admin/element/unlock-element',
+                        params: {
+                            id: data.editlock.cid,
+                            type: 'object'
+                        },
+                        success: function () {
+                            this.setClassFolder();
+                        }.bind(this)
+                    });
+                } else {
+                    this.prepareLayout(data);
+                }
             }.bind(this)
         });
     },
 
-    activate: function () {
-        var tabPanel = Ext.getCmp('pimcore_panel_tabs');
-        tabPanel.setActiveItem('coreshop_' + this.type);
+    prepareLayout: function (data) {
+
+        var folderClass = [];
+
+        Ext.Array.each(data.classes, function (objectClass) {
+            if (objectClass.name === this.gridConfig.className) {
+                folderClass.push(objectClass);
+            }
+        }.bind(this));
+
+        data.classes = folderClass;
+        this.search = new pimcore.object.search({data: data, id: this.gridConfig.folderId}, 'folder');
+        this.getLayout();
     },
 
     prepareConfig: function (columnConfig) {
@@ -137,7 +152,8 @@ coreshop.order.sale.list = Class.create({
                             handler: function () {
                                 new coreshop.order[this.type].create.panel();
                             }.bind(this)
-                        }
+                        },
+                        this.getQuickOrder()
                     ]
                 }]
             });
@@ -163,6 +179,64 @@ coreshop.order.sale.list = Class.create({
         return [this.getGrid()];
     },
 
+    getQuickOrder: function () {
+
+        var fieldSettings = {
+            enableKeyEvents: false,
+            fieldCls: 'input_drop_target',
+            style: 'background-color:white;',
+            readOnly: true,
+            emptyText: t('coreshop_' + this.type + '_quick_open'),
+            width: 300
+        }, drag = new Ext.form.TextField(fieldSettings);
+
+        drag.on('render', function (el) {
+
+            new Ext.dd.DropZone(el.getEl(), {
+                reference: drag,
+                ddGroup: 'element',
+                getTargetFromEvent: function (e) {
+                    return this.reference.getEl();
+                },
+
+                onNodeOver: function (target, dd, e, data) {
+
+                    var record = data.records[0],
+                        data = record.data;
+
+                    if (data.className == coreshop.class_map.coreshop[this.type]) {
+                        return Ext.dd.DropZone.prototype.dropAllowed;
+                    } else {
+                        return Ext.dd.DropZone.prototype.dropNotAllowed;
+                    }
+
+                }.bind(this),
+
+                onNodeDrop: function (target, dd, e, data) {
+                    var record = data.records[0],
+                        data = record.data,
+                        view = this.search.getLayout();
+
+                    if (data.className == coreshop.class_map.coreshop[this.type]) {
+                        drag.setDisabled(true);
+                        view.setLoading(t('loading'));
+                        this.open(data.id, function () {
+                            view.setLoading(false);
+                            drag.setDisabled(false);
+                        });
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }.bind(this)
+            });
+
+        }.bind(this));
+
+        return drag;
+
+    },
+
     getGrid: function () {
 
         this.tabbar = new Ext.TabPanel({
@@ -180,13 +254,66 @@ coreshop.order.sale.list = Class.create({
         });
 
         var searchLayout = this.search.getLayout();
+
         if (searchLayout) {
             searchLayout.on('afterLayout', function (layout) {
+
+                layout.setTitle(t('coreshop_' + this.type + '_manage'));
+                layout.setIconCls('coreshop_icon_' + this.type);
+
                 var gridPanels = layout.query('gridpanel');
                 if (gridPanels.length > 0) {
                     var grid = gridPanels[0];
-                    if (!grid._corehop_listener) {
-                        grid._corehop_listener = true;
+                    if (!grid._coreshop_listener) {
+
+                        grid._coreshop_listener = true;
+                        this.setGridPaginator(layout);
+                        this.setupContextMenuPlugin();
+
+                        var label = new Ext.Toolbar.TextItem({
+                            text: t('coreshop_order_list_filter') + ':'
+                        });
+                        var toolbar = layout.down('toolbar');
+
+                        try {
+                            var searchAndMove = toolbar.down('[iconCls*=pimcore_icon_search]');
+                            var justChildrenCheckbox = toolbar.down('[name=onlyDirectChildren]');
+
+                            if (searchAndMove) {
+                                searchAndMove.next().destroy();
+                                searchAndMove.destroy();
+                            }
+
+                            if (justChildrenCheckbox) {
+                                justChildrenCheckbox.next().destroy();
+                                justChildrenCheckbox.destroy();
+                            }
+                        }
+                        catch (ex) {
+
+                        }
+
+                        toolbar.insert(2, [
+                            label,
+                            {
+                                xtype: 'combo',
+                                value: 'none',
+                                store: this.getFilterStore(),
+                                flex: 1,
+                                valueField: 'id',
+                                displayField: 'name',
+                                queryMode: 'local',
+                                disabled: false,
+                                name: 'coreshopFilter',
+                                listeners: {
+                                    'change': function (field) {
+                                        grid.getStore().getProxy().setExtraParam('coreshop_filter', field.getValue());
+                                        this.getGridPaginator().moveFirst();
+                                    }.bind(this)
+                                }
+                            }
+                        ]);
+
                         grid.on('beforeedit', function (grid, cell) {
                             if (cell.column.hasEditor() === false) {
                                 return false;
@@ -220,5 +347,36 @@ coreshop.order.sale.list = Class.create({
 
     open: function (id, callback) {
         coreshop.order.helper.openSale(id, this.type, callback);
+    },
+
+    setGridPaginator: function (layout) {
+        this.gridPaginator = layout.down('pagingtoolbar');
+    },
+
+    getGridPaginator: function () {
+        return this.gridPaginator;
+    },
+
+    getFilterStore: function () {
+
+        var filterStore = new Ext.data.Store({
+            restful: false,
+            proxy: new Ext.data.HttpProxy({
+                url: '/admin/coreshop/grid/filters/coreshop_' + this.type
+            }),
+            reader: new Ext.data.JsonReader({}, [
+                {name: 'id'},
+                {name: 'name'}
+            ]),
+            listeners: {
+                load: function (store) {
+                    var rec = {id: 'none', name: t('coreshop_order_list_filter_empty')};
+                    store.insert(0, rec);
+                }.bind(this)
+            }
+        });
+
+        filterStore.load();
+        return filterStore;
     }
 });

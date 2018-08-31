@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
@@ -42,9 +42,25 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
     /**
      * {@inheritdoc}
      */
+    public function getDiscountPrice(PurchasableInterface $product, $withTax = true)
+    {
+        return $this->productPriceCalculator->getDiscountPrice($product, $withTax);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRetailPrice(PurchasableInterface $product, $withTax = true)
     {
         return $this->productPriceCalculator->getRetailPrice($product, $withTax);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscount(PurchasableInterface $product, $withTax = true)
+    {
+        return $this->productPriceCalculator->getDiscount($product, $withTax);
     }
 
     /**

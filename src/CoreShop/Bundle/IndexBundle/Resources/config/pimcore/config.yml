@@ -4,3 +4,10 @@ pimcore:
             data:
                 map:
                     coreShopFilter: CoreShop\Bundle\IndexBundle\CoreExtension\Filter
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-index:
+                namespace_prefix: "CoreShop\\Component\\Index"
+                path: "@CoreShopIndexBundle/Resources/config/serializer"

@@ -14,11 +14,6 @@ namespace CoreShop\Component\Order\Workflow;
 
 use CoreShop\Component\Order\Model\ProposalInterface;
 
-/**
- * Interface WorkflowManagerInterface
- *
- * @package CoreShop\Component\Order\Workflow
- */
 interface WorkflowStateManagerInterface
 {
     /**
@@ -40,7 +35,7 @@ interface WorkflowStateManagerInterface
      * @param       $subject
      * @param       $workflowName
      * @param array $transitions
-     * @param bool  $forFrontend
+     * @param bool $forFrontend
      * @return mixed
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);

@@ -8,18 +8,29 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Payment\Repository;
 
+use CoreShop\Component\Payment\Model\PayableInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface PaymentRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param int $orderId
+     * @param PayableInterface $payable
      *
-     * @return mixed
+     * @return PaymentInterface[]
+     *
+     * @deprecated use findForPayable instead
      */
-    public function findForOrderId($orderId);
+    public function findForOrder(PayableInterface $payable);
+
+    /**
+     * @param PayableInterface $payable
+     *
+     * @return PaymentInterface[]
+     */
+    public function findForPayable(PayableInterface $payable);
 }

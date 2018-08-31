@@ -1,0 +1,30 @@
+default:
+    suites:
+        domain_cart:
+            contexts_services:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+                - coreshop.behat.context.transform.tax_rate
+                - coreshop.behat.context.transform.tax_rule_group
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.country
+                - coreshop.behat.context.transform.currency
+                - coreshop.behat.context.transform.product
+
+                - coreshop.behat.context.setup.tax_rate
+                - coreshop.behat.context.setup.tax_rule_group
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.country
+                - coreshop.behat.context.setup.currency
+                - coreshop.behat.context.setup.cart
+                - coreshop.behat.context.setup.product
+
+                - coreshop.behat.context.domain.cart
+                - coreshop.behat.context.domain.link_generator
+            filters:
+                tags: "@cart"

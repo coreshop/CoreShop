@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\StoreBundle\EventListener;
 
 use CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class ThemeRequestListener

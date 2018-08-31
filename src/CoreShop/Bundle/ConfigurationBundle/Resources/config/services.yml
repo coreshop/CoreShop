@@ -2,6 +2,9 @@ imports:
     - { resource: "services/form.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.configuration.service:
         class: CoreShop\Component\Configuration\Service\ConfigurationService
         arguments:

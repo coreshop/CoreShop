@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
-use CoreShop\Component\Pimcore\ClassUpdate;
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -14,33 +14,33 @@ class Version20171211121142 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionFieldNotFoundException
+     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
      */
     public function up(Schema $schema)
     {
         $localeField = [
             'fieldtype' => 'input',
-             'width' => null,
-             'queryColumnType' => 'varchar',
-             'columnType' => 'varchar',
-             'columnLength' => 190,
-             'phpdocType' => 'string',
-             'regex' => '',
-             'unique' => false,
-             'name' => 'locale',
-             'title' => 'Locale',
-             'tooltip' => '',
-             'mandatory' => false,
-             'noteditable' => true,
-             'index' => false,
-             'locked' => null,
-             'style' => '',
-             'permissions' => null,
-             'datatype' => 'data',
-             'relationType' => false,
-             'invisible' => false,
-             'visibleGridView' => false,
-             'visibleSearch' => false
+            'width' => null,
+            'queryColumnType' => 'varchar',
+            'columnType' => 'varchar',
+            'columnLength' => 190,
+            'phpdocType' => 'string',
+            'regex' => '',
+            'unique' => false,
+            'name' => 'locale',
+            'title' => 'Locale',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => null,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false
         ];
 
         $customer = $this->container->getParameter('coreshop.model.customer.pimcore_class_name');

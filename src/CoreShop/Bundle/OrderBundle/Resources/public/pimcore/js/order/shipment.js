@@ -107,9 +107,9 @@ coreshop.order.order.shipment = Class.create({
         });
 
         var panel = Ext.create('Ext.form.Panel', {
-            title: t('coreshop_products'),
+            title: t('coreshop_shipment'),
             border: true,
-            iconCls: 'coreshop_icon_product',
+            iconCls: 'coreshop_icon_shipping',
             bodyPadding: 10,
             items: [trackingCode, itemsGrid]
         });
@@ -153,8 +153,6 @@ coreshop.order.order.shipment = Class.create({
 
                                 if (res.success) {
                                     pimcore.helpers.showNotification(t('success'), t('success'), 'success');
-
-                                    pimcore.helpers.openObject(res.shipmentId, 'object');
 
                                     if (Ext.isFunction(this.cb)) {
                                         this.cb();

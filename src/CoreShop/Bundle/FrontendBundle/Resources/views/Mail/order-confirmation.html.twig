@@ -11,10 +11,12 @@
         <callout class="secondary">
             <row>
                 <columns large="6">
+                    {% if order.getPaymentProvider %}
                     <p>
                         <strong>{{ 'coreshop.ui.payment_method'|trans }}</strong><br/>
                         {{ order.paymentProvider.name }}
                     </p>
+                    {% endif %}
                     <p>
                         <strong>{{ 'coreshop.ui.email_address'|trans }}</strong><br/>
                         {{ order.customer.email }}

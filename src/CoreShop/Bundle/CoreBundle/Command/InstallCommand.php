@@ -8,10 +8,11 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\CoreBundle\Command;
 
+use CoreShop\Bundle\CoreBundle\Installer;
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use Pimcore\Migrations\MigrationManager;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,7 +29,7 @@ final class InstallCommand extends AbstractInstallCommand
      */
     private $commands = [
         [
-            'command' => 'classes',
+            'command' => 'resources',
             'message' => 'Install Pimcore Classes.',
         ],
         [
@@ -38,12 +39,13 @@ final class InstallCommand extends AbstractInstallCommand
         [
             'command' => 'folders',
             'message' => 'Install CoreShop Object Folders.',
-        ],
-        [
-            'command' => 'assets',
-            'message' => 'Install CoreShop Assets.',
         ]
     ];
+
+    /**
+     * @var Installer
+     */
+    private $installer;
 
     /**
      * @var MigrationManager
@@ -58,17 +60,20 @@ final class InstallCommand extends AbstractInstallCommand
     /**
      * @param KernelInterface $kernel
      * @param CommandDirectoryChecker $directoryChecker
+     * @param Installer $installer
      * @param MigrationManager $migrationManager
      * @param Bundle $bundle
      */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
+        Installer $installer,
         MigrationManager $migrationManager,
         Bundle $bundle)
     {
         parent::__construct($kernel, $directoryChecker);
 
+        $this->installer = $installer;
         $this->migrationManager = $migrationManager;
         $this->bundle = $bundle;
     }
@@ -85,8 +90,7 @@ final class InstallCommand extends AbstractInstallCommand
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command installs CoreShop.
 EOT
-            )
-        ;
+            );
     }
 
     /**
@@ -94,6 +98,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
+
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln('<info>Installing CoreShop...</info>');
         $outputStyle->writeln($this->getCoreShopLogo());
@@ -115,6 +121,9 @@ EOT
                 $errored = true;
             }
         }
+
+        $installConfiguration = $this->installer->getInstallMigrationConfiguration();
+        $this->migrationManager->markVersionAsMigrated($installConfiguration->getVersion($installConfiguration->getLatestVersion()));
 
         $migrationConfiguration = $this->migrationManager->getBundleConfiguration($this->bundle);
         $this->migrationManager->markVersionAsMigrated($migrationConfiguration->getVersion($migrationConfiguration->getLatestVersion()));
@@ -191,7 +200,6 @@ EOT
                           <info>`::::::::`</info>
                              <info>::::::</info>
                                <info>:::</info>
-'
-        ;
+';
     }
 }

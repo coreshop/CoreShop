@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
@@ -16,7 +16,10 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 
-interface CartInterface extends ProposalInterface, PimcoreModelInterface, StorageListInterface
+interface CartInterface extends
+    ProposalInterface,
+    PimcoreModelInterface,
+    StorageListInterface
 {
     /**
      * @param $order
@@ -64,15 +67,6 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
      * @return bool
      */
     public function hasPriceRule($priceRule);
-
-    /**
-     * calculates the total without discount.
-     *
-     * @param bool $withTax
-     *
-     * @return float
-     */
-    public function getTotalWithoutDiscount($withTax = true);
 
     /**
      * @return int

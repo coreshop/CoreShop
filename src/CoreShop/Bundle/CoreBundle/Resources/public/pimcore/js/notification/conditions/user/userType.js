@@ -24,7 +24,12 @@ coreshop.notification.rule.conditions.userType = Class.create(coreshop.rules.con
                     name: 'userType',
                     value: this.data ? this.data.userType : null,
                     width: 250,
-                    store: [['register', t('coreshop_user_type_new')], ['password-reset', t('coreshop_user_type_password')]],
+                    store: [
+                        ['register', t('coreshop_user_type_new')],
+                        ['password-reset', t('coreshop_user_type_password')],
+                        ['newsletter-double-opt-in', t('coreshop_user_type_newsletter_double_opt_in')],
+                        ['newsletter-confirmed', t('coreshop_user_type_newsletter_confirmed')]
+                    ],
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

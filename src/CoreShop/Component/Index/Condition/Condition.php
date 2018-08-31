@@ -8,10 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Index\Condition;
 
+/**
+ * @deprecated this class is not supported anymore and will be removed in 2.0. Please use concrete Condition Classes instead.
+ */
 class Condition implements ConditionInterface
 {
     /**
@@ -34,160 +37,223 @@ class Condition implements ConditionInterface
      *
      * @param string $fieldName
      * @param string $type
-     * @param mixed  $values
+     * @param mixed $values
      */
     public function __construct($fieldName, $type, $values)
     {
+        @trigger_error('Do not use Condition class directly anymore, the class has been deprecated and will be removed with 2.0. Please use a concrete Condition class instead.', E_USER_DEPRECATED);
+
         $this->fieldName = $fieldName;
         $this->type = $type;
         $this->values = $values;
     }
 
     /**
+     * @deprecated Don't use anymore, use IsCondition directly
+     *
+     * IN Condition (in).
+     *
+     * @param $fieldName
+     * @param $null
+     *
+     * @return ConditionInterface
+     */
+    public static function is($fieldName, $null)
+    {
+        @trigger_error('is() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use IsCondition class instead.', E_USER_DEPRECATED);
+
+        return new IsCondition($fieldName, $null);
+    }
+
+    /**
+     * @deprecated Don't use anymore, use InCondition directly
+     *
      * IN Condition (in).
      *
      * @param $fieldName
      * @param $array
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function in($fieldName, $array)
     {
-        return new self($fieldName, 'in', $array);
+        @trigger_error('in() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use InCondition class instead.', E_USER_DEPRECATED);
+
+        return new InCondition($fieldName, $array);
     }
 
     /**
+     * @deprecated Don't use anymore, use RangeCondition directly
+     *
      * Range Condition (>=, <=).
      *
      * @param $fieldName
      * @param $fromRange
      * @param $toRange
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function range($fieldName, $fromRange, $toRange)
     {
-        return new self($fieldName, 'range', ['from' => $fromRange, 'to' => $toRange]);
+        @trigger_error('range() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use RangeCondition class instead.', E_USER_DEPRECATED);
+
+        return new RangeCondition($fieldName, $fromRange, $toRange);
     }
 
     /**
+     * @deprecated Don't use anymore, use ConcatCondition directly
+     *
      * Concat Conditions with "AND" or "OR".
      *
      * @param $fieldName
-     * @param Condition[] $conditions
-     * @param string      $operator   ("AND", "OR")
+     * @param ConditionInterface[] $conditions
+     * @param string $operator ("AND", "OR")
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function concat($fieldName, $conditions, $operator)
     {
-        return new self($fieldName, 'concat', ['operator' => $operator, 'conditions' => $conditions]);
+        @trigger_error('concat() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use ConcatCondition class instead.', E_USER_DEPRECATED);
+
+        return new ConcatCondition($fieldName, $operator, $conditions);
     }
 
     /**
+     * @deprecated Don't use anymore, use LikeCondition directly
+     *
      * Like Condition (%).
      *
      * @param $fieldName
      * @param $value
      * @param $patternPosition ("left", "right", "both")
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function like($fieldName, $value, $patternPosition)
     {
-        return new self($fieldName, 'like', ['value' => $value, 'pattern' => $patternPosition]);
+        @trigger_error('like() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use LikeCondition class instead.', E_USER_DEPRECATED);
+
+        return new LikeCondition($fieldName, $patternPosition, $value);
     }
 
     /**
+     * @deprecated Don't use anymore, use MatchCondition directly
+     *
      * Match Condition (=).
      *
      * @param $fieldName
      * @param $value
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function match($fieldName, $value)
     {
-        return static::compare($fieldName, $value, '=');
+        @trigger_error('match() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use MatchCondition class instead.', E_USER_DEPRECATED);
+
+        return new MatchCondition($fieldName, $value);
     }
 
     /**
+     * @deprecated Don't use anymore, use NotMatchCondition directly
+     *
      * Match Condition (=).
      *
      * @param $fieldName
      * @param $value
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function notMatch($fieldName, $value)
     {
-        return static::compare($fieldName, $value, '!=');
+        @trigger_error('notMatch() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use NotMatchCondition class instead.', E_USER_DEPRECATED);
+
+        return new NotMatchCondition($fieldName, $value);
     }
 
     /**
+     * @deprecated Don't use anymore, use LowerThanCondition directly
+     *
      * Lower Than Condition (<).
      *
      * @param $fieldName
      * @param $value
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function lt($fieldName, $value)
     {
-        return static::compare($fieldName, $value, '<');
+        @trigger_error('lt() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use LowerThanCondition class instead.', E_USER_DEPRECATED);
+
+        return new LowerThanCondition($fieldName, $value);
     }
 
     /**
+     * @deprecated Don't use anymore, use LowerThanEqualCondition directly
+     *
      * Lower Than Equal Condition (<=).
      *
      * @param $fieldName
      * @param $value
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function lte($fieldName, $value)
     {
-        return static::compare($fieldName, $value, '<=');
+        @trigger_error('lte() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use LowerThanEqualCondition class instead.', E_USER_DEPRECATED);
+
+        return new LowerThanEqualCondition($fieldName, $value);
     }
 
     /**
+     * @deprecated Don't use anymore, use GreaterThanCondition directly
+     *
      * Greater Than Condition (>).
      *
      * @param $fieldName
      * @param $value
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function gt($fieldName, $value)
     {
-        return static::compare($fieldName, $value, '>');
+        @trigger_error('gt() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use GreaterThanCondition class instead.', E_USER_DEPRECATED);
+
+        return new GreaterThanCondition($fieldName, $value);
     }
 
     /**
+     * @deprecated Don't use anymore, use GreaterThanEqualCondition directly
+     *
      * Greater Than Equal Condition (<=).
      *
      * @param $fieldName
      * @param $value
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function gte($fieldName, $value)
     {
-        return static::compare($fieldName, $value, '>=');
+        @trigger_error('gte() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use GreaterThanEqualCondition class instead.', E_USER_DEPRECATED);
+
+        return new GreaterThanEqualCondition($fieldName, $value);
     }
 
     /**
+     * @deprecated Don't use anymore, use CompareCondition directly
+     *
      * Compare Condition ($operator).
      *
      * @param $fieldName
      * @param $value
      * @param $operator
      *
-     * @return Condition
+     * @return ConditionInterface
      */
     public static function compare($fieldName, $value, $operator)
     {
-        return new self($fieldName, 'compare', ['value' => $value, 'operator' => $operator]);
+        @trigger_error('compare() is deprecated since version 2.0.0-beta.2 and will be removed in 2.0. Use CompareCondition class instead.', E_USER_DEPRECATED);
+
+        return new CompareCondition($fieldName, $operator, $value);
     }
 
     /**

@@ -7,14 +7,10 @@ CoreShop\Component\Shipping\Model\Carrier:
             type: integer
             xml_attribute: true
             groups: [List, Detailed]
-        name:
+        identifier:
             expose: true
             type: string
             groups: [List, Detailed]
-        label:
-            expose: true
-            type: string
-            groups: [Detailed]
         trackingUrl:
             expose: true
             type: string
@@ -22,10 +18,6 @@ CoreShop\Component\Shipping\Model\Carrier:
         isFree:
             expose: true
             type: boolean
-            groups: [Detailed]
-        rangeBehaviour:
-            expose: true
-            type: string
             groups: [Detailed]
         shippingRules:
             expose: true

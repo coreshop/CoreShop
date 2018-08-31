@@ -24,7 +24,7 @@ interface ProposalCartPriceRuleCalculatorInterface
      * @param CartPriceRuleInterface $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
      *
-     * @return ProposalCartPriceRuleItemInterface
+     * @return ProposalCartPriceRuleItemInterface|false
      */
     public function calculatePriceRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 }

@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
@@ -25,15 +25,14 @@ final class PaymentProviderTranslationType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add('title', TextType::class, [
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
             ])
             ->add('instructions', TextareaType::class, [
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     /**

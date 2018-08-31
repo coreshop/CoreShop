@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Bundle\OrderBundle\Renderer;
 
@@ -24,13 +24,18 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     private $decoratedService;
 
     /**
-     * AssetOrderDocumentPdfRenderer constructor.
-     *
-     * @param OrderDocumentRendererInterface $decoratedService
+     * @var string
      */
-    public function __construct(OrderDocumentRendererInterface $decoratedService)
+    private $environment;
+
+    /**
+     * @param OrderDocumentRendererInterface $decoratedService
+     * @param string $environment
+     */
+    public function __construct(OrderDocumentRendererInterface $decoratedService, string $environment)
     {
         $this->decoratedService = $decoratedService;
+        $this->environment = $environment;
     }
 
     /**
@@ -38,8 +43,16 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
      */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
     {
+        // if in dev mode, do not store document
+        if ($this->environment === 'dev') {
+            return $this->decoratedService->renderDocumentPdf($orderDocument);
+        }
+
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
-            return $orderDocument->getRenderedAsset()->getData();
+            // check if asset is outdated.
+            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate()) {
+                return $orderDocument->getRenderedAsset()->getData();
+            }
         }
 
         $pdfContent = $this->decoratedService->renderDocumentPdf($orderDocument);

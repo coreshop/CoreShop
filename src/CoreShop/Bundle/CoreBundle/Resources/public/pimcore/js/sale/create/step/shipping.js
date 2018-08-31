@@ -39,6 +39,11 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
         return 60;
     },
 
+    reset: function() {
+        this.panel.getForm().reset();
+        this.layout.hide();
+    },
+
     getValues: function (parent) {
         return this.panel.getForm().getFieldValues();
     },
@@ -59,7 +64,9 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
                 change: function (combo, value) {
                     var carrier = this.carriersStore.getById(value);
 
-                    deliveryPriceField.setValue(carrier.get('priceFormatted'));
+                    if (carrier) {
+                        deliveryPriceField.setValue(carrier.get('priceFormatted'));
+                    }
 
                     this.eventManager.fireEvent('carrier.changed');
                     this.eventManager.fireEvent('totals.reload');

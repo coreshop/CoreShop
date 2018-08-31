@@ -1,35 +1,43 @@
 # CoreShop Country Context
 
-For CoreShop to determine the current Country the visitor or customer comes from, it uses a concept called Context and Context Resolver.
+For CoreShop to determine the current country the visitor or customer comes from,
+it uses a concept called context and context resolver.
 
-CoreShop comes with a set of default Resolvers like:
+## Context
+| Name | Priority | Tag | Description|
+|------|----------|-----|------------|
+| [FixedCountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/FixedCountryContext.php) | default | `coreshop.context.country` | Used for testing purposes |
+| [CountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/RequestBased/CountryContext.php) | default | `coreshop.context.country` | Check for a country within the country request resolver |
+| [StoreAwareCountryContext](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/Country/StoreAwareCountryContext.php) | default | `coreshop.context.country` | Check if current country is available in current store context |
 
- - [Request Based Geo Lite Resolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/RequestBased/GeoLiteBasedRequestResolver.php)
- - [Store Based Resolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/StoreBasedCountryResolver.php)
- - [Cart Based Resolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Core/Context/CartBasedCountryResolver.php)
+## Resolver
 
-These Resolver take care about finding the correct Country for the current Request.
+| Name | Priority | Tag | Description|
+|------|----------|-----|------------|
+| [GeoLiteBasedRequestResolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Address/Context/RequestBased/GeoLiteBasedRequestResolver.php) | 10 | `coreshop.context.country.request_based.resolver` | This Resolver tries to determinate the users location by using the Geo Lite Database. |
+
+These resolver takes care about finding the correct country for the current request.
 
 ## Create a Custom Resolver
 
-A Country Context needs to implement the interface ```CoreShop\Component\Address\Context\CountryContextInterface```. This interface
-consists of one function called "getCountry" which returns a ```CoreShop\Component\Address\Model\CountryInterface``` or throws an ```CoreShop\Component\Address\Context\CountryNotFoundException```
+A Country Context needs to implement the interface `CoreShop\Component\Address\Context\CountryContextInterface`.
+This interface consists of one method called `getCountry` which returns a `CoreShop\Component\Address\Model\CountryInterface` or throws an `CoreShop\Component\Address\Context\CountryNotFoundException`.
 
-To register your context, you need to use the tag: ```coreshop.context.country``` with an optional ```priority``` attribute.
+To register your context, you need to use the tag: `coreshop.context.country` with an optional `priority` attribute.
 
 ## Create a Request based Resolver
 
-CoreShop already implements Request based Currency Context Resolver. So if your Context depends on the current request, you can
-create a custom RequestBased Resolver. To do that, implement the interface ```CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface```
-with the function ```findCountry```. This function either returns a Country or null.
+CoreShop already implements Request based country context resolver.
+So if your Context depends on the current request, you can create a custom RequestBased Resolver.
+To do that, implement the interface `CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface`
+with the method `findCountry`. This method either returns a country or null.
 
-To register this resolver, use the tag: ```coreshop.context.country.request_based.resolver``` with an optional ```priority``` attribute.
-
+To register this resolver, use the tag: `coreshop.context.country.request_based.resolver` with an optional `priority` attribute.
 
 ## Example
 
-We want to a CountryContext to be based on the Pimcore Document. So if we are on site ```/de```, we want to resolve to ```Austria```, if we
-are on page ```/en``` we want to resolve to Country ```Great Britain```:
+We want to a CountryContext to be based on the Pimcore Document. So if we are on site `/de`, we want to resolve to `Austria`, if we
+are on page `/en` we want to resolve to Country `Great Britain`:
 
 **1**: First of all we need to create our RequestBased Country Context:
 
@@ -82,7 +90,7 @@ final class DocumentBasedRequestRequestResolver implements RequestResolverInterf
 }
 ```
 
-Now we need to configure the service in ```src/AppBundle/Resources/config/services.yml```
+Now we need to configure the service in `src/AppBundle/Resources/config/services.yml`
 
 ```yaml
 services:

@@ -14,5 +14,5 @@ pimcore.registerNS('pimcore.object.tags.coreShopCountryMultiselect');
 pimcore.object.tags.coreShopCountryMultiselect = Class.create(coreshop.object.tags.multiselect, {
 
     type: 'coreShopCountryMultiselect',
-    storeName: 'countries'
+    storeName: 'coreshop_countries'
 });

@@ -11,8 +11,12 @@ imports:
     - { resource: "services/profiler.yml" }
     - { resource: "services/cart.yml" }
     - { resource: "services/grid_config.yml" }
+    - { resource: "services/payment.yml" }
 
 services:
+    _defaults:
+        public: true
+
     coreshop.order.configurator.session_cart:
         class: CoreShop\Bundle\OrderBundle\Session\SessionCartConfigurator
         tags:
@@ -29,16 +33,19 @@ services:
         class: CoreShop\Component\Order\Cart\CartModifier
         arguments:
             - '@coreshop.factory.cart_item'
+            - '@event_dispatcher'
 
     coreshop.order.invoice.processable:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems
         arguments:
             - '@coreshop.repository.order_invoice'
+            - !php/const CoreShop\Component\Order\InvoiceStates::STATE_CANCELLED
 
     coreshop.order.shipment.processable:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems
         arguments:
             - '@coreshop.repository.order_shipment'
+            - !php/const CoreShop\Component\Order\ShipmentStates::STATE_CANCELLED
 
     coreshop.transformer.event_dispatcher:
         class: CoreShop\Component\Order\Transformer\TransformerEventDispatcher
@@ -49,11 +56,26 @@ services:
     coreshop.cart_processor.composite:
         class: CoreShop\Component\Order\Processor\CompositeCartProcessor
 
-    coreshop.cart.cleanup:
-        class: CoreShop\Bundle\OrderBundle\Cart\Maintenance\Cleanup
+    coreshop.cart.expire:
+        class: CoreShop\Bundle\OrderBundle\Expiration\CartExpiration
         shared: false
         arguments:
              - '@coreshop.repository.cart'
-             - '%coreshop.cart.cleanup.expiration_days%'
-             - '%coreshop.cart.cleanup.anonymous%'
-             - '%coreshop.cart.cleanup.user%'
+
+    coreshop.order.expire:
+        class: CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration
+        shared: false
+        arguments:
+             - '@coreshop.repository.order'
+             - '@coreshop.state_machine_applier'
+
+    coreshop.proportional_integer_distributor:
+        class: CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor
+
+    coreshop.custom_factory.adjustment:
+        class: CoreShop\Component\Order\Factory\AdjustmentFactory
+        decorates: coreshop.factory.adjustment
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@coreshop.custom_factory.adjustment.inner'

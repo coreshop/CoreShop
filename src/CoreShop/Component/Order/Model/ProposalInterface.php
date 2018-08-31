@@ -8,17 +8,23 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface
+interface ProposalInterface extends
+    ResourceInterface,
+    CurrencyAwareInterface,
+    StoreAwareInterface,
+    LocaleAwareInterface,
+    AdjustableInterface
 {
 
     /**
@@ -62,12 +68,6 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      * @return int
      */
     public function getDiscount($withTax = true);
-
-    /**
-     * @param int $discount
-     * @param bool $withTax
-     */
-    public function setDiscount($discount, $withTax = true);
 
     /**
      * @return ProposalItemInterface[]
@@ -137,7 +137,7 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      */
     public function getWeight();
 
-     /**
+    /**
      * @return Fieldcollection
      */
     public function getTaxes();

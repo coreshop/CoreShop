@@ -70,7 +70,7 @@ coreshop.resource.panel = Class.create({
     },
 
     getTitle: function () {
-        return t('coreshop_' + this.type);
+        return t(this.type);
     },
 
     refresh: function () {
@@ -83,6 +83,15 @@ coreshop.resource.panel = Class.create({
         return [this.getNavigation(), this.getTabPanel()];
     },
 
+    getDefaultGridDisplayColumnName: function() {
+        return 'name';
+    },
+
+    getGridDisplayColumnRenderer: function (value, metadata, record) {
+        metadata.tdAttr = 'data-qtip="ID: ' + record.get('id') + '"';
+        return value;
+    },
+
     getDefaultGridConfiguration: function () {
         return {
             region: 'west',
@@ -90,13 +99,9 @@ coreshop.resource.panel = Class.create({
             columns: [
                 {
                     text: '',
-                    dataIndex: 'name',
+                    dataIndex: this.getDefaultGridDisplayColumnName(),
                     flex: 1,
-                    renderer: function (value, metadata, record) {
-                        metadata.tdAttr = 'data-qtip="ID: ' + record.get("id") + '"';
-
-                        return value;
-                    }
+                    renderer: this.getGridDisplayColumnRenderer
                 }
             ],
             listeners: this.getTreeNodeListeners(),
@@ -138,9 +143,9 @@ coreshop.resource.panel = Class.create({
                 )
             );
 
-            this.grid.getStore().on("load", function (store, records) {
+            this.grid.getStore().on('load', function (store, records) {
                 if (this.grid.rendered) {
-                    this.grid.down("#totalLabel").setText(t('coreshop_total_items').format(records.length));
+                    this.grid.down('#totalLabel').setText(t('coreshop_total_items').format(records.length));
                 }
             }.bind(this));
 
@@ -165,7 +170,6 @@ coreshop.resource.panel = Class.create({
     },
 
     getTreeNodeListeners: function () {
-
         return {
             itemclick: this.onTreeNodeClick.bind(this),
             itemcontextmenu: this.onTreeNodeContextmenu.bind(this)
@@ -213,9 +217,7 @@ coreshop.resource.panel = Class.create({
 
                     this.grid.getStore().reload();
 
-                    if (pimcore.globalmanager.exists('coreshop_' + this.type)) {
-                        pimcore.globalmanager.get('coreshop_' + this.type).load();
-                    }
+                    this.refresh();
 
                     if (!data || !data.success) {
                         Ext.Msg.alert(t('add_target'), t('problem_creating_new_target'));
@@ -239,9 +241,7 @@ coreshop.resource.panel = Class.create({
             success: function () {
                 this.grid.getStore().reload();
 
-                if (pimcore.globalmanager.exists('coreshop_' + this.type)) {
-                    pimcore.globalmanager.get('coreshop_' + this.type).load();
-                }
+                this.refresh();
 
                 if (this.panels[this.getPanelKey(record)]) {
                     this.panels[this.getPanelKey(record)].destroy();

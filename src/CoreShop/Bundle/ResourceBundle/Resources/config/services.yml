@@ -3,33 +3,25 @@ imports:
     - { resource: "services/controller.yml" }
     - { resource: "services/installer.yml" }
     - { resource: "services/commands.yml" }
-    - { resource: "services/workflow.yml" }
+    - { resource: "services/validators.yml" }
 
 parameters:
-    coreshop.admin.route.base: /admin/coreshop
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
 services:
-    coreshop.object_service:
-        class: CoreShop\Component\Resource\Pimcore\ObjectService
-
-    coreshop.object_note_service:
-        class: CoreShop\Component\Resource\Pimcore\DataObjectNoteService
+    _defaults:
+        public: true
 
     coreshop.resource_registry:
         class: CoreShop\Component\Resource\Metadata\Registry
 
-    coreshop.class_installer:
-        class: CoreShop\Component\Pimcore\ClassInstaller
-
-
-    coreshop.grid_config_installer:
-        class: CoreShop\Component\Pimcore\GridConfigInstaller
+    pimcore.dao.object_manager:
+        class: CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager
 
     coreshop.jms_serializer.handler.relation:
         class: CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler
         arguments:
-            - "@doctrine.orm.entity_manager"
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: jms_serializer.handler, type: relation, direction: serialization, format: json, method: serializeRelation}
             - { name: jms_serializer.handler, type: relation, direction: deserialization, format: json, method: deserializeRelation}
@@ -52,12 +44,6 @@ services:
           - '@coreshop.resource_controller.view_handler'
         calls:
           - [setContainer, ['@service_container']]
-
-    coreshop.resource_loader:
-        class: CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader
-
-    coreshop.resource.object_cloner:
-        class: CoreShop\Component\Resource\Pimcore\ObjectCloner
 
     coreshop.resource.helper.form_error_serializer:
         class: CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer

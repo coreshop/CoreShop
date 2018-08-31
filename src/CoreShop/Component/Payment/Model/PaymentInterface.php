@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Payment\Model;
 
@@ -79,11 +79,15 @@ interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceI
     public function setNumber($number);
 
     /**
+     * @deprecated setOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setOrder from Core Component instead
+     *
      * @param int $orderId
      */
     public function setOrderId($orderId);
 
     /**
+     * @deprecated getOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getOrder from Core Component instead
+     *
      * @return int
      */
     public function getOrderId();

@@ -17,9 +17,10 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
+    use AdjustableTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -41,7 +42,15 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     public function getTotal($withTax = true)
     {
-        return $this->getItemPrice($withTax) * $this->getQuantity();
+        return $withTax ? $this->getTotalGross() : $this->getTotalNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotal($total, $withTax = true)
+    {
+        $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
     /**
@@ -79,6 +88,38 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * {@inheritdoc}
      */
+    public function getItemDiscountPrice($withTax = true)
+    {
+        return $withTax ? $this->getItemDiscountPriceGross() : $this->getItemDiscountPriceNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountPrice($itemDiscountPrice, $withTax = true)
+    {
+        return $withTax ? $this->setItemDiscountPriceGross($itemDiscountPrice) : $this->setItemDiscountPriceNet($itemDiscountPrice);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscount($withTax = true)
+    {
+        return $withTax ? $this->getItemDiscountGross() : $this->getItemDiscountNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscount($itemDiscount, $withTax = true)
+    {
+        return $withTax ? $this->setItemDiscountGross($itemDiscount) : $this->setItemDiscountNet($itemDiscount);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTotalTax()
     {
         if (!$this->getTaxes() instanceof Fieldcollection) {
@@ -110,6 +151,39 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
 
         return $cart;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalNet($totalNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalGross($totalGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
 
     /**
      * {@inheritdoc}
@@ -154,7 +228,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * {@inheritdoc}
      */
-    public function setItemRetailPriceNet($itemRetailPriceNett)
+    public function setItemRetailPriceNet($itemRetailPriceNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -171,6 +245,71 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      * {@inheritdoc}
      */
     public function setItemRetailPriceGross($itemRetailPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountPriceNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountPriceNet($itemDiscountPriceNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountPriceGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountPriceGross($itemDiscountPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountNet($itemDiscountNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemDiscountGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemDiscountGross($itemDiscountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -269,5 +408,14 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     public function setTaxes($taxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateAfterAdjustmentChange()
+    {
+        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(true), true);
+        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(false), false);
     }
 }

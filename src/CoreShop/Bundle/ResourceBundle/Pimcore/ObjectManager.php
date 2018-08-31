@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use Pimcore\Model\AbstractModel;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\Element\ElementInterface;
 use Webmozart\Assert\Assert;
 
 final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
@@ -20,7 +22,17 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     /**
      * @var array
      */
-    protected $modelsToPersist = [];
+    protected $repositories = [];
+
+    /**
+     * @var array
+     */
+    protected $modelsToUpdate = [];
+
+    /**
+     * @var array
+     */
+    protected $modelsToInsert = [];
 
     /**
      * @var array
@@ -40,9 +52,19 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function persist($resource)
     {
+        /**
+         * @var $resource AbstractModel
+         */
         Assert::isInstanceOf($resource, AbstractModel::class);
 
-        $this->modelsToPersist[] = $resource;
+        $id = $this->getResourceId($resource);
+        $className = $this->getResourceClassName($resource);
+
+        if ($id) {
+            $this->modelsToUpdate[$className][$id] = $resource;
+        } else {
+            $this->modelsToInsert[$className][] = $resource;
+        }
     }
 
     /**
@@ -50,9 +72,16 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function remove($resource)
     {
-        Assert::isInstanceOf($resource, AbstractModel::class);
+        $id = $this->getResourceId($resource);
+        $className = $this->getResourceClassName($resource);
 
-        $this->modelsToRemove[] = $resource;
+        if ($resource instanceof Concrete) {
+            $className = $resource->getClassName();
+        }
+
+        if ($id) {
+            $this->modelsToRemove[$className][$id] = $resource;
+        }
     }
 
     /**
@@ -70,15 +99,19 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     {
         if (null === $objectName) {
             $this->modelsToRemove = [];
-            $this->modelsToPersist = [];
-        }
-        else {
+            $this->modelsToUpdate = [];
+            $this->modelsToInsert = [];
+        } else {
             if (isset($this->modelsToRemove[$objectName])) {
                 $this->modelsToRemove[$objectName] = [];
             }
 
-            if (isset($this->modelsToPersist[$objectName])) {
-                $this->modelsToPersist[$objectName] = [];
+            if (isset($this->modelsToUpdate[$objectName])) {
+                $this->modelsToUpdate[$objectName] = [];
+            }
+
+            if (isset($this->modelsToInsert[$objectName])) {
+                $this->modelsToInsert[$objectName] = [];
             }
         }
     }
@@ -104,13 +137,29 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function flush()
     {
-        foreach ($this->modelsToRemove as $model) {
-            $model->delete();
+        foreach ($this->modelsToRemove as $className => $classTypeModels) {
+            foreach ($classTypeModels as $model) {
+                $model->delete();
+            }
         }
 
-        foreach ($this->modelsToPersist as $model) {
-            $model->save();
+        foreach ([$this->modelsToInsert, $this->modelsToUpdate] as $modelsToSave) {
+            foreach ($modelsToSave as $className => $classTypeModels) {
+                foreach ($classTypeModels as $model) {
+                    if ($model instanceof Concrete) {
+                        if (!$model->getPublished()) {
+                            $model->setOmitMandatoryCheck(true);
+                        }
+                    }
+
+                    $model->save();
+                }
+            }
         }
+
+        $this->modelsToUpdate =
+        $this->modelsToInsert =
+        $this->modelsToRemove = [];
     }
 
     /**
@@ -118,7 +167,11 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function getRepository($className)
     {
-        //TODO
+        if (!array_key_exists($className, $this->repositories)) {
+            throw new \InvalidArgumentException(sprintf('Repository for class %s not found', $className));
+        }
+
+        return $this->repositories[$className];
     }
 
     public function getClassMetadata($className)
@@ -139,5 +192,61 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     public function contains($object)
     {
         // TODO
+    }
+
+    /**
+     * @param $className
+     * @param $repository
+     */
+    public function registerRepository($className, $repository)
+    {
+        $this->repositories[$className] = $repository;
+    }
+
+    /**
+     * @param $resource
+     * @return int
+     */
+    protected function getResourceId($resource)
+    {
+        $id = spl_object_hash($resource);
+
+        if (method_exists($resource, 'getId')) {
+            $id = $resource->getId();
+        }
+
+        return $id;
+    }
+
+    /**
+     * @param $resource
+     * @return string
+     */
+    protected function getResourceClassName($resource)
+    {
+        $className = get_class($resource);
+
+        if ($resource instanceof Concrete) {
+            $className = $resource->getClassName();
+        }
+
+        return $className;
+    }
+
+    /**
+     * @param $resource
+     * @return bool
+     */
+    protected function isResourceNew($resource)
+    {
+        if ($resource instanceof ElementInterface) {
+            return is_null($resource->getId()) || $resource->getId() === 0;
+        }
+
+        if (method_exists($resource, 'getId')) {
+            return is_null($resource->getId()) || $resource->getId() === 0;
+        }
+
+        return true;
     }
 }

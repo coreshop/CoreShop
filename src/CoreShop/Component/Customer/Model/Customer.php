@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Customer\Model;
 
@@ -17,8 +17,29 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class Customer extends AbstractPimcoreModel implements CustomerInterface, UserInterface
+class Customer extends AbstractPimcoreModel implements CustomerInterface
 {
+    /**
+     * @var array
+     */
+    private $roles = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSalutation()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSalutation($salutation)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -118,7 +139,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
+    public function getLocaleCode()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -126,7 +147,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocaleCode($locale)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -191,7 +212,20 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
      */
     public function getRoles()
     {
-        return $this->getCustomerGroups();
+        $roles = $this->roles;
+
+        /** @var CustomerGroupInterface $group */
+        if (is_array($this->getCustomerGroups())) {
+            foreach ($this->getCustomerGroups() as $group) {
+                $groupRoles = $group->getRoles();
+                $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);
+            }
+        }
+
+        // we need to make sure to have at least one role
+        $roles[] = static::CORESHOP_ROLE_DEFAULT;
+
+        return array_unique($roles);
     }
 
     /**
@@ -200,5 +234,13 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface, UserIn
     public function getUsername()
     {
         return $this->getEmail();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        return $user instanceof self && $user->getId() === $this->getId();
     }
 }

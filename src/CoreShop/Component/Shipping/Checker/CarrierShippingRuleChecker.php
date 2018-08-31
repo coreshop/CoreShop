@@ -8,7 +8,7 @@
  *
  * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
-*/
+ */
 
 namespace CoreShop\Component\Shipping\Checker;
 
@@ -40,7 +40,15 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
         $shippingRules = $carrier->getShippingRules();
 
         foreach ($shippingRules as $rule) {
-            if ($this->ruleValidationProcessor->isValid(['carrier' => $carrier, 'shippable' => $shippable, 'address' => $address], $rule->getShippingRule())) {
+            $isValid = $this->ruleValidationProcessor->isValid($carrier, $rule->getShippingRule(), [
+                $carrier,
+                'shippable' => $shippable,
+                'address'   => $address
+            ]);
+
+            if ($isValid === false && $rule->getStopPropagation() === true) {
+                return false;
+            } elseif ($isValid === true) {
                 return $rule;
             }
         }
