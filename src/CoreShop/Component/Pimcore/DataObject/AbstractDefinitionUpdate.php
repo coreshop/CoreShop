@@ -68,17 +68,20 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function insertFieldBefore($fieldName, $jsonFieldDefinition)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-            if ($index === 0) {
-                $index = 1;
+        $this->findField(
+            $fieldName,
+            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+                if ($index === 0) {
+                    $index = 1;
+                }
+
+                $childs = $parent['childs'];
+
+                array_splice($childs, $index, 0, [$jsonFieldDefinition]);
+
+                $parent['childs'] = $childs;
             }
-
-            $childs = $parent['childs'];
-
-            array_splice($childs, $index, 0, [$jsonFieldDefinition]);
-
-            $parent['childs'] = $childs;
-        });
+        );
     }
 
     /**
@@ -86,13 +89,16 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function insertFieldAfter($fieldName, $jsonFieldDefinition)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-            $childs = $parent['childs'];
+        $this->findField(
+            $fieldName,
+            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+                $childs = $parent['childs'];
 
-            array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
+                array_splice($childs, $index + 1, 0, [$jsonFieldDefinition]);
 
-            $parent['childs'] = $childs;
-        });
+                $parent['childs'] = $childs;
+            }
+        );
     }
 
     /**
@@ -100,9 +106,12 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function replaceField($fieldName, $jsonFieldDefinition)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
-            $foundField = $jsonFieldDefinition;
-        });
+        $this->findField(
+            $fieldName,
+            function (&$foundField, $index, &$parent) use ($jsonFieldDefinition) {
+                $foundField = $jsonFieldDefinition;
+            }
+        );
     }
 
     /**
@@ -110,11 +119,14 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function replaceFieldProperties($fieldName, array $keyValues)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) use ($keyValues) {
-            foreach ($keyValues as $key => $value) {
-                $foundField[$key] = $value;
+        $this->findField(
+            $fieldName,
+            function (&$foundField, $index, &$parent) use ($keyValues) {
+                foreach ($keyValues as $key => $value) {
+                    $foundField[$key] = $value;
+                }
             }
-        });
+        );
     }
 
     /**
@@ -122,13 +134,16 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      */
     public function removeField($fieldName)
     {
-        $this->findField($fieldName, function(&$foundField, $index, &$parent) {
-            unset($parent['childs'][$index]);
-        });
+        $this->findField(
+            $fieldName,
+            function (&$foundField, $index, &$parent) {
+                unset($parent['childs'][$index]);
+            }
+        );
     }
 
     /**
-     * @param string $fieldName
+     * @param string   $fieldName
      * @param \Closure $callback
      *
      * @throws ClassDefinitionFieldNotFoundException
@@ -137,7 +152,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     {
         $found = false;
 
-        $traverseFunction = function($children) use (&$traverseFunction, $fieldName, $callback, &$found) {
+        $traverseFunction = function ($children) use (&$traverseFunction, $fieldName, $callback, &$found) {
             foreach ($children['childs'] as $index => &$child) {
                 if ($child['name'] === $fieldName) {
                     $callback($child, $index, $children);
