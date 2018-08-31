@@ -8,3 +8,4 @@ services:
         arguments:
             - '@coreshop.tracking.item_builder.decorated.inner'
             - '@coreshop.product.taxed_price_calculator'
+            - '%coreshop.model.product.class%'
