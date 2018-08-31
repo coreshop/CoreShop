@@ -1,0 +1,17 @@
+core_shop_taxation:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshoptaxation/pimcore/js/resource.js'
+            resource_tax_rate: '/bundles/coreshoptaxation/pimcore/js/resource/taxRate.js'
+            resource_tax_rule_group: '/bundles/coreshoptaxation/pimcore/js/resource/taxRuleGroup.js'
+            tax_item: '/bundles/coreshoptaxation/pimcore/js/tax/item.js'
+            tax_panel: '/bundles/coreshoptaxation/pimcore/js/tax/panel.js'
+            taxrulegroup_item: '/bundles/coreshoptaxation/pimcore/js/taxrulegroup/item.js'
+            taxrulegroup_panel: '/bundles/coreshoptaxation/pimcore/js/taxrulegroup/panel.js'
+            core_extension_data_tax_rule_group: '/bundles/coreshoptaxation/pimcore/js/coreExtension/data/coreShopTaxRuleGroup.js'
+            core_extension_tag_tax_rule_group: '/bundles/coreshoptaxation/pimcore/js/coreExtension/tags/coreShopTaxRuleGroup.js'
+        css:
+            taxation: '/bundles/coreshoptaxation/pimcore/css/taxation.css'
+        editmode_js:
+            core_extension_document_tag_tax_rate: '/bundles/coreshoptaxation/pimcore/js/coreExtension/document/coreShopTaxRate.js'
+            core_extension_document_tag_tax_rule_group: '/bundles/coreshoptaxation/pimcore/js/coreExtension/document/coreShopTaxRuleGroup.js'

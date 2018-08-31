@@ -1,0 +1,15 @@
+core_shop_store:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshopstore/pimcore/js/resource.js'
+            resource_store: '/bundles/coreshopstore/pimcore/js/resource/store.js'
+            store_item: '/bundles/coreshopstore/pimcore/js/item.js'
+            store_panel: '/bundles/coreshopstore/pimcore/js/panel.js'
+            core_extension_data_store: '/bundles/coreshopstore/pimcore/js/coreExtension/data/coreShopStore.js'
+            core_extension_tag_store: '/bundles/coreshopstore/pimcore/js/coreExtension/tags/coreShopStore.js'
+            core_extension_data_store_multiselect: '/bundles/coreshopstore/pimcore/js/coreExtension/data/coreShopStoreMultiselect.js'
+            core_extension_tag_store_multiselect: '/bundles/coreshopstore/pimcore/js/coreExtension/tags/coreShopStoreMultiselect.js'
+        css:
+            store: '/bundles/coreshopstore/pimcore/css/store.css'
+        editmode_js:
+            core_extension_document_tag_store: '/bundles/coreshopstore/pimcore/js/coreExtension/document/coreShopStore.js'

@@ -1,0 +1,21 @@
+core_shop_resource:
+    pimcore_admin:
+        js:
+            global: '/bundles/coreshopresource/pimcore/js/global.js'
+            plugin: '/bundles/coreshopresource/pimcore/js/plugin.js'
+            event_manager: '/bundles/coreshopresource/pimcore/js/eventManager.js'
+            resource: '/bundles/coreshopresource/pimcore/js/resource.js'
+            resource_panel: '/bundles/coreshopresource/pimcore/js/resource/panel.js'
+            resource_item: '/bundles/coreshopresource/pimcore/js/resource/item.js'
+            resource_combo: '/bundles/coreshopresource/pimcore/js/resource/comboBox.js'
+            object_element_href: '/bundles/coreshopresource/pimcore/js/object/elementHref.js'
+            object_object_multihref: '/bundles/coreshopresource/pimcore/js/object/objectMultihref.js'
+            core_extension_data_data: '/bundles/coreshopresource/pimcore/js/coreExtension/data/data.js'
+            core_extension_data_data_multiselect: '/bundles/coreshopresource/pimcore/js/coreExtension/data/dataMultiselect.js'
+            core_extension_data_select: '/bundles/coreshopresource/pimcore/js/coreExtension/data/select.js'
+            core_extension_tag_select: '/bundles/coreshopresource/pimcore/js/coreExtension/tags/select.js'
+            core_extension_tag_multiselect: '/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js'
+        css:
+            resource: '/bundles/coreshopresource/pimcore/css/resource.css'
+        editmode_js:
+            core_extension_document_tag_select: '/bundles/coreshopresource/pimcore/js/coreExtension/document/select.js'

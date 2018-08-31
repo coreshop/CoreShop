@@ -1,0 +1,7 @@
+core_shop_address:
+    pimcore_admin:
+        js:
+            core_extension_data_money: '/bundles/coreshopmoney/pimcore/js/coreExtension/data/coreShopMoney.js'
+            core_extension_tag_money: '/bundles/coreshopmoney/pimcore/js/coreExtension/tags/coreShopMoney.js'
+        css:
+            money: '/bundles/coreshopmoney/pimcore/css/money.css'

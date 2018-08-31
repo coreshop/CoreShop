@@ -1,0 +1,13 @@
+core_shop_rule:
+    pimcore_admin:
+        js:
+            rule_panel: '/bundles/coreshoprule/pimcore/js/rules/panel.js'
+            rule_item: '/bundles/coreshoprule/pimcore/js/rules/item.js'
+            rule_abstract: '/bundles/coreshoprule/pimcore/js/rules/abstract.js'
+            rule_condition: '/bundles/coreshoprule/pimcore/js/rules/condition.js'
+            rule_action: '/bundles/coreshoprule/pimcore/js/rules/action.js'
+            rule_action_abstract: '/bundles/coreshoprule/pimcore/js/rules/actions/abstract.js'
+            rule_condition_abstract: '/bundles/coreshoprule/pimcore/js/rules/conditions/abstract.js'
+            rule_condition_nested: '/bundles/coreshoprule/pimcore/js/rules/conditions/nested.js'
+        css:
+            rule: '/bundles/coreshoprule/pimcore/css/rule.css'
