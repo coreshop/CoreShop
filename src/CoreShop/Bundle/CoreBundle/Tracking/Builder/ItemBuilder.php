@@ -69,7 +69,6 @@ final class ItemBuilder implements ItemBuilderInterface
      */
     public function buildPurchasableImpressionItem(PurchasableInterface $product)
     {
-        var_dump(get_class($product));
         $item = $this->decoratedItemBuilder->buildPurchasableImpressionItem($product);
 
         if ($product instanceof ProductInterface) {
