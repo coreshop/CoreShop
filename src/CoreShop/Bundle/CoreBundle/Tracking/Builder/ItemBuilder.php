@@ -23,25 +23,18 @@ final class ItemBuilder implements ItemBuilderInterface
      */
     protected $taxedProductPriceCalculator;
 
-    /**
-     * @var string
-     */
-    protected $productClass;
 
     /**
      * @param ItemBuilderInterface $decoratedItemBuilder
      * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
-     * @param string $productClass
      */
     public function __construct(
         ItemBuilderInterface $decoratedItemBuilder,
-        TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator,
-        $productClass
+        TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
     )
     {
         $this->decoratedItemBuilder = $decoratedItemBuilder;
         $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
-        $this->productClass = $productClass;
     }
 
     /**
