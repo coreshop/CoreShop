@@ -10,7 +10,6 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use Pimcore\Model\DataObject\CoreShopProduct;
 
 final class ItemBuilder implements ItemBuilderInterface
 {
@@ -24,11 +23,15 @@ final class ItemBuilder implements ItemBuilderInterface
      */
     protected $taxedProductPriceCalculator;
 
+
     /**
-     * @param ItemBuilderInterface                 $decoratedItemBuilder
+     * @param ItemBuilderInterface $decoratedItemBuilder
      * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
      */
-    public function __construct(ItemBuilderInterface $decoratedItemBuilder, TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator)
+    public function __construct(
+        ItemBuilderInterface $decoratedItemBuilder,
+        TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
+    )
     {
         $this->decoratedItemBuilder = $decoratedItemBuilder;
         $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
@@ -51,8 +54,8 @@ final class ItemBuilder implements ItemBuilderInterface
             $item->setPrice($this->taxedProductPriceCalculator->getPrice($product) / 100);
         }
 
-        if ($this->coreClassHasMethod(CoreShopProduct::class, 'getManufacturer')) {
-            if($product->getManufacturer() instanceof ManufacturerInterface) {
+        if (method_exists($product, 'getManufacturer')) {
+            if ($product->getManufacturer() instanceof ManufacturerInterface) {
                 $item->setBrand($product->getManufacturer()->getName());
             }
         }
@@ -62,6 +65,7 @@ final class ItemBuilder implements ItemBuilderInterface
 
     /**
      * {@inheritdoc}
+     * @throws \ReflectionException
      */
     public function buildPurchasableImpressionItem(PurchasableInterface $product)
     {
@@ -77,8 +81,8 @@ final class ItemBuilder implements ItemBuilderInterface
             $item->setPrice($this->taxedProductPriceCalculator->getPrice($product) / 100);
         }
 
-        if ($this->coreClassHasMethod(CoreShopProduct::class, 'getManufacturer')) {
-            if($product->getManufacturer() instanceof ManufacturerInterface) {
+        if (method_exists($product, 'getManufacturer')) {
+            if ($product->getManufacturer() instanceof ManufacturerInterface) {
                 $item->setBrand($product->getManufacturer()->getName());
             }
         }
@@ -96,7 +100,6 @@ final class ItemBuilder implements ItemBuilderInterface
         if ($order instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             $item->setAffiliation($order->getStore()->getName());
         }
-
         return $item;
     }
 
@@ -141,13 +144,14 @@ final class ItemBuilder implements ItemBuilderInterface
 
     /**
      * {@inheritdoc}
+     * @throws \ReflectionException
      */
     public function buildCheckoutItem(OrderInterface $order, OrderItemInterface $orderItem)
     {
         $item = $this->decoratedItemBuilder->buildCheckoutItem($order, $orderItem);
         $product = $orderItem->getProduct();
 
-        if ($this->coreClassHasMethod(CoreShopProduct::class, 'getSku')) {
+        if (method_exists($product, 'getSku')) {
             $item->setSku($product->getSku());
         }
 
@@ -160,19 +164,4 @@ final class ItemBuilder implements ItemBuilderInterface
         return $item;
     }
 
-    /**
-     * @param string $class
-     * @param string $method
-     * @return bool
-     * @throws \ReflectionException
-     */
-    private function coreClassHasMethod($class = '', $method = '')
-    {
-        $coreProductClass = new \ReflectionClass($class);
-        if ($coreProductClass->hasMethod($method) && $coreProductClass->getMethod($method)->class === $class) {
-            return true;
-        }
-
-        return false;
-    }
 }
