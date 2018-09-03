@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use Pimcore\DependencyInjection\ConfigMerger;
+use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,7 +30,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
 
@@ -58,7 +60,8 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
      */
     public function prepend(ContainerBuilder $container)
     {
-        $fosRestConfig = [
+        $fosRestConfigs = $container->getExtensionConfig('fos_rest');
+        $fosRestConfigs[] = [
             'format_listener' => [
                 'rules' => [
                     [
@@ -75,71 +78,41 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             ]
         ];
 
-        $frameworkConfig = [
-            'form' => true
-        ];
+        if (count($fosRestConfigs) > 1) {
+            $configMerger = new ConfigMerger();
 
-        $doctrineConfig = [
-            'dbal' => [
-                'mapping_types' => [
-                    'enum' => 'string'
-                ]
-            ],
-            'orm' => [
-                'auto_generate_proxy_classes' => '%kernel.debug%',
-                'entity_managers' => [
-                    'default' => [
-                        'auto_mapping' => true,
-                        'metadata_cache_driver' => [
-                            'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_metadata_cache'
-                        ],
-                        'result_cache_driver' => [
-                            'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_result_cache'
-                        ],
-                        'query_cache_driver' => [
-                            'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_query_cache'
-                        ]
-                    ]
-                ]
-            ]
-        ];
+            $restConfigs = [];
+            foreach ($fosRestConfigs as $rest) {
+                if (!is_array($rest)) {
+                    continue;
+                }
 
-        $doctrineCacheConfig = [
-            'custom_providers' => [
-                'coreshop_pimcore_cache' => [
-                    'prototype' => 'coreshop.doctrine.cache.pimcore'
-                ]
-            ],
-            'providers' => [
-                'coreshop_pimcore_metadata_cache' => [
-                    'coreshop_pimcore_cache' => []
-                ],
-                'coreshop_pimcore_result_cache' => [
-                    'coreshop_pimcore_cache' => []
-                ],
-                'coreshop_pimcore_query_cache' => [
-                    'coreshop_pimcore_cache' => []
-                ]
-            ]
-        ];
+                $restConfigs = $configMerger->merge($restConfigs, $rest);
+            }
 
-        $stofDoctrineExtensions = [
-            'default_locale' => '%locale%',
-            'orm' => [
-                'default' => [
-                    'timestampable' => true
-                ]
-            ]
-        ];
+            $fosRestConfigs = [$restConfigs];
 
-        $container->prependExtensionConfig('fos_rest', $fosRestConfig);
-        $container->prependExtensionConfig('framework', $frameworkConfig);
-        $container->prependExtensionConfig('doctrine', $doctrineConfig);
-        $container->prependExtensionConfig('doctrine_cache', $doctrineCacheConfig);
-        $container->prependExtensionConfig('stof_doctrine_extensions', $stofDoctrineExtensions);
+            $this->setExtensionConfig($container, 'fos_rest', $fosRestConfigs);
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param $name
+     * @param array $config
+     * @throws \ReflectionException
+     */
+    private function setExtensionConfig(ContainerBuilder $container, $name, array $config = [])
+    {
+        $reflector = new ReflectionClass($container);
+        $property = $reflector->getProperty('extensionConfigs');
+        $property->setAccessible(true);
+
+        $extensionConfigs = $property->getValue($container);
+        $extensionConfigs[$name] = $config;
+
+        $property->setValue($container, $extensionConfigs);
+        $property->setAccessible(false);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)

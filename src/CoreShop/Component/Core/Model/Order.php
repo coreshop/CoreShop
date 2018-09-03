@@ -20,6 +20,7 @@ class Order extends BaseOrder implements OrderInterface
 {
     use CarrierAwareTrait;
 
+
     /**
      * {@inheritdoc}
      */
