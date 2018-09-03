@@ -59,6 +59,16 @@ interface TaxCalculatorInterface
      *
      * @return int|array $taxes_amount
      */
+    public function getTaxesAmountFromGross($price, $asArray = false);
+
+    /**
+     * Return the tax amount associated to each taxes of the TaxCalculator.
+     *
+     * @param int $price
+     * @param bool $asArray
+     *
+     * @return int|array $taxes_amount
+     */
     public function getTaxesAmount($price, $asArray = false);
 
     /**

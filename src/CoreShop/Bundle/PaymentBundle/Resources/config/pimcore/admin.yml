@@ -1,0 +1,15 @@
+core_shop_payment:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshoppayment/pimcore/js/resource.js'
+            payment_item: '/bundles/coreshoppayment/pimcore/js/provider/item.js'
+            payment_panel: '/bundles/coreshoppayment/pimcore/js/provider/panel.js'
+            payment_gateway_abstract: '/bundles/coreshoppayment/pimcore/js/provider/gateways/abstract.js'
+            payment_gateway_paypal: '/bundles/coreshoppayment/pimcore/js/provider/gateways/paypal_express_checkout.js'
+            payment_gateway_sofort: '/bundles/coreshoppayment/pimcore/js/provider/gateways/sofort.js'
+            core_extension_data_provider: '/bundles/coreshoppayment/pimcore/js/coreExtension/data/coreShopPaymentProvider.js'
+            core_extension_tag_provider: '/bundles/coreshoppayment/pimcore/js/coreExtension/tags/coreShopPaymentProvider.js'
+        css:
+            payment: '/bundles/coreshoppayment/pimcore/css/payment.css'
+        editmode_js:
+            core_extension_document_tag_provider: '/bundles/coreshoppayment/pimcore/js/coreExtension/document/coreShopPaymentProvider.js'

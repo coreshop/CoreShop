@@ -15,7 +15,7 @@ namespace CoreShop\Component\Pimcore\DataObject;
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Pimcore\Model\DataObject;
 
-class ClassUpdate extends AbstractDefinitionUpdate
+class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameInterface
 {
     /**
      * @var string
@@ -26,6 +26,11 @@ class ClassUpdate extends AbstractDefinitionUpdate
      * @var DataObject\ClassDefinition
      */
     private $classDefinition;
+
+    /**
+     * @var array
+     */
+    private $fieldsToRename = [];
 
     /**
      * @param $className
@@ -49,7 +54,26 @@ class ClassUpdate extends AbstractDefinitionUpdate
      */
     public function save()
     {
+        foreach ($this->fieldsToRename as $from => $to) {
+            $renamer = new ClassDefinitionFieldReNamer($this->classDefinition, $from, $to);
+            $renamer->rename();
+        }
+
         return DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
+    }
+
+
+    public function renameField($fieldName, $newFieldName)
+    {
+        $this->findField(
+            $fieldName,
+            function (&$foundField, $index, &$parent) use($fieldName, $newFieldName) {
+                $this->fieldsToRename[$fieldName] = [
+                    'newName' => $newFieldName,
+                    'definition' => $foundField
+                ];
+            }
+        );
     }
 }
 

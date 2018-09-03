@@ -1,5 +1,6 @@
 imports:
     - { resource: "workflow.yml" }
+    - { resource: "admin.yml" }
 
 pimcore:
     objects:
@@ -7,6 +8,7 @@ pimcore:
             data:
                 map:
                   coreShopPaymentProvider: CoreShop\Bundle\PaymentBundle\CoreExtension\PaymentProvider
+
 
 jms_serializer:
     metadata:

@@ -123,6 +123,22 @@ final class CartContext implements Context
     }
 
     /**
+     * @Then /^the cart total tax should be "([^"]+)"$/
+     */
+    public function cartTotalTaxShouldBe($totalTax)
+    {
+        Assert::eq(
+            $totalTax,
+            $this->cartContext->getCart()->getTotalTax(),
+            sprintf(
+                'Cart total is expected to be %s, but it is %s',
+                $totalTax,
+                $this->cartContext->getCart()->getTotalTax()
+            )
+        );
+    }
+
+    /**
      * @Then /^the cart should weigh ([^"]+)kg$/
      */
     public function cartShouldWeigh($kg)

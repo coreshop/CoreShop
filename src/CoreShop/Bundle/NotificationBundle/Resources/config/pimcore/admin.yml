@@ -1,0 +1,11 @@
+core_shop_notification:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshopnotification/pimcore/js/resource.js'
+            notification_rule_item: '/bundles/coreshopnotification/pimcore/js/rule/item.js'
+            notification_rule_panel: '/bundles/coreshopnotification/pimcore/js/rule/panel.js'
+            notification_rule_action: '/bundles/coreshopnotification/pimcore/js/rule/action.js'
+            notification_rule_condition: '/bundles/coreshopnotification/pimcore/js/rule/condition.js'
+            notification_rule_action_mail: '/bundles/coreshopnotification/pimcore/js/rule/actions/mail.js'
+        css:
+            notification_rule: '/bundles/coreshopnotification/pimcore/css/notification.css'
