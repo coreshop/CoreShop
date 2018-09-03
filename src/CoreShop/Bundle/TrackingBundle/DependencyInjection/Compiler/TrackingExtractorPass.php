@@ -10,28 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\TrackingBundle\Model;
+namespace CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler;
 
-class AbstractData
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+
+final class TrackingExtractorPass extends RegisterSimpleRegistryTypePass
 {
-    /**
-     * @var string
-     */
-    public $id;
-
-    /**
-     * @return string
-     */
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        parent::__construct(
+            'coreshop.registry.tracking.extractor',
+            'coreshop.tracking.extractors',
+            'coreshop.tracking.extractor'
+        );
     }
 }

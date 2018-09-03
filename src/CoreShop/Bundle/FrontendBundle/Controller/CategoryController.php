@@ -199,7 +199,7 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
+            $this->get('coreshop.tracking.manager')->trackProductImpression($product);
         }
 
         $this->get('coreshop.seo.presentation')->updateSeoMetadata($category);

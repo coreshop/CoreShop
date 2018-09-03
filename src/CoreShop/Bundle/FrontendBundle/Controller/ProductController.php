@@ -53,7 +53,7 @@ class ProductController extends FrontendController
         }
 
         $this->get('coreshop.seo.presentation')->updateSeoMetadata($product);
-        $this->get('coreshop.tracking.manager')->trackPurchasableView($product);
+        $this->get('coreshop.tracking.manager')->trackProduct($product);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,

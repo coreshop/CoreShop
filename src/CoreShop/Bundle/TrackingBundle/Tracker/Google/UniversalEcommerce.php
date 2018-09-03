@@ -12,12 +12,8 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
-use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\Google\Tracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -65,7 +61,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableView(PurchasableInterface $product)
+    public function trackProduct($product)
     {
         // not implemented
     }
@@ -73,7 +69,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableImpression(PurchasableInterface $product)
+    public function trackProductImpression($product)
     {
         // not implemented
     }
@@ -81,7 +77,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1)
     {
         // not implemented
     }
@@ -89,7 +85,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1)
     {
         // not implemented
     }
@@ -97,7 +93,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
         // not implemented
     }
@@ -105,14 +101,14 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete(OrderInterface $order)
+    public function trackCheckoutComplete($order)
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
         }
 
-        $orderData = $this->itemBuilder->buildOrderAction($order);
-        $items = $this->itemBuilder->buildCheckoutItems($order);
+        $orderData = $this->transformOrder($order);
+        $items = $order['items'];
 
         $parameters = [];
         $parameters['order'] = $orderData;
@@ -148,21 +144,42 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         return $config->gtagcode;
     }
 
-    /**
-     * Transform product action into universal data object
+     /**
+     * Transform ActionData into classic analytics data array
      *
-     * @param ProductData $item
-     *
+     * @param $actionData
      * @return array
      */
-    protected function transformProductAction(ProductData $item)
+    protected function transformOrder($actionData)
+    {
+        return [
+            'id'          => $actionData['id'],
+            'affiliation' => $actionData['affiliation'] ?: '',
+            'total'       => $actionData['total'],
+            'tax'         => $actionData['totalTax'],
+            'shipping'    => $actionData['shipping'],
+            'currency'    => $actionData['currency']
+        ];
+    }
+
+    /**
+     * Transform product action into enhanced data object
+     *
+     * @param $item
+     * @return array
+     */
+    protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'sku'      => $item->getId(),
-            'name'     => $item->getName(),
-            'category' => $item->getCategory(),
-            'price'    => round($item->getPrice(), 2),
-            'quantity' => $item->getQuantity() ?: 1,
+            'id'        => $item['id'],
+            'name'      => $item['name'],
+            'category'  => $item['category'],
+            'brand'     => $item['brand'],
+            'variant'   => $item['variant'],
+            'price'     => round($item['price'], 2),
+            'quantity'  => $item['quantity'] ?: 1,
+            'position'  => $item['position'],
+            'currency' => $item['currency']
         ]);
     }
 }

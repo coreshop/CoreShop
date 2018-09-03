@@ -12,11 +12,7 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Matomo;
 
-use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\TrackerInterface;
 use Pimcore\Analytics\Piwik\Tracker as PiwikTracker;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -83,24 +79,17 @@ final class Matomo extends AbstractEcommerceTracker
      *
      * {@inheritdoc}
      */
-    public function trackPurchasableView(PurchasableInterface $product)
+    public function trackProduct($product)
     {
-        $item = $this->itemBuilder->buildPurchasableViewItem($product);
-
         $call = [
             'setEcommerceView',
-            $item->getId(),
-            $item->getName(),
-            $item->getCategory(),
-            $item->getPrice()
+            $product['id'],
+            $product['name'],
+            $product['category']
         ];
 
-        $call[] = $this->filterCategories([$item->getCategory()]);
-
-        $price = $item->getPrice();
-        if (!empty($price)) {
-            $call[] = $price;
-        }
+        $call[] = $this->filterCategories([$product['categories']]);
+        $call[] = $product['price'];
 
         $result = $this->renderCalls([$call]);
         $this->tracker->addCodePart($result, PiwikTracker::BLOCK_BEFORE_TRACK);
@@ -110,7 +99,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableImpression(PurchasableInterface $product)
+    public function trackProductImpression($product)
     {
         // not implemented
     }
@@ -118,34 +107,32 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1)
     {
         if ($this->handleCartAdd) {
-            $this->trackPurchasableAction($cart, 'add', $quantity);
+            $this->trackCartAction($cart, 'add', $quantity);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1)
     {
         if ($this->handleCartRemove) {
-            $this->trackPurchasableAction($cart, 'remove', $quantity);
+            $this->trackCartAction($cart, 'remove', $quantity);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function trackPurchasableAction(CartInterface $cart, $action, $quantity = 1)
+    protected function trackCartAction($cart, $action, $quantity = 1)
     {
-        $items = $this->itemBuilder->buildCheckoutItemsByCart($cart);
-
-        $calls = $this->buildItemCalls($items);
+        $calls = $this->buildItemCalls($cart['items']);
         $calls[] = [
             'trackEcommerceCartUpdate',
-            $cart->getTotal() / 100
+            $cart['total']
         ];
 
         $result = $this->renderCalls($calls);
@@ -156,7 +143,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
         // not implemented (not supported by Matomo)
     }
@@ -164,19 +151,20 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete(OrderInterface $order)
+    public function trackCheckoutComplete($order)
     {
-        $items = $this->itemBuilder->buildCheckoutItems($order);
+        $items = $order['items'];
+
         $calls = $this->buildItemCalls($items);
 
         $calls[] = [
             'trackEcommerceOrder',
-            $order->getId(),
-            $order->getTotal() / 100,
-            $order->getSubtotal() / 100,
-            $order->getTotalTax() / 100,
-            $order->getShipping() / 100,
-            $order->getDiscount() / 100
+            $order['id'],
+            $order['total'],
+            $order['subtotal'],
+            $order['totalTax'],
+            $order['shipping'],
+            $order['discount']
         ];
 
         $result = $this->renderCalls($calls);
@@ -184,7 +172,7 @@ final class Matomo extends AbstractEcommerceTracker
     }
 
     /**
-     * @param ProductData[] $items
+     * @param $items
      *
      * @return array
      */
@@ -194,26 +182,15 @@ final class Matomo extends AbstractEcommerceTracker
         foreach ($items as $item) {
             $calls[] = [
                 'addEcommerceItem',
-                $item->getId(),
-                $item->getName(),
-                $item->getCategory(),
-                $item->getPrice(),
-                $item->getQuantity()
+                $item['id'],
+                $item['name'],
+                $item['category'],
+                $item['price'],
+                $item['quantity']
             ];
         }
 
         return $calls;
-    }
-
-    /**
-     * @param array $calls
-     * @return string
-     */
-    private function renderCalls(array $calls)
-    {
-        return $this->renderTemplate('calls', [
-            'calls' => $calls
-        ]);
     }
 
     /**
@@ -235,19 +212,27 @@ final class Matomo extends AbstractEcommerceTracker
 
             $result = [];
             foreach ($categories as $category) {
-                $category = trim((string)$category);
+                $category = trim((string)$category['name']);
                 if (!empty($category)) {
                     $result[] = $category;
                 }
             }
 
-            $result = array_slice($result, 0, $limit);
-        } else {
-            $result = trim((string)$categories);
+            return array_slice($result, 0, $limit);
         }
 
-        if (!empty($result)) {
-            return $result;
-        }
+        return [];
+    }
+
+
+    /**
+     * @param array $calls
+     * @return string
+     */
+    private function renderCalls(array $calls)
+    {
+        return $this->renderTemplate('calls', [
+            'calls' => $calls
+        ]);
     }
 }

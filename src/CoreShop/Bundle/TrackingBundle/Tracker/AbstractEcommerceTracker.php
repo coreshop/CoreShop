@@ -12,27 +12,23 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
-use CoreShop\Bundle\TrackingBundle\Builder\ItemBuilderInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
+use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
+abstract class AbstractEcommerceTracker implements TrackerInterface
 {
     /**
-     * @var ItemBuilderInterface
+     * @var bool
      */
-    protected $itemBuilder;
+    protected $enabled = false;
 
     /**
      * @var EngineInterface
      */
     protected $templatingEngine;
-
-    /**
-     * @var CurrencyContextInterface
-     */
-    protected $currencyContext;
 
     /**
      * @var string
@@ -47,20 +43,14 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
     /**
      * EcommerceTracker constructor.
      *
-     * @param EngineInterface          $templatingEngine
-     * @param ItemBuilderInterface     $itemBuilder
-     * @param CurrencyContextInterface $currencyContext
-     * @param array                    $options
+     * @param EngineInterface $templatingEngine
+     * @param array           $options
      */
     public function __construct(
         EngineInterface $templatingEngine,
-        ItemBuilderInterface $itemBuilder,
-        CurrencyContextInterface $currencyContext,
         array $options = []
     ) {
-        $this->itemBuilder = $itemBuilder;
         $this->templatingEngine = $templatingEngine;
-        $this->currencyContext = $currencyContext;
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -82,7 +72,7 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
     {
         $this->enabled = $enabled;
     }
-
+    
     /**
      * @param array $options
      */
@@ -98,9 +88,11 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
     protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['template_prefix', 'template_extension']);
-        $resolver->setDefaults([
-            'template_extension' => 'twig'
-        ]);
+        $resolver->setDefaults(
+            [
+                'template_extension' => 'twig',
+            ]
+        );
 
         $resolver->setAllowedTypes('template_prefix', 'string');
         $resolver->setAllowedTypes('template_extension', 'string');
@@ -131,14 +123,6 @@ abstract class AbstractEcommerceTracker implements EcommerceTrackerInterface
             $this->getTemplatePath($name),
             $parameters
         );
-    }
-
-    /**
-     * @return string
-     */
-    protected function getCurrentCurrency()
-    {
-        return $this->currencyContext->getCurrency()->getIsoCode();
     }
 
     /**
