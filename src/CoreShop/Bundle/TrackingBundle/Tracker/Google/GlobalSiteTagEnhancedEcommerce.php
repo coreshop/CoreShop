@@ -187,7 +187,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackCartAction(PurchasableInterface $product, $action, $quantity = 1)
+    protected function trackCartAction($product, $action, $quantity = 1)
     {
         $product = $this->transformProductAction($product);
         $product['quantity'] = $quantity;
@@ -239,7 +239,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
             'price'     => round($item['price'], 2),
             'quantity'  => $item['quantity'] ?: 1,
             'position'  => $item['position'],
-            'ciurrency' => $item['currency']
+            'currency' => $item['currency']
         ]);
     }
 

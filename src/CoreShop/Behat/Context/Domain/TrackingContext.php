@@ -17,8 +17,11 @@ use Behat\Gherkin\Node\PyStringNode;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Behat\Service\Tracking\ConfigResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce;
+use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce;
+use CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce;
+use CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -63,6 +66,8 @@ final class TrackingContext implements Context
         $this->trackerRegistry = $trackerRegistry;
 
         $this->trackerRegistry->get('google-analytics-enhanced-ecommerce')->setConfigResolver(new ConfigResolver());
+        $this->trackerRegistry->get('google-gtag-enhanced-ecommerce')->setConfigResolver(new ConfigResolver());
+        $this->trackerRegistry->get('google-analytics-universal-ecommerce')->setConfigResolver(new ConfigResolver());
     }
 
     /**
@@ -104,8 +109,14 @@ final class TrackingContext implements Context
 
         $tracker->trackCartAdd($this->trackingExtractor->updateMetadata($cart), $this->trackingExtractor->updateMetadata($product), 1);
 
+        $params = ['cart' => $cart, 'product' => $product];
+
+        if ($cart->getItems() > 0) {
+            $params['cartItem'] = $cart->getItems()[0];
+        }
+
         $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), ['cart' => $cart, 'product' => $product]);
+        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), $params);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $code);
     }
@@ -172,7 +183,11 @@ final class TrackingContext implements Context
         else if ($tracker instanceof TagManagerClassicEcommerce) {
             $code = implode('', $tracker->codeTracker->getBlocks());
         }
-        else if ($tracker instanceof AnalyticsEnhancedEcommerce) {
+        else if ($tracker instanceof AnalyticsEnhancedEcommerce ||
+            $tracker instanceof GlobalSiteTagEnhancedEcommerce ||
+            $tracker instanceof UniversalEcommerce ||
+            $tracker instanceof Matomo
+        ) {
             $trackerReflector = new \ReflectionClass(AbstractTracker::class);
             $codeCollectorProperty = $trackerReflector->getProperty('codeCollector');
             $codeCollectorProperty->setAccessible(true);
@@ -190,7 +205,21 @@ final class TrackingContext implements Context
 
             $codePartsProperty->setAccessible(false);
 
-            return trim(preg_replace('/\s+/', ' ', implode(PHP_EOL, $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_BEFORE_TRACK]['append'])));
+
+            if ($tracker instanceof  UniversalEcommerce) {
+                $code = implode(
+                    PHP_EOL,
+                    $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_AFTER_TRACK]['append']
+                );
+            }
+            else {
+                $code = implode(
+                    PHP_EOL,
+                    $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_BEFORE_TRACK]['append']
+                );
+            }
+
+            return trim(preg_replace('/\s+/', ' ', $code));
         }
 
         return trim($code);

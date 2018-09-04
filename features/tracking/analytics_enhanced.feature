@@ -1,6 +1,6 @@
 @tracking @tracking_analytics_enhanced
 Feature: In order to track ecommerce sales
-  we track them using Google Tag Manager Enhanced
+  we track them using Google Analytics Enhanced
 
   Background:
     Given the site operates on a store in "Austria"

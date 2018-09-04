@@ -162,7 +162,7 @@ final class Matomo extends AbstractEcommerceTracker
             $order['id'],
             $order['total'],
             $order['subtotal'],
-            $order['totalTax'],
+            $order['tax'],
             $order['shipping'],
             $order['discount']
         ];
