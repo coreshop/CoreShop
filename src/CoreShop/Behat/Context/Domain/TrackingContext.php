@@ -25,6 +25,9 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
+use Pimcore\Analytics\AbstractTracker;
+use Pimcore\Analytics\Code\CodeCollector;
+use Pimcore\Analytics\Google\Tracker;
 use Pimcore\Analytics\SiteId\SiteId;
 use Webmozart\Assert\Assert;
 
@@ -147,7 +150,10 @@ final class TrackingContext implements Context
         $tracker->trackCheckoutComplete($this->trackingExtractor->updateMetadata($order));
 
         $placeholderHelper = new \Pimcore\Placeholder();
-        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), ['order' => $order, 'orderItem' => $order->getItems()[0]]);
+        $code = $placeholderHelper->replacePlaceholders($code->getRaw(), [
+            'order' => $order,
+            'orderItem' => $order->getItems()[0],
+        ]);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $code);
     }
@@ -167,7 +173,24 @@ final class TrackingContext implements Context
             $code = implode('', $tracker->codeTracker->getBlocks());
         }
         else if ($tracker instanceof AnalyticsEnhancedEcommerce) {
-            $code = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", preg_replace('/[ \t]+/', ' ', preg_replace('/\s*$^\s*/m', "", $tracker->tracker->generateCode(SiteId::forMainDomain()))));
+            $trackerReflector = new \ReflectionClass(AbstractTracker::class);
+            $codeCollectorProperty = $trackerReflector->getProperty('codeCollector');
+            $codeCollectorProperty->setAccessible(true);
+
+            $codeCollector = $codeCollectorProperty->getValue($tracker->tracker);
+
+            $codeCollectorProperty->setAccessible(false);
+
+            $codeCollectorReflector = new \ReflectionClass(CodeCollector::class);
+
+            $codePartsProperty = $codeCollectorReflector->getProperty('codeParts');
+            $codePartsProperty->setAccessible(true);
+
+            $blocks = $codePartsProperty->getValue($codeCollector);
+
+            $codePartsProperty->setAccessible(false);
+
+            return trim(preg_replace('/\s+/', ' ', implode(PHP_EOL, $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_BEFORE_TRACK]['append'])));
         }
 
         return trim($code);

@@ -148,6 +148,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         $parameters = [];
         $parameters['items'] = $cart['items'];
         $parameters['calls'] = [];
+        $parameters['actionData'] = [];
 
         if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
             $actionData = ['step' => $stepIdentifier];
