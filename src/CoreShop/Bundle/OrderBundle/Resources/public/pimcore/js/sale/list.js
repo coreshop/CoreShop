@@ -57,6 +57,7 @@ coreshop.order.sale.list = Class.create({
                 if (typeof data.editlock === 'object') {
                     Ext.Ajax.request({
                         url: '/admin/element/unlock-element',
+                        method: 'PUT',
                         params: {
                             id: data.editlock.cid,
                             type: 'object'
