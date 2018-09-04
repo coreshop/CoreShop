@@ -53,7 +53,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
             $proposal = $object->getOrder();
         }
 
-        return [
+        return array_merge($data, [
             'id' => $object->getId(),
             'sku' => $product instanceof ProductInterface ? $product->getSku() : '',
             'name' => $product instanceof PurchasableInterface ? $product->getName() : '',
@@ -61,6 +61,6 @@ class OrderItemExtractor implements TrackingExtractorInterface
             'price' => $object->getTotal() / 100,
             'quantity' => $object->getQuantity(),
             'currency' => $proposal ? $proposal->getCurrency()->getIsoCode() : ''
-        ];
+        ]);
     }
 }

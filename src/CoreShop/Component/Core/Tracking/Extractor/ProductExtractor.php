@@ -65,7 +65,7 @@ class ProductExtractor implements TrackingExtractorInterface
         /**
          * @var $object PurchasableInterface
          */
-        return [
+        return array_merge($data, [
             'id' => $object->getId(),
             'name' => $object->getName(),
             'category' => count($categories) > 0 ? $categories[0]->getName() : '',
@@ -78,6 +78,6 @@ class ProductExtractor implements TrackingExtractorInterface
                     'name' => $category->getName()
                 ];
             }, $categories)
-        ];
+        ]);
     }
 }
