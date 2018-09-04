@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Locale\Context;
 
 use Pimcore\Localization\LocaleServiceInterface;
+use Pimcore\Tool;
 
 class PimcoreLocaleContext implements LocaleContextInterface
 {
@@ -38,6 +39,10 @@ class PimcoreLocaleContext implements LocaleContextInterface
 
         if (null === $pimcoreLocale) {
             throw new LocaleNotFoundException();
+        }
+
+        if (!Tool::isValidLanguage($pimcoreLocale)) {
+            return Tool::getDefaultLanguage();
         }
 
         return $pimcoreLocale;
