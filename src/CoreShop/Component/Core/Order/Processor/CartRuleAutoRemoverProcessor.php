@@ -67,6 +67,8 @@ final class CartRuleAutoRemoverProcessor implements CartProcessorInterface
         }
 
         foreach ($priceRuleItems->getItems() as $index => $item) {
+            $invalid = false;
+
             if (!$item instanceof ProposalCartPriceRuleItemInterface) {
                 continue;
             }
@@ -78,7 +80,10 @@ final class CartRuleAutoRemoverProcessor implements CartProcessorInterface
 
             $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
 
-            if (!$this->cartPriceRuleValidator->isValidCartRule($cart, $item->getCartPriceRule(), $voucherCode)) {
+            if (!$item->getCartPriceRule()->getIsVoucherRule() && null !== $item->getVoucherCode()) {
+                $this->cartPriceRuleUnProcessor->unProcess($cart, $item->getCartPriceRule(), $voucherCode);
+            }
+            elseif (!$this->cartPriceRuleValidator->isValidCartRule($cart, $item->getCartPriceRule(), $voucherCode)) {
                 $this->cartPriceRuleUnProcessor->unProcess($cart, $item->getCartPriceRule(), $voucherCode);
             }
         }
