@@ -14,6 +14,7 @@ namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use Webmozart\Assert\Assert;
@@ -31,32 +32,26 @@ class DiscountAmountActionProcessor implements ProductDiscountActionProcessorInt
     protected $currencyRepository;
 
     /**
-     * @var CurrencyContextInterface
-     */
-    protected $currencyContext;
-
-    /**
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param CurrencyConverterInterface $moneyConverter
-     * @param CurrencyContextInterface $currencyContext
      */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
-        $this->currencyContext = $currencyContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, $price, array $configuration)
+    public function getDiscount($subject, $price, array $context, array $configuration)
     {
-        Assert::isInstanceOf($subject, ProductInterface::class);
+        Assert::keyExists($context, 'currency');
+        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
 
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
 
-        return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $context['currency']->getIsoCode());
     }
 }

@@ -17,33 +17,19 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
+use Webmozart\Assert\Assert;
 
 final class CountriesConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
-
-    /**
-     * @param CountryContextInterface $countryContext
-     */
-    public function __construct(CountryContextInterface $countryContext)
-    {
-        $this->countryContext = $countryContext;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        $country = $this->countryContext->getCountry();
-
-        if (!$country instanceof CountryInterface) {
+        if (!array_key_exists('country', $params)) {
             return false;
         }
 
-        return in_array($country->getId(), $configuration['countries']);
+        return in_array($params['country']->getId(), $configuration['countries']);
     }
 }

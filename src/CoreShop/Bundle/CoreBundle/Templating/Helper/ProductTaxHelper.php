@@ -21,9 +21,9 @@ use Symfony\Component\Templating\Helper\Helper;
 class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
 {
     /**
-     * @var TaxedProductPriceCalculatorInterface
+     * @var ProductPriceHelperInterface
      */
-    private $priceCalculator;
+    private $priceHelper;
 
     /**
      * @var ProductTaxCalculatorFactoryInterface
@@ -31,15 +31,15 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
     private $taxCalculatorFactory;
 
     /**
-     * @param TaxedProductPriceCalculatorInterface $priceCalculator
+     * @param ProductPriceHelperInterface $priceHelper
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      */
     public function __construct(
-        TaxedProductPriceCalculatorInterface $priceCalculator,
+        ProductPriceHelperInterface $priceHelper,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
     )
     {
-        $this->priceCalculator = $priceCalculator;
+        $this->priceHelper = $priceHelper;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
@@ -51,7 +51,7 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
     {
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product);
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            return $taxCalculator->getTaxesAmount($this->priceCalculator->getPrice($product, false));
+            return $taxCalculator->getTaxesAmount($this->priceHelper->getPrice($product, false));
         }
     }
 

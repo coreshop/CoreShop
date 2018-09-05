@@ -19,6 +19,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Webmozart\Assert\Assert;
 
 final class CategoriesConditionChecker implements ConditionCheckerInterface
@@ -29,11 +30,10 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->__traitConstruct($categoryRepository, $storeContext);
+        $this->__traitConstruct($categoryRepository);
     }
 
     /**
@@ -41,12 +41,15 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
+        Assert::keyExists($params, 'store');
+        Assert::isInstanceOf($params['store'], StoreInterface::class);
+
         /**
          * @var $subject ProductInterface
          */
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $params['store'], $configuration['recursive'] ?: false);
 
         if (!is_array($subject->getCategories())) {
             return false;

@@ -50,10 +50,10 @@ final class DefaultPurchasablePriceCalculator implements PurchasablePriceCalcula
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
     {
-        $retailPrice = $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable);
-        $discountPrice = $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable);
+        $retailPrice = $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
+        $discountPrice = $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
         $price = $retailPrice;
 
         if ($discountPrice > 0 && $discountPrice < $retailPrice) {
@@ -61,7 +61,7 @@ final class DefaultPurchasablePriceCalculator implements PurchasablePriceCalcula
         }
 
         if ($includingDiscounts) {
-            $price -= $this->purchasableDiscountCalculator->getDiscount($purchasable, $price);
+            $price -= $this->purchasableDiscountCalculator->getDiscount($purchasable, $context, $price);
         }
 
         return $price;

@@ -49,6 +49,14 @@ final class CartItemProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
+        $context = [
+            'store' => $cart->getStore(),
+            'customer' => $cart->getCustomer() ?: null,
+            'currency' => $cart->getCurrency(),
+            'country' => $cart->getStore()->getBaseCountry(),
+            'cart' => $cart
+        ];
+
         /**
          * @var $item CartItemInterface
          */
@@ -57,8 +65,8 @@ final class CartItemProcessor implements CartProcessorInterface
 
             $taxCalculator = $this->taxCalculator->getTaxCalculator($product);
 
-            $itemNetPrice = $this->productPriceCalculator->getPrice($product, false);
-            $itemGrossPrice = $this->productPriceCalculator->getPrice($product, true);
+            $itemNetPrice = $this->productPriceCalculator->getPrice($product, $context, false);
+            $itemGrossPrice = $this->productPriceCalculator->getPrice($product, $context, true);
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 if ($cart->getStore()->getUseGrossPrice()) {
@@ -82,12 +90,12 @@ final class CartItemProcessor implements CartProcessorInterface
             $item->setItemPrice($itemNetPrice, false);
             $item->setItemPrice($itemGrossPrice, true);
             //$item->setTotal($itemNetPrice * $item->getQuantity() + $totalTaxAmount, true);
-            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, false), false);
-            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, true), true);
-            $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, false), false);
-            $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, true), true);
-            $item->setItemDiscount($this->productPriceCalculator->getDiscount($product, false), false);
-            $item->setItemDiscount($this->productPriceCalculator->getDiscount($product, true), true);
+            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, $context, false), false);
+            $item->setItemRetailPrice($this->productPriceCalculator->getRetailPrice($product, $context, true), true);
+            $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, $context, false), false);
+            $item->setItemDiscountPrice($this->productPriceCalculator->getDiscountPrice($product, $context, true), true);
+            $item->setItemDiscount($this->productPriceCalculator->getDiscount($product, $context, false), false);
+            $item->setItemDiscount($this->productPriceCalculator->getDiscount($product, $context, true), true);
             $item->setItemWholesalePrice($product->getWholesalePrice());
 
             if ($product instanceof ProductInterface) {

@@ -52,14 +52,14 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(ProductInterface $subject)
+    public function getRetailPrice(ProductInterface $subject, array $context)
     {
         $price = 0;
 
         /**
          * @var RuleInterface[]
          */
-        $rules = $this->validRulesFetcher->getValidRules($subject);
+        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
 
         if (is_array($rules)) {
             foreach ($rules as $rule) {
@@ -73,44 +73,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
                         continue;
                     }
 
-                    $actionPrice = $processor->getPrice($subject, $action->getConfiguration());
-
-                    if (false !== $actionPrice && null !== $actionPrice) {
-                        $price = $actionPrice;
-                    }
-                }
-            }
-        }
-
-        return $price === 0 ? false : $price;
-    }
-
-    /**
-     * @param ProductInterface $subject
-     * @return bool|int|mixed
-     */
-    public function getDiscountPrice(ProductInterface $subject)
-    {
-        $price = 0;
-
-        /**
-         * @var RuleInterface[]
-         */
-        $rules = $this->validRulesFetcher->getValidRules($subject);
-
-        if (is_array($rules)) {
-            foreach ($rules as $rule) {
-                /**
-                 * @var ActionInterface
-                 */
-                foreach ($rule->getActions() as $action) {
-                    $processor = $this->actionServiceRegistry->get($action->getType());
-
-                    if (!$processor instanceof ProductDiscountPriceActionProcessorInterface) {
-                        continue;
-                    }
-
-                    $actionPrice = $processor->getDiscountPrice($subject, $action->getConfiguration());
+                    $actionPrice = $processor->getPrice($subject, $context, $action->getConfiguration());
 
                     if (false !== $actionPrice && null !== $actionPrice) {
                         $price = $actionPrice;
@@ -125,14 +88,50 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(ProductInterface $subject, $price)
+    public function getDiscountPrice(ProductInterface $subject, array $context)
+    {
+        $price = 0;
+
+        /**
+         * @var RuleInterface[]
+         */
+        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
+
+        if (is_array($rules)) {
+            foreach ($rules as $rule) {
+                /**
+                 * @var ActionInterface
+                 */
+                foreach ($rule->getActions() as $action) {
+                    $processor = $this->actionServiceRegistry->get($action->getType());
+
+                    if (!$processor instanceof ProductDiscountPriceActionProcessorInterface) {
+                        continue;
+                    }
+
+                    $actionPrice = $processor->getDiscountPrice($subject, $context, $action->getConfiguration());
+
+                    if (false !== $actionPrice && null !== $actionPrice) {
+                        $price = $actionPrice;
+                    }
+                }
+            }
+        }
+
+        return $price === 0 ? false : $price;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscount(ProductInterface $subject, array $context, $price)
     {
         $discount = 0;
 
         /**
          * @var RuleInterface[]
          */
-        $rules = $this->validRulesFetcher->getValidRules($subject);
+        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
 
         if (!is_array($rules)) {
             return $discount;
@@ -147,7 +146,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
                     continue;
                 }
 
-                $discount += $processor->getDiscount($subject, $price, $action->getConfiguration());
+                $discount += $processor->getDiscount($subject, $price, $context, $action->getConfiguration());
             }
         }
 

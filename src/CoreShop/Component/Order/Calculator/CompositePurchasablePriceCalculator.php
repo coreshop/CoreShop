@@ -33,7 +33,7 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
     {
         $price = false;
 
@@ -41,7 +41,7 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
          * @var $calculator PurchasablePriceCalculatorInterface
          */
         foreach ($this->calculators->all() as $calculator) {
-            $actionPrice = $calculator->getPrice($purchasable, $includingDiscounts);
+            $actionPrice = $calculator->getPrice($purchasable, $context, $includingDiscounts);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

@@ -14,7 +14,9 @@ namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
+use Webmozart\Assert\Assert;
 
 class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcessorInterface
 {
@@ -29,30 +31,26 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
     protected $currencyRepository;
 
     /**
-     * @var CurrencyContextInterface
-     */
-    protected $currencyContext;
-
-    /**
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param CurrencyConverterInterface $moneyConverter
-     * @param CurrencyContextInterface $currencyContext
      */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
-        $this->currencyContext = $currencyContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice($subject, array $configuration)
+    public function getDiscountPrice($subject, array $context, array $configuration)
     {
+        Assert::keyExists($context, 'currency');
+        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
+
         $price = $configuration['price'];
         $currency = $this->currencyRepository->find($configuration['currency']);
 
-        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $context['currency']->getIsoCode());
     }
 }

@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -21,6 +22,7 @@ use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use Webmozart\Assert\Assert;
 
 final class CategoriesConditionChecker extends AbstractConditionChecker
 {
@@ -30,11 +32,10 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->__traitConstruct($categoryRepository, $storeContext);
+        $this->__traitConstruct($categoryRepository);
     }
 
     /**
@@ -42,9 +43,14 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
      */
     public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
+        /**
+         * @var $shippable CartInterface
+         */
+        Assert::isInstanceOf($shippable, CartInterface::class);
+
         $cartItems = $shippable->getItems();
 
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $shippable->getStore(), $configuration['recursive'] ?: false);
 
         foreach ($cartItems as $item) {
             if ($item->getProduct() instanceof ProductInterface) {

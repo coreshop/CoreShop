@@ -41,13 +41,13 @@ final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context)
     {
         $validRules = [];
         $rules = $this->productPriceRuleRepository->findActive();
 
         foreach ($rules as $rule) {
-            if (!$this->ruleValidationProcessor->isValid($product, $rule)) {
+            if (!$this->ruleValidationProcessor->isValid($product, $rule, $context)) {
                 continue;
             }
 

@@ -47,7 +47,7 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context)
     {
         if ($this->requestStack->getMasterRequest() instanceof Request) {
             if (isset($this->checkedProducts[$product->getId()])) {
@@ -55,7 +55,7 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
             }
         }
 
-        $rules = $this->validRuleFetcher->getValidRules($product);
+        $rules = $this->validRuleFetcher->getValidRules($product, $context);
 
         $this->checkedProducts[$product->getId()] = $rules;
 

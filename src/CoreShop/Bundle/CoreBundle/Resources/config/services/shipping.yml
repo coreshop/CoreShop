@@ -30,6 +30,26 @@ services:
         tags:
             - { name: coreshop.shipping_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 
+    coreshop.shipping_rule.condition.customers:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CustomersConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
+
+    coreshop.shipping_rule.condition.customer_groups:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CustomerGroupsConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
+
+    coreshop.shipping_rule.condition.stores:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\StoresConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
+
+    coreshop.shipping_rule.condition.currencies:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CurrenciesConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
+
     coreshop.carrier.price_calculator.taxed:
         class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
         arguments:
