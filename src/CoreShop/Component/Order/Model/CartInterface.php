@@ -69,11 +69,6 @@ interface CartInterface extends
     public function hasPriceRule($priceRule);
 
     /**
-     * @return int
-     */
-    public function getDiscountPercentage();
-
-    /**
      * @return PaymentProviderInterface
      */
     public function getPaymentProvider();

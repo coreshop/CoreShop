@@ -19,11 +19,6 @@ use CoreShop\Component\Order\Model\OrderInvoiceItemInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Taxation\Calculator\TaxRulesTaxCalculator;
-use CoreShop\Component\Taxation\Model\TaxItemInterface;
-use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerInterface
@@ -44,35 +39,19 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $eventDispatcher;
 
     /**
-     * @var FactoryInterface
-     */
-    private $taxRateFactory;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $taxItemFactory;
-
-    /**
      * @param ObjectServiceInterface $objectService
      * @param string $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param FactoryInterface $taxRateFactory
-     * @param FactoryInterface $taxItemFactory
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
-        TransformerEventDispatcherInterface $eventDispatcher,
-        FactoryInterface $taxRateFactory,
-        FactoryInterface $taxItemFactory
+        TransformerEventDispatcherInterface $eventDispatcher
     )
     {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
-        $this->taxRateFactory = $taxRateFactory;
-        $this->taxItemFactory = $taxItemFactory;
     }
 
     /**
@@ -102,14 +81,9 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
 
         $invoiceItem->setTotal($orderItem->getItemPrice(true) * $quantity, true);
         $invoiceItem->setTotal($orderItem->getItemPrice(false) * $quantity, false);
-        $invoiceItem->setTotalTax(($orderItem->getItemPrice(true) - $orderItem->getItemPrice(false)) * $quantity);
 
         $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
         $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
-        $invoiceItem->setBaseTotalTax(($orderItem->getBaseItemPrice(true) - $orderItem->getBaseItemPrice(false)) * $quantity);
-
-        $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), false);
-        $this->setDocumentItemTaxes($orderItem, $invoiceItem, $invoiceItem->getTotal(false), true);
 
         VersionHelper::useVersioning(function() use ($invoiceItem) {
             $invoiceItem->save();
@@ -118,57 +92,5 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $this->eventDispatcher->dispatchPostEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
         return $invoiceItem;
-    }
-
-    /**
-     * @param OrderItemInterface $orderItem
-     * @param OrderInvoiceItemInterface $docItem
-     * @param $quantity
-     * @param bool $base
-     */
-    protected function setDocumentItemTaxes(OrderItemInterface $orderItem, OrderInvoiceItemInterface $docItem, $quantity, $base = true)
-    {
-        $itemTaxes = new Fieldcollection();
-        $totalTax = 0;
-
-        if ($base) {
-            $orderTaxes = $orderItem->getBaseTaxes();
-        } else {
-            $orderTaxes = $orderItem->getTaxes();
-        }
-
-        if ($orderTaxes instanceof Fieldcollection) {
-            foreach ($orderTaxes as $tax) {
-                if ($tax instanceof TaxItemInterface) {
-                    /**
-                     * @var $taxRate TaxRateInterface
-                     */
-                    $taxRate = $this->taxRateFactory->createNew();
-                    $taxRate->setRate($tax->getRate());
-
-                    $taxCalculator = new TaxRulesTaxCalculator([$taxRate]);
-
-                    /**
-                     * @var $itemTax TaxItemInterface
-                     */
-                    $itemTax = $this->taxItemFactory->createNew();
-                    $itemTax->setName($tax->getName());
-                    $itemTax->setRate($tax->getRate());
-                    $itemTax->setAmount($taxCalculator->getTaxesAmount($quantity));
-
-                    $itemTaxes->add($itemTax);
-
-                    $totalTax += $itemTax->getAmount();
-                }
-            }
-        }
-
-        if ($base) {
-            $docItem->setBaseTotalTax($totalTax);
-            $docItem->setBaseTaxes($itemTaxes);
-        } else {
-            $docItem->setTotalTax($totalTax);
-            $docItem->setTaxes($itemTaxes);
-        }
     }
 }

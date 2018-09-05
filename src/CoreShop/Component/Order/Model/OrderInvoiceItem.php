@@ -37,6 +37,22 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
     /**
      * {@inheritdoc}
      */
+    public function getTotalTax()
+    {
+        return $this->getTotal(true) - $this->getTotal(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseTotalTax()
+    {
+        return $this->getBaseTotal(true) - $this->getBaseTotal(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOrderItem()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -117,38 +133,6 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
     /**
      * {@inheritdoc}
      */
-    public function getTotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalTax($totalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxes()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTaxes($taxes)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseTotal($withTax = true)
     {
         return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
@@ -190,38 +174,6 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
      * {@inheritdoc}
      */
     public function setBaseTotalGross($baseTotalGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseTotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTotalTax($baseTotalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseTaxes()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTaxes($baseTaxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

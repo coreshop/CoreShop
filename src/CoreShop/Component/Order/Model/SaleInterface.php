@@ -112,11 +112,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function hasPriceRule($priceRule);
 
     /**
-     * @return int
-     */
-    public function getDiscountPercentage();
-
-    /**
      * @param float $weight
      */
     public function setWeight($weight);

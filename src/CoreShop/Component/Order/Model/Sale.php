@@ -163,21 +163,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPercentage()
-    {
-        $totalWithoutDiscount = $this->getSubtotal(false);
-        $totalWithDiscount = $this->getSubtotal(false) - $this->getDiscount(false);
-
-        if ($totalWithoutDiscount > 0) {
-            return ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
-        }
-
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getWeight()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

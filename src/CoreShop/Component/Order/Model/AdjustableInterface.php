@@ -32,11 +32,12 @@ interface AdjustableInterface
     public function removeAdjustment(AdjustmentInterface $adjustment);
 
     /**
-     * @param string|null $type
+     * @param null|string $type
+     * @param bool        $withTax
      *
      * @return int
      */
-    public function getAdjustmentsTotal(string $type = null);
+    public function getAdjustmentsTotal(?string $type = null, $withTax = true);
 
     /**
      * @param string|null $type

@@ -45,8 +45,7 @@
                 {% set shippingIt = invoice.getShipping(true) %}
                 {% set discount = invoice.getDiscount(false) %}
                 {% set discountIt = invoice.getDiscount(true) %}
-                {% set taxes = invoice.taxes %}
-                {% set rowspan = 10 + taxes|length %}
+                {% set rowspan = 10 %}
 
                 {% if shipping == 0 %}
                     {% set rowspan = rowspan - 1 %}
@@ -77,7 +76,7 @@
                         {{ invoice.getSubtotal(false)|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
                     </td>
                 </tr>
-                {% if discount > 0 %}
+                {% if discount != 0 %}
                     <tr>
                         <td class="col-xs-8 text-right" >
                             <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
@@ -113,17 +112,7 @@
                         </td>
                     </tr>
                 {% endif %}
-                {% for taxItem in taxes %}
-                     <tr>
-                        <td class="col-xs-8 text-right" >
-                            <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
-                        </td>
-                        <td class="text-right cart-tax-detail">
-                            {{ taxItem.amount|coreshop_format_money(invoice.order.getCurrency.getIsoCode, invoice.order.localeCode) }}
-                        </td>
-                    </tr>
-                {% endfor %}
-               <tr>
+                <tr>
                     <td class="col-xs-8 text-right" >
                         <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
                     </td>
