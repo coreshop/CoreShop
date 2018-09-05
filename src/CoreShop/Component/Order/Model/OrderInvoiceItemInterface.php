@@ -32,21 +32,6 @@ interface OrderInvoiceItemInterface extends OrderDocumentItemInterface
     public function getTotalTax();
 
     /**
-     * @param int $totalTax
-     */
-    public function setTotalTax($totalTax);
-
-    /**
-     * @return mixed
-     */
-    public function getTaxes();
-
-    /**
-     * @param mixed $taxes
-     */
-    public function setTaxes($taxes);
-
-    /**
      * @param bool $withTax
      * @return int
      */
@@ -57,24 +42,4 @@ interface OrderInvoiceItemInterface extends OrderDocumentItemInterface
      * @param bool $withTax
      */
     public function setBaseTotal($baseTotal, $withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getBaseTotalTax();
-
-    /**
-     * @param int $baseTotalTax
-     */
-    public function setBaseTotalTax($baseTotalTax);
-
-    /**
-     * @return mixed
-     */
-    public function getBaseTaxes();
-
-    /**
-     * @param mixed $baseTaxes
-     */
-    public function setBaseTaxes($baseTaxes);
 }

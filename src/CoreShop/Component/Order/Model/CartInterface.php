@@ -85,11 +85,6 @@ interface CartInterface extends
     public function getPriceRuleByCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 
     /**
-     * @return int
-     */
-    public function getDiscountPercentage();
-
-    /**
      * @return PaymentProviderInterface
      */
     public function getPaymentProvider();

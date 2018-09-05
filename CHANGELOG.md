@@ -4,6 +4,40 @@
  - **BC break**: All occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
  - **Pimcore**: CoreShop now requires at least Pimcore 5.4.0. You need to update Pimcore to the at least 5.4.0 in order to use/update CoreShop.
 
+### Order Invoice
+Due to changes in adjustments, we also need to change OrderInvoice/OrderInvoiceItem.
+
+After you have migrated to the latest version you also have to remove some fields:
+
+#### CoreShopOrderInvoice
+- totalTax
+- baseTotalTax
+- subtotalTax
+- baseSubtotalTax
+- shippingTax
+- baseShippingTax
+- taxes
+- baseTaxes
+- discountTax
+- baseDiscountTax
+- discountNet
+- discountGross
+- baseDiscountNet
+- baseDiscountGross
+- shippingNet
+- shippingGross
+- baseShippingNet
+- baseShippingGross
+- shippingTaxRate
+
+#### CoreShopOrderInvoiceItem
+- totalTax
+- baseTotalTax
+- taxes
+- baseTaxes
+
+#### Order Invoice
+
 ### Adjustments
 > **BC break / New Feature**
 
@@ -24,6 +58,8 @@ After you have migrated to the latest version you also have to remove them:
 - baseDiscountGross
 - totalTax
 - baseTotalTax
+- subTotalTax
+- baseSubtotalTax
 
 #### CoreShopOrderItem / CoreShopQuoteItem
 - totalTax
