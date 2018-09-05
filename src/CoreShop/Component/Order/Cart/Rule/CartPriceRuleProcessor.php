@@ -46,10 +46,6 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
      */
     public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
-        if ($cart->hasCartPriceRule($cartPriceRule, $voucherCode)) {
-            return false;
-        }
-
         if ($this->cartPriceRuleValidator->isValidCartRule($cart, $cartPriceRule, $voucherCode)) {
             $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $cartPriceRule, $voucherCode);
 
