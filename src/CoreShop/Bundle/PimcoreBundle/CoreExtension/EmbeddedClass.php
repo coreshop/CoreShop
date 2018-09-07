@@ -179,7 +179,12 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
      */
     public function preGetData($object, $params = [])
     {
-        $data = $object->{$this->getName()};
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        }
+        else {
+            $data = $object->{$this->getName()};
+        }
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
