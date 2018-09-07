@@ -3,42 +3,44 @@
 {% block content %}
     {{ emailizr_style_collector.add("@CoreShopFrontendBundle/Resources/public/static/css/mail.css") }}
 
-    <container class="body-drip">
-        <spacer size="16"></spacer>
+    <div>
+        <container class="body-drip">
+            <spacer size="16"></spacer>
 
-        <center>
-            <img src="/bundles/{{ asset('coreshopfrontend/static/images/logo.png') }}" title="CoreShop Demo"/>
-        </center>
-
-        <spacer size="16"></spacer>
-
-        <row>
-            <columns>
-                <h4 class="text-center">{{ pimcore_input('head') }}</h4>
-            </columns>
-        </row>
-        <hr/>
-        {% block mail %}
-
-        {% endblock %}
-        <hr/>
-
-        <wrapper class="secondary">
+            <div class="center" align="center">
+                <img src="/bundles/{{ asset('coreshopfrontend/static/images/logo.png') }}" title="CoreShop Demo"/>
+            </div>
 
             <spacer size="16"></spacer>
 
             <row>
-                <columns large="6">
-                    <h5>Connect With Us:</h5>
-                    <button class="facebook expand" href="https://www.facebook.com/coreshop.onlineshop">Facebook</button>
-                    <button class="github expand" href="https://www.github.com/coreshop">Github</button>
-                </columns>
-                <columns large="6">
-                    <h5>Contact Info:</h5>
-                    <p>Phone: +43 660 36 177 85</p>
-                    <p>Email: <a href="mailto:info@coreshop.org">info@coreshop.org</a></p>
+                <columns>
+                    <h4 class="text-center">{{ pimcore_input('head') }}</h4>
                 </columns>
             </row>
-        </wrapper>
-    </container>
+            <hr/>
+            {% block mail %}
+
+            {% endblock %}
+            <hr/>
+
+            <wrapper class="secondary">
+
+                <spacer size="16"></spacer>
+
+                <row>
+                    <columns large="6">
+                        <h5>Connect With Us:</h5>
+                        <button class="facebook expand" href="https://www.facebook.com/coreshop.onlineshop">Facebook</button>
+                        <button class="github expand" href="https://www.github.com/coreshop">Github</button>
+                    </columns>
+                    <columns large="6">
+                        <h5>Contact Info:</h5>
+                        <p>Phone: +43 660 36 177 85</p>
+                        <p>Email: <a href="mailto:info@coreshop.org">info@coreshop.org</a></p>
+                    </columns>
+                </row>
+            </wrapper>
+        </container>
+    </div>
 {% endblock %}
