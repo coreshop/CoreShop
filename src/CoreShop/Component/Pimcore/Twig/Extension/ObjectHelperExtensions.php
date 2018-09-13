@@ -12,7 +12,10 @@
 
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
-use Pimcore\Model\DataObject;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Data\Hotspotimage;
+use Pimcore\Model\DataObject\Data\ImageGallery;
+use Pimcore\Model\DataObject\Service;
 
 final class ObjectHelperExtensions extends \Twig_Extension
 {
@@ -23,10 +26,7 @@ final class ObjectHelperExtensions extends \Twig_Extension
     {
         return [
             new \Twig_Test('object', function ($object) {
-                return is_object($object) && $object instanceof DataObject\Concrete;
-            }),
-            new \Twig_Test('object_folder', function ($object) {
-                return is_object($object) && $object instanceof DataObject\Folder;
+                return is_object($object) && $object instanceof Concrete;
             }),
             new \Twig_Test('object_class', function ($object, $className) {
                 $className = ucfirst($className);
@@ -35,10 +35,10 @@ final class ObjectHelperExtensions extends \Twig_Extension
                 return class_exists($className) && $object instanceof $className;
             }),
             new \Twig_Test('object_gallery', function ($object, $className) {
-                return $object instanceof DataObject\Data\ImageGallery;
+                return $object instanceof ImageGallery;
             }),
             new \Twig_Test('object_hotspot_image', function ($object, $className) {
-                return $object instanceof DataObject\Data\Hotspotimage;
+                return $object instanceof Hotspotimage;
             })
         ];
     }
@@ -50,7 +50,7 @@ final class ObjectHelperExtensions extends \Twig_Extension
     {
         return [
             new \Twig_Function('object_select_options', function($object, $field) {
-                return DataObject\Service::getOptionsForSelectField($object, $field);
+                return Service::getOptionsForSelectField($object, $field);
             })
         ];
     }
