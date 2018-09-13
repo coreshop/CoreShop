@@ -86,6 +86,10 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
                 continue;
             }
 
+            if ($item->getCartPriceRule()->getIsVoucherRule() && null === $item->getVoucherCode()) {
+                $this->cartPriceRuleUnProcessor->unProcess($cart, $item->getCartPriceRule());
+            }
+
             if (!$item->getVoucherCode()) {
                 continue;
             }
