@@ -127,7 +127,7 @@ class DiscountApplier implements DiscountApplierInterface
         $cart->addAdjustment(
             $this->adjustmentFactory->createWithData(
                 AdjustmentInterface::CART_PRICE_RULE,
-                '',
+                $cartPriceRuleItem->getCartPriceRule()->getName(),
                 -1 * $cartPriceRuleItem->getDiscount(true),
                 -1 * $cartPriceRuleItem->getDiscount(false)
             )
