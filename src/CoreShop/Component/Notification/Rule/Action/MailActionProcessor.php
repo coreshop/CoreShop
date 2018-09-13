@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Notification\Rule\Action;
 
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use Pimcore\Model\Document;
@@ -69,7 +70,9 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
             if ($mailDocument instanceof Document\Email) {
                 $params['object'] = $subject;
 
-                $this->mailProcessor->sendMail($mailDocument, $subject, $recipient, [], $params);
+                InheritanceHelper::useInheritedValues(function () use ($mailDocument, $subject, $recipient, $params) {
+                    $this->mailProcessor->sendMail($mailDocument, $subject, $recipient, [], $params);
+                });
             }
         }
     }
