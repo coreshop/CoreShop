@@ -128,8 +128,8 @@ class DiscountApplier implements DiscountApplierInterface
             $this->adjustmentFactory->createWithData(
                 AdjustmentInterface::CART_PRICE_RULE,
                 '',
-                -1 * $totalDiscountGross,
-                -1 * $totalDiscountNet
+                -1 * $cartPriceRuleItem->getDiscount(true),
+                -1 * $cartPriceRuleItem->getDiscount(false)
             )
         );
     }
