@@ -7,7 +7,6 @@ Feature: Create a new order
     And the site has a tax rate "AT" with "20%" rate
     And the site has a tax rule group "AT"
     And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
-    And the tax rule group is valid for store "Austria"
     And the site has a product "T-Shirt" priced at 2000
     And the product has the tax rule group "AT"
     And the site has a customer "some-customer@something.com"

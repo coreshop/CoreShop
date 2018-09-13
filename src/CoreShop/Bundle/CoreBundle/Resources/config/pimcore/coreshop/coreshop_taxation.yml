@@ -4,6 +4,3 @@ core_shop_taxation:
             classes:
                 model: CoreShop\Component\Core\Model\TaxRule
                 repository: CoreShop\Bundle\CoreBundle\Doctrine\ORM\TaxRuleRepository
-        tax_rule_group:
-            classes:
-                model: CoreShop\Component\Core\Model\TaxRuleGroup

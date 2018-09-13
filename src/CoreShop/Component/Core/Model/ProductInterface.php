@@ -10,6 +10,7 @@ use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 interface ProductInterface extends
     BaseProductInterface,
