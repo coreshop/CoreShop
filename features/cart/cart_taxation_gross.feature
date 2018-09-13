@@ -8,11 +8,9 @@ Feature: Create a new cart where store uses gross values
     And the site has a tax rate "AT" with "20%" rate
     And the site has a tax rule group "AT"
     And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
-    And the tax rule group is valid for store "Austria"
     And the site has a tax rate "CH" with "7.7%" rate
     And the site has a tax rule group "CH"
     And the tax rule group has a tax rule for country "Austria" with tax rate "CH"
-    And the tax rule group is valid for store "Austria"
     And the site has a product "Shoes" priced at 1000
     And the product has the tax rule group "AT"
     And the site has a product "T-Shirt" priced at 2000

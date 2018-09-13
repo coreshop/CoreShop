@@ -11,25 +11,6 @@
  */
 
 coreshop.taxrulegroup.item = Class.create(coreshop.taxrulegroup.item, {
-    getFormPanel: function ($super) {
-        var panel = $super(),
-            data = this.data;
-
-        panel.down("fieldset").add([
-            {
-                xtype: 'coreshop.store',
-                name: 'stores',
-                multiSelect: true,
-                typeAhead: false,
-                value: data.stores
-            }
-        ]);
-
-        this.formPanel = panel;
-
-        return this.formPanel;
-    },
-
     getGrid: function () {
         var listeners = {};
 

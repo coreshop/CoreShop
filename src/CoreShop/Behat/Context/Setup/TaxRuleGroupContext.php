@@ -16,7 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -136,17 +136,6 @@ final class TaxRuleGroupContext implements Context
 
         $this->objectManager->persist($taxRule);
         $this->objectManager->flush();
-    }
-
-    /**
-     * @Given /^the (tax rule group "[^"]+") is valid for (store "[^"]+")$/
-     * @Given /^the (tax rule group) is valid for (store "[^"]+")$/
-     */
-    public function taxRuleGroupIsValidForStore(TaxRuleGroupInterface $taxRuleGroup, StoreInterface $store)
-    {
-        $taxRuleGroup->addStore($store);
-
-        $this->saveTaxRuleGroup($taxRuleGroup);
     }
 
     /**

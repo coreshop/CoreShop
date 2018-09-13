@@ -41,11 +41,6 @@ class Store extends BaseStore implements StoreInterface
     protected $countries;
 
     /**
-     * @var Collection|TaxRuleGroupInterface[]
-     */
-    protected $taxRuleGroups;
-
-    /**
      * {@inheritdoc}
      */
     public function getConfigurations()
