@@ -12,10 +12,8 @@ services:
     coreshop.product.taxed_price_calculator:
         class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
         arguments:
-            - '@coreshop.order.purchasable.price_calculator'
-            - '@coreshop.order.purchasable.retail_price_calculator'
-            - '@coreshop.order.purchasable.price_discount_calculator'
-            - '@coreshop.order.purchasable.discount_calculator'
+            - '@coreshop.order.purchasable.calculator'
+            - '@coreshop.provider.taxation.default_country'
             - '@coreshop.product.tax_factory'
             - '@coreshop.taxation.tax_applicator'
 
@@ -29,8 +27,9 @@ services:
     coreshop.templating.helper.tax:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper
         arguments:
-            - '@coreshop.product.taxed_price_calculator'
+            - '@coreshop.order.purchasable.calculator'
             - '@coreshop.product.tax_factory'
+            - '@coreshop.provider.taxation.default_country'
         tags:
             - { name: templating.helper, alias: coreshop_product_tax }
 

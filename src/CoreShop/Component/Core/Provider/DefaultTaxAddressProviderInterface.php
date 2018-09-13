@@ -10,18 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Product;
+namespace CoreShop\Component\Core\Provider;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 
-interface ProductTaxCalculatorFactoryInterface
+interface DefaultTaxAddressProviderInterface
 {
     /**
-     * @param PurchasableInterface $product
-     * @param AddressInterface $address
-     * @return TaxCalculatorInterface
+     * @return AddressInterface|null
      */
-    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address);
+    public function getAddress();
 }

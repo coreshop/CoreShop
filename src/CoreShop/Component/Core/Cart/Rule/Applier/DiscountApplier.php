@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -37,18 +38,26 @@ class DiscountApplier implements DiscountApplierInterface
     private $taxCollector;
 
     /**
+     * @var AddressProviderInterface
+     */
+    private $defaultAddressProvider;
+
+    /**
      * @param ProportionalIntegerDistributor       $distributor
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param TaxCollectorInterface                $taxCollector
+     * @param AddressProviderInterface             $defaultAddressProvider
      */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        TaxCollectorInterface $taxCollector
+        TaxCollectorInterface $taxCollector,
+        AddressProviderInterface $defaultAddressProvider
     ) {
         $this->distributor = $distributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
+        $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
     /**
@@ -86,7 +95,7 @@ class DiscountApplier implements DiscountApplierInterface
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
-                $cart->getShippingAddress()
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
             );
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {

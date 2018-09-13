@@ -14,8 +14,13 @@ namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-final class DefaultPurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
+final class PurchasableCalculator implements PurchasableCalculatorInterface
 {
+    /**
+     * @var PurchasablePriceCalculatorInterface
+     */
+    private $purchasablePriceCalculator;
+
     /**
      * @var PurchasableRetailPriceCalculatorInterface
      */
@@ -32,16 +37,19 @@ final class DefaultPurchasablePriceCalculator implements PurchasablePriceCalcula
     private $purchasableDiscountCalculator;
 
     /**
+     * @param PurchasablePriceCalculatorInterface $purchasablePriceCalculator
      * @param PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator
      * @param PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator
      * @param PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator
      */
     public function __construct(
+        PurchasablePriceCalculatorInterface $purchasablePriceCalculator,
         PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator,
         PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator,
         PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator
     )
     {
+        $this->purchasablePriceCalculator = $purchasablePriceCalculator;
         $this->purchasableRetailPriceCalculator = $purchasableRetailPriceCalculator;
         $this->purchasableDiscountPriceCalculator = $purchasableDiscountPriceCalculator;
         $this->purchasableDiscountCalculator = $purchasableDiscountCalculator;
@@ -52,18 +60,30 @@ final class DefaultPurchasablePriceCalculator implements PurchasablePriceCalcula
      */
     public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false)
     {
-        $retailPrice = $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable);
-        $discountPrice = $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable);
-        $price = $retailPrice;
+        return $this->purchasablePriceCalculator->getPrice($purchasable, $includingDiscounts);
+    }
 
-        if ($discountPrice > 0 && $discountPrice < $retailPrice) {
-            $price = $discountPrice;
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscount(PurchasableInterface $purchasable, $basePrice)
+    {
+        return $this->purchasableDiscountCalculator->getDiscount($purchasable, $basePrice);
+    }
 
-        if ($includingDiscounts) {
-            $price -= $this->purchasableDiscountCalculator->getDiscount($purchasable, $price);
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiscountPrice(PurchasableInterface $purchasable)
+    {
+        return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable);
+    }
 
-        return $price;
+    /**
+     * {@inheritdoc}
+     */
+    public function getRetailPrice(PurchasableInterface $purchasable)
+    {
+        return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable);
     }
 }

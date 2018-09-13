@@ -14,8 +14,9 @@ services:
     coreshop.cart_processor.items:
         class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
         arguments:
-            - '@coreshop.product.taxed_price_calculator'
+            - '@coreshop.order.purchasable.calculator'
             - '@coreshop.product.tax_factory'
+            - '@coreshop.provider.store_based_default_address_provider'
         tags:
             - { name: coreshop.cart_processor, priority: 550 }
 
@@ -35,6 +36,7 @@ services:
         arguments:
             - '@coreshop.product.tax_factory'
             - '@coreshop.collector.taxes'
+            - '@coreshop.provider.store_based_default_address_provider'
         tags:
             - { name: coreshop.cart_processor, priority: 450 }
 
