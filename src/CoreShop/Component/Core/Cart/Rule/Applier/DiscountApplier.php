@@ -14,6 +14,8 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -37,18 +39,26 @@ class DiscountApplier implements DiscountApplierInterface
     private $taxCollector;
 
     /**
+     * @var AdjustmentFactoryInterface
+     */
+    private $adjustmentFactory;
+
+    /**
      * @param ProportionalIntegerDistributor       $distributor
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param TaxCollectorInterface                $taxCollector
+     * @param AdjustmentFactoryInterface           $adjustmentFactory
      */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        TaxCollectorInterface $taxCollector
+        TaxCollectorInterface $taxCollector,
+        AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->distributor = $distributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
+        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     /**
@@ -113,5 +123,14 @@ class DiscountApplier implements DiscountApplierInterface
 
         $cartPriceRuleItem->setDiscount((int)round($totalDiscountNet), false);
         $cartPriceRuleItem->setDiscount((int)round($totalDiscountGross), true);
+
+        $cart->addAdjustment(
+            $this->adjustmentFactory->createWithData(
+                AdjustmentInterface::CART_PRICE_RULE,
+                '',
+                -1 * $cartPriceRuleItem->getDiscount(true),
+                -1 * $cartPriceRuleItem->getDiscount(false)
+            )
+        );
     }
 }

@@ -80,7 +80,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
 
             $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
 
-            if (!$this->ruleValidationProcessor->isValidCartRule($value, $cartRule, $voucherCode)) {
+            if ($voucherCode && !$this->ruleValidationProcessor->isValidCartRule($value, $cartRule, $voucherCode)) {
                 $this->context->addViolation(
                     $constraint->message,
                     ['%rule%' => $cartRule->getName()]

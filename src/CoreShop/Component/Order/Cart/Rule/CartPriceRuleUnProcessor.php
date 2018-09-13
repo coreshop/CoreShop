@@ -41,26 +41,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
      */
     public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
-        $priceRuleItem = null;
-
-        if ($cart->hasPriceRules()) {
-            foreach ($cart->getPriceRuleItems() as $rule) {
-                if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                    $cartsRule = $rule->getCartPriceRule();
-
-                    if ($cartsRule instanceof CartPriceRuleInterface) {
-                        if ($cartsRule->getId() === $cartPriceRule->getId()) {
-                            if ($voucherCode && $voucherCode->getCode() !== $rule->getVoucherCode()) {
-                                continue;
-                            }
-
-                            $priceRuleItem = $rule;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
 
         if ($priceRuleItem instanceof ProposalCartPriceRuleItemInterface) {
             foreach ($cartPriceRule->getActions() as $action) {
@@ -71,7 +52,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
                 }
             }
 
-            $cart->removePriceRule($cartPriceRule);
+            $cart->removePriceRule($priceRuleItem);
 
             return true;
         }

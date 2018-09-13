@@ -68,21 +68,6 @@ class CartController extends FrontendController
                     ]);
                 }
 
-                // TODO: would be better to do that inside the form
-                foreach ($this->getCart()->getPriceRules() as $rule) {
-                    if (!$rule instanceof CartPriceRuleInterface) {
-                        continue;
-                    }
-
-                    if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
-                        $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
-                        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
-                            'cart' => $this->getCart(),
-                            'form' => $form->createView()
-                        ]);
-                    }
-                }
-
                 $priceRule = $voucherCode->getCartPriceRule();
 
                 if ($this->getCartPriceRuleProcessor()->process($cart, $priceRule, $voucherCode)) {

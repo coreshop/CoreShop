@@ -80,7 +80,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function setSaleNumber($saleNumber);
 
     /**
-     * @return array
+     * @return ProposalCartPriceRuleItemInterface[]
      */
     public function getPriceRules();
 
@@ -95,21 +95,28 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function hasPriceRules();
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      */
-    public function addPriceRule($priceRule);
+    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      */
-    public function removePriceRule($priceRule);
+    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @param $priceRule
-     *
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      * @return bool
      */
-    public function hasPriceRule($priceRule);
+    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
+
+    /**
+     * @param CartPriceRuleInterface                 $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
+     * @return boolean
+     */
+    public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode);
 
     /**
      * @return int

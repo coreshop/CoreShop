@@ -16,6 +16,7 @@ use CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
@@ -83,9 +84,9 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
-            $cartAmount = $cart->getTotal(false);
+            $cartAmount = $cart->getTotal($configuration['gross']);
         } else {
-            $cartAmount = $cart->getSubtotal(false);
+            $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $configuration['gross']);
         }
 
         $amount = $configuration['amount'];
