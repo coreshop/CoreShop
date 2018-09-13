@@ -32,9 +32,9 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
      * @param CategoryRepositoryInterface $categoryRepository
      * @param StoreContextInterface $storeContext
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->__traitConstruct($categoryRepository, $storeContext);
+        $this->__traitConstruct($categoryRepository);
     }
 
     /**
@@ -42,7 +42,7 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
      */
     public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $cart->getStore(), $configuration['recursive'] ?: false);
 
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();

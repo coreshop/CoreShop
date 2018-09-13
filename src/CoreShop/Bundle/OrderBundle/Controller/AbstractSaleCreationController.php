@@ -74,12 +74,15 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '".$request->get('currency')."' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
+        $context = [
+            'store' => $store,
+            'customer' => $customer,
+            'currency' => $currency,
+        ];
 
         $result = [];
 
-        $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
+        $currentCurrency = $store->getCurrency()->getIsoCode();
 
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
@@ -87,12 +90,12 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
-                $result[] = InheritanceHelper::useInheritedValues(function() use ($product, $productObject, $currentCurrency, $currency) {
+                $result[] = InheritanceHelper::useInheritedValues(function() use ($product, $productObject, $currentCurrency, $currency, $context) {
                     $productFlat = $this->getDataForObject($product);
 
                     $productFlat['quantity'] = $productObject['quantity'] ? $productObject['quantity'] : 1;
 
-                    $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, true);
+                    $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, $context,true);
                     $priceFormatted = $this->get('coreshop.money_formatter')->format($price, $currentCurrency);
 
                     $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
@@ -159,13 +162,8 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.currency.fixed')->setCurrency($currency);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
-        $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
-
-        $cart = InheritanceHelper::useInheritedValues(function() use ($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
-            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+        $cart = InheritanceHelper::useInheritedValues(function() use ($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
+            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
             try {
                 $this->prepareCart($request, $cart);
@@ -179,7 +177,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         });
 
         $totals = $this->getTotalArray($cart);
-        $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
+        $currentCurrency = $store->getCurrency()->getIsoCode();
 
         foreach ($totals as &$totalEntry) {
             $price = $totalEntry['value'];
@@ -236,13 +234,8 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.currency.fixed')->setCurrency($currency);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
-        $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
-
-        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $store, $paymentModule) {
-            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $paymentModule) {
+            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
             try {
                 $this->prepareCart($request, $cart);
@@ -250,7 +243,6 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
                 return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
             }
 
-            $cart->setStore($store);
             $cart->setPaymentProvider($paymentModule);
             $this->get('coreshop.cart_processor')->process($cart);
 
@@ -327,6 +319,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
     protected function createTempCart(
         CustomerInterface $customer,
+        StoreInterface $store,
         AddressInterface $shippingAddress,
         AddressInterface $invoiceAddress,
         CurrencyInterface $currency,
@@ -340,6 +333,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $cart = $this->get('coreshop.factory.cart')->createNew();
         $cart->setParent(\Pimcore\Model\DataObject\Service::createFolderByPath('/coreshop/tmp'));
         $cart->setKey(uniqid());
+        $cart->setStore($store);
         $cart->setShippingAddress($shippingAddress);
         $cart->setInvoiceAddress($invoiceAddress);
         $cart->setCurrency($currency);

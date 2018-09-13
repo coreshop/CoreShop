@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
@@ -27,20 +28,28 @@ final class ProductSpecificPriceRuleContext implements Context
     private $sharedStorage;
 
     /**
+     * @var ShopperContextInterface
+     */
+    private $shopperContext;
+
+    /**
      * @var RuleValidationProcessorInterface
      */
     private $ruleValidationProcessor;
 
     /**
      * @param SharedStorageInterface $sharedStorage
+     * @param ShopperContextInterface $shopperContext
      * @param RuleValidationProcessorInterface $ruleValidationProcessor
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
+        ShopperContextInterface $shopperContext,
         RuleValidationProcessorInterface $ruleValidationProcessor
     )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->shopperContext = $shopperContext;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
@@ -50,7 +59,7 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theSpecificPriceRuleForProductShouldBeValid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {
-        Assert::true($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, []));
+        Assert::true($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, $this->getContext()));
     }
 
     /**
@@ -59,6 +68,20 @@ final class ProductSpecificPriceRuleContext implements Context
      */
     public function theSpecificPriceRuleForProductShouldBeInvalid(ProductSpecificPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {
-        Assert::false($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, []));
+        Assert::false($this->ruleValidationProcessor->isValid($product, $productSpecificPriceRule, $this->getContext()));
+    }
+
+    /**
+     * @return array
+     */
+    protected function getContext()
+    {
+        return [
+            'store' => $this->shopperContext->getStore(),
+            'customer' => $this->shopperContext->hasCustomer() ? $this->shopperContext->getCustomer() : null,
+            'currency' => $this->shopperContext->getCurrency(),
+            'country' => $this->shopperContext->getCountry(),
+            'cart' => $this->shopperContext->getCart()
+        ];
     }
 }

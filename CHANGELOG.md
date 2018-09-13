@@ -4,6 +4,28 @@
  - **BC break**: All occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
  - **Pimcore**: CoreShop now requires at least Pimcore 5.4.0. You need to update Pimcore to the at least 5.4.0 in order to use/update CoreShop.
 
+### Product Price Calculation
+In order to allow custom price calculation on API Level, we changed the way CoreShop calculates product prices by introducing a new parameter to every PriceCalculation Interface. Price Calculator Conditions are not anymore using a Live context, instead it gets passed via API.
+
+Following interfaces have changed:
+
+ - ```CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface```
+
+ If you have anything customized with those classes, please change them accordingly.
+
 ### Adjustments
 > **BC break / New Feature**
 
