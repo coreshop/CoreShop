@@ -3135,7 +3135,7 @@
                                                 "visibleSearch": false
                                             },
                                             {
-                                                "fieldype": "coreShopMoney",
+                                                "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
                                                 "queryColumnType": "int",
