@@ -21,11 +21,11 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationTyp
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
-use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionAmountActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
-use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
-use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;

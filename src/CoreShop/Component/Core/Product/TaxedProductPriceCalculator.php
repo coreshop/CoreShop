@@ -62,13 +62,13 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $product, $withTax = true)
+    public function getPrice(PurchasableInterface $product, array $context, $withTax = true)
     {
-        $price = $this->purchasableCalculator->getPrice($product, true);
+        $price = $this->purchasableCalculator->getPrice($product, $context, true);
         $taxCalculator = $this->getTaxCalculator($product);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            return $this->taxApplicator->applyTax($price, $taxCalculator, $withTax);
+            return $this->taxApplicator->applyTax($price, $context, $taxCalculator, $withTax);
         }
 
         return $price;
@@ -77,9 +77,9 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(PurchasableInterface $product, $withTax = true)
+    public function getDiscountPrice(PurchasableInterface $product, array $context, $withTax = true)
     {
-        $price = $this->purchasableCalculator->getDiscountPrice($product);
+        $price = $this->purchasableCalculator->getDiscountPrice($product, $context);
 
         if (is_null($price)) {
             throw new \InvalidArgumentException(
@@ -90,7 +90,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         $taxCalculator = $this->getTaxCalculator($product);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            return $this->taxApplicator->applyTax($price, $taxCalculator, $withTax);
+            return $this->taxApplicator->applyTax($price, $context, $taxCalculator, $withTax);
         }
 
         return $price;
@@ -99,14 +99,14 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $product, $withTax = true)
+    public function getDiscount(PurchasableInterface $product, array $context, $withTax = true)
     {
-        $price = $this->purchasableCalculator->getPrice($product);
-        $discount = $this->purchasableCalculator->getDiscount($product, $price);
+        $price = $this->purchasableCalculator->getPrice($product, $context);
+        $discount = $this->purchasableCalculator->getDiscount($product, $context, $price);
         $taxCalculator = $this->getTaxCalculator($product);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            return $this->taxApplicator->applyTax($discount, $taxCalculator, $withTax);
+            return $this->taxApplicator->applyTax($discount, $context, $taxCalculator, $withTax);
         }
 
         return $discount;
@@ -115,9 +115,9 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(PurchasableInterface $product, $withTax = true)
+    public function getRetailPrice(PurchasableInterface $product, array $context, $withTax = true)
     {
-        $price = $this->purchasableCalculator->getRetailPrice($product);
+        $price = $this->purchasableCalculator->getRetailPrice($product, $context);
 
         if (is_null($price)) {
             throw new \InvalidArgumentException(
@@ -128,7 +128,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         $taxCalculator = $this->getTaxCalculator($product);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            return $this->taxApplicator->applyTax($price, $taxCalculator, $withTax);
+            return $this->taxApplicator->applyTax($price, $context, $taxCalculator, $withTax);
         }
 
         return $price;

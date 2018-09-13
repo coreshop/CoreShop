@@ -30,6 +30,52 @@ services:
         tags:
             - { name: coreshop.shipping_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
 
+    coreshop.shipping_rule.condition.customers:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CustomersConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
+
+    coreshop.shipping_rule.condition.customer_groups:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CustomerGroupsConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
+
+    coreshop.shipping_rule.condition.stores:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\StoresConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
+
+    coreshop.shipping_rule.condition.currencies:
+        class: CoreShop\Component\Core\Shipping\Rule\Condition\CurrenciesConditionChecker
+        tags:
+            - { name: coreshop.shipping_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
+
+
+    coreshop.shipping_rule.action.price:
+        class: CoreShop\Component\Core\Shipping\Rule\Action\PriceActionProcessor
+        arguments:
+            - '@coreshop.repository.currency'
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.shipping_rule.action, type: price, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType }
+
+    coreshop.shipping_rule.action.addition_amount:
+        class: CoreShop\Component\Core\Shipping\Rule\Action\AdditionAmountActionProcessor
+        arguments:
+            - '@coreshop.repository.currency'
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.shipping_rule.action, type: additionAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType }
+
+    coreshop.shipping_rule.action.discount_amount:
+        class: CoreShop\Component\Core\Shipping\Rule\Action\DiscountAmountActionProcessor
+        arguments:
+            - '@coreshop.repository.currency'
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.shipping_rule.action, type: discountAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType }
+
+
     coreshop.carrier.price_calculator.taxed:
         class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
         arguments:
@@ -43,4 +89,3 @@ services:
         arguments:
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'
-            - '@coreshop.context.store'

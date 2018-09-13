@@ -33,7 +33,7 @@ final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInt
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context)
     {
         $validRules = [];
         $rules = $product->getSpecificPriceRules();
@@ -43,7 +43,7 @@ final class ValidProductSpecificPriceRuleFetcher implements ValidRulesFetcherInt
         }
 
         foreach ($rules as $rule) {
-            if (!$this->ruleValidationProcessor->isValid($product, $rule)) {
+            if (!$this->ruleValidationProcessor->isValid($product, $rule, $context)) {
                 continue;
             }
 

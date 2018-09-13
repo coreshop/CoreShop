@@ -33,12 +33,12 @@ class CompositeDiscountPriceCalculator implements ProductDiscountPriceCalculator
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(ProductInterface $subject)
+    public function getDiscountPrice(ProductInterface $subject, array $context)
     {
         $price = false;
 
         foreach ($this->discountPriceCalculator->all() as $calculator) {
-            $actionPrice = $calculator->getDiscountPrice($subject);
+            $actionPrice = $calculator->getDiscountPrice($subject, $context, $context);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

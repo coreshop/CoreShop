@@ -19,6 +19,7 @@
   ],
   "require": {
     "coreshop/resource": "^2.0",
+    "coreshop/currency": "^2.0",
     "coreshop/rule": "^2.0",
     "coreshop/address": "^2.0"
   },

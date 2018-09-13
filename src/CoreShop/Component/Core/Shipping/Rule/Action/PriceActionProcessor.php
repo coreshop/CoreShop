@@ -10,16 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Shipping\Rule\Action;
+namespace CoreShop\Component\Core\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
+use Webmozart\Assert\Assert;
 
-class AdditionAmountActionProcessor implements CarrierPriceActionProcessorInterface
+class PriceActionProcessor implements CarrierPriceActionProcessorInterface
 {
     /**
      * @var CurrencyConverterInterface
@@ -32,20 +35,13 @@ class AdditionAmountActionProcessor implements CarrierPriceActionProcessorInterf
     protected $currencyRepository;
 
     /**
-     * @var CurrencyContextInterface
-     */
-    protected $currencyContext;
-
-    /**
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param CurrencyConverterInterface $moneyConverter
-     * @param CurrencyContextInterface $currencyContext
      */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter, CurrencyContextInterface $currencyContext)
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
-        $this->currencyContext = $currencyContext;
     }
 
     /**
@@ -53,7 +49,15 @@ class AdditionAmountActionProcessor implements CarrierPriceActionProcessorInterf
      */
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
-        return false;
+        /**
+         * @var $shippable CartInterface
+         */
+        Assert::isInstanceOf($shippable, CartInterface::class);
+
+        $price = $configuration['price'];
+        $currency = $this->currencyRepository->find($configuration['currency']);
+
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
     }
 
     /**
@@ -61,9 +65,6 @@ class AdditionAmountActionProcessor implements CarrierPriceActionProcessorInterf
      */
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
     {
-        $amount = $configuration['amount'];
-        $currency = $this->currencyRepository->find($configuration['currency']);
-
-        return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $this->currencyContext->getCurrency()->getIsoCode());
+        return 0;
     }
 }

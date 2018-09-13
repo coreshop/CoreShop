@@ -7,7 +7,6 @@ services:
         arguments:
             - '@coreshop.taxation.factory.tax_calculator'
             - '@coreshop.factory.address'
-            - '@coreshop.context.country'
 
     coreshop.product.taxed_price_calculator:
         class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
@@ -21,13 +20,14 @@ services:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper
         arguments:
             - '@coreshop.product.taxed_price_calculator'
+            - '@coreshop.context.shopper'
         tags:
             - { name: templating.helper, alias: coreshop_product_price }
 
     coreshop.templating.helper.tax:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper
         arguments:
-            - '@coreshop.order.purchasable.calculator'
+            - '@coreshop.templating.helper.price'
             - '@coreshop.product.tax_factory'
             - '@coreshop.provider.taxation.default_country'
         tags:
@@ -64,8 +64,6 @@ services:
     coreshop.core.product.price_calculator.store_price:
         class: CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator
         decorates: 'coreshop.product.price_calculator.property_price'
-        arguments:
-            - '@coreshop.context.store'
 
     coreshop.order.purchasable.price_calculator.product:
         class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator

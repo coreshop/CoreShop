@@ -33,12 +33,12 @@ class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInte
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(ProductInterface $subject)
+    public function getRetailPrice(ProductInterface $subject, array $context)
     {
         $price = false;
 
         foreach ($this->retailPriceCalculator->all() as $calculator) {
-            $actionPrice = $calculator->getRetailPrice($subject);
+            $actionPrice = $calculator->getRetailPrice($subject, $context);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

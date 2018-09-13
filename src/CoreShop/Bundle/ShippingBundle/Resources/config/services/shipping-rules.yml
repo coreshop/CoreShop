@@ -71,33 +71,6 @@ services:
             - { name: coreshop.shipping_rule.condition, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common\ShippingRuleConfigurationType }
 
     # Shipping Rule ACTIONS
-    coreshop.shipping_rule.action.price:
-        class: CoreShop\Component\Shipping\Rule\Action\PriceActionProcessor
-        arguments:
-            - '@coreshop.repository.currency'
-            - '@coreshop.currency_converter'
-            - '@coreshop.context.currency'
-        tags:
-            - { name: coreshop.shipping_rule.action, type: price, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType }
-
-    coreshop.shipping_rule.action.addition_amount:
-        class: CoreShop\Component\Shipping\Rule\Action\AdditionAmountActionProcessor
-        arguments:
-            - '@coreshop.repository.currency'
-            - '@coreshop.currency_converter'
-            - '@coreshop.context.currency'
-        tags:
-            - { name: coreshop.shipping_rule.action, type: additionAmount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionAmountActionConfigurationType }
-
-    coreshop.shipping_rule.action.discount_amount:
-        class: CoreShop\Component\Shipping\Rule\Action\DiscountAmountActionProcessor
-        arguments:
-            - '@coreshop.repository.currency'
-            - '@coreshop.currency_converter'
-            - '@coreshop.context.currency'
-        tags:
-            - { name: coreshop.shipping_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType }
-
     coreshop.shipping_rule.action.addition_percent:
         class: CoreShop\Component\Shipping\Rule\Action\AdditionPercentActionProcessor
         tags:

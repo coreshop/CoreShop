@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
@@ -59,6 +58,14 @@ final class CartItemProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
+        $context = [
+            'store' => $cart->getStore(),
+            'customer' => $cart->getCustomer() ?: null,
+            'currency' => $cart->getCurrency(),
+            'country' => $cart->getStore()->getBaseCountry(),
+            'cart' => $cart
+        ];
+
         /**
          * @var $item CartItemInterface
          */
@@ -67,11 +74,11 @@ final class CartItemProcessor implements CartProcessorInterface
 
             $taxCalculator = $this->taxCalculator->getTaxCalculator($product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 
-            $itemPrice = $this->productPriceCalculator->getPrice($product, true);
-            $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product);
-            $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product);
-            $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product);
-            $itemDiscount = $this->productPriceCalculator->getDiscount($product, $itemPriceWithoutDiscount);
+            $itemPrice = $this->productPriceCalculator->getPrice($product, $context,true);
+            $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product, $context);
+            $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
+            $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
+            $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 if ($cart->getStore()->getUseGrossPrice()) {
@@ -131,12 +138,6 @@ final class CartItemProcessor implements CartProcessorInterface
 
                 $item->setItemDiscount($itemDiscount, false);
                 $item->setItemDiscount($itemDiscount, true);
-            }
-
-            $item->setItemWholesalePrice($product->getWholesalePrice());
-
-            if ($product instanceof ProductInterface) {
-                $item->setDigitalProduct($product->getDigitalProduct());
             }
         }
     }

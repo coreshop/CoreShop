@@ -23,7 +23,7 @@ final class PriceAwarePurchasableCalculator implements PurchasableRetailPriceCal
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(PurchasableInterface $purchasable)
+    public function getRetailPrice(PurchasableInterface $purchasable, array $context)
     {
         if ($purchasable instanceof PriceAwarePurchasableInterface) {
             @trigger_error('Class CoreShop\Component\Order\Calculator\PriceAwarePurchasableCalculator is deprecated since version 2.0.0-beta.4 and will be removed in 2.0.', E_USER_DEPRECATED);

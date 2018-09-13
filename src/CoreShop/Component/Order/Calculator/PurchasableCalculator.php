@@ -58,32 +58,32 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
     {
-        return $this->purchasablePriceCalculator->getPrice($purchasable, $includingDiscounts);
+        return $this->purchasablePriceCalculator->getPrice($purchasable, $context, $includingDiscounts);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $purchasable, $basePrice)
+    public function getDiscount(PurchasableInterface $purchasable, array $context, $basePrice)
     {
-        return $this->purchasableDiscountCalculator->getDiscount($purchasable, $basePrice);
+        return $this->purchasableDiscountCalculator->getDiscount($purchasable, $context, $basePrice);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(PurchasableInterface $purchasable)
+    public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
     {
-        return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable);
+        return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(PurchasableInterface $purchasable)
+    public function getRetailPrice(PurchasableInterface $purchasable, array $context)
     {
-        return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable);
+        return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
     }
 }

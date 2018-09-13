@@ -236,6 +236,17 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
+     * @Given /^the (products) price is ([^"]+) for (store "[^"]+")$/
+     */
+    public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
+    {
+        $product->setStorePrice($price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @param string $productName
      *
      * @return ProductInterface

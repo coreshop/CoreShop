@@ -176,8 +176,6 @@ class Data
             $taxRuleGroup = $taxRuleGroupFactory->createNew();
             $taxRuleGroup->setName('20');
             $taxRuleGroup->setActive(true);
-            $taxRuleGroup->addStore(self::$store);
-            $taxRuleGroup->addStore(self::$storeGrossPrices);
 
             /**
              * @var $taxRule TaxRuleInterface

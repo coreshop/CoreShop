@@ -23,29 +23,15 @@ use Webmozart\Assert\Assert;
 final class QuantityConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var CartContextInterface
-     */
-    private $cartContext;
-
-    /**
-     * @param CartContextInterface $cartContext
-     */
-    public function __construct(CartContextInterface $cartContext)
-    {
-        $this->cartContext = $cartContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        /**
-         * @var $subject ProductInterface
-         */
-        Assert::isInstanceOf($subject, ProductInterface::class);
+        if (array_key_exists('cart', $params)) {
+            return false;
+        }
 
-        $cart = $this->cartContext->getCart();
+        $cart = $params['cart'];
 
         foreach ($cart->getItems() as $item) {
             if ($item instanceof CartItemInterface) {

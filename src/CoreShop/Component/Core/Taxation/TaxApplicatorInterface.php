@@ -10,9 +10,10 @@ interface TaxApplicatorInterface
      * apply taxes on a price
      *
      * @param $price
+     * @param array $context
      * @param TaxCalculatorInterface $taxCalculator
      * @param bool $withTax
      * @return mixed
      */
-    public function applyTax($price, TaxCalculatorInterface $taxCalculator, $withTax = true);
+    public function applyTax($price, array $context, TaxCalculatorInterface $taxCalculator, $withTax = true);
 }

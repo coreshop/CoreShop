@@ -18,8 +18,9 @@ interface ProductDiscountPriceCalculatorInterface
 {
     /**
      * @param $subject
+     * @param array $context
      *
      * @return mixed
      */
-    public function getDiscountPrice(ProductInterface $subject);
+    public function getDiscountPrice(ProductInterface $subject, array $context);
 }

@@ -18,8 +18,9 @@ interface ProductRetailPriceCalculatorInterface
 {
     /**
      * @param $subject
+     * @param array $context
      *
      * @return mixed
      */
-    public function getRetailPrice(ProductInterface $subject);
+    public function getRetailPrice(ProductInterface $subject, array $context);
 }

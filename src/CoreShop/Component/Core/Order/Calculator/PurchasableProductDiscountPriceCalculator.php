@@ -35,10 +35,10 @@ final class PurchasableProductDiscountPriceCalculator implements PurchasableDisc
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(PurchasableInterface $purchasable)
+    public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
     {
         if ($purchasable instanceof ProductInterface) {
-            $discount = $this->productPriceCalculator->getDiscountPrice($purchasable);
+            $discount = $this->productPriceCalculator->getDiscountPrice($purchasable, $context);
 
             return $discount;
         }

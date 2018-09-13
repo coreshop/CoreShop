@@ -73,7 +73,6 @@ services:
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
-            - '@coreshop.context.currency'
         tags:
             - { name: coreshop.product_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
@@ -83,7 +82,6 @@ services:
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
-            - '@coreshop.context.currency'
         tags:
             - { name: coreshop.product_price_rule.action, type: discountPrice, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: discountPrice, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
@@ -93,7 +91,6 @@ services:
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
-            - '@coreshop.context.currency'
         tags:
             - { name: coreshop.product_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
