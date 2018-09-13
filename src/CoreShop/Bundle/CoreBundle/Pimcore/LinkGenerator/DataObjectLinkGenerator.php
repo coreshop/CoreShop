@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator;
 
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\DataObject\AbstractSluggableLinkGenerator;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -55,8 +56,12 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 
         $locale = isset($params['_locale']) ? $params['_locale'] : null;
 
+        $name = InheritanceHelper::useInheritedValues(function () use ($object, $locale) {
+            return $object->getName($locale);
+        });
+
         $routeParams = [
-            'name' => $this->slugify($object->getName($locale)),
+            'name' => $this->slugify($name),
             $this->type => $object->getId()
         ];
 
