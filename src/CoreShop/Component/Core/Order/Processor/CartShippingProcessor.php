@@ -79,8 +79,6 @@ final class CartShippingProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
-        $cart->removeAdjustments(AdjustmentInterface::SHIPPING);
-
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return;
         }

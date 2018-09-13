@@ -24,7 +24,7 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-final class CartPriceRuleProcessor implements CartProcessorInterface
+final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
 {
     /**
      * @var ProposalCartPriceRuleCalculatorInterface
@@ -35,11 +35,6 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
      * @var CartPriceRuleVoucherRepositoryInterface
      */
     private $voucherCodeRepository;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
-    private $adjustmentFactory;
 
     /**
      * @var CartPriceRuleValidationProcessorInterface
@@ -56,21 +51,18 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
      * @param CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-     * @param AdjustmentFactoryInterface $adjustmentFactory
      */
     public function __construct(
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
-        CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor,
-        AdjustmentFactoryInterface $adjustmentFactory
+        CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
     )
     {
         $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
         $this->voucherCodeRepository = $voucherCodeRepository;
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
-        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     /**
@@ -78,8 +70,6 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
-        $cart->removeAdjustments(AdjustmentInterface::CART_PRICE_RULE);
-
         $priceRuleItems = $cart->getPriceRuleItems();
 
         if (!$priceRuleItems instanceof Fieldcollection) {
@@ -96,6 +86,10 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
                 continue;
             }
 
+            if (!$item->getVoucherCode()) {
+                continue;
+            }
+
             $voucherCode = $this->voucherCodeRepository->findByCode($item->getVoucherCode());
 
             if (!$item->getCartPriceRule()->getIsVoucherRule() && null !== $item->getVoucherCode()) {
@@ -103,22 +97,11 @@ final class CartPriceRuleProcessor implements CartProcessorInterface
             }
 
             if ($this->cartPriceRuleValidator->isValidCartRule($cart, $item->getCartPriceRule(), $voucherCode)) {
-                $rule = $this->proposalCartPriceRuleCalculator->calculatePriceRule(
+                $this->proposalCartPriceRuleCalculator->calculatePriceRule(
                     $cart,
                     $item->getCartPriceRule(),
                     $voucherCode
                 );
-
-                if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                    $cart->addAdjustment(
-                        $this->adjustmentFactory->createWithData(
-                            AdjustmentInterface::CART_PRICE_RULE,
-                            $item->getCartPriceRule()->getName(),
-                            -1 * $rule->getDiscount(true),
-                            -1 * $rule->getDiscount(false)
-                        )
-                    );
-                }
             }
             else {
                 $this->cartPriceRuleUnProcessor->unProcess($cart, $item->getCartPriceRule(), $voucherCode);

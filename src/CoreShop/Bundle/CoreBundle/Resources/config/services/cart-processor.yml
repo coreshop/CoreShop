@@ -2,6 +2,11 @@ services:
     _defaults:
         public: true
 
+    coreshop.cart_processor.adjustments_clearer:
+        class: CoreShop\Component\Core\Order\Processor\CartAdjustmentClearer
+        tags:
+            - { name: coreshop.cart_processor, priority: 650 }
+
     coreshop.cart_processor.items:
         class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
         arguments:
@@ -40,7 +45,7 @@ services:
             - { name: coreshop.cart_processor, priority: 450 }
 
     coreshop.cart_processor.rule_calculator:
-        class: CoreShop\Component\Core\Order\Processor\CartPriceRuleProcessor
+        class: CoreShop\Component\Core\Order\Processor\CartPriceRuleVoucherProcessor
         arguments:
             - '@coreshop.proposal.cart_price_rule.calculator'
             - '@coreshop.repository.cart_price_rule_voucher_code'

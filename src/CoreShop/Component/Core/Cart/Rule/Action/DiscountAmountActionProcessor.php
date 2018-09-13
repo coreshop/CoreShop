@@ -83,9 +83,9 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
-            $cartAmount = $cart->getTotal(false);
+            $cartAmount = $cart->getTotal($configuration['gross']);
         } else {
-            $cartAmount = $cart->getSubtotal(false);
+            $cartAmount = $cart->getSubtotal($configuration['gross']);
         }
 
         $amount = $configuration['amount'];
