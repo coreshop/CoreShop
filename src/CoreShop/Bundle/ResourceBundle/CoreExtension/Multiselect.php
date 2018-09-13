@@ -24,7 +24,12 @@ abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multise
      */
     public function preGetData($object, $params = [])
     {
-        $data = $object->{$this->getName()};
+        //TODO: Remove once CoreShop requires min Pimcore 5.5
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
 
         if (is_null($data)) {
             $data = [];
