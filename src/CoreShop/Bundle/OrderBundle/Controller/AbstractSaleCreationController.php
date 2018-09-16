@@ -164,8 +164,8 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
         $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
 
-        $cart = InheritanceHelper::useInheritedValues(function() use ($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
-            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+        $cart = InheritanceHelper::useInheritedValues(function() use ($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
+            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
             try {
                 $this->prepareCart($request, $cart);
@@ -242,7 +242,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
 
         $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $store, $paymentModule) {
-            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
             try {
                 $this->prepareCart($request, $cart);
@@ -327,6 +327,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
     protected function createTempCart(
         CustomerInterface $customer,
+        StoreInterface $store,
         AddressInterface $shippingAddress,
         AddressInterface $invoiceAddress,
         CurrencyInterface $currency,
@@ -346,6 +347,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $cart->setCustomer($customer);
         $cart->setCurrency($currency);
         $cart->setLocaleCode($localeCode);
+        $cart->setStore($store);
 
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
