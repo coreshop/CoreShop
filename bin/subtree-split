@@ -65,6 +65,7 @@ remote pimcore git@github.com:CoreShop/Pimcore.git
 remote storage-list git@github.com:CoreShop/StorageList.git
 remote inventory git@github.com:CoreShop/Inventory.git
 remote seo git@github.com:CoreShop/SEO.git
+remote tracking git@github.com:CoreShop/Tracking.git
 
 remote address-bundle git@github.com:CoreShop/AddressBundle.git
 remote configuration-bundle git@github.com:CoreShop/ConfigurationBundle.git
@@ -115,6 +116,7 @@ split 'src/CoreShop/Component/Pimcore' pimcore
 split 'src/CoreShop/Component/StorageList' storage-list
 split 'src/CoreShop/Component/Inventory' inventory
 split 'src/CoreShop/Component/SEO' seo
+split 'src/CoreShop/Component/Tracking' tracking
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
 split 'src/CoreShop/Bundle/ConfigurationBundle' configuration-bundle
