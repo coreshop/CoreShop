@@ -167,6 +167,26 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     /**
      * {@inheritdoc}
      */
+    public function getForWebserviceExport($object, $params = [])
+    {
+        if ($object instanceof ResourceInterface) {
+            return $object->getId();
+        }
+
+        return parent::getForWebserviceExport($object, $params);
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
+    {
+        return $this->getRepository()->find($value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isAllowEmpty()
     {
         return $this->allowEmpty;
