@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
@@ -33,7 +34,10 @@ final class CoreShopShippingExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
-        $container->setAlias('coreshop.carrier.default_resolver', $config['default_resolver']);
+        $alias = new Alias($config['default_resolver']);
+        $alias->setPublic(true);
+
+        $container->setAlias('coreshop.carrier.default_resolver', $alias);
 
         $loader->load('services.yml');
     }

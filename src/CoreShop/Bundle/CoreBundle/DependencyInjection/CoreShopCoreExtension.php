@@ -69,6 +69,8 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         if (array_key_exists('checkout_manager_factory', $config)) {
             $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $config['checkout_manager_factory']));
+            $alias->setPublic(true);
+
             $container->setAlias('coreshop.checkout_manager.factory', $alias);
         } else {
             throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');

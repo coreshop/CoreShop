@@ -42,9 +42,12 @@ abstract class AbstractDoctrineDriver extends AbstractDriver
      */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
+        $alias = new Alias($this->getManagerServiceId($metadata));
+        $alias->setPublic(true);
+
         $container->setAlias(
             $metadata->getServiceId('manager'),
-            new Alias($this->getManagerServiceId($metadata))
+            $alias
         );
     }
 
