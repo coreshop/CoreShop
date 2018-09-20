@@ -26,5 +26,11 @@ final class CoreShopSEOExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('LuceneSearchBundle', $bundles)) {
+            $loader->load('services/lucene_search.yml');
+        }
     }
 }
