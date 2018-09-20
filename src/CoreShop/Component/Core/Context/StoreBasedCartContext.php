@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Context;
 
-use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -74,8 +73,6 @@ final class StoreBasedCartContext implements CartContextInterface
         } catch (CurrencyNotFoundException $exception) {
             throw new CartNotFoundException('CoreShop was not able to prepare the cart.', $exception);
         } catch (LocaleNotFoundException $exception) {
-            throw new CartNotFoundException('CoreShop was not able to prepare the cart.', $exception);
-        } catch (CountryNotFoundException $exception) {
             throw new CartNotFoundException('CoreShop was not able to prepare the cart.', $exception);
         }
 
