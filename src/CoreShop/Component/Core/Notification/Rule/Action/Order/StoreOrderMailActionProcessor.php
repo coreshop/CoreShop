@@ -27,18 +27,11 @@ class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterfac
     protected $orderMailActionProcessor;
 
     /**
-     * @var StoreContextInterface
-     */
-    protected $storeContext;
-
-    /**
      * @param OrderMailActionProcessor $orderMailActionProcessor
-     * @param StoreContextInterface $storeContext
      */
-    public function __construct(OrderMailActionProcessor $orderMailActionProcessor, StoreContextInterface $storeContext)
+    public function __construct(OrderMailActionProcessor $orderMailActionProcessor)
     {
         $this->orderMailActionProcessor = $orderMailActionProcessor;
-        $this->storeContext = $storeContext;
     }
 
     /**
@@ -56,14 +49,6 @@ class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterfac
 
         if ($subject instanceof StoreAwareInterface) {
             $store = $subject->getStore();
-        }
-
-        if (!$store instanceof StoreInterface) {
-            try {
-                $store = $this->storeContext->getStore();
-            } catch (StoreNotFoundException $exception) {
-
-            }
         }
 
         if (!$store instanceof StoreInterface) {
