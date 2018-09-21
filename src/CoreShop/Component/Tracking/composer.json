@@ -1,7 +1,7 @@
 {
   "name": "coreshop/tracking",
   "type": "library",
-  "description": "CoreShop Tracaking Component.",
+  "description": "CoreShop Tracking Component.",
   "keywords": [
     "coreshop",
     "pimcore",
