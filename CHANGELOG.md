@@ -4,6 +4,9 @@
  - **BC break**: All occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
  - **Pimcore**: CoreShop now requires at least Pimcore 5.4.0. You need to update Pimcore to the at least 5.4.0 in order to use/update CoreShop.
 
+### Tracking
+Tracking bundle has completely been refactored in order to support more use-cases than just ecommerce. If you have any customizations made, please check the current implementation to adapt your changes.
+
 ### Order Invoice
 Due to changes in adjustments, we also need to change OrderInvoice/OrderInvoiceItem.
 
