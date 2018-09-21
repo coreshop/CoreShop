@@ -54,24 +54,35 @@ interface CartInterface extends
     /**
      * @param $priceRule
      */
-    public function addPriceRule($priceRule);
+    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
      * @param $priceRule
      */
-    public function removePriceRule($priceRule);
+    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
      * @param $priceRule
      *
      * @return bool
      */
-    public function hasPriceRule($priceRule);
+    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @return int
+     * @param CartPriceRuleInterface                 $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
+     * @return boolean
      */
-    public function getDiscountPercentage();
+    public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
+
+    /**
+     * @param CartPriceRuleInterface                 $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
+     * @return ProposalCartPriceRuleItemInterface|null
+     */
+    public function getPriceRuleByCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 
     /**
      * @return PaymentProviderInterface

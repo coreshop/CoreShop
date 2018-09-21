@@ -47,25 +47,8 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
      */
     public function calculatePriceRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
-        $priceRuleItem = null;
-        $existingPriceRule = false;
-
-        if ($cart->hasPriceRules()) {
-            foreach ($cart->getPriceRuleItems() as $rule) {
-                if ($rule instanceof ProposalCartPriceRuleItemInterface) {
-                    $cartsRule = $rule->getCartPriceRule();
-
-                    if ($cartsRule instanceof CartPriceRuleInterface) {
-                        if ($cartsRule->getId() === $cartPriceRule->getId()) {
-                            $priceRuleItem = $rule;
-                            $existingPriceRule = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
+        $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
+        $existingPriceRule = null !== $priceRuleItem;
         $result = false;
 
         /**
@@ -93,8 +76,8 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
         }
 
         if (!$result) {
-            if ($existingPriceRule) {
-                $cart->removePriceRule($cartPriceRule);
+            if ($priceRuleItem instanceof ProposalCartPriceRuleItemInterface) {
+                $cart->removePriceRule($priceRuleItem);
             }
 
             return false;

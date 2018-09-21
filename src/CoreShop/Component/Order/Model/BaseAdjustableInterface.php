@@ -33,10 +33,11 @@ interface BaseAdjustableInterface
 
     /**
      * @param string|null $type
+     * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseAdjustmentsTotal(string $type = null);
+    public function getBaseAdjustmentsTotal(string $type = null, $withTax = true);
 
     /**
      * @param string|null $type

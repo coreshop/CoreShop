@@ -22,7 +22,7 @@ interface CartPriceRuleProcessorInterface
      * @param CartInterface $cart
      * @param CartPriceRuleInterface $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
-     * @return mixed
+     * @return bool
      */
     public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 }

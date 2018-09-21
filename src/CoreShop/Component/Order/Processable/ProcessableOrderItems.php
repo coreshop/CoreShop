@@ -53,7 +53,7 @@ class ProcessableOrderItems implements ProcessableInterface
                 if (array_key_exists($item->getId(), $processedItems)) {
                     if ($processedItems[$item->getId()]['quantity'] < $item->getQuantity()) {
                         $processAbleItems[$item->getId()] = [
-                            'quantity' => $item->getQuantity() - $processedItems[$item->getId()]['amount'],
+                            'quantity' => $item->getQuantity() - $processedItems[$item->getId()]['quantity'],
                             'item' => $item,
                             'orderItemId' => $item->getId(),
                         ];

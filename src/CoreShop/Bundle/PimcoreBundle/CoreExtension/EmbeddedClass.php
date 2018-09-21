@@ -179,7 +179,12 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
      */
     public function preGetData($object, $params = [])
     {
-        $data = $object->{$this->getName()};
+        //TODO: Remove once CoreShop requires min Pimcore 5.5
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);

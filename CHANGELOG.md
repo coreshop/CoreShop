@@ -29,6 +29,38 @@ Following interfaces have changed:
 ### Taxation
 Tax Rule Store relation has been removed as it makes currently no sense.
 
+### Order Invoice
+Due to changes in adjustments, we also need to change OrderInvoice/OrderInvoiceItem.
+
+After you have migrated to the latest version you also have to remove some fields:
+
+#### CoreShopOrderInvoice
+- totalTax
+- baseTotalTax
+- subtotalTax
+- baseSubtotalTax
+- shippingTax
+- baseShippingTax
+- taxes
+- baseTaxes
+- discountTax
+- baseDiscountTax
+- discountNet
+- discountGross
+- baseDiscountNet
+- baseDiscountGross
+- shippingNet
+- shippingGross
+- baseShippingNet
+- baseShippingGross
+- shippingTaxRate
+
+#### CoreShopOrderInvoiceItem
+- totalTax
+- baseTotalTax
+- taxes
+- baseTaxes
+
 ### Adjustments
 > **BC break / New Feature**
 
@@ -49,6 +81,8 @@ After you have migrated to the latest version you also have to remove them:
 - baseDiscountGross
 - totalTax
 - baseTotalTax
+- subTotalTax
+- baseSubtotalTax
 
 #### CoreShopOrderItem / CoreShopQuoteItem
 - totalTax

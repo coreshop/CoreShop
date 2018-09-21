@@ -39,6 +39,10 @@ class VoucherConditionChecker extends AbstractConditionChecker
      */
     public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
+        if (null === $voucher) {
+            return false;
+        }
+
         Assert::isInstanceOf($cart, CartInterface::class);
 
         $maxUsagePerCode = $configuration['maxUsagePerCode'];

@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -35,7 +36,10 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
         if ($config['translation']['enabled']) {
             $loader->load('services/integrations/translation.yml');
 
-            $container->setAlias('coreshop.translation_locale_provider', $config['translation']['locale_provider']);
+            $alias = new Alias($config['translation']['locale_provider']);
+            $alias->setPublic(true);
+
+            $container->setAlias('coreshop.translation_locale_provider', $alias);
         }
 
         if (array_key_exists('pimcore_admin', $config)) {

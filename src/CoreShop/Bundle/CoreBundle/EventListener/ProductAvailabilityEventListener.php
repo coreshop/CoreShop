@@ -20,7 +20,7 @@ use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Event\Model\DataObjectEvent;
-use Pimcore\Model\Version;
+use Pimcore\Model\FactoryInterface;
 
 final class ProductAvailabilityEventListener
 {
@@ -35,22 +35,34 @@ final class ProductAvailabilityEventListener
     private $cartItemRepository;
 
     /**
-     * @param CartRepositoryInterface $cartRepository
+     * @var FactoryInterface
+     */
+    private $pimcoreModelFactory;
+
+    /**
+     * @var PurchasableInterface[]
+     */
+    private $productIdsToCheck = [];
+
+    /**
+     * @param CartRepositoryInterface     $cartRepository
      * @param CartItemRepositoryInterface $cartItemRepository
+     * @param FactoryInterface            $pimcoreModelFactory
      */
     public function __construct(
         CartRepositoryInterface $cartRepository,
-        CartItemRepositoryInterface $cartItemRepository
-    )
-    {
+        CartItemRepositoryInterface $cartItemRepository,
+        FactoryInterface $pimcoreModelFactory
+    ) {
         $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
+        $this->pimcoreModelFactory = $pimcoreModelFactory;
     }
 
     /**
      * @param DataObjectEvent $event
      */
-    public function checkCartsAfterUpdate(DataObjectEvent $event)
+    public function preUpdateListener(DataObjectEvent $event)
     {
         $object = $event->getObject();
 
@@ -58,30 +70,36 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        // we need to check if product was active before! if no version is available, we can't do anything.
-        $versions = $object->getVersions();
-        if (empty($versions) || !$versions[1] instanceof Version) {
+        if (in_array($object->getId(), $this->productIdsToCheck)) {
             return;
         }
 
-        /**
-         * return if new state is published
-         *
-         * @var \Pimcore\Model\Version $currentVersion
-         **/
-        $currentVersion = $versions[0];
-        if (!$currentVersion->getData() instanceof PurchasableInterface || $currentVersion->getData()->isPublished() === true) {
+        $originalItem = $this->pimcoreModelFactory->build(get_class($object));
+        $originalItem->getDao()->getById($object->getId());
+
+        if (!$originalItem instanceof PurchasableInterface) {
             return;
         }
 
-        /**
-         *
-         * return if last state was not published.
-         *
-         * @var \Pimcore\Model\Version $prevVersion
-         **/
-        $prevVersion = $versions[1];
-        if (!$prevVersion->getData() instanceof PurchasableInterface || $prevVersion->getData()->isPublished() === false) {
+        if (false === $originalItem->isPublished()) {
+            return;
+        }
+
+        $this->productIdsToCheck[] = $object->getId();
+    }
+
+    /**
+     * @param DataObjectEvent $event
+     */
+    public function postUpdateListener(DataObjectEvent $event)
+    {
+        $object = $event->getObject();
+
+        if (!$object instanceof PurchasableInterface) {
+            return;
+        }
+
+        if (!in_array($object->getId(), $this->productIdsToCheck)) {
             return;
         }
 
@@ -92,13 +110,12 @@ final class ProductAvailabilityEventListener
         }
 
         $this->informCarts($cartItems);
-
     }
 
     /**
      * @param DataObjectEvent $event
      */
-    public function checkCartsAfterDelete(DataObjectEvent $event)
+    public function postDeleteListener(DataObjectEvent $event)
     {
         $object = $event->getObject();
 
@@ -132,11 +149,15 @@ final class ProductAvailabilityEventListener
             }
 
             $cart->removeItem($cartItem);
+            $cartItem->delete();
 
-            VersionHelper::useVersioning(function() use ($cart) {
-                $cart->setNeedsRecalculation(true);
-                $cart->save();
-            }, false);
+            VersionHelper::useVersioning(
+                function () use ($cart) {
+                    $cart->setNeedsRecalculation(true);
+                    $cart->save();
+                },
+                false
+            );
         }
     }
 }

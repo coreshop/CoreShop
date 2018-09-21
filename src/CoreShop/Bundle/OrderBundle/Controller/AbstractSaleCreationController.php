@@ -234,6 +234,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
+
         $cart = InheritanceHelper::useInheritedValues(function() use($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $paymentModule) {
             $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
@@ -340,6 +341,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $cart->setCustomer($customer);
         $cart->setCurrency($currency);
         $cart->setLocaleCode($localeCode);
+        $cart->setStore($store);
 
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];

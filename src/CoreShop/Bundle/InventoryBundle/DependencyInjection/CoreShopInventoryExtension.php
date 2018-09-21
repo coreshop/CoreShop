@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\InventoryBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
@@ -29,6 +30,9 @@ final class CoreShopInventoryExtension extends AbstractModelExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setAlias('coreshop.inventory.availability_checker', $config['checker']);
+        $alias = new Alias($config['checker']);
+        $alias->setPublic(true);
+
+        $container->setAlias('coreshop.inventory.availability_checker', $alias);
     }
 }

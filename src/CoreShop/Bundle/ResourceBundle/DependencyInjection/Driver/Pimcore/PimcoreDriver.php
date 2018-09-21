@@ -165,9 +165,12 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
+        $alias = new Alias('pimcore.dao.object_manager');
+        $alias->setPublic(true);
+        
         $container->setAlias(
             $metadata->getServiceId('manager'),
-            new Alias('pimcore.dao.object_manager')
+            $alias
         );
     }
 }

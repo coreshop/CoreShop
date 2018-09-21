@@ -52,6 +52,7 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
                 $decorator = new Definition(TraceableRuleConditionsValidationProcessor::class);
                 $decorator->setDecoratedService($serviceId);
                 $decorator->setArguments(array(new Reference($serviceIdInner)));
+                $decorator->setPublic(true);
 
                 $container->setDefinition($newServiceId, $decorator);
 

@@ -70,7 +70,7 @@ trait CoreSaleCreationTrait
         /**
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */
-        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
+        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $store) {
             $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
             $this->get('coreshop.cart_processor')->process($cart);
 

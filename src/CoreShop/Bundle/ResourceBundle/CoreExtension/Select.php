@@ -69,7 +69,12 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      */
     public function preGetData($object, $params = [])
     {
-        $data = $object->{$this->getName()};
+        //TODO: Remove once CoreShop requires min Pimcore 5.5
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
 
         if ($data instanceof ResourceInterface) {
             //Reload from Database, but only if available
@@ -157,6 +162,26 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
         }
 
         return parent::getDataForSearchIndex($object, $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getForWebserviceExport($object, $params = [])
+    {
+        if ($object instanceof ResourceInterface) {
+            return $object->getId();
+        }
+
+        return parent::getForWebserviceExport($object, $params);
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
+    {
+        return $this->getRepository()->find($value);
     }
 
     /**
