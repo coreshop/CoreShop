@@ -17,6 +17,7 @@ class Version20180913095716 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $this->addSql('DROP TABLE coreshop_tax_rule_group_stores');
+        $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
     }
 
     /**
