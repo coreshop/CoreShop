@@ -45,21 +45,29 @@ class DiscountApplier implements DiscountApplierInterface
     private $defaultAddressProvider;
 
     /**
+     * @var AdjustmentFactoryInterface
+     */
+    private $adjustmentFactory;
+
+    /**
      * @param ProportionalIntegerDistributor       $distributor
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param TaxCollectorInterface                $taxCollector
      * @param AddressProviderInterface             $defaultAddressProvider
+     * @param AdjustmentFactoryInterface           $adjustmentFactory
      */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxCollectorInterface $taxCollector,
-        AddressProviderInterface $defaultAddressProvider
+        AddressProviderInterface $defaultAddressProvider,
+        AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->distributor = $distributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
+        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     /**
@@ -124,5 +132,14 @@ class DiscountApplier implements DiscountApplierInterface
 
         $cartPriceRuleItem->setDiscount((int)round($totalDiscountNet), false);
         $cartPriceRuleItem->setDiscount((int)round($totalDiscountGross), true);
+
+        $cart->addAdjustment(
+            $this->adjustmentFactory->createWithData(
+                AdjustmentInterface::CART_PRICE_RULE,
+                $cartPriceRuleItem->getCartPriceRule()->getName(),
+                -1 * $cartPriceRuleItem->getDiscount(true),
+                -1 * $cartPriceRuleItem->getDiscount(false)
+            )
+        );
     }
 }
