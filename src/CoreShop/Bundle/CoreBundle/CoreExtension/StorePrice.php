@@ -447,7 +447,13 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     public function getForCsvExport($object, $params = [])
     {
-        return 'NOT SUPPORTED';
+        $data = $this->getDataFromObjectParam($object, $params);
+
+        if (!is_array($data) || empty($data)) {
+            return "{}";
+        }
+
+        return json_encode($data);
     }
 
     /**
@@ -455,7 +461,38 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
-        return 'NOT SUPPORTED';
+        if (!$object) {
+            throw new Exception('This version of Pimcore is not supported for storePrice import.');
+        }
+        $repo = $this->getProductStorePriceRepository();
+        $storeRepo = $this->getStoreRepository();
+
+        $data = $importValue == "" ? [] : json_decode($importValue, true);
+        $this->checkValidity($data, true);
+
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $storeId => $newPrice) {
+                $store = $storeRepo->find($storeId);
+
+                if (!$store instanceof StoreInterface) {
+                    throw new \InvalidArgumentException(sprintf('Store with ID %s not found', $storeId));
+                }
+            }
+        }
+
+        $oldStorePrices = $repo->findForProductAndProperty($object, $this->getName());
+
+        if (is_array($oldStorePrices) && !empty($oldStorePrices)) {
+            foreach ($oldStorePrices as $oldStorePrice) {
+                $storeId = $oldStorePrice->getStore()->getId();
+
+                if (!array_key_exists($storeId, $data)) {
+                    $data[$storeId] = $oldStorePrice->getPrice();
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
