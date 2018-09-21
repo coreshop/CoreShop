@@ -10,8 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\TrackingBundle\Model;
+namespace CoreShop\Behat\Service\Tracking;
 
-class ImpressionData extends AbstractProductData
+use Pimcore\Config\Config as ConfigObject;
+
+class ConfigResolver extends \CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver
 {
+    public function __construct()
+    {
+
+    }
+
+    /**
+     * @return bool|ConfigObject
+     */
+    public function getGoogleConfig()
+    {
+        return new ConfigObject([]);
+    }
 }

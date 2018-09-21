@@ -1,10 +1,23 @@
 services:
-  _defaults:
-    public: true
+    _defaults:
+        public: true
 
-  coreshop.tracking.item_builder.decorated:
-    class: CoreShop\Bundle\CoreBundle\Tracking\Builder\ItemBuilder
-    decorates: coreshop.tracking.item_builder
-    arguments:
-    - '@coreshop.tracking.item_builder.decorated.inner'
-    - '@coreshop.product.taxed_price_calculator'
+    coreshop.tracking.extractor.order:
+        class: CoreShop\Component\Core\Tracking\Extractor\OrderExtractor
+        arguments:
+            - '@coreshop.tracking.extractor'
+        tags:
+            - { name: coreshop.tracking.extractor, type: order }
+
+    coreshop.tracking.extractor.order_item:
+        class: CoreShop\Component\Core\Tracking\Extractor\OrderItemExtractor
+        tags:
+            - { name: coreshop.tracking.extractor, type: order-item }
+
+    coreshop.tracking.extractor.purchasable:
+        class: CoreShop\Component\Core\Tracking\Extractor\ProductExtractor
+        arguments:
+            - '@coreshop.product.taxed_price_calculator'
+            - '@coreshop.context.shopper'
+        tags:
+            - { name: coreshop.tracking.extractor, type: product }

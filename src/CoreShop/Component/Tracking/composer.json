@@ -1,7 +1,7 @@
 {
-  "name": "coreshop/tracking-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Tracking Bundle",
+  "name": "coreshop/tracking",
+  "type": "library",
+  "description": "CoreShop Tracaking Component.",
   "keywords": [
     "coreshop",
     "pimcore",
@@ -18,16 +18,14 @@
     }
   ],
   "require": {
-    "coreshop/registry": "^2.0",
-    "coreshop/tracking": "^2.0",
-    "pimcore/pimcore": "^5.4.0"
+
   },
   "config": {
     "bin-dir": "bin"
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Bundle\\TrackingBundle\\": ""
+      "CoreShop\\Component\\Tracking\\": ""
     }
   },
   "minimum-stability": "dev",

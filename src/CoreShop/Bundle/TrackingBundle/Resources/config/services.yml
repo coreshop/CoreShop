@@ -3,14 +3,15 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         public: true
         arguments:
-            - CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface
+            - CoreShop\Component\Tracking\Tracker\TrackerInterface
             - 'tracker'
 
-    coreshop.tracking.item_builder:
-        class: CoreShop\Bundle\TrackingBundle\Builder\ItemBuilder
+    coreshop.registry.tracking.extractor:
+        class: CoreShop\Component\Registry\ServiceRegistry
         public: true
         arguments:
-            - '@coreshop.order.purchasable.price_calculator'
+            - CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface
+            - 'tracking-extractor'
 
     coreshop.tracking.resolver.tracking_config:
         class: CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver
@@ -24,8 +25,6 @@ services:
         abstract: true
         arguments:
             - '@templating.engine.delegating'
-            - '@coreshop.tracking.item_builder'
-            - '@coreshop.context.currency'
 
     coreshop.tracking.event.gtm_code_tracker:
         class: CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker
@@ -103,8 +102,14 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: matomo }
 
+    coreshop.tracking.extractor:
+        class: CoreShop\Component\Tracking\Extractor\CompositeExtractor
+        arguments:
+            - '@coreshop.registry.tracking.extractor'
+
     coreshop.tracking.manager:
-        class: CoreShop\Bundle\TrackingBundle\Manager\TrackingManager
+        class: CoreShop\Component\Tracking\Tracker\CompositeTracker
         public: true
         arguments:
+            - '@coreshop.tracking.extractor'
             - '@coreshop.registry.tracking.tracker'
