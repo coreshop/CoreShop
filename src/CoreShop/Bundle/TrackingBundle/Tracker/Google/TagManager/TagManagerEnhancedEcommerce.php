@@ -2,14 +2,8 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
-use CoreShop\Bundle\TrackingBundle\Model\ActionData;
-use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
-use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -69,17 +63,15 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableView(PurchasableInterface $product)
+    public function trackProduct($product)
     {
         $this->ensureDataLayer();
-
-        $item = $this->itemBuilder->buildPurchasableViewItem($product);
 
         $parameters = [];
         $actionField = [];
         $actionData = [
             'actionField' => $actionField,
-            'products'    => [$this->transformProductAction($item)]
+            'products'    => [$this->transformProductAction($product)]
         ];
 
         $parameters['actionData'] = $actionData;
@@ -91,16 +83,14 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableImpression(PurchasableInterface $product)
+    public function trackProductImpression($product)
     {
         $this->ensureDataLayer();
 
-        $item = $this->itemBuilder->buildPurchasableImpressionItem($product);
-
         $parameters = [];
         $actionData = [
-            'impressions'  => [$this->transformProductImpression($item)],
-            'currencyCode' => $this->getCurrentCurrency()
+            'impressions'  => $this->transformProductAction($product),
+            'currencyCode' => $product['currency']
         ];
 
         $parameters['actionData'] = $actionData;
@@ -114,33 +104,30 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1)
     {
         $this->ensureDataLayer();
-        $this->trackPurchasableAction($product, 'add', $quantity);
+        $this->trackCartAction($product, 'add', $quantity);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1)
     {
         $this->ensureDataLayer();
-        $this->trackPurchasableAction($product, 'remove', $quantity);
+        $this->trackCartAction($product, 'remove', $quantity);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
         $this->ensureDataLayer();
-
-        $items = $this->itemBuilder->buildCheckoutItemsByCart($cart);
-        $cartCoupon = $this->itemBuilder->buildCouponByCart($cart);
 
         $parameters = [];
-        $actionData['products'] = $items;
+        $actionData['products'] = $cart['items'];
         $actionField = [];
 
         if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
@@ -169,17 +156,14 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete(OrderInterface $order)
+    public function trackCheckoutComplete($order)
     {
         $this->ensureDataLayer();
 
-        $orderData = $this->itemBuilder->buildOrderAction($order);
-        $items = $this->itemBuilder->buildCheckoutItems($order);
+        $actionData = array_merge(['actionField' => $this->transformOrder($order)], ['products' => []]);
 
-        $actionData = array_merge(['actionField' => $this->transformOrder($orderData)], ['products' => []]);
-
-        foreach ($items as $item) {
-            $actionData['products'][] = $this->transformProductAction($item);
+        foreach ($order['items'] as $item) {
+            $actionData['products'][] = $item;
         }
 
         $parameters['actionData'] = $actionData;
@@ -192,21 +176,20 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackPurchasableAction(PurchasableInterface $product, $action, $quantity = 1)
+    protected function trackCartAction($product, $action, $quantity = 1)
     {
         $this->ensureDataLayer();
 
-        $item = $this->itemBuilder->buildPurchasableActionItem($product);
-        $item->setQuantity($quantity);
+        $product['quantity'] = 1;
 
         $parameters = [];
         $actionData = [$action => []];
 
         if ($action === 'add') {
-            $actionData['currencyCode'] = $this->getCurrentCurrency();
+            $actionData['currencyCode'] = $product['currency'];
         }
 
-        $actionData[$action]['products'][] = $this->transformProductAction($item);
+        $actionData[$action]['products'][] = $product;
 
         $parameters['actionData'] = $actionData;
         $parameters['event'] = $action === 'remove' ? 'csRemoveFromCart' : 'csAddToCart';
@@ -216,77 +199,44 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
     }
 
-    /**
+        /**
      * Transform ActionData into gtag data array
      *
-     * @param ActionData $actionData
+     * @param $actionData
      * @return array
      */
-    protected function transformOrder(ActionData $actionData)
+    protected function transformOrder($actionData)
     {
         return [
-            'id'           => $actionData->getId(),
-            'affiliation'  => $actionData->getAffiliation() ?: '',
-            'revenue'      => $actionData->getRevenue(),
-            'currencyCode' => $actionData->getCurrency(),
-            'tax'          => $actionData->getTax(),
-            'shipping'     => $actionData->getShipping()
+            'id'          => $actionData['id'],
+            'affiliation' => $actionData['affiliation'] ?: '',
+            'total'       => $actionData['total'],
+            'tax'         => $actionData['totalTax'],
+            'shipping'    => $actionData['shipping'],
+            'currency'    => $actionData['currency']
         ];
     }
 
-    /**
+        /**
      * Transform product action into gtag data object
      *
-     * @param ProductData $item
+     * @param $item
      * @return array
      */
-    protected function transformProductAction(ProductData $item)
+    protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'id'            => $item->getId(),
-            'name'          => $item->getName(),
-            'category'      => $item->getCategory(),
-            'brand'         => $item->getBrand(),
-            'variant'       => $item->getVariant(),
-            'price'         => round($item->getPrice(), 2),
-            'quantity'      => $item->getQuantity() ?: 1,
-            'list_position' => $item->getPosition()
+            'id'            => $item['id'],
+            'name'          => $item['name'],
+            'category'      => $item['category'],
+            'brand'         => $item['brand'],
+            'variant'       => $item['variant'],
+            'price'         => round($item['price'], 2),
+            'quantity'      => $item['quantity'] ?: 1,
+            'list_position' => $item['position']
         ]);
     }
 
-    /**
-     * Transform product action into enhanced data object
-     *
-     * @param ImpressionData $item
-     * @return array
-     */
-    protected function transformProductImpression(ImpressionData $item)
-    {
-        return $this->filterNullValues([
-            'id'       => $item->getId(),
-            'name'     => $item->getName(),
-            'category' => $item->getCategory(),
-            'brand'    => $item->getBrand(),
-            'variant'  => $item->getVariant(),
-            'price'    => round($item->getPrice(), 2),
-            'list'     => $item->getList(),
-            'position' => $item->getPosition()
-        ]);
-    }
-
-    /**
-     * @param array $items
-     * @return array
-     */
-    protected function buildCheckoutCalls(array $items)
-    {
-        $calls = [];
-        foreach ($items as $item) {
-            $calls[] = $this->transformProductAction($item);
-        }
-
-        return $calls;
-    }
 
     /**
      * Makes sure data layer is included once before any call

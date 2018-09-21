@@ -12,15 +12,12 @@
 
 namespace CoreShop\Bundle\TrackingBundle;
 
-use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
-use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackerPass;
-use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
-use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingExtractorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class CoreShopTrackingBundle extends Bundle implements DependentBundleInterface
+final class CoreShopTrackingBundle extends Bundle
 {
     /**
      * @param ContainerBuilder $container
@@ -28,13 +25,6 @@ final class CoreShopTrackingBundle extends Bundle implements DependentBundleInte
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new TrackerPass());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function registerDependentBundles(BundleCollection $collection)
-    {
-        $collection->addBundle(new CoreShopOrderBundle(), 3200);
+        $container->addCompilerPass(new TrackingExtractorPass());
     }
 }

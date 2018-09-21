@@ -29,6 +29,9 @@ Following interfaces have changed:
 ### Taxation
 Tax Rule Store relation has been removed as it makes currently no sense.
 
+### Tracking
+Tracking bundle has completely been refactored in order to support more use-cases than just ecommerce. If you have any customizations made, please check the current implementation to adapt your changes.
+
 ### Order Invoice
 Due to changes in adjustments, we also need to change OrderInvoice/OrderInvoiceItem.
 

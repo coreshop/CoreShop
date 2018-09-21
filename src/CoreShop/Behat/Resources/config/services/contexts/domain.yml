@@ -190,3 +190,12 @@ services:
             - '@__symfony__.coreshop.filter.processor'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.tracking:
+        class: CoreShop\Behat\Context\Domain\TrackingContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.tracking.extractor'
+            - '@__symfony__.coreshop.registry.tracking.tracker'
+        tags:
+            - { name: fob.context_service }
