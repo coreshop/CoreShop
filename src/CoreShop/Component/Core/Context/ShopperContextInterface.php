@@ -28,6 +28,11 @@ interface ShopperContextInterface extends
     CartContextInterface
 {
     /**
+     * @return array
+     */
+    public function getContext();
+
+    /**
      * @return bool
      */
     public function hasStore();

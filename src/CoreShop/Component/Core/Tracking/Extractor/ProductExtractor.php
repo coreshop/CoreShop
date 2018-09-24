@@ -70,7 +70,7 @@ class ProductExtractor implements TrackingExtractorInterface
             'name' => $object->getName(),
             'category' => count($categories) > 0 ? $categories[0]->getName() : '',
             'sku' => $object instanceof ProductInterface ? $object->getSku() : '',
-            'price' => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->getContext()) / 100,
+            'price' => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->shopperContext->getContext()) / 100,
             'currency' => $this->shopperContext->getCurrency()->getIsoCode(),
             'categories' => array_map(function(CategoryInterface $category) {
                 return [
@@ -79,19 +79,5 @@ class ProductExtractor implements TrackingExtractorInterface
                 ];
             }, $categories)
         ]);
-    }
-
-    /**
-     * @return array
-     */
-    private function getContext()
-    {
-        return  [
-            'store' => $this->shopperContext->getStore(),
-            'customer' => $this->shopperContext->hasCustomer() ? $this->shopperContext->getCustomer() : null,
-            'currency' => $this->shopperContext->getCurrency(),
-            'country' => $this->shopperContext->getCountry(),
-            'cart' => $this->shopperContext->getCart()
-        ];
     }
 }

@@ -46,7 +46,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getPrice(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getPrice($product, $this->getContext(), $withTax);
+        return $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**
@@ -54,7 +54,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getDiscountPrice(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getDiscountPrice($product, $this->getContext(), $withTax);
+        return $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**
@@ -62,7 +62,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getRetailPrice(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getRetailPrice($product, $this->getContext(), $withTax);
+        return $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**
@@ -70,7 +70,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getDiscount(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getDiscount($product, $this->getContext(), $withTax);
+        return $this->productPriceCalculator->getDiscount($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**
@@ -81,17 +81,4 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
         return 'coreshop_product_price';
     }
 
-    /**
-     * @return array
-     */
-    private function getContext()
-    {
-        return  [
-            'store' => $this->shopperContext->getStore(),
-            'customer' => $this->shopperContext->hasCustomer() ? $this->shopperContext->getCustomer() : null,
-            'currency' => $this->shopperContext->getCurrency(),
-            'country' => $this->shopperContext->getCountry(),
-            'cart' => $this->shopperContext->getCart()
-        ];
-    }
 }

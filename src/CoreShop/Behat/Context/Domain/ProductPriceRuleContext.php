@@ -59,7 +59,7 @@ final class ProductPriceRuleContext implements Context
      */
     public function theSpecificPriceRuleForProductShouldBeValid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product)
     {
-        Assert::true($this->ruleValidationProcessor->isValid($product, $productPriceRule, $this->getContext()));
+        Assert::true($this->ruleValidationProcessor->isValid($product, $productPriceRule, $this->shopperContext->getContext()));
     }
 
     /**
@@ -68,20 +68,6 @@ final class ProductPriceRuleContext implements Context
      */
     public function theSpecificPriceRuleForProductShouldBeInvalid(ProductPriceRuleInterface $productPriceRule, ProductInterface $product)
     {
-        Assert::false($this->ruleValidationProcessor->isValid($product, $productPriceRule, $this->getContext()));
-    }
-
-    /**
-     * @return array
-     */
-    protected function getContext()
-    {
-        return [
-            'store' => $this->shopperContext->getStore(),
-            'customer' => $this->shopperContext->hasCustomer() ? $this->shopperContext->getCustomer() : null,
-            'currency' => $this->shopperContext->getCurrency(),
-            'country' => $this->shopperContext->getCountry(),
-            'cart' => $this->shopperContext->getCart()
-        ];
+        Assert::false($this->ruleValidationProcessor->isValid($product, $productPriceRule, $this->shopperContext->getContext()));
     }
 }
