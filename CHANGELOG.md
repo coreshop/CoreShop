@@ -24,7 +24,50 @@ Following interfaces have changed:
  - ```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```
  - ```CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface```
 
- If you have anything customized with those classes, please change them accordingly.
+If you have anything customized with those classes, please change them accordingly.
+
+If you use the PriceCalculator Service directly, you also need to change the call from
+
+```
+$this->priceCalculator->getPrice($object, true)
+```
+
+to
+
+```
+$this->priceCalculator->getPrice($object, [
+    'store' => $store,
+    'country' => $country,
+    'customer' => $customer,
+    'currency' $currency,
+    'cart' => $cart
+], true)
+```
+
+The new second argument, is the Context for which you want to get the Price. This is highly depends on your
+need. On a default CoreShop setup, the context can be fetched form the `ShopperContext` Service like this:
+
+```
+return  [
+    'store' => $this->shopperContext->getStore(),
+    'customer' => $this->shopperContext->hasCustomer() ? $this->shopperContext->getCustomer() : null,
+    'currency' => $this->shopperContext->getCurrency(),
+    'country' => $this->shopperContext->getCountry(),
+    'cart' => $this->shopperContext->getCart()
+];
+```
+
+If you product already has a cart, the context is a bit different, cause it resolves from the cart
+
+```
+$context = [
+    'store' => $cart->getStore(),
+    'customer' => $cart->getCustomer() ?: null,
+    'currency' => $cart->getCurrency(),
+    'country' => $cart->getStore()->getBaseCountry(),
+    'cart' => $cart
+];
+```
 
 ### Taxation
 Tax Rule Store relation has been removed as it makes currently no sense.
