@@ -57,6 +57,9 @@ return  [
 ];
 ```
 
+CoreShop makes that easier for you, you can just use ```$this->shoppperContext->getContext()```. But be aware, the Shopper Context is only in a Web Request available.
+When you work on a CLI Level, you have to define the context yourself.
+
 If you already have a cart and want to calculate the price for the cart, the context is a bit different, cause it resolves from the cart
 
 ```
