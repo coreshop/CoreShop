@@ -17,7 +17,7 @@ We gladly accept community pull requests.
 There are a few necessary steps before we can accept a pull request:
 
 * [Open an issue](https://github.com/coreshop/CoreShop/issues) describing the problem that you are looking to solve in 
-your PR (if one is not already open), and your approach to solving it (no necessary for bug fixes - only feature contributions). 
+your PR (if one is not already open), and your approach to solving it (not necessary for bug fixes - only for feature contributions). 
 * [Fork us!](https://help.github.com/articles/fork-a-repo/) Code! Follow the coding standards PSR-1 and PSR-2
 * [Send a pull request](https://help.github.com/articles/using-pull-requests/) from your fork’s branch to our `master` branch.
 
