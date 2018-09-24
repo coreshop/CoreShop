@@ -57,7 +57,7 @@ return  [
 ];
 ```
 
-If you product already has a cart, the context is a bit different, cause it resolves from the cart
+If you already have a cart and want to calculate the price for the cart, the context is a bit different, cause it resolves from the cart
 
 ```
 $context = [
