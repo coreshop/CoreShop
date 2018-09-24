@@ -65,7 +65,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     public function getPrice(PurchasableInterface $product, array $context, $withTax = true)
     {
         $price = $this->purchasableCalculator->getPrice($product, $context, true);
-        $taxCalculator = $this->getTaxCalculator($product);
+        $taxCalculator = $this->getTaxCalculator($product, $context);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $this->taxApplicator->applyTax($price, $context, $taxCalculator, $withTax);
@@ -87,7 +87,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
             );
         }
 
-        $taxCalculator = $this->getTaxCalculator($product);
+        $taxCalculator = $this->getTaxCalculator($product, $context);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $this->taxApplicator->applyTax($price, $context, $taxCalculator, $withTax);
@@ -103,7 +103,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     {
         $price = $this->purchasableCalculator->getPrice($product, $context);
         $discount = $this->purchasableCalculator->getDiscount($product, $context, $price);
-        $taxCalculator = $this->getTaxCalculator($product);
+        $taxCalculator = $this->getTaxCalculator($product, $context);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $this->taxApplicator->applyTax($discount, $context, $taxCalculator, $withTax);
@@ -125,7 +125,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
             );
         }
 
-        $taxCalculator = $this->getTaxCalculator($product);
+        $taxCalculator = $this->getTaxCalculator($product, $context);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $this->taxApplicator->applyTax($price, $context, $taxCalculator, $withTax);
@@ -136,18 +136,20 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
     /**
      * @param PurchasableInterface $product
+     * @param array                $context
      * @return TaxCalculatorInterface
      */
-    protected function getTaxCalculator(PurchasableInterface $product)
+    protected function getTaxCalculator(PurchasableInterface $product, array $context)
     {
-        return $this->taxCalculatorFactory->getTaxCalculator($product, $this->getDefaultAddress());
+        return $this->taxCalculatorFactory->getTaxCalculator($product, $this->getDefaultAddress($context));
     }
 
     /**
+     * @param $context
      * @return AddressInterface|null
      */
-    protected function getDefaultAddress()
+    protected function getDefaultAddress($context)
     {
-        return $this->defaultTaxAddressProvider->getAddress();
+        return $this->defaultTaxAddressProvider->getAddress($context);
     }
 }

@@ -12,38 +12,38 @@
 
 namespace CoreShop\Component\Core\Provider;
 
-use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 
 class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProviderInterface
 {
-     /**
+    /**
      * @var PimcoreFactoryInterface
      */
     private $addressFactory;
 
     /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
-
-    /**
      * @param PimcoreFactoryInterface $addressFactory
-     * @param CountryContextInterface $countryContext
      */
-    public function __construct(PimcoreFactoryInterface $addressFactory, CountryContextInterface $countryContext)
+    public function __construct(PimcoreFactoryInterface $addressFactory)
     {
         $this->addressFactory = $addressFactory;
-        $this->countryContext = $countryContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAddress()
+    public function getAddress(array $context = [])
     {
         $address = $this->addressFactory->createNew();
-        $country = $this->countryContext->getCountry();
+
+        if (array_key_exists('country', $context)) {
+            $country = $context['country'];
+        } elseif (array_key_exists('store', $context)) {
+            $country = $context['store']->getBaseCountry();
+        } else {
+            throw new CountryNotFoundException('No country has been found');
+        }
 
         $address->setCountry($country);
 

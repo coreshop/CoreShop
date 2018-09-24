@@ -18,7 +18,8 @@ use CoreShop\Component\Core\Model\CartInterface;
 interface DefaultTaxAddressProviderInterface
 {
     /**
+     * @param array $context
      * @return AddressInterface|null
      */
-    public function getAddress();
+    public function getAddress(array $context = []);
 }
