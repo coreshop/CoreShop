@@ -470,7 +470,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $data = $importValue == "" ? [] : json_decode($importValue, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException('Error decoding Store Price JSON `' . $importValue . '`: ' . json_last_error_msg());
+            throw new \InvalidArgumentException(sprintf('Error decoding Store Price JSON `%s`: %s', $importValue, json_last_error_msg()));
         }
 
         $this->checkValidity($data, true);
