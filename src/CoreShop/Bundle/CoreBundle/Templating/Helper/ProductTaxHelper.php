@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;

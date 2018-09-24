@@ -28,6 +28,7 @@ services:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper
         arguments:
             - '@coreshop.templating.helper.price'
+            - '@coreshop.context.shopper'
             - '@coreshop.product.tax_factory'
             - '@coreshop.provider.taxation.default_country'
         tags:
