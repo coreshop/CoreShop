@@ -33,7 +33,7 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context)
     {
         $rules = [];
 
@@ -41,7 +41,7 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
          * @var $validRuleFetcher ValidRulesFetcherInterface
          */
         foreach ($this->validRuleFetchers->all() as $validRuleFetcher) {
-            $rules = array_merge($rules, $validRuleFetcher->getValidRules($product));
+            $rules = array_merge($rules, $validRuleFetcher->getValidRules($product, $context));
         }
 
         return $rules;

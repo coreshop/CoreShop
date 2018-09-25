@@ -4,6 +4,77 @@
  - **BC break**: All occurrences of parameters `coreshop.all.stack.pimcore_class_ids`, `"application".model."class".pimcore_class_id`, `coreshop.all.pimcore_classes.ids` have been removed. Inject the corresponding Repository and use `classId` function instead
  - **Pimcore**: CoreShop now requires at least Pimcore 5.4.0. You need to update Pimcore to the at least 5.4.0 in order to use/update CoreShop.
 
+### Product Price Calculation
+In order to allow custom price calculation on API Level, we changed the way CoreShop calculates product prices by introducing a new parameter to every PriceCalculation Interface. Price Calculator Conditions are not anymore using a Live context, instead it gets passed via API.
+
+Following interfaces have changed:
+
+ - ```CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```
+ - ```CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface```
+ - ```CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface```
+
+If you have anything customized with those classes, please change them accordingly.
+
+If you use the PriceCalculator Service directly, you also need to change the call from
+
+```
+$this->priceCalculator->getPrice($object, true)
+```
+
+to
+
+```
+$this->priceCalculator->getPrice($object, [
+    'store' => $store,
+    'country' => $country,
+    'customer' => $customer,
+    'currency' $currency,
+    'cart' => $cart
+], true)
+```
+
+The new second argument, is the Context for which you want to get the Price. This is highly depends on your
+need. On a default CoreShop setup, the context can be fetched form the `ShopperContext` Service like this:
+
+```
+return  [
+    'store' => $this->shopperContext->getStore(),
+    'customer' => $this->shopperContext->hasCustomer() ? $this->shopperContext->getCustomer() : null,
+    'currency' => $this->shopperContext->getCurrency(),
+    'country' => $this->shopperContext->getCountry(),
+    'cart' => $this->shopperContext->getCart()
+];
+```
+
+CoreShop makes that easier for you, you can just use ```$this->shoppperContext->getContext()```. But be aware, the Shopper Context is only in a Web Request available.
+When you work on a CLI Level, you have to define the context yourself.
+
+If you already have a cart and want to calculate the price for the cart, the context is a bit different, cause it resolves from the cart
+
+```
+$context = [
+    'store' => $cart->getStore(),
+    'customer' => $cart->getCustomer() ?: null,
+    'currency' => $cart->getCurrency(),
+    'country' => $cart->getStore()->getBaseCountry(),
+    'cart' => $cart
+];
+```
+
+### Taxation
+Tax Rule Store relation has been removed as it makes currently no sense.
+
 ### Tracking
 Tracking bundle has completely been refactored in order to support more use-cases than just ecommerce. If you have any customizations made, please check the current implementation to adapt your changes.
 
@@ -38,8 +109,6 @@ After you have migrated to the latest version you also have to remove some field
 - baseTotalTax
 - taxes
 - baseTaxes
-
-#### Order Invoice
 
 ### Adjustments
 > **BC break / New Feature**

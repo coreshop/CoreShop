@@ -22,38 +22,25 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var CustomerContextInterface
-     */
-    private $customerContext;
-
-    /**
-     * @param CustomerContextInterface $customerContext
-     */
-    public function __construct(CustomerContextInterface $customerContext)
-    {
-        $this->customerContext = $customerContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        try {
-            /**
-             * @var CustomerInterface
-             */
-            $customer = $this->customerContext->getCustomer();
+        if (!array_key_exists('customer', $params) || !$params['customer'] instanceof CustomerInterface) {
+            return false;
+        }
 
-            foreach ($customer->getCustomerGroups() as $group) {
-                if ($group instanceof ResourceInterface) {
-                    if (in_array($group->getId(), $configuration['customerGroups'])) {
-                        return true;
-                    }
+        /**
+         * @var $customer CustomerInterface
+         */
+        $customer = $params['customer'];
+
+        foreach ($customer->getCustomerGroups() as $group) {
+            if ($group instanceof ResourceInterface) {
+                if (in_array($group->getId(), $configuration['customerGroups'])) {
+                    return true;
                 }
             }
-        } catch (CustomerNotFoundException $ex) {
-            //If some goes wrong, we just ignore it and return false
         }
 
         return false;

@@ -21,31 +21,14 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 final class CustomersConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var CustomerContextInterface
-     */
-    private $customerContext;
-
-    /**
-     * @param CustomerContextInterface $customerContext
-     */
-    public function __construct(CustomerContextInterface $customerContext)
-    {
-        $this->customerContext = $customerContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        try {
-            $customer = $this->customerContext->getCustomer();
-
-            return in_array($customer->getId(), $configuration['customers']);
-        } catch (CustomerNotFoundException $ex) {
-            //If some goes wrong, we can ignore it, since it means that there is no Customer in the context
+        if (!array_key_exists('customer', $params)) {
+            return false;
         }
 
-        return false;
+        return in_array($params['customer']->getId(), $configuration['customers']);
     }
 }

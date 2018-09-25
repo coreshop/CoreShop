@@ -21,29 +21,14 @@ use CoreShop\Component\Store\Model\StoreInterface;
 final class StoresConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @param StoreContextInterface $storeContext
-     */
-    public function __construct(StoreContextInterface $storeContext)
-    {
-        $this->storeContext = $storeContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        $store = $this->storeContext->getStore();
-
-        if (!$store instanceof StoreInterface) {
+        if (!array_key_exists('store', $params)) {
             return false;
         }
 
-        return in_array($store->getId(), $configuration['stores']);
+        return in_array($params['store']->getId(), $configuration['stores']);
     }
 }

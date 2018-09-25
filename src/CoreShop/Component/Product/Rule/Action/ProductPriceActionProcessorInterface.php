@@ -16,9 +16,10 @@ interface ProductPriceActionProcessorInterface extends ActionProcessorInterface
 {
     /**
      * @param $subject
+     * @param array $context
      * @param array $configuration
      *
      * @return mixed
      */
-    public function getPrice($subject, array $configuration);
+    public function getPrice($subject, array $context, array $configuration);
 }

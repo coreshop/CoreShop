@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -39,6 +40,11 @@ class DiscountApplier implements DiscountApplierInterface
     private $taxCollector;
 
     /**
+     * @var AddressProviderInterface
+     */
+    private $defaultAddressProvider;
+
+    /**
      * @var AdjustmentFactoryInterface
      */
     private $adjustmentFactory;
@@ -47,17 +53,20 @@ class DiscountApplier implements DiscountApplierInterface
      * @param ProportionalIntegerDistributor       $distributor
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param TaxCollectorInterface                $taxCollector
+     * @param AddressProviderInterface             $defaultAddressProvider
      * @param AdjustmentFactoryInterface           $adjustmentFactory
      */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxCollectorInterface $taxCollector,
+        AddressProviderInterface $defaultAddressProvider,
         AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->distributor = $distributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
+        $this->defaultAddressProvider = $defaultAddressProvider;
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
@@ -96,7 +105,7 @@ class DiscountApplier implements DiscountApplierInterface
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
-                $cart->getShippingAddress()
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
             );
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {

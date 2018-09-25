@@ -7,15 +7,12 @@ services:
         arguments:
             - '@coreshop.taxation.factory.tax_calculator'
             - '@coreshop.factory.address'
-            - '@coreshop.context.country'
 
     coreshop.product.taxed_price_calculator:
         class: CoreShop\Component\Core\Product\TaxedProductPriceCalculator
         arguments:
-            - '@coreshop.order.purchasable.price_calculator'
-            - '@coreshop.order.purchasable.retail_price_calculator'
-            - '@coreshop.order.purchasable.price_discount_calculator'
-            - '@coreshop.order.purchasable.discount_calculator'
+            - '@coreshop.order.purchasable.calculator'
+            - '@coreshop.provider.taxation.default_country'
             - '@coreshop.product.tax_factory'
             - '@coreshop.taxation.tax_applicator'
 
@@ -23,14 +20,17 @@ services:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper
         arguments:
             - '@coreshop.product.taxed_price_calculator'
+            - '@coreshop.context.shopper'
         tags:
             - { name: templating.helper, alias: coreshop_product_price }
 
     coreshop.templating.helper.tax:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper
         arguments:
-            - '@coreshop.product.taxed_price_calculator'
+            - '@coreshop.templating.helper.price'
+            - '@coreshop.context.shopper'
             - '@coreshop.product.tax_factory'
+            - '@coreshop.provider.taxation.default_country'
         tags:
             - { name: templating.helper, alias: coreshop_product_tax }
 
@@ -65,8 +65,6 @@ services:
     coreshop.core.product.price_calculator.store_price:
         class: CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator
         decorates: 'coreshop.product.price_calculator.property_price'
-        arguments:
-            - '@coreshop.context.store'
 
     coreshop.order.purchasable.price_calculator.product:
         class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator

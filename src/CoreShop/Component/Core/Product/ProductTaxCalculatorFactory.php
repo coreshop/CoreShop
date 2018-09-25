@@ -12,9 +12,8 @@
 
 namespace CoreShop\Component\Core\Product;
 
-use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
@@ -32,40 +31,26 @@ class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterfac
     private $addressFactory;
 
     /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
-
-    /**
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param PimcoreFactoryInterface $addressFactory
-     * @param CountryContextInterface $countryContext
      */
-    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory, PimcoreFactoryInterface $addressFactory, CountryContextInterface $countryContext)
+    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory, PimcoreFactoryInterface $addressFactory)
     {
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->addressFactory = $addressFactory;
-        $this->countryContext = $countryContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address = null)
+    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address)
     {
         $taxRuleGroup = $product->getTaxRule();
 
         if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
-            if (null === $address) {
-                $address = $this->addressFactory->createNew();
-                $country = $this->countryContext->getCountry();
-
-                $address->setCountry($country);
-            }
-
             return $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
         }
 
-        throw new \InvalidArgumentException(sprintf('Product %s has no valid TaxRuleGroup', $product->getId()));
+        return null;
     }
 }

@@ -18,9 +18,10 @@ interface ProductPriceCalculatorInterface extends ProductRetailPriceCalculatorIn
 {
     /**
      * @param ProductInterface $subject
+     * @param array $context
      * @param bool $withDiscount
      *
      * @return int
      */
-    public function getPrice(ProductInterface $subject, $withDiscount = true);
+    public function getPrice(ProductInterface $subject, array $context, $withDiscount = true);
 }

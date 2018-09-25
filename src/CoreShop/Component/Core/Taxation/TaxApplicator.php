@@ -2,32 +2,21 @@
 
 namespace CoreShop\Component\Core\Taxation;
 
-use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use Webmozart\Assert\Assert;
 
 final class TaxApplicator implements TaxApplicatorInterface
 {
     /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @param StoreContextInterface $storeContext
-     */
-    public function __construct(
-        StoreContextInterface $storeContext
-    )
-    {
-        $this->storeContext = $storeContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function applyTax($price, TaxCalculatorInterface $taxCalculator, $withTax = true)
+    public function applyTax($price, array $context, TaxCalculatorInterface $taxCalculator, $withTax = true)
     {
-        $useGrossPrice = $this->storeContext->getStore()->getUseGrossPrice();
+        Assert::keyExists($context, 'store');
+        Assert::isInstanceOf($context['store'], StoreInterface::class);
+
+        $useGrossPrice = $context['store']->getUseGrossPrice();
 
         if ($useGrossPrice) {
             if ($withTax) {

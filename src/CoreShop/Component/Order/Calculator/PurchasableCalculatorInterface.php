@@ -10,12 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\Order\Calculator;
 
-use CoreShop\Component\Store\Model\StoresAwareInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface as BaseTaxRuleGroupInterface;
-
-interface TaxRuleGroupInterface extends BaseTaxRuleGroupInterface, StoresAwareInterface
+interface PurchasableCalculatorInterface extends
+    PurchasablePriceCalculatorInterface,
+    PurchasableDiscountCalculatorInterface,
+    PurchasableDiscountPriceCalculatorInterface,
+    PurchasableRetailPriceCalculatorInterface
 {
 
 }

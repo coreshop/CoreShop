@@ -3,6 +3,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
             - '@__symfony__.coreshop.repository.product'
             - '@__symfony__.coreshop.product.price_calculator'
             - '@__symfony__.coreshop.product.taxed_price_calculator'
@@ -13,6 +14,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductSpecificPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
             - '@__symfony__.coreshop.product_specific_price_rule.processor'
         tags:
             - { name: fob.context_service }
@@ -21,6 +23,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
             - '@__symfony__.coreshop.product_price_rule.processor'
         tags:
             - { name: fob.context_service }

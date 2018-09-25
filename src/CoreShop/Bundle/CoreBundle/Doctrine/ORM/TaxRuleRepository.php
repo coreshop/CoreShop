@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 use CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRuleRepository as BaseTaxRuleRepository;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\TaxRuleRepositoryInterface;
 
 class TaxRuleRepository extends BaseTaxRuleRepository implements TaxRuleRepositoryInterface

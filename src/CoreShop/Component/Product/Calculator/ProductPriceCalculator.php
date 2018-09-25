@@ -51,10 +51,10 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(ProductInterface $product, $includingDiscounts = false)
+    public function getPrice(ProductInterface $product, array $context, $includingDiscounts = false)
     {
-        $retailPrice = $this->getRetailPrice($product);
-        $discountPrice = $this->getDiscountPrice($product);
+        $retailPrice = $this->getRetailPrice($product, $context);
+        $discountPrice = $this->getDiscountPrice($product, $context);
         $price = $retailPrice;
 
         if ($discountPrice > 0 && $discountPrice < $retailPrice) {
@@ -62,7 +62,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         }
 
         if ($includingDiscounts) {
-            $price -= $this->getDiscount($product, $price);
+            $price -= $this->getDiscount($product, $context, $price);
         }
 
         return $price;
@@ -71,24 +71,24 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(ProductInterface $subject)
+    public function getRetailPrice(ProductInterface $subject, array $context)
     {
-        return $this->retailPriceCalculator->getRetailPrice($subject);
+        return $this->retailPriceCalculator->getRetailPrice($subject, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(ProductInterface $subject)
+    public function getDiscountPrice(ProductInterface $subject, array $context)
     {
-        return $this->discountPriceCalculator->getDiscountPrice($subject);
+        return $this->discountPriceCalculator->getDiscountPrice($subject, $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(ProductInterface $subject, $price)
+    public function getDiscount(ProductInterface $subject, array $context, $price)
     {
-        return $this->discountCalculator->getDiscount($subject, $price);
+        return $this->discountCalculator->getDiscount($subject, $context, $price);
     }
 }

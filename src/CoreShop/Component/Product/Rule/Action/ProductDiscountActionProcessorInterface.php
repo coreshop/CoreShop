@@ -17,9 +17,10 @@ interface ProductDiscountActionProcessorInterface extends ActionProcessorInterfa
     /**
      * @param $subject
      * @param $price
+     * @param array $context
      * @param array $configuration
      *
      * @return mixed
      */
-    public function getDiscount($subject, $price, array $configuration);
+    public function getDiscount($subject, $price, array $context, array $configuration);
 }

@@ -14,8 +14,9 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
@@ -27,6 +28,11 @@ final class ProductContext implements Context
      * @var SharedStorageInterface
      */
     private $sharedStorage;
+
+    /**
+     * @var ShopperContextInterface
+     */
+    private $shopperContext;
 
     /**
      * @var ProductRepositoryInterface
@@ -45,18 +51,21 @@ final class ProductContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
+     * @param ShopperContextInterface $shopperContext,
      * @param ProductRepositoryInterface $productRepository
      * @param ProductPriceCalculatorInterface $productPriceCalculator
      * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
+        ShopperContextInterface $shopperContext,
         ProductRepositoryInterface $productRepository,
         ProductPriceCalculatorInterface $productPriceCalculator,
         TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
     )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->shopperContext = $shopperContext;
         $this->productRepository = $productRepository;
         $this->productPriceCalculator = $productPriceCalculator;
         $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
@@ -67,7 +76,7 @@ final class ProductContext implements Context
      */
     public function productShouldBePriced(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getPrice($product, true));
+        Assert::same(intval($price), $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true));
     }
 
     /**
@@ -75,7 +84,7 @@ final class ProductContext implements Context
      */
     public function productsDiscountPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getDiscountPrice($product));
+        Assert::same(intval($price), $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -83,7 +92,7 @@ final class ProductContext implements Context
      */
     public function productsRetailPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getRetailPrice($product));
+        Assert::same(intval($price), $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -91,8 +100,8 @@ final class ProductContext implements Context
      */
     public function productDiscountShouldBe(ProductInterface $product, int $discount)
     {
-        $productPrice = $this->productPriceCalculator->getPrice($product, false);
-        $productDiscount = $this->productPriceCalculator->getDiscount($product, $productPrice);
+        $productPrice = $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), false);
+        $productDiscount = $this->productPriceCalculator->getDiscount($product, $this->shopperContext->getContext(), $productPrice);
 
         Assert::same($discount, $productDiscount);
     }
@@ -123,7 +132,7 @@ final class ProductContext implements Context
      */
     public function productTaxedPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->taxedProductPriceCalculator->getPrice($product));
+        Assert::same(intval($price), $this->taxedProductPriceCalculator->getPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -131,7 +140,7 @@ final class ProductContext implements Context
      */
     public function productTaxedRetailPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->taxedProductPriceCalculator->getRetailPrice($product));
+        Assert::same(intval($price), $this->taxedProductPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -141,4 +150,5 @@ final class ProductContext implements Context
     {
         Assert::eq($product->getTaxRule()->getId(), $taxRuleGroup->getId());
     }
+
 }

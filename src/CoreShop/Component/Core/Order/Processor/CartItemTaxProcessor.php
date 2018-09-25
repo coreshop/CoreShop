@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -33,16 +34,24 @@ final class CartItemTaxProcessor implements CartProcessorInterface
     private $taxCollector;
 
     /**
+     * @var AddressProviderInterface
+     */
+    private $defaultAddressProvider;
+
+    /**
      * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
      * @param TaxCollectorInterface $taxCollector
+     * @param AddressProviderInterface $defaultAddressProvider
      */
     public function __construct(
         ProductTaxCalculatorFactoryInterface $productTaxFactory,
-        TaxCollectorInterface $taxCollector
+        TaxCollectorInterface $taxCollector,
+        AddressProviderInterface $defaultAddressProvider
     )
     {
         $this->productTaxFactory = $productTaxFactory;
         $this->taxCollector = $taxCollector;
+        $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
     /**
@@ -54,7 +63,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
          * @var $item CartItemInterface
          */
         foreach ($cart->getItems() as $item) {
-            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct());
+            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(), $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 
             $fieldCollection = new Fieldcollection();
 

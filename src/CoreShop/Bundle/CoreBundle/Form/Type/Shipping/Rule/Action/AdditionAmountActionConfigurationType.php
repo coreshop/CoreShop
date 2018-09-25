@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
@@ -18,9 +18,11 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
-class PriceActionConfigurationType extends AbstractType
+class AdditionAmountActionConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -28,9 +30,11 @@ class PriceActionConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('price', MoneyType::class, [
+            ->add('amount', MoneyType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
                 ],
             ])
             ->add('currency', CurrencyChoiceType::class, [
@@ -62,6 +66,6 @@ class PriceActionConfigurationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_shipping_rule_action_price';
+        return 'coreshop_shipping_rule_action_addition_amount';
     }
 }

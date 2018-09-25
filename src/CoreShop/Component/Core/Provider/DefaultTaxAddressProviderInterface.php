@@ -10,21 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\Core\Provider;
 
-use CoreShop\Component\Store\Model\StoresAwareTrait;
-use CoreShop\Component\Taxation\Model\TaxRuleGroup as BaseTaxRuleGroup;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 
-class TaxRuleGroup extends BaseTaxRuleGroup implements TaxRuleGroupInterface
+interface DefaultTaxAddressProviderInterface
 {
-    use StoresAwareTrait {
-        __construct as storesAwareConstructor;
-    }
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->storesAwareConstructor();
-    }
+    /**
+     * @param array $context
+     * @return AddressInterface|null
+     */
+    public function getAddress(array $context = []);
 }

@@ -23,11 +23,11 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationTyp
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
-use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionAmountActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType;
-use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountAmountActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType;
-use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\PriceActionConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType;

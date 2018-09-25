@@ -16,7 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\Product;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -176,8 +176,6 @@ class Data
             $taxRuleGroup = $taxRuleGroupFactory->createNew();
             $taxRuleGroup->setName('20');
             $taxRuleGroup->setActive(true);
-            $taxRuleGroup->addStore(self::$store);
-            $taxRuleGroup->addStore(self::$storeGrossPrices);
 
             /**
              * @var $taxRule TaxRuleInterface

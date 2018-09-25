@@ -23,5 +23,5 @@ interface ProductTaxCalculatorFactoryInterface
      * @param AddressInterface $address
      * @return TaxCalculatorInterface
      */
-    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address = null);
+    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address);
 }

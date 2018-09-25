@@ -142,7 +142,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'shipping' => $sale->getShipping(),
             'totalTax' => $sale->getTotalTax(),
             'total' => $sale->getTotal(),
-            'currency' => $this->getCurrency($sale->getCurrency() ? $sale->getCurrency() : $this->get('coreshop.context.currency')->getCurrency()),
+            'currency' => $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency()),
             'currencyName' => $sale->getCurrency() instanceof CurrencyInterface ? $sale->getCurrency()->getName() : '',
             'customerName' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getFirstname().' '.$sale->getCustomer()->getLastname() : '',
             'customerEmail' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getEmail() : '',
@@ -213,7 +213,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         $jsonSale['details'] = $this->getItemDetails($sale);
         $jsonSale['summary'] = $this->getSummary($sale);
         $jsonSale['mailCorrespondence'] = $this->getMailCorrespondence($sale);
-        $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ? $sale->getCurrency() : $this->get('coreshop.context.currency')->getCurrency());
+        $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency());
         $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
 
         $jsonSale['address'] = [

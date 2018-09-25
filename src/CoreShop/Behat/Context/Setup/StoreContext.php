@@ -111,6 +111,14 @@ final class StoreContext implements Context
     }
 
     /**
+     * @Given /^I am in (store "[^"]+")$/
+     */
+    public function iAmInCountry(StoreInterface $store)
+    {
+        $this->fixedStoreContext->setStore($store);
+    }
+
+    /**
      * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$/
      */
     public function siteHasAStoreWithCountryAndCurrency($name, CountryInterface $country, CurrencyInterface $currency)

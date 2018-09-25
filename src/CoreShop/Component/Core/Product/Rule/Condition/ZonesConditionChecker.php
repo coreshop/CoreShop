@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
-use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -22,28 +21,15 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 final class ZonesConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var CountryContextInterface
-     */
-    private $countryContext;
-
-    /**
-     * @param CountryContextInterface $countryContext
-     */
-    public function __construct(CountryContextInterface $countryContext)
-    {
-        $this->countryContext = $countryContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        $country = $this->countryContext->getCountry();
-
-        if (!$country instanceof CountryInterface) {
+        if (!array_key_exists('country', $params)) {
             return false;
         }
+
+        $country = $params['country'];
 
         if (!$country->getZone() instanceof ZoneInterface) {
             return false;

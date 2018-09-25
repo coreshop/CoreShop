@@ -15,6 +15,7 @@ namespace CoreShop\Component\Core\Rule\Condition;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 trait CategoriesConditionCheckerTrait
 {
@@ -24,26 +25,20 @@ trait CategoriesConditionCheckerTrait
     private $categoryRepository;
 
     /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
-        $this->storeContext = $storeContext;
     }
 
     /**
      * @param $categories
+     * @param StoreInterface $store
      * @param $recursive
      * @return array
      */
-    protected function getCategoriesToCheck($categories, $recursive)
+    protected function getCategoriesToCheck($categories, StoreInterface $store, $recursive)
     {
         $categoryIdsToCheck = $categories;
 
@@ -55,7 +50,7 @@ trait CategoriesConditionCheckerTrait
                     continue;
                 }
 
-                $subCategories = $this->categoryRepository->findRecursiveChildCategoryIdsForStore($category, $this->storeContext->getStore());
+                $subCategories = $this->categoryRepository->findRecursiveChildCategoryIdsForStore($category, $store);
 
                 foreach ($subCategories as $child) {
                     if (!in_array($child, $categoryIdsToCheck)) {

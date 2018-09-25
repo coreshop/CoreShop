@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Shipping\Model\Carrier as BaseCarrier;
 use CoreShop\Component\Store\Model\StoresAwareTrait;
-
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class Carrier extends BaseCarrier implements CarrierInterface
 {

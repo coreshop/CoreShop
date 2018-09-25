@@ -12,7 +12,7 @@
 
 namespace CoreShop\Test\PHPUnit\Suites;
 
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;

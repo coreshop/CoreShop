@@ -25,25 +25,17 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 class StoresChecker extends AbstractConditionChecker
 {
     /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
 
     /**
-     * @param StoreContextInterface $storeContext
      * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
-        StoreContextInterface $storeContext,
         OrderRepositoryInterface $orderRepository
     )
     {
-        $this->storeContext = $storeContext;
         $this->orderRepository = $orderRepository;
     }
 
@@ -63,12 +55,6 @@ class StoresChecker extends AbstractConditionChecker
 
             if ($order instanceof OrderInterface) {
                 $store = $order->getStore();
-            }
-        } else {
-            try {
-                return in_array($this->storeContext->getStore()->getId(), $configuration['stores']);
-            } catch (StoreNotFoundException $ex) {
-                return false;
             }
         }
 

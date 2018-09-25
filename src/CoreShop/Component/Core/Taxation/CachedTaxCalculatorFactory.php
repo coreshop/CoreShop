@@ -15,8 +15,7 @@ namespace CoreShop\Component\Core\Taxation;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {

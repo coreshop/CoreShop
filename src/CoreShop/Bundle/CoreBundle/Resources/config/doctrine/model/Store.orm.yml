@@ -20,10 +20,7 @@ CoreShop\Component\Core\Model\Store:
             cascade: [ persist, remove ]
             fetch: EAGER
     manyToMany:
-        taxRuleGroups:
-            targetEntity: CoreShop\Component\Taxation\Model\TaxRuleGroupInterface
-            mappedBy: stores
-        countries:
+       countries:
             targetEntity: CoreShop\Component\Address\Model\CountryInterface
             inversedBy: stores
             joinTable:

@@ -14,14 +14,13 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroup;
+use CoreShop\Component\Taxation\Model\TaxRuleGroup;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
-use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface

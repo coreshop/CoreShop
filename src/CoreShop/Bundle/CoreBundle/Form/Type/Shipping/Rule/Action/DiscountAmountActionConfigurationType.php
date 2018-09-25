@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
+namespace CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;

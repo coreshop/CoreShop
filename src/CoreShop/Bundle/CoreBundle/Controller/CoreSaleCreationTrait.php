@@ -67,11 +67,6 @@ trait CoreSaleCreationTrait
             return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.currency.fixed')->setCurrency($currency);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
-        $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
-
         /**
          * @var $cart \CoreShop\Component\Core\Model\CartInterface
          */

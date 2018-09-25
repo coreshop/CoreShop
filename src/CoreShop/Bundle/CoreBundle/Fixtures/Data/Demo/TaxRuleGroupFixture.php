@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -61,15 +61,12 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     public function load(ObjectManager $manager)
     {
         if (!count($this->container->get('coreshop.repository.tax_rule_group')->findAll())) {
-            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
-
             /**
              * @var $taxRuleGroup TaxRuleGroupInterface
              */
             $taxRuleGroup = $this->container->get('coreshop.factory.tax_rule_group')->createNew();
             $taxRuleGroup->setName('AT');
             $taxRuleGroup->setActive(true);
-            $taxRuleGroup->addStore($defaultStore);
 
             /**
              * @var $taxRule TaxRuleInterface

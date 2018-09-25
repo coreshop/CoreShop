@@ -12,10 +12,10 @@
 
 namespace CoreShop\Component\Core\Tracking\Extractor;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculator;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
@@ -27,20 +27,20 @@ class ProductExtractor implements TrackingExtractorInterface
     private $taxedPurchasablePriceCalculator;
 
     /**
-     * @var CurrencyContextInterface
+     * @var ShopperContextInterface
      */
-    private $currencyContext;
+    private $shopperContext;
 
     /**
      * @param TaxedProductPriceCalculator $taxedPurchasablePriceCalculator
-     * @param CurrencyContextInterface    $currencyContext
+     * @param ShopperContextInterface    $shopperContext
      */
     public function __construct(
         TaxedProductPriceCalculator $taxedPurchasablePriceCalculator,
-        CurrencyContextInterface $currencyContext
+        ShopperContextInterface $shopperContext
     ) {
         $this->taxedPurchasablePriceCalculator = $taxedPurchasablePriceCalculator;
-        $this->currencyContext = $currencyContext;
+        $this->shopperContext = $shopperContext;
     }
 
     /**
@@ -70,8 +70,8 @@ class ProductExtractor implements TrackingExtractorInterface
             'name' => $object->getName(),
             'category' => count($categories) > 0 ? $categories[0]->getName() : '',
             'sku' => $object instanceof ProductInterface ? $object->getSku() : '',
-            'price' => $this->taxedPurchasablePriceCalculator->getPrice($object) / 100,
-            'currency' => $this->currencyContext->getCurrency()->getIsoCode(),
+            'price' => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->shopperContext->getContext()) / 100,
+            'currency' => $this->shopperContext->getCurrency()->getIsoCode(),
             'categories' => array_map(function(CategoryInterface $category) {
                 return [
                     'id' => $category->getId(),

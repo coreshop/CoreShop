@@ -21,29 +21,14 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 final class CurrenciesConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var CurrencyContextInterface
-     */
-    private $currencyContext;
-
-    /**
-     * @param CurrencyContextInterface $currencyContext
-     */
-    public function __construct(CurrencyContextInterface $currencyContext)
-    {
-        $this->currencyContext = $currencyContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        $currency = $this->currencyContext->getCurrency();
-
-        if (!$currency instanceof CurrencyInterface) {
+        if (!array_key_exists('currency', $params)) {
             return false;
         }
 
-        return in_array($currency->getId(), $configuration['currencies']);
+        return in_array($params['currency']->getId(), $configuration['currencies']);
     }
 }
