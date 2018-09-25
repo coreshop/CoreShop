@@ -9,10 +9,7 @@ $ composer require coreshop/address-bundle:^2.0
 ```
 
 ### Adding required bundles to kernel
-You need to enable the bundle inside the kernel
-
-If you're not using CoreShop bundles, you will also need to add CoreShopResourceBundle and its dependencies
-to kernel. Don’t worry, everything was automatically installed via Composer.
+You need to enable the bundle inside the kernel.
 
 ```php
 <?php
@@ -22,16 +19,7 @@ to kernel. Don’t worry, everything was automatically installed via Composer.
 public function registerBundlesToCollection(BundleCollection $collection)
 {
     $collection->addBundles([
-        new \JMS\SerializerBundle\JMSSerializerBundle(),
-
         new \CoreShop\Bundle\AddressBundle\CoreShopAddressBundle(),
-        new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-
-
-        new \FOS\RestBundle\FOSRestBundle(),
-        new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-        new \Payum\Bundle\PayumBundle\PayumBundle(),
-        new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
     ]);
 }
 ```
@@ -49,10 +37,7 @@ $ php bin/console doctrine:schema:update --force
 $ php bin/console coreshop:resources:install
 ```
 
-
 Learn more about overriding Pimcore Classes [here](../03_Development/01_Extending_Guide/03_Extend_CoreShop_DataObjects.md))
-
-
 
 ## Usage
 

@@ -111,7 +111,7 @@ final class Configuration implements ConfigurationInterface
 
 ```
 
-- Thats it, PimcoreBundle now takes care about loading your resources and also bundles them in non DEV-Mode.
+- That's it, PimcoreBundle now takes care about loading your resources and also bundles them in non DEV-Mode.
 
 ### DataObject Extensions
 
@@ -126,7 +126,7 @@ The data tree looks like this then:
 - object
     - embeddedObject1
     - embeddedObject2
-        - subEmbededObject1
+        - subEmbeddedObject1
 
 You can inherit this as deep as you want, but be careful. The deeper it goes, the more time it takes to save, as it persists every subobject.
 

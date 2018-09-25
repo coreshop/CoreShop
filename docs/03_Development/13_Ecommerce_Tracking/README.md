@@ -44,22 +44,22 @@ core_shop_tracking:
 
 ##### Product Impression
 ```php
-$this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
+$this->get('coreshop.tracking.manager')->trackProductImpression($product);
 ```
 
 ##### Product View
 ```php
-$this->get('coreshop.tracking.manager')->trackPurchasableView($product);
+$this->get('coreshop.tracking.manager')->trackProduct($product);
 ```
 
 ##### Product Action Add from Cart
 ```php
-$this->get('coreshop.tracking.manager')->trackCartPurchasableAdd($cart, $product);
+$this->get('coreshop.tracking.manager')->trackCartAdd($cart, $product);
 ```
 
 ##### Product Action Remove from Cart
 ```php
-$this->get('coreshop.tracking.manager')->trackCartPurchasableRemove($cart, $product);
+$this->get('coreshop.tracking.manager')->trackCartRemove($cart, $product);
 ```
 
 ##### Checkout Step
@@ -73,14 +73,12 @@ $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order)
 ```
 
 ## Add a custom Tracker
-To add a custom tracker, extend your class from `CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTracker`, implement the `CoreShop\Bundle\TrackingBundle\Tracker\EcommerceTrackerInterface` Interface and register your tracker in the container:
+To add a custom tracker you need to implement the interface `CoreShop\Component\Tracking\Tracker\TrackerInterface`
 
 ```yaml
 app.tracking.tracker.my_tracker:
     class: AppBundle\Tracker\CustomTracker
     parent: coreshop.tracking.tracker.ecommerce_tracker
-    calls:
-        - [setTracker, ['@app.tracking.my_ecommerce_tracker']]
     tags:
         - { name: coreshop.tracking.tracker, type: app-custom-tracker }
 ```

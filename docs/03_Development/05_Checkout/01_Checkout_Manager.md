@@ -49,11 +49,11 @@ core_shop_core:
 # app/config/config.yml
 core_shop_core:
     checkout:
-      default:
-        steps:
-          payment: false                                            # disables the payment step
-          shipping: false                                           # disables the shipping step
-          payment_shipping:                                         # adds a new PaymentShiping Step
-            step: app_bundle.coreshop.checkout.payment_shipping     # This is your service-id, the service needs to implement CoreShop\Component\Order\Checkout\CheckoutStepInterface
-            priority: 40                                            # Priority of this step
+        default:
+            steps:
+              payment: false                                              # disables the payment step
+              shipping: false                                             # disables the shipping step
+              payment_shipping:                                           # adds a new PaymentShiping Step
+                  step: app_bundle.coreshop.checkout.payment_shipping     # This is your service-id, the service needs to implement CoreShop\Component\Order\Checkout\CheckoutStepInterface
+                  priority: 40                                            # Priority of this step
 ```

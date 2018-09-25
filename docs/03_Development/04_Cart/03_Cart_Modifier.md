@@ -9,4 +9,4 @@ CoreShop provides you with a helper service to modify the cart. It handles follo
 The Modifier implements the interface [```CoreShop\Component\Order\Cart\CartModifierInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Cart/CartModifierInterface.php) and is implemented by the service
 ```coreshop.cart.modifier```
 
-The Cart Modifier itself, uses the [Storage List Component](../../02_Components/15_StorageListComponent.md)
+The Cart Modifier itself, uses the [Storage List Component](../../02_Components/StorageList_Component.md)

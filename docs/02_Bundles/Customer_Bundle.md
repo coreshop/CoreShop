@@ -9,9 +9,6 @@ $ composer require coreshop/customer-bundle:^2.0
 ### Adding required bundles to kernel
 You need to enable the bundle inside the kernel
 
-If you're not using CoreShop bundles, you will also need to add CoreShopResourceBundle and its dependencies
-to kernel. Don’t worry, everything was automatically installed via Composer.
-
 ```php
 <?php
 
@@ -20,16 +17,7 @@ to kernel. Don’t worry, everything was automatically installed via Composer.
 public function registerBundlesToCollection(BundleCollection $collection)
 {
     $collection->addBundles([
-        new \JMS\SerializerBundle\JMSSerializerBundle(),
-
         new \CoreShop\Bundle\CustomerBundle\CoreShopCustomerBundle(),
-        new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-
-
-        new \FOS\RestBundle\FOSRestBundle(),
-        new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-        new \Payum\Bundle\PayumBundle\PayumBundle(),
-        new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
     ]);
 }
 ```

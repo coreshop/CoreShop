@@ -1,2 +1,2 @@
 # CoreShop SEO
- * [Usage](./../../02_Bundles/17_SEOBundle.md)
+ * [Usage](./../../02_Bundles/SEO_Bundle.md)

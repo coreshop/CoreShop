@@ -11,7 +11,7 @@ CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled compon
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.0.0/Bundles/ResourceBundle/index.html).
+Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.0.0/Bundles/Resource_Bundle/index.html).
 
 Bug tracking
 ------------

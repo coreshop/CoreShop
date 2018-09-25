@@ -4,13 +4,13 @@ Adding Price-, Shipping- or Notification-Rule Conditions is the same for all of 
 tag you use and Interface you need to implement for them.
 
 
-| Action Type               | Tag                                              | Interface                                                   |
+| Action Type               | Tag                                              | Interface/AbstractClass                                     |
 | ------------------------- | ------------------------------------------------ | ----------------------------------------------------------- |
-| Cart Price Rule           | coreshop.cart_price_rule.condition               | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
+| Cart Price Rule           | coreshop.cart_price_rule.condition               | [```CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Cart/Rule/Condition/AbstractConditionChecker.php) |
 | Product Price Rule        | coreshop.product_price_rule.condition            | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
 | Product Specific Price    | coreshop.product_specific_price_rule.condition   | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
-| Shipping Rule             | coreshop.shipping_rule.condition                 | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
-| Notification Rule         | coreshop.notification_rule.condition             | [```CoreShop\Component\Rule\Condition\ConditionCheckerInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Rule/Condition/ConditionCheckerInterface.php) |
+| Shipping Rule             | coreshop.shipping_rule.condition                 | [```CoreShop\Component\Shipping\Rule\Condition\CategoriesConditionChecker```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Shipping/Rule/Condition/AbstractConditionChecker.php) |
+| Notification Rule         | coreshop.notification_rule.condition             | [```CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Notification/Rule/Condition/AbstractConditionChecker.php) |
 
 
 ## Example Adding a new Condition

@@ -1,0 +1,3 @@
+# CoreShop Locale Bundle
+
+TBD
