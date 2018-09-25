@@ -25,7 +25,7 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
             return null;
         }
 
-        return sprintf('%0.2f', $value / 100);
+        return $value / 100;
     }
 
     /**
