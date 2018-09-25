@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ProductBundle\Templating\Helper;
+namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;

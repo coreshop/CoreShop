@@ -12,23 +12,6 @@ services:
         arguments:
             - '@coreshop.registry.product.rules.fetcher'
 
-
-    coreshop.templating.helper.product_valid_rules:
-        class: CoreShop\Bundle\ProductBundle\Templating\Helper\ValidPriceRulesHelper
-        lazy: true
-        arguments:
-          - '@coreshop.product.rules.fetcher'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_price_rules }
-
-    coreshop.twig.extension.product_valid_rules:
-        class: CoreShop\Bundle\ProductBundle\Twig\ValidPriceRulesExtension
-        public: false
-        arguments:
-            - '@coreshop.templating.helper.product_valid_rules'
-        tags:
-            - { name: twig.extension }
-
     # Rule Assessor
     coreshop.rule.availability_assessor.product_price:
         class: CoreShop\Bundle\RuleBundle\Assessor\RuleAvailabilityAssessor

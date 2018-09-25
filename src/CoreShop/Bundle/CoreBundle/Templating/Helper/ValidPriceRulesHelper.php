@@ -10,8 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ProductBundle\Templating\Helper;
+namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use Symfony\Component\Templating\Helper\Helper;
@@ -24,11 +25,18 @@ class ValidPriceRulesHelper extends Helper implements ValidPriceRulesHelperInter
     protected $validPriceRulesFetcher;
 
     /**
-     * @param ValidRulesFetcherInterface $validPriceRulesFetcher
+     * @var ShopperContextInterface
      */
-    public function __construct(ValidRulesFetcherInterface $validPriceRulesFetcher)
+    protected $shopperContext;
+
+    /**
+     * @param ValidRulesFetcherInterface $validPriceRulesFetcher
+     * @param ShopperContextInterface    $shopperContext
+     */
+    public function __construct(ValidRulesFetcherInterface $validPriceRulesFetcher, ShopperContextInterface $shopperContext)
     {
         $this->validPriceRulesFetcher = $validPriceRulesFetcher;
+        $this->shopperContext = $shopperContext;
     }
 
     /**
@@ -36,7 +44,7 @@ class ValidPriceRulesHelper extends Helper implements ValidPriceRulesHelperInter
      */
     public function getValidRules(ProductInterface $product)
     {
-        return $this->validPriceRulesFetcher->getValidRules($product);
+        return $this->validPriceRulesFetcher->getValidRules($product, $this->shopperContext->getContext());
     }
 
     /**

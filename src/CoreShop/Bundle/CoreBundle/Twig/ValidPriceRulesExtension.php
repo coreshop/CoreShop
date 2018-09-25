@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ProductBundle\Twig;
+namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\ProductBundle\Templating\Helper\ValidPriceRulesHelperInterface;
+use CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface;
 
 final class ValidPriceRulesExtension extends \Twig_Extension
 {

@@ -144,3 +144,20 @@ services:
             - '@coreshop.rule_availability_processor'
         tags:
             - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerAvailabilityCheck }
+
+    coreshop.templating.helper.product_valid_rules:
+        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper
+        lazy: true
+        arguments:
+            - '@coreshop.product.rules.fetcher'
+            - '@coreshop.context.shopper'
+        tags:
+            - { name: templating.helper, alias: coreshop_product_price_rules }
+
+    coreshop.twig.extension.product_valid_rules:
+        class: CoreShop\Bundle\CoreBundle\Twig\ValidPriceRulesExtension
+        public: false
+        arguments:
+            - '@coreshop.templating.helper.product_valid_rules'
+        tags:
+            - { name: twig.extension }
