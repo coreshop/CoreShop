@@ -87,7 +87,7 @@
     "stof/doctrine-extensions-bundle": "^1.2",
     "fzaninotto/faker": "^1.6",
     "liip/theme-bundle": "^1.4",
-    "dachcom-digital/emailizr": "~1.0.0",
+    "dachcom-digital/emailizr": "^1.0.6",
     "symfony/twig-bundle": "~3.2",
     "doctrine/data-fixtures": "^1.0",
     "pimcore/pimcore": "^5.4.0"
