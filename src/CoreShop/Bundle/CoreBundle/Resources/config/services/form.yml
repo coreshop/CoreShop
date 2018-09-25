@@ -12,11 +12,6 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType }
 
-    coreshop.form.extension.type.tax_rule_group:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleGroupTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType }
-
     coreshop.form.extension.type.carrier:
         class: CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension
         tags:
