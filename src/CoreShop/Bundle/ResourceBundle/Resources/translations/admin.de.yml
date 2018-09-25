@@ -1,7 +1,7 @@
 ---
 coreshop: 'CoreShop'
-coreshop_save_success: 'Element wurde erfolgreich gespeichert.'
-coreshop_enter_the_name: 'Geben Sie den Namen ein.'
-coreshop_save_error: 'Fehler beim speichern des Elements.'
+coreshop_save_success: 'Element wurde erfolgreich gespeichert'
+coreshop_enter_the_name: 'Geben Sie den Namen ein'
+coreshop_save_error: 'Fehler beim speichern des Elements'
 coreshop_multistore: 'Multistore'
 coreshop_total_items: 'Gesamt {0}'
