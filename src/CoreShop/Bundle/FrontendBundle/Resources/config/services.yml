@@ -29,11 +29,6 @@ services:
         parent: coreshop.frontend.controller.abstract
         public: true
 
-    coreshop.frontend.controller.language:
-        class: '%coreshop.frontend.controller.language%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
     coreshop.frontend.controller.search:
         class: '%coreshop.frontend.controller.search%'
         parent: coreshop.frontend.controller.abstract
@@ -106,3 +101,11 @@ services:
         arguments:
             - '%coreshop.frontend.view_bundle%'
             - '%coreshop.frontend.view_suffix%'
+
+    coreshop.frontend.twig.locale_switcher:
+        class: CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension
+        arguments:
+            - '@Pimcore\Model\Document\Service'
+            - '@coreshop.context.shopper'
+        tags:
+            - { name: twig.extension }
