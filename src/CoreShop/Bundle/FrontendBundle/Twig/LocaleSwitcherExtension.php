@@ -88,7 +88,7 @@ final class LocaleSwitcherExtension extends \Twig_Extension
                 $links[] = [
                     'language' => $language,
                     'target' => $localizedDocument->getFullPath(),
-                    'displayLanguage' => \Locale::getDisplayLanguage($language),
+                    'displayLanguage' => \Locale::getDisplayLanguage($language, $language),
                 ];
             }
         }
