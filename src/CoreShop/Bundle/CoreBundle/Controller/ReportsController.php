@@ -62,8 +62,7 @@ class ReportsController extends AdminController
 
         if ($report instanceof ExportReportInterface) {
             $data = $report->getExportReportData($request->query);
-        }
-        else {
+        } else {
             $data = $report->getReportData($request->query);
         }
 
