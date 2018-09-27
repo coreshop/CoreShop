@@ -23,6 +23,11 @@ coreshop_admin_report_get_data:
     methods: [GET]
     defaults:  { _controller: coreshop.admin_controller.reports:getReportDataAction}
 
+coreshop_admin_report_export:
+    path: /%coreshop.admin.route.base%/report/export
+    methods: [GET]
+    defaults:  { _controller: coreshop.admin_controller.reports:exportReportCsvAction}
+
 coreshop_admin_portlet_get_data:
     path: /%coreshop.admin.route.base%/portlet/get-data
     methods: [GET]
