@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,7 +59,13 @@ class ReportsController extends AdminController
 
         /** @var ReportInterface $report */
         $report = $reportRegistry->get($reportType);
-        $data = $report->getReportData($request->query);
+
+        if ($report instanceof ExportReportInterface) {
+            $data = $report->getExportReportData($request->query);
+        }
+        else {
+            $data = $report->getReportData($request->query);
+        }
 
         $csvData = $this->get('serializer')->encode($data, 'csv');
 
