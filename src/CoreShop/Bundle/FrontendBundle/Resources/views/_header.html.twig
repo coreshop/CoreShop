@@ -21,7 +21,16 @@
                                 {{ 'coreshop.ui.wishlist'|trans }}
                             </a>
                             {{ render(controller('coreshop.frontend.controller.currency:widgetAction')) }}
-                            {{ render(controller('coreshop.frontend.controller.language:widgetAction')) }}
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ 'coreshop.ui.language'|trans }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                                {% for document in coreshop_locale_switcher(document) %}
+                                    <a class="dropdown-item" href="{{ document.target }}">{{ document.language }}</a>
+                                {% endfor %}
+                            </div>
                         </li>
                     </ul>
 

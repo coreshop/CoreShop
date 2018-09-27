@@ -68,7 +68,6 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('register')->defaultValue(RegisterController::class)->end()
                     ->scalarNode('customer')->defaultValue(CustomerController::class)->end()
                     ->scalarNode('currency')->defaultValue(CurrencyController::class)->end()
-                    ->scalarNode('language')->defaultValue(LanguageController::class)->end()
                     ->scalarNode('search')->defaultValue(SearchController::class)->end()
                     ->scalarNode('cart')->defaultValue(CartController::class)->end()
                     ->scalarNode('checkout')->defaultValue(CheckoutController::class)->end()
