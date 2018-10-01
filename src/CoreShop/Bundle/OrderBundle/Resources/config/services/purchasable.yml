@@ -8,11 +8,6 @@ services:
             - CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface
             - purchasable-retail-price-calculators
 
-    coreshop.order.purchasable.price_calculator.price_aware:
-        class: CoreShop\Component\Order\Calculator\PriceAwarePurchasableCalculator
-        tags:
-          - { name: coreshop.order.purchasable.retail_price_calculator, type: price_aware, priority: 10 }
-
     coreshop.order.purchasable.retail_price_calculator:
         class: CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator
         arguments:

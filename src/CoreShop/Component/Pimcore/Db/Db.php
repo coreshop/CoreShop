@@ -47,5 +47,3 @@ final class Db extends \Pimcore\Db
         return count($result) > 0;
     }
 }
-
-class_alias(Db::class, 'CoreShop\Component\Pimcore\Db');

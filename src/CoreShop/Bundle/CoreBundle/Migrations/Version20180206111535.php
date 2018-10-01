@@ -26,7 +26,13 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
             }
 
             $config = $filterCondition->getConfiguration();
-            $config['field'] = $filterCondition->getField();
+
+            if (method_exists($filterCondition, 'getField')) {
+                $config['field'] = $filterCondition->getField();
+            }
+            else {
+                throw new \Exception('Can\'t run Filter Condition Migration casue the installed CoreShop Version is already to far ahead. Please use beta.4 at last and then further update.');
+            }
 
             $filterCondition->setConfiguration($config);
 
@@ -36,7 +42,7 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
 
         $em->flush();
 
-        $db = $this->container->get('doctrine.dbal.default_connection')->executeQuery('ALTER TABLE coreshop_filter_condition CHANGE field field VARCHAR(255) DEFAULT NULL;');
+        $this->addSql('ALTER TABLE coreshop_filter_condition CHANGE field field VARCHAR(255) DEFAULT NULL;');
     }
 
     /**

@@ -111,5 +111,3 @@ interface ClassUpdateInterface
      */
     public function removeField($fieldName);
 }
-
-class_alias(ClassUpdateInterface::class, 'CoreShop\Component\Pimcore\ClassUpdateInterface');

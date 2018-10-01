@@ -18,16 +18,6 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 interface PaymentProviderRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @deprecated findByName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use findByTitle instead
-     *
-     * @param string $name
-     * @param string $locale
-     *
-     * @return PaymentProviderInterface[]
-     */
-    public function findByName($name, $locale);
-
-    /**
      * @param string $title
      * @param string $locale
      *

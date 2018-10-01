@@ -54,26 +54,6 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
-    {
-        @trigger_error('getLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
-
-        return $this->getTitle();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLabel($label)
-    {
-        @trigger_error('setLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
-
-        $this->setTitle($label);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTitle()
     {
         return $this->title;

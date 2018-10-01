@@ -38,5 +38,3 @@ final class ResourceLoader
         return [Admin::getMinimizedScriptPath($scriptContents)];
     }
 }
-
-\class_alias(ResourceLoader::class, 'CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader');

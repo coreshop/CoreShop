@@ -68,26 +68,6 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        @trigger_error('getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getIdentifier instead', E_USER_DEPRECATED);
-
-        return $this->getIdentifier();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name)
-    {
-        @trigger_error('setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setIdentifier instead', E_USER_DEPRECATED);
-
-        $this->setIdentifier($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier()
     {
         return $this->identifier;
@@ -120,28 +100,8 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel($language = null)
-    {
-        return $this->getTitle($language);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLabel($label, $language = null)
-    {
-        @trigger_error('getLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
-
-        $this->setTitle($label, $language);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTitle($language = null)
     {
-        @trigger_error('setLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead', E_USER_DEPRECATED);
-
         return $this->getTranslation($language)->getTitle();
     }
 

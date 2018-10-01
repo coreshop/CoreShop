@@ -23,5 +23,3 @@ final class ObjectCloner implements ObjectClonerInterface
         return $newObject;
     }
 }
-
-\class_alias(ObjectCloner::class, 'CoreShop\Component\Resource\Pimcore\ObjectCloner');

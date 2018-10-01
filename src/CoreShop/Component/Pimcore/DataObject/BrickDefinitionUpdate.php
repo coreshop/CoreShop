@@ -53,5 +53,3 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
         return DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);
     }
 }
-
-class_alias(BrickDefinitionUpdate::class, 'CoreShop\Component\Pimcore\BrickDefinitionUpdate');

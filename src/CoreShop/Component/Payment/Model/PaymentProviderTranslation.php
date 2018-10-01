@@ -58,26 +58,6 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        @trigger_error('getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
-
-        return $this->getTitle();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name)
-    {
-        @trigger_error('setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead', E_USER_DEPRECATED);
-
-        $this->setTitle($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTitle()
     {
         return $this->title;

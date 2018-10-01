@@ -18,20 +18,6 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 interface CarrierTranslationInterface extends ResourceInterface, TimestampableInterface
 {
     /**
-     * @deprecated getLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead
-     *
-     * @return string
-     */
-    public function getLabel();
-
-    /**
-     * @deprecated setLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead
-     *
-     * @param string $label
-     */
-    public function setLabel($label);
-
-    /**
      * @return string
      */
     public function getTitle();

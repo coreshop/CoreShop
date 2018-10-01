@@ -76,5 +76,3 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         );
     }
 }
-
-class_alias(ClassUpdate::class, 'CoreShop\Component\Pimcore\ClassUpdate');

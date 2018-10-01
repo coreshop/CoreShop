@@ -40,5 +40,3 @@ interface ClassInstallerInterface
      */
     public function createFieldCollection($jsonFile, $name);
 }
-
-class_alias(ClassInstallerInterface::class, 'CoreShop\Component\Pimcore\ClassInstallerInterface');

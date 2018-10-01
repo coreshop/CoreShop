@@ -217,5 +217,3 @@ final class Migrate
         $db->query("UPDATE objects SET o_classId=?, o_className=? WHERE o_classId=?", [$newClassDefinition->getId(), $newClassDefinition->getName(), $oldClassDefinition->getId()]);
     }
 }
-
-class_alias(Migrate::class, 'CoreShop\Component\Pimcore\Migrate');

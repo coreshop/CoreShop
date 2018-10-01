@@ -20,20 +20,6 @@ use Doctrine\Common\Collections\Collection;
 interface CarrierInterface extends ResourceInterface, TimestampableInterface, TranslatableInterface
 {
     /**
-     * @deprecated getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getIdentifier instead
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * @deprecated setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setIdentifier instead
-     *
-     * @param string $name
-     */
-    public function setName($name);
-
-    /**
      * @return string
      */
     public function getIdentifier();
@@ -55,23 +41,6 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
      * @param null $language
      */
     public function setDescription($description, $language = null);
-
-    /**
-     * @deprecated getLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead
-     *
-     * @param null $language
-     *
-     * @return string
-     */
-    public function getLabel($language = null);
-
-    /**
-     * @deprecated setLabel is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead
-     *
-     * @param string $label
-     * @param null $language
-     */
-    public function setLabel($label, $language = null);
 
     /**
      * @param null $language

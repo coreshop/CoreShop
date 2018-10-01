@@ -45,5 +45,3 @@ class GridConfigInstaller implements GridConfigInstallerInterface
         $gridConfig->save();
     }
 }
-
-class_alias(GridConfigInstaller::class, 'CoreShop\Component\Pimcore\GridConfigInstaller');

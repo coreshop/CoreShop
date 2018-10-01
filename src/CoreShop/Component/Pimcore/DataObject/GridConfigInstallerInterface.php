@@ -22,5 +22,3 @@ interface GridConfigInstallerInterface
      */
     public function installGridConfig($config, $name, $class, $overwrite = false);
 }
-
-class_alias(GridConfigInstallerInterface::class, 'CoreShop\Component\Pimcore\GridConfigInstallerInterface');

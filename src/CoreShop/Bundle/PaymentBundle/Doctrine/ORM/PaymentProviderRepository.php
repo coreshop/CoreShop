@@ -39,16 +39,6 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
     /**
      * {@inheritdoc}
      */
-    public function findByName($name, $locale)
-    {
-        @trigger_error('findByName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use findByTitle instead', E_USER_DEPRECATED);
-
-        return $this->findByTitle($name, $locale);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findActive()
     {
         return $this->createQueryBuilder('o')
