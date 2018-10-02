@@ -30,11 +30,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     public $width;
 
     /**
-     * @var int
-     */
-    public $defaultValue;
-
-    /**
      * Type for the column to query
      *
      * @var string
@@ -87,32 +82,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     public function setWidth($width)
     {
         $this->width = $this->getAsIntegerCast($width);
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDefaultValue()
-    {
-        if ($this->defaultValue !== null) {
-            return $this->toNumeric($this->defaultValue);
-        }
-
-        return 0;
-    }
-
-    /**
-     * @param int $defaultValue
-     *
-     * @return $this
-     */
-    public function setDefaultValue($defaultValue)
-    {
-        if (strlen(strval($defaultValue)) > 0) {
-            $this->defaultValue = $defaultValue;
-        }
 
         return $this;
     }

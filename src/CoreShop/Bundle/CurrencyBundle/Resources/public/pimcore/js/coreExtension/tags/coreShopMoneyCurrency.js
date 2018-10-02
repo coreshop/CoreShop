@@ -16,12 +16,6 @@ pimcore.object.tags.coreShopMoneyCurrency = Class.create(pimcore.object.tags.abs
 
     initialize: function (data, fieldConfig)
     {
-        this.defaultValue = null;
-        if ((typeof data === "undefined" || data === null) && fieldConfig.defaultValue) {
-            data = fieldConfig.defaultValue;
-            this.defaultValue = data;
-        }
-
         this.data = data;
         this.fieldConfig = fieldConfig;
     },
@@ -128,10 +122,6 @@ pimcore.object.tags.coreShopMoneyCurrency = Class.create(pimcore.object.tags.abs
     isDirty: function ()
     {
         var dirty = false;
-
-        if (this.defaultValue) {
-            return true;
-        }
 
         var components = [
             this.component.down('[name="value"]'),

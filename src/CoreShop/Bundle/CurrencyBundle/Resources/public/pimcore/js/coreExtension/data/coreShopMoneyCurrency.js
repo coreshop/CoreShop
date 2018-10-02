@@ -56,17 +56,6 @@ pimcore.object.classes.data.coreShopMoneyCurrency = Class.create(pimcore.object.
                 fieldLabel: t("width"),
                 name: "width",
                 value: this.datax.width
-            },
-            {
-                xtype: "numberfield",
-                fieldLabel: t("default_value"),
-                name: "defaultValue",
-                value: this.datax.defaultValue
-            }, {
-                xtype: "panel",
-                bodyStyle: "padding-top: 3px",
-                style: "margin-bottom: 10px",
-                html: '<span class="object_field_setting_warning">' + t('default_value_warning') + '</span>'
             }
         ]);
 
@@ -97,7 +86,6 @@ pimcore.object.classes.data.coreShopMoneyCurrency = Class.create(pimcore.object.
 
             Ext.apply(this.datax, {
                 width: source.datax.width,
-                defaultValue: source.datax.defaultValue,
                 minValue: source.datax.minValue,
                 maxValue: source.datax.maxValue,
             });
