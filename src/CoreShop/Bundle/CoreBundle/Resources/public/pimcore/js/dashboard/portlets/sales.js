@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('pimcore.layout.portlets.coreshop_sales');
-pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.abstract, {
+pimcore.layout.portlets.coreshop_sales = Class.create(coreshop.portlet.abstract, {
 
     portletType: 'sales',
 
@@ -27,18 +27,22 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
         return 'coreshop_carrier_costs_icon';
     },
 
+    getFilterParams: function() {
+        return {
+            'from': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
+            'to': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000,
+            'store': this.config
+        };
+    },
+
     getLayout: function (portletId) {
+        var me = this;
 
         this.store = new Ext.data.Store({
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
                 url: '/admin/coreshop/portlet/get-data?portlet=' + this.portletType,
-                extraParams: {
-                    'filters[from]': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
-                    'filters[to]': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000,
-                    'store': this.config
-                },
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
@@ -46,7 +50,9 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
             },
             fields: ['timestamp', 'datetext', 'sales']
         });
-
+        this.store.on('beforeload', function (store, operation) {
+            me.store.getProxy().setExtraParams(me.getFilterParams());
+        });
         this.store.load();
 
         var panel = new Ext.Panel({
@@ -119,6 +125,10 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
             {
                 type: 'gear',
                 handler: this.editSettings.bind(this)
+            },
+            {
+                type: 'download',
+                handler: this.download.bind(this)
             },
             {
                 type: 'close',
@@ -205,7 +215,6 @@ pimcore.layout.portlets.coreshop_sales = Class.create(pimcore.layout.portlets.ab
                                         config: storeValue
                                     },
                                     success: function () {
-                                        this.store.proxy.extraParams.store = storeValue;
                                         this.store.reload();
                                     }.bind(this)
                                 });

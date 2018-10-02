@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('pimcore.layout.portlets.coreshop_order_cart');
-pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portlets.abstract, {
+pimcore.layout.portlets.coreshop_order_cart = Class.create(coreshop.portlet.abstract, {
 
     portletType: 'order_cart',
 
@@ -27,23 +27,32 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
         return 'pimcore_icon_portlet_modification_statistic';
     },
 
+    getFilterParams: function() {
+        return {
+            'from': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
+            'to': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000,
+            'store': this.config
+        };
+    },
+
     getLayout: function (portletId) {
+        var me = this;
+
         this.store = new Ext.data.Store({
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
                 url: '/admin/coreshop/portlet/get-data?portlet=' + this.portletType,
-                extraParams: {
-                    'filters[from]': new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() / 1000,
-                    'filters[to]': new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getTime() / 1000,
-                    'store': this.config
-                },
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
                 }
             },
             fields: ['timestamp', 'datetext', 'carts', 'orders']
+        });
+
+        this.store.on('beforeload', function (store, operation) {
+            me.store.getProxy().setExtraParams(me.getFilterParams());
         });
 
         this.store.load();
@@ -148,6 +157,10 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                 handler: this.editSettings.bind(this)
             },
             {
+                type: 'download',
+                handler: this.download.bind(this)
+            },
+            {
                 type: 'close',
                 handler: this.remove.bind(this)
             }
@@ -232,7 +245,6 @@ pimcore.layout.portlets.coreshop_order_cart = Class.create(pimcore.layout.portle
                                         config: storeValue
                                     },
                                     success: function () {
-                                        this.store.proxy.extraParams.store = storeValue;
                                         this.store.reload();
                                     }.bind(this)
                                 });

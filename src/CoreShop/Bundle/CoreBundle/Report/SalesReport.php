@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Portlet\ExportPortletInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
@@ -25,7 +26,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class SalesReport implements ReportInterface, ExportReportInterface, PortletInterface
+class SalesReport implements ReportInterface, ExportReportInterface, PortletInterface, ExportPortletInterface
 {
     /**
      * @var int
@@ -182,6 +183,14 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportPortletData(ParameterBag $parameterBag)
+    {
+        return $this->getExportReportData($parameterBag);
     }
 
     /**
