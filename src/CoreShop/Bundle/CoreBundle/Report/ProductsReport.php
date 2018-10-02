@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
@@ -24,7 +25,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class ProductsReport implements ReportInterface
+class ProductsReport implements ReportInterface, ExportReportInterface
 {
     /**
      * @var int
@@ -193,6 +194,20 @@ class ProductsReport implements ReportInterface
         }
 
         return array_values($productSales);
+    }
+
+    public function getExportReportData(ParameterBag $parameterBag)
+    {
+        $data = $this->getReportData($parameterBag);
+
+        foreach ($data as &$entry)
+        {
+            unset($entry['salesPrice']);
+            unset($entry['sales']);
+            unset($entry['profit']);
+        }
+
+        return $data;
     }
 
     /**

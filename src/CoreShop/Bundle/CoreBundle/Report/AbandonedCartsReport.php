@@ -14,13 +14,15 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class AbandonedCartsReport implements ReportInterface
+class AbandonedCartsReport implements ReportInterface, ExportReportInterface
 {
     /**
      * @var int
@@ -48,24 +50,32 @@ class AbandonedCartsReport implements ReportInterface
     private $customerRepository;
 
     /**
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
+
+    /**
      * AbandonedCartsReport constructor.
      *
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param PimcoreRepositoryInterface $cartRepository,
      * @param PimcoreRepositoryInterface $customerRepository
+     * @param LocaleContextInterface $localeContext
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         PimcoreRepositoryInterface $cartRepository,
-        PimcoreRepositoryInterface $customerRepository
+        PimcoreRepositoryInterface $customerRepository,
+        LocaleContextInterface $localeContext
     )
     {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->cartRepository = $cartRepository;
         $this->customerRepository = $customerRepository;
+        $this->localeContext = $localeContext;
     }
 
     /**
@@ -147,6 +157,24 @@ class AbandonedCartsReport implements ReportInterface
         }
 
         return array_values($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportReportData(ParameterBag $parameterBag)
+    {
+        $data = $this->getReportData($parameterBag);
+
+        $formatter = new \IntlDateFormatter($this->localeContext->getLocaleCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+
+        foreach ($data as &$entry)
+        {
+            $entry['creationDate'] = $formatter->format($entry['creationDate']);
+            $entry['modificationDate'] = $formatter->format($entry['modificationDate']);
+        }
+
+        return $data;
     }
 
     /**
