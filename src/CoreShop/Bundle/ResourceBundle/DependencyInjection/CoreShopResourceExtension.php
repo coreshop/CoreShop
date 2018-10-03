@@ -14,14 +14,11 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
-use Pimcore\DependencyInjection\ConfigMerger;
-use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopResourceExtension extends AbstractModelExtension
