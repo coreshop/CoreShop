@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
@@ -23,7 +24,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class VouchersReport implements ReportInterface
+class VouchersReport implements ReportInterface, ExportReportInterface
 {
     /**
      * @var int
@@ -135,6 +136,24 @@ class VouchersReport implements ReportInterface
 
         return array_values($data);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportReportData(ParameterBag $parameterBag)
+    {
+        $data = $this->getReportData($parameterBag);
+
+        $formatter = new \IntlDateFormatter($this->localeContext->getLocaleCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+
+        foreach ($data as &$entry)
+        {
+            $entry['usedDate'] = $formatter->format($entry['usedDate']);
+        }
+
+        return $data;
+    }
+
 
     /**
      * @return int

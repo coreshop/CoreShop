@@ -154,3 +154,12 @@
 .coreshop_rule_icon_condition_backendCreated {
     background: url(../img/orders-backend.svg) center center no-repeat !important;
 }
+
+.x-tool-download {
+    font: 16px/1 FontAwesome;
+    background: none;
+}
+
+.x-tool-download:before {
+    content: "\f0ed";
+}

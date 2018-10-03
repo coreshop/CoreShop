@@ -13,8 +13,11 @@
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ReportsController extends AdminController
 {
@@ -39,5 +42,40 @@ class ReportsController extends AdminController
             'data' => $report->getReportData($request->query),
             'total' => $report->getTotal()
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function exportReportCsvAction(Request $request)
+    {
+        $reportType = $request->get('report');
+        $reportRegistry = $this->get('coreshop.registry.reports');
+
+        if (!$reportRegistry->has($reportType)) {
+            throw new \InvalidArgumentException(sprintf('Report %s not found', $reportType));
+        }
+
+        /** @var ReportInterface $report */
+        $report = $reportRegistry->get($reportType);
+
+        if ($report instanceof ExportReportInterface) {
+            $data = $report->getExportReportData($request->query);
+        } else {
+            $data = $report->getReportData($request->query);
+        }
+
+        $csvData = $this->get('serializer')->encode($data, 'csv');
+
+        $response = new Response($csvData);
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            sprintf('%s.csv', $reportType)
+        );
+
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
     }
 }

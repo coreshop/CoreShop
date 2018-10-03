@@ -68,6 +68,7 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@coreshop.repository.cart'
             - '@coreshop.repository.customer'
+            - '@coreshop.context.locale'
         tags:
             - { name: coreshop.report, type: carts_abandoned }
 
