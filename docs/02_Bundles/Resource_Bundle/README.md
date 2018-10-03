@@ -26,7 +26,6 @@ public function registerBundlesToCollection(BundleCollection $collection)
     $collection->addBundles([
         new \JMS\SerializerBundle\JMSSerializerBundle(),
         new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-        new \FOS\RestBundle\FOSRestBundle(),
         new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
         new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle()
     ]);
