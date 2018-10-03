@@ -23,6 +23,7 @@ core_shop_core:
             report_reports_payment_providers: '/bundles/coreshopcore/pimcore/js/report/reports/payment_providers.js'
             report_reports_products: '/bundles/coreshopcore/pimcore/js/report/reports/products.js'
             report_reports_sales: '/bundles/coreshopcore/pimcore/js/report/reports/sales.js'
+            portlet_abstract: '/bundles/coreshopcore/pimcore/js/dashboard/portlets/abstract.js'
             portlet_orders_carts: '/bundles/coreshopcore/pimcore/js/dashboard/portlets/order_cart.js'
             portlet_sales: '/bundles/coreshopcore/pimcore/js/dashboard/portlets/sales.js'
             carrier_item: '/bundles/coreshopcore/pimcore/js/shipping/carrier/item.js'
