@@ -79,71 +79,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             ]
         ];
 
-        $frameworkConfig = [
-            'form' => true
-        ];
-
-        $doctrineConfig = [
-            'dbal' => [
-                'mapping_types' => [
-                    'enum' => 'string'
-                ]
-            ],
-            'orm' => [
-                'auto_generate_proxy_classes' => '%kernel.debug%',
-                'entity_managers' => [
-                    'default' => [
-                        'auto_mapping' => true,
-                        'metadata_cache_driver' => [
-                            'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_metadata_cache'
-                        ],
-                        'result_cache_driver' => [
-                            'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_result_cache'
-                        ],
-                        'query_cache_driver' => [
-                            'type' => 'service',
-                            'id' => 'doctrine_cache.providers.coreshop_pimcore_query_cache'
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        $doctrineCacheConfig = [
-            'custom_providers' => [
-                'coreshop_pimcore_cache' => [
-                    'prototype' => 'coreshop.doctrine.cache.pimcore'
-                ]
-            ],
-            'providers' => [
-                'coreshop_pimcore_metadata_cache' => [
-                    'coreshop_pimcore_cache' => []
-                ],
-                'coreshop_pimcore_result_cache' => [
-                    'coreshop_pimcore_cache' => []
-                ],
-                'coreshop_pimcore_query_cache' => [
-                    'coreshop_pimcore_cache' => []
-                ]
-            ]
-        ];
-
-        $stofDoctrineExtensions = [
-            'default_locale' => '%locale%',
-            'orm' => [
-                'default' => [
-                    'timestampable' => true
-                ]
-            ]
-        ];
-
         $container->prependExtensionConfig('fos_rest', $fosRestConfig);
-        $container->prependExtensionConfig('framework', $frameworkConfig);
-        $container->prependExtensionConfig('doctrine', $doctrineConfig);
-        $container->prependExtensionConfig('doctrine_cache', $doctrineCacheConfig);
-        $container->prependExtensionConfig('stof_doctrine_extensions', $stofDoctrineExtensions);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)
