@@ -8,6 +8,7 @@ pimcore:
                 map:
                     coreShopCurrency: CoreShop\Bundle\CurrencyBundle\CoreExtension\Currency
                     coreShopCurrencyMultiselect: CoreShop\Bundle\CurrencyBundle\CoreExtension\CurrencyMultiselect
+                    coreShopMoneyCurrency: CoreShop\Bundle\CurrencyBundle\CoreExtension\MoneyCurrency
 
 jms_serializer:
     metadata:
