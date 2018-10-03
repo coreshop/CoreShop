@@ -1,0 +1,8 @@
+Pimcore\Model\DataObject\AbstractObject:
+    exclusion_policy: ALL
+    virtual_properties:
+        getId:
+            expose: true
+            type: integer
+            xml_attribute: true
+            serialized_name: id
