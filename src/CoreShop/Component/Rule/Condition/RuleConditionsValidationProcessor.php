@@ -55,6 +55,10 @@ class RuleConditionsValidationProcessor implements RuleConditionsValidationProce
             return true;
         }
 
+        if (!$rule->getActive()) {
+            return false;
+        }
+
         foreach ($conditions as $condition) {
             if (!$this->isConditionValid($subject, $rule, $condition, $params)) {
                 return false;
