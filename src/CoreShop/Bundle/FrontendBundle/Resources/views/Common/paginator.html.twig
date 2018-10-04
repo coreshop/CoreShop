@@ -15,17 +15,17 @@
             <ul class="pagination">
                 {% if pages.previous is defined %}
                     {% if pages.previous %}
-                        <li><a href="{{ generator.generate_seo_pagination_url(pages.first) }}">«</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ generator.generate_seo_pagination_url(pages.first) }}">«</a></li>
                     {% endif %}
                 {% endif %}
 
                 {% for page in pages.pagesInRange %}
-                    <li class="{% if page == pages.current  %} active {% endif %}"><a href="{{ generator.generate_seo_pagination_url(page) }}">{{ page }}</a></li>
+                    <li class="page-item {% if page == pages.current  %} active {% endif %}"><a class="page-link" href="{{ generator.generate_seo_pagination_url(page) }}">{{ page }}</a></li>
                 {% endfor %}
 
                 {% if pages.next is defined %}
                     {% if pages.next %}
-                        <li><a href="{{ pimcore_url({ page: pages.last }) }}">«</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ pimcore_url({ page: pages.last }) }}">»</a></li>
                     {% endif %}
                 {% endif %}
             </ul>
