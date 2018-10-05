@@ -55,7 +55,7 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
     private function getRequiredCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
         if ($input->getOption('no-interaction')) {
-            $commands['doctrine:schema:update'] = ['--force' => true];
+            $commands['coreshop:resources:drop-tables'] = ['application-name' => 'coreshop', '--force' => true];
         }
 
         return $this->setupDatabase($input, $output, $questionHelper);
@@ -73,16 +73,16 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
         $outputStyle = new SymfonyStyle($input, $output);
 
         if (!$this->isSchemaPresent()) {
-            return ['doctrine:schema:create'];
+            return ['coreshop:resources:create-tables' => ['application-name' => 'coreshop', '--force' => true]];
         }
 
         $outputStyle->writeln('Seems like your database contains schema.');
-        $outputStyle->writeln('<error>Warning! This action will erase your database.</error>');
+        $outputStyle->writeln('<error>Warning! This action will erase your CoreShop Tables.</error>');
         $question = new ConfirmationQuestion('Do you want to reset your CoreShop scheme it? (y/N) ', false);
         if ($questionHelper->ask($input, $output, $question)) {
             return [
-                'doctrine:schema:drop' => ['--force' => true],
-                'doctrine:schema:create',
+                'coreshop:resources:drop-tables' => ['application-name' => 'coreshop', '--force' => true],
+                'coreshop:resources:create-tables' => ['application-name' => 'coreshop', '--force' => true],
             ];
         }
 
