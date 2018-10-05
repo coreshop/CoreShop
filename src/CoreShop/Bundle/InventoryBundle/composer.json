@@ -29,7 +29,7 @@
       "CoreShop\\Bundle\\InventoryBundle\\": ""
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "RC",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
