@@ -13,15 +13,15 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopResourceExtension extends AbstractModelExtension implements PrependExtensionInterface
+final class CoreShopResourceExtension extends AbstractModelExtension
 {
     /**
      * {@inheritdoc}
@@ -36,10 +36,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
         if ($config['translation']['enabled']) {
             $loader->load('services/integrations/translation.yml');
 
-            $alias = new Alias($config['translation']['locale_provider']);
-            $alias->setPublic(true);
-
-            $container->setAlias('coreshop.translation_locale_provider', $alias);
+            $container->setAlias('coreshop.translation_locale_provider', $config['translation']['locale_provider']);
         }
 
         if (array_key_exists('pimcore_admin', $config)) {
@@ -54,32 +51,20 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             $container->setParameter('coreshop.all.stack', []);
         }
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (!array_key_exists('FOSRestBundle', $bundles)) {
+            $bodyListener = new Definition(BodyListener::class);
+            $bodyListener->addTag('kernel.event_listener', [
+                'event' => 'kernel.request',
+                'method' => 'onKernelRequest',
+                'priority' => 10
+            ]);
+
+            $container->setDefinition('coreshop.body_listener', $bodyListener);
+        }
+
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        $fosRestConfig = [
-            'format_listener' => [
-                'rules' => [
-                    [
-                        'path' => '^/admin/coreshop',
-                        'priorities' => ['json', 'xml'],
-                        'fallback_format' => 'json',
-                        'prefer_extension' => true
-                    ],
-                    [
-                        'path' => '^/',
-                        'stop' => true
-                    ]
-                ]
-            ]
-        ];
-
-        $container->prependExtensionConfig('fos_rest', $fosRestConfig);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)
