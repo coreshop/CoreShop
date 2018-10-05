@@ -50,7 +50,7 @@ final class Matomo extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix'    => 'CoreShopTrackingBundle:Tracking/matomo',
+            'template_prefix'    => '@CoreShopTracking/Tracking/matomo',
 
             // by default, a cart add/remove delegates to cart update
             // if you manually trigger cart update on every change you can

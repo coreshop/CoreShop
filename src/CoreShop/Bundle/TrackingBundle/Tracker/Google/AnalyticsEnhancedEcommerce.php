@@ -66,7 +66,7 @@ class AnalyticsEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/enhanced'
+            'template_prefix' => '@CoreShopTracking/Tracking/analytics/enhanced'
         ]);
     }
 

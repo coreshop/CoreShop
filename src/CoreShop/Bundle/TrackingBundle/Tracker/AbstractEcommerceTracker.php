@@ -105,7 +105,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     protected function getTemplatePath(string $name)
     {
         return sprintf(
-            '%s:%s.js.%s',
+            '%s/%s.js.%s',
             $this->templatePrefix,
             $name,
             $this->templateExtension

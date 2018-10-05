@@ -54,7 +54,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/analytics/universal'
+            'template_prefix' => '@CoreShopTracking/Tracking/analytics/universal'
         ]);
     }
 
