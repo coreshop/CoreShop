@@ -5,9 +5,6 @@ imports:
     - { resource: "services/commands.yml" }
     - { resource: "services/validators.yml" }
 
-parameters:
-    jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
-
 services:
     _defaults:
         public: true
