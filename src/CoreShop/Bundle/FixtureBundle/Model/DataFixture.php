@@ -1,47 +1,36 @@
 <?php
 
-namespace CoreShop\Bundle\FixtureBundle\Entity;
+namespace CoreShop\Bundle\FixtureBundle\Model;
 
-use Doctrine\ORM\Mapping as ORM;
+use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\SetValuesTrait;
 
-/**
- * @ORM\Table("coreshop_fixtures_data")
- * @ORM\Entity(repositoryClass="CoreShop\Bundle\FixtureBundle\Entity\Repository\DataFixtureRepository")
- */
-class DataFixture
+class DataFixture extends AbstractResource implements DataFixtureInterface
 {
+    use SetValuesTrait;
+
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="class_name", type="string", length=255)
      */
     protected $className;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="version", type="string", length=255, nullable=true)
      */
     protected $version;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="loaded_at", type="datetime")
      */
     protected $loadedAt;
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -49,7 +38,7 @@ class DataFixture
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getClassName()
     {
@@ -57,18 +46,15 @@ class DataFixture
     }
 
     /**
-     * @param string $className
-     * @return $this
+     * {@inheritdoc}
      */
     public function setClassName($className)
     {
         $this->className = $className;
-
-        return $this;
     }
 
     /**
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function getLoadedAt()
     {
@@ -76,29 +62,23 @@ class DataFixture
     }
 
     /**
-     * @param \DateTime $loadedAt
-     * @return $this
+     * {@inheritdoc}
      */
     public function setLoadedAt($loadedAt)
     {
         $this->loadedAt = $loadedAt;
-
-        return $this;
     }
 
     /**
-     * @param string $version
-     * @return $this
+     * {@inheritdoc}
      */
     public function setVersion($version)
     {
         $this->version = $version;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getVersion()
     {
