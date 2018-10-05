@@ -8,11 +8,19 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
 
+    coreshop.fixture.update_data_fixtures:
+        class: CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture
+        arguments:
+            - '@coreshop.factory.data_fixture'
+            - '@coreshop.repository.data_fixture'
+
     coreshop.fixture.data.loader:
         class: CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@service_container'
+            - '@coreshop.fixture.update_data_fixtures'
+            - '@coreshop.repository.data_fixture'
 
     coreshop.command.load_fixtures:
         class: CoreShop\Bundle\FixtureBundle\Command\LoadDataFixturesCommand

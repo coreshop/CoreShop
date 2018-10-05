@@ -2,16 +2,26 @@
 
 namespace CoreShop\Bundle\FixtureBundle;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 
-class CoreShopFixtureBundle extends Bundle
+class CoreShopFixtureBundle extends AbstractResourceBundle
 {
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function getSupportedDrivers()
     {
-        parent::build($container);
+        return [
+            CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getModelNamespace()
+    {
+        return 'CoreShop\Bundle\FixtureBundle\Model';
     }
 }

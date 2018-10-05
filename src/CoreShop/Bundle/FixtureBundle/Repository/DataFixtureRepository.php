@@ -1,16 +1,13 @@
 <?php
 
-namespace CoreShop\Bundle\FixtureBundle\Entity\Repository;
+namespace CoreShop\Bundle\FixtureBundle\Repository;
 
-use CoreShop\Bundle\FixtureBundle\Entity\DataFixture;
-use Doctrine\ORM\EntityRepository;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-class DataFixtureRepository extends EntityRepository
+class DataFixtureRepository extends EntityRepository implements DataFixtureRepositoryInterface
 {
     /**
-     * @param $className
-     *
-     * @return DataFixture[]
+     * {@inheritdoc}
      */
     public function findByClassName($className)
     {
@@ -18,10 +15,7 @@ class DataFixtureRepository extends EntityRepository
     }
 
     /**
-     * @param string $where
-     * @param array $parameters
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isDataFixtureExists($where, array $parameters = [])
     {
@@ -36,17 +30,13 @@ class DataFixtureRepository extends EntityRepository
     }
 
     /**
-     * Update data fixture history
-     *
-     * @param array $updateFields assoc array with field names and values that should be updated
-     * @param string $where condition
-     * @param array $parameters optional parameters for where condition
+     * {@inheritdoc}
      */
     public function updateDataFixtureHistory(array $updateFields, $where, array $parameters = [])
     {
         $qb = $this->_em
             ->createQueryBuilder()
-            ->update('CoreShopFixtureBundle:DataFixture', 'm')
+            ->update($this->getEntityName(), 'm')
             ->where($where);
 
         foreach ($updateFields as $fieldName => $fieldValue) {
