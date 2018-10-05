@@ -55,7 +55,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtag'
+            'template_prefix' => '@CoreShopTracking/Tracking/gtag'
         ]);
     }
 

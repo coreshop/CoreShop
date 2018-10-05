@@ -56,7 +56,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtm/enhanced'
+            'template_prefix' => '@CoreShopTracking/Tracking/gtm/enhanced'
         ]);
     }
 
