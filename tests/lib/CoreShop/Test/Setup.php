@@ -69,7 +69,11 @@ class Setup
             );
         }
         else {
-            $installer = \Pimcore::getContainer()->get(\Pimcore\Bundle\InstallBundle\Installer::class);
+            $installer = new \Pimcore\Bundle\InstallBundle\Installer(
+                \Pimcore::getContainer()->get('monolog.logger.pimcore'),
+                \Pimcore::getContainer()->get('event_dispatcher')
+            );
+            
             $installer->setupDatabase([
                 'username' => 'admin',
                 'password' => microtime(),
