@@ -34,7 +34,7 @@ class WorkflowListener implements EventSubscriberInterface
      * @param array $callbackConfig
      * @param ContainerInterface $container
      */
-    public function __construct($callbackConfig = [], ContainerInterface $container)
+    public function __construct(array $callbackConfig, ContainerInterface $container)
     {
         $this->callbackConfig = $callbackConfig;
         $this->container = $container;
