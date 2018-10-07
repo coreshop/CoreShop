@@ -74,7 +74,7 @@ thumbnails:
   coreshop_productDetailFancy:
     items:
       -
-        method: contain
+        method: scaleByWidth
         arguments:
           width: 1000
   coreshop_category:
