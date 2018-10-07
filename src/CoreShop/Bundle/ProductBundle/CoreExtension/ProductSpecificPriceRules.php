@@ -216,8 +216,12 @@ class ProductSpecificPriceRules extends Data
     public function save($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
-            $getter = $this->getName();
-            $existingPriceRules = $object->$getter;
+            //TODO: Remove once CoreShop requires min Pimcore 5.5
+            if (method_exists($object, 'getObjectVar')) {
+                $existingPriceRules = $object->getObjectVar($this->getName());
+            } else {
+                $existingPriceRules = $object->{$this->getName()};
+            }
 
             $all = $this->load($object, ['force' => true]);
             $founds = [];

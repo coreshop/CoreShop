@@ -57,7 +57,7 @@ class Setup
         }
 
         //Prior 5.5
-        if (class_exists('\Pimcore\Model\Tool\Setup')) {
+        if (@class_exists('\Pimcore\Model\Tool\Setup')) {
             $setup = new \Pimcore\Model\Tool\Setup();
             $setup->database();
 
@@ -73,7 +73,7 @@ class Setup
                 \Pimcore::getContainer()->get('monolog.logger.pimcore'),
                 \Pimcore::getContainer()->get('event_dispatcher')
             );
-            
+
             $installer->setupDatabase([
                 'username' => 'admin',
                 'password' => microtime(),
