@@ -56,15 +56,25 @@ class Setup
             $connection->connect();
         }
 
-        $setup = new \Pimcore\Model\Tool\Setup();
-        $setup->database();
+        //Prior 5.5
+        if (class_exists('\Pimcore\Model\Tool\Setup')) {
+            $setup = new \Pimcore\Model\Tool\Setup();
+            $setup->database();
 
-        $setup->contents(
-            [
+            $setup->contents(
+                [
+                    'username' => 'admin',
+                    'password' => microtime(),
+                ]
+            );
+        }
+        else {
+            $installer = \Pimcore::getContainer()->get(\Pimcore\Bundle\InstallBundle\Installer::class);
+            $installer->setupDatabase([
                 'username' => 'admin',
                 'password' => microtime(),
-            ]
-        );
+            ]);
+        }
 
         static::$pimcoreSetupDone = true;
     }
