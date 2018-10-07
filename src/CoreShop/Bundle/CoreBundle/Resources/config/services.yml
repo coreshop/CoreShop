@@ -72,7 +72,6 @@ services:
         class: CoreShop\Component\Core\Provider\StoreBasedAddressProvider
         arguments:
             - '@coreshop.factory.address'
-            - '@coreshop.context.shopper'
 
     coreshop.provider.taxation.default_country:
         class: CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider

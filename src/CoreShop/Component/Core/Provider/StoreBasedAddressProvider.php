@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Provider;
 
-use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -25,18 +24,11 @@ class StoreBasedAddressProvider implements AddressProviderInterface
     private $addressFactory;
 
     /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
      * @param FactoryInterface $addressFactory
-     * @param ShopperContextInterface $shopperContext
      */
-    public function __construct(FactoryInterface $addressFactory, ShopperContextInterface $shopperContext)
+    public function __construct(FactoryInterface $addressFactory)
     {
         $this->addressFactory = $addressFactory;
-        $this->shopperContext = $shopperContext;
     }
 
     /**
@@ -46,7 +38,7 @@ class StoreBasedAddressProvider implements AddressProviderInterface
     {
         if ($cart->getStore() instanceof StoreInterface) {
             $address = $this->addressFactory->createNew();
-            $address->setCountry($this->shopperContext->hasCountry() ? $this->shopperContext->getCountry() : $cart->getStore()->getBaseCountry());
+            $address->setCountry($cart->getStore()->getBaseCountry());
 
             return $address;
         }
