@@ -139,7 +139,7 @@ final class ProductAvailabilityEventListener
     {
         /** @var CartItemInterface $cartItem */
         foreach ($cartItems as $cartItem) {
-            $cart = $cartItem->getParent();
+            $cart = $cartItem->getCart();
             if (!$cart instanceof CartInterface) {
                 continue;
             }
