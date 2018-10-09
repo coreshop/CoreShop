@@ -23,6 +23,10 @@ class TimestampInterpreter implements InterpreterInterface
      */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
     {
+        if ($value instanceof Carbon) {
+            return $value;
+        }
+
         return Carbon::createFromTimestamp($value);
     }
 }
