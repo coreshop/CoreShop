@@ -106,7 +106,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'amount',
+                    dataIndex: 'quantity',
                     text: t('coreshop_quantity'),
                     width: 150,
                     align: 'right',
