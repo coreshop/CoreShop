@@ -408,7 +408,7 @@ QUERY;
                 return 'datetime';
 
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                return 'double';
+                return 'decimal';
 
             case IndexColumnInterface::FIELD_TYPE_STRING:
                 return 'string';
