@@ -42,7 +42,8 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('floatval'),
             ExpressionFunction::fromPHP('round'),
             ExpressionFunction::fromPHP('explode'),
-            ExpressionFunction::fromPHP('implode')
+            ExpressionFunction::fromPHP('implode'),
+            ExpressionFunction::fromPHP('is_array'),
         );
     }
 }
