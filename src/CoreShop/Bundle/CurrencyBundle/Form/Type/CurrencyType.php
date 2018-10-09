@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CurrencyBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,9 +28,9 @@ final class CurrencyType extends AbstractResourceType
         $builder
             ->add('name', TextType::class)
             ->add('isoCode', TextType::class)
-            ->add('numericIsoCode', NumberType::class)
+            ->add('numericIsoCode', IntegerType::class)
             ->add('symbol', TextType::class)
-            ->add('exchangeRate', NumberType::class);
+        ;
     }
 
     /**
