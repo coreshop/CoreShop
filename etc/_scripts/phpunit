@@ -2,4 +2,5 @@
 set -e
 
 echo "PHP UNIT TESTS"
-vendor/bin/phpunit
+vendor/bin/phpunit --testsuite CoreShop
+vendor/bin/phpunit --testsuite Component-Pimcore
