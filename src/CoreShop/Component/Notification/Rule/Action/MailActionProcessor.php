@@ -65,8 +65,6 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
 
             $params['rule'] = $rule;
 
-            unset($params['recipient'], $params['_locale']);
-
             if ($mailDocument instanceof Document\Email) {
                 $params['object'] = $subject;
 

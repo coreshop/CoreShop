@@ -17,44 +17,15 @@ use Pimcore\Model\DataObject;
 final class FolderInstallerProvider
 {
     /**
-     * @var string
+     * @var array
      */
-    private $cartFolder;
+    private $folders;
 
     /**
-     * @var string
+     * @param array $folders
      */
-    private $productFolder;
-
-    /**
-     * @var string
-     */
-    private $customerFolder;
-
-    /**
-     * @var string
-     */
-    private $customerGroupFolder;
-
-    /**
-     * @var string
-     */
-    private $orderFolder;
-
-    /**
-     * @param string $cartFolder
-     * @param string $productFolder
-     * @param string $customerFolder
-     * @param string $customerGroupFolder
-     * @param string $orderFolder
-     */
-    public function __construct($cartFolder, $productFolder, $customerFolder, $customerGroupFolder, $orderFolder)
-    {
-        $this->cartFolder = $cartFolder;
-        $this->productFolder = $productFolder;
-        $this->customerFolder = $customerFolder;
-        $this->customerGroupFolder = $customerGroupFolder;
-        $this->orderFolder = $orderFolder;
+    public function __construct(array $folders) {
+        $this->folders = $folders;
     }
 
     /**
@@ -62,15 +33,7 @@ final class FolderInstallerProvider
      */
     public function installFolders()
     {
-        $folders = [
-            $this->cartFolder,
-            $this->productFolder,
-            $this->customerFolder,
-            $this->customerGroupFolder,
-            $this->orderFolder,
-        ];
-
-        foreach ($folders as $folder) {
+        foreach ($this->folders as $folder) {
             DataObject\Service::createFolderByPath(sprintf('/%s', $folder));
         }
     }

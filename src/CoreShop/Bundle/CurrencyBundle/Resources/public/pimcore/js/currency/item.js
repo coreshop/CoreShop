@@ -59,6 +59,7 @@ coreshop.currency.item = Class.create(coreshop.resource.item, {
                             value: this.data.isoCode
                         },
                         {
+                            xtype: 'numberfield',
                             fieldLabel: t('coreshop_currency_numericIsoCode'),
                             name: 'numericIsoCode',
                             value: this.data.numericIsoCode

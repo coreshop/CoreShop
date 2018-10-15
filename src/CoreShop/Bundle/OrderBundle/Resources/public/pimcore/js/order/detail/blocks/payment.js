@@ -74,7 +74,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.de
                         {
                             xtype: 'gridcolumn',
                             dataIndex: 'amount',
-                            text: t('coreshop_quantity'),
+                            text: t('coreshop_amount'),
                             flex: 1,
                             renderer: function (value) {
                                 return coreshop.util.format.currency(me.sale.currency.symbol, value);

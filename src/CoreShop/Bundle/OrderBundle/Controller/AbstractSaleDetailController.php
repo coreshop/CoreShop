@@ -371,7 +371,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'wholesale_price' => $item->getItemWholesalePrice(),
             'price_without_tax' => $item->getItemPrice(false),
             'price' => $item->getItemPrice(true),
-            'amount' => $item->getQuantity(),
+            'quantity' => $item->getQuantity(),
             'total' => $item->getTotal(),
             'total_tax' => $item->getTotalTax(),
         ];
