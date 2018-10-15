@@ -38,7 +38,12 @@ class AddressFormatter implements AddressFormatterInterface
      */
     public function formatAddress(AddressInterface $address, $asHtml = true)
     {
-        $objectVars = get_object_vars($address);
+        if (method_exists($address, 'getObjectVars')) {
+            $objectVars = $address->getObjectVars();
+        } else {
+            $objectVars = get_object_vars($address);
+        }
+
         $objectVars['country'] = $address->getCountry();
 
         //translate salutation
