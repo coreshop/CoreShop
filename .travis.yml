@@ -25,32 +25,32 @@ matrix:
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_BRANCH="tags/v5.4.4"
+            - PIMCORE_VERSION="5.4.4"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_BRANCH="tags/v5.4.4"
+            - PIMCORE_VERSION="5.4.4"
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_BRANCH="tags/v5.5.0"
+            - PIMCORE_VERSION="5.5.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_BRANCH="tags/v5.5.0"
+            - PIMCORE_VERSION="5.5.0"
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_BRANCH="master"
+            - PIMCORE_VERSION="dev-master"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_BRANCH="master"
+            - PIMCORE_VERSION="dev-master"
     allow_failures:
         - env:
             - CORESHOP_RUN_ECS=1

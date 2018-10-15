@@ -43,7 +43,6 @@ class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterf
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
-        $this->currencyContext = $currencyContext;
     }
 
     /**

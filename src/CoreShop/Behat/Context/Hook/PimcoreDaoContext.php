@@ -13,6 +13,7 @@
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -26,6 +27,9 @@ final class PimcoreDaoContext implements Context
      */
     public function purgeObjects()
     {
+        Cache::clearAll();
+        Cache\Runtime::clear();
+
         /**
          * @var $list Listing
          */

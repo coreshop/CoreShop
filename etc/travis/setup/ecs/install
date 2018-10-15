@@ -2,4 +2,4 @@
 set -e
 
 phpenv config-add $CS_HOME/etc/_config/php.ini
-composer install --no-scripts
+COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts
