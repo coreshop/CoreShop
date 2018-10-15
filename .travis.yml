@@ -35,6 +35,16 @@ matrix:
         - sudo: required
           php: 7.1
           env:
+            - PIMCORE_BRANCH="tags/v5.5.0"
+
+        - sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_BRANCH="tags/v5.5.0"
+
+        - sudo: required
+          php: 7.1
+          env:
             - PIMCORE_BRANCH="master"
 
         - sudo: required
