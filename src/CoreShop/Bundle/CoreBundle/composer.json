@@ -38,7 +38,7 @@
     "coreshop/workflow-bundle": "^2.0",
     "coreshop/core": "^2.0",
     "fzaninotto/faker": "^1.6",
-    "rinvex/country": "^3.1",
+    "rinvex/countries": "^5.0",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {
