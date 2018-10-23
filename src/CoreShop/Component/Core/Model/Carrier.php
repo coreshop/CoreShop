@@ -48,4 +48,12 @@ class Carrier extends BaseCarrier implements CarrierInterface
     {
         $this->taxRule = $taxRule;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s', $this->getIdentifier());
+    }
 }

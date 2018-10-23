@@ -59,4 +59,12 @@ class Country extends BaseCountry implements CountryInterface
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s', $this->getIsoCode());
+    }
 }
