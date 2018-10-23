@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\CoreBundle\Security;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
-use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -23,6 +23,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
+    /**
+     * @var CustomerRepositoryInterface
+     */
+    protected $customerRepository;
+
     /**
      * The pimcore class name to be used. Needs to be a fully qualified class
      * name (e.g. Pimcore\Model\DataObject\User or your custom user class extending
@@ -38,11 +43,16 @@ class ObjectUserProvider implements UserProviderInterface
     protected $usernameField = 'username';
 
     /**
-     * @param string $className
-     * @param string $usernameField
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param string                      $className
+     * @param string                      $usernameField
      */
-    public function __construct($className, $usernameField = 'username')
-    {
+    public function __construct(
+        CustomerRepositoryInterface $customerRepository,
+        $className,
+        $usernameField = 'username'
+    ) {
+        $this->customerRepository = $customerRepository;
         $this->className = $className;
         $this->usernameField = $usernameField;
     }
@@ -69,30 +79,19 @@ class ObjectUserProvider implements UserProviderInterface
     {
         $this->checkClass();
 
-        /** @var Concrete $class */
+        $list = $this->customerRepository->getList();
+        $list->addConditionParam(sprintf('%s = ?', $this->usernameField), $username);
+        $list->setLimit(1);
+
         $class = new $this->className();
+        if ($class instanceof CustomerInterface) {
+            $list->addConditionParam('isGuest = ?', 0);
+        }
 
         $user = null;
-        if ($class instanceof CustomerInterface) {
-            try {
-
-                $listing = $class::getList([
-                    'condition' => sprintf('`%s` = "%s" AND isGuest = 0', $this->usernameField, $username),
-                    'limit'     => 1
-                ]);
-
-                $objects = $listing->load();
-                if (count($objects) > 0) {
-                    $user = $objects[0];
-                }
-
-            } catch (\Exception $e) {
-                // fail silently.
-            }
-
-        } else {
-            $getter = sprintf('getBy%s', ucfirst($this->usernameField));
-            $user = call_user_func_array([$this->className, $getter], [$username, 1]);
+        $objects = $list->getObjects();
+        if (count($objects) > 0) {
+            $user = $objects[0];
         }
 
         if ($user && $user instanceof $this->className) {
@@ -113,7 +112,7 @@ class ObjectUserProvider implements UserProviderInterface
             throw new UnsupportedUserException();
         }
 
-        $refreshedUser = call_user_func_array([$this->className, 'getById'], [$user->getId()]);
+        $refreshedUser = $this->customerRepository->find($user->getId());
 
         return $refreshedUser;
     }
