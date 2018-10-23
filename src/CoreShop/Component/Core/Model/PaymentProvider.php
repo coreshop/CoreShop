@@ -50,4 +50,12 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     {
         return $this->gatewayConfig;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s', $this->getIdentifier());
+    }
 }

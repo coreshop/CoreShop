@@ -57,7 +57,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        return unserialize($data) ?: null;
+        return (is_string($data) ? unserialize($data) : $data) ?: null;
     }
 
     /**
