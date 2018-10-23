@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\CoreBundle\Security;
 
+use CoreShop\Component\Core\Model\CustomerInterface;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -67,10 +69,32 @@ class ObjectUserProvider implements UserProviderInterface
     {
         $this->checkClass();
 
-        $getter = sprintf('getBy%s', ucfirst($this->usernameField));
+        /** @var Concrete $class */
+        $class = new $this->className();
 
-        // User::getByUsername($username, 1);
-        $user = call_user_func_array([$this->className, $getter], [$username, 1]);
+        $user = null;
+        if ($class instanceof CustomerInterface) {
+            try {
+
+                $listing = $class::getList([
+                    'condition' => sprintf('`%s` = "%s" AND isGuest = 0', $this->usernameField, $username),
+                    'limit'     => 1
+                ]);
+
+                $objects = $listing->load();
+                if (count($objects) > 0) {
+                    $user = $objects[0];
+                }
+
+            } catch (\Exception $e) {
+                // fail silently.
+            }
+
+        } else {
+            $getter = sprintf('getBy%s', ucfirst($this->usernameField));
+            $user = call_user_func_array([$this->className, $getter], [$username, 1]);
+        }
+
         if ($user && $user instanceof $this->className) {
             return $user;
         }
