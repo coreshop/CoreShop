@@ -14,8 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\Security;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
-use Pimcore\Model\DataObject\AbstractObject;
-use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -29,76 +27,24 @@ class ObjectUserProvider implements UserProviderInterface
     protected $customerRepository;
 
     /**
-     * The pimcore class name to be used. Needs to be a fully qualified class
-     * name (e.g. Pimcore\Model\DataObject\User or your custom user class extending
-     * the generated one.
-     *
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * @var string
-     */
-    protected $usernameField = 'username';
-
-    /**
      * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     * @param string                      $usernameField
      */
-    public function __construct(
-        CustomerRepositoryInterface $customerRepository,
-        $className,
-        $usernameField = 'username'
-    ) {
-        $this->customerRepository = $customerRepository;
-        $this->className = $className;
-        $this->usernameField = $usernameField;
-    }
-
-    /**
-     * Check if Class is of right type.
-     */
-    protected function checkClass()
+    public function __construct(CustomerRepositoryInterface $customerRepository)
     {
-        if (!class_exists($this->className)) {
-            throw new InvalidArgumentException(sprintf('User class %s does not exist', $this->className));
-        }
-
-        $reflector = new \ReflectionClass($this->className);
-        if (!$reflector->isSubclassOf(AbstractObject::class)) {
-            throw new InvalidArgumentException(sprintf('User class %s must be a subclass of %s', $this->className, AbstractObject::class));
-        }
+        $this->customerRepository = $customerRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($emailAddress)
     {
-        $this->checkClass();
-
-        $list = $this->customerRepository->getList();
-        $list->addConditionParam(sprintf('%s = ?', $this->usernameField), $username);
-        $list->setLimit(1);
-
-        $class = new $this->className();
-        if ($class instanceof CustomerInterface) {
-            $list->addConditionParam('isGuest = ?', 0);
+        $customer = $this->customerRepository->findCustomerByEmail($emailAddress);
+        if ($customer instanceof CustomerInterface) {
+            return $customer;
         }
 
-        $user = null;
-        $objects = $list->getObjects();
-        if (count($objects) > 0) {
-            $user = $objects[0];
-        }
-
-        if ($user && $user instanceof $this->className) {
-            return $user;
-        }
-
-        throw new UsernameNotFoundException(sprintf('User %s was not found', $username));
+        throw new UsernameNotFoundException(sprintf('User with email address %s was not found', $emailAddress));
     }
 
     /**
@@ -106,22 +52,12 @@ class ObjectUserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        $this->checkClass();
-
-        if (!$user instanceof $this->className || !$user instanceof AbstractObject) {
+        if (!$user instanceof CustomerInterface) {
             throw new UnsupportedUserException();
         }
 
         $refreshedUser = $this->customerRepository->find($user->getId());
 
         return $refreshedUser;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return $class === $this->className;
     }
 }

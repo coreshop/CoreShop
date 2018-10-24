@@ -51,8 +51,6 @@ services:
         class: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
         arguments:
             - '@coreshop.repository.customer'
-            - '%coreshop.model.customer.class%'
-            - 'email'
 
     coreshop.security.customer.password_encoder_factory:
         class: Pimcore\Security\Encoder\Factory\UserAwareEncoderFactory
