@@ -27,11 +27,18 @@ class ObjectUserProvider implements UserProviderInterface
     protected $customerRepository;
 
     /**
-     * @param CustomerRepositoryInterface $customerRepository
+     * @var string
      */
-    public function __construct(CustomerRepositoryInterface $customerRepository)
+    protected $className;
+
+    /**
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param string                      $className
+     */
+    public function __construct(CustomerRepositoryInterface $customerRepository, $className)
     {
         $this->customerRepository = $customerRepository;
+        $this->className = $className;
     }
 
     /**
@@ -59,5 +66,13 @@ class ObjectUserProvider implements UserProviderInterface
         $refreshedUser = $this->customerRepository->find($user->getId());
 
         return $refreshedUser;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsClass($class)
+    {
+        return $class === $this->className;
     }
 }
