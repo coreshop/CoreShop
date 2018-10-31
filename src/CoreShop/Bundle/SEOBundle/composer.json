@@ -29,7 +29,7 @@
       "CoreShop\\Bundle\\SEOBundle\\": ""
     }
   },
-  "minimum-stability": "RC",
+  "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {

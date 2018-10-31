@@ -30,7 +30,7 @@
       "CoreShop\\Component\\Shipping\\": ""
     }
   },
-  "minimum-stability": "RC",
+  "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {

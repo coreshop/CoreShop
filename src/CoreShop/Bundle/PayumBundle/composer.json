@@ -36,7 +36,7 @@
       "CoreShop\\Bundle\\PaymentBundle\\": ""
     }
   },
-  "minimum-stability": "RC",
+  "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
