@@ -51,5 +51,3 @@ class ObjectService implements ObjectServiceInterface
         }
     }
 }
-
-\class_alias(ObjectService::class, 'CoreShop\Component\Resource\Pimcore\ObjectService');

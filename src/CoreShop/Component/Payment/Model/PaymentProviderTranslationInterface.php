@@ -18,20 +18,6 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 interface PaymentProviderTranslationInterface extends ResourceInterface, TimestampableInterface
 {
     /**
-     * @deprecated getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * @deprecated setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead
-     *
-     * @param string $name
-     */
-    public function setName($name);
-
-    /**
      * @return string
      */
     public function getTitle();

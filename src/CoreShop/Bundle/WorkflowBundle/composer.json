@@ -39,7 +39,7 @@
       "CoreShop\\Bundle\\WorkflowBundle\\": ""
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "RC",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {

@@ -35,5 +35,3 @@ interface ObjectServiceInterface
      */
     public function copyObject(Concrete $fromObject, Concrete $toObject);
 }
-
-\class_alias(ObjectServiceInterface::class, 'CoreShop\Component\Resource\Pimcore\ObjectServiceInterface');

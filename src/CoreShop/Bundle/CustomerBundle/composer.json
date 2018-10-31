@@ -30,7 +30,7 @@
       "CoreShop\\Bundle\\CustomerBundle\\": ""
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "RC",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {

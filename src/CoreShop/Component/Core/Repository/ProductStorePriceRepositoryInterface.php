@@ -29,15 +29,6 @@ interface ProductStorePriceRepositoryInterface extends RepositoryInterface
 
     /**
      * @param ProductInterface $product
-     * @param StoreInterface $store
-     * @return ProductStorePriceInterface[]
-     *
-     * @deprecated Won't get you the direct price anymore, use findForProductAndStoreAndKey
-     */
-    public function findForProductAndStore(ProductInterface $product, StoreInterface $store);
-
-    /**
-     * @param ProductInterface $product
      * @param string $property
      * @return ProductStorePriceInterface[]
      */

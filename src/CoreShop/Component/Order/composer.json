@@ -41,7 +41,7 @@
       "CoreShop\\Component\\Order\\": ""
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "RC",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {

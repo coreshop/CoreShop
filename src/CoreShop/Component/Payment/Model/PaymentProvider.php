@@ -80,26 +80,6 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     /**
      * {@inheritdoc}
      */
-    public function getName($language = null)
-    {
-        @trigger_error('getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
-
-        return $this->getTitle($language);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name, $language = null)
-    {
-        @trigger_error('setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead', E_USER_DEPRECATED);
-
-        $this->setTitle($name, $language);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTitle($language = null)
     {
         return $this->getTranslation($language)->getTitle();

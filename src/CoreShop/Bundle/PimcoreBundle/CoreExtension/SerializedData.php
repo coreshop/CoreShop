@@ -197,5 +197,3 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
         return $this;
     }
 }
-
-class_alias(SerializedData::class, 'CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData');

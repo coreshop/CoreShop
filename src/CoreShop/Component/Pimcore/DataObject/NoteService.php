@@ -136,5 +136,3 @@ class NoteService implements NoteServiceInterface
         );
     }
 }
-
-\class_alias(NoteService::class, 'CoreShop\Component\Resource\Pimcore\DataObjectNoteService');

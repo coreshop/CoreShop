@@ -40,5 +40,3 @@ class LinkGenerator implements LinkGeneratorInterface
         return $object->getClass()->getLinkGenerator() instanceof LinkGeneratorInterface;
     }
 }
-
-class_alias(LinkGenerator::class, 'CoreShop\Component\Pimcore\ObjectLinkGenerator');

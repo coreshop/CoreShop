@@ -160,5 +160,3 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         });
     }
 }
-
-class_alias(OrderMailProcessor::class, 'CoreShop\Component\Core\Order\OrderMailProcessor');

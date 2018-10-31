@@ -196,8 +196,8 @@ final class CartContext implements Context
             $this->cartContext->getCart()->getCarrier()->getId(),
             sprintf(
                 'Cart is expected to use carrier %s, but found %s',
-                $carrier->getIdentifier(),
-                $this->cartContext->getCart()->getCarrier()->getName()
+                $carrier->getTitle('en'),
+                $this->cartContext->getCart()->getCarrier()->getTitle('en')
             )
         );
     }

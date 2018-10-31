@@ -84,5 +84,3 @@ class ClassLoader
         return ucfirst($classNameExploded[count($classNameExploded) - 1]);
     }
 }
-
-class_alias(ClassLoader::class, 'CoreShop\Component\Pimcore\ClassLoader');

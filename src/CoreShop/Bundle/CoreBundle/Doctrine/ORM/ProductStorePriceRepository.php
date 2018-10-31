@@ -36,22 +36,6 @@ class ProductStorePriceRepository extends EntityRepository implements ProductSto
     /**
      * {@inheritdoc}
      */
-    public function findForProductAndStore(ProductInterface $product, StoreInterface $store)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.product = :product')
-            ->andWhere('o.store = :store')
-            ->setParameter('product', $product->getId())
-            ->setParameter('store', $store)
-            ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findForProductAndProperty(ProductInterface $product, string $property)
     {
         return $this->createQueryBuilder('o')

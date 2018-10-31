@@ -37,5 +37,3 @@ class InheritanceHelper
         return $result;
     }
 }
-
-class_alias(InheritanceHelper::class, 'CoreShop\Component\Pimcore\InheritanceHelper');

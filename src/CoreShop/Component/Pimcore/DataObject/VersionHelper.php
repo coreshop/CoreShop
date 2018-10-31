@@ -46,5 +46,3 @@ class VersionHelper
         return $result;
     }
 }
-
-class_alias(VersionHelper::class, 'CoreShop\Component\Pimcore\VersionHelper');

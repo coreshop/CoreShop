@@ -52,5 +52,3 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
         return DataObject\ClassDefinition\Service::importFieldCollectionFromJson($this->fieldCollectionDefinition, json_encode($this->jsonDefinition), true);
     }
 }
-
-class_alias(FieldCollectionDefinitionUpdate::class, 'CoreShop\Component\Pimcore\FieldCollectionDefinitionUpdate');

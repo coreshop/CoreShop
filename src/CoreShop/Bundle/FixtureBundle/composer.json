@@ -35,7 +35,7 @@
       "CoreShop\\Bundle\\FixtureBundle\\": ""
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "RC",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {

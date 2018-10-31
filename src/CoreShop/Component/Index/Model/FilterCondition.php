@@ -76,24 +76,6 @@ class FilterCondition extends AbstractResource implements FilterConditionInterfa
     /**
      * {@inheritdoc}
      */
-    public function getField()
-    {
-        return $this->field;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setField($field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->label;

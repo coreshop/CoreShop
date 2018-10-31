@@ -18,10 +18,6 @@ services:
     coreshop.object_link_generator:
         class: CoreShop\Component\Pimcore\DataObject\LinkGenerator
 
-    coreshop.pimcore.object_link_generator:
-        alias: coreshop.object_link_generator
-        deprecated: 'use @coreshop.object_link_generator instead'
-
     coreshop.grid_config_installer:
         class: CoreShop\Component\Pimcore\DataObject\GridConfigInstaller
 
@@ -38,10 +34,6 @@ services:
 
     coreshop.object_cloner:
         class: CoreShop\Component\Pimcore\DataObject\ObjectCloner
-
-    coreshop.resource.object_cloner:
-        alias: coreshop.object_cloner
-        deprecated: 'use @coreshop.object_cloner instead'
 
     coreshop.link_generator:
         class: CoreShop\Component\Pimcore\Routing\LinkGenerator

@@ -175,5 +175,3 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         }
     }
 }
-
-class_alias(AbstractDefinitionUpdate::class, 'CoreShop\Component\Pimcore\AbstractDefinitionUpdate');

@@ -108,5 +108,3 @@ class ClassInstaller implements ClassInstallerInterface
         return $fieldCollection;
     }
 }
-
-class_alias(ClassInstaller::class, 'CoreShop\Component\Pimcore\ClassInstaller');

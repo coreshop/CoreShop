@@ -22,15 +22,6 @@ interface PaymentRepositoryInterface extends RepositoryInterface
      * @param PayableInterface $payable
      *
      * @return PaymentInterface[]
-     *
-     * @deprecated use findForPayable instead
-     */
-    public function findForOrder(PayableInterface $payable);
-
-    /**
-     * @param PayableInterface $payable
-     *
-     * @return PaymentInterface[]
      */
     public function findForPayable(PayableInterface $payable);
 }
