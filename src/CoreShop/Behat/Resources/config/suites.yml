@@ -7,6 +7,7 @@ imports:
     - suites/domain/shipping.yml
     - suites/domain/country.yml
     - suites/domain/index.yml
+    - suites/domain/index_condition.yml
     - suites/domain/pimcore.yml
     - suites/domain/order.yml
     - suites/domain/seo.yml

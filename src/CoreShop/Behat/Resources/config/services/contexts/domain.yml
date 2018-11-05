@@ -199,3 +199,10 @@ services:
             - '@__symfony__.coreshop.registry.tracking.tracker'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.index_condition:
+        class: CoreShop\Behat\Context\Domain\IndexConditionContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
