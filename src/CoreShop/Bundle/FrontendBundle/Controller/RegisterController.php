@@ -105,7 +105,7 @@ class RegisterController extends FrontendController
                 $dispatcher = $this->container->get('event_dispatcher');
                 $dispatcher->dispatch('coreshop.customer.request_password_reset', new RequestPasswordChangeEvent($customer, $resetLink));
 
-                $this->addFlash('success', 'coreshop.ui.password_reset_request_success');
+                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_request_success'));
 
                 return $this->redirectToRoute('coreshop_login');
             }
@@ -134,7 +134,7 @@ class RegisterController extends FrontendController
                     $customer->setPassword($resetPassword['password']);
                     $customer->save();
 
-                    $this->addFlash('success', 'coreshop.ui.password_reset_success');
+                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_success'));
 
                     $dispatcher = $this->container->get('event_dispatcher');
                     $dispatcher->dispatch('coreshop.customer.password_reset', new GenericEvent($customer));
