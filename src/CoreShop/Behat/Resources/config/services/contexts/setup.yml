@@ -267,3 +267,10 @@ services:
             - '@__symfony__.coreshop.factory.manufacturer'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.index_condition:
+        class: CoreShop\Behat\Context\Setup\IndexConditionContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }

@@ -169,3 +169,10 @@ services:
             - '@__symfony__.coreshop.repository.manufacturer'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.index_condition:
+        class: CoreShop\Behat\Context\Transform\IndexConditionContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }

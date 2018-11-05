@@ -17,8 +17,13 @@ use CoreShop\Component\Index\Condition\ConcatCondition;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\InCondition;
 use CoreShop\Component\Index\Condition\IsCondition;
+use CoreShop\Component\Index\Condition\IsNotCondition;
+use CoreShop\Component\Index\Condition\IsNotNullCondition;
+use CoreShop\Component\Index\Condition\IsNullCondition;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Condition\MatchCondition;
+use CoreShop\Component\Index\Condition\NotInCondition;
+use CoreShop\Component\Index\Condition\NotLikeCondition;
 use CoreShop\Component\Index\Condition\NotMatchCondition;
 use CoreShop\Component\Index\Condition\RangeCondition;
 use CoreShop\Component\Index\Condition\RendererInterface;
@@ -62,6 +67,9 @@ class MysqlRenderer implements RendererInterface
         elseif ($condition instanceof CompareCondition) {
             return $this->renderCompare($condition, $prefix);
         }
+        elseif ($condition instanceof IsNullCondition) {
+            return $this->renderIsNull($condition, $prefix);
+        }
 
         throw new \InvalidArgumentException(sprintf('Class %s is not implemented in Mysql Condition Renderer', get_class($condition)));
     }
@@ -83,7 +91,13 @@ class MysqlRenderer implements RendererInterface
         }
 
         if (count($inValues) > 0) {
-            return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IN (' . implode(',', $inValues) . ')';
+            $operator = 'IN';
+
+            if ($condition instanceof NotInCondition) {
+                $operator = 'NOT IN';
+            }
+
+            return sprintf('%s %s (%s)', $this->quoteFieldName($condition->getFieldName(), $prefix), $operator, implode(',', $inValues));
         }
 
         return '';
@@ -103,6 +117,23 @@ class MysqlRenderer implements RendererInterface
     }
 
     /**
+     * @param IsNullCondition $condition
+     * @param string $prefix
+     *
+     * @return string
+     */
+    protected function renderIsNull(IsNullCondition $condition, $prefix = null)
+    {
+        $operator = 'IS NULL';
+
+        if ($condition instanceof IsNotNullCondition) {
+            $operator = 'IS NOT NULL';
+        }
+
+        return sprintf('%s %s', $this->quoteFieldName($condition->getFieldName(), $prefix), $operator);
+    }
+
+    /**
      * @param LikeCondition $condition
      * @param string $prefix
      *
@@ -112,7 +143,7 @@ class MysqlRenderer implements RendererInterface
     {
         $value = $condition->getValue();
         $pattern = $condition->getPattern();
-
+        $operator = 'LIKE';
         $patternValue = '';
 
         switch ($pattern) {
@@ -127,7 +158,11 @@ class MysqlRenderer implements RendererInterface
                 break;
         }
 
-        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' LIKE ' . $this->database->quote($patternValue);
+        if ($condition instanceof NotLikeCondition) {
+            $operator = 'NOT LIKE';
+        }
+
+        return sprintf('%s %s %s', $this->quoteFieldName($condition->getFieldName(), $prefix), $operator, $this->database->quote($patternValue));
     }
 
     /**
@@ -152,11 +187,17 @@ class MysqlRenderer implements RendererInterface
      */
     protected function renderConcat(ConcatCondition $condition, $prefix = null)
     {
+        $conditions = [];
+
         foreach ($condition->getConditions() as $cond) {
             $conditions[] = $this->render($cond, $prefix);
         }
 
-        return '(' . implode(' ' . trim($condition->getOperator()) . ' ', $conditions) . ')';
+        if (count($conditions) > 0) {
+            return '('.implode(' '.trim($condition->getOperator()).' ', $conditions).')';
+        }
+
+        return '';
     }
 
     /**
