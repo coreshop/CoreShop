@@ -222,7 +222,7 @@ class OrderController extends AbstractSaleDetailController
             $return[] = [
                 'id' => $payment->getId(),
                 'datePayment' => $payment->getDatePayment() ? $payment->getDatePayment()->getTimestamp() : '',
-                'provider' => $payment->getPaymentProvider()->getName(),
+                'provider' => $payment->getPaymentProvider()->getIdentifier(),
                 'paymentNumber' => $payment->getNumber(),
                 'details' => $details,
                 'amount' => $payment->getTotalAmount(),
