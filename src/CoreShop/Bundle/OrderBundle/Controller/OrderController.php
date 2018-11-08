@@ -195,7 +195,7 @@ class OrderController extends AbstractSaleDetailController
      */
     protected function getPayments(OrderInterface $order)
     {
-        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
+        $payments = $this->get('coreshop.repository.payment')->findForPayable($order);
         $return = [];
 
         foreach ($payments as $payment) {
