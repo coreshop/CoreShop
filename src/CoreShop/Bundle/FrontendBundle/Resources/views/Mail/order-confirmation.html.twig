@@ -14,7 +14,7 @@
                     {% if order.getPaymentProvider %}
                     <p>
                         <strong>{{ 'coreshop.ui.payment_method'|trans }}</strong><br/>
-                        {{ order.paymentProvider.name }}
+                        {{ order.paymentProvider.identifier }}
                     </p>
                     {% endif %}
                     <p>

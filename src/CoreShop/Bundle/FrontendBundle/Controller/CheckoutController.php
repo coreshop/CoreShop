@@ -212,7 +212,7 @@ class CheckoutController extends FrontendController
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
 
-        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
+        $payments = $this->get('coreshop.repository.payment')->findForPayable($order);
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [

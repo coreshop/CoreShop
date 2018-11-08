@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
+use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -49,7 +50,10 @@ final class PaymentProviderChoiceType extends AbstractType
                 },
                 'choice_value' => 'id',
                 'choice_label' => function($paymentProvider) {
-                    return $paymentProvider->getName();
+                    /**
+                     * @var $paymentProvider PaymentProviderInterface
+                     */
+                    return $paymentProvider->getIdentifier();
                 },
                 'choice_attr' => function($val, $key, $index) {
                     // adds a class like attending_yes, attending_no, etc

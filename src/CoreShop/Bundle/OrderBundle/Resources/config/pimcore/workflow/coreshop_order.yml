@@ -47,7 +47,7 @@ core_shop_workflow:
                     cancel_payment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
-                        args: ["service('coreshop.repository.payment').findForOrder(object)", 'event', '"cancel"', '"coreshop_payment"']
+                        args: ["service('coreshop.repository.payment').findForPayable(object)", 'event', '"cancel"', '"coreshop_payment"']
                     cancel_shipment:
                         on: ['cancel']
                         do: ['@coreshop.state_machine_cascade_transition', 'apply']
