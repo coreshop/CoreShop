@@ -2,11 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.carrier.price_calculator.free_shipping_rule:
-        class: CoreShop\Component\Core\Shipping\Calculator\FreeShippingPriceRuleActionCalculator
-        tags:
-            - { name: coreshop.shipping.price_calculator, type: free-shipping-rule, priority: 255 }
-
     coreshop.shipping_rule.condition.categories:
         class: CoreShop\Component\Core\Shipping\Rule\Condition\CategoriesConditionChecker
         arguments:

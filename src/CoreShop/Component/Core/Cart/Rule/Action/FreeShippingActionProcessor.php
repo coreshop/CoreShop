@@ -13,16 +13,39 @@
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     /**
+     * @var AdjustmentFactoryInterface
+     */
+    private $adjustmentFactory;
+
+    /**
+     * @param AdjustmentFactoryInterface $adjustmentFactory
+     */
+    public function __construct(AdjustmentFactoryInterface $adjustmentFactory)
+    {
+        $this->adjustmentFactory = $adjustmentFactory;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
+        $shippingWithTax = $cart->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, true);
+        $shippingWithoutTax = $cart->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, false);
+
+        $cartPriceRuleItem->setDiscount($shippingWithoutTax, false);
+        $cartPriceRuleItem->setDiscount($shippingWithTax, true);
+
+        $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::CART_PRICE_RULE, 'FreeShipping', -1 * $shippingWithTax, -1 * $shippingWithoutTax));
+
         return true;
     }
 
