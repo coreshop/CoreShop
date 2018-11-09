@@ -15,12 +15,14 @@ namespace CoreShop\Test\PHPUnit\Suites;
 use CoreShop\Test\Setup;
 use CoreShop\Test\SuiteBase;
 use PHPUnit\Framework\TestSuite;
+use Pimcore\Bootstrap;
 
 class AllTests extends SuiteBase
 {
     public static function suite()
     {
-        self::bootKernel();
+        \Pimcore::setKernel(self::createKernel());
+        \Pimcore::getKernel()->boot();
 
         Setup::setupPimcore();
         Setup::setupCoreShop();
@@ -51,6 +53,7 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\PHPUnit\\Suites\\ShippingRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\NotificationRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\StorageList',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\BatchListing',
         ];
 
         shuffle($tests);

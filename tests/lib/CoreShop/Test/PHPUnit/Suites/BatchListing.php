@@ -10,14 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Test\PHPUnit\Component\Pimcore;
+namespace CoreShop\Test\PHPUnit\Suites;
 
-use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
+use CoreShop\Component\Pimcore\BatchProcessing\BatchListing as BatchList;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Test\Base;
 use Pimcore\Model\Asset;
 
-class BatchListingTest extends Base
+class BatchListing extends Base
 {
     public function testObjectBatchListing()
     {
@@ -25,7 +25,7 @@ class BatchListingTest extends Base
 
         $listing = $this->get('coreshop.repository.product')->getList();
 
-        $batch = new BatchListing($listing, 1);
+        $batch = new BatchList($listing, 1);
 
         foreach ($batch as $product) {
             $this->assertTrue($product instanceof ProductInterface);
@@ -38,7 +38,7 @@ class BatchListingTest extends Base
     {
         $this->printTestName();
 
-        $batch = new BatchListing(new Asset\Listing(), 5);
+        $batch = new BatchList(new Asset\Listing(), 5);
 
         foreach ($batch as $asset) {
             $this->assertTrue($asset instanceof Asset);
