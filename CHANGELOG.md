@@ -1,7 +1,7 @@
 # Within V2
 
 ## 2.0.0-RC.1
- - Flash Messages are not translated in the Controllers, not in views anymore. If you have custom Flash Messages, translate them in your Controller instead of the view.
+ - Flash Messages are translated in the Controllers now, not in views anymore. If you have custom Flash Messages, translate them in your Controller instead of the view.
 
 ## 2.0.0-beta.4
  - Completely remove FOSRestBundle, you still can use it, but you need to install it yourself. CoreShop only used the BodyListener to decode POST/PUT Requests, this Listener is now added by CoreShop if FOSRestBundle is not installed.
