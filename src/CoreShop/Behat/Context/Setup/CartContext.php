@@ -15,11 +15,14 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -129,5 +132,33 @@ final class CartContext implements Context
 
         $this->cartContext->getCart()->setInvoiceAddress($address);
         $this->cartManager->persistCart($this->cartContext->getCart());
+    }
+
+    /**
+     * @Given /^(my cart) uses (currency "[^"]+")$/
+     */
+    public function myCartIsUsingCurrency(CartInterface $cart, CurrencyInterface $currency)
+    {
+        $cart->setCurrency($currency);
+
+        $this->cartManager->persistCart($cart);
+    }
+
+    /**
+     * @Given /^(my cart) uses (store "[^"]+")$/
+     */
+    public function myCartIsUsingStore(CartInterface $cart, StoreInterface $store)
+    {
+        $cart->setStore($store);
+
+        $this->cartManager->persistCart($cart);
+    }
+
+    /**
+     * @Given /^I refresh (my cart)$/
+     */
+    public function iRefreshMyCart(CartInterface $cart)
+    {
+        $this->cartManager->persistCart($cart);
     }
 }

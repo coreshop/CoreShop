@@ -274,3 +274,20 @@ services:
             - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.cart_price_rule:
+        class: CoreShop\Behat\Context\Setup\CartPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.form.factory'
+            - '@__symfony__.coreshop.form_registry.cart_price_rule.conditions'
+            - '@__symfony__.coreshop.form_registry.cart_price_rule.actions'
+            - '@__symfony__.coreshop.factory.cart_price_rule'
+            - '@__symfony__.coreshop.repository.cart_price_rule'
+            - '@__symfony__.coreshop.repository.cart_price_rule_voucher_code'
+            - '@__symfony__.coreshop.cart_price_rule.processor'
+            - '@__symfony__.coreshop.cart.manager'
+            - '@__symfony__.coreshop.factory.cart_price_rule_voucher_code'
+        tags:
+            - { name: fob.context_service }
