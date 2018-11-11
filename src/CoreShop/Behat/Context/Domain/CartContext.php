@@ -212,4 +212,36 @@ final class CartContext implements Context
             'Cart is expected to not have a carrier but found one'
         );
     }
+
+    /**
+     * @Then /^the cart discount should be "([^"]+)" including tax$/
+     */
+    public function cartDiscountShouldBeIncludingTax($total)
+    {
+        Assert::eq(
+            $total,
+            $this->cartContext->getCart()->getDiscount(true),
+            sprintf(
+                'Cart discount is expected to be %s, but it is %s',
+                $total,
+                $this->cartContext->getCart()->getDiscount(true)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the cart discount should be "([^"]+)" excluding tax$/
+     */
+    public function cartDiscountShouldBeExcludingTax($total)
+    {
+        Assert::eq(
+            $total,
+            $this->cartContext->getCart()->getDiscount(false),
+            sprintf(
+                'Cart discount is expected to be %s, but it is %s',
+                $total,
+                $this->cartContext->getCart()->getDiscount(false)
+            )
+        );
+    }
 }

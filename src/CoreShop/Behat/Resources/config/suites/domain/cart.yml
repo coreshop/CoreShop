@@ -14,7 +14,13 @@ default:
                 - coreshop.behat.context.transform.store
                 - coreshop.behat.context.transform.country
                 - coreshop.behat.context.transform.currency
+                - coreshop.behat.context.transform.category
                 - coreshop.behat.context.transform.product
+                - coreshop.behat.context.transform.cart_price_rule
+                - coreshop.behat.context.transform.cart
+                - coreshop.behat.context.transform.customer
+                - coreshop.behat.context.transform.customer_group
+                - coreshop.behat.context.transform.zone
 
                 - coreshop.behat.context.setup.tax_rate
                 - coreshop.behat.context.setup.tax_rule_group
@@ -22,9 +28,15 @@ default:
                 - coreshop.behat.context.setup.country
                 - coreshop.behat.context.setup.currency
                 - coreshop.behat.context.setup.cart
+                - coreshop.behat.context.setup.category
                 - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.customer
+                - coreshop.behat.context.setup.customer_group
+                - coreshop.behat.context.setup.cart_price_rule
+                - coreshop.behat.context.setup.zone
 
                 - coreshop.behat.context.domain.cart
                 - coreshop.behat.context.domain.link_generator
+                - coreshop.behat.context.domain.cart_price_rule
             filters:
                 tags: "@cart"

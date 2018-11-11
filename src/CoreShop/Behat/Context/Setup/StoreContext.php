@@ -113,7 +113,7 @@ final class StoreContext implements Context
     /**
      * @Given /^I am in (store "[^"]+")$/
      */
-    public function iAmInCountry(StoreInterface $store)
+    public function iAmInStore(StoreInterface $store)
     {
         $this->fixedStoreContext->setStore($store);
     }
