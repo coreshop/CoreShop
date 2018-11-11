@@ -510,8 +510,8 @@ class CartPriceRule extends RuleTest
         $this->assertEquals(0, $discount);
         $this->assertEquals(0, $discountWt);
 
-        $this->assertEquals(0, $cart->getShipping());
         $this->assertEquals(0, $cart->getShipping(false));
+        $this->assertEquals(0, $cart->getShipping(true));
 
         $this->getEntityManager()->remove($rule);
         $this->getEntityManager()->flush();

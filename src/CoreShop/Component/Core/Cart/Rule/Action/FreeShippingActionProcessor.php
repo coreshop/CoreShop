@@ -38,13 +38,19 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
      */
     public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
     {
+        $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
+
+        // Don't apply FreeShipping Conditions multiple times
+        foreach ($shippingAdjustments as $adjustment) {
+            if ($adjustment->getLabel() === 'FreeShipping') {
+                return true;
+            }
+        }
+
         $shippingWithTax = $cart->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, true);
         $shippingWithoutTax = $cart->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, false);
 
-        $cartPriceRuleItem->setDiscount($shippingWithoutTax, false);
-        $cartPriceRuleItem->setDiscount($shippingWithTax, true);
-
-        $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::CART_PRICE_RULE, 'FreeShipping', -1 * $shippingWithTax, -1 * $shippingWithoutTax));
+        $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::SHIPPING, 'FreeShipping', -1 * $shippingWithTax, -1 * $shippingWithoutTax));
 
         return true;
     }
