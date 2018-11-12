@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
@@ -444,6 +445,17 @@ final class CartPriceRuleContext implements Context
             'amount' => intval($amount),
             'currency' => $currency->getId()
         ]));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a action free-shipping$/
+     * @Given /^the (cart rule) has a action free-shipping$/
+     */
+    public function theCartPriceRuleHasAFreeShippingAction(CartPriceRuleInterface $rule)
+    {
+        $this->assertActionForm(FreeShippingConfigurationType::class, 'freeShipping');
+
+        $this->addAction($rule, $this->createActionWithForm('freeShipping'));
     }
 
     /**
