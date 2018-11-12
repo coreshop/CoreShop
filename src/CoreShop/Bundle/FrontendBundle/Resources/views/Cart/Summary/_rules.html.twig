@@ -8,7 +8,9 @@
             </td>
             <td class="text-center"></td>
             <td class="text-right" colspan="2">
-                -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
+                {% if priceRule.getDiscount != 0 %}
+                    -{{ currency.convertAndFormat(priceRule.getDiscount(true)) }}
+                {% endif %}
             </td>
             <td colspan="1" class="text-left cart-sub-total">
                 {% if priceRule.cartPriceRule.isVoucherRule %}

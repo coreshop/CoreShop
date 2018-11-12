@@ -100,6 +100,8 @@ services:
 
     coreshop.rule.cart_price_rule.action.free_shipping:
         class: CoreShop\Component\Core\Cart\Rule\Action\FreeShippingActionProcessor
+        arguments:
+            - '@coreshop.factory.adjustment'
         tags:
             - { name: coreshop.cart_price_rule.action, type: freeShipping, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType }
 
