@@ -44,6 +44,7 @@ class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
             ExpressionFunction::fromPHP('explode'),
             ExpressionFunction::fromPHP('implode'),
             ExpressionFunction::fromPHP('is_array'),
+            ExpressionFunction::fromPHP('count'),
         );
     }
 }
