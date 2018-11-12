@@ -27,7 +27,6 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 550 }
 
-
     coreshop.cart_processor.item_taxes:
         class: CoreShop\Component\Core\Order\Processor\CartItemTaxProcessor
         arguments:
