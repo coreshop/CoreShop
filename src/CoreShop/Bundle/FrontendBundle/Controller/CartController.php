@@ -61,7 +61,7 @@ class CartController extends FrontendController
                 $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-                    $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
+                    $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.voucher.not_found'));
                     return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
                         'cart' => $this->getCart(),
                         'form' => $form->createView()
@@ -72,12 +72,12 @@ class CartController extends FrontendController
 
                 if ($this->getCartPriceRuleProcessor()->process($cart, $priceRule, $voucherCode)) {
                     $this->getCartManager()->persistCart($cart);
-                    $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
+                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.success.voucher.stored'));
                 } else {
-                    $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
+                    $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.voucher.invalid'));
                 }
             } else {
-                $this->addFlash('success', 'coreshop.ui.cart_updated');
+                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
             }
 
             $this->get('event_dispatcher')->dispatch('coreshop.cart.update', new GenericEvent($cart));
@@ -188,7 +188,7 @@ class CartController extends FrontendController
 
         $this->get('coreshop.tracking.manager')->trackCartAdd($this->getCart(), $product, $quantity);
 
-        $this->addFlash('success', 'coreshop.ui.item_added');
+        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
         return $this->redirect($redirect);
     }
@@ -210,7 +210,7 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->addFlash('success', 'coreshop.ui.item_removed');
+        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
 
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
