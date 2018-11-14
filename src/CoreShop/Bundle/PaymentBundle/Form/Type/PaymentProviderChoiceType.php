@@ -53,7 +53,7 @@ final class PaymentProviderChoiceType extends AbstractType
                     /**
                      * @var $paymentProvider PaymentProviderInterface
                      */
-                    return $paymentProvider->getIdentifier();
+                    return $paymentProvider->getTitle();
                 },
                 'choice_attr' => function($val, $key, $index) {
                     // adds a class like attending_yes, attending_no, etc
