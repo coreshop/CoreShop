@@ -334,7 +334,7 @@ class OrderController extends AbstractSaleDetailController
 
         foreach ($shipments as $shipment) {
             $data = $this->getDataForObject($shipment);
-            $data['carrierName'] = $shipment->getCarrier()->getName();
+            $data['carrierName'] = $shipment->getCarrier()->getTitle();
 
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'create',
