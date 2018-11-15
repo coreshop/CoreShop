@@ -65,13 +65,11 @@ class ManufacturerReport implements ReportInterface
     private $orderItemRepository;
 
     /**
-     * ManufacturerReport constructor.
-     *
      * @param RepositoryInterface        $storeRepository
      * @param Connection                 $db
      * @param MoneyFormatterInterface    $moneyFormatter
      * @param LocaleContextInterface     $localeService
-     * @param PimcoreRepositoryInterface $orderRepository ,
+     * @param PimcoreRepositoryInterface $orderRepository
      * @param PimcoreRepositoryInterface $orderItemRepository
      */
     public function __construct(
