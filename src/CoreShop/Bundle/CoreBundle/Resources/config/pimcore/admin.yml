@@ -17,6 +17,7 @@ core_shop_core:
             report_reports_carrier: '/bundles/coreshopcore/pimcore/js/report/reports/carriers.js'
             report_reports_carts: '/bundles/coreshopcore/pimcore/js/report/reports/carts.js'
             report_reports_carts_abandoned: '/bundles/coreshopcore/pimcore/js/report/reports/carts_abandoned.js'
+            report_reports_manufacturer: '/bundles/coreshopcore/pimcore/js/report/reports/manufacturer.js'
             report_reports_vouchers: '/bundles/coreshopcore/pimcore/js/report/reports/vouchers.js'
             report_reports_categories: '/bundles/coreshopcore/pimcore/js/report/reports/categories.js'
             report_reports_customers: '/bundles/coreshopcore/pimcore/js/report/reports/customers.js'

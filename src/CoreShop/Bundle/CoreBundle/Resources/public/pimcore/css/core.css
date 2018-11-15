@@ -91,6 +91,10 @@
     background: url(../img/cart-abandoned.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_report_manufacturer {
+    background: url(../img/manufacturer.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_report_vouchers {
     background: url(../img/cart.svg) center center no-repeat !important;
 }
