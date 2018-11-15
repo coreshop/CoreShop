@@ -25,7 +25,6 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
@@ -68,8 +67,7 @@ abstract class AbstractWorker implements WorkerInterface
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper
-    )
-    {
+    ) {
         $this->extensions = $extensions;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
@@ -103,103 +101,97 @@ abstract class AbstractWorker implements WorkerInterface
         $hidePublishedMemory = AbstractObject::doHideUnpublished();
         AbstractObject::setHideUnpublished(false);
 
+        $extensions = $this->getExtensions($index);
 
-        $result = InheritanceHelper::useInheritedValues(function () use ($index, $object) {
-            $extensions = $this->getExtensions($index);
+        $virtualObjectId = $object->getId();
+        $virtualObjectActive = $object->getIndexableEnabled();
 
-            $virtualObjectId = $object->getId();
+        if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
+            $parent = $object->getParent();
+
+            while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
+                $parent = $parent->getParent();
+            }
+
+            $virtualObjectId = $parent->getId();
             $virtualObjectActive = $object->getIndexableEnabled();
+        }
 
-            if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
-                $parent = $object->getParent();
+        $data = [
+            'o_id' => $object->getId(),
+            'o_key' => $object->getKey(),
+            'o_classId' => $object->getClassId(),
+            'o_className' => $object->getClassName(),
+            'o_virtualObjectId' => $virtualObjectId,
+            'o_virtualObjectActive' => $virtualObjectActive === null ? false : $virtualObjectActive,
+            'o_type' => $object->getType()
+        ];
 
-                while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
-                    $parent = $parent->getParent();
+        foreach ($extensions as $extension) {
+            if ($extension instanceof IndexColumnsExtensionInterface) {
+                $data = array_merge($data, $extension->getIndexColumns($object));
+            }
+        }
+
+        $data['active'] = $object->getIndexableEnabled();
+
+        if (!is_bool($data['active'])) {
+            $data['active'] = false;
+        }
+
+        $localizedData = [
+            'oo_id' => $object->getId(),
+            'values' => [],
+        ];
+
+        foreach (Tool::getValidLanguages() as $language) {
+            $localizedData['values'][$language]['name'] = $object->getIndexableName($language);
+        }
+
+        $relationData = [];
+        $columnConfig = $index->getColumns();
+
+        foreach ($columnConfig as $column) {
+            Assert::isInstanceOf($column, IndexColumnInterface::class);
+
+            try {
+                $value = null;
+                if ($column->hasGetter()) {
+                    $value = $this->processGetter($column, $object);
+                } else {
+                    $getter = 'get' . ucfirst($column->getObjectKey());
+                    if (method_exists($object, $getter)) {
+                        $value = $object->$getter();
+                    }
                 }
 
-                $virtualObjectId = $parent->getId();
-                $virtualObjectActive = $object->getIndexableEnabled();
-            }
+                list ($columnLocalizedData, $columnRelationData, $value, $isLocalizedValue) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
 
-            $validLanguages = Tool::getValidLanguages();
+                $relationData = array_merge_recursive($relationData, $columnRelationData);
+                $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
 
-            $data = [
-                'o_id' => $object->getId(),
-                'o_key' => $object->getKey(),
-                'o_classId' => $object->getClassId(),
-                'o_className' => $object->getClassName(),
-                'o_virtualObjectId' => $virtualObjectId,
-                'o_virtualObjectActive' => $virtualObjectActive === null ? false : $virtualObjectActive,
-                'o_type' => $object->getType()
-            ];
 
-            foreach ($extensions as $extension) {
-                if ($extension instanceof IndexColumnsExtensionInterface) {
-                    $data = array_merge($data, $extension->getIndexColumns($object));
-                }
-            }
-
-            $data['active'] = $object->getIndexableEnabled();
-
-            if (!is_bool($data['active'])) {
-                $data['active'] = false;
-            }
-
-            $localizedData = [
-                'oo_id' => $object->getId(),
-                'values' => [],
-            ];
-
-            foreach ($validLanguages as $language) {
-                $localizedData['values'][$language]['name'] = $object->getIndexableName($language);
-            }
-
-            $relationData = [];
-            $columnConfig = $index->getColumns();
-
-            foreach ($columnConfig as $column) {
-                Assert::isInstanceOf($column, IndexColumnInterface::class);
-
-                try {
-                    $value = null;
-                    if ($column->hasGetter()) {
-                        $value = $this->processGetter($column, $object);
-                    } else {
-                        $getter = 'get' . ucfirst($column->getObjectKey());
-
-                        if (method_exists($object, $getter)) {
-                            $value = $object->$getter();
-                        }
+                if (!$isLocalizedValue) {
+                    if (is_array($value)) {
+                        $value = ',' . implode($value, ',') . ',';
                     }
 
-                    list ($columnLocalizedData, $columnRelationData, $value, $isLocalizedValue) = $this->processInterpreter($column, $object, $value, $virtualObjectId);
+                    $value = $this->typeCastValues($column, $value);
 
-                    $relationData = array_merge_recursive($relationData, $columnRelationData);
-                    $localizedData = array_merge_recursive($localizedData, $columnLocalizedData);
-
-
-                    if (!$isLocalizedValue) {
-                        if (is_array($value)) {
-                            $value = ',' . implode($value, ',') . ',';
-                        }
-
-                        $value = $this->typeCastValues($column, $value);
-
-                        $data[$column->getName()] = $value;
-                    }
-
-                } catch (\Exception $e) {
-                    $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
-                    throw $e;
+                    $data[$column->getName()] = $value;
                 }
-            }
 
-            return [
-                'data' => $data,
-                'relation' => $relationData,
-                'localizedData' => $localizedData,
-            ];
-        });
+            } catch (\Exception $e) {
+                $this->logger->error('Exception in CoreShopIndexService: ' . $e->getMessage(), [$e]);
+                throw $e;
+            }
+        }
+
+        $result = [
+            'data' => $data,
+            'relation' => $relationData,
+            'localizedData' => $localizedData,
+        ];
 
         if ($inAdmin) {
             \Pimcore::setAdminMode();
@@ -329,8 +321,7 @@ abstract class AbstractWorker implements WorkerInterface
         $interpreterClass = $this->getInterpreterObject($column);
 
         if ($interpreterClass instanceof LocalizedInterpreterInterface) {
-            $validLanguages = Tool::getValidLanguages();
-            foreach ($validLanguages as $language) {
+            foreach (Tool::getValidLanguages() as $language) {
                 $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig());
             }
             //reset value here, we only populate localized values here
