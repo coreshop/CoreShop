@@ -8,6 +8,7 @@ use CoreShop\Component\Core\Model\SaleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
+use CoreShop\Component\Resource\Model\AbstractObject;
 
 final class CartItemToSaleItemTransformer implements ProposalItemTransformerInterface
 {
@@ -38,7 +39,7 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
             $mainObjectId = null;
 
             if ($fromProposalItem->getProduct() instanceof ProductInterface) {
-                if ($fromProposalItem->getProduct()->getType() === 'variant') {
+                if ($fromProposalItem->getProduct()->getType() === AbstractObject::OBJECT_TYPE_VARIANT) {
                     $mainProduct = $fromProposalItem->getProduct()->getVariantMaster();
                     $toProposal->setMainObjectId($mainProduct->getId());
                 }

@@ -143,8 +143,9 @@ class CategoriesReport implements ReportInterface
                         foreach ($categories as $category) {
                             $catId = $category->getId();
                             if (!isset($catSales[$catId])) {
+                                $name = !empty($category->getName()) ? $category->getName() : $category->getKey();
                                 $catSales[$catId] = $productSale;
-                                $catSales[$catId]['name'] = $category->getName();
+                                $catSales[$catId]['name'] = sprintf('%s (Id: %d)', $name, $category->getId());
                             } else {
                                 $catSales[$catId]['sales'] += $productSale['sales'];
                                 $catSales[$catId]['profit'] += $productSale['profit'];
