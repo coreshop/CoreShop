@@ -75,14 +75,7 @@ class IndexController extends ResourceController
             ];
         }
 
-        $fieldTypes = [
-            IndexColumnInterface::FIELD_TYPE_STRING,
-            IndexColumnInterface::FIELD_TYPE_DOUBLE,
-            IndexColumnInterface::FIELD_TYPE_INTEGER,
-            IndexColumnInterface::FIELD_TYPE_BOOLEAN,
-            IndexColumnInterface::FIELD_TYPE_DATE,
-            IndexColumnInterface::FIELD_TYPE_TEXT,
-        ];
+        $fieldTypes = $this->getParameter('coreshop.index.mapping_types');
         $fieldTypesResult = [];
 
         foreach ($fieldTypes as $type) {

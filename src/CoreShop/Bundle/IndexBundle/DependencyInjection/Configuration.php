@@ -49,6 +49,7 @@ final class Configuration implements ConfigurationInterface
         ;
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
+        $this->addIndexColumnsTypeSection($rootNode);
 
         return $treeBuilder;
     }
@@ -169,5 +170,20 @@ final class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ->end();
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    public function addIndexColumnsTypeSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('mapping_types')
+                    ->useAttributeAsKey('name')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+        ;
     }
 }

@@ -23,6 +23,7 @@ use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Type;
 use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker
@@ -259,6 +260,18 @@ QUERY;
     /**
      * {@inheritdoc}
      */
+    protected function typeCastValues(IndexColumnInterface $column, $value)
+    {
+        $doctrineType = $this->renderFieldType($column->getColumnType());
+
+        $type = Type::getType($doctrineType);
+
+        return $type->convertToDatabaseValue($value, $this->database->getDatabasePlatform());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function deleteIndexStructures(IndexInterface $index)
     {
         try {
@@ -396,24 +409,20 @@ QUERY;
      */
     public function renderFieldType($type)
     {
+        //Check if the Mapping type is available in doctrine
+        $doctrineType = strtolower($type);
+
         switch ($type) {
-            case IndexColumnInterface::FIELD_TYPE_INTEGER:
-                return 'integer';
-
-            case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
-                return 'boolean';
-
             case IndexColumnInterface::FIELD_TYPE_DATE:
-                return 'datetime';
-
+                $doctrineType = 'date';
+                break;
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                return 'decimal';
+                $doctrineType = 'decimal';
+                break;
+        }
 
-            case IndexColumnInterface::FIELD_TYPE_STRING:
-                return 'string';
-
-            case IndexColumnInterface::FIELD_TYPE_TEXT:
-                return 'text';
+        if (Type::hasType($doctrineType)) {
+            return Type::getType($doctrineType)->getName();
         }
 
         throw new \Exception($type . ' is not supported by MySQL Index');

@@ -33,6 +33,8 @@ final class CoreShopIndexExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        $container->setParameter('coreshop.index.mapping_types', array_keys($config['mapping_types']));
+
         $loader->load('services.yml');
     }
 }

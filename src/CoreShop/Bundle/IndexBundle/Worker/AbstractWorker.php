@@ -225,46 +225,7 @@ abstract class AbstractWorker implements WorkerInterface
      * @param $value
      * @return mixed
      */
-    protected function typeCastValues(IndexColumnInterface $column, $value)
-    {
-        switch ($column->getColumnType()) {
-            case IndexColumnInterface::FIELD_TYPE_INTEGER:
-                return intval($value);
-
-            case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
-                return filter_var($value, FILTER_VALIDATE_BOOLEAN);
-
-            case IndexColumnInterface::FIELD_TYPE_DATE:
-                if ($value instanceof \DateTime) {
-                    return $value->format('Y-m-d H:i:s');
-                }
-
-                return null;
-
-            case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                return doubleval($value);
-
-            case IndexColumnInterface::FIELD_TYPE_STRING:
-                return strval($value);
-
-            case IndexColumnInterface::FIELD_TYPE_TEXT:
-                return strval($value);
-        }
-
-
-        throw new \InvalidArgumentException(sprintf(
-            'Unknown type %s given, valid types are %s',
-            $column->getColumnType(),
-            implode(', ', [
-                IndexColumnInterface::FIELD_TYPE_STRING,
-                IndexColumnInterface::FIELD_TYPE_DOUBLE,
-                IndexColumnInterface::FIELD_TYPE_INTEGER,
-                IndexColumnInterface::FIELD_TYPE_BOOLEAN,
-                IndexColumnInterface::FIELD_TYPE_DATE,
-                IndexColumnInterface::FIELD_TYPE_TEXT
-            ])
-        ));
-    }
+    protected abstract function typeCastValues(IndexColumnInterface $column, $value);
 
     /**
      * @param IndexColumnInterface $column
