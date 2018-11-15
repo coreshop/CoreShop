@@ -72,6 +72,18 @@ services:
         tags:
             - { name: coreshop.report, type: carts_abandoned }
 
+    coreshop.report.manufacturer:
+        class: CoreShop\Bundle\CoreBundle\Report\ManufacturerReport
+        arguments:
+            - '@coreshop.repository.store'
+            - '@doctrine.dbal.default_connection'
+            - '@coreshop.money_formatter'
+            - '@coreshop.context.locale'
+            - '@coreshop.repository.order'
+            - '@coreshop.repository.order_item'
+        tags:
+            - { name: coreshop.report, type: manufacturer }
+
     coreshop.report.sales:
         class: CoreShop\Bundle\CoreBundle\Report\SalesReport
         arguments:
