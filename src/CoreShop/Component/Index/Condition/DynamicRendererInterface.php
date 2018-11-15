@@ -12,18 +12,25 @@
 
 namespace CoreShop\Component\Index\Condition;
 
-/**
- * @deprecated RendererInterface is deprecated since 2.0.0, please use the CoreShop\Component\Index\Condition\DynamicRendererInterface instead
- */
-interface RendererInterface
+use CoreShop\Component\Index\Worker\WorkerInterface;
+
+interface DynamicRendererInterface
 {
     /**
      * Renders the condition.
      *
+     * @param WorkerInterface    $worker
      * @param ConditionInterface $condition
-     * @param string $prefix
+     * @param string             $prefix
      *
      * @return mixed
      */
-    public function render(ConditionInterface $condition, $prefix = null);
+    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null);
+
+    /**
+     * @param WorkerInterface    $worker
+     * @param ConditionInterface $condition
+     * @return bool
+     */
+    public function supports(WorkerInterface $worker, ConditionInterface $condition);
 }

@@ -204,6 +204,7 @@ services:
         class: CoreShop\Behat\Context\Domain\IndexConditionContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.registry.index.worker'
         tags:
             - { name: fob.context_service }
 

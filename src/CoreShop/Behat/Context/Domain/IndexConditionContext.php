@@ -14,9 +14,9 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
 use CoreShop\Component\Index\Condition\ConditionInterface;
-use CoreShop\Component\Index\Condition\RendererInterface;
+use CoreShop\Component\Index\Worker\WorkerInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Webmozart\Assert\Assert;
 
 final class IndexConditionContext implements Context
@@ -27,11 +27,17 @@ final class IndexConditionContext implements Context
     private $sharedStorage;
 
     /**
+     * @var ServiceRegistryInterface
+     */
+    private $workerRegistry;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      */
-    public function __construct(SharedStorageInterface $sharedStorage)
+    public function __construct(SharedStorageInterface $sharedStorage, ServiceRegistryInterface $workerRegistry)
     {
         $this->sharedStorage = $sharedStorage;
+        $this->workerRegistry = $workerRegistry;
     }
 
     /**
@@ -39,8 +45,7 @@ final class IndexConditionContext implements Context
      */
     public function theConditionForTypeShouldLookLike(ConditionInterface $condition, $rendererType, $expected)
     {
-        $renderer = $this->getRenderer($rendererType);
-        $is = $renderer->render($condition);
+        $is = $this->render($rendererType, $condition);
 
         Assert::eq(
             $is,
@@ -49,17 +54,17 @@ final class IndexConditionContext implements Context
         );
     }
 
-    /**
-     * @param $type
-     * @return RendererInterface
-     */
-    private function getRenderer($type)
+    private function render($worker, $condition)
     {
-        switch ($type) {
-            case 'mysql':
-                return new MysqlRenderer();
+        if (!$this->workerRegistry->has($worker)) {
+            throw new \InvalidArgumentException(sprintf('Worker with type %s not found', $worker));
         }
 
-        throw new \InvalidArgumentException(sprintf('No renderer for type %s found', $type));
+        /**
+         * @var $worker WorkerInterface
+         */
+        $worker = $this->workerRegistry->get($worker);
+
+        return $worker->renderCondition($condition);
     }
 }

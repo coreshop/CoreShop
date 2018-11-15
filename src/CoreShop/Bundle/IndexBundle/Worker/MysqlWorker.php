@@ -12,9 +12,8 @@
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
-use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
-use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Condition\ConditionRendererInterface;
 use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -22,8 +21,8 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Db;
 use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker
@@ -31,26 +30,36 @@ class MysqlWorker extends AbstractWorker
     /**
      * Database.
      *
-     * @var \Pimcore\Db\Connection
+     * @var Connection
      */
     protected $database;
 
     /**
-     * @param ServiceRegistryInterface $extensionsRegistry
-     * @param ServiceRegistryInterface $getterServiceRegistry
-     * @param ServiceRegistryInterface $interpreterServiceRegistry
+     * @param ServiceRegistryInterface   $extensionsRegistry
+     * @param ServiceRegistryInterface   $getterServiceRegistry
+     * @param ServiceRegistryInterface   $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
+     * @param ConditionRendererInterface $conditionRenderer
+     * @param Connection                 $connection
      */
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
-        FilterGroupHelperInterface $filterGroupHelper
+        FilterGroupHelperInterface $filterGroupHelper,
+        ConditionRendererInterface $conditionRenderer,
+        Connection $connection
     )
     {
-        parent::__construct($extensionsRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
+        parent::__construct(
+            $extensionsRegistry,
+            $getterServiceRegistry,
+            $interpreterServiceRegistry,
+            $filterGroupHelper,
+            $conditionRenderer
+        );
 
-        $this->database = Db::get();
+        $this->database = $connection;
     }
 
     /**
@@ -380,16 +389,6 @@ QUERY;
 
             $this->database->query($insert, array_merge($updateData, $insertData));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function renderCondition(ConditionInterface $condition, $prefix = null)
-    {
-        $renderer = new MysqlRenderer();
-
-        return $renderer->render($condition, $prefix);
     }
 
     /**

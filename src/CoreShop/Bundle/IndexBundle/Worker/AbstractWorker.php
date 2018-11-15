@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Condition\ConditionRendererInterface;
 use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
@@ -57,21 +58,30 @@ abstract class AbstractWorker implements WorkerInterface
     protected $filterGroupHelper;
 
     /**
+     * @var ConditionRendererInterface
+     */
+    protected $conditionRenderer;
+
+    /**
      * @param ServiceRegistryInterface $extensions
      * @param ServiceRegistryInterface $getterServiceRegistry
      * @param ServiceRegistryInterface $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
+     * @param ConditionRendererInterface $conditionRenderer
      */
     public function __construct(
         ServiceRegistryInterface $extensions,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
-        FilterGroupHelperInterface $filterGroupHelper
-    ) {
+        FilterGroupHelperInterface $filterGroupHelper,
+        ConditionRendererInterface $conditionRenderer
+    )
+    {
         $this->extensions = $extensions;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
         $this->filterGroupHelper = $filterGroupHelper;
+        $this->conditionRenderer = $conditionRenderer;
     }
 
     /**
@@ -89,6 +99,14 @@ abstract class AbstractWorker implements WorkerInterface
         }
 
         return $eligibleExtensions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderCondition(ConditionInterface $condition, $prefix = null)
+    {
+        return $this->conditionRenderer->render($this, $condition, $prefix);
     }
 
     /**
@@ -400,11 +418,6 @@ abstract class AbstractWorker implements WorkerInterface
      * {@inheritdoc}
      */
     abstract public function getList(IndexInterface $index);
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function renderCondition(ConditionInterface $condition, $prefix = null);
 
     /**
      * {@inheritdoc}
