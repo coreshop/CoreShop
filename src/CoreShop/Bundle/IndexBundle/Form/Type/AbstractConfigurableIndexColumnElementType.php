@@ -45,7 +45,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
         parent::buildForm($builder, $options);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
                 $objectType = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $objectType) {
                     return;
@@ -61,7 +61,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
 
                 $event->getForm()->get('objectType')->setData($objectType);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
                 $data = $event->getData();
 
                 if (!isset($data['objectType'])) {

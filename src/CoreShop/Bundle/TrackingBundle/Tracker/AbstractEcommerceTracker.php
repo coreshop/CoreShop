@@ -12,8 +12,6 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

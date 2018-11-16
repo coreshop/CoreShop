@@ -12,9 +12,8 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
-use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\Google\Tracker as GoogleTracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,7 +26,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     public $tracker;
 
     /**
-     * @var ConfigResolver
+     * @var ConfigResolverInterface
      */
     public $config;
 
@@ -42,7 +41,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function setConfigResolver(ConfigResolver $config)
+    public function setConfigResolver(ConfigResolverInterface $config)
     {
         $this->config = $config;
     }

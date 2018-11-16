@@ -48,7 +48,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
         if ($request->get('filter', null)) {
             $conditionFilters = [];
-            $conditionFilters[] = DataObject\Service::getFilterCondition($this->getParam('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
+            $conditionFilters[] = DataObject\Service::getFilterCondition($request->getParam('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }

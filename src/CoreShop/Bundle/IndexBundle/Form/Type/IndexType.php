@@ -50,7 +50,7 @@ class IndexType extends AbstractResourceType
             ->add('columns', IndexColumnCollectionType::class);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -66,7 +66,7 @@ class IndexType extends AbstractResourceType
 
                 $event->getForm()->get('worker')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
                 $data = $event->getData();
 
                 if (!isset($data['worker'])) {

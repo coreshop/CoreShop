@@ -1,0 +1,31 @@
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+
+parameters:
+    autoload_files:
+        - %currentWorkingDirectory%/vendor/pimcore/pimcore/lib/helper-functions.php
+
+    reportUnmatchedIgnoredErrors: false
+
+    symfony:
+        container_xml_path: var/cache/dev/appDevDebugProjectContainer.xml
+
+    excludes_analyse:
+        # Makes PHPStan crash
+        - '**/DependencyInjection/Configuration.php'
+        - '**/CoreShop/DependencyAnalysis/*.php'
+
+    ignoreErrors:
+        # Magic calls
+        - '/Call to an undefined static method Webmozart\\Assert\\Assert::all/'
+        - '/Call to an undefined static method Webmozart\\Assert\\Assert::nullOr/'
+        - '/Call to an undefined method Faker\\Generator::/'
+        - '/Access to an undefined property Faker\\Generator::/'
+        - '/Constant PIMCORE_CONFIGURATION_DIRECTORY not found./'
+        - '/Constant PIMCORE_CLASS_DIRECTORY not found./'
+        - '/Constant PIMCORE_WEB_ROOT not found./'
+        - '/Constant PIMCORE_DEVMODE not found./'
+        - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
+

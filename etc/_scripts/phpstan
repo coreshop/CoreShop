@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+echo "RUNNING PHPSTAN"
+
+vendor/bin/stan analyse -c phpstan.neon src -l 1

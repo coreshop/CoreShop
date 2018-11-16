@@ -50,7 +50,7 @@ final class PlaceholderContext implements Context
         Assert::same(
             $executedValue,
             $value,
-            sprintf('Expression value should be "%s" but is', $executedValue, $value)
+            sprintf('Expression value should be "%s" but is %s instead', $executedValue, $value)
         );
     }
 
@@ -68,7 +68,7 @@ final class PlaceholderContext implements Context
         Assert::same(
             $executedValue,
             $value,
-            sprintf('Expression value should be "%s" but is', $executedValue, $value)
+            sprintf('Expression value should be "%s" but is %s instead', $executedValue, $value)
         );
     }
 }

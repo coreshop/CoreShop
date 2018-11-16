@@ -12,15 +12,11 @@
 
 namespace CoreShop\Behat\Service\Tracking;
 
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use Pimcore\Config\Config as ConfigObject;
 
-class ConfigResolver extends \CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver
+class ConfigResolver implements ConfigResolverInterface
 {
-    public function __construct()
-    {
-
-    }
-
     /**
      * @return bool|ConfigObject
      */

@@ -10,18 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Exception;
+namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
-class ObjectUnsupportedException extends \Exception
+use Pimcore\Analytics\SiteId\SiteIdProvider;
+use Pimcore\Analytics\Google\Config\ConfigProvider as GoogleConfigProvider;
+use Pimcore\Config\Config as ConfigObject;
+
+interface ConfigResolverInterface
 {
     /**
-     * ObjectUnsupportedException constructor.
-     *
-     * @param string $function
-     * @param int $class
+     * @return bool|ConfigObject
      */
-    public function __construct($function, $class)
-    {
-        parent::__construct(__FUNCTION__.' is not supported for '.$class.'. This Method needs to implemented by Pimcore Object Class. '.(get_called_class()));
-    }
+    public function getGoogleConfig();
 }

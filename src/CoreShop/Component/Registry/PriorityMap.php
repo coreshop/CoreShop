@@ -44,7 +44,7 @@ class PriorityMap implements \Iterator, \Countable
     public function set($key, $value, $priority = 0)
     {
         $key = $this->getScalarKey($key);
-        $this->list[$key] = new \stdclass();
+        $this->list[$key] = new \stdClass();
         $this->list[$key]->value = $value;
         $this->list[$key]->priority = (int) $priority;
         $this->list[$key]->sequence = $this->lastSequence++;

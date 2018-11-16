@@ -32,7 +32,7 @@ interface DefinitionFieldReNamerInterface
     public function getOldFieldName();
 
     /**
-     * @return mixedstring
+     * @return string
      */
     public function getNewFieldName();
 

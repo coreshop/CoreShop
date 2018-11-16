@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
-use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
 use Pimcore\Analytics\Google\Tracker;
 use Pimcore\Analytics\TrackerInterface;
@@ -26,7 +26,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     public $tracker;
 
     /**
-     * @var ConfigResolver
+     * @var ConfigResolverInterface
      */
     public $config;
 
@@ -39,9 +39,9 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     }
 
     /**
-     * @param ConfigResolver $config
+     * @param ConfigResolverInterface $config
      */
-    public function setConfigResolver(ConfigResolver $config)
+    public function setConfigResolver(ConfigResolverInterface $config)
     {
         $this->config = $config;
     }

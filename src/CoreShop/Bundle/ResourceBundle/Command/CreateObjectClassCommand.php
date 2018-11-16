@@ -115,6 +115,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
         $classType = $input->getOption("classType");
         $prefix = $input->getOption("prefix");
         $pluginName = ucfirst($input->getOption("bundle"));
+        $bundle = null;
 
         if (is_string($pluginName)) {
             $bundle = Validators::validateBundleName($pluginName);
@@ -123,7 +124,13 @@ final class CreateObjectClassCommand extends GeneratorCommand
                 $bundle = $this->kernel->getBundle($bundle);
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<bg=red>Bundle "%s" does not exist.</>', $bundle));
+
+                return 1;
             }
+        }
+
+        if (null === $bundle) {
+            throw new \InvalidArgumentException('Could not determine the right bundle');
         }
 
         $availableClasses = $this->classes;

@@ -50,7 +50,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getIdentifier();
     }
 
     /**

@@ -24,6 +24,8 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->items = [];
     }
 

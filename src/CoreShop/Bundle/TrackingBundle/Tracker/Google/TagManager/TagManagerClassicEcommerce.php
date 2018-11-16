@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
-use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +25,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     public $codeTracker;
 
     /**
-     * @var ConfigResolver
+     * @var ConfigResolverInterface
      */
     public $config;
 
@@ -51,9 +51,9 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     }
 
     /**
-     * @param ConfigResolver $config
+     * @param ConfigResolverInterface $config
      */
-    public function setConfigResolver(ConfigResolver $config)
+    public function setConfigResolver(ConfigResolverInterface $config)
     {
         $this->config = $config;
     }
