@@ -68,7 +68,7 @@ final class CartContext implements Context
             count($this->cartContext->getCart()->getItems()),
             2,
             sprintf(
-                'There should two products in the cart, but found %d',
+                'There should be only two products in the cart, but found %d',
                 count($this->cartContext->getCart()->getItems())
             )
         );
