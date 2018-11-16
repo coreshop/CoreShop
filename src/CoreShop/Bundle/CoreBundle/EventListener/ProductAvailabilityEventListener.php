@@ -81,11 +81,15 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        if (false === $originalItem->isPublished()) {
+        if (true === $object->getPublished()) {
             return;
         }
 
-        $this->productIdsToCheck[] = $object->getId();
+        if (true === $originalItem->isPublished()) {
+            return;
+        }
+
+        $this->productIdsToCheck[$object->getId()] = $object->getId();
     }
 
     /**
@@ -102,6 +106,8 @@ final class ProductAvailabilityEventListener
         if (!in_array($object->getId(), $this->productIdsToCheck)) {
             return;
         }
+
+        unset($this->productIdsToCheck[$object->getId()]);
 
         $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
 
