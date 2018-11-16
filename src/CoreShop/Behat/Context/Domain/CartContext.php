@@ -62,13 +62,13 @@ final class CartContext implements Context
     /**
      * @Then /^there should be two products in my cart$/
      */
-    public function thereShouldBeTwpProductsInTheCart()
+    public function thereShouldBeTwoProductsInTheCart()
     {
         Assert::eq(
             count($this->cartContext->getCart()->getItems()),
             2,
             sprintf(
-                'There should be only one product in the cart, but found %d',
+                'There should two products in the cart, but found %d',
                 count($this->cartContext->getCart()->getItems())
             )
         );

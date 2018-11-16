@@ -1,4 +1,4 @@
-@cart @cart_delete_cart_item_on_unpbulish
+@cart @cart_delete_cart_item_on_unpublish
 Feature: In Order to not allow
   customers to buy products that are unpublished
   CoreShop deletes those cart-items and
