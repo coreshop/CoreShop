@@ -63,11 +63,31 @@ final class PimcoreDaoContext implements Context
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function clearRuntimeCacheScenario()
+    {
+        //Clearing it here is totally fine, since each scenario has its own separated context of objects
+        \Pimcore\Cache\Runtime::clear();
+    }
+
+    /**
      * @BeforeStep
      */
-    public function clearRuntimeCache()
+    public function clearRuntimeCacheStep()
     {
-        \Pimcore\Cache\Runtime::clear();
+        //We should not clear Pimcore Objects here, otherwise we lose the reference to it
+        //and end up having the same object twice
+        $copy = \Pimcore\Cache\Runtime::getInstance()->getArrayCopy();
+        $keepItems = [];
+
+        foreach ($copy as $key => $value) {
+            if (strpos($key, 'object_') === 0) {
+                $keepItems[] = $key;
+            }
+        }
+
+        \Pimcore\Cache\Runtime::clear($keepItems);
     }
 
     /**

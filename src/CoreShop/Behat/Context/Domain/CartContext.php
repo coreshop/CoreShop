@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -51,6 +52,21 @@ final class CartContext implements Context
         Assert::eq(
             count($this->cartContext->getCart()->getItems()),
             1,
+            sprintf(
+                'There should be only one product in the cart, but found %d',
+                count($this->cartContext->getCart()->getItems())
+            )
+        );
+    }
+
+    /**
+     * @Then /^there should be two products in my cart$/
+     */
+    public function thereShouldBeTwpProductsInTheCart()
+    {
+        Assert::eq(
+            count($this->cartContext->getCart()->getItems()),
+            2,
             sprintf(
                 'There should be only one product in the cart, but found %d',
                 count($this->cartContext->getCart()->getItems())
@@ -241,6 +257,21 @@ final class CartContext implements Context
                 'Cart discount is expected to be %s, but it is %s',
                 $total,
                 $this->cartContext->getCart()->getDiscount(false)
+            )
+        );
+    }
+
+    /**
+     * @Then /^there should be no product in (my cart)$/
+     */
+    public function thereShouldBeNoProductInMyCart(CartInterface $cart)
+    {
+        Assert::eq(
+            $cart->getItems(),
+            0,
+            sprintf(
+                'There should be noe product in the cart, but found %d',
+                count($cart->getItems())
             )
         );
     }
