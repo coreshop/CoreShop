@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -67,7 +68,7 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 
     /**
      * @param ClassMetadataInfo $metadata
-     * @param $configuration
+     * @param Configuration $configuration
      */
     private function setAssociationMappings(ClassMetadataInfo $metadata, $configuration)
     {

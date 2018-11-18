@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\Loader;
 
+use CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Loader\ImplementationLoader\LoaderInterface;
 
@@ -43,6 +44,9 @@ class DependencyInjectionImplementationLoader implements LoaderInterface
      */
     public function build(string $name, array $params = [])
     {
+        /**
+         * @var DocumentTagFactoryInterface $factory
+         */
         $factory = $this->factories->get($name);
 
         return $factory->create($name, $params);

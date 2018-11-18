@@ -289,7 +289,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $currencyId
+     * @param int $currencyId
      * @return null|CurrencyInterface
      */
     protected function getCurrencyById($currencyId)
@@ -298,7 +298,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $value
+     * @param int $value
      *
      * @return int
      */

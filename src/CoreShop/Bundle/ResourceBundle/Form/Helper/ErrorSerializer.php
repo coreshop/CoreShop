@@ -26,7 +26,7 @@ final class ErrorSerializer
         $errors = [];
 
         /**
-         * @var $e FormError
+         * @var FormError $e
          */
         foreach ($handledForm->getErrors(true, true) as $e) {
             if ($e instanceof FormError) {

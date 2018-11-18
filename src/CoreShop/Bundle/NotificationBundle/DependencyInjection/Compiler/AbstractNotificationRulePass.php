@@ -32,7 +32,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
      * @param string $formRegistry
      * @param string $parameter
      * @param string $tag
-     * @param $type
+     * @param string $type
      */
     public function __construct($registry, $formRegistry, $parameter, $tag, $type)
     {

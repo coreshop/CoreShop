@@ -136,7 +136,7 @@ final class CreateObjectClassCommand extends GeneratorCommand
         $availableClasses = $this->classes;
 
         if (!array_key_exists($classType, $availableClasses)) {
-            throw new \Exception("Class Type $classType not found. Found these: ".implode(', ', array_keys($availableClasses)));
+            throw new \Exception(sprintf("Class Type %s not found. Found these: ".implode(', ', array_keys($availableClasses)), $classType));
         }
 
         list($applicationName, $shortClassType) = explode('.', $classType);

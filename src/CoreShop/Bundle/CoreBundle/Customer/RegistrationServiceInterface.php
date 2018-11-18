@@ -20,7 +20,7 @@ interface RegistrationServiceInterface
     /**
      * @param CustomerInterface $customer
      * @param AddressInterface $address
-     * @param $formData
+     * @param array $formData
      * @param bool $isGuest
      * @return mixed
      */

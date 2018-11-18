@@ -174,7 +174,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      *     ]
      * ]
      *
-     * @param $criteria
+     * @param array $criteria
      * @return array
      */
     private function normalizeCriteria($criteria)
@@ -225,7 +225,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      *
      * "o_id ASC"
      *
-     * @param $orderBy
+     * @param array|string $orderBy
      * @return array
      */
     private function normalizeOrderBy($orderBy)

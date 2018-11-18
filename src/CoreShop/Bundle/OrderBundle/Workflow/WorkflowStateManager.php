@@ -13,12 +13,12 @@
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
 use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Pimcore\Model\Element\Note;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 final class WorkflowStateManager implements WorkflowStateManagerInterface
 {
@@ -70,9 +70,9 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     }
 
     /**
-     * @param      $workflowName
-     * @param      $value
-     * @param bool $forFrontend
+     * @param string $workflowName
+     * @param mixed  $value
+     * @param bool   $forFrontend
      * @return array
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true)
@@ -92,9 +92,9 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     }
 
     /**
-     * @param      $workflowName
-     * @param      $transition
-     * @param bool $forFrontend
+     * @param string $workflowName
+     * @param string $transition
+     * @param bool   $forFrontend
      * @return array
      */
     public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
@@ -113,10 +113,10 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     }
 
     /**
-     * @param       $subject
-     * @param       $workflowName
-     * @param array $transitions
-     * @param bool $forFrontend
+     * @param string $subject
+     * @param string $workflowName
+     * @param array  $transitions
+     * @param bool   $forFrontend
      * @return array
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)

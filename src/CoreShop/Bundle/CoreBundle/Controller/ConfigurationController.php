@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
+use CoreShop\Component\Core\Model\ConfigurationInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConfigurationController extends ResourceController
@@ -50,6 +51,9 @@ class ConfigurationController extends ResourceController
         foreach ($stores as $store) {
             $storeValues = [];
 
+            /**
+             * @var ConfigurationInterface[] $configurations
+             */
             $configurations = $this->repository->findBy(['store' => [$store, null]]);
 
             if (is_array($configurations)) {

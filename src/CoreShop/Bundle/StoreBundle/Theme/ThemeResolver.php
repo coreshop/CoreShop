@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\StoreBundle\Theme;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Liip\ThemeBundle\ActiveTheme;
 
 final class ThemeResolver implements ThemeResolverInterface
@@ -57,6 +58,9 @@ final class ThemeResolver implements ThemeResolverInterface
     {
         $themes = [];
 
+        /**
+         * @var StoreInterface $store
+         */
         foreach ($this->storeRepository->findAll() as $store) {
             $storeTheme = $store->getTemplate();
 

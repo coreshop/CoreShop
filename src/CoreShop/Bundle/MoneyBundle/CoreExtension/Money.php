@@ -317,7 +317,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $data
+     * @param mixed $data
      *
      * @return bool
      */
@@ -327,7 +327,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return float|int
      */

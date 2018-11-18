@@ -172,7 +172,7 @@ final class Matomo extends AbstractEcommerceTracker
     }
 
     /**
-     * @param $items
+     * @param array $items
      *
      * @return array
      */
@@ -194,7 +194,7 @@ final class Matomo extends AbstractEcommerceTracker
     }
 
     /**
-     * @param     $categories
+     * @param array $categories
      * @param int $limit
      * @return array|null|string
      */

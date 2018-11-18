@@ -31,8 +31,8 @@ class FrontendController extends \Pimcore\Controller\FrontendController
     }
 
     /**
-     * @param $object |null
-     * @param $route |null
+     * @param mixed $object|null
+     * @param string $route|null
      * @param array $parameters
      * @param int $referenceType
      * @return mixed|string

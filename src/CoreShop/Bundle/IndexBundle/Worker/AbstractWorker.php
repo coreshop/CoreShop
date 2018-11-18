@@ -222,7 +222,7 @@ abstract class AbstractWorker implements WorkerInterface
 
     /**
      * @param IndexColumnInterface $column
-     * @param $value
+     * @param mixed $value
      * @return mixed
      */
     protected abstract function typeCastValues(IndexColumnInterface $column, $value);
@@ -230,8 +230,8 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @param IndexColumnInterface $column
      * @param IndexableInterface $object
-     * @param $value
-     * @param $virtualObjectId
+     * @param mixed $value
+     * @param int $virtualObjectId
      * @return array
      */
     protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
@@ -285,8 +285,8 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @param IndexColumnInterface $column
      * @param IndexableInterface $object
-     * @param $originalValue
-     * @param $virtualObjectId
+     * @param mixed $originalValue
+     * @param int $virtualObjectId
      * @return array
      * @throws \Exception
      */

@@ -89,7 +89,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
             if (count($sites) > 0) {
                 /**
-                 * @var $site Site
+                 * @var Site $site
                  */
                 $site = $sites[0];
                 $rootDocument = $site->getRootDocument();
@@ -142,8 +142,8 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
     /**
      * @param Document $rootDocument
-     * @param          $language
-     * @param          $properties
+     * @param string   $language
+     * @param array    $properties
      * @return Document
      */
     private function installDocument(Document $rootDocument, $language, $properties)
@@ -154,7 +154,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
             $class = "Pimcore\\Model\\Document\\".ucfirst($properties['type']);
 
             if (\Pimcore\Tool::classExists($class)) {
-                /** @var Document $document */
+                /** @var Document\Page $document */
                 $document = new $class();
                 $document->setParent(
                     Document::getByPath($rootDocument->getRealFullPath().'/'.$language.'/'.$properties['path'])

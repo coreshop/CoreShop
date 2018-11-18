@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 interface PdfRendererInterface
 {
     /**
-     * @param $string
+     * @param string $string
      * @param string $header
      * @param string $footer
      * @param array $config

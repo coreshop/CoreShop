@@ -141,13 +141,13 @@ class UniversalEcommerce extends AbstractEcommerceTracker
             return false;
         }
 
-        return $config->gtagcode;
+        return $config->get('gtagcode');
     }
 
      /**
      * Transform ActionData into classic analytics data array
      *
-     * @param $actionData
+     * @param array $actionData
      * @return array
      */
     protected function transformOrder($actionData)
@@ -165,7 +165,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * Transform product action into enhanced data object
      *
-     * @param $item
+     * @param array $item
      * @return array
      */
     protected function transformProductAction($item)

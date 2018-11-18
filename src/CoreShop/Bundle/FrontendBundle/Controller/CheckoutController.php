@@ -126,8 +126,8 @@ class CheckoutController extends FrontendController
     /**
      * @param Request $request
      * @param CheckoutStepInterface $step
-     * @param $stepIdentifier
-     * @param $dataForStep
+     * @param string $stepIdentifier
+     * @param mixed $dataForStep
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
@@ -164,12 +164,12 @@ class CheckoutController extends FrontendController
          */
 
         /**
-         * @var $step CheckoutStepInterface
+         * @var CheckoutStepInterface $step
          */
         foreach ($checkoutManager->getSteps() as $stepIdentifier) {
             $step = $checkoutManager->getStep($stepIdentifier);
 
-            if ($step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
+            if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
@@ -207,7 +207,7 @@ class CheckoutController extends FrontendController
         $request->getSession()->remove('coreshop_order_id');
 
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface $order
          */
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);

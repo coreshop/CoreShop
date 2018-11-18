@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 class GridController extends AdminController
 {
     /**
-     * @param $listType
+     * @param string $listType
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getGridFiltersAction($listType)
@@ -45,7 +45,7 @@ class GridController extends AdminController
     }
 
     /**
-     * @param $listType
+     * @param string $listType
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getGridActionsAction($listType)

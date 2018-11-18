@@ -237,8 +237,8 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param $allowedBricks
-     * @param $result
+     * @param array $allowedBricks
+     * @param array $result
      * @return mixed
      */
     protected function getObjectbrickFields(array $allowedBricks, &$result)
@@ -271,8 +271,8 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param $allowedCollections
-     * @param $result
+     * @param array $allowedCollections
+     * @param array $result
      * @return mixed
      * @throws \Exception
      */
@@ -324,7 +324,7 @@ class IndexController extends ResourceController
         $groupConfigList = $list->getList();
 
         /**
-         * @var $config DataObject\Classificationstore\GroupConfig
+         * @var DataObject\Classificationstore\GroupConfig $config
          */
         foreach ($groupConfigList as $config) {
             $key = $config->getId().($config->getName() ? $config->getName() : 'EMPTY');

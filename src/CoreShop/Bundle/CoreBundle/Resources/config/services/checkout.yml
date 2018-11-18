@@ -45,7 +45,6 @@ services:
             - '@coreshop.carrier.resolver'
             - '@coreshop.shipping.carrier.validator'
             - '@form.factory'
-            - '@coreshop.context.store'
             - '@coreshop.cart.manager'
 
     coreshop.checkout.step.payment:

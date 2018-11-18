@@ -15,10 +15,10 @@ namespace CoreShop\Bundle\AddressBundle\Templating\Helper;
 interface FormatAddressHelperInterface
 {
     /**
-     * @param $address
+     * @param string $address
      * @param bool $asHtml
      *
-     * @return mixed
+     * @return string
      */
     public function formatAddress($address, $asHtml = true);
 }

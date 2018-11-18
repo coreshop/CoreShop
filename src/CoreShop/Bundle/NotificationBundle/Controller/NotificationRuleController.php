@@ -14,7 +14,9 @@ namespace CoreShop\Bundle\NotificationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
+use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class NotificationRuleController extends ResourceController
@@ -71,11 +73,21 @@ class NotificationRuleController extends ResourceController
 
     public function sortAction(Request $request)
     {
+        /**
+         * @var EntityRepository $repository
+         */
+        $repository = $this->repository;
         $rule = $request->get('rule');
         $toRule = $request->get('toRule');
         $position = $request->get('position');
 
+        /**
+         * @var NotificationRuleInterface $rule
+         */
         $rule = $this->repository->find($rule);
+        /**
+         * @var NotificationRuleInterface $toRule
+         */
         $toRule = $this->repository->find($toRule);
 
         $direction = $rule->getSort() < $toRule->getSort() ? 'down' : 'up';
@@ -94,7 +106,7 @@ class NotificationRuleController extends ResourceController
             $criteria->where($criteria->expr()->gte('sort', $fromSort));
             $criteria->where($criteria->expr()->lte('sort', $toSort));
 
-            $result = $this->repository->matching($criteria);
+            $result = $repository->matching($criteria);
 
             foreach ($result as $newRule) {
                 if ($newRule instanceof NotificationRuleInterface) {
@@ -117,7 +129,7 @@ class NotificationRuleController extends ResourceController
             $criteria->where($criteria->expr()->gte('sort', $fromSort));
             $criteria->where($criteria->expr()->lte('sort', $toSort));
 
-            $result = $this->repository->matching($criteria);
+            $result = $repository->matching($criteria);
 
             foreach ($result as $newRule) {
                 if ($newRule instanceof NotificationRuleInterface) {

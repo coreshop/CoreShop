@@ -92,9 +92,9 @@ class WorkflowListener implements EventSubscriberInterface
     }
 
     /**
-     * @param $transitionName
+     * @param string $transitionName
      * @param Event $event
-     * @param $actions
+     * @param array $actions
      */
     public function applyTransition($transitionName, Event $event, $actions)
     {

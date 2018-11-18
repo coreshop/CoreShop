@@ -78,7 +78,7 @@ class RelationsHandler
     }
 
     /**
-     * @param $relation
+     * @param mixed $relation
      *
      * @return array|mixed
      */

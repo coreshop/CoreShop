@@ -23,6 +23,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
@@ -78,6 +79,8 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
      */
     public function validate(CartInterface $cart)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         return $cart->hasItems()
             && ($cart->hasShippableItems() === false || $cart->getShippingAddress() instanceof AddressInterface)
             && $cart->getInvoiceAddress() instanceof AddressInterface;
@@ -109,6 +112,8 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
      */
     public function prepareStep(CartInterface $cart, Request $request)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         $customer = $this->getCustomer();
 
         return [
@@ -142,6 +147,8 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
      */
     private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         $options = [
             'customer' => $customer,
         ];

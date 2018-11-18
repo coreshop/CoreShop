@@ -19,6 +19,7 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,7 +58,9 @@ class OrderController extends FrontendController
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
+            $cancelButton = $form->get('cancel');
+
+            if ($cancelButton instanceof ClickableInterface && $form->isSubmitted() && $cancelButton->isClicked()) {
                 $this->get('coreshop.state_machine_applier')->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
                 $cart = $this->get('coreshop.repository.cart')->findCartByOrder($order);
 

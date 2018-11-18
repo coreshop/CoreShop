@@ -12,15 +12,14 @@
 
 namespace CoreShop\Bundle\PayumBundle\Controller;
 
-use CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface;
-use CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface;
-use CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface;
+use CoreShop\Bundle\PayumBundle\Request\ConfirmOrder;
+use CoreShop\Bundle\PayumBundle\Request\GetStatus;
+use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
+use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,49 +43,25 @@ class PaymentController extends Controller
     private $pimcoreObjectService;
 
     /**
-     * @var GetStatusFactoryInterface
-     */
-    private $getStatusRequestFactory;
-
-    /**
-     * @var ResolveNextRouteFactoryInterface
-     */
-    private $resolveNextRouteRequestFactory;
-
-    /**
-     * @var ConfirmOrderFactoryInterface
-     */
-    private $confirmOrderFactory;
-
-    /**
      * PaymentController constructor.
      *
-     * @param OrderPaymentProviderInterface    $orderPaymentProvider
-     * @param PimcoreRepositoryInterface       $orderRepository
-     * @param ObjectServiceInterface           $pimcoreObjectService
-     * @param GetStatusFactoryInterface        $getStatusRequestFactory
-     * @param ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory
-     * @param ConfirmOrderFactoryInterface     $confirmOrderFactory
+     * @param OrderPaymentProviderInterface $orderPaymentProvider,
+     * @param PimcoreRepositoryInterface $orderRepository
+     * @param ObjectServiceInterface $pimcoreObjectService
      */
     public function __construct(
         OrderPaymentProviderInterface $orderPaymentProvider,
         PimcoreRepositoryInterface $orderRepository,
-        ObjectServiceInterface $pimcoreObjectService,
-        GetStatusFactoryInterface $getStatusRequestFactory,
-        ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory,
-        ConfirmOrderFactoryInterface $confirmOrderFactory
-    ) {
+        ObjectServiceInterface $pimcoreObjectService
+    )
+    {
         $this->orderPaymentProvider = $orderPaymentProvider;
         $this->orderRepository = $orderRepository;
         $this->pimcoreObjectService = $pimcoreObjectService;
-        $this->getStatusRequestFactory = $getStatusRequestFactory;
-        $this->resolveNextRouteRequestFactory = $resolveNextRouteRequestFactory;
-        $this->confirmOrderFactory = $confirmOrderFactory;
     }
 
     /**
      * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function prepareCaptureAction(Request $request)
@@ -104,7 +79,7 @@ class PaymentController extends Controller
 
         $order = $this->orderRepository->findOneBy([$property => $identifier]);
 
-        if (null === $order) {
+        if (!$order instanceof OrderInterface) {
             throw new NotFoundHttpException(sprintf('Order with %s "%s" does not exist.', $property, $identifier));
         }
 
@@ -115,34 +90,51 @@ class PaymentController extends Controller
         $storage = $this->getPayum()->getStorage($payment);
         $storage->update($payment);
 
-        $token = $this->provideTokenBasedOnPayment($payment);
+        /**
+         * @var PaymentProviderInterface $provider
+         */
+        $provider = $payment->getPaymentProvider();
 
-        return $this->redirect($token->getTargetUrl());
+        $captureToken = $this->getPayum()->getTokenFactory()->createCaptureToken(
+            $provider->getGatewayConfig()->getGatewayName(),
+            $payment,
+            'coreshop_payment_after',
+            []
+        );
+
+        return $this->redirect($captureToken->getTargetUrl());
     }
 
     /**
      * Here we return from the Payment Provider and process the result.
      *
      * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
-     * @throws \Payum\Core\Reply\ReplyInterface
      */
     public function afterCaptureAction(Request $request)
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
-        $status = $this->getStatusRequestFactory->createNewWithModel($token);
+        $status = new GetStatus($token);
         $this->getPayum()->getGateway($token->getGatewayName())->execute($status);
 
-        $confirmOrderRequest = $this->confirmOrderFactory->createNewWithModel($status->getFirstModel());
+        $confirmOrderRequest = new ConfirmOrder($status->getFirstModel());
         $this->getPayum()->getGateway($token->getGatewayName())->execute($confirmOrderRequest);
 
-        $resolveNextRoute = $this->resolveNextRouteRequestFactory->createNewWithModel($status->getFirstModel());
+        $resolveNextRoute = new ResolveNextRoute($status->getFirstModel());
         $this->getPayum()->getGateway($token->getGatewayName())->execute($resolveNextRoute);
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 
+        //if (PaymentInterface::STATE_NEW !== $status->getValue()) {
+        //    $request->getSession()->getBag('flashes')->add('info', sprintf('payment.%s', $status->getValue()));
+        //}
+
+        //Start Workflow with $status->getStatus()
+
+        /**
+         * Further process the status here, kick-off the pimcore workflow for orders?
+         */
         return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 
@@ -152,32 +144,5 @@ class PaymentController extends Controller
     protected function getPayum()
     {
         return $this->get('payum');
-    }
-
-    /**
-     * @param PaymentInterface $payment
-     *
-     * @return mixed
-     */
-    private function provideTokenBasedOnPayment(PaymentInterface $payment)
-    {
-        /** @var GatewayConfigInterface $gatewayConfig */
-        $gatewayConfig = $payment->getPaymentProvider()->getGatewayConfig();
-        if (isset($gatewayConfig->getConfig()['use_authorize']) && $gatewayConfig->getConfig()['use_authorize'] === true) {
-            $token = $this->getPayum()->getTokenFactory()->createAuthorizeToken(
-                $gatewayConfig->getGatewayName(),
-                $payment,
-                'coreshop_payment_after',
-                []
-            );
-        } else {
-            $token = $this->getPayum()->getTokenFactory()->createCaptureToken(
-                $gatewayConfig->getGatewayName(),
-                $payment,
-                'coreshop_payment_after',
-                []
-            );
-        }
-        return $token;
     }
 }

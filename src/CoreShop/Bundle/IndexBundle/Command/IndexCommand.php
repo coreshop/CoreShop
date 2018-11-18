@@ -69,7 +69,7 @@ final class IndexCommand extends Command
         $classesToUpdate = [];
 
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface $index
          */
         foreach ($indices as $index) {
             if (!in_array($index->getClass(), $classesToUpdate)) {

@@ -16,9 +16,8 @@ use Symfony\Component\Workflow\Workflow;
 
 interface StateMachineManagerInterface
 {
-
     /**
-     * @param $subject
+     * @param mixed $subject
      * @param null $workflowName
      * @return Workflow
      */
@@ -26,7 +25,7 @@ interface StateMachineManagerInterface
 
     /**
      * @param Workflow $workflow
-     * @param $subject
+     * @param mixed $subject
      * @param string $fromState
      * @return mixed
      */
@@ -34,7 +33,7 @@ interface StateMachineManagerInterface
 
     /**
      * @param Workflow $workflow
-     * @param $subject
+     * @param mixed $subject
      * @param string $toState
      * @return mixed
      */

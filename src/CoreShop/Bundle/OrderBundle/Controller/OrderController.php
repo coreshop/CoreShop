@@ -89,7 +89,7 @@ class OrderController extends AbstractSaleDetailController
             $states[$identifier] = [];
 
             /**
-             * @var $stateMachine StateMachine
+             * @var StateMachine $stateMachine
              */
             $stateMachine = $this->get(sprintf('state_machine.%s', $identifier));
             $places = $stateMachine->getDefinition()->getPlaces();
@@ -334,7 +334,11 @@ class OrderController extends AbstractSaleDetailController
 
         foreach ($shipments as $shipment) {
             $data = $this->getDataForObject($shipment);
-            $data['carrierName'] = $shipment->getCarrier()->getTitle();
+
+            //This should be in CoreBundle, but for BC reasons, we keep it here
+            if (method_exists($shipment, 'getCarrier')) {
+                $data['carrierName'] = $shipment->getCarrier()->getTitle();
+            }
 
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'create',

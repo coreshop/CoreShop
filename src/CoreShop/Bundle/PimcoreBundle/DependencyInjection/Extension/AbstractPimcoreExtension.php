@@ -18,8 +18,8 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 abstract class AbstractPimcoreExtension extends Extension
 {
     /**
-     * @param                  $applicationName
-     * @param                  $bundleResources
+     * @param string           $applicationName
+     * @param array            $bundleResources
      * @param ContainerBuilder $container
      */
     protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)

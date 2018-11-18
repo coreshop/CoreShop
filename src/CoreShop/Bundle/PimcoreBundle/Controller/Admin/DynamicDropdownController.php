@@ -191,7 +191,7 @@ final class DynamicDropdownController extends AdminController
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @return array
      */
     private function getThisClassMethods($class)
@@ -209,7 +209,7 @@ final class DynamicDropdownController extends AdminController
 
     /**
      * @param DataObject\Concrete $object
-     * @param                     $method
+     * @param string $method
      * @return bool
      */
     private function isUsingI18n(DataObject\Concrete $object, $method)
@@ -228,8 +228,8 @@ final class DynamicDropdownController extends AdminController
     }
 
     /**
-     * @param $tree
-     * @param $definition
+     * @param mixed $tree
+     * @param mixed $definition
      * @return mixed
      */
     private function parseTree($tree, $definition)

@@ -41,7 +41,7 @@ final class OrderHistoryLogger
 
     /**
      * @param OrderRepositoryInterface $orderRepository
-     * @param NoteService    $noteService
+     * @param NoteServiceInterface     $noteService
      * @param TranslatorInterface      $translator
      * @param string                   $noteIdentifier
      */

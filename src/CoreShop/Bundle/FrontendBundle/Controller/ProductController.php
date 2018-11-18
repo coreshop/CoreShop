@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -62,7 +62,7 @@ class ProductController extends FrontendController
 
     /**
      * @param Request $request
-     * @return DataObject
+     * @return DataObject\Concrete
      */
     private function getProductByRequest(Request $request)
     {

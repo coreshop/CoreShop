@@ -31,7 +31,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface $user
          */
         $user = $event->getCustomer();
 

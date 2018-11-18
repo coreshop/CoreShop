@@ -77,7 +77,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
     /**
      * Creates an Temporary HTML File.
      *
-     * @param $string
+     * @param string $string
      *
      * @return string
      */
@@ -93,7 +93,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return mixed|null|string|string[]
      */
     private function replaceUrls($string)
@@ -144,7 +144,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
     /**
      * Converts URL to pdf.
      *
-     * @param $httpSource
+     * @param string $httpSource
      * @param array $config
      *
      * @return string PDF-Content

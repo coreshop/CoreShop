@@ -15,10 +15,10 @@ namespace CoreShop\Bundle\WorkflowBundle\Applier;
 interface StateMachineApplierInterface
 {
     /**
-     * @param      $subject
-     * @param null $workflowName
-     * @param null $transition
-     * @param bool $soft
+     * @param mixed $subject
+     * @param null  $workflowName
+     * @param null  $transition
+     * @param bool  $soft
      */
     public function apply($subject, $workflowName = null, $transition = null, $soft = true);
 }

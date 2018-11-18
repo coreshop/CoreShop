@@ -20,7 +20,7 @@ class CodeTracker
     protected $blocks = [];
 
     /**
-     * @param $block
+     * @param mixed $block
      */
     public function addCodePart($block)
     {

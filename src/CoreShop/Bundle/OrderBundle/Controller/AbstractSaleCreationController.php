@@ -56,7 +56,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         $productIds = $request->get("products");
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
         $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
         $store = $this->get('coreshop.repository.store')->find($request->get('store'));
@@ -137,7 +137,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $storeId = $request->get('store');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
         $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
 
@@ -204,7 +204,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $storeId = $request->get('store');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
         $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
 
@@ -251,7 +251,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         });
 
         /**
-         * @var $sale SaleInterface
+         * @var SaleInterface $sale
          */
         $sale = $this->factory->createNew();
         $sale->setBackendCreated(true);
@@ -329,7 +329,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
     )
     {
         /**
-         * @var $cart CartInterface
+         * @var CartInterface $cart
          */
         $cart = $this->get('coreshop.factory.cart')->createNew();
         $cart->setParent(\Pimcore\Model\DataObject\Service::createFolderByPath('/coreshop/tmp'));

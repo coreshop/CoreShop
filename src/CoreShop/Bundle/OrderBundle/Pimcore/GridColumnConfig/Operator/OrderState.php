@@ -99,7 +99,7 @@ class OrderState extends AbstractOperator
     }
 
     /**
-     * @param $hex
+     * @param string $hex
      * @return array
      */
     private function hex2rgb($hex)
@@ -120,9 +120,9 @@ class OrderState extends AbstractOperator
     }
 
     /**
-     * @param $r
-     * @param $g
-     * @param $b
+     * @param int $r
+     * @param int $g
+     * @param int $b
      * @return string
      */
     private function getContrastColor($r, $g, $b)
