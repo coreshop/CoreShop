@@ -1,11 +1,12 @@
 includes:
-    - vendor/phpstan/phpstan-doctrine/extension.neon
-    - vendor/phpstan/phpstan-symfony/extension.neon
-    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+    - ../../vendor/phpstan/phpstan-doctrine/extension.neon
+    - ../../vendor/phpstan/phpstan-symfony/extension.neon
+    - ../../vendor/phpstan/phpstan-webmozart-assert/extension.neon
 
 parameters:
     autoload_files:
         - %currentWorkingDirectory%/vendor/pimcore/pimcore/lib/helper-functions.php
+        - %currentWorkingDirectory%/vendor/pimcore/pimcore/stubs/compatibility-v4.php
 
     reportUnmatchedIgnoredErrors: false
 
@@ -15,7 +16,6 @@ parameters:
     excludes_analyse:
         # Makes PHPStan crash
         - '**/DependencyInjection/Configuration.php'
-        - '**/CoreShop/DependencyAnalysis/*.php'
 
     ignoreErrors:
         # Magic calls
