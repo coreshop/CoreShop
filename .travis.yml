@@ -25,6 +25,7 @@ matrix:
           php: 7.2
           env:
             - CORESHOP_SUITE=phpstan
+            - PIMCORE_VERSION="5.5.3"
 
         - sudo: required
           php: 7.1
