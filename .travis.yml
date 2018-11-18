@@ -13,6 +13,7 @@ env:
         - CORESHOP_TEST=1
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
         - CORESHOP_SUITE=tests
+        - PIMCORE_VERSION="^5"
 
 matrix:
     include:
@@ -25,28 +26,25 @@ matrix:
           php: 7.2
           env:
             - CORESHOP_SUITE=phpstan
-            - PIMCORE_VERSION="5.5.3"
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_VERSION="5.4.4"
+            - PIMCORE_VERSION="~5.4.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="5.4.4"
+            - PIMCORE_VERSION="~5.4.0"
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_VERSION="5.5.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="5.5.0"
-
+            - 
         - sudo: required
           php: 7.1
           env:
