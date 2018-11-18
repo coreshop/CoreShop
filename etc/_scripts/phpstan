@@ -3,4 +3,4 @@ set -e
 
 echo "RUNNING PHPSTAN"
 
-vendor/bin/stan analyse -c phpstan.neon src -l 1
+vendor/bin/phpstan analyse -c phpstan.neon src -l 1
