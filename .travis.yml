@@ -12,7 +12,7 @@ env:
         - PIMCORE_ENVIRONMENT=test
         - CORESHOP_TEST=1
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
-        - CORESHOP_SUITE=behat
+        - CORESHOP_SUITE=tests
 
 matrix:
     include:

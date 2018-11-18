@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-export CS_HOME=$TRAVIS_BUILD_DIR
+phpenv config-add $CS_HOME/etc/_config/php.ini
 
-if [ $CORESHOP_RUN_ECS == 0 ]; then
-    $TRAVIS_BUILD_DIR/etc/travis/setup/tests/install
-else
-    $TRAVIS_BUILD_DIR/etc/travis/setup/ecs/install
-fi
+$CS_HOME/etc/_setup/install

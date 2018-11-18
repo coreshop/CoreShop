@@ -3,4 +3,4 @@ set -e
 
 export CS_HOME=$TRAVIS_BUILD_DIR
 
-$CS_HOME/etc/travis/scripts/$CORESHOP_SUITE
+$CS_HOME/etc/_scripts/$CORESHOP_SUITE

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-phpenv config-add $CS_HOME/etc/_config/php.ini
-COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts
