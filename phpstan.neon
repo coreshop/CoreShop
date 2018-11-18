@@ -1,8 +1,3 @@
-includes:
-    - vendor/phpstan/phpstan-doctrine/extension.neon
-    - vendor/phpstan/phpstan-symfony/extension.neon
-    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
-
 parameters:
     autoload_files:
         - %currentWorkingDirectory%/vendor/pimcore/pimcore/lib/helper-functions.php
@@ -28,4 +23,8 @@ parameters:
         - '/Constant PIMCORE_WEB_ROOT not found./'
         - '/Constant PIMCORE_DEVMODE not found./'
         - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
+
+        - '/Class LuceneSearchBundle/'
+        - '/has unknown class LuceneSearchBundle/'
+        - '/typehint type LuceneSearchBundle/'
 
