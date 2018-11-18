@@ -116,7 +116,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
      *
      * @return boolean
      */
-    public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode);
+    public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 
     /**
      * @param float $weight

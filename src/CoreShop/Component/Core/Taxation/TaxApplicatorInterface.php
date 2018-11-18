@@ -9,7 +9,7 @@ interface TaxApplicatorInterface
     /**
      * apply taxes on a price
      *
-     * @param $price
+     * @param int $price
      * @param array $context
      * @param TaxCalculatorInterface $taxCalculator
      * @param bool $withTax

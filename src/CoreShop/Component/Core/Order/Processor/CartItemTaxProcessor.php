@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -20,6 +21,7 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
+use Webmozart\Assert\Assert;
 
 final class CartItemTaxProcessor implements CartProcessorInterface
 {
@@ -59,8 +61,15 @@ final class CartItemTaxProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
+        $store = $cart->getStore();
+
         /**
-         * @var $item CartItemInterface
+         * @var StoreInterface $store
+         */
+        Assert::isInstanceOf($store, StoreInterface::class);
+
+        /**
+         * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(), $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
@@ -70,7 +79,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $item->getTotal(false)));
 
-                if ($cart->getStore()->getUseGrossPrice()) {
+                if ($store->getUseGrossPrice()) {
                     $item->setItemTax($taxCalculator->getTaxesAmountFromGross($item->getItemPrice(true)));
                 }
                 else {

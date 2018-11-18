@@ -24,9 +24,7 @@ interface IndexInterface extends ResourceInterface, TimestampableInterface
     public function getName();
 
     /**
-     * @param $name
-     *
-     * @return static
+     * @param string $name
      */
     public function setName($name);
 
@@ -37,8 +35,6 @@ interface IndexInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param string $worker
-     *
-     * @return static
      */
     public function setWorker($worker);
 
@@ -49,8 +45,6 @@ interface IndexInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param string $class
-     *
-     * @return static
      */
     public function setClass($class);
 
@@ -87,9 +81,7 @@ interface IndexInterface extends ResourceInterface, TimestampableInterface
     public function getConfiguration();
 
     /**
-     * @param $configuration
-     *
-     * @return mixed
+     * @param array $configuration
      */
     public function setConfiguration($configuration);
 }

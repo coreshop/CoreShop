@@ -17,7 +17,7 @@ use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 interface ConfigurationServiceInterface
 {
     /**
-     * @param $key
+     * @param string $key
      * @param bool $returnObject
      *
      * @return ConfigurationInterface
@@ -25,15 +25,15 @@ interface ConfigurationServiceInterface
     public function get($key, $returnObject = false);
 
     /**
-     * @param $key
-     * @param $data
+     * @param string $key
+     * @param mixed $data
      *
      * @return ConfigurationInterface
      */
     public function set($key, $data);
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return ConfigurationInterface
      */

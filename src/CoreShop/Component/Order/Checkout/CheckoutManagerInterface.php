@@ -19,7 +19,7 @@ interface CheckoutManagerInterface
 {
     /**
      * @param CheckoutStepInterface $step
-     * @param $priority
+     * @param int $priority
      */
     public function addCheckoutStep(CheckoutStepInterface $step, $priority);
 
@@ -29,42 +29,42 @@ interface CheckoutManagerInterface
     public function getSteps();
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return CheckoutStepInterface|null
      */
     public function getStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return CheckoutStepInterface|null
      */
     public function getNextStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return bool
      */
     public function hasNextStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return CheckoutStepInterface|null
      */
     public function getPreviousStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return bool
      */
     public function hasPreviousStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return CheckoutStepInterface[]
      */
@@ -88,9 +88,9 @@ interface CheckoutManagerInterface
     public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return int
      */
     public function getCurrentStepIndex($identifier);
 

@@ -124,9 +124,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
     {
-        /*
-         * @var $cart CartInterface
-         */
         Assert::isInstanceOf($order, OrderInterface::class);
         Assert::isInstanceOf($invoice, OrderInvoiceInterface::class);
 
@@ -139,8 +136,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoiceNumber = $this->numberGenerator->generate($invoice);
 
         /**
-         * @var $invoice OrderInvoiceInterface
-         * @var $order OrderInterface
+         * @var OrderInvoiceInterface $invoice
+         * @var OrderInterface $order
          */
         $invoice->setKey($this->keyTransformer->transform($invoiceNumber));
         $invoice->setInvoiceNumber($invoiceNumber);
@@ -158,7 +155,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $items = [];
 
         /**
-         * @var $cartItem CartItemInterface
+         * @var CartItemInterface $cartItem
          */
         foreach ($itemsToTransform as $item) {
             $invoiceItem = $this->invoiceItemFactory->createNew();
@@ -210,7 +207,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $subtotalWithoutTax = 0;
 
         /**
-         * @var $item OrderInvoiceItemInterface
+         * @var OrderInvoiceItemInterface $item
          */
         foreach ($invoice->getItems() as $item) {
             if ($base) {
@@ -292,7 +289,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderInterface $order
-     * @param                $adjustmentIdentifier
+     * @param string         $adjustmentIdentifier
      * @param bool           $withTax
      * @param bool           $base
      * @return int
@@ -303,7 +300,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $processedValue = 0;
 
         /**
-         * @var $invoice OrderInvoiceInterface
+         * @var OrderInvoiceInterface $invoice
          */
         foreach ($invoices as $invoice) {
             foreach ($base ? $invoice->getBaseAdjustments() : $invoice->getAdjustments() as $adjustment) {

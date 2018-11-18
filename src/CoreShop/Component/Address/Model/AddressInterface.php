@@ -23,7 +23,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getSalutation();
 
     /**
-     * @param $salutation
+     * @param string $salutation
      */
     public function setSalutation($salutation);
 
@@ -33,7 +33,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getFirstname();
 
     /**
-     * @param $firstname
+     * @param string $firstname
      */
     public function setFirstname($firstname);
 
@@ -43,7 +43,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getLastname();
 
     /**
-     * @param $lastname
+     * @param string $lastname
      */
     public function setLastname($lastname);
 
@@ -53,7 +53,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getCompany();
 
     /**
-     * @param $company
+     * @param string $company
      */
     public function setCompany($company);
 
@@ -63,7 +63,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getStreet();
 
     /**
-     * @param $street
+     * @param string $street
      */
     public function setStreet($street);
 
@@ -73,7 +73,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getNumber();
 
     /**
-     * @param $number
+     * @param string $number
      */
     public function setNumber($number);
 
@@ -83,7 +83,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getPostcode();
 
     /**
-     * @param $postcode
+     * @param string $postcode
      */
     public function setPostcode($postcode);
 
@@ -93,7 +93,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getCity();
 
     /**
-     * @param $city
+     * @param string $city
      */
     public function setCity($city);
 
@@ -103,7 +103,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getCountry();
 
     /**
-     * @param $country
+     * @param string $country
      */
     public function setCountry($country);
 
@@ -113,7 +113,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getState();
 
     /**
-     * @param $state
+     * @param string $state
      */
     public function setState($state);
 
@@ -123,7 +123,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getPhoneNumber();
 
     /**
-     * @param $phoneNumber
+     * @param string $phoneNumber
      */
     public function setPhoneNumber($phoneNumber);
 }

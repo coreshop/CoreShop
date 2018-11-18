@@ -15,13 +15,13 @@ namespace CoreShop\Component\Tracking\Extractor;
 interface TrackingExtractorInterface
 {
     /**
-     * @param $object
+     * @param mixed $object
      * @return bool
      */
     public function supports($object);
 
     /**
-     * @param       $object
+     * @param mixed $object
      * @param array $data
      * @return array
      */

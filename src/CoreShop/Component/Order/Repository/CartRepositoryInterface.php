@@ -31,7 +31,7 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
     public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer);
 
     /**
-     * @param $id
+     * @param int $id
      * @return CartInterface|null
      */
     public function findCartById($id);

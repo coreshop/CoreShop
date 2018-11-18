@@ -16,6 +16,7 @@ use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use Pimcore\Model\Asset\Image;
 use Pimcore\Tool;
+use Webmozart\Assert\Assert;
 
 final class ImageExtractor implements ExtractorInterface
 {
@@ -33,8 +34,10 @@ final class ImageExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        Assert::isInstanceOf($object, SEOImageAwareInterface::class);
+
         /**
-         * @var $object SEOImageAwareInterface
+         * @var SEOImageAwareInterface $object
          */
         $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('seo');
         $seoMetadata->addExtraProperty('og:image', $ogImage);

@@ -45,8 +45,8 @@ final class CartToOrderTransformerWorkflowApplier implements ProposalTransformer
     public function transform(ProposalInterface $cart, ProposalInterface $sale)
     {
         /**
-         * @var $cart CartInterface
-         * @var $order OrderInterface
+         * @var CartInterface $cart
+         * @var OrderInterface $order
          */
         $sale = $this->innerCartToOrderTransformer->transform($cart, $sale);
 

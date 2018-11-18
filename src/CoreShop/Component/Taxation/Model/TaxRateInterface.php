@@ -20,17 +20,14 @@ use CoreShop\Component\Resource\Model\TranslatableInterface;
 interface TaxRateInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface, ToggleableInterface
 {
     /**
-     * @param $language
-     *
-     * @return mixed
+     * @param string $language
+     * @return string
      */
     public function getName($language = null);
 
     /**
-     * @param $name
-     * @param $language
-     *
-     * @return mixed
+     * @param string $name
+     * @param string $language
      */
     public function setName($name, $language = null);
 
@@ -41,8 +38,6 @@ interface TaxRateInterface extends ResourceInterface, TranslatableInterface, Tim
 
     /**
      * @param float $rate
-     *
-     * @return static
      */
     public function setRate($rate);
 }

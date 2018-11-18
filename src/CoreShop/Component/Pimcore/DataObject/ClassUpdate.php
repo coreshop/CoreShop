@@ -33,7 +33,7 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
     private $fieldsToRename = [];
 
     /**
-     * @param $className
+     * @param string $className
      * @throws ClassDefinitionNotFoundException
      */
     public function __construct($className)

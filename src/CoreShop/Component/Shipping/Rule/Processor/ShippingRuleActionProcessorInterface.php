@@ -34,7 +34,7 @@ interface ShippingRuleActionProcessorInterface
      * @param CarrierInterface $carrier
      * @param ShippableInterface $shippable
      * @param AddressInterface $address
-     * @param $price
+     * @param int $price
      *
      * @return mixed
      */

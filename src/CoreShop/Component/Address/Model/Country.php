@@ -24,6 +24,7 @@ class Country extends AbstractResource implements CountryInterface
     use TimestampableTrait;
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -173,6 +174,18 @@ class Country extends AbstractResource implements CountryInterface
     public function getZoneName()
     {
         return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     * @return CountryTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var CountryTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale);
+        return $translation;
     }
 
     /**

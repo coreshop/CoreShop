@@ -45,8 +45,8 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())).'_'.$uniqueId;
 
         /**
-         * @var $payment PaymentInterface
-         * @var $payment Payment
+         * @var PaymentInterface $payment
+         * @var Payment $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);

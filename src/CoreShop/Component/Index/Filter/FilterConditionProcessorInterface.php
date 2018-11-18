@@ -28,7 +28,7 @@ interface FilterConditionProcessorInterface
      * @param FilterConditionInterface $condition
      * @param FilterInterface $filter
      * @param ListingInterface $list
-     * @param $currentFilter
+     * @param array $currentFilter
      * @param ParameterBag $parameterBag
      * @param bool $isPrecondition
      *
@@ -40,7 +40,7 @@ interface FilterConditionProcessorInterface
      * @param FilterConditionInterface $condition
      * @param FilterInterface $filter
      * @param ListingInterface $list
-     * @param $currentFilter
+     * @param array $currentFilter
      *
      * @return array
      */

@@ -28,15 +28,15 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setSku($sku);
 
     /**
-     * @param string|null $language
+     * @param string $language
      *
-     * @return mixed
+     * @return string
      */
     public function getName($language = null);
 
     /**
-     * @param $name
-     * @param string|null $language
+     * @param string $name
+     * @param string $language
      */
     public function setName($name, $language = null);
 
@@ -71,7 +71,7 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function getImages();
 
     /**
-     * @param $images
+     * @param mixed $images
      */
     public function setImages($images);
 
@@ -103,16 +103,16 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     /**
      * Get all Variants Differences.
      *
-     * @param $language
-     * @param $type
-     * @param $field
+     * @param string $language
+     * @param string $type
+     * @param string $field
      *
      * @return array|bool
      */
     public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
 
     /**
-     * @param string|null $language
+     * @param string $language
      *
      * @return string
      */

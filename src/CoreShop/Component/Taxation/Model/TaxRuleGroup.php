@@ -75,8 +75,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**

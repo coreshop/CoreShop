@@ -43,7 +43,16 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
 
         if (is_array($conditions)) {
             foreach ($conditions as $cond) {
-                $conditionParams[] = $this->conditionProcessors->get($cond->getType())->prepareValuesForRendering($cond, $filter, $list, $currentFilter);
+                $filterProcessor = $this->conditionProcessors->get($cond->getType());
+
+                if ($filterProcessor instanceof FilterConditionProcessorInterface) {
+                    $conditionParams[] = $filterProcessor->prepareValuesForRendering(
+                        $cond,
+                        $filter,
+                        $list,
+                        $currentFilter
+                    );
+                }
             }
         }
 
@@ -61,8 +70,19 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
     {
         $conditions = $condition->getConfiguration()['conditions'];
 
-        foreach ($conditions as $condition) {
-            $currentFilter = $this->conditionProcessors->get($condition->getType())->addCondition($condition, $filter, $list, $currentFilter, $parameterBag, $isPrecondition);
+        foreach ($conditions as $cond) {
+            $filterProcessor = $this->conditionProcessors->get($cond->getType());
+
+            if ($filterProcessor instanceof FilterConditionProcessorInterface) {
+                $currentFilter = $filterProcessor->addCondition(
+                    $cond,
+                    $filter,
+                    $list,
+                    $currentFilter,
+                    $parameterBag,
+                    $isPrecondition
+                );
+            }
         }
 
         return $currentFilter;

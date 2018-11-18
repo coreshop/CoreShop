@@ -20,8 +20,8 @@ interface RuleApplierInterface
      * Apply all actions from a rule.
      *
      * @param NotificationRuleInterface $rule
-     * @param $subject
-     * @param $params
+     * @param mixed $subject
+     * @param array $params
      *
      * @return mixed
      */

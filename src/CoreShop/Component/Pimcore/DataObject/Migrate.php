@@ -25,8 +25,8 @@ use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 final class Migrate
 {
     /**
-     * @param $fromClass
-     * @param $toClass
+     * @param string $fromClass
+     * @param string $toClass
      * @param array $options
      * @return ClassDefinition
      * @throws ClassDefinitionAlreadyExistsException

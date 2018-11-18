@@ -35,7 +35,7 @@ final class Db extends \Pimcore\Db
     /**
      * Check if table exists
      *
-     * @param $table
+     * @param string $table
      * @return bool
      */
     public static function tableExists($table)

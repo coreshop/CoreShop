@@ -22,9 +22,7 @@ interface CustomerGroupInterface extends ResourceInterface
     public function getName();
 
     /**
-     * @param $name
-     *
-     * @return static
+     * @param string $name
      */
     public function setName($name);
 

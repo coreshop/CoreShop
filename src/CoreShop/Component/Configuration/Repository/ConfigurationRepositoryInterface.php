@@ -18,7 +18,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 interface ConfigurationRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param $key
+     * @param string $key
      *
      * @return ConfigurationInterface
      */

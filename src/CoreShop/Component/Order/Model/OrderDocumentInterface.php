@@ -81,7 +81,7 @@ interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterfac
     public function getRenderedAsset();
 
     /**
-     * @param $renderedAsset
+     * @param mixed $renderedAsset
      */
     public function setRenderedAsset($renderedAsset);
 }

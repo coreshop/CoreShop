@@ -15,7 +15,7 @@ namespace CoreShop\Component\Registry;
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
     /**
-     * @var array
+     * @var PriorityMap
      */
     private $priortyMap;
 
@@ -147,7 +147,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     }
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return bool|int|string
      */

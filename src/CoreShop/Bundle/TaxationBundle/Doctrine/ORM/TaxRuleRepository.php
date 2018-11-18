@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\TaxationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
 
 class TaxRuleRepository extends EntityRepository implements TaxRuleRepositoryInterface
@@ -33,6 +35,18 @@ class TaxRuleRepository extends EntityRepository implements TaxRuleRepositoryInt
         return $this->createQueryBuilder('o')
             ->andWhere('o.taxRuleGroup = :taxRuleGroupId')
             ->setParameter('taxRuleGroupId', $taxRuleGroupId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByGroup(TaxRuleGroupInterface $group)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.taxRuleGroup = :taxRuleGroup')
+            ->setParameter('taxRuleGroup', $group)
             ->getQuery()
             ->getResult();
     }

@@ -30,7 +30,7 @@ interface FilterProcessorInterface
     /**
      * @param FilterInterface $filter
      * @param ListingInterface $list
-     * @param $currentFilter
+     * @param array $currentFilter
      *
      * @return mixed
      */

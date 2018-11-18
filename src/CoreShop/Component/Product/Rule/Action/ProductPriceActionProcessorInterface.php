@@ -15,7 +15,7 @@ namespace CoreShop\Component\Product\Rule\Action;
 interface ProductPriceActionProcessorInterface extends ActionProcessorInterface
 {
     /**
-     * @param $subject
+     * @param mixed $subject
      * @param array $context
      * @param array $configuration
      *

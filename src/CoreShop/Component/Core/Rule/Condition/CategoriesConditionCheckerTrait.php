@@ -33,9 +33,9 @@ trait CategoriesConditionCheckerTrait
     }
 
     /**
-     * @param $categories
+     * @param array $categories
      * @param StoreInterface $store
-     * @param $recursive
+     * @param bool $recursive
      * @return array
      */
     protected function getCategoriesToCheck($categories, StoreInterface $store, $recursive)

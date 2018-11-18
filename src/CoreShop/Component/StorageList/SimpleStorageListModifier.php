@@ -75,7 +75,7 @@ class SimpleStorageListModifier implements StorageListModifierInterface
             $item->setQuantity($newQuantity);
         } else {
             /**
-             * @var $item StorageListItemInterface
+             * @var StorageListItemInterface $item
              */
             $item = $this->storageListItemFactory->createNew();
             $item->setProduct($product);

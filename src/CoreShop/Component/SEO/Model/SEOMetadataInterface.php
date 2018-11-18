@@ -60,17 +60,17 @@ interface SEOMetadataInterface
     public function getTitle();
 
     /**
-     * @param array
+     * @param array $extraProperties
      */
     public function setExtraProperties($extraProperties);
 
     /**
-     * @param array
+     * @param array $extraNames
      */
     public function setExtraNames($extraNames);
 
     /**
-     * @param array
+     * @param array $extraHttp
      */
     public function setExtraHttp($extraHttp);
 

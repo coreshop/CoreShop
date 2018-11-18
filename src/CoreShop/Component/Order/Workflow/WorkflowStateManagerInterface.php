@@ -24,18 +24,18 @@ interface WorkflowStateManagerInterface
     public function getStateHistory(ProposalInterface $proposal);
 
     /**
-     * @param      $workflowName
-     * @param      $value
-     * @param bool $forFrontend
+     * @param string $workflowName
+     * @param string $value
+     * @param bool   $forFrontend
      * @return array
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true);
 
     /**
-     * @param       $subject
-     * @param       $workflowName
-     * @param array $transitions
-     * @param bool $forFrontend
+     * @param mixed  $subject
+     * @param string $workflowName
+     * @param array  $transitions
+     * @param bool   $forFrontend
      * @return mixed
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);

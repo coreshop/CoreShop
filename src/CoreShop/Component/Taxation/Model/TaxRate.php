@@ -23,6 +23,7 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     use TimestampableTrait;
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -70,8 +71,6 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     public function setName($name, $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
-
-        return $this;
     }
 
     /**
@@ -88,9 +87,20 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     public function setRate($rate)
     {
         $this->rate = $rate;
-
-        return $this;
     }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     * @return TaxRateTranslation
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var TaxRateTranslation $translation */
+        $translation = $this->doGetTranslation($locale);
+        return $translation;
+    }
+
 
     /**
      * {@inheritdoc}

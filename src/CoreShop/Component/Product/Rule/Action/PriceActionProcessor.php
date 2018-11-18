@@ -48,9 +48,16 @@ class PriceActionProcessor implements ProductPriceActionProcessorInterface
         Assert::keyExists($context, 'currency');
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
 
+        /**
+         * @var CurrencyInterface $currency
+         * @var CurrencyInterface $contextCurrency
+         */
+        $contextCurrency = $context['currency'];
         $price = $configuration['price'];
         $currency = $this->currencyRepository->find($configuration['currency']);
 
-        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $context['currency']->getIsoCode());
+        Assert::isInstanceOf($currency, CurrencyInterface::class);
+
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $contextCurrency->getIsoCode());
     }
 }

@@ -18,12 +18,17 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 interface RelationInterpreterInterface extends InterpreterInterface
 {
     /**
-     * @param $value
-     * @param IndexableInterface $indexable
+     * @param mixed                $value
+     * @param IndexableInterface   $indexable
      * @param IndexColumnInterface $config
-     * @param array $interpreterConfig
+     * @param array                $interpreterConfig
      *
      * @return array|RelationalValueInterface[]
      */
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
+    public function interpretRelational(
+        $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        $interpreterConfig = []
+    );
 }

@@ -72,7 +72,7 @@ class SEOPresentation implements SEOPresentationInterface
     }
 
     /**
-     * @param $object
+     * @param mixed $object
      * @return SEOMetadata
      */
     protected function extractSeoMetaData($object)
@@ -80,7 +80,7 @@ class SEOPresentation implements SEOPresentationInterface
         $seoMetadata = new SEOMetadata();
 
         /**
-         * @var $extractor ExtractorInterface
+         * @var ExtractorInterface $extractor
          */
         foreach ($this->extractorRegistry->all() as $extractor) {
             if ($extractor->supports($object)) {

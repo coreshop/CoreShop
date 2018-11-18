@@ -18,7 +18,7 @@ use Pimcore\Model\Element\ElementInterface;
 interface PimcoreModelInterface extends ResourceInterface, ElementInterface
 {
     /**
-     * @param $key
+     * @param string $key
      */
     public function setKey($key);
 

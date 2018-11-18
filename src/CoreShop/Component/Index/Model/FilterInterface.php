@@ -24,9 +24,7 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
     public function getName();
 
     /**
-     * @param $name
-     *
-     * @return static
+     * @param string $name
      */
     public function setName($name);
 
@@ -37,8 +35,6 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param int $resultsPerPage
-     *
-     * @return static
      */
     public function setResultsPerPage($resultsPerPage);
 
@@ -49,8 +45,6 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param string $orderDirection
-     *
-     * @return static
      */
     public function setOrderDirection($orderDirection);
 
@@ -61,8 +55,6 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param string $orderKey
-     *
-     * @return static
      */
     public function setOrderKey($orderKey);
 
@@ -127,8 +119,6 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param IndexInterface $index
-     *
-     * @return static
      */
     public function setIndex(IndexInterface $index);
 }

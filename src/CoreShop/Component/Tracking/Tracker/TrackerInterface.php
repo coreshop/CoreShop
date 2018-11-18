@@ -24,32 +24,32 @@ interface TrackerInterface
      */
     public function setEnabled($enabled);
 
-        /**
-     * @param $product
+    /**
+     * @param mixed $product
      */
     public function trackProduct($product);
 
     /**
-     * @param $product
+     * @param mixed $product
      */
     public function trackProductImpression($product);
 
     /**
-     * @param $cart
-     * @param $product
+     * @param mixed $cart
+     * @param mixed $product
      * @param int $quantity
      */
     public function trackCartAdd($cart, $product, $quantity = 1);
 
     /**
-     * @param $cart
-     * @param $product
+     * @param mixed $cart
+     * @param mixed $product
      * @param int $quantity
      */
     public function trackCartRemove($cart, $product, $quantity = 1);
 
     /**
-     * @param $cart
+     * @param mixed $cart
      * @param null $stepIdentifier
      * @param boolean $isFirstStep
      * @param null $checkoutOption
@@ -57,7 +57,7 @@ interface TrackerInterface
     public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null);
 
     /**
-     * @param $order
+     * @param mixed $order
      */
     public function trackCheckoutComplete($order);
 }

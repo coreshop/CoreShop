@@ -19,9 +19,9 @@ class SharedTranslation
     /**
      * Add a new Shared Translation
      *
-     * @param $key
-     * @param $language
-     * @param $value
+     * @param string $key
+     * @param string $language
+     * @param string $value
      */
     public static function add($key, $language, $value)
     {
@@ -36,6 +36,9 @@ class SharedTranslation
     public static function cleanup()
     {
         $list = new Website\Listing();
-        $list->cleanup();
+
+        if (method_exists($list, 'cleanup')) {
+            $list->cleanup();
+        }
     }
 }

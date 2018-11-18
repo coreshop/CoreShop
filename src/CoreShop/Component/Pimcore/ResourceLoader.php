@@ -17,8 +17,8 @@ use Pimcore\Tool\Admin;
 final class ResourceLoader
 {
     /**
-     * @param $resources
-     * @param $minify
+     * @param array $resources
+     * @param boolean $minify
      * @return array
      */
     public function loadResources($resources, $minify = false)

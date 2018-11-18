@@ -14,6 +14,7 @@ namespace CoreShop\Component\SEO\Extractor;
 
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
+use Webmozart\Assert\Assert;
 
 final class OGExtractor implements ExtractorInterface
 {
@@ -30,6 +31,8 @@ final class OGExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        Assert::isInstanceOf($object, SEOOpenGraphAwareInterface::class);
+
         /**
          * @var $object SEOOpenGraphAwareInterface
          */

@@ -128,7 +128,10 @@ class NoteService implements NoteServiceInterface
         }
 
         $noteType = $note->getType();
-        $note->delete();
+
+        if (method_exists($note, 'delete')) {
+            $note->delete();
+        }
 
         $this->eventDispatcher->dispatch(
             sprintf('coreshop.note.%s.pot_delete', $noteType),

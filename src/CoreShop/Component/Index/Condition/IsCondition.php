@@ -15,18 +15,18 @@ namespace CoreShop\Component\Index\Condition;
 class IsCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var string
      */
     private $fieldName;
 
     /**
-     * @var $string
+     * @var string
      */
     private $value;
 
     /**
-     * @param $fieldName
-     * @param $value
+     * @param string $fieldName
+     * @param string $value
      */
     public function __construct($fieldName, $value)
     {
@@ -35,7 +35,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFieldName()
     {
@@ -43,7 +43,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $fieldName
+     * @param string $fieldName
      */
     public function setFieldName($fieldName)
     {
@@ -51,7 +51,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getValue()
     {
@@ -59,7 +59,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      */
     public function setValue($value)
     {

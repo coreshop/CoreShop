@@ -25,22 +25,22 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
     public function getIsoCode();
 
     /**
-     * @param $isoCode
+     * @param string $isoCode
      *
      * @return static
      */
     public function setIsoCode($isoCode);
 
     /**
-     * @param $language
+     * @param string $language
      *
      * @return mixed
      */
     public function getName($language = null);
 
     /**
-     * @param $name
-     * @param $language
+     * @param string $name
+     * @param string $language
      *
      * @return mixed
      */

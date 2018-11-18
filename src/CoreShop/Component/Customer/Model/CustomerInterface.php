@@ -39,9 +39,7 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
     public function getFirstname();
 
     /**
-     * @param $firstname
-     *
-     * @return static
+     * @param string $firstname
      */
     public function setFirstname($firstname);
 
@@ -51,43 +49,37 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
     public function getLastname();
 
     /**
-     * @param $lastname
-     *
-     * @return static
+     * @param string $lastname
      */
     public function setLastname($lastname);
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getGender();
 
     /**
-     * @param $gender
-     *
-     * @return static
+     * @param string $gender
      */
     public function setGender($gender);
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail();
 
     /**
-     * @param $email
-     *
-     * @return static
+     * @param string $email
      */
     public function setEmail($email);
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPassword();
 
     /**
-     * @param $password
+     * @param string $password
      */
     public function setPassword($password);
 
@@ -97,7 +89,7 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
     public function getPasswordResetHash();
 
     /**
-     * @param $passwordResetHash
+     * @param string $passwordResetHash
      */
     public function setPasswordResetHash($passwordResetHash);
 
@@ -108,8 +100,6 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
 
     /**
      * @param bool $guest
-     *
-     * @return static
      */
     public function setIsGuest($guest);
 
@@ -120,8 +110,6 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
 
     /**
      * @param CustomerGroupInterface[] $customerGroups
-     *
-     * @return static
      */
     public function setCustomerGroups($customerGroups);
 }

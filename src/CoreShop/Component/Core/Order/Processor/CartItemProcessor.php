@@ -13,12 +13,14 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use Webmozart\Assert\Assert;
 
 final class CartItemProcessor implements CartProcessorInterface
 {
@@ -58,16 +60,23 @@ final class CartItemProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
+        $store = $cart->getStore();
+
+        /**
+         * @var StoreInterface $store
+         */
+        Assert::isInstanceOf($store, StoreInterface::class);
+
         $context = [
-            'store' => $cart->getStore(),
+            'store' => $store,
             'customer' => $cart->getCustomer() ?: null,
             'currency' => $cart->getCurrency(),
-            'country' => $cart->getStore()->getBaseCountry(),
+            'country' => $store->getBaseCountry(),
             'cart' => $cart
         ];
 
         /**
-         * @var $item CartItemInterface
+         * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
@@ -81,7 +90,7 @@ final class CartItemProcessor implements CartProcessorInterface
             $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
-                if ($cart->getStore()->getUseGrossPrice()) {
+                if ($store->getUseGrossPrice()) {
                     $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemPrice * $item->getQuantity());
                     $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
                     $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);

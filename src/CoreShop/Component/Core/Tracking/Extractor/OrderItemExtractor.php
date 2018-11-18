@@ -35,7 +35,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
     public function updateMetadata($object, $data = []): array
     {
         /**
-         * @var $object ProposalItemInterface
+         * @var ProposalItemInterface $object
          */
         $product = $object->getProduct();
         $categories = [];

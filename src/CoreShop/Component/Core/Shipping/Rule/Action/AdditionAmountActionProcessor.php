@@ -16,6 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
@@ -58,12 +59,14 @@ class AdditionAmountActionProcessor implements CarrierPriceActionProcessorInterf
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
     {
         /**
-         * @var $shippable CartInterface
+         * @var CartInterface $shippable
          */
         Assert::isInstanceOf($shippable, CartInterface::class);
 
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
+
+        Assert::isInstanceOf($currency, CurrencyInterface::class);
 
         return $this->moneyConverter->convert($amount, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
     }

@@ -57,8 +57,8 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
     }
 
     /**
-     * @param $model
-     * @param $params
+     * @param mixed $model
+     * @param array $params
      *
      * @return GenericEvent
      */

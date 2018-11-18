@@ -17,32 +17,32 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface CategoryInterface extends PimcoreModelInterface
 {
     /**
-     * @param null $language
+     * @param string $language
      *
-     * @return mixed
+     * @return string
      */
     public function getName($language = null);
 
     /**
-     * @param $name
-     * @param null $language
+     * @param string $name
+     * @param string $language
      *
-     * @return mixed
+     * @return string
      */
     public function setName($name, $language = null);
 
     /**
-     * @param null $language
+     * @param string $language
      *
-     * @return mixed
+     * @return string
      */
     public function getDescription($language = null);
 
     /**
-     * @param $description
-     * @param null $language
+     * @param string $description
+     * @param string $language
      *
-     * @return mixed
+     * @return string
      */
     public function setDescription($description, $language = null);
 

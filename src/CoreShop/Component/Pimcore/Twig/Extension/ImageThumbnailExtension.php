@@ -39,9 +39,9 @@ final class ImageThumbnailExtension extends \Twig_Extension
     }
 
     /**
-     * @param Image $image
-     * @param       $thumbnail
-     * @param bool  $deferred
+     * @param Image  $image
+     * @param string $thumbnail
+     * @param bool   $deferred
      * @return Image\Thumbnail
      */
     public function getImageThumbnail(Image $image, $thumbnail, $deferred = true)
@@ -50,11 +50,11 @@ final class ImageThumbnailExtension extends \Twig_Extension
     }
 
     /**
-     * @param Image $image
-     * @param       $thumbnail
-     * @param array $options
-     * @param array $removeAttributes
-     * @param bool  $deferred
+     * @param Image  $image
+     * @param string $thumbnail
+     * @param array  $options
+     * @param array  $removeAttributes
+     * @param bool   $deferred
      * @return string
      */
     public function getImageThumbnailHtml(

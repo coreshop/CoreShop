@@ -34,10 +34,9 @@ class VariantHelper
     /**
      * @param ProductInterface $master
      * @param ProductInterface $currentProduct
-     * @param string $type
-     * @param string $field
-     * @param string $language
-     *
+     * @param string           $type
+     * @param string           $field
+     * @param string           $language
      * @return array
      */
     public static function getProductVariations(ProductInterface $master, ProductInterface $currentProduct, $type = 'objectbricks', $field = 'variants', $language = 'en')
@@ -121,6 +120,10 @@ class VariantHelper
      */
     public static function getVariantValuesFromClassificationStore(ProductInterface $master, $classificationStoreField = 'classificationStore', $language = 'en')
     {
+        if (!method_exists($master, 'getClassId')) {
+            throw new \InvalidArgumentException(sprintf('getClassId in Object %s not found', $master));
+        }
+
         $productClassDefinition = ClassDefinition::getById($master->getClassId());
 
         $definition = $productClassDefinition->getFieldDefinition($classificationStoreField);
@@ -203,6 +206,10 @@ class VariantHelper
      */
     public static function getVariantValuesFromBrick(ProductInterface $master, $brickField = 'variants', $language = 'en')
     {
+        if (!method_exists($master, 'getClassId')) {
+            throw new \InvalidArgumentException(sprintf('getClassId in Object %s not found', $master));
+        }
+
         $productClassDefinition = ClassDefinition::getById($master->getClassId());
 
         $definition = $productClassDefinition->getFieldDefinition($brickField);
@@ -211,6 +218,9 @@ class VariantHelper
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge([$master], $productVariants);
 
+            if (!method_exists($master, 'getVariants')) {
+                throw new \InvalidArgumentException(sprintf('getClassId in Object %s not found', $master));
+            }
             //we do have some dimension entries!
             $variantData = $master->getVariants();
 
@@ -284,9 +294,9 @@ class VariantHelper
     }
 
     /**
-     * @param $tmpArray
-     * @param $allowedProductIds
-     * @param $filtered
+     * @param array $tmpArray
+     * @param array $allowedProductIds
+     * @param array $filtered
      *
      * @return mixed
      */
@@ -306,8 +316,8 @@ class VariantHelper
     }
 
     /**
-     * @param $value
-     * @param $array
+     * @param mixed $value
+     * @param array $array
      *
      * @return array
      */
@@ -346,7 +356,7 @@ class VariantHelper
     }
 
     /**
-     * @param      $getter
+     * @param mixed $getter
      * @param bool $restrictTypes
      *
      * @return array
@@ -396,18 +406,20 @@ class VariantHelper
         $condition = 'o_path LIKE ?';
         $conditionParams = [$object->getFullPath().'/%'];
 
-        $storeParams = [];
+        if (method_exists($object, 'getStores')) {
+            $storeParams = [];
 
-        foreach ($object->getStores() as $shop) {
-            $storeParams[] = "stores LIKE '%,".$shop.",%'";
+            foreach ($object->getStores() as $shop) {
+                $storeParams[] = "stores LIKE '%,".$shop.",%'";
+            }
+
+            $condition .= ' AND ('.implode(' OR ', $storeParams).')';
+
+            $list->setCondition($condition, $conditionParams);
+            $list->setOrderKey('o_key');
+            $list->setOrder('asc');
+            $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
         }
-
-        $condition .= ' AND ('.implode(' OR ', $storeParams).')';
-
-        $list->setCondition($condition, $conditionParams);
-        $list->setOrderKey('o_key');
-        $list->setOrder('asc');
-        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
 
         return $list->load();
     }

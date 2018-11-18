@@ -99,7 +99,7 @@ final class TaxRuleGroupContext implements Context
          */
         $group = reset($groups);
 
-        $rules = $this->taxRuleRepository->getByGroupId($group->getId());
+        $rules = $this->taxRuleRepository->findByGroup($group);
 
         Assert::eq(
             count($rules),

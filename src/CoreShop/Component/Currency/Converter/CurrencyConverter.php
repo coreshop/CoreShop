@@ -99,8 +99,8 @@ final class CurrencyConverter implements CurrencyConverterInterface
     }
 
     /**
-     * @param $prefix
-     * @param $suffix
+     * @param string $prefix
+     * @param string $suffix
      *
      * @return string
      */

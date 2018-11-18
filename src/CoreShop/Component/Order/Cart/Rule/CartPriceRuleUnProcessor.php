@@ -12,12 +12,14 @@
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
+use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
+use Webmozart\Assert\Assert;
 
 class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
 {
@@ -47,6 +49,8 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
             foreach ($cartPriceRule->getActions() as $action) {
                 if ($action instanceof ActionInterface) {
                     $actionCommand = $this->actionServiceRegistry->get($action->getType());
+
+                    Assert::isInstanceOf($actionCommand, CartPriceRuleActionProcessorInterface::class);
 
                     $actionCommand->unApplyRule($cart, $action->getConfiguration(), $priceRuleItem);
                 }

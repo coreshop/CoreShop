@@ -39,8 +39,8 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
     }
 
     /**
-     * @param $postcode
-     * @param $deliveryPostcode
+     * @param string $postcode
+     * @param string $deliveryPostcode
      *
      * @return bool
      */

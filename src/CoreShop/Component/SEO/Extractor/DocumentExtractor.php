@@ -15,6 +15,7 @@ namespace CoreShop\Component\SEO\Extractor;
 use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use Pimcore\Model\Document\Page;
+use Webmozart\Assert\Assert;
 
 final class DocumentExtractor implements ExtractorInterface
 {
@@ -31,6 +32,8 @@ final class DocumentExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        Assert::isInstanceOf($object, Page::class);
+
         /**
          * @var $object Page
          */

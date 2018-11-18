@@ -23,6 +23,7 @@ class Carrier extends AbstractResource implements CarrierInterface
     use TimestampableTrait;
     use TranslatableTrait {
         __construct as initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -190,6 +191,18 @@ class Carrier extends AbstractResource implements CarrierInterface
     public function hasShippingRule(ShippingRuleGroupInterface $shippingRuleGroup)
     {
         return $this->shippingRules->contains($shippingRuleGroup);
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     * @return CarrierTranslation
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var CarrierTranslation $translation */
+        $translation = $this->doGetTranslation($locale);
+        return $translation;
     }
 
     /**

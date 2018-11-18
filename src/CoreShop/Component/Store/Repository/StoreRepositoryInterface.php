@@ -24,7 +24,7 @@ interface StoreRepositoryInterface extends RepositoryInterface
     public function createListQueryBuilder();
 
     /**
-     * @param $siteId
+     * @param int $siteId
      *
      * @return StoreInterface
      */

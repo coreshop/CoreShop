@@ -57,7 +57,7 @@ class RulesProcessor implements RulesProcessorInterface
         $rules = $this->ruleRepository->findForType($type);
 
         /**
-         * @var $rule NotificationRuleInterface
+         * @var NotificationRuleInterface $rule
          */
         foreach ($rules as $rule) {
             if ($this->ruleValidationProcessor->isValid($subject, $rule, ['params' => $params])) {

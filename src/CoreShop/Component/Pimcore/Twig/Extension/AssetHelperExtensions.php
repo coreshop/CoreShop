@@ -44,7 +44,7 @@ final class AssetHelperExtensions extends \Twig_Extension
                 return is_object($object) && $object instanceof Asset\Unknown;
             }),
             new \Twig_Test('asset_video', function ($object) {
-                return is_object($object) && $object instanceof Asset\video;
+                return is_object($object) && $object instanceof Asset\Video;
             }),
         ];
     }

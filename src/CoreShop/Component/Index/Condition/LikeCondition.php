@@ -15,7 +15,7 @@ namespace CoreShop\Component\Index\Condition;
 class LikeCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var string
      */
     private $fieldName;
 
@@ -29,10 +29,13 @@ class LikeCondition implements ConditionInterface
      */
     private $value;
 
+    /**
+     * @var array
+     */
     private $allowedPatterns = ['left', 'right', 'both'];
 
     /**
-     * @param $fieldName
+     * @param string $fieldName
      * @param string $pattern
      * @param string $value
      */
@@ -48,7 +51,7 @@ class LikeCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFieldName()
     {
@@ -56,7 +59,7 @@ class LikeCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $fieldName
+     * @param string $fieldName
      */
     public function setFieldName($fieldName)
     {

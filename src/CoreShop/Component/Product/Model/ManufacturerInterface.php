@@ -17,13 +17,12 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface ManufacturerInterface extends PimcoreModelInterface
 {
     /**
-     * @return mixed
+     * @return string
      */
     public function getName();
 
     /**
-     * @param $name
-     * @return mixed
+     * @param string $name
      */
     public function setName($name);
 }

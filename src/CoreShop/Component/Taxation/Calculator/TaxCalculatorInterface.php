@@ -36,7 +36,7 @@ interface TaxCalculatorInterface
     /**
      * Compute and add the taxes to the specified price.
      *
-     * @param $price
+     * @param int $price
      *
      * @return int
      */
@@ -45,7 +45,7 @@ interface TaxCalculatorInterface
     /**
      * Compute and remove the taxes to the specified price.
      *
-     * @param $price
+     * @param int $price
      *
      * @return int
      */

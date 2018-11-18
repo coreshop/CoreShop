@@ -42,7 +42,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
         $netPrice = 0;
 
         /**
-         * @var $calculator CarrierPriceCalculatorInterface
+         * @var CarrierPriceCalculatorInterface $calculator
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
             $price = $calculator->getPrice($carrier, $shippable, $address);

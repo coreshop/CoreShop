@@ -194,7 +194,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
             $brickDefinitions = new Objectbrick\Definition\Listing();
 
             /**
-             * @var $brickDefinition Objectbrick\Definition
+             * @var Objectbrick\Definition $brickDefinition
              */
             foreach ($brickDefinitions as $brickDefinition) {
                 $brickQueryTable = $brickDefinition->getDao()->getTableName($this->definition, true);
@@ -246,7 +246,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         if ($isLocalizedField) {
             /**
-             * @var $localizedFieldDefinition Data\Localizedfields
+             * @var Data\Localizedfields $localizedFieldDefinition
              */
             $localizedFieldDefinition = $this->definition->getFieldDefinition('localizedfields');
             $localizedFieldDefinition->fieldDefinitionsCache = null;

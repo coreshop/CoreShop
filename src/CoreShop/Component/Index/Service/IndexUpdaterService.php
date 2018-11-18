@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Index\Service;
 
-use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -33,7 +33,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     private $workerServiceRegistry;
 
     /**
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface      $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
      */
     public function __construct(RepositoryInterface $indexRepository, ServiceRegistryInterface $workerServiceRegistry)
@@ -59,7 +59,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     }
 
     /**
-     * @param $subject
+     * @param string $subject
      * @param string $operation
      */
     protected function operationOnIndex($subject, $operation = 'update')
@@ -67,12 +67,16 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
         $indices = $this->indexRepository->findAll();
 
         foreach ($indices as $index) {
+            if (!$index instanceof IndexInterface) {
+                continue;
+            }
+
             if (!$this->isEligible($index, $subject)) {
                 continue;
             }
+
             /**
-             * @var $index IndexInterface
-             * @var $subject IndexableInterface
+             * @var IndexableInterface $subject
              */
             $worker = $index->getWorker();
 
@@ -81,7 +85,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
             }
 
             /**
-             * @var $worker WorkerInterface
+             * @var WorkerInterface $worker
              */
             $worker = $this->workerServiceRegistry->get($worker);
 
@@ -94,8 +98,8 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     }
 
     /**
-     * @param $index
-     * @param $subject
+     * @param IndexInterface $index
+     * @param mixed          $subject
      * @return bool
      */
     protected function isEligible($index, $subject)

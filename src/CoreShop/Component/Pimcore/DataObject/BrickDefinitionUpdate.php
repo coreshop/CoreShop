@@ -29,7 +29,7 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
 
 
     /**
-     * @param $brickKey
+     * @param string $brickKey
      * @throws ClassDefinitionNotFoundException
      */
     public function __construct($brickKey)

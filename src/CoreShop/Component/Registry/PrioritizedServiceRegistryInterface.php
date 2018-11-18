@@ -55,16 +55,22 @@ interface PrioritizedServiceRegistryInterface
     /**
      * get previous item to $identifier.
      *
-     * @param $identifier
+     * @param string $identifier
      *
      * @return mixed
      */
     public function getPreviousTo($identifier);
 
     /**
+     * @param string $identifier
+     * @return boolean
+     */
+    public function hasPreviousTo($identifier);
+
+    /**
      * get all previous items to $identifier.
      *
-     * @param $identifier
+     * @param string $identifier
      *
      * @return array
      */
@@ -73,16 +79,22 @@ interface PrioritizedServiceRegistryInterface
     /**
      * get previous item to $identifier.
      *
-     * @param $identifier
+     * @param string $identifier
      *
      * @return mixed
      */
     public function getNextTo($identifier);
 
     /**
+     * @param string $identifier
+     * @return boolean
+     */
+    public function hasNextTo($identifier);
+
+    /**
      * get index for $identifier.
      *
-     * @param $identifier
+     * @param string $identifier
      *
      * @return int
      */

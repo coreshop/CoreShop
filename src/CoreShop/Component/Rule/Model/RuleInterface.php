@@ -20,14 +20,13 @@ use Doctrine\Common\Collections\Collection;
 interface RuleInterface extends ResourceInterface, TimestampableInterface, ToggleableInterface
 {
     /**
-     * @return mixed
+     * @return string
      */
     public function getName();
 
     /**
-     * @param $name
+     * @param string $name
      *
-     * @return mixed
      */
     public function setName($name);
 
