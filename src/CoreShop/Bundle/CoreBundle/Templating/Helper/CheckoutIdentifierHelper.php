@@ -81,9 +81,9 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
         $shopSteps = [
             'cart' => [
                 'waiting' => false,
-                'done' => !is_null($stepIdentifier),
+                'done' => null !== $stepIdentifier,
                 'current' => $requestAttributes->get('_route') === 'coreshop_cart_summary',
-                'valid' => !is_null($stepIdentifier),
+                'valid' => null !== $stepIdentifier,
                 'url' => $this->linkGenerator->generate($cart, 'coreshop_cart_summary')
 
             ]
@@ -94,12 +94,12 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
             $step = $checkoutManager->getStep($identifier);
             $isValid = $step instanceof ValidationCheckoutStepInterface ? $step->validate($cart) : false;
 
-            $shopSteps[(string)$identifier] = [
-                'waiting' => is_null($stepIdentifier) || (int)$currentStep < $stepIndex,
-                'done' => !is_null($stepIdentifier) && (int)$currentStep > $stepIndex,
-                'current' => !is_null($stepIdentifier) && (int)$currentStep === $stepIndex,
+            $shopSteps[$identifier] = [
+                'waiting' => null === $stepIdentifier || $currentStep < $stepIndex,
+                'done' => null !== $stepIdentifier && $currentStep > $stepIndex,
+                'current' => null !== $stepIdentifier && $currentStep === $stepIndex,
                 'valid' => $isValid,
-                'url' => $this->linkGenerator->generate($cart, 'coreshop_checkout', ['stepIdentifier' => (string)$identifier])
+                'url' => $this->linkGenerator->generate($cart, 'coreshop_checkout', ['stepIdentifier' => $identifier])
             ];
         }
 

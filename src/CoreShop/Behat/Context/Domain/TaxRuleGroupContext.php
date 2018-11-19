@@ -95,7 +95,7 @@ final class TaxRuleGroupContext implements Context
         );
 
         /**
-         * @var $group TaxRuleGroupInterface
+         * @var TaxRuleGroupInterface $group
          */
         $group = reset($groups);
 

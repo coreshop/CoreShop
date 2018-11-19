@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -65,6 +66,9 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
     public function load(ObjectManager $manager)
     {
         $countries = CountryLoader::countries(true, true);
+        /**
+         * @var StoreInterface $store
+         */
         $store = $this->container->get('coreshop.repository.store')->findStandard();
 
         $addressFormatReplaces = [
@@ -103,7 +107,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         foreach ($countries as $country) {
             if ($country instanceof Country) {
                 /**
-                 * @var $newCountry CountryInterface
+                 * @var CountryInterface $newCountry
                  */
                 $newCountry = $this->container->get('coreshop.repository.country')->findByCode($country->getIsoAlpha2());
 
@@ -176,7 +180,6 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $manager->persist($store);
         $manager->flush();
 
-        $store = $this->container->get('coreshop.repository.store')->findStandard();
         $store->setCurrency($this->container->get('coreshop.repository.currency')->getByCode('EUR'));
         $store->setBaseCountry($this->container->get('coreshop.repository.country')->findOneBy(['isoCode' => 'AT']));
 

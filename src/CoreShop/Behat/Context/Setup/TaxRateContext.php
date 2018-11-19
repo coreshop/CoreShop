@@ -79,12 +79,12 @@ final class TaxRateContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     private function createTaxRate($name, $rate)
     {
         /**
-         * @var $taxRate TaxRateInterface
+         * @var TaxRateInterface $taxRate
          */
         $taxRate = $this->taxRateFactory->createNew();
         $taxRate->setName($name, 'en');

@@ -184,7 +184,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);

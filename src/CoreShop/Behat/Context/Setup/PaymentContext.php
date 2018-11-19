@@ -78,8 +78,8 @@ final class PaymentContext implements Context
     public function thereIsAPaymentProviderUsingFactory($name, $factory)
     {
         /**
-         * @var $paymentProvider PaymentProviderInterface
-         * @var $gatewayConfig GatewayConfig
+         * @var PaymentProviderInterface $paymentProvider
+         * @var GatewayConfig $gatewayConfig
          */
         $paymentProvider = $this->paymentProviderFactory->createNew();
         $gatewayConfig = $this->gatewayConfigFactory->createNew();
@@ -106,7 +106,7 @@ final class PaymentContext implements Context
     public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount)
     {
         /**
-         * @var $payment PaymentInterface
+         * @var PaymentInterface $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setCurrency($order->getCurrency());

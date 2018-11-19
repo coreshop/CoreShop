@@ -139,7 +139,7 @@ final class StoreContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param CurrencyInterface|null $currency
      * @param CountryInterface|null $country
      * @return StoreInterface
@@ -147,13 +147,13 @@ final class StoreContext implements Context
     private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null, $grossValues = false)
     {
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface $store
          */
         $store = $this->storeFactory->createNew();
 
         if (null === $currency) {
             /**
-             * @var $currency CurrencyInterface
+             * @var CurrencyInterface $currency
              */
             $currency = $this->currencyFactory->createNew();
             $currency->setIsoCode('EUR');
@@ -167,7 +167,7 @@ final class StoreContext implements Context
 
         if (null === $country) {
             /**
-             * @var $country CountryInterface
+             * @var CountryInterface $country
              */
             $country = $this->countryFactory->createNew();
             $country->setName('Austria');

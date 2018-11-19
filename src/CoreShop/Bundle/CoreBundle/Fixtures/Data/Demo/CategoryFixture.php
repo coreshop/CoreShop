@@ -55,7 +55,7 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
 
             for ($i = 0; $i < $categoriesCount; $i++) {
                 /**
-                 * @var $category CategoryInterface
+                 * @var CategoryInterface $category
                  */
                 $category = $this->container->get('coreshop.factory.category')->createNew();
                 $category->setName($faker->words(3, true));

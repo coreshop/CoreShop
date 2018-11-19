@@ -20,6 +20,7 @@ use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface;
 use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate;
+use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
@@ -611,7 +612,7 @@ final class PimcoreClassContext implements Context
     {
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
         /**
-         * @var $instance Concrete
+         * @var Concrete $instance
          */
         $instance = new $className();
         $instance->setKey($key);
@@ -713,9 +714,9 @@ final class PimcoreClassContext implements Context
     }
 
     /**
-     * @param $definition
-     * @param $fieldDefinition
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
+     * @param string $definition
+     * @param string $fieldDefinition
+     * @throws ClassDefinitionNotFoundException
      */
     private function addFieldDefinitionToDefinition($definition, $fieldDefinition)
     {
@@ -725,9 +726,9 @@ final class PimcoreClassContext implements Context
     }
 
     /**
-     * @param $definition
-     * @return BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate|null
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
+     * @param string $definition
+     * @return BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate
+     * @throws ClassDefinitionNotFoundException
      */
     private function getUpdater($definition)
     {

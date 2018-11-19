@@ -47,7 +47,7 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 
     /**
      * @param LinkGeneratorInterface $linkGenerator
-     * @param $routeName
+     * @param string $routeName
      * @param SessionInterface $session
      * @param StoreContextInterface $storeContext
      */

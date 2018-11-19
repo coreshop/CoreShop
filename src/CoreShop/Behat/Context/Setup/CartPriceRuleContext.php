@@ -179,7 +179,7 @@ final class CartPriceRuleContext implements Context
     public function addingACartPriceRule($ruleName)
     {
         /**
-         * @var $rule CartPriceRuleInterface
+         * @var CartPriceRuleInterface $rule
          */
         $rule = $this->cartPriceRuleFactory->createNew();
         $rule->setName($ruleName);

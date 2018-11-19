@@ -19,6 +19,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\Document;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
@@ -49,7 +50,11 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
     public function load(ObjectManager $manager)
     {
         $installResourcesDirectory = $this->container->getParameter('coreshop.installer.resources');
-        $jsonFile = $this->container->get('kernel')->locateResource(sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'));
+        /**
+         * @var KernelInterface $kernel
+         */
+        $kernel = $this->container->get('kernel');
+        $jsonFile = $kernel->locateResource(sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'));
 
         $totalExistingRules = count($this->container->get('coreshop.repository.notification_rule')->findAll());
 

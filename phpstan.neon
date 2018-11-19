@@ -11,6 +11,7 @@ parameters:
     excludes_analyse:
         # Makes PHPStan crash
         - '**/DependencyInjection/Configuration.php'
+        - '**/Migrations/Version*.php'
 
     ignoreErrors:
         # Magic calls

@@ -65,10 +65,11 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
+        $dao = $list->getDao();
 
         $db = \Pimcore\Db::get();
         $query = $db->select()
-            ->from($list->getTableName(), ['oo_id'])
+            ->from($dao->getTableName(), ['oo_id'])
             ->where('o_path LIKE ?', $category->getRealFullPath() . '/%')
             ->where('stores LIKE ?', '%,' . $store->getId() . ',%');
 

@@ -42,7 +42,7 @@ final class PriceRuleUpdateEventListener
         //coreshop.product_specific_price_rule.post_save
 
         /**
-         * @var $rule RuleInterface
+         * @var RuleInterface $rule
          */
         $rule = $event->getSubject();
 

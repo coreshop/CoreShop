@@ -109,7 +109,7 @@ final class IndexContext implements Context
 
         foreach ($hash as $row) {
             /**
-             * @var $column IndexColumnInterface
+             * @var IndexColumnInterface $column
              */
             $column = $this->indexColumnFactory->createNew();
             $column->setName($row['name']);
@@ -199,14 +199,14 @@ final class IndexContext implements Context
     }
 
     /**
-     * @param $name
-     * @param $class
+     * @param string $name
+     * @param string $class
      * @param string $type
      */
     private function createIndex($name, $class, $type = 'mysql')
     {
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface $index
          */
         $index = $this->indexFactory->createNew();
         $index->setName($name);
@@ -228,7 +228,7 @@ final class IndexContext implements Context
         }
 
         /**
-         * @var $worker WorkerInterface
+         * @var WorkerInterface $worker
          */
         $worker = $this->workerServiceRegistry->get($worker);
         $worker->createOrUpdateIndexStructures($index);

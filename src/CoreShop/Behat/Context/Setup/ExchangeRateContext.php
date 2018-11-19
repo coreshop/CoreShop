@@ -68,7 +68,7 @@ final class ExchangeRateContext implements Context
     public function currencyHasExchangeRateTo(CurrencyInterface $fromCurrency, CurrencyInterface $toCurrency, float $rate)
     {
         /**
-         * @var $exchangeRate ExchangeRateInterface
+         * @var ExchangeRateInterface $exchangeRate
          */
         $exchangeRate = $this->exchangeRateFactory->createNew();
         $exchangeRate->setFromCurrency($fromCurrency);

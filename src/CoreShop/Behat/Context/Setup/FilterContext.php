@@ -103,7 +103,7 @@ final class FilterContext implements Context
 
         foreach ($hash as $row) {
             /**
-             * @var $condition FilterConditionInterface
+             * @var FilterConditionInterface $condition
              */
             $condition = $this->filterConditionFactory->createNew();
             $condition->setType($row['type']);
@@ -143,13 +143,13 @@ final class FilterContext implements Context
     }
 
     /**
-     * @param                $name
+     * @param string         $name
      * @param IndexInterface $index
      */
     private function createFilter($name, IndexInterface $index)
     {
         /**
-         * @var $filter FilterInterface
+         * @var FilterInterface $filter
          */
         $filter = $this->filterFactory->createNew();
         $filter->setName($name);

@@ -101,8 +101,8 @@ final class CurrencyContext implements Context
     }
 
     /**
-     * @param $name
-     * @param $iso
+     * @param string $name
+     * @param string $iso
      */
     private function createCurrency($name, $iso)
     {
@@ -110,7 +110,7 @@ final class CurrencyContext implements Context
 
         if (!$currency) {
             /**
-             * @var $currency CurrencyInterface
+             * @var CurrencyInterface $currency
              */
             $currency = $this->currencyFactory->createNew();
             $currency->setName($name);

@@ -24,7 +24,7 @@ interface CheckoutManagerInterface
     public function addCheckoutStep(CheckoutStepInterface $step, $priority);
 
     /**
-     * @return CheckoutStepInterface[]
+     * @return string[]
      */
     public function getSteps();
 

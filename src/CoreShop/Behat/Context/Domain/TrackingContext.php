@@ -65,9 +65,22 @@ final class TrackingContext implements Context
         $this->trackingExtractor = $trackingExtractor;
         $this->trackerRegistry = $trackerRegistry;
 
-        $this->trackerRegistry->get('google-analytics-enhanced-ecommerce')->setConfigResolver(new ConfigResolver());
-        $this->trackerRegistry->get('google-gtag-enhanced-ecommerce')->setConfigResolver(new ConfigResolver());
-        $this->trackerRegistry->get('google-analytics-universal-ecommerce')->setConfigResolver(new ConfigResolver());
+        /**
+         * @var AnalyticsEnhancedEcommerce $googleAnalyticsEnhancedTracker
+         */
+        $googleAnalyticsEnhancedTracker = $this->trackerRegistry->get('google-analytics-enhanced-ecommerce');
+        /**
+         * @var GlobalSiteTagEnhancedEcommerce $googleGTagEnhancedTracker
+         */
+        $googleGTagEnhancedTracker = $this->trackerRegistry->get('google-gtag-enhanced-ecommerce');
+        /**
+         * @var UniversalEcommerce $googleAnalyticsUniversalTracker
+         */
+        $googleAnalyticsUniversalTracker = $this->trackerRegistry->get('google-analytics-universal-ecommerce');
+
+        $googleAnalyticsEnhancedTracker->setConfigResolver(new ConfigResolver());
+        $googleGTagEnhancedTracker->setConfigResolver(new ConfigResolver());
+        $googleAnalyticsUniversalTracker->setConfigResolver(new ConfigResolver());
     }
 
     /**
@@ -226,7 +239,7 @@ final class TrackingContext implements Context
     }
 
     /**
-     * @param $tracker
+     * @param string $tracker
      * @return TrackerInterface
      */
     private function getTracker($tracker)
