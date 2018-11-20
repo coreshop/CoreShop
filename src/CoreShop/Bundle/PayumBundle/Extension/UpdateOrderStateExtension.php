@@ -89,7 +89,7 @@ final class UpdateOrderStateExtension implements ExtensionInterface
 
         if (
             $value === PaymentInterface::STATE_COMPLETED ||
-            $value === PaymentInterface::STATE_PROCESSING
+            $value === PaymentInterface::STATE_AUTHORIZED
         ) {
             $order = $payment->getOrder();
             if ($order instanceof OrderInterface) {
