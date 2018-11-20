@@ -10,11 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\PayumBundle\Request;
+namespace CoreShop\Bundle\PayumBundle\Factory;
 
-use Payum\Core\Request\Generic;
+use CoreShop\Bundle\PayumBundle\Request\ResolveNextRoute;
+use CoreShop\Bundle\PayumBundle\Request\ResolveNextRouteInterface;
 
-class ConfirmOrder extends Generic implements ConfirmOrderInterface
+final class ResolveNextRouteFactory implements ResolveNextRouteFactoryInterface
 {
-
+    /**
+     * @inheritdoc
+     */
+    public function createNewWithModel($model): ResolveNextRouteInterface
+    {
+        return new ResolveNextRoute($model);
+    }
 }

@@ -37,7 +37,7 @@ final class ResolveNextRouteAction implements ActionInterface
 
             if (
                 $payment->getState() === PaymentInterface::STATE_COMPLETED ||
-                $payment->getState() === PaymentInterface::STATE_PROCESSING
+                $payment->getState() === PaymentInterface::STATE_AUTHORIZED
             ) {
                 $request->setRouteName('coreshop_checkout_confirmation');
                 return;

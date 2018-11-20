@@ -611,6 +611,18 @@ translations:
           en: 'Awaiting Payment'
           de: 'Warten auf Zahlung'
 
+  coreshop.ui.workflow.state.coreshop_order_payment.partially_authorized:
+      languages:
+          de_CH: 'Zahlung teilweise autorisiert'
+          en: 'Partially Authorized'
+          de: 'Zahlung teilweise autorisiert'
+
+  coreshop.ui.workflow.state.coreshop_order_payment.authorized:
+      languages:
+          de_CH: 'Autorisiert'
+          en: 'Authorized'
+          de: 'Autorisiert'
+
   coreshop.ui.workflow.state.coreshop_order_payment.partially_paid:
       languages:
           de_CH: 'Zahlung teilweise eingegangen'

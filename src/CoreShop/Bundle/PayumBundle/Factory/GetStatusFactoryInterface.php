@@ -10,11 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\PayumBundle\Request;
+namespace CoreShop\Bundle\PayumBundle\Factory;
 
-use Payum\Core\Request\Generic;
+use Payum\Core\Request\GetStatusInterface;
 
-class ConfirmOrder extends Generic implements ConfirmOrderInterface
+interface GetStatusFactoryInterface
 {
-
+    /**
+     * @param $model
+     *
+     * @return GetStatusInterface
+     */
+    public function createNewWithModel($model): GetStatusInterface;
 }

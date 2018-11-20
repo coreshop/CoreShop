@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.factory.payum_get_status:
+        class: CoreShop\Bundle\PayumBundle\Factory\GetStatusFactory
+
+    coreshop.factory.payum_resolve_next_route:
+        class: CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactory
+
+    coreshop.factory.payum_confirm_order:
+        class: CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactory
