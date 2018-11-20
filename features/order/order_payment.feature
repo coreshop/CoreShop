@@ -41,7 +41,7 @@ Feature: Create a new order and add a payment
   Scenario: Create fully authorized payment
     Given I create a payment for my order with payment provider "Bankwire" and amount 2400
     And I apply payment transition "authorize" to latest order payment
-    Then the order payment state should be "authorize"
+    Then the order payment state should be "authorized"
 
   Scenario: Create partially authorized payment
     Given I create a payment for my order with payment provider "Bankwire" and amount 1800
