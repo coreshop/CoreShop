@@ -60,7 +60,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -68,9 +68,7 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setName($name)
     {

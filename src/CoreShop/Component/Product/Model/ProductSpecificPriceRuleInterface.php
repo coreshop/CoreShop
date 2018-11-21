@@ -21,8 +21,6 @@ interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
 
     /**
      * @param bool $inherit
-     *
-     * @return static
      */
     public function setInherit($inherit);
 
@@ -33,8 +31,6 @@ interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
 
     /**
      * @param int $priority
-     *
-     * @return static
      */
     public function setPriority($priority);
 

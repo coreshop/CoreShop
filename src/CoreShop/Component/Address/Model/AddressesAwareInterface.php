@@ -32,8 +32,6 @@ interface AddressesAwareInterface
 
     /**
      * @param AddressInterface[] $addresses
-     *
-     * @return static
      */
     public function setAddresses($addresses);
 }

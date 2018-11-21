@@ -26,8 +26,6 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
 
     /**
      * @param string $isoCode
-     *
-     * @return static
      */
     public function setIsoCode($isoCode);
 
@@ -53,8 +51,6 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
 
     /**
      * @param ZoneInterface|null $zone
-     *
-     * @return static
      */
     public function setZone(ZoneInterface $zone = null);
 
@@ -70,8 +66,6 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
 
     /**
      * @param string $addressFormat
-     *
-     * @return static
      */
     public function setAddressFormat($addressFormat);
 
@@ -82,8 +76,6 @@ interface CountryInterface extends ResourceInterface, TranslatableInterface, Tim
 
     /**
      * @param array $salutations
-     *
-     * @return static
      */
     public function setSalutations($salutations);
 }

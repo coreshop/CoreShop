@@ -56,7 +56,7 @@ interface IndexableInterface
     public function getIndexableName($language);
 
     /**
-     * @return static|null
+     * @return mixed
      */
     public function getParent();
 }
