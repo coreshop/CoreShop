@@ -67,7 +67,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
          * Getter Configurations
          */
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
                 $type = $this->getGetterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -83,7 +83,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $event->getForm()->get('getter')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
                 $data = $event->getData();
 
                 if (!isset($data['getter'])) {
@@ -97,7 +97,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
          * Interpreter Configurations
          */
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
                 $type = $this->getInterpreterRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -113,7 +113,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 
                 $event->getForm()->get('interpreter')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
                 $data = $event->getData();
 
                 if (!isset($data['interpreter'])) {

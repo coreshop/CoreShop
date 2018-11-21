@@ -62,7 +62,7 @@ class SequenceGenerator implements SequenceGeneratorInterface
     /**
      * @param $type
      *
-     * @return \coreShop\Component\Sequence\Model\SequenceInterface
+     * @return \CoreShop\Component\Sequence\Model\SequenceInterface
      */
     private function getSequence($type)
     {

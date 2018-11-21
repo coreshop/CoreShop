@@ -17,7 +17,6 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
 use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use CoreShop\DependencyAnalysis\ReferenceValidator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

@@ -140,7 +140,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $applicationPermissions = [];
             $applicationParameter = sprintf('%s.permissions', $applicationName);
             $resourcePermissions = [];
-            $globalParameter = sprintf('coreshop.all.permissions', $applicationName);
+            $globalParameter = 'coreshop.all.permissions';
 
             if ($container->hasParameter($applicationParameter)) {
                 $applicationPermissions = $container->getParameter($applicationParameter);

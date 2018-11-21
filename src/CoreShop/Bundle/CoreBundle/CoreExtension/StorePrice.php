@@ -462,7 +462,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
         if (!$object) {
-            throw new Exception('This version of Pimcore is not supported for storePrice import.');
+            throw new \Exception('This version of Pimcore is not supported for storePrice import.');
         }
         $repo = $this->getProductStorePriceRepository();
         $storeRepo = $this->getStoreRepository();

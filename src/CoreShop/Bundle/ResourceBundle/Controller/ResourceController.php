@@ -51,11 +51,6 @@ class ResourceController extends AdminController
     protected $manager;
 
     /**
-     * @var ViewHandler
-     */
-    protected $viewHandler;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
@@ -91,11 +86,12 @@ class ResourceController extends AdminController
         ErrorSerializer $formErrorSerializer
     )
     {
+        parent::__construct($viewHandler);
+
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->viewHandler = $viewHandler;
         $this->eventDispatcher = $eventDispatcher;
         $this->resourceFormFactory = $resourceFormFactory;
         $this->formErrorSerializer = $formErrorSerializer;

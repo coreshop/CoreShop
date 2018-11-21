@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-if [ $CORESHOP_RUN_BEHAT == 1 ]; then
-    $CS_HOME/etc/_scripts/behat
-fi
-
-$CS_HOME/etc/_scripts/phpunit

@@ -32,7 +32,7 @@ class ExchangeRate implements ExchangeRateInterface
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->creationDate = new \DateTime();
     }
 
     /**

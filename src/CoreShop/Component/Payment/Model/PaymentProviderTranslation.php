@@ -44,7 +44,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getTitle();
     }
 
     /**

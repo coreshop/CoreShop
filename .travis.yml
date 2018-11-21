@@ -12,36 +12,39 @@ env:
         - PIMCORE_ENVIRONMENT=test
         - CORESHOP_TEST=1
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
-        - CORESHOP_RUN_BEHAT=1
-        - CORESHOP_RUN_ECS=0
+        - CORESHOP_SUITE=tests
+        - PIMCORE_VERSION="^5"
 
 matrix:
     include:
         - sudo: required
           php: 7.1
           env:
-            - CORESHOP_RUN_ECS=1
-
-        - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_VERSION="5.4.4"
+            - CORESHOP_SUITE=ecs
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="5.4.4"
+            - CORESHOP_SUITE=phpstan
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_VERSION="5.5.0"
+            - PIMCORE_VERSION="~5.4.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="5.5.0"
+            - PIMCORE_VERSION="~5.4.0"
 
+        - sudo: required
+          php: 7.1
+          env:
+
+        - sudo: required
+          php: 7.2
+          env:
+            - 
         - sudo: required
           php: 7.1
           env:
@@ -53,7 +56,7 @@ matrix:
             - PIMCORE_VERSION="dev-master"
     allow_failures:
         - env:
-            - CORESHOP_RUN_ECS=1
+            - CORESHOP_SUITE=ecs
     fast_finish: true
 
 cache:

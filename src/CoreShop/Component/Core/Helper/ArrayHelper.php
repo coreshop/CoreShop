@@ -90,7 +90,7 @@ class ArrayHelper
                         /* @var $value Fieldcollection */
                         $def = $value->getItemDefinitions();
                         if (method_exists($def['children'], 'getFieldDefinitions')) {
-                            $collection[$fieldName] = _objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
+                            $collection[$fieldName] = static::objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
                         }
                     }
                     break;

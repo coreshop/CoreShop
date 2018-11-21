@@ -179,6 +179,7 @@ class ProductSpecificPriceRules extends Data
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         $prices = [];
+        $errors = [];
 
         if ($data && $object instanceof Concrete) {
             foreach ($data as $dataRow) {
