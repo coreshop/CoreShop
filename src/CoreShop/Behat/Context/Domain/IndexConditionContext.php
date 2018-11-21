@@ -61,7 +61,7 @@ final class IndexConditionContext implements Context
         }
 
         /**
-         * @var $worker WorkerInterface
+         * @var WorkerInterface $worker
          */
         $worker = $this->workerRegistry->get($worker);
 

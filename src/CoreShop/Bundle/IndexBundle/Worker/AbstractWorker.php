@@ -125,6 +125,9 @@ abstract class AbstractWorker implements WorkerInterface
         $virtualObjectActive = $object->getIndexableEnabled();
 
         if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
+            /**
+             * @var Concrete $parent
+             */
             $parent = $object->getParent();
 
             while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
