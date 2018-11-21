@@ -12,6 +12,7 @@ core_shop_workflow:
             places:
                 - new
                 - processing
+                - authorized
                 - completed
                 - failed
                 - cancelled
@@ -20,14 +21,17 @@ core_shop_workflow:
                 process:
                     from: [new]
                     to: processing
-                complete:
+                authorize:
                     from: [new, processing]
+                    to: authorized
+                complete:
+                    from: [new, processing, authorized]
                     to: completed
                 fail:
                     from: [new, processing]
                     to: failed
                 cancel:
-                    from: [new, processing]
+                    from: [new, processing, authorized]
                     to: cancelled
                 refund:
                     from: [completed]
@@ -35,6 +39,7 @@ core_shop_workflow:
             place_colors:
                 new: '#61c2cb'
                 processing: '#feb624'
+                authorized: '#896957'
                 completed: '#5b981a'
                 failed: '#83002e'
                 cancelled: '#f2583e'
@@ -42,6 +47,7 @@ core_shop_workflow:
             transition_colors:
                 create: '#61c2cb'
                 process: '#feb624'
+                authorize: '#896957'
                 complete: '#5b981a'
                 fail: '#83002e'
                 cancel: '#f2583e'

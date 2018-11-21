@@ -33,7 +33,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     protected $paymentRepository;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager        $stateMachineManager
      * @param PaymentRepositoryInterface $paymentRepository
      */
     public function __construct(StateMachineManager $stateMachineManager, PaymentRepositoryInterface $paymentRepository)
@@ -58,7 +58,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     /**
      * @param Workflow $workflow
      * @param          $subject
-     * @param string $transition
+     * @param string   $transition
      */
     private function applyTransition(Workflow $workflow, $subject, string $transition)
     {
@@ -98,7 +98,6 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         }
 
         $payments = $this->paymentRepository->findForPayable($order);
-
         if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getTotal()) || count($payments) === 0) {
             return OrderPaymentTransitions::TRANSITION_PAY;
         }
@@ -107,12 +106,27 @@ final class OrderPaymentStateResolver implements StateResolverInterface
             return OrderPaymentTransitions::TRANSITION_PARTIALLY_PAY;
         }
 
+        $authorizedPaymentTotal = 0;
+        $authorizedPayments = $this->getPaymentsWithState($order, PaymentInterface::STATE_AUTHORIZED);
+
+        foreach ($authorizedPayments as $payment) {
+            $authorizedPaymentTotal += $payment->getTotalAmount();
+        }
+
+        if (count($authorizedPayments) > 0 && $authorizedPaymentTotal >= $order->getTotal()) {
+            return OrderPaymentTransitions::TRANSITION_AUTHORIZE;
+        }
+
+        if ($authorizedPaymentTotal < $order->getTotal() && $authorizedPaymentTotal > 0) {
+            return OrderPaymentTransitions::TRANSITION_PARTIALLY_AUTHORIZE;
+        }
+
         return null;
     }
 
     /**
      * @param OrderInterface $order
-     * @param string $state
+     * @param string         $state
      *
      * @return PaymentInterface[]
      */

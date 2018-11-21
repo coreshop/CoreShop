@@ -19,6 +19,7 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceInterface, TimestampableInterface
 {
     const STATE_NEW = 'new';
+    const STATE_AUTHORIZED = 'authorized';
     const STATE_PROCESSING = 'processing';
     const STATE_COMPLETED = 'completed';
     const STATE_FAILED = 'failed';

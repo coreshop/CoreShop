@@ -92,6 +92,9 @@ services:
             - '@coreshop.order.payment_provider'
             - '@coreshop.repository.order'
             - '@coreshop.object_service'
+            - '@coreshop.factory.payum_get_status'
+            - '@coreshop.factory.payum_resolve_next_route'
+            - '@coreshop.factory.payum_confirm_order'
         calls:
             - [setContainer, ['@service_container']]
 

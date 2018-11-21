@@ -12,9 +12,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\Request;
 
-use Payum\Core\Request\Generic;
-
-class ConfirmOrder extends Generic implements ConfirmOrderInterface
+interface ConfirmOrderInterface
 {
 
 }

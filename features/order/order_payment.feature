@@ -18,7 +18,17 @@ Feature: Create a new order and add a payment
     And There is a payment provider "Bankwire" using factory "Bankwire"
     And I create an order from my cart
 
-  Scenario: Create fully payment
+  Scenario: Create failed payment
+    Given I create a payment for my order with payment provider "Bankwire" and amount 1800
+    And I apply payment transition "fail" to latest order payment
+    Then the order payment state should be "awaiting_payment"
+
+  Scenario: Create cancelled payment
+    Given I create a payment for my order with payment provider "Bankwire" and amount 1800
+    And I apply payment transition "cancel" to latest order payment
+    Then the order payment state should be "awaiting_payment"
+
+  Scenario: Create fully paid payment
     Given I create a payment for my order with payment provider "Bankwire" and amount 2400
     And I apply payment transition "complete" to latest order payment
     Then the order payment state should be "paid"
@@ -27,3 +37,13 @@ Feature: Create a new order and add a payment
     Given I create a payment for my order with payment provider "Bankwire" and amount 1800
     And I apply payment transition "complete" to latest order payment
     Then the order payment state should be "partially_paid"
+
+  Scenario: Create fully authorized payment
+    Given I create a payment for my order with payment provider "Bankwire" and amount 2400
+    And I apply payment transition "authorize" to latest order payment
+    Then the order payment state should be "authorized"
+
+  Scenario: Create partially authorized payment
+    Given I create a payment for my order with payment provider "Bankwire" and amount 1800
+    And I apply payment transition "authorize" to latest order payment
+    Then the order payment state should be "partially_authorized"

@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\PayumBundle\Request;
 
 use Payum\Core\Request\Generic;
 
-class ResolveNextRoute extends Generic
+class ResolveNextRoute extends Generic implements ResolveNextRouteInterface
 {
     /**
      * @var string
@@ -37,7 +37,7 @@ class ResolveNextRoute extends Generic
     /**
      * @param string $routeName
      */
-    public function setRouteName($routeName)
+    public function setRouteName(string $routeName)
     {
         $this->routeName = $routeName;
     }

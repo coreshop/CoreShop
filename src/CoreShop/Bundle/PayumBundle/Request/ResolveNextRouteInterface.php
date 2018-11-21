@@ -12,9 +12,13 @@
 
 namespace CoreShop\Bundle\PayumBundle\Request;
 
-use Payum\Core\Request\Generic;
-
-class ConfirmOrder extends Generic implements ConfirmOrderInterface
+interface ResolveNextRouteInterface
 {
+    public function getRouteName();
 
+    public function setRouteName(string $routeName);
+
+    public function getRouteParameters();
+
+    public function setRouteParameters(array $parameters);
 }
