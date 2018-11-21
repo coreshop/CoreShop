@@ -18,7 +18,7 @@ use CoreShop\Component\Index\Condition\RendererInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 
 /**
- * @deprecated MysqlRenderer is deprecated since 2.0.0, please use the CoreShop\Component\Index\Condition˜ConditionRendererInterface instead
+ * @deprecated MysqlRenderer is deprecated since 2.0.0, please use the CoreShop\Component\Index\Condition\ConditionRendererInterface instead
  */
 class MysqlRenderer implements RendererInterface
 {
@@ -41,7 +41,7 @@ class MysqlRenderer implements RendererInterface
         $this->renderer = \Pimcore::getContainer()->get('coreshop.index.condition.renderer');
 
         @trigger_error(
-            'Class CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer is deprecated since 2.0.0, please use the CoreShop\Component\Index\Condition˜ConditionRendererInterface instead.',
+            'Class CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer is deprecated since 2.0.0, please use the CoreShop\Component\Index\Condition\ConditionRendererInterface instead.',
             E_USER_DEPRECATED
         );
     }
