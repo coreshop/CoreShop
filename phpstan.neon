@@ -12,6 +12,8 @@ parameters:
         # Makes PHPStan crash
         - '**/DependencyInjection/Configuration.php'
         - '**/Migrations/Version*.php'
+        # Ignore cause the file uses external dependencies and will only be used if those dependencies are met
+        - 'CoreShop/Component/SEO/Extractor/LuceneSearchExtractor.php'
 
     ignoreErrors:
         # Magic calls
