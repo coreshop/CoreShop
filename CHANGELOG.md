@@ -1,5 +1,8 @@
 # Within V2
 
+## 2.0.0
+ - CoreShop\Component\Index\Condition\RendererInterface has been deprecated in favor of CoreShop\Component\Index\Condition\DynamicRendererInterface to allow dynamic registration of condition renderers
+
 ## 2.0.0-RC.1
  - Flash Messages are translated in the Controllers now, not in views anymore. If you have custom Flash Messages, translate them in your Controller instead of the view.
 

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\IndexBundle;
 
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRendererTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
@@ -47,6 +48,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterGetterPass());
         $container->addCompilerPass(new RegisterFilterConditionTypesPass());
         $container->addCompilerPass(new RegisterExtensionsPass());
+        $container->addCompilerPass(new RegisterConditionRendererTypesPass());
     }
 
     /**
