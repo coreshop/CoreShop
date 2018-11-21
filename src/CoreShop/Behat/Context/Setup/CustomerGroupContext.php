@@ -18,6 +18,7 @@ use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\File;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
 
 final class CustomerGroupContext implements Context
@@ -33,24 +34,16 @@ final class CustomerGroupContext implements Context
     private $customerGroupFactory;
 
     /**
-     * @var RepositoryInterface
-     */
-    private $customerGroupRepository;
-
-    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface $customerGroupFactory
-     * @param RepositoryInterface $customerGroupRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        FactoryInterface $customerGroupFactory,
-        RepositoryInterface $customerGroupRepository
+        FactoryInterface $customerGroupFactory
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->customerGroupFactory = $customerGroupFactory;
-        $this->customerGroupRepository = $customerGroupRepository;
     }
 
     /**

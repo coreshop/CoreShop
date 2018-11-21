@@ -17,7 +17,7 @@ use CoreShop\Bundle\PayumBundle\Request\ConfirmOrderInterface;
 interface ConfirmOrderFactoryInterface
 {
     /**
-     * @param $model
+     * @param mixed $model
      *
      * @return ConfirmOrderInterface
      */

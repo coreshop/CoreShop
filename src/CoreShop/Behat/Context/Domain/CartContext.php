@@ -17,7 +17,6 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context

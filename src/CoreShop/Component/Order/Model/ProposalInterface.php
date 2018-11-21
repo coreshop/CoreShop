@@ -77,6 +77,11 @@ interface ProposalInterface extends
     public function getItems();
 
     /**
+     * @param ProposalItemInterface[] $items
+     */
+    public function setItems($items);
+
+    /**
      * @return bool
      */
     public function hasItems();

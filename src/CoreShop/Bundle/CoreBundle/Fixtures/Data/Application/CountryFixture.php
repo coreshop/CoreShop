@@ -23,6 +23,7 @@ use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Intl\Data\Provider\LanguageDataProvider;
 use Symfony\Component\Intl\Intl;
 
 class CountryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
@@ -96,12 +97,17 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $languages = Tool::getValidLanguages();
         $alpha3CodeMap = [];
 
+        /**
+         * @var LanguageDataProvider $languageDataProvider
+         */
+        $languageDataProvider = Intl::getLanguageBundle();
+
         foreach ($languages as $lang) {
             if (strpos($lang, '_')) {
                 $lang = explode('_', $lang)[0];
             }
 
-            $alpha3CodeMap[$lang] = Intl::getLanguageBundle()->getAlpha3Code($lang);
+            $alpha3CodeMap[$lang] = $languageDataProvider->getAlpha3Code($lang);
         }
 
         foreach ($countries as $country) {

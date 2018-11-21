@@ -81,7 +81,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.factory.customer_group'
-            - '@__symfony__.coreshop.repository.customer_group'
         tags:
             - { name: fob.context_service }
 

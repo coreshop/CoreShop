@@ -11,10 +11,9 @@
  */
 
 namespace CoreShop\Component\Customer\Model;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-
-interface CustomerGroupInterface extends ResourceInterface
+interface CustomerGroupInterface extends PimcoreModelInterface
 {
     /**
      * @return string
