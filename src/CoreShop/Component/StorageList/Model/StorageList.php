@@ -32,7 +32,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
     /**
      * {@inheritdoc}
      */
-    public function getItemForProduct(StorageListProductInterface $product)
+    public function getItemForProduct($product)
     {
         foreach ($this->getItems() as $item) {
             if ($item instanceof StorageListItemInterface) {
@@ -66,7 +66,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
     /**
      * {@inheritdoc}
      */
-    public function addItem(StorageListItemInterface $item)
+    public function addItem($item)
     {
         Assert::isInstanceOf($item, StorageListItemInterface::class);
 
@@ -79,7 +79,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
     /**
      * {@inheritdoc}
      */
-    public function removeItem(StorageListItemInterface $item)
+    public function removeItem($item)
     {
         Assert::isInstanceOf($item, StorageListItemInterface::class);
 
@@ -100,7 +100,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
     /**
      * {@inheritdoc}
      */
-    public function hasItem(StorageListItemInterface $item)
+    public function hasItem($item)
     {
         Assert::isInstanceOf($item, StorageListItemInterface::class);
 

@@ -20,7 +20,7 @@ interface StorageListInterface extends ResourceInterface
      * @param StorageListProductInterface $product
      * @return StorageListItemInterface|null
      */
-    public function getItemForProduct(StorageListProductInterface $product);
+    public function getItemForProduct($product);
 
     /**
      * @return StorageListItemInterface[]
@@ -35,17 +35,17 @@ interface StorageListInterface extends ResourceInterface
     /**
      * @param StorageListItemInterface $item
      */
-    public function addItem(StorageListItemInterface $item);
+    public function addItem($item);
 
     /**
      * @param StorageListItemInterface $item
      */
-    public function removeItem(StorageListItemInterface $item);
+    public function removeItem($item);
 
     /**
      * @param StorageListItemInterface $item
      *
      * @return bool
      */
-    public function hasItem(StorageListItemInterface $item);
+    public function hasItem($item);
 }
