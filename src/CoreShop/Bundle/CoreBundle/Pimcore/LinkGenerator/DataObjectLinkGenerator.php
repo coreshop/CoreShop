@@ -50,14 +50,18 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
     public function generate(Concrete $object, array $params = []): string
     {
         /**
-         * @var $object Concrete
+         * @var Concrete $object
          */
         Assert::isInstanceOf($object, Concrete::class);
 
         $locale = isset($params['_locale']) ? $params['_locale'] : null;
 
         $name = InheritanceHelper::useInheritedValues(function () use ($object, $locale) {
-            return $object->getName($locale);
+            if (method_exists($object, 'getName')) {
+                return $object->getName($locale);
+            }
+
+            return '';
         });
 
         $routeParams = [

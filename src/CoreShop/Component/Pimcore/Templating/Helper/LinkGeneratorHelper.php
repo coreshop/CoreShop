@@ -53,7 +53,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
     }
 
     /**
-     * @param $arguments
+     * @param array $arguments
      * @return array
      */
     protected function prepareParameters($arguments)

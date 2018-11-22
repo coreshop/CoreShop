@@ -38,7 +38,7 @@ class CompositePurchasableRetailPriceCalculator implements PurchasableRetailPric
         $price = false;
 
         /**
-         * @var $calculator PurchasableRetailPriceCalculatorInterface
+         * @var PurchasableRetailPriceCalculatorInterface $calculator
          */
         foreach ($this->calculators->all() as $calculator) {
             $actionPrice = $calculator->getRetailPrice($purchasable, $context);

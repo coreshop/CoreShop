@@ -80,7 +80,7 @@ interface WorkerInterface
     /**
      * Renders field type for the service.
      *
-     * @param $type
+     * @param string $type
      *
      * @return mixed
      */

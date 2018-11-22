@@ -48,6 +48,9 @@ final class ProductContext implements Context
      */
     public function getProductByName($productName)
     {
+        /**
+         * @var \Pimcore\Model\DataObject\Listing\Concrete $list
+         */
         $list = $this->productRepository->getList();
         $list->setLocale('en');
         $list->setCondition('name = ?', [$productName]);

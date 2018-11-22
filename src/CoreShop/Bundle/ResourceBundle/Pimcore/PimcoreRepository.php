@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -55,6 +54,15 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     public function getClassId()
     {
         $class = $this->metadata->getClass('model');
+
+        if (!method_exists($class, 'classId')) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class %s has no classId function and is therefore not considered as a valid Pimcore DataObject',
+                    $class
+                )
+            );
+        }
 
         return $class::classId();
     }
@@ -102,9 +110,18 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      */
     public function forceFind($id, $force = true)
     {
-        $className = $this->metadata->getClass('model');
+        $class = $this->metadata->getClass('model');
 
-        return $className::getById($id, $force);
+        if (!method_exists($class, 'getById')) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class %s has no getById function and is therefore not considered as a valid Pimcore DataObject',
+                    $class
+                )
+            );
+        }
+
+        return $class::getById($id, $force);
     }
 
     /**
@@ -174,7 +191,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      *     ]
      * ]
      *
-     * @param $criteria
+     * @param array $criteria
      * @return array
      */
     private function normalizeCriteria($criteria)
@@ -225,7 +242,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      *
      * "o_id ASC"
      *
-     * @param $orderBy
+     * @param array|string $orderBy
      * @return array
      */
     private function normalizeOrderBy($orderBy)

@@ -50,13 +50,13 @@ interface IndexableInterface
     public function getType();
 
     /**
-     * @param $language
+     * @param string $language
      * @return string
      */
     public function getIndexableName($language);
 
     /**
-     * @return static|null
+     * @return mixed
      */
     public function getParent();
 }

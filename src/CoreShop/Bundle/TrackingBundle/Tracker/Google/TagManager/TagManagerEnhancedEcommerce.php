@@ -199,10 +199,10 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
     }
 
-        /**
+    /**
      * Transform ActionData into gtag data array
      *
-     * @param $actionData
+     * @param array $actionData
      * @return array
      */
     protected function transformOrder($actionData)
@@ -217,10 +217,10 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         ];
     }
 
-        /**
+    /**
      * Transform product action into gtag data object
      *
-     * @param $item
+     * @param array $item
      * @return array
      */
     protected function transformProductAction($item)

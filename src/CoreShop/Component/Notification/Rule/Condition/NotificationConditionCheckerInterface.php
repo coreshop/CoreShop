@@ -17,8 +17,8 @@ use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 interface NotificationConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
-     * @param $subject
-     * @param $params
+     * @param mixed $subject
+     * @param array $params
      * @param array $configuration
      *
      * @return bool

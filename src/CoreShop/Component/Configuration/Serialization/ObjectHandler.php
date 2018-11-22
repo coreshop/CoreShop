@@ -19,7 +19,7 @@ class ObjectHandler
 {
     /**
      * @param JsonSerializationVisitor $visitor
-     * @param $value
+     * @param mixed $value
      * @param array $type
      * @param Context $context
      *

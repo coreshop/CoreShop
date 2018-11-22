@@ -82,7 +82,7 @@ class Dao
      * Load Group by values.
      *
      * @param QueryBuilder $queryBuilder
-     * @param $fieldName
+     * @param string $fieldName
      * @param bool $countValues
      *
      * @return array
@@ -124,7 +124,7 @@ class Dao
      * Load Grouo by Relation values.
      *
      * @param QueryBuilder $queryBuilder
-     * @param $fieldName
+     * @param string $fieldName
      * @param bool $countValues
      *
      * @return array
@@ -202,7 +202,7 @@ class Dao
     /**
      * quote value.
      *
-     * @param $value
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -214,9 +214,9 @@ class Dao
     /**
      * quote identifier.
      *
-     * @param $value
+     * @param string $value
      *
-     * @return mixed
+     * @return string
      */
     public function quoteIdentifier($value)
     {
@@ -226,8 +226,8 @@ class Dao
     /**
      * returns order by statement for similarity calculations based on given fields and object ids.
      *
-     * @param $fields
-     * @param $objectId
+     * @param array $fields
+     * @param int $objectId
      *
      * @return string
      */
@@ -291,8 +291,8 @@ class Dao
     /**
      * returns where statement for fulltext search index.
      *
-     * @param $fields
-     * @param $searchString
+     * @param array $fields
+     * @param string $searchString
      *
      * @return string
      */

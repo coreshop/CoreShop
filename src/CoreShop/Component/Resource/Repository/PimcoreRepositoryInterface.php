@@ -27,7 +27,7 @@ interface PimcoreRepositoryInterface extends RepositoryInterface
     public function getList();
 
     /**
-     * @param $id
+     * @param int $id
      * @param bool $force
      * @return mixed
      */

@@ -62,7 +62,7 @@ final class CustomerNewsletterConfirmListener
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface $user
          */
         $user = $event->getSubject();
 

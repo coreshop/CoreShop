@@ -142,7 +142,7 @@ class MysqlWorker extends AbstractWorker
 
         if (array_key_exists('indexes', $index->getConfiguration())) {
             /**
-             * @var $tableIndex TableIndex
+             * @var TableIndex $tableIndex
              */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
@@ -190,7 +190,7 @@ class MysqlWorker extends AbstractWorker
 
         if (array_key_exists('localizedIndexes', $index->getConfiguration())) {
             /**
-             * @var $tableIndex TableIndex
+             * @var TableIndex $tableIndex
              */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
@@ -312,13 +312,13 @@ QUERY;
             try {
                 $this->doInsertData($index, $preparedData['data']);
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
                 $this->doInsertLocalizedData($index, $preparedData['localizedData']);
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
@@ -327,7 +327,7 @@ QUERY;
                     $this->database->insert($this->getRelationTablename($index), $rd);
                 }
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index relation table: ' . $e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index relation table: ' . $e->getMessage(), [$e]);
             }
         } else {
             $this->logger->info('Don\'t adding object ' . $object->getId() . ' to index.');
@@ -340,7 +340,7 @@ QUERY;
      * Insert data into mysql-table.
      *
      * @param IndexInterface $index
-     * @param $data
+     * @param array $data
      */
     protected function doInsertData(IndexInterface $index, $data)
     {
@@ -367,7 +367,7 @@ QUERY;
      * Insert data into mysql-table.
      *
      * @param IndexInterface $index
-     * @param $data
+     * @param array $data
      */
     protected function doInsertLocalizedData(IndexInterface $index, $data)
     {
@@ -464,7 +464,7 @@ QUERY;
      * get localized view name.
      *
      * @param IndexInterface $index
-     * @param $language
+     * @param string $language
      *
      * @return string
      */

@@ -143,7 +143,7 @@ final class CountryContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     private function createCountry($name, CurrencyInterface $currency)
     {
@@ -151,7 +151,7 @@ final class CountryContext implements Context
 
         if (!$country) {
             /**
-             * @var $country CountryInterface
+             * @var CountryInterface $country
              */
             $country = $this->countryFactory->createNew();
             $country->setName($name, 'en');

@@ -43,7 +43,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 
     /**
      * @param array $context
-     * @param       $fieldDefinition Data
+     * @param Data $fieldDefinition
      *
      * @return array
      */
@@ -73,8 +73,8 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     }
 
     /**
-     * @param $context         array
-     * @param $fieldDefinition Data
+     * @param array $context
+     * @param Data $fieldDefinition
      *
      * @return bool
      */
@@ -84,8 +84,8 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     }
 
     /**
-     * @param $context         array
-     * @param $fieldDefinition Data
+     * @param array $context
+     * @param Data $fieldDefinition
      *
      * @return mixed
      */

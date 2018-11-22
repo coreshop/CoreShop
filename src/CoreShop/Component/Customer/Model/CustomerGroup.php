@@ -16,7 +16,7 @@ use CoreShop\Component\Resource\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-class CustomerGroup extends AbstractPimcoreModel implements CustomerGroupInterface, PimcoreModelInterface
+class CustomerGroup extends AbstractPimcoreModel implements CustomerGroupInterface
 {
     /**
      * {@inheritdoc}

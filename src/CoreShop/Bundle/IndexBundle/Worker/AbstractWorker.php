@@ -125,6 +125,9 @@ abstract class AbstractWorker implements WorkerInterface
         $virtualObjectActive = $object->getIndexableEnabled();
 
         if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
+            /**
+             * @var Concrete $parent
+             */
             $parent = $object->getParent();
 
             while ($parent->getType() === Concrete::OBJECT_TYPE_VARIANT && $parent instanceof $object) {
@@ -222,7 +225,7 @@ abstract class AbstractWorker implements WorkerInterface
 
     /**
      * @param IndexColumnInterface $column
-     * @param $value
+     * @param mixed $value
      * @return mixed
      */
     protected abstract function typeCastValues(IndexColumnInterface $column, $value);
@@ -230,8 +233,8 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @param IndexColumnInterface $column
      * @param IndexableInterface $object
-     * @param $value
-     * @param $virtualObjectId
+     * @param mixed $value
+     * @param int $virtualObjectId
      * @return array
      */
     protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
@@ -285,8 +288,8 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @param IndexColumnInterface $column
      * @param IndexableInterface $object
-     * @param $originalValue
-     * @param $virtualObjectId
+     * @param mixed $originalValue
+     * @param int $virtualObjectId
      * @return array
      * @throws \Exception
      */

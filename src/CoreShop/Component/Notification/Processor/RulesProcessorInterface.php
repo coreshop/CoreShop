@@ -15,8 +15,8 @@ namespace CoreShop\Component\Notification\Processor;
 interface RulesProcessorInterface
 {
     /**
-     * @param $type
-     * @param $subject
+     * @param string $type
+     * @param mixed $subject
      * @param array $params
      *
      * @return mixed

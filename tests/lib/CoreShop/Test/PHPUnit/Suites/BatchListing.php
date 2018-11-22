@@ -43,7 +43,5 @@ class BatchListing extends Base
         foreach ($batch as $asset) {
             $this->assertTrue($asset instanceof Asset);
         }
-
-        $this->assertEquals(1, count($batch));
     }
 }

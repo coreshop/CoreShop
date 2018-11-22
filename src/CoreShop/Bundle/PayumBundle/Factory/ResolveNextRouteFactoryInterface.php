@@ -17,7 +17,7 @@ use CoreShop\Bundle\PayumBundle\Request\ResolveNextRouteInterface;
 interface ResolveNextRouteFactoryInterface
 {
     /**
-     * @param $model
+     * @param mixed $model
      *
      * @return ResolveNextRouteInterface
      */

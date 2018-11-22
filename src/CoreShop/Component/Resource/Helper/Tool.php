@@ -17,7 +17,7 @@ class Tool
     /**
      * @static
      *
-     * @param $class
+     * @param string $class
      *
      * @return bool
      */
@@ -29,7 +29,7 @@ class Tool
     /**
      * @static
      *
-     * @param $class
+     * @param string $class
      *
      * @return bool
      */
@@ -39,8 +39,8 @@ class Tool
     }
 
     /**
-     * @param $class
-     * @param $type
+     * @param string $class
+     * @param string $type
      *
      * @return bool
      */

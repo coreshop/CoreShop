@@ -54,7 +54,9 @@ class EditmodeHelper
             //lazy loading data is fetched from DB differently, so that not every relation object is instantiated
             $refId = null;
 
-            if ($fielddefinition->isRemoteOwner()) {
+            if ($fielddefinition->isRemoteOwner() &&
+                method_exists($fielddefinition, 'getOwnerFieldName') &&
+                method_exists($fielddefinition, 'getOwnerClassName')) {
                 $refKey = $fielddefinition->getOwnerFieldName();
                 $refClass = DataObject\ClassDefinition::getByName($fielddefinition->getOwnerClassName());
                 if ($refClass) {

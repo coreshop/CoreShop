@@ -84,7 +84,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             $list->addConditionParam('active = ?', 1);
         }
 
-        $classId = $list->getClassId();
+        $classId = $this->getClassId();
         if (count($listOptions['categories']) > 0) {
             $categoryIds = [];
             foreach ($listOptions['categories'] as $category) {

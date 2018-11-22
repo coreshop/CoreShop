@@ -25,9 +25,7 @@ interface TaxRuleGroupInterface extends ResourceInterface, TimestampableInterfac
     public function getName();
 
     /**
-     * @param $name
-     *
-     * @return static
+     * @param string $name
      */
     public function setName($name);
 

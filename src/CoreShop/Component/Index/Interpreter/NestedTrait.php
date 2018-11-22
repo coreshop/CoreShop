@@ -23,8 +23,8 @@ trait NestedTrait
     protected $interpreterRegistry;
 
     /**
-     * @param $value
-     * @param $interpreterConfig
+     * @param mixed $value
+     * @param array $interpreterConfig
      * @param callable $callback
      * @return mixed
      */
@@ -40,7 +40,7 @@ trait NestedTrait
     }
 
     /**
-     * @param $interpreterConfig
+     * @param array $interpreterConfig
      */
     protected function assert($interpreterConfig)
     {

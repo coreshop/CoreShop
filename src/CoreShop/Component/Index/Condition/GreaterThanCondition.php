@@ -15,8 +15,8 @@ namespace CoreShop\Component\Index\Condition;
 class GreaterThanCondition extends CompareCondition
 {
     /**
-     * @param $fieldName
-     * @param $value
+     * @param string $fieldName
+     * @param string $value
      */
     public function __construct($fieldName, $value)
     {

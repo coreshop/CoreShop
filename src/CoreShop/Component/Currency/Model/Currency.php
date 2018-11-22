@@ -71,7 +71,7 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -79,19 +79,15 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param $name
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getIsoCode()
     {
@@ -99,15 +95,11 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param mixed $isoCode
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
-
-        return $this;
     }
 
     /**
@@ -119,19 +111,15 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param int $numericIsoCode
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setNumericIsoCode($numericIsoCode)
     {
         $this->numericIsoCode = $numericIsoCode;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getSymbol()
     {
@@ -139,9 +127,7 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param string $symbol
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setSymbol($symbol)
     {

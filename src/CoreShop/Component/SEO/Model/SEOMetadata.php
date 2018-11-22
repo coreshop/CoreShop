@@ -258,7 +258,7 @@ class SEOMetadata implements SEOMetadataInterface
     }
 
     /**
-     * @param $data
+     * @param mixed $data
      * @return array
      */
     private function toArray($data)

@@ -28,7 +28,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicRendererInterface
     }
 
     /**
-     * @param $identifier
+     * @param string $identifier
      * @return string
      */
     protected function quoteIdentifier($identifier)
@@ -37,7 +37,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicRendererInterface
     }
 
     /**
-     * @param $identifier
+     * @param string $identifier
      * @return string
      */
     protected function quote($identifier)
@@ -46,7 +46,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicRendererInterface
     }
 
     /**
-     * @param null $prefix
+     * @param string|null $prefix
      * @return string
      */
     protected function renderPrefix($prefix = null)
@@ -59,8 +59,8 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicRendererInterface
     }
 
     /**
-     * @param      $fieldName
-     * @param null $prefix
+     * @param string      $fieldName
+     * @param string|null $prefix
      * @return string
      */
     protected function quoteFieldName($fieldName, $prefix = null)

@@ -49,7 +49,7 @@ class TaxRateFixture extends AbstractFixture implements ContainerAwareInterface,
     {
         if (!count($this->container->get('coreshop.repository.tax_rate')->findAll())) {
             /**
-             * @var $taxRate TaxRateInterface
+             * @var TaxRateInterface $taxRate
              */
             $taxRate = $this->container->get('coreshop.factory.tax_rate')->createNew();
             $taxRate->setName('20AT', 'de');

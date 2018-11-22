@@ -105,8 +105,8 @@ final class PimcoreContext implements Context
     }
 
     /**
-     * @param $type
-     * @param $files
+     * @param array $files
+     * @param string $type
      */
     private function checkFilesExist(array $files, string $type)
     {
@@ -116,7 +116,7 @@ final class PimcoreContext implements Context
     }
 
     /**
-     * @param $file
+     * @param string $file
      * @return bool
      */
     private function checkFileExists($file)

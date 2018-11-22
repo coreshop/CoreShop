@@ -38,9 +38,8 @@ interface ProductInterface extends
     public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
-     * @param $price
+     * @param int $price
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
-     * @return static
      */
     public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null);
 

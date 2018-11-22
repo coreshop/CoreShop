@@ -163,7 +163,7 @@ final class ShippingContext implements Context
     public function addingAShippingRule($ruleName)
     {
         /**
-         * @var $rule ShippingRuleInterface
+         * @var ShippingRuleInterface $rule
          */
         $rule = $this->shippingRuleFactory->createNew();
         $rule->setName($ruleName);
@@ -205,7 +205,7 @@ final class ShippingContext implements Context
     public function addingShippingRuleToCarrier(ShippingRuleInterface $shippingRule, CarrierInterface $carrier)
     {
         /**
-         * @var $shippingRuleGroup ShippingRuleGroupInterface
+         * @var ShippingRuleGroupInterface $shippingRuleGroup
          */
         $shippingRuleGroup = $this->shippingRuleGroupFactory->createNew();
         $shippingRuleGroup->setShippingRule($shippingRule);
@@ -500,12 +500,12 @@ final class ShippingContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     private function createCarrier($name)
     {
         /**
-         * @var $carrier CarrierInterface
+         * @var CarrierInterface $carrier
          */
         $carrier = $this->carrierFactory->createNew();
         $carrier->setIdentifier($name);

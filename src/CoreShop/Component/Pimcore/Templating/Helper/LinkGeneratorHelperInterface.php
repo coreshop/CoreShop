@@ -17,15 +17,15 @@ use Symfony\Component\Templating\Helper\HelperInterface;
 interface LinkGeneratorHelperInterface extends HelperInterface
 {
     /**
-     * @param $nameOrObject
-     * @param $params
+     * @param mixed $nameOrObject
+     * @param array $params
      * @param bool $relative
      * @return string
      */
     public function getPath($nameOrObject, $params, $relative = false);
 
     /**
-     * @param $nameOrObject
+     * @param mixed $nameOrObject
      * @param array $parameters
      * @param bool $schemeRelative
      * @return string

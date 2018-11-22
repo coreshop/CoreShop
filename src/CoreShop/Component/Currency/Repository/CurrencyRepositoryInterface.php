@@ -29,7 +29,7 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
     public function findActive();
 
     /**
-     * @param $currencyCode
+     * @param string $currencyCode
      *
      * @return CurrencyInterface
      */

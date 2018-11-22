@@ -114,7 +114,7 @@ final class CustomerContext implements Context
         $nr
     ) {
         /**
-         * @var $address AddressInterface
+         * @var AddressInterface $address
          */
         $address = $this->addressFactory->createNew();
         $address->setCountry($country);

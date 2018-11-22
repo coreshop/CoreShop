@@ -88,7 +88,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface $taxRule
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -107,7 +107,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface $taxRule
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -126,7 +126,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface $taxRule
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -139,12 +139,12 @@ final class TaxRuleGroupContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     private function createTaxRuleGroup($name)
     {
         /**
-         * @var $taxRule TaxRuleGroupInterface
+         * @var TaxRuleGroupInterface $taxRule
          */
         $taxRule = $this->taxRuleGroupFactory->createNew();
         $taxRule->setName($name);

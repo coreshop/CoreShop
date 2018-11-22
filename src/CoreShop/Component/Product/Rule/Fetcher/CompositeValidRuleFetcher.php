@@ -38,7 +38,7 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
         $rules = [];
 
         /**
-         * @var $validRuleFetcher ValidRulesFetcherInterface
+         * @var ValidRulesFetcherInterface $validRuleFetcher
          */
         foreach ($this->validRuleFetchers->all() as $validRuleFetcher) {
             $rules = array_merge($rules, $validRuleFetcher->getValidRules($product, $context));

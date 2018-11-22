@@ -12,8 +12,10 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
@@ -75,60 +77,59 @@ interface ProposalInterface extends
     public function getItems();
 
     /**
+     * @param ProposalItemInterface[] $items
+     */
+    public function setItems($items);
+
+    /**
      * @return bool
      */
     public function hasItems();
 
     /**
-     * @param $item
+     * @param ProposalItemInterface $item
      */
     public function addItem($item);
 
     /**
-     * @param $item
+     * @param ProposalItemInterface $item
      */
     public function removeItem($item);
 
     /**
-     * @param $item
+     * @param ProposalItemInterface $item
      *
      * @return bool
      */
     public function hasItem($item);
 
     /**
-     * @return mixed
+     * @return CustomerInterface|null
      */
     public function getCustomer();
 
     /**
-     * @param $customer
-     *
-     * @return static
+     * @param CustomerInterface $customer
      */
     public function setCustomer($customer);
 
     /**
-     * @return mixed
+     * @return AddressInterface|null
      */
     public function getShippingAddress();
 
     /**
-     * @param $shippingAddress
-     *
-     * @return static
+     * @param AddressInterface $shippingAddress
      */
     public function setShippingAddress($shippingAddress);
 
     /**
-     * @return mixed
+     * @return AddressInterface|null
      */
     public function getInvoiceAddress();
 
     /**
-     * @param $invoiceAddress
-     *
-     * @return static
+     * @param AddressInterface $invoiceAddress
      */
     public function setInvoiceAddress($invoiceAddress);
 

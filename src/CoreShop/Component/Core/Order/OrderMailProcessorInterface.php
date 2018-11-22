@@ -13,11 +13,12 @@
 namespace CoreShop\Component\Core\Order;
 
 use CoreShop\Component\Order\Model\OrderInterface;
+use Pimcore\Model\Document\Email;
 
 interface OrderMailProcessorInterface
 {
     /**
-     * @param $emailDocument
+     * @param Email $emailDocument
      * @param OrderInterface $order
      * @param bool $sendInvoices
      * @param bool $sendShipments

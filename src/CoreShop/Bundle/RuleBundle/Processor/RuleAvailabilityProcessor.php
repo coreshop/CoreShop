@@ -34,13 +34,11 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     protected $entityManager;
 
     /**
-     * @var RuleRepositoryInterface
+     * @var ServiceRegistryInterface
      */
     protected $ruleRegistry;
 
     /**
-     * RuleAvailabilityProcessor constructor.
-     *
      * @param EventDispatcherInterface $eventDispatcher
      * @param EntityManagerInterface   $entityManager
      * @param ServiceRegistryInterface $ruleRegistry

@@ -32,7 +32,7 @@ interface CarrierPriceActionProcessorInterface
      * @param CarrierInterface $carrier
      * @param ShippableInterface $shippable
      * @param AddressInterface $address
-     * @param $price
+     * @param int $price
      * @param array $configuration
      *
      * @return mixed

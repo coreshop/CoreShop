@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 interface NoteServiceInterface
 {
     /**
-     * @param $id
+     * @param int $id
      * @return Note
      */
     public function getNoteById($id);
@@ -55,15 +55,15 @@ interface NoteServiceInterface
     public function storeNoteForEmail(Note $note, Document\Email $emailDocument);
 
     /**
-     * @param $note
-     * @param $eventParams
+     * @param Note $note
+     * @param array $eventParams
      * @return Note
      */
     public function storeNote(Note $note, $eventParams = []);
 
     /**
-     * @param $noteId
-     * @param $eventParams
+     * @param int $noteId
+     * @param array $eventParams
      * @return void
      */
     public function deleteNote($noteId, $eventParams = []);

@@ -28,7 +28,7 @@ final class ConditionRenderer implements ConditionRendererInterface
     public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
     {
         /**
-         * @var $renderer DynamicRendererInterface
+         * @var DynamicRendererInterface $renderer
          */
         foreach ($this->registry->all() as $renderer) {
             if ($renderer->supports($worker, $condition)) {

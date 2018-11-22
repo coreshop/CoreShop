@@ -20,7 +20,7 @@ interface LocaleAwareInterface
     public function getLocaleCode();
 
     /**
-     * @param $localeCode
+     * @param string $localeCode
      */
     public function setLocaleCode($localeCode);
 }

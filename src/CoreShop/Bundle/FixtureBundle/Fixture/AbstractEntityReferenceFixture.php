@@ -54,8 +54,9 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture implements
         $entities = [];
 
         foreach ($ids as $id) {
-            /** @var EntityManager $objectManager */
-            $entities[] = $objectManager->getReference($className, $id);
+            if ($objectManager instanceof EntityManager) {
+                $entities[] = $objectManager->getReference($className, $id);
+            }
         }
 
         return $entities;

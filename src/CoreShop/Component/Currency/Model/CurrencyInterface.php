@@ -23,7 +23,7 @@ interface CurrencyInterface extends ResourceInterface, TimestampableInterface
     public function getName();
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function setName($name);
 
@@ -33,7 +33,7 @@ interface CurrencyInterface extends ResourceInterface, TimestampableInterface
     public function getIsoCode();
 
     /**
-     * @param mixed $isoCode
+     * @param string $isoCode
      */
     public function setIsoCode($isoCode);
 

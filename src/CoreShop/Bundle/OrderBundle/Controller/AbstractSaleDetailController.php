@@ -48,7 +48,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
         if ($request->get('filter', null)) {
             $conditionFilters = [];
-            $conditionFilters[] = DataObject\Service::getFilterCondition($request->getParam('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
+            $conditionFilters[] = DataObject\Service::getFilterCondition($request->get('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
@@ -155,8 +155,8 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     }
 
     /**
-     * @param $address
-     * @param $type
+     * @param string $address
+     * @param string $type
      * @return array
      * @throws \Exception
      */
@@ -176,7 +176,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 if (method_exists($address, $getter)) {
                     $value = $address->$getter();
 
-                    if ($value instanceof ResourceInterface) {
+                    if (method_exists($value, 'getName')) {
                         $value = $value->getName();
                     }
 

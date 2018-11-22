@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\StoreBundle\Theme;
 interface ThemeHelperInterface
 {
     /**
-     * @param $themeName
+     * @param string $themeName
      * @param \Closure $function
      * @return mixed
      */

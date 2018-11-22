@@ -15,24 +15,24 @@ namespace CoreShop\Component\Index\Condition;
 class CompareCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var string
      */
     private $fieldName;
 
     /**
-     * @var $string
+     * @var string
      */
     private $operator;
 
     /**
-     * @var $string
+     * @var string
      */
     private $value;
 
     /**
-     * @param $fieldName
-     * @param $operator
-     * @param $value
+     * @param string $fieldName
+     * @param string $operator
+     * @param string $value
      */
     public function __construct($fieldName, $operator, $value)
     {
@@ -42,7 +42,7 @@ class CompareCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFieldName()
     {
@@ -50,7 +50,7 @@ class CompareCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $fieldName
+     * @param string $fieldName
      */
     public function setFieldName($fieldName)
     {
@@ -58,7 +58,7 @@ class CompareCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getOperator()
     {
@@ -66,7 +66,7 @@ class CompareCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $operator
+     * @param string $operator
      */
     public function setOperator($operator)
     {
@@ -74,7 +74,7 @@ class CompareCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getValue()
     {
@@ -82,7 +82,7 @@ class CompareCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      */
     public function setValue($value)
     {

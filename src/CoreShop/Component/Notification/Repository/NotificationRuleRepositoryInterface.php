@@ -12,15 +12,15 @@
 
 namespace CoreShop\Component\Notification\Repository;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 interface NotificationRuleRepositoryInterface extends RuleRepositoryInterface
 {
     /**
-     * @param $type
+     * @param string $type
      *
-     * @return mixed
+     * @return NotificationRuleInterface[]
      */
     public function findForType($type);
 }

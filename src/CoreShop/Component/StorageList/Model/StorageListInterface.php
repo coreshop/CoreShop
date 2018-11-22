@@ -33,17 +33,17 @@ interface StorageListInterface extends ResourceInterface
     public function hasItems();
 
     /**
-     * @param $item
+     * @param StorageListItemInterface $item
      */
     public function addItem($item);
 
     /**
-     * @param $item
+     * @param StorageListItemInterface $item
      */
     public function removeItem($item);
 
     /**
-     * @param $item
+     * @param StorageListItemInterface $item
      *
      * @return bool
      */

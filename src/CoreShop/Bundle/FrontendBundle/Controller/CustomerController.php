@@ -310,6 +310,7 @@ class CustomerController extends FrontendController
      */
     public function confirmNewsletterAction(Request $request)
     {
+        $success = false;
         $token = $request->get('token');
         $newsletterUser = null;
 
@@ -318,11 +319,11 @@ class CustomerController extends FrontendController
         }
 
         /**
-         * @var $customer CustomerInterface
+         * @var CustomerInterface $customer
          */
         $customer = $this->get('coreshop.repository.customer')->findByNewsletterToken($token);
 
-        if ($success = $customer instanceof CustomerInterface) {
+        if ($customer instanceof CustomerInterface) {
             $customer->setNewsletterConfirmed(true);
             $customer->setNewsletterToken(null);
 
@@ -337,6 +338,7 @@ class CustomerController extends FrontendController
             );
 
             $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.newsletter_confirmed'));
+            $success = true;
         } else {
             $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.newsletter_confirmation_error'));
         }

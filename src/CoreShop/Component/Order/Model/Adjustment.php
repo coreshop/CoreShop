@@ -174,9 +174,6 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @param bool $withTax
-     */
     private function recalculateAdjustable()
     {
         $adjustable = $this->getAdjustable();

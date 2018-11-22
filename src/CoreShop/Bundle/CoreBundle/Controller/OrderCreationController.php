@@ -27,7 +27,7 @@ class OrderCreationController extends BaseOrderCreationController
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
         $carrierId = $request->get('carrier');
 

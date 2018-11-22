@@ -108,11 +108,6 @@ services:
             - CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface
             - product-price-calculators
 
-    coreshop.product.price_calculator.property_price:
-        class: CoreShop\Component\Product\Calculator\PropertyPriceCalculator
-        tags:
-            - { name: coreshop.product.retail_price_calculator, type: property, priority: 10 }
-
     coreshop.product.price_calculator:
         class: CoreShop\Component\Product\Calculator\ProductPriceCalculator
         arguments:

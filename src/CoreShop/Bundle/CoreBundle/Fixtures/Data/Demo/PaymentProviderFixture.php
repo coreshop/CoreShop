@@ -58,7 +58,7 @@ class PaymentProviderFixture extends AbstractFixture implements ContainerAwareIn
             $faker->addProvider(new Lorem($faker));
 
             /**
-             * @var $provider PaymentProviderInterface
+             * @var PaymentProviderInterface $provider
              */
             $provider = $this->container->get('coreshop.factory.payment_provider')->createNew();
 

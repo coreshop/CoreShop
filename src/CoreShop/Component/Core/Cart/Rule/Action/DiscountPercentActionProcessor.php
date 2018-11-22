@@ -75,8 +75,8 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
     }
 
     /**
-     * @param $cartAmount
-     * @param $ruleAmount
+     * @param int $cartAmount
+     * @param int $ruleAmount
      * @return int
      */
     protected function getApplicableAmount($cartAmount, $ruleAmount)

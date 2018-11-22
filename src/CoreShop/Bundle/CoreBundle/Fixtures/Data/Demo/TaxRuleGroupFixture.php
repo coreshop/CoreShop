@@ -62,14 +62,14 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     {
         if (!count($this->container->get('coreshop.repository.tax_rule_group')->findAll())) {
             /**
-             * @var $taxRuleGroup TaxRuleGroupInterface
+             * @var TaxRuleGroupInterface $taxRuleGroup
              */
             $taxRuleGroup = $this->container->get('coreshop.factory.tax_rule_group')->createNew();
             $taxRuleGroup->setName('AT');
             $taxRuleGroup->setActive(true);
 
             /**
-             * @var $taxRule TaxRuleInterface
+             * @var TaxRuleInterface $taxRule
              */
             $taxRule = $this->container->get('coreshop.factory.tax_rule')->createNew();
             $taxRule->setCountry($this->container->get('coreshop.repository.country')->findByCode('AT'));

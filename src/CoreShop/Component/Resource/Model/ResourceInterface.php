@@ -27,8 +27,8 @@ interface ResourceInterface
     public function setValues($data = []);
 
     /**
-     * @param  $key
-     * @param  $value
+     * @param  string $key
+     * @param  mixed  $value
      *
      * @return $this
      */

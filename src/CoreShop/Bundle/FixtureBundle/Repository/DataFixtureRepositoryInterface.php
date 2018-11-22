@@ -9,11 +9,12 @@ use Doctrine\ORM\EntityRepository;
 interface DataFixtureRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param $className
+     * @param string $className
      *
      * @return DataFixture[]
      */
     public function findByClassName($className);
+
     /**
      * @param string $where
      * @param array $parameters

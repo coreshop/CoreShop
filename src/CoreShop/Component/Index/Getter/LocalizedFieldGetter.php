@@ -25,7 +25,7 @@ class LocalizedFieldGetter implements GetterInterface
     protected $localeProvider;
 
     /**
-     * @param Locale $localeService
+     * @param TranslationLocaleProviderInterface $localeProvider
      */
     public function __construct(TranslationLocaleProviderInterface $localeProvider)
     {

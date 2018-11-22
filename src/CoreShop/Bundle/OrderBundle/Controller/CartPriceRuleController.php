@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -74,7 +75,7 @@ class CartPriceRuleController extends ResourceController
             /** @var FactoryInterface $voucherCodeFactory */
             $voucherCodeFactory = $this->get('coreshop.factory.cart_price_rule_voucher_code');
 
-            /** @var $codeObject CartPriceRuleVoucherCodeInterface */
+            /** @var CartPriceRuleVoucherCodeInterface $codeObject */
             $codeObject = $voucherCodeFactory->createNew();
             $codeObject->setCode($resource->getCode());
             $codeObject->setCreationDate(new \DateTime());
@@ -174,6 +175,9 @@ class CartPriceRuleController extends ResourceController
             throw new NotFoundHttpException();
         }
 
+        /**
+         * @var RepositoryInterface $repository
+         */
         $repository = $this->manager
             ->getRepository('CoreShop\Component\Order\Model\CartPriceRuleVoucherCode');
 
@@ -188,7 +192,7 @@ class CartPriceRuleController extends ResourceController
     }
 
     /**
-     * @return \CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator|object
+     * @return \CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
      */
     protected function getVoucherCodeGenerator()
     {

@@ -22,7 +22,6 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -89,7 +88,7 @@ class OrderPaymentController extends PimcoreController
                 return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
                 /**
-                 * @var PaymentInterface|PimcoreModelInterface
+                 * @var PaymentInterface $payment
                  */
                 $tokenGenerator = new UniqueTokenGenerator(true);
                 $uniqueId = $tokenGenerator->generate(15);
@@ -118,9 +117,14 @@ class OrderPaymentController extends PimcoreController
                     'totalPayed' => $totalPayed
                 ]);
             }
-        } else {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Payment Provider '$paymentProvider' not found"]);
         }
+
+        return $this->viewHandler->handle(
+            [
+                'success' => false,
+                'message' => sprintf('Payment Provider %s not found', $request->get('paymentProvider')),
+            ]
+        );
     }
 
     /**
@@ -132,7 +136,7 @@ class OrderPaymentController extends PimcoreController
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager|object
+     * @return \Doctrine\ORM\EntityManager
      */
     private function getEntityManager()
     {

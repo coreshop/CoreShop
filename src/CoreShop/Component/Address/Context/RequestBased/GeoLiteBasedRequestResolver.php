@@ -67,7 +67,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     /**
      * Check if ip is private.
      *
-     * @param $clientIp
+     * @param string $clientIp
      *
      * @return bool
      */

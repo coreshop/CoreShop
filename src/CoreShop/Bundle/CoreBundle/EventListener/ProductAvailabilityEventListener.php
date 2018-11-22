@@ -20,15 +20,11 @@ use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\FactoryInterface;
 
 final class ProductAvailabilityEventListener
 {
-    /**
-     * @var CartRepositoryInterface
-     */
-    private $cartRepository;
-
     /**
      * @var CartItemRepositoryInterface
      */
@@ -45,16 +41,13 @@ final class ProductAvailabilityEventListener
     private $productIdsToCheck = [];
 
     /**
-     * @param CartRepositoryInterface     $cartRepository
      * @param CartItemRepositoryInterface $cartItemRepository
      * @param FactoryInterface            $pimcoreModelFactory
      */
     public function __construct(
-        CartRepositoryInterface $cartRepository,
         CartItemRepositoryInterface $cartItemRepository,
         FactoryInterface $pimcoreModelFactory
     ) {
-        $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
         $this->pimcoreModelFactory = $pimcoreModelFactory;
     }
@@ -78,6 +71,15 @@ final class ProductAvailabilityEventListener
         $originalItem->getDao()->getById($object->getId());
 
         if (!$originalItem instanceof PurchasableInterface) {
+            return;
+        }
+
+
+        if (!$object instanceof Concrete) {
+            return;
+        }
+
+        if (!$originalItem instanceof Concrete) {
             return;
         }
 
@@ -135,7 +137,7 @@ final class ProductAvailabilityEventListener
     }
 
     /**
-     * @param $cartItems
+     * @param array $cartItems
      */
     private function informCarts($cartItems)
     {

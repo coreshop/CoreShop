@@ -56,9 +56,9 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     }
 
     /**
-     * @param Workflow $workflow
-     * @param          $subject
-     * @param string   $transition
+     * @param Workflow       $workflow
+     * @param OrderInterface $subject
+     * @param string         $transition
      */
     private function applyTransition(Workflow $workflow, $subject, string $transition)
     {

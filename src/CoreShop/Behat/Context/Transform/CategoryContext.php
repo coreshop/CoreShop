@@ -47,6 +47,9 @@ final class CategoryContext implements Context
      */
     public function getCategoryByName($categoryName)
     {
+        /**
+         * @var \Pimcore\Model\DataObject\Listing\Concrete $list
+         */
         $list = $this->categoryRepository->getList();
         $list->setLocale('en');
         $list->setCondition('name = ?', [$categoryName]);

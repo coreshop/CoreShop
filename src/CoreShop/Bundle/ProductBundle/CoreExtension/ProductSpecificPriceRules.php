@@ -92,7 +92,7 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return ProductSpecificPriceRuleInterface[]
      */
@@ -105,6 +105,10 @@ class ProductSpecificPriceRules extends Data
             $data = $object->getObjectVar($this->getName());
         } else {
             $data = $object->{$this->getName()};
+        }
+
+        if (!method_exists($object, 'getO__loadedLazyFields')) {
+            return $data;
         }
 
         if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
@@ -290,7 +294,7 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * @param \stdClass[]
+     * @param \stdClass[] $array
      *
      * @return array
      */

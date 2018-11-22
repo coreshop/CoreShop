@@ -17,14 +17,12 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface TaxItemInterface extends ResourceInterface
 {
     /**
-     * @return mixed
+     * @return string
      */
     public function getName();
 
     /**
-     * @param $name
-     *
-     * @return mixed
+     * @param string $name
      */
     public function setName($name);
 
@@ -35,8 +33,6 @@ interface TaxItemInterface extends ResourceInterface
 
     /**
      * @param integer $rate
-     *
-     * @return static
      */
     public function setRate($rate);
 
@@ -47,8 +43,6 @@ interface TaxItemInterface extends ResourceInterface
 
     /**
      * @param integer $amount
-     *
-     * @return static
      */
     public function setAmount($amount);
 }

@@ -4,4 +4,4 @@ set -e
 echo "RUNNING PHPSTAN"
 
 bin/console cache:warmup --env=dev
-vendor/bin/phpstan analyse -c phpstan.neon src -l 1
+vendor/bin/phpstan analyse -c phpstan.travis.neon src -l 2

@@ -74,7 +74,7 @@ EOT
         }
 
         $schemaTool = new SchemaTool($em);
-        $sqls = $schemaTool->getDropSchemaSQL($metadatas, true);
+        $sqls = $schemaTool->getDropSchemaSQL($metadatas);
 
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');

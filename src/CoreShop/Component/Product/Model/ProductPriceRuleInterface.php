@@ -21,8 +21,6 @@ interface ProductPriceRuleInterface extends PriceRuleInterface
 
     /**
      * @param string $description
-     *
-     * @return static
      */
     public function setDescription($description);
 }

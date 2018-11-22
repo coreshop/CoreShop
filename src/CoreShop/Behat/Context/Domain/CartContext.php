@@ -15,8 +15,8 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -175,13 +175,17 @@ final class CartContext implements Context
      */
     public function cartShippingCostShouldBeExcludingTax($shipping)
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $shipping,
-            $this->cartContext->getCart()->getShipping(false),
+            $cart->getShipping(false),
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $this->cartContext->getCart()->getShipping(false)
+                $cart->getShipping(false)
             )
         );
     }
@@ -191,13 +195,17 @@ final class CartContext implements Context
      */
     public function cartShippingCostShouldBeIncludingTax($shipping)
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $shipping,
-            $this->cartContext->getCart()->getShipping(true),
+            $cart->getShipping(true),
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $this->cartContext->getCart()->getShipping(true)
+                $cart->getShipping(true)
             )
         );
     }
@@ -224,13 +232,17 @@ final class CartContext implements Context
      */
     public function cartShouldUseCarrier(CarrierInterface $carrier)
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $carrier->getId(),
-            $this->cartContext->getCart()->getCarrier()->getId(),
+            $cart->getCarrier()->getId(),
             sprintf(
                 'Cart is expected to use carrier %s, but found %s',
                 $carrier->getTitle('en'),
-                $this->cartContext->getCart()->getCarrier()->getTitle('en')
+                $cart->getCarrier()->getTitle('en')
             )
         );
     }
@@ -240,8 +252,12 @@ final class CartContext implements Context
      */
     public function cartShouldNotHaveACarrier()
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::null(
-            $this->cartContext->getCart()->getCarrier(),
+            $cart->getCarrier(),
             'Cart is expected to not have a carrier but found one'
         );
     }

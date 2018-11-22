@@ -19,7 +19,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 interface ConfigurationServiceInterface extends BaseConfigurationServiceInterface
 {
     /**
-     * @param $key
+     * @param string $key
      * @param StoreInterface|null $store
      * @param bool $returnObject
      *
@@ -28,8 +28,8 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
     public function getForStore($key, StoreInterface $store = null, $returnObject = false);
 
     /**
-     * @param $key
-     * @param $data
+     * @param string $key
+     * @param mixed $data
      * @param StoreInterface|null $store
      *
      * @return ConfigurationInterface
@@ -37,7 +37,7 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
     public function setForStore($key, $data, StoreInterface $store = null);
 
     /**
-     * @param $key
+     * @param string $key
      * @param StoreInterface|null $store
      *
      * @return ConfigurationInterface

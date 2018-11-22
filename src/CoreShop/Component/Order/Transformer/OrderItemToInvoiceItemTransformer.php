@@ -60,13 +60,13 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity)
     {
         /**
-         * @var $invoice OrderInvoiceInterface
-         * @var $orderItem OrderItemInterface
-         * @var $invoiceItem OrderInvoiceItemInterface
+         * @var OrderInvoiceInterface $invoice
+         * @var OrderItemInterface $orderItem
+         * @var OrderInvoiceItemInterface $invoiceItem
          */
         Assert::isInstanceOf($orderItem, OrderItemInterface::class);
         Assert::isInstanceOf($invoice, OrderDocumentInterface::class);
-        Assert::isInstanceOf($invoiceItem, OrderDocumentItemInterface::class);
+        Assert::isInstanceOf($invoiceItem, OrderInvoiceItemInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 

@@ -62,9 +62,10 @@ services:
         tags:
             - { name: twig.extension }
 
-    coreshop.core.product.price_calculator.store_price:
+    coreshop.product.price_calculator.property_price:
         class: CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator
-        decorates: 'coreshop.product.price_calculator.property_price'
+        tags:
+            - { name: coreshop.product.retail_price_calculator, type: store_price, priority: 10 }
 
     coreshop.order.purchasable.price_calculator.product:
         class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator

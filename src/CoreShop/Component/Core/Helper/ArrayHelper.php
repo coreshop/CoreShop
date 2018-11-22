@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Helper;
 
 use Carbon\Carbon;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 class ArrayHelper
@@ -53,12 +54,12 @@ class ArrayHelper
     }
 
     /**
-     * @param AbstractObject $object
+     * @param Concrete $object
      * @param null $fieldDefintions
      *
      * @return array|false
      */
-    public static function objectToArray(AbstractObject $object, $fieldDefintions = null)
+    public static function objectToArray(Concrete $object, $fieldDefintions = null)
     {
         //if the given object is an array then loop through each element
         if (is_array($object)) {

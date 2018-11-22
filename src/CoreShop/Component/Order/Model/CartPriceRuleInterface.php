@@ -25,8 +25,6 @@ interface CartPriceRuleInterface extends RuleInterface
 
     /**
      * @param string $description
-     *
-     * @return static
      */
     public function setDescription($description);
 

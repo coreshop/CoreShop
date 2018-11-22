@@ -195,7 +195,7 @@ final class IndexConditionContext implements Context
     }
 
     /**
-     * @param      $condition
+     * @param string $condition
      * @param null $identifier
      */
     private function addCondition($condition, $identifier = null)

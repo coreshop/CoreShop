@@ -22,12 +22,12 @@ interface SequenceInterface extends ResourceInterface
     public function getIndex();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType();
 
     /**
-     * @param $type
+     * @param string $type
      */
     public function setType($type);
 

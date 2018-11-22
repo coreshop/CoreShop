@@ -28,7 +28,7 @@ interface ProposalItemInterface extends ResourceInterface, AdjustableInterface
     public function setTotal($total, $withTax = true);
 
     /**
-     * @param $product
+     * @param PurchasableInterface $product
      */
     public function setProduct($product);
 
@@ -38,9 +38,7 @@ interface ProposalItemInterface extends ResourceInterface, AdjustableInterface
     public function getQuantity();
 
     /**
-     * @param $quantity
-     *
-     * @return int
+     * @param int $quantity
      */
     public function setQuantity($quantity);
 

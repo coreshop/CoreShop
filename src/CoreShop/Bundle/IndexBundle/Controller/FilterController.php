@@ -61,7 +61,7 @@ class FilterController extends ResourceController
 
         if ($index instanceof IndexInterface) {
             /**
-             * @var $worker WorkerInterface
+             * @var WorkerInterface $worker
              */
             $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
             $list = $this->get('coreshop.factory.index.list')->createList($index);

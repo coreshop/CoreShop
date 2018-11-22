@@ -14,6 +14,7 @@ namespace CoreShop\Component\SEO\Extractor;
 
 use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
+use Webmozart\Assert\Assert;
 
 final class TitleExtractor implements ExtractorInterface
 {
@@ -30,6 +31,8 @@ final class TitleExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        Assert::isInstanceOf($object, SEOAwareInterface::class);
+
         /**
          * @var $object SEOAwareInterface
          */

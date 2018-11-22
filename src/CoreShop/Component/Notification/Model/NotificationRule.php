@@ -56,8 +56,6 @@ class NotificationRule implements NotificationRuleInterface
     public function setType($type)
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**

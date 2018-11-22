@@ -17,14 +17,14 @@ interface IndexUpdaterServiceInterface
     /**
      * Update all Indices with $subject.
      *
-     * @param $subject
+     * @param mixed $subject
      */
     public function updateIndices($subject);
 
     /**
      * Remove all Indices with $subject.
      *
-     * @param $subject
+     * @param mixed $subject
      */
     public function removeIndices($subject);
 }

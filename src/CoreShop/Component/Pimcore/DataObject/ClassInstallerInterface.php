@@ -17,15 +17,15 @@ use Pimcore\Model\DataObject;
 interface ClassInstallerInterface
 {
     /**
-     * @param $jsonFile
-     * @param $brickName
+     * @param string $jsonFile
+     * @param string $brickName
      * @return mixed|DataObject\Objectbrick\Definition
      */
     public function createBrick($jsonFile, $brickName);
 
     /**
-     * @param $jsonFile
-     * @param $className
+     * @param string $jsonFile
+     * @param string $className
      * @param bool $updateClass
      *
      * @return DataObject\ClassDefinition
@@ -33,8 +33,8 @@ interface ClassInstallerInterface
     public function createClass($jsonFile, $className, $updateClass = false);
 
     /**
-     * @param $name
-     * @param null $jsonFile
+     * @param string $jsonFile
+     * @param string $name
      *
      * @return mixed|null|DataObject\Fieldcollection\Definition
      */

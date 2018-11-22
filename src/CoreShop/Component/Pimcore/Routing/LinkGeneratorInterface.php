@@ -18,8 +18,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 interface LinkGeneratorInterface
 {
     /**
-     * @param $object
-     * @param $routeName
+     * @param mixed $object
+     * @param string $routeName
      * @param array $params
      * @param int $referenceType
      * @return mixed

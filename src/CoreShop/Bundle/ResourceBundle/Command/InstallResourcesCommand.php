@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -60,10 +61,16 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /**
+         * @var Application $application
+         */
+        $application = $this->getApplication();
+        $kernel = $application->getKernel();
+
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln(sprintf(
             'Install Resources for Environment <info>%s</info>.',
-            $this->getContainer()->get('kernel')->getEnvironment()
+            $kernel->getEnvironment()
         ));
 
         $this->resourceInstaller->installResources($output, $input->getOption('application-name'));

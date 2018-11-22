@@ -11,12 +11,15 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
+    /**
+     * @var string
+     */
     protected $productClassName;
 
     /**
-     * @param $productClassName
+     * @param string $productClassName
      */
-    public function __construct($productClassName)
+    public function __construct(string $productClassName)
     {
         $this->productClassName = $productClassName;
     }

@@ -18,13 +18,19 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 interface LocalizedInterpreterInterface extends InterpreterInterface
 {
     /**
-     * @param $language
-     * @param $value
+     * @param string               $language
+     * @param mixed                $value
      * @param IndexableInterface   $indexable
      * @param IndexColumnInterface $config
-     * @param array $interpreterConfig
+     * @param array                $interpreterConfig
      *
      * @return mixed
      */
-    public function interpretForLanguage($language, $value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []);
+    public function interpretForLanguage(
+        $language,
+        $value,
+        IndexableInterface $indexable,
+        IndexColumnInterface $config,
+        $interpreterConfig = []
+    );
 }

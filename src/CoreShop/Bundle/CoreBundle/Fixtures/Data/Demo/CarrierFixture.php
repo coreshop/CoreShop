@@ -68,7 +68,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
             $faker->addProvider(new Lorem($faker));
 
             /**
-             * @var $carrier CarrierInterface
+             * @var CarrierInterface $carrier
              */
             $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
             $carrier->setIdentifier('Standard');

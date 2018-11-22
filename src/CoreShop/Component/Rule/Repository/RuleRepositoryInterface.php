@@ -23,13 +23,13 @@ interface RuleRepositoryInterface extends RepositoryInterface
     public function findActive();
 
     /**
-     * @param $conditionType
+     * @param string $conditionType
      * @return RuleInterface[]
      */
     public function findWithConditionOfType($conditionType);
 
     /**
-     * @param $actionType
+     * @param string $actionType
      * @return RuleInterface[]
      */
     public function findWithActionOfType($actionType);

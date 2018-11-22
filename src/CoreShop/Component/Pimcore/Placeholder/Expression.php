@@ -30,7 +30,8 @@ class Expression extends AbstractPlaceholder
     public function getReplacement()
     {
         $expr = \Pimcore::getContainer()->get('coreshop.expression_language');
-        $expression = $this->getPlaceholderConfig()->expression;
+        $config = $this->getPlaceholderConfig();
+        $expression = $config->get('expression');
 
         return $expr->evaluate($expression, [
             'value' => $this->getValue(),

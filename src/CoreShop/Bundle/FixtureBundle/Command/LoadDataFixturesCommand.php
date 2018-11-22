@@ -4,6 +4,7 @@ namespace CoreShop\Bundle\FixtureBundle\Command;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutorInterface;
 use CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -113,8 +114,13 @@ class LoadDataFixturesCommand extends Command
         $excludeBundles = $input->getOption('exclude');
         $fixtureRelativePath = $this->getFixtureRelativePath($input);
 
+        /**
+         * @var Application $application
+         */
+        $application = $this->getApplication();
+
         /** @var BundleInterface $bundle */
-        foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
+        foreach ($application->getKernel()->getBundles() as $bundle) {
             if (!empty($bundles) && !in_array($bundle->getName(), $bundles)) {
                 continue;
             }

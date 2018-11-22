@@ -33,7 +33,7 @@ final class EmbeddedClassController extends AdminController
         $list->setCondition('classId = ' . $list->quote($class->getId()));
         $list = $list->load();
         $result = [];
-        /** @var $item DataObject\ClassDefinition\CustomLayout */
+        /** @var DataObject\ClassDefinition\CustomLayout $item */
         foreach ($list as $item) {
             $result[] = [
                 'id' => $item->getId(),

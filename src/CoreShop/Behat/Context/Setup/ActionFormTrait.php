@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 trait ActionFormTrait
 {
     /**
-     * @param $class
-     * @param $type
+     * @param string $class
+     * @param string $type
      * @throws \Exception
      */
     protected function assertActionForm($class, $type)
@@ -55,7 +55,7 @@ trait ActionFormTrait
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return FormInterface
      * @throws \Exception
      */

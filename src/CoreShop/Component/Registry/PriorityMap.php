@@ -55,7 +55,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get item from map.
      *
-     * @param $key
+     * @param string $key
      *
      * @return mixed
      */
@@ -69,7 +69,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Check if item in map.
      *
-     * @param $key
+     * @param string $key
      *
      * @return bool
      */
@@ -83,7 +83,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * remove item in map.
      *
-     * @param $key
+     * @param string $key
      */
     public function remove($key)
     {
@@ -142,8 +142,8 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * ASC sort strategy.
      *
-     * @param $declaration1
-     * @param $declaration2
+     * @param \stdClass $declaration1
+     * @param \stdClass $declaration2
      *
      * @return int
      */
@@ -159,8 +159,8 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * DESC sort strategy.
      *
-     * @param $declaration1
-     * @param $declaration2
+     * @param \stdClass $declaration1
+     * @param \stdClass $declaration2
      *
      * @return int
      */

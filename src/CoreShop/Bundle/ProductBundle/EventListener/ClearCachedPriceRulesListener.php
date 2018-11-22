@@ -26,7 +26,7 @@ final class ClearCachedPriceRulesListener
     public function clearCachedRules(ResourceControllerEvent $event)
     {
         /**
-         * @var $rule RuleInterface
+         * @var RuleInterface $rule
          */
         $rule = $event->getSubject();
 

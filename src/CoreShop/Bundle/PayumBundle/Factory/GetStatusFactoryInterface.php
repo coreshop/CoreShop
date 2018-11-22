@@ -17,7 +17,7 @@ use Payum\Core\Request\GetStatusInterface;
 interface GetStatusFactoryInterface
 {
     /**
-     * @param $model
+     * @param mixed $model
      *
      * @return GetStatusInterface
      */

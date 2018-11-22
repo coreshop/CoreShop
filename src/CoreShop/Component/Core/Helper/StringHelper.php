@@ -15,8 +15,8 @@ namespace CoreShop\Component\Core\Helper;
 class StringHelper
 {
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      *
      * @return bool
      */
@@ -27,8 +27,8 @@ class StringHelper
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      *
      * @return bool
      */

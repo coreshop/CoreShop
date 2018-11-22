@@ -18,8 +18,8 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
 interface TaxRateRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param $name
-     * @param $locale
+     * @param string $name
+     * @param string $locale
      * @return TaxRateInterface[]
      */
     public function findByName($name, $locale);

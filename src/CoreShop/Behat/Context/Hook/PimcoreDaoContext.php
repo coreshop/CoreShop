@@ -31,7 +31,7 @@ final class PimcoreDaoContext implements Context
         Cache\Runtime::clear();
 
         /**
-         * @var $list Listing
+         * @var Listing $list
          */
         $list = new DataObject\Listing();
         $list->setUnpublished(true);

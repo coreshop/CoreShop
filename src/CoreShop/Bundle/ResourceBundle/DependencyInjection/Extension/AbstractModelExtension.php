@@ -58,7 +58,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param $applicationName
+     * @param string $applicationName
      * @param array $models
      * @param ContainerBuilder $container
      */
@@ -85,8 +85,8 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param $applicationName
-     * @param $stack
+     * @param string $applicationName
+     * @param array $stack
      * @param ContainerBuilder $container
      */
     public function registerStack($applicationName, $stack, ContainerBuilder $container)

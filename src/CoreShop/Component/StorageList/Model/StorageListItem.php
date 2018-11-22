@@ -40,8 +40,6 @@ class StorageListItem extends AbstractPimcoreModel implements StorageListItemInt
     public function setProduct($product)
     {
         $this->product = $product;
-
-        return $this;
     }
 
     /**
@@ -58,7 +56,5 @@ class StorageListItem extends AbstractPimcoreModel implements StorageListItemInt
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
-
-        return $this;
     }
 }

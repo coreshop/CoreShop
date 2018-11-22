@@ -69,7 +69,7 @@ final class ZoneContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     private function createZone($name)
     {
@@ -77,7 +77,7 @@ final class ZoneContext implements Context
 
         if (!$zone) {
             /**
-             * @var $zone ZoneInterface
+             * @var ZoneInterface $zone
              */
             $zone = $this->zoneFactory->createNew();
             $zone->setName($name);

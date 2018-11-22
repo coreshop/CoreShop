@@ -94,7 +94,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
     /**
      * @param ContainerBuilder $container
-     * @param                  $config
+     * @param array $config
      */
     private function registerCheckout(ContainerBuilder $container, $config)
     {

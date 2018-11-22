@@ -65,7 +65,7 @@ class StorePrice extends AbstractOperator
         $result->label = $this->label;
 
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface $store
          */
         $store = $this->storeRepository->find($this->storeId);
 

@@ -58,7 +58,7 @@ final class ManufacturerContext implements Context
     public function thereIsAManufacturer($name)
     {
         /**
-         * @var $manufacturer ManufacturerInterface
+         * @var ManufacturerInterface $manufacturer
          */
         $manufacturer = $this->manufacturerFactory->createNew();
 

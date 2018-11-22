@@ -18,9 +18,9 @@ use Symfony\Component\Templating\Helper\HelperInterface;
 interface ConfigurationHelperInterface extends HelperInterface
 {
     /**
-     * @param $name
+     * @param string $name
      * @param StoreInterface $store
-     * @return mixed
+     * @return array
      */
     public function getConfiguration($name, StoreInterface $store = null);
 }

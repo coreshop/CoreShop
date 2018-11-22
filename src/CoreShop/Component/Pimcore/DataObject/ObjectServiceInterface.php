@@ -19,7 +19,7 @@ use Pimcore\Model\Element\ElementInterface;
 interface ObjectServiceInterface
 {
     /**
-     * @param $path
+     * @param string $path
      *
      * @return ElementInterface
      */

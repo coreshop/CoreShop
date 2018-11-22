@@ -25,7 +25,7 @@ class CompositeTracker implements TrackerInterface
     private $extractor;
 
     /**
-     * @var TrackerInterface
+     * @var ServiceRegistryInterface
      */
     private $trackerRegistry;
 
@@ -112,13 +112,13 @@ class CompositeTracker implements TrackerInterface
     }
 
     /**
-     * @param $function
-     * @param $data
+     * @param callable $function
+     * @param array $data
      */
     private function compositeTrackerCall($function, $data)
     {
          /**
-         * @var $tracker TrackerInterface
+         * @var TrackerInterface $tracker
          */
         foreach ($this->trackerRegistry->all() as $tracker) {
             if (!$tracker->isEnabled()) {
@@ -130,7 +130,7 @@ class CompositeTracker implements TrackerInterface
     }
 
     /**
-     * @param $object
+     * @param mixed $object
      * @return array
      */
     private function extractTrackingData($object): array

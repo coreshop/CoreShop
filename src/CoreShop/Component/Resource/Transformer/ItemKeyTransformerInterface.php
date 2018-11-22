@@ -15,7 +15,7 @@ namespace CoreShop\Component\Resource\Transformer;
 interface ItemKeyTransformerInterface
 {
     /**
-     * @param $string
+     * @param string $string
      *
      * @return mixed
      */

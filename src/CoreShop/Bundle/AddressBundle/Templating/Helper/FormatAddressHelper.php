@@ -31,10 +31,7 @@ class FormatAddressHelper extends Helper implements FormatAddressHelperInterface
     }
 
     /**
-     * @param $address
-     * @param bool $asHtml
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function formatAddress($address, $asHtml = true)
     {

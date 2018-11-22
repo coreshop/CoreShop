@@ -11,6 +11,9 @@ parameters:
     excludes_analyse:
         # Makes PHPStan crash
         - '**/DependencyInjection/Configuration.php'
+        - '**/Migrations/Version*.php'
+        # Ignore cause the file uses external dependencies and will only be used if those dependencies are met
+        - 'CoreShop/Component/SEO/Extractor/LuceneSearchExtractor.php'
 
     ignoreErrors:
         # Magic calls
@@ -25,7 +28,7 @@ parameters:
         - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
 
         - '/Class LuceneSearchBundle/'
-        - '/has unknown class LuceneSearchBundle/'
+        - '/unknown class LuceneSearchBundle/'
         - '/typehint type LuceneSearchBundle/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children()/'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::save()./'

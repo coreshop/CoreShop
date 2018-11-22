@@ -16,6 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
@@ -37,7 +38,6 @@ class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterf
     /**
      * @param CurrencyRepositoryInterface $currencyRepository
      * @param CurrencyConverterInterface $moneyConverter
-     * @param CurrencyContextInterface $currencyContext
      */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
@@ -65,6 +65,8 @@ class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterf
 
         $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
+
+        Assert::isInstanceOf($currency, CurrencyInterface::class);
 
         return -1 * $this->moneyConverter->convert($amount, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
     }

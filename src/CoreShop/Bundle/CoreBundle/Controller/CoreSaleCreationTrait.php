@@ -40,7 +40,7 @@ trait CoreSaleCreationTrait
         $language = $request->get('language');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
         $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
 
@@ -68,7 +68,7 @@ trait CoreSaleCreationTrait
         }
 
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
         $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $store) {
             $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
@@ -81,7 +81,7 @@ trait CoreSaleCreationTrait
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
 
         /**
-         * @var $carrier CarrierInterface
+         * @var CarrierInterface $carrier
          */
         foreach ($carriers as $carrier) {
             $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice($carrier, $cart, $cart->getShippingAddress());
@@ -102,7 +102,7 @@ trait CoreSaleCreationTrait
     protected function getTotalArray(CartInterface $cart)
     {
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
@@ -129,7 +129,7 @@ trait CoreSaleCreationTrait
     protected function prepareCart(Request $request, CartInterface $cart)
     {
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 

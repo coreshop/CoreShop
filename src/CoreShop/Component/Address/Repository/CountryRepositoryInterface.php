@@ -32,7 +32,7 @@ interface CountryRepositoryInterface extends RepositoryInterface
     public function findByName($name, $locale);
 
     /**
-     * @param $code
+     * @param string $code
      *
      * @return CountryInterface
      */

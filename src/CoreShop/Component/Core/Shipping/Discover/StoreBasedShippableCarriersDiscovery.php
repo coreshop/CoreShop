@@ -36,7 +36,6 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
     /**
      * @param CarrierRepositoryInterface $carrierRepository
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     * @param StoreContextInterface $storeContext
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
@@ -53,7 +52,7 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
     public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
     {
         /**
-         * @var $shippable CartInterface
+         * @var CartInterface $shippable
          */
         Assert::isInstanceOf($shippable, CartInterface::class);
 

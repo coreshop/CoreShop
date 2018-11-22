@@ -33,29 +33,27 @@ interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceI
     public function getPaymentProvider();
 
     /**
-     * @param $paymentProvider
-     *
-     * @return mixed
+     * @param PaymentProviderInterface $paymentProvider
      */
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider);
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getDatePayment();
 
     /**
-     * @param $datePayment
+     * @param \DateTime $datePayment
      */
     public function setDatePayment($datePayment);
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getState();
 
     /**
-     * @param $state
+     * @param string $state
      */
     public function setState($state);
 
@@ -75,7 +73,7 @@ interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceI
     public function setTotalAmount($amount);
 
     /**
-     * @param $number
+     * @param string $number
      */
     public function setNumber($number);
 }

@@ -195,8 +195,8 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $className
-     * @param $repository
+     * @param string $className
+     * @param string $repository
      */
     public function registerRepository($className, $repository)
     {
@@ -204,7 +204,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $resource
+     * @param string $resource
      * @return int
      */
     protected function getResourceId($resource)
@@ -219,7 +219,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $resource
+     * @param string $resource
      * @return string
      */
     protected function getResourceClassName($resource)
@@ -234,7 +234,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $resource
+     * @param string $resource
      * @return bool
      */
     protected function isResourceNew($resource)

@@ -23,8 +23,6 @@ interface StorageListItemInterface extends ResourceInterface
 
     /**
      * @param StorageListProductInterface $product
-     *
-     * @return static
      */
     public function setProduct($product);
 
@@ -34,9 +32,7 @@ interface StorageListItemInterface extends ResourceInterface
     public function getQuantity();
 
     /**
-     * @param $quantity
-     *
-     * @return static
+     * @param int $quantity
      */
     public function setQuantity($quantity);
 }

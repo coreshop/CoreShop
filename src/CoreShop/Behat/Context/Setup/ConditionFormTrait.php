@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 trait ConditionFormTrait
 {
     /**
-     * @param $class
-     * @param $type
+     * @param string $class
+     * @param string $type
      * @throws \Exception
      */
     protected function assertConditionForm($class, $type)
@@ -35,8 +35,8 @@ trait ConditionFormTrait
     }
 
     /**
-     * @param $type
-     * @param $data
+     * @param string $type
+     * @param mixed $data
      * @return ConditionInterface
      */
     protected function createConditionWithForm($type, $data)
@@ -60,7 +60,7 @@ trait ConditionFormTrait
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return FormInterface
      * @throws \Exception
      */

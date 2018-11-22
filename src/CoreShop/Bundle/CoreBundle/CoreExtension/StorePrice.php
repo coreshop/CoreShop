@@ -270,7 +270,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
             $data = [];
 
             /**
-             * @var $price ProductStorePriceInterface
+             * @var ProductStorePriceInterface $price
              */
             foreach ($prices as $price) {
                 $data[$price->getStore()->getId()] = $price->getPrice();
@@ -305,12 +305,12 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 }
 
                 /**
-                 * @var $storePrice ProductStorePriceInterface
+                 * @var ProductStorePriceInterface $storePrice
                  */
                 $storePrice = null;
 
                 /**
-                 * @var $searchStorePrice ProductStorePriceInterface
+                 * @var ProductStorePriceInterface $searchStorePrice
                  */
                 foreach ($storePrices as $searchStorePrice) {
                     if ($searchStorePrice->getStore()->getId() === $storeId) {
@@ -345,7 +345,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $storeData = [];
 
         /**
-         * @var $price ProductStorePriceInterface
+         * @var ProductStorePriceInterface $price
          */
         foreach ($prices as $price) {
             $priceValue = $price->getPrice();
@@ -360,7 +360,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
 
         //Fill missing stores with null values
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface $store
          */
         foreach ($stores as $store) {
             if (array_key_exists($store->getId(), $storeData)) {
@@ -517,7 +517,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return float|int
      */

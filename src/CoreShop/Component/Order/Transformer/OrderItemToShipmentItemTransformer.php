@@ -60,13 +60,13 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
     public function transform(OrderDocumentInterface $shipment, OrderItemInterface $orderItem, OrderDocumentItemInterface $shipmentItem, $quantity)
     {
         /**
-         * @var $shipment OrderInvoiceInterface
-         * @var $orderItem OrderItemInterface
-         * @var $shipmentItem OrderShipmentItemInterface
+         * @var OrderInvoiceInterface $shipment
+         * @var OrderItemInterface $orderItem
+         * @var OrderShipmentItemInterface $shipmentItem
          */
         Assert::isInstanceOf($orderItem, OrderItemInterface::class);
         Assert::isInstanceOf($shipment, OrderDocumentInterface::class);
-        Assert::isInstanceOf($shipmentItem, OrderDocumentItemInterface::class);
+        Assert::isInstanceOf($shipmentItem, OrderShipmentItemInterface::class);
 
         $this->eventDispatcher->dispatchPreEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 

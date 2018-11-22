@@ -18,7 +18,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 interface ClassUpdateInterface
 {
     /**
-     * @param $className
+     * @param string $className
      */
     public function __construct($className);
 
@@ -32,7 +32,7 @@ interface ClassUpdateInterface
     /**
      * get a property from the class
      *
-     * @param $property
+     * @param string $property
      * @return mixed
      */
     public function getProperty($property);
@@ -40,8 +40,8 @@ interface ClassUpdateInterface
     /**
      * set a property for the class
      *
-     * @param $property
-     * @param $value
+     * @param string $property
+     * @param mixed $value
      * @return mixed
      */
     public function setProperty($property, $value);
@@ -49,7 +49,7 @@ interface ClassUpdateInterface
     /**
      * Check if Class has field
      *
-     * @param $fieldName
+     * @param string $fieldName
      * @return bool
      */
     public function hasField($fieldName);
@@ -63,7 +63,7 @@ interface ClassUpdateInterface
     /**
      * Insert Field at the end
      *
-     * @param $jsonFieldDefinition
+     * @param array $jsonFieldDefinition
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
@@ -72,8 +72,8 @@ interface ClassUpdateInterface
     /**
      * Insert Field before another field
      *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
+     * @param string $fieldName
+     * @param array $jsonFieldDefinition
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
@@ -82,8 +82,8 @@ interface ClassUpdateInterface
     /**
      * Insert Field after another field
      *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
+     * @param string $fieldName
+     * @param array $jsonFieldDefinition
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
@@ -92,8 +92,8 @@ interface ClassUpdateInterface
     /**
      * Replace existing Field with a new Definition
      *
-     * @param $fieldName
-     * @param $jsonFieldDefinition
+     * @param string $fieldName
+     * @param array $jsonFieldDefinition
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
@@ -102,7 +102,7 @@ interface ClassUpdateInterface
     /**
      * Replace Properties from any field
      *
-     * @param $fieldName
+     * @param string $fieldName
      * @param array $keyValues
      *
      * @throws ClassDefinitionFieldNotFoundException
@@ -112,7 +112,7 @@ interface ClassUpdateInterface
     /**
      * Remove existing Field
      *
-     * @param $fieldName
+     * @param string $fieldName
      *
      * @throws ClassDefinitionFieldNotFoundException
      */

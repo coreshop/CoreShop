@@ -26,6 +26,7 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
@@ -45,11 +46,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     private $formFactory;
 
     /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
      * @var CartManagerInterface
      */
     private $cartManager;
@@ -58,21 +54,18 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      * @param CarriersResolverInterface $carriersResolver
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      * @param FormFactoryInterface $formFactory
-     * @param StoreContextInterface $storeContext
      * @param CartManagerInterface $cartManager
      */
     public function __construct(
         CarriersResolverInterface $carriersResolver,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
-        StoreContextInterface $storeContext,
         CartManagerInterface $cartManager
     )
     {
         $this->carriersResolver = $carriersResolver;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
-        $this->storeContext = $storeContext;
         $this->cartManager = $cartManager;
     }
 
@@ -89,6 +82,8 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function isRequired(CartInterface $cart)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         return $cart->hasShippableItems();
     }
 
@@ -97,6 +92,8 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function doAutoForward(CartInterface $cart)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         return $cart->hasShippableItems() === false;
     }
 
@@ -105,6 +102,8 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function validate(CartInterface $cart)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         return $cart->hasShippableItems() === false
             || ($cart->hasItems() &&
                 $cart->getCarrier() instanceof CarrierInterface &&
@@ -160,7 +159,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
 
     /**
      * @param Request $request
-     * @param $carriers
+     * @param array $carriers
      * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface

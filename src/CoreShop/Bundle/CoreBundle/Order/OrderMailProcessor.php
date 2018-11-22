@@ -27,6 +27,7 @@ use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use Monolog\Logger;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
@@ -104,7 +105,12 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         }
 
         $attachments = [];
-        $emailParameters = array_merge($order->getCustomer()->getObjectVars(), $params);
+        $customer = $order->getCustomer();
+
+        if ($customer instanceof Concrete) {
+            $emailParameters = array_merge($customer->getObjectVars(), $params);
+        }
+
         $emailParameters['orderTotal'] = $this->priceFormatter->format($order->getTotal(), $order->getCurrency()->getIsoCode());
         $emailParameters['orderNumber'] = $order->getOrderNumber();
 
@@ -119,8 +125,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         if (!isset($params['doNotSendToDesignatedRecipient']) || !$params['doNotSendToDesignatedRecipient']) {
             $recipient = [
                 [
-                    $order->getCustomer()->getEmail(),
-                    $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
+                    $customer->getEmail(),
+                    $customer->getFirstname() . ' ' . $customer->getLastname()
                 ],
             ];
         }

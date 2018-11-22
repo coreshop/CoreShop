@@ -23,6 +23,7 @@ class State extends AbstractResource implements StateInterface
     use TimestampableTrait;
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -121,6 +122,18 @@ class State extends AbstractResource implements StateInterface
     public function getCountryName()
     {
         return $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : '';
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     * @return StateTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var StateTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+        return $translation;
     }
 
     /**

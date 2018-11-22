@@ -74,14 +74,14 @@ class TaxCollector implements TaxCollectorInterface
     }
 
     /**
-     * @param $taxId
-     * @param $amount
-     * @param $usedTaxes
+     * @param int $taxId
+     * @param int $amount
+     * @param array $usedTaxes
      */
     private function addTaxToArray($taxId, $amount, &$usedTaxes)
     {
         /**
-         * @var $tax TaxRateInterface
+         * @var TaxRateInterface $tax
          */
         $tax = $this->taxRateRepository->find($taxId);
 
@@ -95,7 +95,7 @@ class TaxCollector implements TaxCollectorInterface
 
         if (!array_key_exists($tax->getId(), $usedTaxes)) {
             /**
-             * @var $item TaxItemInterface
+             * @var TaxItemInterface $item
              */
             $item = $this->taxItemFactory->createNew();
             $item->setName($tax->getName());

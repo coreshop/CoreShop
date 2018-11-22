@@ -22,12 +22,12 @@ interface CartInterface extends
     StorageListInterface
 {
     /**
-     * @param $order
+     * @param OrderInterface $order
      */
     public function setOrder($order);
 
     /**
-     * @return mixed
+     * @return OrderInterface|null
      */
     public function getOrder();
 
@@ -52,17 +52,17 @@ interface CartInterface extends
     public function hasPriceRules();
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      */
     public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      */
     public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      *
      * @return bool
      */

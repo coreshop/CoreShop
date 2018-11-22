@@ -19,7 +19,7 @@ use Pimcore\Model\Document\Tag;
 class Select extends Tag
 {
     /**
-     * @var int
+     * @var ResourceInterface|null
      */
     public $resource;
 

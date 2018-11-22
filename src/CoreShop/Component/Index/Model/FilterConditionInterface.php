@@ -24,8 +24,6 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
 
     /**
      * @param string $type
-     *
-     * @return static
      */
     public function setType($type);
 
@@ -36,8 +34,6 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
 
     /**
      * @param string $label
-     *
-     * @return static
      */
     public function setLabel($label);
 
@@ -48,8 +44,6 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
 
     /**
      * @param int $quantityUnit
-     *
-     * @return static
      */
     public function setQuantityUnit($quantityUnit);
 
@@ -60,8 +54,6 @@ interface FilterConditionInterface extends ResourceInterface, TimestampableInter
 
     /**
      * @param array $configuration
-     *
-     * @return static
      */
     public function setConfiguration($configuration);
 }

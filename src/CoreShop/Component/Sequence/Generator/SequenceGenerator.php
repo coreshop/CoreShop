@@ -60,7 +60,7 @@ class SequenceGenerator implements SequenceGeneratorInterface
     }
 
     /**
-     * @param $type
+     * @param string $type
      *
      * @return \CoreShop\Component\Sequence\Model\SequenceInterface
      */

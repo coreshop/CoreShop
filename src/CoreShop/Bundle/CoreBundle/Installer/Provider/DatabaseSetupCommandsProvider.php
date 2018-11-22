@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Installer\Provider;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -102,6 +103,11 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
      */
     private function getSchemaManager()
     {
-        return $this->doctrineRegistry->getManager()->getConnection()->getSchemaManager();
+        /**
+         * @var EntityManager $manager
+         */
+        $manager = $this->doctrineRegistry->getManager();
+
+        return $manager->getConnection()->getSchemaManager();
     }
 }

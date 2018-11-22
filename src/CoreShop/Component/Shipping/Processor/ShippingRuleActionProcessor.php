@@ -28,9 +28,9 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
     protected $actionServiceRegistry;
 
     /**
-     * @param $actionServiceRegistry
+     * @param ServiceRegistryInterface $actionServiceRegistry
      */
-    public function __construct($actionServiceRegistry)
+    public function __construct(ServiceRegistryInterface $actionServiceRegistry)
     {
         $this->actionServiceRegistry = $actionServiceRegistry;
     }

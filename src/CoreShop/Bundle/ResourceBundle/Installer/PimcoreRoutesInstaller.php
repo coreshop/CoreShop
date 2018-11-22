@@ -89,8 +89,8 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     /**
      * Check if route is already installed
      *
-     * @param $name
-     * @param $properties
+     * @param string $name
+     * @param array $properties
      * @return Staticroute
      */
     private function installRoute($name, $properties)

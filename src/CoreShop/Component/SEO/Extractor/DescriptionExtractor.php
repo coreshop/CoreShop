@@ -14,6 +14,7 @@ namespace CoreShop\Component\SEO\Extractor;
 
 use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
+use Webmozart\Assert\Assert;
 
 final class DescriptionExtractor implements ExtractorInterface
 {
@@ -30,8 +31,10 @@ final class DescriptionExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        Assert::isInstanceOf($object, SEOAwareInterface::class);
+
         /**
-         * @var $object SEOAwareInterface
+         * @var SEOAwareInterface $object
          */
         if ($object->getMetaDescription()) {
             $seoMetadata->setMetaDescription($object->getMetaDescription());

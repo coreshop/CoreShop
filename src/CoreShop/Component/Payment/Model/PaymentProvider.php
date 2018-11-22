@@ -23,6 +23,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     use ToggleableTrait;
     use TranslatableTrait {
         __construct as initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -139,6 +140,18 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     public function setPosition($position)
     {
         $this->position = $position;
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     * @return PaymentProviderTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var PaymentProviderTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+        return $translation;
     }
 
     /**

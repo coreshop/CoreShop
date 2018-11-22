@@ -11,8 +11,8 @@ interface ObjectClonerInterface
      * Clones an object and returns it unsaved
      *
      * @param Concrete $object
-     * @param $parent
-     * @param $key
+     * @param Concrete $parent
+     * @param string $key
      *
      * @return Concrete
      */

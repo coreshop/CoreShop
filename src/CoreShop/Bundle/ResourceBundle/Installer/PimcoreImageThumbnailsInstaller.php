@@ -86,8 +86,8 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
     /**
      * Check if Image Thumbnail is already installed
      *
-     * @param $name
-     * @param $properties
+     * @param string $name
+     * @param array $properties
      * @return Config
      */
     private function installThumbnail($name, $properties)
@@ -95,7 +95,11 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
         $thumbnailConfig = new Config();
 
         try {
-            $thumbnailConfig->getDao()->getByName($name, null);
+            /**
+             * @var \Pimcore\Model\Asset\Image\Thumbnail\Config\Dao
+             */
+            $dao = $thumbnailConfig->getDao();
+            $dao->getByName($name);
         } catch (\Exception $e) {
             //Thumbnail does not exist, so we install it
             $thumbnailConfig = new Config();

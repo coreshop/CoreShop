@@ -103,11 +103,13 @@ final class BatchListing implements Iterator, Countable
     public function count()
     {
         if (!$this->total) {
-            if (!method_exists($this->list, 'count')) {
+            $dao = $this->list->getDao();
+
+            if (!method_exists($dao, 'getTotalCount')) {
                 throw new \InvalidArgumentException(sprintf('%s listing class does not support count.', get_class($this->list)));
             }
 
-            $this->total = $this->list->getTotalCount();
+            $this->total = $dao->getTotalCount();
         }
         return $this->total;
     }
@@ -118,6 +120,13 @@ final class BatchListing implements Iterator, Countable
     protected function load()
     {
         $this->list->setOffset($this->loop * $this->batchSize);
-        $this->items = $this->list->load();
+
+        $dao = $this->list->getDao();
+
+        if (!method_exists($dao, 'load')) {
+            throw new \InvalidArgumentException(sprintf('%s listing class does not support load.', get_class($this->list)));
+        }
+
+        $this->items = $dao->load();
     }
 }

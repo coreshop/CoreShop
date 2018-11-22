@@ -18,7 +18,7 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 interface RuleValidationProcessorInterface
 {
     /**
-     * @param $subject
+     * @param ResourceInterface $subject
      * @param RuleInterface $rule
      * @param array $params
      *

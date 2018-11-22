@@ -54,8 +54,6 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param IndexInterface|null $index
-     *
-     * @return static
      */
     public function setIndex(IndexInterface $index = null);
 
@@ -176,8 +174,6 @@ interface IndexColumnInterface extends ResourceInterface, TimestampableInterface
 
     /**
      * @param array $configuration
-     *
-     * @return static
      */
     public function setConfiguration($configuration);
 }

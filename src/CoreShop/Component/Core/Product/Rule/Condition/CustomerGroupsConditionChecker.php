@@ -31,7 +31,7 @@ final class CustomerGroupsConditionChecker implements ConditionCheckerInterface
         }
 
         /**
-         * @var $customer CustomerInterface
+         * @var CustomerInterface $customer
          */
         $customer = $params['customer'];
 

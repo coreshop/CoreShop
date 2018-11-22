@@ -325,7 +325,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $total
+     * @param int $total
      */
     public function setBaseTotalNet($total)
     {
@@ -341,7 +341,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $total
+     * @param int $total
      */
     public function setBaseTotalGross($total)
     {
@@ -357,7 +357,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $subTotalNet
+     * @param int $subTotalNet
      */
     public function setBaseSubtotalNet($subTotalNet)
     {
@@ -373,7 +373,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $subTotalGross
+     * @param int $subTotalGross
      */
     public function setBaseSubtotalGross($subTotalGross)
     {
@@ -389,7 +389,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $taxes
+     * @param Fieldcollection $taxes
      */
     public function setBaseTaxes($taxes)
     {

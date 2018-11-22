@@ -38,16 +38,12 @@ class CompositeExtractor implements TrackingExtractorInterface
     }
 
     /**
-     * @param       $object
-     * @param array $data
-     * @return array
+     * {@inheritdoc}
      */
     public function updateMetadata($object, $data = []): array
     {
-        $data = [];
-
         /**
-         * @var $extractor TrackingExtractorInterface
+         * @var TrackingExtractorInterface $extractor
          */
         foreach ($this->extractorRegistry->all() as $extractor) {
             if ($extractor->supports($object)) {

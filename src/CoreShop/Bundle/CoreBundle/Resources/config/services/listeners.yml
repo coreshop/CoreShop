@@ -44,7 +44,6 @@ services:
     coreshop.listener.product_check_availability:
         class: CoreShop\Bundle\CoreBundle\EventListener\ProductAvailabilityEventListener
         arguments:
-            - '@coreshop.repository.cart'
             - '@coreshop.repository.cart_item'
             - '@Pimcore\Model\Factory'
         tags:
@@ -67,7 +66,6 @@ services:
         arguments:
            - '@coreshop.cart.manager'
            - '@coreshop.context.shopper'
-           - '@coreshop.configuration.service'
            - '@pimcore.http.request_helper'
            - '@session'
         tags:

@@ -40,9 +40,7 @@ final class ThemeHelper implements ThemeHelperInterface
     }
 
     /**
-     * @param $themeName
-     * @param \Closure $function
-     * @return mixed
+     * {@inheritdoc}
      */
     public function useTheme($themeName, \Closure $function)
     {

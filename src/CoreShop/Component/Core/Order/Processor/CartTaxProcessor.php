@@ -66,7 +66,7 @@ final class CartTaxProcessor implements CartProcessorInterface
         $usedTaxes = [];
 
         /**
-         * @var $item CartItemInterface
+         * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $usedTaxes = $this->taxCollector->mergeTaxes($item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [], $usedTaxes);
@@ -106,15 +106,23 @@ final class CartTaxProcessor implements CartProcessorInterface
 
         $carrier = $cart->getCarrier();
 
-        if ($carrier instanceof Carrier && $carrier->getTaxRule() instanceof TaxRuleGroup) {
-            $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($cart->getCarrier()->getTaxRule(), $address);
+        if (!$carrier instanceof Carrier) {
+            return $usedTaxes;
+        }
 
-            if ($taxCalculator instanceof TaxCalculatorInterface) {
-                $cart->setShippingTaxRate($taxCalculator->getTotalRate());
-                $shipping = $cart->getShipping(false);
+        $taxRule = $carrier->getTaxRule();
 
-                return $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $shipping), $usedTaxes);
-            }
+        if (!$taxRule instanceof TaxRuleGroup) {
+            return $usedTaxes;
+        }
+
+        $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($taxRule, $address);
+
+        if ($taxCalculator instanceof TaxCalculatorInterface) {
+            $cart->setShippingTaxRate($taxCalculator->getTotalRate());
+            $shipping = $cart->getShipping(false);
+
+            return $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $shipping), $usedTaxes);
         }
 
         return $usedTaxes;

@@ -198,8 +198,10 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             $sale->save();
         }, false);
 
+        //TODO: hasShippableItems doesn't exist in this Component -> it only exists in Core
+        //But leave this here now for BC reasons
         $shippingAddress = $this->objectCloner->cloneObject(
-            $cart->hasShippableItems() === false ? $cart->getInvoiceAddress() : $cart->getShippingAddress(),
+            method_exists($cart, 'hasShippableItems') &&  $cart->hasShippableItems() === false ? $cart->getInvoiceAddress() : $cart->getShippingAddress(),
             $this->objectService->createFolderByPath(sprintf('%s/addresses', $sale->getFullPath())),
             'shipping'
         );

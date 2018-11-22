@@ -89,9 +89,7 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     public function getBaseTaxes();
 
     /**
-     * @param $taxes
-     *
-     * @return mixed
+     * @param mixed $taxes
      */
     public function setBaseTaxes($taxes);
 

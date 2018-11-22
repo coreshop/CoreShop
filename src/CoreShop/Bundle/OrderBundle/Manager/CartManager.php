@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Manager;
 
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
@@ -67,6 +68,9 @@ final class CartManager implements CartManagerInterface
                 $cart->save();
             }
 
+            /**
+             * @var CartItemInterface $item
+             */
             foreach ($tempItems as $index => $item) {
                 $item->setParent($cart);
                 $item->save();
@@ -75,6 +79,9 @@ final class CartManager implements CartManagerInterface
             $cart->setItems($tempItems);
             $this->cartProcessor->process($cart);
 
+            /**
+             * @var CartItemInterface $cartItem
+             */
             foreach ($cart->getItems() as $cartItem) {
                 $cartItem->save();
             }

@@ -25,7 +25,7 @@ class StackRepository extends PimcoreRepository
 
     /**
      * @param MetadataInterface $metadata
-     * @param                   $interface
+     * @param string            $interface
      * @param array             $stackClasses
      */
     public function __construct(MetadataInterface $metadata, $interface, array $stackClasses)

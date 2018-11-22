@@ -122,7 +122,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     }
 
     /**
-     * @param $classIdentifier
+     * @param string $classIdentifier
      * @return int
      */
     protected function findClassId($classIdentifier)

@@ -208,7 +208,7 @@ class CategoryController extends FrontendController
     }
 
     /**
-     * @param $sortString
+     * @param string $sortString
      *
      * @return array
      */

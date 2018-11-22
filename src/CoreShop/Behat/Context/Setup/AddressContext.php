@@ -63,10 +63,10 @@ final class AddressContext implements Context
 
     /**
      * @param CountryInterface $country
-     * @param $postcode
-     * @param $city
-     * @param $street
-     * @param $nr
+     * @param string $postcode
+     * @param string $city
+     * @param string $street
+     * @param string $nr
      * @return AddressInterface
      */
     private function createAddress(CountryInterface $country, $postcode, $city, $street, $nr)

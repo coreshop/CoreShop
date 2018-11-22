@@ -52,7 +52,7 @@ class Zone extends AbstractResource implements ZoneInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -60,7 +60,7 @@ class Zone extends AbstractResource implements ZoneInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -68,9 +68,7 @@ class Zone extends AbstractResource implements ZoneInterface
     }
 
     /**
-     * @param $name
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setName($name)
     {

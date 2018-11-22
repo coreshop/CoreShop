@@ -134,12 +134,23 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
                     }
 
                     if (method_exists($fd, 'isRemoteOwner') and $fd->isRemoteOwner()) {
-                        $remoteClass = DataObject\ClassDefinition::getByName($fd->getOwnerClassName());
-                        $relations = $embeddedObject->getRelationData($fd->getOwnerFieldName(), false, $remoteClass->getId());
-                        $toAdd = $this->detectAddedRemoteOwnerRelations($relations, $value);
-                        $toDelete = $this->detectDeletedRemoteOwnerRelations($relations, $value);
-                        if (count($toAdd) > 0 or count($toDelete) > 0) {
-                            $this->processRemoteOwnerRelations($embeddedObject, $toDelete, $toAdd, $fd->getOwnerFieldName());
+                        if (method_exists($fd, 'getOwnerClassName') && method_exists($fd, 'getOwnerFieldName')) {
+                            $remoteClass = DataObject\ClassDefinition::getByName($fd->getOwnerClassName());
+                            $relations = $embeddedObject->getRelationData(
+                                $fd->getOwnerFieldName(),
+                                false,
+                                $remoteClass->getId()
+                            );
+                            $toAdd = $this->detectAddedRemoteOwnerRelations($relations, $value);
+                            $toDelete = $this->detectDeletedRemoteOwnerRelations($relations, $value);
+                            if (count($toAdd) > 0 or count($toDelete) > 0) {
+                                $this->processRemoteOwnerRelations(
+                                    $embeddedObject,
+                                    $toDelete,
+                                    $toAdd,
+                                    $fd->getOwnerFieldName()
+                                );
+                            }
                         }
                     } else {
                         $embeddedObject->setValue($key, $fd->getDataFromEditmode($value, $embeddedObject));
@@ -386,7 +397,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return DataObject\Concrete
      */
     private function findInstance($id)
@@ -398,7 +409,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
     /**
      * @param DataObject\Concrete $object
-     * @param $index
+     * @param int $index
      * @return mixed
      */
     private function findInstanceByIndex(DataObject\Concrete $object, $index)

@@ -145,7 +145,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     }
 
     /**
-     * @param $context
+     * @param array $context
      * @return AddressInterface|null
      */
     protected function getDefaultAddress($context)

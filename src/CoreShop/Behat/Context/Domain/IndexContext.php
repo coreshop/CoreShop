@@ -168,8 +168,8 @@ final class IndexContext implements Context
     /**
      * @param IndexInterface $index
      * @param IndexableInterface $object
-     * @param $column
-     * @param $value
+     * @param string $column
+     * @param mixed $value
      * @param bool $localized
      */
     protected function indexEntryShouldHaveValue(IndexInterface $index, IndexableInterface $object, $column, $value, $localized = false)

@@ -117,7 +117,7 @@ final class ProductSpecificPriceRuleContext implements Context
     public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName)
     {
         /**
-         * @var $rule ProductSpecificPriceRuleInterface
+         * @var ProductSpecificPriceRuleInterface $rule
          */
         $rule = $this->productSpecificPriceRuleFactory->createNew();
         $rule->setName($ruleName);

@@ -17,7 +17,7 @@ use CoreShop\Component\Product\Model\ProductInterface;
 interface ProductDiscountPriceCalculatorInterface
 {
     /**
-     * @param $subject
+     * @param ProductInterface $subject
      * @param array $context
      *
      * @return mixed
