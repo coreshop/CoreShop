@@ -119,6 +119,7 @@ services:
         class: CoreShop\Behat\Context\Transform\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.cart'
             - '@__symfony__.coreshop.context.cart'
         tags:
             - { name: fob.context_service }

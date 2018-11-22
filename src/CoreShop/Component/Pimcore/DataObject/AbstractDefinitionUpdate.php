@@ -58,6 +58,18 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
+    public function getFieldDefinition($fieldName)
+    {
+        if (!$this->hasField($fieldName)) {
+            throw new \InvalidArgumentException(sprintf('Field with Name %s not found', $fieldName));
+        }
+
+        return $this->fieldDefinitions[$fieldName];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function insertField($jsonFieldDefinition)
     {
         $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'][] = $jsonFieldDefinition;

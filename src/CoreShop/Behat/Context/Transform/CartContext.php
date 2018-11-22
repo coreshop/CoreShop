@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -26,25 +27,45 @@ final class CartContext implements Context
     private $sharedStorage;
 
     /**
+     * @var CartRepositoryInterface
+     */
+    private $cartRepository;
+
+    /**
      * @var CartContextInterface
      */
     private $cartContext;
 
     /**
      * @param SharedStorageInterface $sharedStorage
+     * @param CartRepositoryInterface $cartRepository
      * @param CartContextInterface $cartContext
      */
-    public function __construct(SharedStorageInterface $sharedStorage, CartContextInterface $cartContext)
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        CartRepositoryInterface $cartRepository,
+        CartContextInterface $cartContext
+    )
     {
         $this->sharedStorage = $sharedStorage;
+        $this->cartRepository = $cartRepository;
         $this->cartContext = $cartContext;
     }
 
     /**
      * @Transform /^my cart/
+     * @Transform /^cart(?:|s)/
      */
     public function cart()
     {
         return $this->cartContext->getCart();
+    }
+
+    /**
+     * @Transform /^loaded cart(?:|s)/
+     */
+    public function loadedCart()
+    {
+        return $this->cartRepository->forceFind($this->cartContext->getCart()->getId());
     }
 }

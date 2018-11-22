@@ -203,6 +203,23 @@ final class CartContext implements Context
     }
 
     /**
+     * @Then /^the (carts) shipping tax rate should be "([^"]+)"$/
+     * @Then /^the (loaded carts) shipping tax rate should be "([^"]+)"$/
+     */
+    public function cartShippingTaxRateShouldBe(CartInterface $cart, $shippingTaxRate)
+    {
+        Assert::eq(
+            $shippingTaxRate,
+            $cart->getShippingTaxRate(),
+            sprintf(
+                'Cart shipping is expected to be %s, but it is %s',
+                $shippingTaxRate,
+                $cart->getShippingTaxRate()
+            )
+        );
+    }
+
+    /**
      * @Then /^the cart should use (carrier "[^"]+")$/
      */
     public function cartShouldUseCarrier(CarrierInterface $carrier)
