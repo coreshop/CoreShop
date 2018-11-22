@@ -12,7 +12,9 @@ Feature: In Order to not allow
     And the site has a tax rule group "AT"
     And the tax rule group has a tax rule for country "Austria" with tax rate "AT"
     And the site has a product "T-Shirt" priced at 2000
+    And the product is published
     And the site has a product "T-Shirt Blue" priced at 2000
+    And the product is published
     And the product has the tax rule group "AT"
 
   Scenario: Create a new cart and add a product and unpublish the product

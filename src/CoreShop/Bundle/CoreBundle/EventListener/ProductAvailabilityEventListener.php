@@ -81,11 +81,7 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        if (true === $object->getPublished()) {
-            return;
-        }
-
-        if (true === $originalItem->isPublished()) {
+        if ($object->getPublished() === $originalItem->isPublished()) {
             return;
         }
 
