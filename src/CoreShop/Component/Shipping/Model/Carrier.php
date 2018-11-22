@@ -201,7 +201,7 @@ class Carrier extends AbstractResource implements CarrierInterface
     public function getTranslation($locale = null, $useFallbackTranslation = true)
     {
         /** @var CarrierTranslation $translation */
-        $translation = $this->doGetTranslation($locale);
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
         return $translation;
     }
 

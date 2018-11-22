@@ -150,7 +150,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     public function getTranslation($locale = null, $useFallbackTranslation = true)
     {
         /** @var PaymentProviderTranslationInterface $translation */
-        $translation = $this->doGetTranslation($locale);
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
         return $translation;
     }
 

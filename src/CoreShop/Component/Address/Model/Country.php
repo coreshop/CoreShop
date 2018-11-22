@@ -184,7 +184,7 @@ class Country extends AbstractResource implements CountryInterface
     public function getTranslation($locale = null, $useFallbackTranslation = true)
     {
         /** @var CountryTranslationInterface $translation */
-        $translation = $this->doGetTranslation($locale);
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
         return $translation;
     }
 
