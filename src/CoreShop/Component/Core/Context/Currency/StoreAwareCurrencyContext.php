@@ -37,16 +37,15 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
     private $currencyRepository;
 
     /**
-     * @param CurrencyContextInterface $currencyContext
-     * @param StoreContextInterface $storeContext
+     * @param CurrencyContextInterface    $currencyContext
+     * @param StoreContextInterface       $storeContext
      * @param CurrencyRepositoryInterface $currencyRepository
      */
     public function __construct(
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
         CurrencyRepositoryInterface $currencyRepository
-    )
-    {
+    ) {
         $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;
         $this->currencyRepository = $currencyRepository;
@@ -75,13 +74,13 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
 
     /**
      * @param CurrencyInterface $currency
-     * @param StoreInterface $store
+     * @param StoreInterface    $store
      *
      * @return bool
      */
     private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
-        return in_array($currency->getIsoCode(), array_map(function(CurrencyInterface $currency) {
+        return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
             return $currency->getIsoCode();
         }, $this->getCurrenciesForStore($store)));
     }

@@ -41,9 +41,8 @@ final class LocaleSwitcherExtension extends \Twig_Extension
         $this->shopperContext = $shopperContext;
     }
 
-
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
@@ -54,6 +53,7 @@ final class LocaleSwitcherExtension extends \Twig_Extension
 
     /**
      * @param Document $document
+     *
      * @return array
      */
     public function getLocalizedLinks(Document $document)
@@ -67,14 +67,14 @@ final class LocaleSwitcherExtension extends \Twig_Extension
         if ($store->getSiteId()) {
             try {
                 $site = Site::getById($store->getSiteId());
-                $basePath = $site->getRootDocument()->getRealFullPath().'/';
+                $basePath = $site->getRootDocument()->getRealFullPath() . '/';
             } catch (\Exception $ex) {
                 $basePath = '/';
             }
         }
 
         foreach (Tool::getValidLanguages() as $language) {
-            $target = $basePath.$language;
+            $target = $basePath . $language;
             $localizedDocument = null;
 
             if (isset($translations[$language])) {

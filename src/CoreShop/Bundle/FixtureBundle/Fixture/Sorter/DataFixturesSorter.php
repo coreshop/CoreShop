@@ -8,17 +8,17 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 /**
  * Basically code of this class comes from origin \Doctrine\Common\DataFixtures\Loader.
- * Issue solved is notices during fixtures sorting
+ * Issue solved is notices during fixtures sorting.
  *
  * @TODO could be removed when https://github.com/doctrine/data-fixtures/issues/148 will be resolved
  */
 final class DataFixturesSorter
 {
     /** @var array */
-    protected $orderedFixtures = [];
+    private $orderedFixtures = [];
 
     /** @var array */
-    protected $fixtures = [];
+    private $fixtures = [];
 
     /**
      * Returns the array of data fixtures to execute.
@@ -34,7 +34,6 @@ final class DataFixturesSorter
 
         $usePrioritySorting = $this->usePrioritySorting($fixtures);
         $useDependenciesSorting = $this->useDependenciesSorting($fixtures);
-
 
         if ($usePrioritySorting) {
             $this->orderFixturesByNumber();
@@ -52,16 +51,16 @@ final class DataFixturesSorter
     }
 
     /**
-     * Order fixtures by priority
+     * Order fixtures by priority.
      *
      * @return array
      */
-    protected function orderFixturesByNumber()
+    private function orderFixturesByNumber()
     {
         $this->orderedFixtures = $this->fixtures;
         usort(
             $this->orderedFixtures,
-            function($a, $b) {
+            function ($a, $b) {
                 if ($a instanceof OrderedFixtureInterface && $b instanceof OrderedFixtureInterface) {
                     if ($a->getOrder() === $b->getOrder()) {
                         return 0;
@@ -83,11 +82,12 @@ final class DataFixturesSorter
      * @param bool $usedPrioritySorting
      *
      * @return array
+     *
      * @throws CircularReferenceException
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function orderFixturesByDependencies($usedPrioritySorting)
+    private function orderFixturesByDependencies($usedPrioritySorting)
     {
         $sequenceForClasses = $orderedFixtures = [];
 
@@ -100,7 +100,7 @@ final class DataFixturesSorter
         if ($usedPrioritySorting) {
             $this->orderedFixtures = array_filter(
                 $this->orderedFixtures,
-                function($fixture) {
+                function ($fixture) {
                     return $fixture instanceof OrderedFixtureInterface;
                 }
             );
@@ -168,11 +168,11 @@ final class DataFixturesSorter
 
     /**
      * @param string $fixtureClass
-     * @param mixed $dependenciesClasses
+     * @param mixed  $dependenciesClasses
      *
      * @return bool
      */
-    protected function validateDependencies($fixtureClass, $dependenciesClasses)
+    private function validateDependencies($fixtureClass, $dependenciesClasses)
     {
         if (!is_array($dependenciesClasses) || empty($dependenciesClasses)) {
             throw new \InvalidArgumentException(
@@ -207,12 +207,12 @@ final class DataFixturesSorter
     }
 
     /**
-     * @param array $sequences
+     * @param array      $sequences
      * @param null|array $classes
      *
      * @return array
      */
-    protected function getUnsequencedClasses(array $sequences, array $classes = null)
+    private function getUnsequencedClasses(array $sequences, array $classes = null)
     {
         $unsequencedClasses = array();
 
@@ -235,7 +235,7 @@ final class DataFixturesSorter
      *
      * @return bool
      */
-    protected function usePrioritySorting($fixtures)
+    private function usePrioritySorting($fixtures)
     {
         foreach ($fixtures as $fixture) {
             if ($fixture instanceof OrderedFixtureInterface) {
@@ -251,7 +251,7 @@ final class DataFixturesSorter
      *
      * @return bool
      */
-    protected function useDependenciesSorting($fixtures)
+    private function useDependenciesSorting($fixtures)
     {
         foreach ($fixtures as $fixture) {
             if ($fixture instanceof DependentFixtureInterface) {

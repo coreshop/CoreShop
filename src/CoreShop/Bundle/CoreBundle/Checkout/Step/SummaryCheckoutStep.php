@@ -58,6 +58,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
     public function getResponse(CartInterface $cart, Request $request)
     {
         $checkoutFinisherUrl = $request->get('checkout_finisher');
+
         return new RedirectResponse($checkoutFinisherUrl);
     }
 

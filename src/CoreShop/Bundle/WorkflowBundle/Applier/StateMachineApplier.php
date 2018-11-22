@@ -19,7 +19,7 @@ final class StateMachineApplier implements StateMachineApplierInterface
     /**
      * @var StateMachineManagerInterface
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @param StateMachineManagerInterface $stateMachineManager

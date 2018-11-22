@@ -53,7 +53,8 @@ final class LinkGeneratorContext implements Context
             $url,
             sprintf(
                 'The generated URL should be "%s" but it is "%s" instead',
-                $generatedUrl, $url
+                $generatedUrl,
+                $url
             )
         );
     }
@@ -71,7 +72,8 @@ final class LinkGeneratorContext implements Context
             $url,
             sprintf(
                 'The generated URL should be "%s" but it is "%s" instead',
-                $generatedUrl, $url
+                $generatedUrl,
+                $url
             )
         );
     }
@@ -88,7 +90,8 @@ final class LinkGeneratorContext implements Context
             $url,
             sprintf(
                 'The generated URL should be "%s" but it is "%s" instead',
-                $generatedUrl, $url
+                $generatedUrl,
+                $url
             )
         );
     }

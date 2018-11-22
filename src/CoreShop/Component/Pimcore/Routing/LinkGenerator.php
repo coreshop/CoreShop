@@ -30,7 +30,7 @@ class LinkGenerator implements LinkGeneratorInterface
 
     /**
      * @param DataObjectLinkGenerator $dataObjectLinkGenerator
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param UrlGeneratorInterface   $urlGenerator
      */
     public function __construct(DataObjectLinkGenerator $dataObjectLinkGenerator, UrlGeneratorInterface $urlGenerator)
     {

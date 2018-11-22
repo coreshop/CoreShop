@@ -127,12 +127,14 @@ class State extends AbstractResource implements StateInterface
     /**
      * @param null $locale
      * @param bool $useFallbackTranslation
+     *
      * @return StateTranslationInterface
      */
     public function getTranslation($locale = null, $useFallbackTranslation = true)
     {
         /** @var StateTranslationInterface $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
         return $translation;
     }
 

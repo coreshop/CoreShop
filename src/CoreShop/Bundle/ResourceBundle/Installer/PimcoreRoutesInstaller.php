@@ -25,7 +25,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**<
      * @param KernelInterface $kernel
@@ -87,10 +87,11 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     }
 
     /**
-     * Check if route is already installed
+     * Check if route is already installed.
      *
      * @param string $name
-     * @param array $properties
+     * @param array  $properties
+     *
      * @return Staticroute
      */
     private function installRoute($name, $properties)

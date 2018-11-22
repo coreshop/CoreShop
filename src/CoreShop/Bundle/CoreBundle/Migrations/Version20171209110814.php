@@ -15,6 +15,7 @@ class Version20171209110814 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
      * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
      */
     public function up(Schema $schema)

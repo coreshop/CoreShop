@@ -20,11 +20,11 @@ use Pimcore\Model\Element;
 class DynamicDropdown extends Href
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopDynamicDropdown";
+    public $fieldtype = 'coreShopDynamicDropdown';
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class DynamicDropdown extends Href
     public $sortBy;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $onlyPublished;
 
@@ -169,7 +169,7 @@ class DynamicDropdown extends Href
      */
     public function getDataFromEditmode($data, $object = null, $params = array())
     {
-        return Service::getElementById("object", $data);
+        return Service::getElementById('object', $data);
     }
 
     /**
@@ -198,9 +198,9 @@ class DynamicDropdown extends Href
         if (is_int($data)) {
             return [
                 [
-                    "dest_id" => $data,
-                    "type" => "object",
-                    "fieldname" => $this->getName(),
+                    'dest_id' => $data,
+                    'type' => 'object',
+                    'fieldname' => $this->getName(),
                 ],
             ];
         }

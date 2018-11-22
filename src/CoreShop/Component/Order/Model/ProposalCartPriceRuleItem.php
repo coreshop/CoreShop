@@ -22,7 +22,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
      */
     public function getId()
     {
-        return $this->getObject()->getId().'_cart_price_rule_'.$this->getIndex();
+        return $this->getObject()->getId() . '_cart_price_rule_' . $this->getIndex();
     }
 
     /**

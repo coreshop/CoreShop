@@ -31,7 +31,7 @@ class FilteredListingFactory implements FilteredListingFactoryInterface
     private $filterProcessor;
 
     /**
-     * @param ListingFactoryInterface $listingFactory
+     * @param ListingFactoryInterface  $listingFactory
      * @param FilterProcessorInterface $filterProcessor
      */
     public function __construct(ListingFactoryInterface $listingFactory, FilterProcessorInterface $filterProcessor)

@@ -40,7 +40,7 @@ final class CartPriceRuleChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function(Options $options) {
+                'choices' => function (Options $options) {
                     return $this->cartPriceRuleRepository->findAll();
                 },
                 'choice_value' => 'id',

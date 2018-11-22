@@ -85,11 +85,12 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
 
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
                 unset($items[$i]);
+
                 break;
             }
         }
@@ -106,7 +107,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
 
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {

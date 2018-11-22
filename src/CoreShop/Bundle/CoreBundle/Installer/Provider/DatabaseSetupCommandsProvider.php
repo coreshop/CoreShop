@@ -42,14 +42,14 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
     public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
         return array_merge($this->getRequiredCommands($input, $output, $questionHelper), [
-            'coreshop:install:fixtures'
+            'coreshop:install:fixtures',
         ]);
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param QuestionHelper $questionHelper
+     * @param QuestionHelper  $questionHelper
      *
      * @return array
      */
@@ -63,9 +63,9 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param QuestionHelper $questionHelper
+     * @param QuestionHelper  $questionHelper
      *
      * @return array
      */

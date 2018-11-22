@@ -14,7 +14,6 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,7 +30,7 @@ final class StoreContext implements Context
     private $storeRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage,
+     * @param SharedStorageInterface   $sharedStorage,
      * @param StoreRepositoryInterface $storeRepository
      */
     public function __construct(SharedStorageInterface $sharedStorage, StoreRepositoryInterface $storeRepository)

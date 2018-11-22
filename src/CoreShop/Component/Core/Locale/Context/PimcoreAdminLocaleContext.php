@@ -44,18 +44,17 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
     private $requestStack;
 
     /**
-     * @param PimcoreContextResolver $pimcoreContextResolver
-     * @param TokenStorageUserResolver $tokenStorageUserResolver
+     * @param PimcoreContextResolver             $pimcoreContextResolver
+     * @param TokenStorageUserResolver           $tokenStorageUserResolver
      * @param TranslationLocaleProviderInterface $localeProvider
-     * @param RequestStack $requestStack
+     * @param RequestStack                       $requestStack
      */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         TokenStorageUserResolver $tokenStorageUserResolver,
         TranslationLocaleProviderInterface $localeProvider,
         RequestStack $requestStack
-    )
-    {
+    ) {
         $this->pimcoreContextResolver = $pimcoreContextResolver;
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
         $this->localeProvider = $localeProvider;

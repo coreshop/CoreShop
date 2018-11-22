@@ -31,7 +31,7 @@ class IndexType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function __construct($dataClass, array $validationGroups = [], FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -50,7 +50,7 @@ class IndexType extends AbstractResourceType
             ->add('columns', IndexColumnCollectionType::class);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -58,7 +58,7 @@ class IndexType extends AbstractResourceType
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -66,7 +66,7 @@ class IndexType extends AbstractResourceType
 
                 $event->getForm()->get('worker')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
 
                 if (!isset($data['worker'])) {
@@ -79,7 +79,7 @@ class IndexType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -88,7 +88,7 @@ class IndexType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

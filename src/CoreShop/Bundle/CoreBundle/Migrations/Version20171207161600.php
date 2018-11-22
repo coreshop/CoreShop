@@ -21,41 +21,41 @@ class Version20171207161600 extends AbstractPimcoreMigration implements Containe
         $className = $this->container->getParameter('coreshop.model.customer.pimcore_class_name');
 
         $newField = [
-            "fieldtype" => "href",
-            "width" => "",
-            "assetUploadPath" => "",
-            "relationType" => true,
-            "queryColumnType" => [
-                "id" => "int(11)",
-                "type" => "enum('document','asset','object')"
+            'fieldtype' => 'href',
+            'width' => '',
+            'assetUploadPath' => '',
+            'relationType' => true,
+            'queryColumnType' => [
+                'id' => 'int(11)',
+                'type' => "enum('document','asset','object')",
             ],
-            "phpdocType" => "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
-            "objectsAllowed" => true,
-            "assetsAllowed" => false,
-            "assetTypes" => [],
-            "documentsAllowed" => false,
-            "documentTypes" => [],
-            "lazyLoading" => true,
-            "classes" => [
+            'phpdocType' => '\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject',
+            'objectsAllowed' => true,
+            'assetsAllowed' => false,
+            'assetTypes' => [],
+            'documentsAllowed' => false,
+            'documentTypes' => [],
+            'lazyLoading' => true,
+            'classes' => [
                 [
-                    "classes" => $this->container->getParameter('coreshop.model.address.pimcore_class_name')
-                ]
+                    'classes' => $this->container->getParameter('coreshop.model.address.pimcore_class_name'),
+                ],
             ],
-            "pathFormatterClass" => "",
-            "name" => "defaultAddress",
-            "title" => "Default Address",
-            "tooltip" => "",
-            "mandatory" => false,
-            "noteditable" => false,
-            "index" => false,
-            "locked" => false,
-            "style" => "",
-            "permissions" => null,
-            "datatype" => "data",
-            "columnType" => null,
-            "invisible" => false,
-            "visibleGridView" => false,
-            "visibleSearch" => false
+            'pathFormatterClass' => '',
+            'name' => 'defaultAddress',
+            'title' => 'Default Address',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => false,
+            'index' => false,
+            'locked' => false,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'columnType' => null,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
         ];
 
         $classUpdater = new ClassUpdate($className);
@@ -86,6 +86,5 @@ class Version20171207161600 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
-
     }
 }

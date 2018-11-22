@@ -22,7 +22,7 @@ use Pimcore\Model\DataObject\Objectbrick;
 interface DefinitionFieldReNamerInterface
 {
     /**
-     * Executes the renaming
+     * Executes the renaming.
      */
     public function rename();
 

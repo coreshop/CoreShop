@@ -29,14 +29,13 @@ final class AddressContext implements Context
     private $addressRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface     $sharedStorage
      * @param PimcoreRepositoryInterface $addressRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         PimcoreRepositoryInterface $addressRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->addressRepository = $addressRepository;
     }

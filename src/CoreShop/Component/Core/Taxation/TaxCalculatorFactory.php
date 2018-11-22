@@ -30,8 +30,7 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
      */
     public function __construct(
         TaxRuleRepositoryInterface $taxRuleRepository
-    )
-    {
+    ) {
         $this->taxRuleRepository = $taxRuleRepository;
     }
 

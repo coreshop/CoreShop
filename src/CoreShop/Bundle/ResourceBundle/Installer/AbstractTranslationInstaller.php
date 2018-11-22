@@ -37,7 +37,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
 
     /**
      * @param KernelInterface $kernel
-     * @param string $translationClass
+     * @param string          $translationClass
      */
     public function __construct(KernelInterface $kernel, $translationClass = Website::class)
     {
@@ -97,13 +97,15 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
 
     /**
      * @param string $applicationName
+     *
      * @return mixed
      */
-    protected abstract function getIdentifier($applicationName = null);
+    abstract protected function getIdentifier($applicationName = null);
 
     /**
      * @param string $name
-     * @param array $properties
+     * @param array  $properties
+     *
      * @return AbstractTranslation
      */
     private function installTranslation($name, $properties)
@@ -116,7 +118,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
         //no data found. set translation.
         if (empty($translationData)) {
             $translation->setTranslations($coreShopTranslationData);
-            //there are already some translations. only update empty ones!
+        //there are already some translations. only update empty ones!
         } else {
             $mergedData = array_merge($coreShopTranslationData, array_filter($translationData));
             $translation->setTranslations($mergedData);

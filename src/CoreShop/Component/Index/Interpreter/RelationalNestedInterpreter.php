@@ -41,7 +41,7 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
             }
 
             return $value;
-        }); 
+        });
     }
 
     /**

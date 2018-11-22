@@ -69,6 +69,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
                     if ($rule instanceof ProposalCartPriceRuleItemInterface) {
                         if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode() !== $storedCode->getCode()) {
                             $valid = false;
+
                             break;
                         }
                     }
@@ -77,6 +78,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
 
             return $valid;
         }
+
         return true;
     }
 }

@@ -16,9 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\File;
-use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
 
 final class CustomerGroupContext implements Context
@@ -35,13 +33,12 @@ final class CustomerGroupContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $customerGroupFactory
+     * @param FactoryInterface       $customerGroupFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerGroupFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerGroupFactory = $customerGroupFactory;
     }
@@ -58,11 +55,12 @@ final class CustomerGroupContext implements Context
 
     /**
      * @param string $name
+     *
      * @return CustomerGroupInterface
      */
     private function createCustomerGroup(string $name)
     {
-        /** @var CustomerGroupInterface $group*/
+        /** @var CustomerGroupInterface $group */
         $group = $this->customerGroupFactory->createNew();
 
         $group->setKey(File::getValidFilename($name));

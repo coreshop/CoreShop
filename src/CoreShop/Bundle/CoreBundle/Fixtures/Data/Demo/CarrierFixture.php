@@ -52,7 +52,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
     public function getDependencies()
     {
         return [
-            TaxRuleGroupFixture::class
+            TaxRuleGroupFixture::class,
         ];
     }
 

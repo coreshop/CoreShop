@@ -16,7 +16,6 @@ use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
 use CoreShop\Component\Store\Model\StoresAwareTrait;
 
-
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {
     use StoresAwareTrait {

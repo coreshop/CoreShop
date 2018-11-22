@@ -19,6 +19,7 @@ interface AddressProviderInterface
 {
     /**
      * @param CartInterface $cart
+     *
      * @return AddressInterface|null
      */
     public function getAddress(CartInterface $cart);

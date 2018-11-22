@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 interface ExportPortletInterface
 {
     /**
-     * Get data for exporting portlet
+     * Get data for exporting portlet.
      *
      * @param ParameterBag $parameterBag
+     *
      * @return array
      */
     public function getExportPortletData(ParameterBag $parameterBag);
-
 }

@@ -14,17 +14,16 @@ namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface ShippingConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
-     * @param CarrierInterface $carrier
+     * @param CarrierInterface   $carrier
      * @param ShippableInterface $shippable
-     * @param AddressInterface $address
-     * @param array $configuration
+     * @param AddressInterface   $address
+     * @param array              $configuration
      *
      * @return mixed
      */

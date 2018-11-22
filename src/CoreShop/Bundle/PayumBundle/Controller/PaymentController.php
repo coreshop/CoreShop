@@ -121,6 +121,7 @@ class PaymentController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \Exception
      */
     public function afterCaptureAction(Request $request)
@@ -156,7 +157,7 @@ class PaymentController extends Controller
      */
     private function provideTokenBasedOnPayment(PaymentInterface $payment)
     {
-         /** @var PaymentProviderInterface $paymentMethod */
+        /** @var PaymentProviderInterface $paymentMethod */
         $paymentMethod = $payment->getPaymentProvider();
 
         /** @var GatewayConfigInterface $gatewayConfig */
@@ -177,6 +178,7 @@ class PaymentController extends Controller
                 []
             );
         }
+
         return $token;
     }
 }

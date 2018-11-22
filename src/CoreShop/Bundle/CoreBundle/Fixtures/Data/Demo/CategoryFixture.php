@@ -59,7 +59,7 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
                  */
                 $category = $this->container->get('coreshop.factory.category')->createNew();
                 $category->setName($faker->words(3, true));
-                $category->setParent($this->container->get('coreshop.object_service')->createFolderByPath("/demo/categories"));
+                $category->setParent($this->container->get('coreshop.object_service')->createFolderByPath('/demo/categories'));
                 $category->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
                 $category->setKey($category->getName());
                 $category->setPublished(true);

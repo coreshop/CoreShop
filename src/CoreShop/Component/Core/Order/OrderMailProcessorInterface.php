@@ -18,11 +18,11 @@ use Pimcore\Model\Document\Email;
 interface OrderMailProcessorInterface
 {
     /**
-     * @param Email $emailDocument
+     * @param Email          $emailDocument
      * @param OrderInterface $order
-     * @param bool $sendInvoices
-     * @param bool $sendShipments
-     * @param array $params
+     * @param bool           $sendInvoices
+     * @param bool           $sendShipments
+     * @param array          $params
      */
     public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = []);
 }

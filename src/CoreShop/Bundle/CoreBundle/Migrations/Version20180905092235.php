@@ -2,15 +2,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItem;
-use CoreShop\Component\Order\Model\SaleInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Pimcore\Model\DataObject\ClassDefinition;
-use Pimcore\Model\DataObject\Fieldcollection;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -108,6 +104,5 @@ class Version20180905092235 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

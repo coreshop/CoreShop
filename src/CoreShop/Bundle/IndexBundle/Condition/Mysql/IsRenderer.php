@@ -32,7 +32,7 @@ class IsRenderer extends AbstractMysqlDynamicRenderer
 
         $value = $condition->getValue();
 
-        return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' IS '.($value ? '' : ' NOT ').'NULL';
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' IS ' . ($value ? '' : ' NOT ') . 'NULL';
     }
 
     /**

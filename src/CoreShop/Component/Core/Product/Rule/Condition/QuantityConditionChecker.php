@@ -12,13 +12,11 @@
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
-use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use Webmozart\Assert\Assert;
 
 final class QuantityConditionChecker implements ConditionCheckerInterface
 {

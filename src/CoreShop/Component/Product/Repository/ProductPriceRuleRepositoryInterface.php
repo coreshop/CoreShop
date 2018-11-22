@@ -16,5 +16,4 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 interface ProductPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
-
 }

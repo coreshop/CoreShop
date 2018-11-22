@@ -70,13 +70,13 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer
-     * @param ItemKeyTransformerInterface $keyTransformer
-     * @param NumberGeneratorInterface $numberGenerator
-     * @param string $shipmentFolderPath
-     * @param ObjectServiceInterface $objectService
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param PimcoreFactoryInterface $shipmentItemFactory
-     * @param TransformerEventDispatcherInterface $eventDispatcher
+     * @param ItemKeyTransformerInterface           $keyTransformer
+     * @param NumberGeneratorInterface              $numberGenerator
+     * @param string                                $shipmentFolderPath
+     * @param ObjectServiceInterface                $objectService
+     * @param PimcoreRepositoryInterface            $orderItemRepository
+     * @param PimcoreFactoryInterface               $shipmentItemFactory
+     * @param TransformerEventDispatcherInterface   $eventDispatcher
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
@@ -87,8 +87,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $shipmentItemFactory,
         TransformerEventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->orderItemToShipmentItemTransformer = $orderItemToShipmentItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -120,7 +119,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 
         /**
          * @var $shipment OrderShipmentInterface
-         * @var $order OrderInterface
+         * @var $order    OrderInterface
          */
         $shipment->setKey($this->keyTransformer->transform($shipmentNumber));
         $shipment->setShipmentNumber($shipmentNumber);
@@ -132,7 +131,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function() use ($shipment) {
+        VersionHelper::useVersioning(function () use ($shipment) {
             $shipment->save();
         }, false);
         $items = [];
@@ -151,7 +150,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         }
 
         $shipment->setItems($items);
-        VersionHelper::useVersioning(function() use ($shipment) {
+        VersionHelper::useVersioning(function () use ($shipment) {
             $shipment->save();
         }, false);
 

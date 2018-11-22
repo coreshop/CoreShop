@@ -50,7 +50,7 @@ class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAware
     {
         return [
             ShippingRuleFixture::class,
-            CarrierFixture::class
+            CarrierFixture::class,
         ];
     }
 

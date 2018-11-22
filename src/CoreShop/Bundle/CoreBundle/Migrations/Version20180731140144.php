@@ -20,7 +20,6 @@ class Version20180731140144 extends AbstractPimcoreMigration implements Containe
         SharedTranslation::add('coreshop.ui.checkout.thank_you', 'de_CH', 'Vielen Dank für Ihre Bestellung');
         SharedTranslation::add('coreshop.ui.checkout.thank_you', 'de', 'Vielen Dank für Ihre Bestellung');
         SharedTranslation::add('coreshop.ui.checkout.thank_you', 'en', 'Thank you for your Order');
-
     }
 
     /**
@@ -29,6 +28,5 @@ class Version20180731140144 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

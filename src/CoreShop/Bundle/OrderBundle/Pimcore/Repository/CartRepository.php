@@ -135,7 +135,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
             $groupBind = ' OR ';
         }
 
-        $sql .= ' AND ('.implode($groupBind, $groupCondition).') ';
+        $sql .= ' AND (' . implode($groupBind, $groupCondition) . ') ';
 
         $list->setCondition($sql, $params);
 

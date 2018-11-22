@@ -53,6 +53,7 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuAction(Request $request)
@@ -66,6 +67,7 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuLeftAction(Request $request)
@@ -82,12 +84,13 @@ class CategoryController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
-            'activeSubCategories' => $activeSubCategories
+            'activeSubCategories' => $activeSubCategories,
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -126,7 +129,6 @@ class CategoryController extends FrontendController
         $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
-
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
@@ -136,7 +138,7 @@ class CategoryController extends FrontendController
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)).'_'.(empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
+            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
             $sort = $request->get('sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
@@ -156,10 +158,9 @@ class CategoryController extends FrontendController
             $viewParameters['currentFilter'] = $currentFilter;
             $viewParameters['paginator'] = $paginator;
             $viewParameters['conditions'] = $preparedConditions;
-
         } else {
             //Classic Listing Mode
-            $sort = $request->get('sort', $this->defaultSortName.'_'.$this->defaultSortDirection);
+            $sort = $request->get('sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
@@ -174,7 +175,7 @@ class CategoryController extends FrontendController
                 'order' => $sortParsed['direction'],
                 'categories' => $categories,
                 'store' => $this->getContext()->getStore(),
-                'return_type' => 'list'
+                'return_type' => 'list',
             ];
 
             if ($variantMode !== ListingInterface::VARIANT_MODE_HIDE) {

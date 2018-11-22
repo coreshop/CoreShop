@@ -24,7 +24,7 @@ final class CoreShopMoneyExtension extends AbstractPimcoreExtension
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);

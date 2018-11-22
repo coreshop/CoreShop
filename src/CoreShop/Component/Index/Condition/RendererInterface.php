@@ -21,7 +21,7 @@ interface RendererInterface
      * Renders the condition.
      *
      * @param ConditionInterface $condition
-     * @param string $prefix
+     * @param string             $prefix
      *
      * @return mixed
      */

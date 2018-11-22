@@ -49,9 +49,9 @@ class PaymentProvidersReport implements ReportInterface
     private $orderRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param RepositoryInterface $paymentProviderRepository
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param RepositoryInterface        $paymentProviderRepository
      * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
@@ -59,8 +59,7 @@ class PaymentProvidersReport implements ReportInterface
         Connection $db,
         RepositoryInterface $paymentProviderRepository,
         PimcoreRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->paymentProviderRepository = $paymentProviderRepository;
@@ -90,7 +89,7 @@ class PaymentProvidersReport implements ReportInterface
             return [];
         }
 
-        $tableName = 'object_query_'.$this->orderRepository->getClassId();
+        $tableName = 'object_query_' . $this->orderRepository->getClassId();
         $sql = "
             SELECT  paymentProvider, 
                     COUNT(1) as total, 

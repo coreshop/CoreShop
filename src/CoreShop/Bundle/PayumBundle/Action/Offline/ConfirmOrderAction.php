@@ -47,6 +47,7 @@ final class ConfirmOrderAction implements ActionInterface
         if ($order instanceof OrderInterface) {
             //Confirm
             $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
+
             return;
         }
 

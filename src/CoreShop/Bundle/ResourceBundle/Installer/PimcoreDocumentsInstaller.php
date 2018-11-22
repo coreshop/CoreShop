@@ -28,7 +28,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**<
      * @param KernelInterface $kernel
@@ -105,7 +105,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 );
 
                 foreach ($validLanguages as $language) {
-                    $languageDocument = Document::getByPath($rootDocument->getRealFullPath().'/'.$language);
+                    $languageDocument = Document::getByPath($rootDocument->getRealFullPath() . '/' . $language);
 
                     if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
@@ -122,7 +122,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                         foreach ($languagesDone as $doneLanguage) {
                             $translatedDocument = Document::getByPath(
                                 $rootDocument->getRealFullPath(
-                                ).'/'.$doneLanguage.'/'.$docData['path'].'/'.$docData['key']
+                                ) . '/' . $doneLanguage . '/' . $docData['path'] . '/' . $docData['key']
                             );
 
                             if ($translatedDocument) {
@@ -144,24 +144,25 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
      * @param Document $rootDocument
      * @param string   $language
      * @param array    $properties
+     *
      * @return Document
      */
     private function installDocument(Document $rootDocument, $language, $properties)
     {
-        $path = $rootDocument->getRealFullPath().'/'.$language.'/'.$properties['path'].'/'.$properties['key'];
+        $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 
         if (!Document\Service::pathExists($path)) {
-            $class = "Pimcore\\Model\\Document\\".ucfirst($properties['type']);
+            $class = 'Pimcore\\Model\\Document\\' . ucfirst($properties['type']);
 
             if (\Pimcore\Tool::classExists($class)) {
                 /** @var Document\Page $document */
                 $document = new $class();
                 $document->setParent(
-                    Document::getByPath($rootDocument->getRealFullPath().'/'.$language.'/'.$properties['path'])
+                    Document::getByPath($rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'])
                 );
 
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
-                $document->setProperty("language", $language, 'text', true);
+                $document->setProperty('language', $language, 'text', true);
 
                 if (isset($properties['name'])) {
                     $document->setName($properties['name']);

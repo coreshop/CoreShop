@@ -130,7 +130,6 @@ class ManufacturerReport implements ReportInterface
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
         $manufacturerSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
-
             $manufacturerSales = [];
             foreach ($productSales as $productSale) {
                 $product = DataObject::getById($productSale['product__id']);
@@ -157,7 +156,6 @@ class ManufacturerReport implements ReportInterface
             }
 
             return $manufacturerSales;
-
         });
 
         usort($manufacturerSales, function ($a, $b) {

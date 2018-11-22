@@ -44,7 +44,7 @@ class VoucherModifier implements VoucherModifierInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function increment(OrderInterface $order)
     {
@@ -70,7 +70,7 @@ class VoucherModifier implements VoucherModifierInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function decrement(OrderInterface $order)
     {

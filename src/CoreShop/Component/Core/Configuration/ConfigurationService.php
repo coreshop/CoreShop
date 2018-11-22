@@ -34,18 +34,17 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     protected $configurationRepository;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface           $entityManager
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface $configurationFactory
-     * @param StoreContextInterface $storeContext
+     * @param FactoryInterface                 $configurationFactory
+     * @param StoreContextInterface            $storeContext
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ConfigurationRepositoryInterface $configurationRepository,
         FactoryInterface $configurationFactory,
         StoreContextInterface $storeContext
-    )
-    {
+    ) {
         parent::__construct($entityManager, $configurationRepository, $configurationFactory);
 
         $this->storeContext = $storeContext;

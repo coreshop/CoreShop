@@ -33,10 +33,10 @@ class RangeRenderer extends AbstractMysqlDynamicRenderer
         $from = $condition->getFrom();
         $to = $condition->getTo();
 
-        return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' >= '.$from.' AND '.$this->quoteFieldName(
-                $condition->getFieldName(),
-                $prefix
-            ).' <= '.$to;
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' >= ' . $from . ' AND ' . $this->quoteFieldName(
+            $condition->getFieldName(),
+            $prefix
+        ) . ' <= ' . $to;
     }
 
     /**

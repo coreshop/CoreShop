@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 final class ProductPriceCalculator implements ProductPriceCalculatorInterface
 {
@@ -33,16 +32,15 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     private $discountCalculator;
 
     /**
-     * @param ProductRetailPriceCalculatorInterface $retailPriceCalculator
+     * @param ProductRetailPriceCalculatorInterface   $retailPriceCalculator
      * @param ProductDiscountPriceCalculatorInterface $discountPriceCalculator
-     * @param ProductDiscountCalculatorInterface $discountCalculator
+     * @param ProductDiscountCalculatorInterface      $discountCalculator
      */
     public function __construct(
         ProductRetailPriceCalculatorInterface $retailPriceCalculator,
         ProductDiscountPriceCalculatorInterface $discountPriceCalculator,
         ProductDiscountCalculatorInterface $discountCalculator
-    )
-    {
+    ) {
         $this->retailPriceCalculator = $retailPriceCalculator;
         $this->discountPriceCalculator = $discountPriceCalculator;
         $this->discountCalculator = $discountCalculator;

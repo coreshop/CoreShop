@@ -18,7 +18,7 @@ use Pimcore\Model;
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
@@ -30,7 +30,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     public $width;
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var string
      */
@@ -40,7 +40,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     ];
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var string
      */
@@ -50,7 +50,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     ];
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
@@ -127,14 +127,14 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
                     $this->getName() . '__value' => $data->getValue(),
-                    $this->getName() . '__currency' => $data->getCurrency()->getId()
+                    $this->getName() . '__currency' => $data->getCurrency()->getId(),
                 ];
             }
         }
 
         return [
             $this->getName() . '__value' => null,
-            $this->getName() . '__currency' => null
+            $this->getName() . '__currency' => null,
         ];
     }
 
@@ -171,14 +171,14 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
                     'value' => $data->getValue(),
-                    'currency' => $data->getCurrency()->getId()
+                    'currency' => $data->getCurrency()->getId(),
                 ];
             }
         }
 
         return [
             'value' => null,
-            'currency' => null
+            'currency' => null,
         ];
     }
 
@@ -212,11 +212,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('Empty mandatory field [ '.$this->getName().' ]');
+            throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
         }
 
         if (!$this->isEmpty($data) && !is_numeric($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data ['.$data.']');
+            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
@@ -230,13 +230,13 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
 
             if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
                 throw new Model\Element\ValidationException(
-                    'Value in field [ '.$this->getName().' ] is not at least '.$this->getMinValue()
+                    'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
                 );
             }
 
             if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException(
-                    'Value in field [ '.$this->getName().' ] is bigger than '.$this->getMaxValue()
+                    'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
                 );
             }
         }
@@ -290,6 +290,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
 
     /**
      * @param int $currencyId
+     *
      * @return null|CurrencyInterface
      */
     protected function getCurrencyById($currencyId)
@@ -304,10 +305,10 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     protected function toNumeric($value): int
     {
-        if (strpos((string)$value, '.') === false) {
-            return (int)$value;
+        if (strpos((string) $value, '.') === false) {
+            return (int) $value;
         }
 
-        return (int)round($value * 100, 0);
+        return (int) round($value * 100, 0);
     }
 }

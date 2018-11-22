@@ -80,5 +80,4 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
     {
         return 'coreshop_product_price';
     }
-
 }

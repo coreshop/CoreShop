@@ -20,7 +20,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class CategoriesConditionChecker extends AbstractConditionChecker
 {

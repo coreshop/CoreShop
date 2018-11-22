@@ -42,7 +42,8 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
      */
     public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address)
     {
-        $cacheIdentifier = sprintf('%s.%s.%s',
+        $cacheIdentifier = sprintf(
+            '%s.%s.%s',
             $taxRuleGroup->getId(),
             ($address->getCountry() instanceof CountryInterface ? $address->getCountry()->getId() : 0),
             ($address->getState() instanceof StateInterface ? $address->getState()->getId() : 0)

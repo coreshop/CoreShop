@@ -19,6 +19,7 @@ final class ErrorSerializer
 {
     /**
      * @param FormInterface $handledForm
+     *
      * @return array
      */
     public function serializeErrorFromHandledForm(FormInterface $handledForm)

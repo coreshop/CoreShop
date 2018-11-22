@@ -25,7 +25,7 @@ final class LuceneSearchExtractor implements ExtractorInterface
     /**
      * @var CrawlerState
      */
-    protected $crawlerState;
+    private $crawlerState;
 
     /**
      * @param CrawlerState $crawlerState
@@ -46,7 +46,7 @@ final class LuceneSearchExtractor implements ExtractorInterface
     {
         if (!class_exists(CrawlerState::class)) {
             throw new \LogicException(
-                'You can not use the "'.LuceneSearchExtractor::class.'" class if the Lucene Search is not available. Try running "composer require dachcom-digital/lucene-bundle".'
+                'You can not use the "' . self::class . '" class if the Lucene Search is not available. Try running "composer require dachcom-digital/lucene-bundle".'
             );
         }
 

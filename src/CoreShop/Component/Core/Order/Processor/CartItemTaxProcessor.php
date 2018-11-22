@@ -42,15 +42,14 @@ final class CartItemTaxProcessor implements CartProcessorInterface
 
     /**
      * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
-     * @param TaxCollectorInterface $taxCollector
-     * @param AddressProviderInterface $defaultAddressProvider
+     * @param TaxCollectorInterface                $taxCollector
+     * @param AddressProviderInterface             $defaultAddressProvider
      */
     public function __construct(
         ProductTaxCalculatorFactoryInterface $productTaxFactory,
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider
-    )
-    {
+    ) {
         $this->productTaxFactory = $productTaxFactory;
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
@@ -81,8 +80,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
 
                 if ($store->getUseGrossPrice()) {
                     $item->setItemTax($taxCalculator->getTaxesAmountFromGross($item->getItemPrice(true)));
-                }
-                else {
+                } else {
                     $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
                 }
             }

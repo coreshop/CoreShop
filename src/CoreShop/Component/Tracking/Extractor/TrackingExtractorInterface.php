@@ -16,6 +16,7 @@ interface TrackingExtractorInterface
 {
     /**
      * @param mixed $object
+     *
      * @return bool
      */
     public function supports($object);
@@ -23,6 +24,7 @@ interface TrackingExtractorInterface
     /**
      * @param mixed $object
      * @param array $data
+     *
      * @return array
      */
     public function updateMetadata($object, $data = []): array;

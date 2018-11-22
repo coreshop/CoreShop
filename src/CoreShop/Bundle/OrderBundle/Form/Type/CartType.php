@@ -42,7 +42,7 @@ final class CartType extends AbstractResourceType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'csrf_protection' => true
+            'csrf_protection' => true,
         ]);
     }
 

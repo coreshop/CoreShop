@@ -16,5 +16,4 @@ use Payum\Core\Request\Generic;
 
 class ConfirmOrder extends Generic implements ConfirmOrderInterface
 {
-
 }

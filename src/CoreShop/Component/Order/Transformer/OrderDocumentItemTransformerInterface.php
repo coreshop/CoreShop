@@ -19,10 +19,10 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 interface OrderDocumentItemTransformerInterface
 {
     /**
-     * @param OrderDocumentInterface $orderDocument
-     * @param OrderItemInterface $orderItem
+     * @param OrderDocumentInterface     $orderDocument
+     * @param OrderItemInterface         $orderItem
      * @param OrderDocumentItemInterface $documentItem
-     * @param int $quantity
+     * @param int                        $quantity
      *
      * @return OrderDocumentItemInterface
      */

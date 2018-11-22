@@ -37,18 +37,17 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     private $purchasableDiscountCalculator;
 
     /**
-     * @param PurchasablePriceCalculatorInterface $purchasablePriceCalculator
-     * @param PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator
+     * @param PurchasablePriceCalculatorInterface         $purchasablePriceCalculator
+     * @param PurchasableRetailPriceCalculatorInterface   $purchasableRetailPriceCalculator
      * @param PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator
-     * @param PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator
+     * @param PurchasableDiscountCalculatorInterface      $purchasableDiscountCalculator
      */
     public function __construct(
         PurchasablePriceCalculatorInterface $purchasablePriceCalculator,
         PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator,
         PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator,
         PurchasableDiscountCalculatorInterface $purchasableDiscountCalculator
-    )
-    {
+    ) {
         $this->purchasablePriceCalculator = $purchasablePriceCalculator;
         $this->purchasableRetailPriceCalculator = $purchasableRetailPriceCalculator;
         $this->purchasableDiscountPriceCalculator = $purchasableDiscountPriceCalculator;

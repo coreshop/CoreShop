@@ -18,7 +18,6 @@ use CoreShop\Bundle\FrontendBundle\Controller\CheckoutController;
 use CoreShop\Bundle\FrontendBundle\Controller\CurrencyController;
 use CoreShop\Bundle\FrontendBundle\Controller\CustomerController;
 use CoreShop\Bundle\FrontendBundle\Controller\IndexController;
-use CoreShop\Bundle\FrontendBundle\Controller\LanguageController;
 use CoreShop\Bundle\FrontendBundle\Controller\MailController;
 use CoreShop\Bundle\FrontendBundle\Controller\OrderController;
 use CoreShop\Bundle\FrontendBundle\Controller\ProductController;
@@ -46,8 +45,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('view_suffix')->defaultValue('twig')->end()
                 ->scalarNode('view_bundle')->defaultValue('CoreShopFrontend')->end()
-            ->end()
-        ;
+            ->end();
 
         $this->addPimcoreResourcesSection($rootNode);
         $this->addControllerSection($rootNode);

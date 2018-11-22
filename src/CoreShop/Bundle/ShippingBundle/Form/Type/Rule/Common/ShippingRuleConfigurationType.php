@@ -34,14 +34,14 @@ final class ShippingRuleConfigurationType extends AbstractType
             ]);
 
         $builder->get('shippingRule')->addModelTransformer(new CallbackTransformer(
-            function($shippingRule) {
+            function ($shippingRule) {
                 if ($shippingRule instanceof ShippingRuleInterface) {
                     return $shippingRule->getId();
                 }
 
                 return null;
             },
-            function($shippingRule) {
+            function ($shippingRule) {
                 if ($shippingRule instanceof ShippingRuleInterface) {
                     return $shippingRule->getId();
                 }

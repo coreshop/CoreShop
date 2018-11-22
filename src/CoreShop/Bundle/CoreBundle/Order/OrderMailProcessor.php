@@ -20,8 +20,6 @@ use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
@@ -68,13 +66,13 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $mailProcessor;
 
     /**
-     * @param Logger $logger
-     * @param MoneyFormatterInterface $priceFormatter
-     * @param OrderInvoiceRepositoryInterface $invoiceRepository
+     * @param Logger                           $logger
+     * @param MoneyFormatterInterface          $priceFormatter
+     * @param OrderInvoiceRepositoryInterface  $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
-     * @param OrderDocumentRendererInterface $orderDocumentRenderer
-     * @param ThemeHelperInterface $themeHelper
-     * @param MailProcessorInterface $mailProcessor
+     * @param OrderDocumentRendererInterface   $orderDocumentRenderer
+     * @param ThemeHelperInterface             $themeHelper
+     * @param MailProcessorInterface           $mailProcessor
      */
     public function __construct(
         Logger $logger,
@@ -84,8 +82,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderDocumentRendererInterface $orderDocumentRenderer,
         ThemeHelperInterface $themeHelper,
         MailProcessorInterface $mailProcessor
-    )
-    {
+    ) {
         $this->logger = $logger;
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
@@ -126,7 +123,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             $recipient = [
                 [
                     $customer->getEmail(),
-                    $customer->getFirstname() . ' ' . $customer->getLastname()
+                    $customer->getFirstname() . ' ' . $customer->getLastname(),
                 ],
             ];
         }

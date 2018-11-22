@@ -40,9 +40,9 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     protected $discountApplier;
 
     /**
-     * @param CurrencyConverterInterface     $moneyConverter
-     * @param CurrencyRepositoryInterface    $currencyRepository
-     * @param DiscountApplierInterface $discountApplier
+     * @param CurrencyConverterInterface  $moneyConverter
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param DiscountApplierInterface    $discountApplier
      */
     public function __construct(
         CurrencyConverterInterface $moneyConverter,
@@ -105,6 +105,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     /**
      * @param int $cartAmount
      * @param int $ruleAmount
+     *
      * @return int
      */
     protected function getApplicableAmount($cartAmount, $ruleAmount)

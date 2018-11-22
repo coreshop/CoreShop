@@ -26,7 +26,7 @@ final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);

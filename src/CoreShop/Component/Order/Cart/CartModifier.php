@@ -37,7 +37,7 @@ class CartModifier implements StorageListModifierInterface
     protected $eventDispatcher;
 
     /**
-     * @param FactoryInterface $cartItemFactory
+     * @param FactoryInterface         $cartItemFactory
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(FactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
@@ -53,7 +53,7 @@ class CartModifier implements StorageListModifierInterface
     {
         /**
          * @var $storageList CartInterface
-         * @var $product PurchasableInterface
+         * @var $product     PurchasableInterface
          */
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($product, PurchasableInterface::class);
@@ -74,7 +74,7 @@ class CartModifier implements StorageListModifierInterface
     {
         /**
          * @var $storageList CartInterface
-         * @var $item CartItemInterface
+         * @var $item        CartItemInterface
          */
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($item, CartItemInterface::class);
@@ -94,7 +94,7 @@ class CartModifier implements StorageListModifierInterface
     {
         /**
          * @var $storageList CartInterface
-         * @var $product PurchasableInterface
+         * @var $product     PurchasableInterface
          */
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($product, PurchasableInterface::class);

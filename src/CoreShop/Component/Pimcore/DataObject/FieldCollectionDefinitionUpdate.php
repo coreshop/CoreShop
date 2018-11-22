@@ -29,6 +29,7 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
 
     /**
      * @param string $fieldCollectionKey
+     *
      * @throws ClassDefinitionNotFoundException
      */
     public function __construct($fieldCollectionKey)

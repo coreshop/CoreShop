@@ -129,7 +129,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
      */
     public function getVersion()
     {
-        return Version::getVersion()." (".$this->getComposerVersion().")";
+        return Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
     }
 
     /**

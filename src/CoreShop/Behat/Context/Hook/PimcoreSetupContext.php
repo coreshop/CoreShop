@@ -13,12 +13,6 @@
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\Tool\Setup;
 
 final class PimcoreSetupContext implements Context
 {

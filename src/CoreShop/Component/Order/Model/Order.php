@@ -96,7 +96,6 @@ class Order extends Sale implements OrderInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-
     /**
      * @return string
      */

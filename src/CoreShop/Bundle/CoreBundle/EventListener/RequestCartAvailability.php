@@ -12,14 +12,12 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartAvailability
@@ -45,10 +43,10 @@ final class RequestCartAvailability
     private $session;
 
     /**
-     * @param CartManagerInterface          $cartManager
-     * @param ShopperContextInterface       $shopperContext
-     * @param RequestHelper                 $pimcoreRequestHelper
-     * @param Session                       $session
+     * @param CartManagerInterface    $cartManager
+     * @param ShopperContextInterface $shopperContext
+     * @param RequestHelper           $pimcoreRequestHelper
+     * @param Session                 $session
      */
     public function __construct(
         CartManagerInterface $cartManager,
@@ -63,7 +61,7 @@ final class RequestCartAvailability
     }
 
     /**
-     * Check if Cart needs a recalculation because of changed items from system
+     * Check if Cart needs a recalculation because of changed items from system.
      *
      * @param GetResponseEvent $event
      */

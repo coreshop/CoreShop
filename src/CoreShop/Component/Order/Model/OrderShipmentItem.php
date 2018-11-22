@@ -31,9 +31,8 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
             $parent = $parent->getParent();
         } while ($parent != null);
 
-        throw new \InvalidArgumentException("Order Shipment could not be found!");
+        throw new \InvalidArgumentException('Order Shipment could not be found!');
     }
-
 
     /**
      * {@inheritdoc}

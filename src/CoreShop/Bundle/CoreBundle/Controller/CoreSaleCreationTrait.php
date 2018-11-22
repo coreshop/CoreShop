@@ -32,17 +32,17 @@ trait CoreSaleCreationTrait
 
     public function getCarrierDetailsAction(Request $request)
     {
-        $productIds = $request->get("products");
-        $customerId = $request->get("customer");
-        $shippingAddressId = $request->get("shippingAddress");
-        $invoiceAddressId = $request->get("invoiceAddress");
+        $productIds = $request->get('products');
+        $customerId = $request->get('customer');
+        $shippingAddressId = $request->get('shippingAddress');
+        $invoiceAddressId = $request->get('invoiceAddress');
         $storeId = $request->get('store');
         $language = $request->get('language');
 
         /**
          * @var CurrencyInterface $currency
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
 
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
         $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
@@ -70,7 +70,7 @@ trait CoreSaleCreationTrait
         /**
          * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
-        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $store) {
+        $cart = InheritanceHelper::useInheritedValues(function () use ($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $store) {
             $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
             $this->get('coreshop.cart_processor')->process($cart);
 
@@ -92,7 +92,7 @@ trait CoreSaleCreationTrait
                 'id' => $carrier->getId(),
                 'name' => $carrier->getIdentifier(),
                 'price' => $price,
-                'priceFormatted' => $priceFormatted
+                'priceFormatted' => $priceFormatted,
             ];
         }
 
@@ -111,16 +111,16 @@ trait CoreSaleCreationTrait
         array_splice($result, 3, 0, [
             [
                 'key' => 'shipping_without_tax',
-                'value' => $cart->getShipping(false)
+                'value' => $cart->getShipping(false),
             ],
             [
                 'key' => 'shipping_tax',
-                'value' => $cart->getShipping(true) - $cart->getShipping(false)
+                'value' => $cart->getShipping(true) - $cart->getShipping(false),
             ],
             [
                 'key' => 'shipping',
-                'value' => $cart->getShipping(true)
-            ]
+                'value' => $cart->getShipping(true),
+            ],
         ]);
 
         return $result;
@@ -139,7 +139,7 @@ trait CoreSaleCreationTrait
             $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
 
             if (!$carrier instanceof CarrierInterface) {
-                throw new \InvalidArgumentException('Carrier with ID '.$carrierId.' not found');
+                throw new \InvalidArgumentException('Carrier with ID ' . $carrierId . ' not found');
             }
 
             $cart->setCarrier($carrier);

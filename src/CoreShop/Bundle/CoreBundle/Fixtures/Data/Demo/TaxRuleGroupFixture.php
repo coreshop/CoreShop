@@ -51,7 +51,7 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     public function getDependencies()
     {
         return [
-            TaxRateFixture::class
+            TaxRateFixture::class,
         ];
     }
 

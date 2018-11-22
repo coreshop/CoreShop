@@ -16,5 +16,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class CoreShopInventoryBundle extends Bundle
 {
-
 }

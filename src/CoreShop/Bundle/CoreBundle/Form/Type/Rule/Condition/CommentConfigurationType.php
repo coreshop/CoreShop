@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 

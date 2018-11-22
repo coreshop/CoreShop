@@ -26,7 +26,7 @@ class InCondition implements ConditionInterface
 
     /**
      * @param string $fieldName
-     * @param array $value
+     * @param array  $value
      */
     public function __construct($fieldName, array $value)
     {

@@ -28,6 +28,7 @@ interface DataFixtureInterface extends ResourceInterface
 
     /**
      * @param string $version
+     *
      * @return $this
      */
     public function setVersion($version);

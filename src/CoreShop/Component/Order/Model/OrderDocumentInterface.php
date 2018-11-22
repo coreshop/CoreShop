@@ -42,7 +42,6 @@ interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterfac
      */
     public function setState($state);
 
-
     /**
      * @return \DateTime
      */

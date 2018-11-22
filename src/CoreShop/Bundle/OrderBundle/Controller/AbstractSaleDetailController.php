@@ -22,7 +22,6 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
 use CoreShop\Component\Order\Notes;
-use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
@@ -35,7 +34,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 {
     /**
      * @param Request $request
+     *
      * @return mixed
+     *
      * @throws \Exception
      */
     public function listAction(Request $request)
@@ -81,6 +82,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function detailAction(Request $request)
@@ -101,6 +103,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function findSaleAction(Request $request)
@@ -125,7 +128,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
+     *
      * @throws \Exception
      */
     protected function prepareSale(SaleInterface $sale)
@@ -144,9 +149,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'total' => $sale->getTotal(),
             'currency' => $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency()),
             'currencyName' => $sale->getCurrency() instanceof CurrencyInterface ? $sale->getCurrency()->getName() : '',
-            'customerName' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getFirstname().' '.$sale->getCustomer()->getLastname() : '',
+            'customerName' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getFirstname() . ' ' . $sale->getCustomer()->getLastname() : '',
             'customerEmail' => $sale->getCustomer() instanceof CustomerInterface ? $sale->getCustomer()->getEmail() : '',
-            'store' => $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null
+            'store' => $sale->getStore() instanceof StoreInterface ? $sale->getStore()->getId() : null,
         ];
 
         $element = array_merge($element, $this->prepareAddress($sale->getShippingAddress(), 'shipping'), $this->prepareAddress($sale->getInvoiceAddress(), 'invoice'));
@@ -157,12 +162,14 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     /**
      * @param string $address
      * @param string $type
+     *
      * @return array
+     *
      * @throws \Exception
      */
     protected function prepareAddress($address, $type)
     {
-        $prefix = 'address'.ucfirst($type);
+        $prefix = 'address' . ucfirst($type);
         $values = [];
         $fullAddress = [];
         $classDefinition = DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.address.pimcore_class_name'));
@@ -171,7 +178,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $value = '';
 
             if ($address instanceof AddressInterface && $address instanceof DataObject\Concrete) {
-                $getter = "get".ucfirst($fieldDefinition->getName());
+                $getter = 'get' . ucfirst($fieldDefinition->getName());
 
                 if (method_exists($address, $getter)) {
                     $value = $address->$getter();
@@ -184,11 +191,11 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 }
             }
 
-            $values[$prefix.ucfirst($fieldDefinition->getName())] = $value;
+            $values[$prefix . ucfirst($fieldDefinition->getName())] = $value;
         }
 
         if ($address instanceof AddressInterface && $address->getCountry() instanceof CountryInterface) {
-            $values[$prefix.'All'] = $this->getAddressFormatter()->formatAddress($address, false);
+            $values[$prefix . 'All'] = $this->getAddressFormatter()->formatAddress($address, false);
         }
 
         return $values;
@@ -196,6 +203,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
      */
     protected function getDetails(SaleInterface $sale)
@@ -261,6 +269,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleInterface $sale
+     *
      * @return array
      */
     protected function getMailCorrespondence(SaleInterface $sale)
@@ -272,7 +281,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         foreach ($notes as $note) {
             $noteElement = [
                 'date' => $note->date,
-                'description' => $note->description
+                'description' => $note->description,
             ];
 
             foreach ($note->data as $key => $noteData) {
@@ -319,9 +328,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             foreach ($taxes as $tax) {
                 if ($tax instanceof TaxItemInterface) {
                     $summary[] = [
-                        'key' => 'tax_'.$tax->getName(),
+                        'key' => 'tax_' . $tax->getName(),
                         'text' => sprintf('Tax (%s - %s)', $tax->getName(), $tax->getRate()),
-                        'value' => $tax->getAmount()
+                        'value' => $tax->getAmount(),
                     ];
                 }
             }
@@ -360,6 +369,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param SaleItemInterface $item
+     *
      * @return array<string,integer|null|string>
      */
     protected function prepareSaleItem(SaleItemInterface $item)
@@ -392,45 +402,46 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
     /**
      * @param StoreInterface $store
+     *
      * @return array<string,integer|string>
      */
     protected function getStore(StoreInterface $store)
     {
         return [
-            "id" => $store->getId(),
-            "name" => $store->getName()
+            'id' => $store->getId(),
+            'name' => $store->getName(),
         ];
     }
 
     /**
      * @return PimcoreRepositoryInterface
      */
-    protected abstract function getSaleRepository();
+    abstract protected function getSaleRepository();
 
     /**
      * @return \Pimcore\Model\DataObject\Listing
      */
-    protected abstract function getSalesList();
+    abstract protected function getSalesList();
 
     /**
      * @return string
      */
-    protected abstract function getSaleClassName();
+    abstract protected function getSaleClassName();
 
     /**
      * @return array
      */
-    protected abstract function getFolderConfigurationAction();
+    abstract protected function getFolderConfigurationAction();
 
     /**
      * @return string
      */
-    protected abstract function getOrderKey();
+    abstract protected function getOrderKey();
 
     /**
      * @return string
      */
-    protected abstract function getSaleNumberField();
+    abstract protected function getSaleNumberField();
 
     /**
      * @return AddressFormatterInterface

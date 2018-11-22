@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\IndexBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +70,7 @@ class IndexController extends ResourceController
                 'type' => $interpreter,
                 'name' => $interpreter,
                 'localized' => $localized,
-                'relation' => $relation
+                'relation' => $relation,
             ];
         }
 
@@ -91,11 +90,11 @@ class IndexController extends ResourceController
 
         foreach ($classes as $class) {
             if ($class instanceof DataObject\ClassDefinition) {
-                $pimcoreClass = 'Pimcore\Model\DataObject\\'.ucfirst($class->getName());
+                $pimcoreClass = 'Pimcore\Model\DataObject\\' . ucfirst($class->getName());
 
                 if (in_array(IndexableInterface::class, class_implements($pimcoreClass), true)) {
                     $availableClasses[] = [
-                        'name' => $class->getName()
+                        'name' => $class->getName(),
                     ];
                 }
             }
@@ -107,7 +106,7 @@ class IndexController extends ResourceController
                 'interpreters' => $interpretersResult,
                 'getters' => $gettersResult,
                 'fieldTypes' => $fieldTypesResult,
-                'classes' => $availableClasses
+                'classes' => $availableClasses,
             ]
         );
     }
@@ -134,7 +133,7 @@ class IndexController extends ResourceController
                 'nodeLabel' => 'fields',
                 'nodeType' => 'object',
                 'childs' => [],
-            ]
+            ],
         ];
 
         $result = array_merge_recursive($result, $this->getSystemFields());
@@ -209,14 +208,15 @@ class IndexController extends ResourceController
                         'fieldtype' => 'datetime',
                         'title' => 'Modification Date',
                         'tooltip' => 'Modification Date',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
      * @param DataObject\ClassDefinition\Data\Localizedfields $field
+     *
      * @return array
      */
     protected function getLocalizedFields(DataObject\ClassDefinition\Data\Localizedfields $field)
@@ -239,6 +239,7 @@ class IndexController extends ResourceController
     /**
      * @param array $allowedBricks
      * @param array $result
+     *
      * @return mixed
      */
     protected function getObjectbrickFields(array $allowedBricks, &$result)
@@ -260,7 +261,7 @@ class IndexController extends ResourceController
                     $fieldConfig['getter'] = 'brick';
                     $fieldConfig['configuration'] = [
                         'className' => $key,
-                        'key' => $field->getName()
+                        'key' => $field->getName(),
                     ];
                     $result[$key]['childs'][] = $fieldConfig;
                 }
@@ -273,7 +274,9 @@ class IndexController extends ResourceController
     /**
      * @param array $allowedCollections
      * @param array $result
+     *
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function getFieldcollectionFields(array $allowedCollections, &$result)
@@ -294,7 +297,7 @@ class IndexController extends ResourceController
                 $fieldConfig = $this->getFieldConfiguration($fieldcollectionField);
                 $fieldConfig['getter'] = 'fieldcollection';
                 $fieldConfig['configuration'] = [
-                    'className' => $key
+                    'className' => $key,
                 ];
 
                 $result[$key]['childs'][] = $fieldConfig;
@@ -306,6 +309,7 @@ class IndexController extends ResourceController
 
     /**
      * @param DataObject\ClassDefinition\Data\Classificationstore $field
+     *
      * @return array
      */
     protected function getClassificationStoreFields(DataObject\ClassDefinition\Data\Classificationstore $field)
@@ -318,7 +322,7 @@ class IndexController extends ResourceController
         $allowedGroupIds = $field->getAllowedGroupIds();
 
         if ($allowedGroupIds) {
-            $list->setCondition('ID in ('.implode(',', $allowedGroupIds).')');
+            $list->setCondition('ID in (' . implode(',', $allowedGroupIds) . ')');
         }
 
         $groupConfigList = $list->getList();
@@ -327,7 +331,7 @@ class IndexController extends ResourceController
          * @var DataObject\Classificationstore\GroupConfig $config
          */
         foreach ($groupConfigList as $config) {
-            $key = $config->getId().($config->getName() ? $config->getName() : 'EMPTY');
+            $key = $config->getId() . ($config->getName() ? $config->getName() : 'EMPTY');
 
             $result[$key] = $this->getClassificationStoreGroupConfiguration($config);
         }
@@ -382,7 +386,7 @@ class IndexController extends ResourceController
     }
 
     /**
-     * @param DataObject\Classificationstore\KeyConfig $field
+     * @param DataObject\Classificationstore\KeyConfig   $field
      * @param DataObject\Classificationstore\GroupConfig $groupConfig
      *
      * @return array
@@ -398,7 +402,7 @@ class IndexController extends ResourceController
             'configuration' => [
                 'keyConfigId' => $field->getId(),
                 'groupConfigId' => $groupConfig->getId(),
-            ]
+            ],
         ];
 
         if ('quantityValue' === $field->getType()) {

@@ -31,7 +31,7 @@ final class IndexContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface    $indexRepository
      */
     public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $indexRepository)
     {

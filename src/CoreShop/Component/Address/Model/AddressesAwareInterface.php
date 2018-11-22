@@ -21,7 +21,8 @@ interface AddressesAwareInterface
 
     /**
      * @param AddressInterface $address
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasAddress(AddressInterface $address);
 

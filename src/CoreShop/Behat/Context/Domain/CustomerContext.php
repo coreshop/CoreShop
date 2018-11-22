@@ -14,15 +14,8 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
 final class CustomerContext implements Context
@@ -38,14 +31,13 @@ final class CustomerContext implements Context
     private $customerContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface   $sharedStorage
      * @param CustomerContextInterface $customerContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CustomerContextInterface $customerContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerContext = $customerContext;
     }

@@ -31,7 +31,6 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Pimcore\Analytics\AbstractTracker;
 use Pimcore\Analytics\Code\CodeCollector;
 use Pimcore\Analytics\Google\Tracker;
-use Pimcore\Analytics\SiteId\SiteId;
 use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context
@@ -52,9 +51,9 @@ final class TrackingContext implements Context
     private $trackerRegistry;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface     $sharedStorage
      * @param TrackingExtractorInterface $trackingExtractor
-     * @param ServiceRegistry $trackerRegistry
+     * @param ServiceRegistry            $trackerRegistry
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -95,7 +94,7 @@ final class TrackingContext implements Context
         $placeholderHelper = new \Pimcore\Placeholder();
         $code = $placeholderHelper->replacePlaceholders($code->getRaw(), ['product' => $product]);
 
-        Assert::eq(preg_replace( "/\r|\n/", "", $this->getRenderedPartForTracker($tracker)), preg_replace( "/\r|\n/", "", $code));
+        Assert::eq(preg_replace("/\r|\n/", '', $this->getRenderedPartForTracker($tracker)), preg_replace("/\r|\n/", '', $code));
     }
 
     /**
@@ -184,6 +183,7 @@ final class TrackingContext implements Context
 
     /**
      * @param TrackerInterface $tracker
+     *
      * @return null|string
      */
     private function getRenderedPartForTracker(TrackerInterface $tracker)
@@ -192,11 +192,9 @@ final class TrackingContext implements Context
 
         if ($tracker instanceof TagManagerEnhancedEcommerce) {
             $code = implode('', $tracker->codeTracker->getBlocks());
-        }
-        else if ($tracker instanceof TagManagerClassicEcommerce) {
+        } elseif ($tracker instanceof TagManagerClassicEcommerce) {
             $code = implode('', $tracker->codeTracker->getBlocks());
-        }
-        else if ($tracker instanceof AnalyticsEnhancedEcommerce ||
+        } elseif ($tracker instanceof AnalyticsEnhancedEcommerce ||
             $tracker instanceof GlobalSiteTagEnhancedEcommerce ||
             $tracker instanceof UniversalEcommerce ||
             $tracker instanceof Matomo
@@ -218,14 +216,12 @@ final class TrackingContext implements Context
 
             $codePartsProperty->setAccessible(false);
 
-
             if ($tracker instanceof  UniversalEcommerce) {
                 $code = implode(
                     PHP_EOL,
                     $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_AFTER_TRACK]['append']
                 );
-            }
-            else {
+            } else {
                 $code = implode(
                     PHP_EOL,
                     $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_BEFORE_TRACK]['append']
@@ -240,6 +236,7 @@ final class TrackingContext implements Context
 
     /**
      * @param string $tracker
+     *
      * @return TrackerInterface
      */
     private function getTracker($tracker)

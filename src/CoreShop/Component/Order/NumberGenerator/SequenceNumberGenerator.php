@@ -29,7 +29,7 @@ class SequenceNumberGenerator implements NumberGeneratorInterface
 
     /**
      * @param SequenceGeneratorInterface $sequenceNumberGenerator
-     * @param string $type
+     * @param string                     $type
      */
     public function __construct(SequenceGeneratorInterface $sequenceNumberGenerator, $type)
     {

@@ -29,7 +29,7 @@ final class StoreType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('template', TextType::class)
             ->add('siteId', IntegerType::class)
-            ->add('currency', CurrencyChoiceType::class); ;
+            ->add('currency', CurrencyChoiceType::class);
     }
 
     /**

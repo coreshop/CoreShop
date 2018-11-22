@@ -32,13 +32,12 @@ class TaxCollector implements TaxCollectorInterface
 
     /**
      * @param RepositoryInterface $taxRateRepository
-     * @param FactoryInterface $taxItemFactory
+     * @param FactoryInterface    $taxItemFactory
      */
     public function __construct(
         RepositoryInterface $taxRateRepository,
         FactoryInterface $taxItemFactory
-    )
-    {
+    ) {
         $this->taxRateRepository = $taxRateRepository;
         $this->taxItemFactory = $taxItemFactory;
     }
@@ -74,8 +73,8 @@ class TaxCollector implements TaxCollectorInterface
     }
 
     /**
-     * @param int $taxId
-     * @param int $amount
+     * @param int   $taxId
+     * @param int   $amount
      * @param array $usedTaxes
      */
     private function addTaxToArray($taxId, $amount, &$usedTaxes)

@@ -16,26 +16,28 @@ final class Db extends \Pimcore\Db
 {
     /**
      * @param string $table
+     *
      * @return array
      */
     public static function getColumns($table)
     {
         $db = static::get();
 
-        $data = $db->fetchAll("SHOW COLUMNS FROM ".$table);
+        $data = $db->fetchAll('SHOW COLUMNS FROM ' . $table);
         $columns = [];
 
         foreach ($data as $d) {
-            $columns[] = $d["Field"];
+            $columns[] = $d['Field'];
         }
 
         return $columns;
     }
 
     /**
-     * Check if table exists
+     * Check if table exists.
      *
      * @param string $table
+     *
      * @return bool
      */
     public static function tableExists($table)

@@ -23,7 +23,7 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
     /**
      * @var RuleRepositoryInterface
      */
-    protected $ruleRepository;
+    private $ruleRepository;
 
     /**
      * @param RuleRepositoryInterface $ruleRepository
@@ -48,7 +48,6 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
     {
         /** @var Condition $condition */
         foreach ($rule->getConditions() as $id => $condition) {
-
             if ($condition->getType() !== 'timespan') {
                 continue;
             }

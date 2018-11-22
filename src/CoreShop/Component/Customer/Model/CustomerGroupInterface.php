@@ -11,6 +11,7 @@
  */
 
 namespace CoreShop\Component\Customer\Model;
+
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CustomerGroupInterface extends PimcoreModelInterface

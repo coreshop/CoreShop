@@ -24,7 +24,8 @@ final class FolderInstallerProvider
     /**
      * @param array $folders
      */
-    public function __construct(array $folders) {
+    public function __construct(array $folders)
+    {
         $this->folders = $folders;
     }
 

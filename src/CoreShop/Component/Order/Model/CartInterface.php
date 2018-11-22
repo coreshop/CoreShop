@@ -16,10 +16,7 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 
-interface CartInterface extends
-    ProposalInterface,
-    PimcoreModelInterface,
-    StorageListInterface
+interface CartInterface extends ProposalInterface, PimcoreModelInterface, StorageListInterface
 {
     /**
      * @param OrderInterface $order
@@ -72,7 +69,7 @@ interface CartInterface extends
      * @param CartPriceRuleInterface                 $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
      *
-     * @return boolean
+     * @return bool
      */
     public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 
@@ -91,6 +88,7 @@ interface CartInterface extends
 
     /**
      * @param PaymentProviderInterface $paymentProvider
+     *
      * @return PaymentProviderInterface
      */
     public function setPaymentProvider($paymentProvider);

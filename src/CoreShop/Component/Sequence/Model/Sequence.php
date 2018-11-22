@@ -67,6 +67,6 @@ class Sequence implements SequenceInterface
 
     public function incrementIndex()
     {
-        ++$this->index;
+        $this->index++;
     }
 }

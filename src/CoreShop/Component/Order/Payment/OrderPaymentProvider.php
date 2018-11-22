@@ -42,11 +42,11 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
     {
         $tokenGenerator = new UniqueTokenGenerator(true);
         $uniqueId = $tokenGenerator->generate(15);
-        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())).'_'.$uniqueId;
+        $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
 
         /**
          * @var PaymentInterface $payment
-         * @var Payment $payment
+         * @var Payment          $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);

@@ -39,16 +39,15 @@ final class CustomerNewsletterConfirmListener
     private $eventDispatcher;
 
     /**
-     * @param LinkGeneratorInterface $linkGenerator
-     * @param RequestStack $requestStack
+     * @param LinkGeneratorInterface   $linkGenerator
+     * @param RequestStack             $requestStack
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
         RequestStack $requestStack,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->linkGenerator = $linkGenerator;
         $this->requestStack = $requestStack;
         $this->eventDispatcher = $eventDispatcher;

@@ -33,7 +33,7 @@ interface BaseAdjustableInterface
 
     /**
      * @param string|null $type
-     * @param bool $withTax
+     * @param bool        $withTax
      *
      * @return int
      */

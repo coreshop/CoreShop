@@ -21,7 +21,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use Webmozart\Assert\Assert;
 
 final class CategoriesConditionChecker extends AbstractConditionChecker

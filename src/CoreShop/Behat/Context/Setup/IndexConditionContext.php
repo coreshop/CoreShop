@@ -13,13 +13,9 @@
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
-use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Component\Index\Condition\CompareCondition;
 use CoreShop\Component\Index\Condition\ConcatCondition;
-use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\GreaterThanCondition;
 use CoreShop\Component\Index\Condition\GreaterThanEqualCondition;
 use CoreShop\Component\Index\Condition\InCondition;
@@ -33,14 +29,6 @@ use CoreShop\Component\Index\Condition\NotInCondition;
 use CoreShop\Component\Index\Condition\NotLikeCondition;
 use CoreShop\Component\Index\Condition\NotMatchCondition;
 use CoreShop\Component\Index\Condition\RangeCondition;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
-use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Index\Worker\WorkerInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexConditionContext implements Context
 {
@@ -54,9 +42,8 @@ final class IndexConditionContext implements Context
      */
     public function __construct(
         SharedStorageInterface $sharedStorage
-    )
-    {
-        $this->sharedStorage = $sharedStorage;;
+    ) {
+        $this->sharedStorage = $sharedStorage;
     }
 
     /**
@@ -196,7 +183,7 @@ final class IndexConditionContext implements Context
 
     /**
      * @param string $condition
-     * @param null $identifier
+     * @param null   $identifier
      */
     private function addCondition($condition, $identifier = null)
     {

@@ -16,18 +16,13 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pimcore\Model\DataObject\ClassDefinition;
 
 final class FilterContext implements Context
 {
@@ -63,11 +58,11 @@ final class FilterContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $filterFactory
-     * @param RepositoryInterface $filterRepository
-     * @param FactoryInterface $filterConditionFactory
+     * @param ClassStorageInterface  $classStorage
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $filterFactory
+     * @param RepositoryInterface    $filterRepository
+     * @param FactoryInterface       $filterConditionFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -76,8 +71,7 @@ final class FilterContext implements Context
         FactoryInterface $filterFactory,
         RepositoryInterface $filterRepository,
         FactoryInterface $filterConditionFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
@@ -108,7 +102,7 @@ final class FilterContext implements Context
             $condition = $this->filterConditionFactory->createNew();
             $condition->setType($row['type']);
             $condition->setConfiguration([
-                'field' => $row['field']
+                'field' => $row['field'],
             ]);
             $condition->setLabel($row['label']);
 
@@ -131,7 +125,7 @@ final class FilterContext implements Context
         $condition->setType('category_select');
         $condition->setConfiguration([
             'preSelect' => $category ? $category->getId() : null,
-            'includeSubCategories' => $includeAllChilds === 'includes all subcategories'
+            'includeSubCategories' => $includeAllChilds === 'includes all subcategories',
         ]);
         $condition->setLabel('Category');
 

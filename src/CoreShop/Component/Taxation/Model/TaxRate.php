@@ -92,15 +92,16 @@ class TaxRate extends AbstractResource implements TaxRateInterface
     /**
      * @param null $locale
      * @param bool $useFallbackTranslation
+     *
      * @return TaxRateTranslation
      */
     public function getTranslation($locale = null, $useFallbackTranslation = true)
     {
         /** @var TaxRateTranslation $translation */
         $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
         return $translation;
     }
-
 
     /**
      * {@inheritdoc}

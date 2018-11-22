@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Rule\Condition;
 
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 trait CategoriesConditionCheckerTrait
@@ -33,9 +32,10 @@ trait CategoriesConditionCheckerTrait
     }
 
     /**
-     * @param array $categories
+     * @param array          $categories
      * @param StoreInterface $store
-     * @param bool $recursive
+     * @param bool           $recursive
+     *
      * @return array
      */
     protected function getCategoriesToCheck($categories, StoreInterface $store, $recursive)

@@ -25,7 +25,7 @@ class ActiveValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof Active) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Active');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Active');
         }
 
         if ($value instanceof ToggleableInterface) {

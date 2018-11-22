@@ -36,9 +36,9 @@ class SettingsController extends AdminController
     {
         $settings = [
             'bundle' => [
-                'version' => Version::getVersion()
+                'version' => Version::getVersion(),
             ],
-            'reports' => array_values($this->getParameter('coreshop.reports'))
+            'reports' => array_values($this->getParameter('coreshop.reports')),
         ];
 
         return $this->viewHandler->handle($settings);

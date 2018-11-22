@@ -14,7 +14,6 @@ namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
 
-
 interface QuoteInterface extends SaleInterface
 {
     /**

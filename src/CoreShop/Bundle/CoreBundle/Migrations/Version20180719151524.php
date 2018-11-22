@@ -26,11 +26,11 @@ class Version20180719151524 extends AbstractPimcoreMigration implements Containe
             foreach ($class->getFieldDefinitions() as $definition) {
                 if ($definition instanceof StorePrice || $definition instanceof ProductSpecificPriceRules) {
                     $class->save();
+
                     break;
                 }
             }
         }
-
     }
 
     /**
@@ -39,6 +39,5 @@ class Version20180719151524 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

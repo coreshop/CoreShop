@@ -48,10 +48,10 @@ final class FilterContext implements Context
     private $filterProcessor;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface $filterRepository
+     * @param SharedStorageInterface          $sharedStorage
+     * @param RepositoryInterface             $filterRepository
      * @param FilteredListingFactoryInterface $filterListFactory
-     * @param FilterProcessorInterface $filterProcessor
+     * @param FilterProcessorInterface        $filterProcessor
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -134,7 +134,6 @@ final class FilterContext implements Context
         Assert::count($diff, 0);
     }
 
-
     /**
      * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_select) condition "([^"]+)"/
      * @Then /the (filter) should have (\d+) values with count (\d+) for (relational_multiselect) condition "([^"]+)"/
@@ -147,7 +146,6 @@ final class FilterContext implements Context
         $field
     ) {
         $conditions = $this->prepareFilter($filter);
-
 
         $field = reset(
             array_filter(
@@ -214,14 +212,13 @@ final class FilterContext implements Context
 
             if (strstr($value, ',')) {
                 $value = explode(',', $value);
-            }
-            else {
+            } else {
                 $value = [$value];
             }
         }
 
         $params = [
-            $field => $value
+            $field => $value,
         ];
 
         $listing = $this->getFilterListing($filter, $params);
@@ -232,9 +229,10 @@ final class FilterContext implements Context
     /**
      * @param FilterInterface $filter
      * @param array           $filterParams
+     *
      * @return array
      */
-    protected function prepareFilter(FilterInterface $filter, $filterParams = [])
+    private function prepareFilter(FilterInterface $filter, $filterParams = [])
     {
         $parameterBag = new ParameterBag($filterParams);
 
@@ -250,9 +248,10 @@ final class FilterContext implements Context
     /**
      * @param FilterInterface $filter
      * @param array           $filterParams
+     *
      * @return ListingInterface
      */
-    protected function getFilterListing(FilterInterface $filter, $filterParams = [])
+    private function getFilterListing(FilterInterface $filter, $filterParams = [])
     {
         $parameterBag = new ParameterBag($filterParams);
 

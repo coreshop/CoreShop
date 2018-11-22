@@ -51,11 +51,11 @@ final class CountryContext implements Context
     private $fixedCountryContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $countryFactory
+     * @param SharedStorageInterface     $sharedStorage
+     * @param ObjectManager              $objectManager
+     * @param FactoryInterface           $countryFactory
      * @param CountryRepositoryInterface $countryRepository
-     * @param FixedCountryContext $fixedCountryContext
+     * @param FixedCountryContext        $fixedCountryContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -63,8 +63,7 @@ final class CountryContext implements Context
         FactoryInterface $countryFactory,
         CountryRepositoryInterface $countryRepository,
         FixedCountryContext $fixedCountryContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->countryFactory = $countryFactory;

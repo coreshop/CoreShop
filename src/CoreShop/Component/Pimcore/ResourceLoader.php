@@ -18,7 +18,8 @@ final class ResourceLoader
 {
     /**
      * @param array $resources
-     * @param boolean $minify
+     * @param bool  $minify
+     *
      * @return array
      */
     public function loadResources($resources, $minify = false)
@@ -27,11 +28,11 @@ final class ResourceLoader
             return $resources;
         }
 
-        $scriptContents = "";
+        $scriptContents = '';
 
         foreach ($resources as $scriptUrl) {
-            if (is_file(PIMCORE_WEB_ROOT.$scriptUrl)) {
-                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT.$scriptUrl)."\n\n\n";
+            if (is_file(PIMCORE_WEB_ROOT . $scriptUrl)) {
+                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT . $scriptUrl) . "\n\n\n";
             }
         }
 

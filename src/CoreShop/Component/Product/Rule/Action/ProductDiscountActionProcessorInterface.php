@@ -16,7 +16,7 @@ interface ProductDiscountActionProcessorInterface extends ActionProcessorInterfa
 {
     /**
      * @param mixed $subject
-     * @param int $price
+     * @param int   $price
      * @param array $context
      * @param array $configuration
      *

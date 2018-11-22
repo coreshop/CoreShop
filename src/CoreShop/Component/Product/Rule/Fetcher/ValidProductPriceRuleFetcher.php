@@ -21,16 +21,16 @@ final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
     /**
      * @var ProductPriceRuleRepositoryInterface
      */
-    protected $productPriceRuleRepository;
+    private $productPriceRuleRepository;
 
     /**
      * @var RuleValidationProcessorInterface
      */
-    protected $ruleValidationProcessor;
+    private $ruleValidationProcessor;
 
     /**
      * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
      */
     public function __construct(ProductPriceRuleRepositoryInterface $productPriceRuleRepository, RuleValidationProcessorInterface $ruleValidationProcessor)
     {

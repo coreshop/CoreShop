@@ -27,14 +27,14 @@ class FieldCollectionGetter implements GetterInterface
         $fieldValues = [];
         $collectionField = $config->getGetterConfig()['collectionField'];
 
-        $collectionContainerGetter = 'get'.ucfirst($collectionField);
+        $collectionContainerGetter = 'get' . ucfirst($collectionField);
         $collectionContainer = $object->$collectionContainerGetter();
         $validItems = [];
-        $fieldGetter = 'get'.ucfirst($config->getObjectKey());
+        $fieldGetter = 'get' . ucfirst($config->getObjectKey());
 
         if ($collectionContainer instanceof Fieldcollection) {
             foreach ($collectionContainer->getItems() as $item) {
-                $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\'.$columnConfig['className'];
+                $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\' . $columnConfig['className'];
                 if (is_a($item, $className)) {
                     $validItems[] = $item;
                 }

@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
-use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\Alias;
@@ -54,7 +53,6 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -68,7 +66,7 @@ final class PimcoreDriver extends AbstractDriver
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
@@ -85,21 +83,21 @@ final class PimcoreDriver extends AbstractDriver
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
-                new Reference('coreshop.resource_controller.view_handler')
+                new Reference('coreshop.resource_controller.view_handler'),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
         $serviceId = $metadata->getServiceId('pimcore_controller');
 
         if (null !== $suffix && 'default' !== $suffix) {
-            $serviceId .= '_'.$suffix;
+            $serviceId .= '_' . $suffix;
         }
 
         $container->setDefinition($serviceId, $definition);
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata)
@@ -166,7 +164,7 @@ final class PimcoreDriver extends AbstractDriver
     {
         $alias = new Alias('pimcore.dao.object_manager');
         $alias->setPublic(true);
-        
+
         $container->setAlias(
             $metadata->getServiceId('manager'),
             $alias

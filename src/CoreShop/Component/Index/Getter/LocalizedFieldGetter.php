@@ -37,7 +37,7 @@ class LocalizedFieldGetter implements GetterInterface
      */
     public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
-        $getter = 'get'.ucfirst($config->getObjectKey());
+        $getter = 'get' . ucfirst($config->getObjectKey());
 
         $fallbackMemory = DataObject\Localizedfield::getGetFallbackValues();
         DataObject\Localizedfield::setGetFallbackValues(true);

@@ -30,13 +30,12 @@ final class LocaleContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param FixedLocaleContext $fixedLocaleContext
+     * @param FixedLocaleContext     $fixedLocaleContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FixedLocaleContext $fixedLocaleContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->fixedLocaleContext = $fixedLocaleContext;
     }

@@ -54,7 +54,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => '@CoreShopTracking/Tracking/analytics/universal'
+            'template_prefix' => '@CoreShopTracking/Tracking/analytics/universal',
         ]);
     }
 
@@ -116,9 +116,9 @@ class UniversalEcommerce extends AbstractEcommerceTracker
 
         $calls = [
             'ecommerce:addTransaction' => [
-                $orderData
+                $orderData,
             ],
-            'ecommerce:addItem' => []
+            'ecommerce:addItem' => [],
         ];
 
         foreach ($items as $item) {
@@ -144,42 +144,44 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         return $config->get('gtagcode');
     }
 
-     /**
-     * Transform ActionData into classic analytics data array
+    /**
+     * Transform ActionData into classic analytics data array.
      *
      * @param array $actionData
+     *
      * @return array
      */
     protected function transformOrder($actionData)
     {
         return [
-            'id'          => $actionData['id'],
+            'id' => $actionData['id'],
             'affiliation' => $actionData['affiliation'] ?: '',
-            'total'       => $actionData['total'],
-            'tax'         => $actionData['totalTax'],
-            'shipping'    => $actionData['shipping'],
-            'currency'    => $actionData['currency']
+            'total' => $actionData['total'],
+            'tax' => $actionData['totalTax'],
+            'shipping' => $actionData['shipping'],
+            'currency' => $actionData['currency'],
         ];
     }
 
     /**
-     * Transform product action into enhanced data object
+     * Transform product action into enhanced data object.
      *
      * @param array $item
+     *
      * @return array
      */
     protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'id'        => $item['id'],
-            'name'      => $item['name'],
-            'category'  => $item['category'],
-            'brand'     => $item['brand'],
-            'variant'   => $item['variant'],
-            'price'     => round($item['price'], 2),
-            'quantity'  => $item['quantity'] ?: 1,
-            'position'  => $item['position'],
-            'currency' => $item['currency']
+            'id' => $item['id'],
+            'name' => $item['name'],
+            'category' => $item['category'],
+            'brand' => $item['brand'],
+            'variant' => $item['variant'],
+            'price' => round($item['price'], 2),
+            'quantity' => $item['quantity'] ?: 1,
+            'position' => $item['position'],
+            'currency' => $item['currency'],
         ]);
     }
 }

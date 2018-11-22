@@ -42,7 +42,7 @@ final class FilterConditionNestedType extends AbstractType
         $builder
             ->add('conditions', FilterConditionCollectionType::class);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
 
             if (is_array($data)) {

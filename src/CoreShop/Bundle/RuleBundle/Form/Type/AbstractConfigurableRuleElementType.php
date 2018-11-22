@@ -30,7 +30,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function __construct($dataClass, array $validationGroups = [], FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -45,7 +45,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
         parent::buildForm($builder, $options);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -53,7 +53,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -61,7 +61,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
                 $event->getForm()->get('type')->setData($type);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
 
                 if (!isset($data['type'])) {
@@ -86,7 +86,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -95,7 +95,7 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

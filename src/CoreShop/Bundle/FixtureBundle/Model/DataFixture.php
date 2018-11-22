@@ -10,7 +10,7 @@ class DataFixture extends AbstractResource implements DataFixtureInterface
     use SetValuesTrait;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 

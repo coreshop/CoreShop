@@ -18,23 +18,26 @@ interface StateMachineManagerInterface
 {
     /**
      * @param mixed $subject
-     * @param null $workflowName
+     * @param null  $workflowName
+     *
      * @return Workflow
      */
     public function get($subject, $workflowName = null);
 
     /**
      * @param Workflow $workflow
-     * @param mixed $subject
-     * @param string $fromState
+     * @param mixed    $subject
+     * @param string   $fromState
+     *
      * @return mixed
      */
     public function getTransitionFromState(Workflow $workflow, $subject, string $fromState);
 
     /**
      * @param Workflow $workflow
-     * @param mixed $subject
-     * @param string $toState
+     * @param mixed    $subject
+     * @param string   $toState
+     *
      * @return mixed
      */
     public function getTransitionToState(Workflow $workflow, $subject, string $toState);

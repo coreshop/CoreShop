@@ -35,8 +35,8 @@ class SequenceGenerator implements SequenceGeneratorInterface
 
     /**
      * @param SequenceRepositoryInterface $sequenceRepository
-     * @param SequenceFactoryInterface $sequenceFactory
-     * @param EntityManagerInterface $entityManager
+     * @param SequenceFactoryInterface    $sequenceFactory
+     * @param EntityManagerInterface      $entityManager
      */
     public function __construct(SequenceRepositoryInterface $sequenceRepository, SequenceFactoryInterface $sequenceFactory, EntityManagerInterface $entityManager)
     {

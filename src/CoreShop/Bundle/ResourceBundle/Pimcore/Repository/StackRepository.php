@@ -37,8 +37,8 @@ class StackRepository extends PimcoreRepository
 
         foreach ($stackClasses as $class) {
             $namespaces = explode('\\', $class);
-           
-            $this->classNames[] = '"'.end($namespaces).'"';
+
+            $this->classNames[] = '"' . end($namespaces) . '"';
         }
     }
 

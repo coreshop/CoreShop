@@ -25,12 +25,12 @@ final class OrderPaymentStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var PaymentRepositoryInterface
      */
-    protected $paymentRepository;
+    private $paymentRepository;
 
     /**
      * @param StateMachineManager        $stateMachineManager
@@ -139,6 +139,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
                 $filteredPayments[] = $payment;
             }
         }
+
         return $filteredPayments;
     }
 }

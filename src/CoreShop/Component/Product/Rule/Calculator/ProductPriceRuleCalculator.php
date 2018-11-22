@@ -29,22 +29,21 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * @var ValidRulesFetcherInterface
      */
-    protected $validRulesFetcher;
+    private $validRulesFetcher;
 
     /**
      * @var ServiceRegistryInterface
      */
-    protected $actionServiceRegistry;
+    private $actionServiceRegistry;
 
     /**
      * @param ValidRulesFetcherInterface $validRulesFetcher
-     * @param ServiceRegistryInterface $actionServiceRegistry
+     * @param ServiceRegistryInterface   $actionServiceRegistry
      */
     public function __construct(
         ValidRulesFetcherInterface $validRulesFetcher,
         ServiceRegistryInterface $actionServiceRegistry
-    )
-    {
+    ) {
         $this->validRulesFetcher = $validRulesFetcher;
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
@@ -136,7 +135,6 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         if (!is_array($rules)) {
             return $discount;
         }
-
 
         foreach ($rules as $rule) {
             foreach ($rule->getActions() as $action) {

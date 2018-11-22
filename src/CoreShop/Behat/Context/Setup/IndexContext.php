@@ -64,13 +64,13 @@ final class IndexContext implements Context
     private $indexColumnFactory;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $indexFactory
-     * @param RepositoryInterface $indexRepository
+     * @param SharedStorageInterface   $sharedStorage
+     * @param ClassStorageInterface    $classStorage
+     * @param ObjectManager            $objectManager
+     * @param FactoryInterface         $indexFactory
+     * @param RepositoryInterface      $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
-     * @param FactoryInterface $indexColumnFactory
+     * @param FactoryInterface         $indexColumnFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -80,8 +80,7 @@ final class IndexContext implements Context
         RepositoryInterface $indexRepository,
         ServiceRegistryInterface $workerServiceRegistry,
         FactoryInterface $indexColumnFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
@@ -178,8 +177,8 @@ final class IndexContext implements Context
 
     /**
      * @param IndexInterface $index
-     * @param TableIndex $tableIndex
-     * @param bool $localized
+     * @param TableIndex     $tableIndex
+     * @param bool           $localized
      */
     private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false)
     {
@@ -237,7 +236,5 @@ final class IndexContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('index', $index);
-
-
     }
 }

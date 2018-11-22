@@ -25,7 +25,6 @@ final class ShipmentStateConfigurationType extends AbstractType
     {
         $builder
             ->add('shipmentState', TextType::class, [
-
             ]);
     }
 

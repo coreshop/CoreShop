@@ -23,6 +23,7 @@ class ReportsController extends AdminController
 {
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function getReportDataAction(Request $request)
@@ -40,12 +41,13 @@ class ReportsController extends AdminController
         return $this->viewHandler->handle([
             'success' => true,
             'data' => $report->getReportData($request->query),
-            'total' => $report->getTotal()
+            'total' => $report->getTotal(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function exportReportCsvAction(Request $request)

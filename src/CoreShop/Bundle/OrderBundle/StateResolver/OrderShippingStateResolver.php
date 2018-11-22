@@ -27,29 +27,28 @@ final class OrderShippingStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var OrderShipmentRepositoryInterface
      */
-    protected $orderShipmentRepository;
+    private $orderShipmentRepository;
 
     /**
      * @var ProcessableInterface
      */
-    protected $processable;
+    private $processable;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager              $stateMachineManager
      * @param OrderShipmentRepositoryInterface $orderShipmentRepository
-     * @param ProcessableInterface $processable
+     * @param ProcessableInterface             $processable
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         OrderShipmentRepositoryInterface $orderShipmentRepository,
         ProcessableInterface $processable
-    )
-    {
+    ) {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderShipmentRepository = $orderShipmentRepository;
         $this->processable = $processable;
@@ -57,6 +56,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
+     *
      * @return mixed|void
      */
     public function resolve(OrderInterface $order)
@@ -76,10 +76,9 @@ final class OrderShippingStateResolver implements StateResolverInterface
         }
     }
 
-
     /**
      * @param OrderInterface $order
-     * @param string $shipmentState
+     * @param string         $shipmentState
      *
      * @return int
      */
@@ -100,8 +99,8 @@ final class OrderShippingStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $shipmentState
-     * @param string $orderShippingState
+     * @param string         $shipmentState
+     * @param string         $orderShippingState
      *
      * @return bool
      */
@@ -109,8 +108,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
         OrderInterface $order,
         string $shipmentState,
         string $orderShippingState
-    ): bool
-    {
+    ): bool {
         $shipmentInStateAmount = $this->countOrderShipmentsInState($order, $shipmentState);
         $shipmentAmount = count($this->orderShipmentRepository->getDocuments($order));
 

@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\MoneyBundle\Templating\Helper;
 interface FormatMoneyHelperInterface
 {
     /**
-     * @param int $amount
+     * @param int    $amount
      * @param string $currencyCode
      * @param string $localeCode
      *

@@ -20,12 +20,12 @@ use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 interface CartRuleConditionCheckerInterface extends ConditionCheckerInterface
 {
     /**
-     * @param CartInterface $cart
-     * @param CartPriceRuleInterface $cartPriceRule
+     * @param CartInterface                          $cart
+     * @param CartPriceRuleInterface                 $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucher
-     * @param array $configuration
+     * @param array                                  $configuration
      *
-     * @return boolean
+     * @return bool
      */
     public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration);
 }

@@ -17,5 +17,4 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 interface ConfigurationInterface extends BaseConfigurationInterface, StoreAwareInterface
 {
-
 }

@@ -14,5 +14,4 @@ namespace CoreShop\Component\Index\Condition;
 
 class IsNotNullCondition extends IsNullCondition
 {
-
 }

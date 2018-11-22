@@ -22,7 +22,7 @@ final class SqlInstaller implements ResourceInstallerInterface
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**<
      * @param KernelInterface $kernel

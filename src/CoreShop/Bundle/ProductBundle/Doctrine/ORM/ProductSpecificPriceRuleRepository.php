@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;

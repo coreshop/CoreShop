@@ -98,8 +98,7 @@ class DiscountApplier implements DiscountApplierInterface
 
             if ($withTax) {
                 $itemDiscountGross = $applicableAmount;
-            }
-            else {
+            } else {
                 $itemDiscountNet = $applicableAmount;
             }
 
@@ -117,8 +116,7 @@ class DiscountApplier implements DiscountApplierInterface
 
                 $taxItems = $item->getTaxes();
                 $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, -1 * $itemDiscountNet, $taxItems->getItems()));
-            }
-            else {
+            } else {
                 if ($withTax) {
                     $itemDiscountNet = $applicableAmount;
                 } else {
@@ -130,8 +128,8 @@ class DiscountApplier implements DiscountApplierInterface
             $totalDiscountGross += $itemDiscountGross;
         }
 
-        $cartPriceRuleItem->setDiscount((int)round($totalDiscountNet), false);
-        $cartPriceRuleItem->setDiscount((int)round($totalDiscountGross), true);
+        $cartPriceRuleItem->setDiscount((int) round($totalDiscountNet), false);
+        $cartPriceRuleItem->setDiscount((int) round($totalDiscountGross), true);
 
         $cart->addAdjustment(
             $this->adjustmentFactory->createWithData(

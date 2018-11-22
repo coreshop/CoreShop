@@ -43,7 +43,7 @@ class BodyListener
                     if (is_array($data)) {
                         $request->request = new ParameterBag($data);
                     } else {
-                        throw new BadRequestHttpException('Invalid '.$format.' message received');
+                        throw new BadRequestHttpException('Invalid ' . $format . ' message received');
                     }
                 }
             }

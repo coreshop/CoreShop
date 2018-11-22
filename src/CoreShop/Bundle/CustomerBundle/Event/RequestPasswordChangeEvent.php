@@ -29,7 +29,7 @@ final class RequestPasswordChangeEvent extends Event
 
     /**
      * @param CustomerInterface $customer
-     * @param string $resetLink
+     * @param string            $resetLink
      */
     public function __construct(CustomerInterface $customer, $resetLink)
     {

@@ -18,8 +18,6 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoresChecker extends AbstractConditionChecker
@@ -34,8 +32,7 @@ class StoresChecker extends AbstractConditionChecker
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
     }
 
@@ -48,9 +45,9 @@ class StoresChecker extends AbstractConditionChecker
 
         if ($subject instanceof StoreAwareInterface) {
             $subject->getStore();
-        } else if ($subject instanceof OrderDocumentInterface) {
+        } elseif ($subject instanceof OrderDocumentInterface) {
             $store = $subject->getOrder()->getStore();
-        } else if ($subject instanceof PaymentInterface) {
+        } elseif ($subject instanceof PaymentInterface) {
             $order = $subject->getOrder();
 
             if ($order instanceof OrderInterface) {

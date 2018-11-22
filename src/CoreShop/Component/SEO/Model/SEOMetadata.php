@@ -176,7 +176,7 @@ class SEOMetadata implements SEOMetadataInterface
      */
     public function addExtraProperty($key, $value)
     {
-        $this->extraProperties[$key] = (string)$value;
+        $this->extraProperties[$key] = (string) $value;
     }
 
     /**
@@ -210,7 +210,7 @@ class SEOMetadata implements SEOMetadataInterface
      */
     public function addExtraName($key, $value)
     {
-        $this->extraNames[$key] = (string)$value;
+        $this->extraNames[$key] = (string) $value;
     }
 
     /**
@@ -244,7 +244,7 @@ class SEOMetadata implements SEOMetadataInterface
      */
     public function addExtraHttp($key, $value)
     {
-        $this->extraHttp[$key] = (string)$value;
+        $this->extraHttp[$key] = (string) $value;
     }
 
     /**
@@ -259,6 +259,7 @@ class SEOMetadata implements SEOMetadataInterface
 
     /**
      * @param mixed $data
+     *
      * @return array
      */
     private function toArray($data)
@@ -272,7 +273,10 @@ class SEOMetadata implements SEOMetadataInterface
         }
 
         throw new \InvalidArgumentException(
-            sprintf('Expected array or Traversable, got "%s"',
-                is_object($data) ? get_class($data) : gettype($data)));
+            sprintf(
+                'Expected array or Traversable, got "%s"',
+                is_object($data) ? get_class($data) : gettype($data)
+            )
+        );
     }
 }

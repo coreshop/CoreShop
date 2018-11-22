@@ -25,7 +25,7 @@ final class StoresConfigurationType extends AbstractType
     {
         $builder
             ->add('stores', StoreChoiceType::class, [
-                'multiple' => true
+                'multiple' => true,
             ]);
     }
 

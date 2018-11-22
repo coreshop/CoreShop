@@ -38,7 +38,7 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
 
     /**
      * @param string $description
-     * @param null $language
+     * @param null   $language
      */
     public function setDescription($description, $language = null);
 
@@ -51,7 +51,7 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
 
     /**
      * @param string $title
-     * @param null $language
+     * @param null   $language
      */
     public function setTitle($title, $language = null);
 

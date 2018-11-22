@@ -62,7 +62,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             $objectData = [];
 
             $editmodeHelper = new EditmodeHelper();
-            list("objectData" => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
+            list('objectData' => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
 
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
@@ -99,7 +99,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
             if (array_key_exists('id', $objectData)) {
                 $embeddedObject = $this->findInstance($objectData['id']);
-            } else if (array_key_exists('originalIndex', $objectData)) {
+            } elseif (array_key_exists('originalIndex', $objectData)) {
                 $embeddedObject = $this->findInstanceByIndex($object, $objectData['originalIndex']);
             }
 
@@ -161,7 +161,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             $embeddedObjects[] = $embeddedObject;
         }
 
-        usort($embeddedObjects, function($objectA, $objectB) {
+        usort($embeddedObjects, function ($objectA, $objectB) {
             if ($objectA->getIndex() === $objectB->getIndex()) {
                 return 0;
             }
@@ -283,8 +283,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param  array $relations
-     * @param  array $value
+     * @param array $relations
+     * @param array $value
      *
      * @return array
      */
@@ -306,8 +306,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param  array $relations
-     * @param  array $value
+     * @param array $relations
+     * @param array $value
      *
      * @return array
      */
@@ -346,6 +346,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
                             $owner->setUserModification($this->getAdminUser()->getId());
                             $owner->save();
                             Logger::debug('Saved object id [ ' . $owner->getId() . ' ] by remote modification through [' . $object->getId() . '], Action: deleted [ ' . $object->getId() . " ] from [ $ownerFieldName]");
+
                             break;
                         }
                     }
@@ -369,7 +370,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * Get user from user proxy object which is registered on security component
+     * Get user from user proxy object which is registered on security component.
      *
      * @param bool $proxyUser Return the proxy user (UserInterface) instead of the pimcore model
      *
@@ -398,6 +399,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
     /**
      * @param int $id
+     *
      * @return DataObject\Concrete
      */
     private function findInstance($id)
@@ -409,7 +411,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
     /**
      * @param DataObject\Concrete $object
-     * @param int $index
+     * @param int                 $index
+     *
      * @return mixed
      */
     private function findInstanceByIndex(DataObject\Concrete $object, $index)

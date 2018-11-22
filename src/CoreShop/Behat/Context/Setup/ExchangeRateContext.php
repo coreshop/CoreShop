@@ -43,9 +43,9 @@ final class ExchangeRateContext implements Context
     private $exchangeRateRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $exchangeRateFactory
+     * @param SharedStorageInterface          $sharedStorage
+     * @param ObjectManager                   $objectManager
+     * @param FactoryInterface                $exchangeRateFactory
      * @param ExchangeRateRepositoryInterface $exchangeRateRepository
      */
     public function __construct(
@@ -53,8 +53,7 @@ final class ExchangeRateContext implements Context
         ObjectManager $objectManager,
         FactoryInterface $exchangeRateFactory,
         ExchangeRateRepositoryInterface $exchangeRateRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->exchangeRateFactory = $exchangeRateFactory;

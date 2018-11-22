@@ -32,7 +32,7 @@ final class StoreContext implements StoreContextInterface
 
     /**
      * @param RequestResolverInterface $requestResolver
-     * @param RequestStack $requestStack
+     * @param RequestStack             $requestStack
      */
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {

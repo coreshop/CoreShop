@@ -20,9 +20,9 @@ interface OrderDocumentTransformerInterface
     /**
      * Transforms an order to an invoice.
      *
-     * @param OrderInterface $order
+     * @param OrderInterface         $order
      * @param OrderDocumentInterface $document
-     * @param array $items
+     * @param array                  $items
      *
      * @return OrderDocumentInterface
      */

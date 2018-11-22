@@ -42,7 +42,7 @@ class Version20180410050946 extends AbstractPimcoreMigration implements Containe
             'relationType' => false,
             'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch' => false
+            'visibleSearch' => false,
         ];
 
         $locales = Tool::getSupportedLocales();
@@ -51,7 +51,7 @@ class Version20180410050946 extends AbstractPimcoreMigration implements Containe
         foreach ($locales as $short => $translation) {
             $options[] = [
                 'key' => $translation,
-                'value' => $short
+                'value' => $short,
             ];
         }
 
@@ -84,16 +84,16 @@ class Version20180410050946 extends AbstractPimcoreMigration implements Containe
         $migrations = [
             $this->container->get('coreshop.repository.customer')->getClassId() => [
                 'from' => 'locale',
-                'to' => 'localeCode'
+                'to' => 'localeCode',
             ],
             $this->container->get('coreshop.repository.order')->getClassId() => [
                 'from' => 'orderLanguage',
-                'to' => 'localeCode'
+                'to' => 'localeCode',
             ],
             $this->container->get('coreshop.repository.quote')->getClassId() => [
                 'from' => 'quoteLanguage',
-                'to' => 'localeCode'
-            ]
+                'to' => 'localeCode',
+            ],
         ];
 
         foreach ($migrations as $classId => $configuration) {
@@ -113,7 +113,5 @@ class Version20180410050946 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
-
-
     }
 }

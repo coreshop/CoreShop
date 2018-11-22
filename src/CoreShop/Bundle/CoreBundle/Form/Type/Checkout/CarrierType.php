@@ -54,17 +54,15 @@ final class CarrierType extends AbstractResourceType
      */
     private $translator;
 
-
     public function __construct(
         $dataClass,
-        array $validationGroups = [],
+        array $validationGroups,
         ShopperContextInterface $shopperContext,
         TaxedShippingCalculatorInterface $taxedShippingCalculator,
         MoneyFormatterInterface $moneyFormatter,
         CurrencyConverterInterface $currencyConverter,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->taxedShippingCalculator = $taxedShippingCalculator;
@@ -87,13 +85,14 @@ final class CarrierType extends AbstractResourceType
                 'expanded' => true,
                 'label' => 'coreshop.ui.carrier',
                 'choices' => $options['carriers'],
-                'choice_value' => function($carrier) {
+                'choice_value' => function ($carrier) {
                     if ($carrier instanceof CarrierInterface) {
                         return $carrier->getId();
                     }
+
                     return null;
                 },
-                'choice_label' => function($carrier) use ($cart) {
+                'choice_label' => function ($carrier) use ($cart) {
                     if ($carrier instanceof CarrierInterface) {
                         $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
                         $amount = $this->currencyConverter->convert($carrierPrice, $this->shopperContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
@@ -102,13 +101,12 @@ final class CarrierType extends AbstractResourceType
                         return sprintf('%s %s', $carrier->getTitle(), $formattedAmount);
                     }
 
-
                     return '';
-                }
+                },
             ])
             ->add('comment', TextareaType::class, [
                 'required' => false,
-                'label' => 'coreshop.ui.comment'
+                'label' => 'coreshop.ui.comment',
             ]);
     }
 
@@ -123,7 +121,7 @@ final class CarrierType extends AbstractResourceType
         $resolver->setDefault('cart', null);
         $resolver->setAllowedTypes('cart', [CartInterface::class]);
         $resolver->setAllowedTypes('carriers', 'array')
-            ->setAllowedValues('carriers', function(array $carriers) {
+            ->setAllowedValues('carriers', function (array $carriers) {
                 // we already know it is an array as types are validated first
                 foreach ($carriers as $carrier) {
                     if (!$carrier instanceof CarrierInterface) {

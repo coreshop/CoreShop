@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\NotificationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
-use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,8 +42,8 @@ class NotificationRuleController extends ResourceController
         }
 
         foreach ($types as $type) {
-            $actionParameter = 'coreshop.notification_rule.actions.'.$type;
-            $conditionParameter = 'coreshop.notification_rule.conditions.'.$type;
+            $actionParameter = 'coreshop.notification_rule.actions.' . $type;
+            $conditionParameter = 'coreshop.notification_rule.conditions.' . $type;
 
             if ($this->container->hasParameter($actionParameter)) {
                 if (!array_key_exists($type, $actions)) {
@@ -99,7 +98,7 @@ class NotificationRuleController extends ResourceController
             $toSort = $toRule->getSort();
 
             if ($position === 'before') {
-                $toSort -= 1;
+                $toSort--;
             }
 
             $criteria = new Criteria();

@@ -39,8 +39,8 @@ final class SessionCartSubscriber implements EventSubscriberInterface
 
     /**
      * @param PimcoreContextResolver $pimcoreContextResolver
-     * @param CartContextInterface $cartContext
-     * @param string $sessionKeyName
+     * @param CartContextInterface   $cartContext
+     * @param string                 $sessionKeyName
      */
     public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, $sessionKeyName)
     {

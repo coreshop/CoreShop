@@ -37,16 +37,15 @@ final class ShippingContext implements Context
     private $shippingRuleRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage,
+     * @param SharedStorageInterface     $sharedStorage,
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param RepositoryInterface $shippingRuleRepository
+     * @param RepositoryInterface        $shippingRuleRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,
         RepositoryInterface $shippingRuleRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->shippingRuleRepository = $shippingRuleRepository;

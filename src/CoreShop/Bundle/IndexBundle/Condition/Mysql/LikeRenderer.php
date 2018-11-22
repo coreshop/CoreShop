@@ -38,13 +38,16 @@ class LikeRenderer extends AbstractMysqlDynamicRenderer
 
         switch ($pattern) {
             case 'left':
-                $patternValue = '%'.$value;
+                $patternValue = '%' . $value;
+
                 break;
             case 'right':
-                $patternValue = $value.'%';
+                $patternValue = $value . '%';
+
                 break;
             case 'both':
-                $patternValue = '%'.$value.'%';
+                $patternValue = '%' . $value . '%';
+
                 break;
         }
 

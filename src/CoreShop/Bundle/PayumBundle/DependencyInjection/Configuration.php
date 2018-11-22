@@ -42,8 +42,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('obtain_credit_card')->defaultValue('CoreShopPayumBundle:Action:obtainCreditCard.html.twig')->end()
                         ->end()
                     ->end()
-            ->end()
-        ;
+            ->end();
 
         $this->addResourcesSection($rootNode);
 
@@ -90,7 +89,6 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 }

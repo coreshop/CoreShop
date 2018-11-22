@@ -30,7 +30,7 @@ final class FilterContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface $filterRepository
+     * @param RepositoryInterface    $filterRepository
      */
     public function __construct(SharedStorageInterface $sharedStorage, RepositoryInterface $filterRepository)
     {

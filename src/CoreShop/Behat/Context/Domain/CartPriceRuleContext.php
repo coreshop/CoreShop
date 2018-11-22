@@ -38,16 +38,15 @@ final class CartPriceRuleContext implements Context
     private $cartPriceRuleValidationProcessor;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ShopperContextInterface $shopperContext
+     * @param SharedStorageInterface                    $sharedStorage
+     * @param ShopperContextInterface                   $shopperContext
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidationProcessor
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ShopperContextInterface $shopperContext,
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidationProcessor
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->shopperContext = $shopperContext;
         $this->cartPriceRuleValidationProcessor = $cartPriceRuleValidationProcessor;

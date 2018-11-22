@@ -26,7 +26,7 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
         $map = [];
         foreach ($container->findTaggedServiceIds('coreshop.workflow.validator') as $id => $attributes) {
             if (!isset($attributes[0]['type']) || !isset($attributes[0]['manager'])) {
-                throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type` and `manager`.');
+                throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `type` and `manager`.');
             }
 
             $manager = $container->getDefinition($attributes[0]['manager']);

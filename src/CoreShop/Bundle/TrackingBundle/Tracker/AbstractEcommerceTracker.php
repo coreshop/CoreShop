@@ -68,7 +68,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     {
         $this->enabled = $enabled;
     }
-    
+
     /**
      * @param array $options
      */
@@ -96,6 +96,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
 
     /**
      * @param string $name
+     *
      * @return string
      */
     protected function getTemplatePath(string $name)
@@ -111,6 +112,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     /**
      * @param string $name
      * @param array  $parameters
+     *
      * @return string
      */
     protected function renderTemplate(string $name, array $parameters)
@@ -122,7 +124,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     }
 
     /**
-     * Remove null values from an object, keep protected keys in any case
+     * Remove null values from an object, keep protected keys in any case.
      *
      * @param array $data
      * @param array $protectedKeys

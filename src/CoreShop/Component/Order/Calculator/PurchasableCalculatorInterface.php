@@ -12,11 +12,6 @@
 
 namespace CoreShop\Component\Order\Calculator;
 
-interface PurchasableCalculatorInterface extends
-    PurchasablePriceCalculatorInterface,
-    PurchasableDiscountCalculatorInterface,
-    PurchasableDiscountPriceCalculatorInterface,
-    PurchasableRetailPriceCalculatorInterface
+interface PurchasableCalculatorInterface extends PurchasablePriceCalculatorInterface, PurchasableDiscountCalculatorInterface, PurchasableDiscountPriceCalculatorInterface, PurchasableRetailPriceCalculatorInterface
 {
-
 }

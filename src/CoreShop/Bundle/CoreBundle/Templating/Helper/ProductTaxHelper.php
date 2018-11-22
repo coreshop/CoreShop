@@ -42,18 +42,17 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
     private $defaultAddressProvider;
 
     /**
-     * @param ProductPriceHelperInterface $priceHelper
-     * @param ShopperContextInterface $shopperContext
+     * @param ProductPriceHelperInterface          $priceHelper
+     * @param ShopperContextInterface              $shopperContext
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param DefaultTaxAddressProviderInterface $defaultAddressProvider
+     * @param DefaultTaxAddressProviderInterface   $defaultAddressProvider
      */
     public function __construct(
         ProductPriceHelperInterface $priceHelper,
         ShopperContextInterface $shopperContext,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         DefaultTaxAddressProviderInterface $defaultAddressProvider
-    )
-    {
+    ) {
         $this->priceHelper = $priceHelper;
         $this->shopperContext = $shopperContext;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
@@ -62,6 +61,7 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
 
     /**
      * @param PurchasableInterface $product
+     *
      * @return array|int
      */
     public function getTaxAmount(PurchasableInterface $product)
@@ -74,6 +74,7 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
 
     /**
      * @param PurchasableInterface $product
+     *
      * @return float
      */
     public function getTaxRate(PurchasableInterface $product)

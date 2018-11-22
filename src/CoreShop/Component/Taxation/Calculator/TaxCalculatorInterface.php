@@ -54,7 +54,7 @@ interface TaxCalculatorInterface
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
-     * @param int $price
+     * @param int  $price
      * @param bool $asArray
      *
      * @return int|array $taxes_amount
@@ -64,7 +64,7 @@ interface TaxCalculatorInterface
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
-     * @param int $price
+     * @param int  $price
      * @param bool $asArray
      *
      * @return int|array $taxes_amount

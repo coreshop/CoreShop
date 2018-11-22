@@ -20,7 +20,7 @@ interface CarriersResolverInterface
 {
     /**
      * @param ShippableInterface $shippable
-     * @param AddressInterface $address
+     * @param AddressInterface   $address
      *
      * @return CarrierInterface[]
      */

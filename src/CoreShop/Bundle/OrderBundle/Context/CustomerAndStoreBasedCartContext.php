@@ -45,17 +45,16 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
 
     /**
      * @param CustomerContextInterface $customerContext
-     * @param StoreContextInterface $storeContext
-     * @param CartRepositoryInterface $cartRepository
-     * @param RequestHelper $pimcoreRequestHelper
+     * @param StoreContextInterface    $storeContext
+     * @param CartRepositoryInterface  $cartRepository
+     * @param RequestHelper            $pimcoreRequestHelper
      */
     public function __construct(
         CustomerContextInterface $customerContext,
         StoreContextInterface $storeContext,
         CartRepositoryInterface $cartRepository,
         RequestHelper $pimcoreRequestHelper
-    )
-    {
+    ) {
         $this->customerContext = $customerContext;
         $this->storeContext = $storeContext;
         $this->cartRepository = $cartRepository;

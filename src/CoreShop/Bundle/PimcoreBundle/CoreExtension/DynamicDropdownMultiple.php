@@ -17,11 +17,11 @@ use Pimcore\Model\DataObject\ClassDefinition\Data\Multiselect;
 class DynamicDropdownMultiple extends Multiselect
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopDynamicDropdownMultiple";
+    public $fieldtype = 'coreShopDynamicDropdownMultiple';
 
     /**
      * @var string
@@ -129,7 +129,7 @@ class DynamicDropdownMultiple extends Multiselect
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getObjectsAllowed()
     {

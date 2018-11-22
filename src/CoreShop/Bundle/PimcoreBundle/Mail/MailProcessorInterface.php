@@ -18,10 +18,11 @@ interface MailProcessorInterface
 {
     /**
      * @param Email $emailDocument
-     * @param null $subject
+     * @param null  $subject
      * @param mixed $recipients
      * @param array $attachments
      * @param array $params
+     *
      * @return bool
      */
     public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = []);

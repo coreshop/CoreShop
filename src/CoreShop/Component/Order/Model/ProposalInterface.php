@@ -21,14 +21,8 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface ProposalInterface extends
-    ResourceInterface,
-    CurrencyAwareInterface,
-    StoreAwareInterface,
-    LocaleAwareInterface,
-    AdjustableInterface
+interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface, AdjustableInterface
 {
-
     /**
      * @return CurrencyInterface
      */
@@ -36,6 +30,7 @@ interface ProposalInterface extends
 
     /**
      * @param CurrencyInterface $currency
+     *
      * @return mixed
      */
     public function setCurrency($currency);
@@ -167,5 +162,4 @@ interface ProposalInterface extends
      * @param \Pimcore\Model\DataObject\Objectbrick $additionalData
      */
     public function setAdditionalData($additionalData);
-
 }

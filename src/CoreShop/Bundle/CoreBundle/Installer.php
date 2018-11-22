@@ -25,9 +25,6 @@ class Installer extends MigrationInstaller
      */
     protected $runUpdateAfterInstall = false;
 
-    /**
-     *
-     */
     protected function beforeInstallMigration()
     {
         $kernel = \Pimcore::getKernel();
@@ -38,13 +35,11 @@ class Installer extends MigrationInstaller
         $application->run(new ArrayInput($options));
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function migrateInstall(Schema $schema, Version $version)
     {
-
     }
 
     /**

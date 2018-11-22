@@ -26,8 +26,8 @@ class SEOPresentation implements SEOPresentationInterface
     protected $extractorRegistry;
 
     /**
-     * @param HeadMeta $headMeta
-     * @param HeadTitle $headTitle
+     * @param HeadMeta                 $headMeta
+     * @param HeadTitle                $headTitle
      * @param ServiceRegistryInterface $extractorRegistry
      */
     public function __construct(HeadMeta $headMeta, HeadTitle $headTitle, ServiceRegistryInterface $extractorRegistry)
@@ -73,6 +73,7 @@ class SEOPresentation implements SEOPresentationInterface
 
     /**
      * @param mixed $object
+     *
      * @return SEOMetadata
      */
     protected function extractSeoMetaData($object)

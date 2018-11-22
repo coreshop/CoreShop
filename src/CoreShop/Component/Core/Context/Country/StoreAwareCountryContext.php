@@ -32,7 +32,7 @@ final class StoreAwareCountryContext implements CountryContextInterface
 
     /**
      * @param CountryContextInterface $countryContext
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface   $storeContext
      */
     public function __construct(CountryContextInterface $countryContext, StoreContextInterface $storeContext)
     {
@@ -63,12 +63,13 @@ final class StoreAwareCountryContext implements CountryContextInterface
 
     /**
      * @param CountryInterface $country
-     * @param StoreInterface $store
+     * @param StoreInterface   $store
+     *
      * @return bool
      */
     private function isCountryAvailable(CountryInterface $country, StoreInterface $store)
     {
-        return in_array($country->getIsoCode(), array_map(function(CountryInterface $country) {
+        return in_array($country->getIsoCode(), array_map(function (CountryInterface $country) {
             return $country->getIsoCode();
         }, $store->getCountries()->toArray()));
     }

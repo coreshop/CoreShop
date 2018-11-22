@@ -34,20 +34,18 @@ class PimcoreController extends AdminController
      */
     protected $factory;
 
-
     /**
-     * @param MetadataInterface $metadata
+     * @param MetadataInterface          $metadata
      * @param PimcoreRepositoryInterface $repository
-     * @param FactoryInterface $factory
-     * @param ViewHandlerInterface $viewHandler
+     * @param FactoryInterface           $factory
+     * @param ViewHandlerInterface       $viewHandler
      */
     public function __construct(
         MetadataInterface $metadata,
         PimcoreRepositoryInterface $repository,
         FactoryInterface $factory,
         ViewHandlerInterface $viewHandler
-    )
-    {
+    ) {
         parent::__construct($viewHandler);
 
         $this->metadata = $metadata;

@@ -40,7 +40,7 @@ interface RegistryInterface
 
     /**
      * @param string $alias
-     * @param array $configuration
+     * @param array  $configuration
      */
     public function addFromAliasAndConfiguration($alias, array $configuration);
 }

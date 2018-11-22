@@ -20,7 +20,7 @@ interface FilteredListingFactoryInterface
 {
     /**
      * @param FilterInterface $filter
-     * @param ParameterBag $parameterBag
+     * @param ParameterBag    $parameterBag
      *
      * @return ListingInterface
      */

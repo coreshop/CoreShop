@@ -20,18 +20,18 @@ class Version20180615093141 extends AbstractPimcoreMigration implements Containe
         $coreShopProductFields = [
             [
                 'fieldName' => 'active',
-                'yesValue'  => 'active',
-                'noValue'   => 'inactive',
+                'yesValue' => 'active',
+                'noValue' => 'inactive',
             ],
             [
                 'fieldName' => 'digitalProduct',
-                'yesValue'  => 'isDigitalProduct',
-                'noValue'   => 'noDigitalProduct',
+                'yesValue' => 'isDigitalProduct',
+                'noValue' => 'noDigitalProduct',
             ],
             [
                 'fieldName' => 'isTracked',
-                'yesValue'  => 'isTracked',
-                'noValue'   => 'notTracked',
+                'yesValue' => 'isTracked',
+                'noValue' => 'notTracked',
             ],
         ];
 
@@ -45,19 +45,19 @@ class Version20180615093141 extends AbstractPimcoreMigration implements Containe
                     $updateField['fieldName'],
                     [
                         'fieldtype' => 'booleanSelect',
-                        'yesLabel'  => $updateField['yesValue'],
-                        'noLabel'   => $updateField['noValue'],
-                        'options'   => [
+                        'yesLabel' => $updateField['yesValue'],
+                        'noLabel' => $updateField['noValue'],
+                        'options' => [
                             0 => [
-                                'key'   => '',
+                                'key' => '',
                                 'value' => 0,
                             ],
                             1 => [
-                                'key'   => $updateField['yesValue'],
+                                'key' => $updateField['yesValue'],
                                 'value' => 1,
                             ],
                             2 => [
-                                'key'   => $updateField['noValue'],
+                                'key' => $updateField['noValue'],
                                 'value' => -1,
                             ],
                         ],
@@ -76,18 +76,18 @@ class Version20180615093141 extends AbstractPimcoreMigration implements Containe
         $coreShopProductFields = [
             [
                 'fieldName' => 'active',
-                'yesValue'  => 'active',
-                'noValue'   => 'inactive',
+                'yesValue' => 'active',
+                'noValue' => 'inactive',
             ],
             [
                 'fieldName' => 'digitalProduct',
-                'yesValue'  => 'isDigitalProduct',
-                'noValue'   => 'noDigitalProduct',
+                'yesValue' => 'isDigitalProduct',
+                'noValue' => 'noDigitalProduct',
             ],
             [
                 'fieldName' => 'isTracked',
-                'yesValue'  => 'isTracked',
-                'noValue'   => 'notTracked',
+                'yesValue' => 'isTracked',
+                'noValue' => 'notTracked',
             ],
         ];
 

@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
-use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
@@ -37,21 +36,19 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
     private $cartPriceRuleUnProcessor;
 
     /**
-     * @param CartPriceRuleRepositoryInterface $cartPriceRuleRepository
-     * @param CartPriceRuleProcessorInterface $cartPriceRuleProcessor
+     * @param CartPriceRuleRepositoryInterface  $cartPriceRuleRepository
+     * @param CartPriceRuleProcessorInterface   $cartPriceRuleProcessor
      * @param CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
      */
     public function __construct(
         CartPriceRuleRepositoryInterface $cartPriceRuleRepository,
         CartPriceRuleProcessorInterface $cartPriceRuleProcessor,
         CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-    )
-    {
+    ) {
         $this->cartPriceRuleRepository = $cartPriceRuleRepository;
         $this->cartPriceRuleProcessor = $cartPriceRuleProcessor;
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
     }
-
 
     /**
      * {@inheritdoc}

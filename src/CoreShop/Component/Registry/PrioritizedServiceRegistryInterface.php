@@ -21,7 +21,7 @@ interface PrioritizedServiceRegistryInterface
 
     /**
      * @param string $identifier
-     * @param int $priority
+     * @param int    $priority
      * @param object $service
      *
      * @throws ExistingServiceException
@@ -63,7 +63,8 @@ interface PrioritizedServiceRegistryInterface
 
     /**
      * @param string $identifier
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasPreviousTo($identifier);
 
@@ -87,7 +88,8 @@ interface PrioritizedServiceRegistryInterface
 
     /**
      * @param string $identifier
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasNextTo($identifier);
 

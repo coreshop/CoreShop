@@ -55,6 +55,7 @@ final class RuleAvailabilityProcessorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->ruleAvailabilityProcessor->process();
+
         return 0;
     }
 }

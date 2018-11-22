@@ -62,7 +62,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
      * @param string $subject
      * @param string $operation
      */
-    protected function operationOnIndex($subject, $operation = 'update')
+    private function operationOnIndex($subject, $operation = 'update')
     {
         $indices = $this->indexRepository->findAll();
 
@@ -100,9 +100,10 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * @param IndexInterface $index
      * @param mixed          $subject
+     *
      * @return bool
      */
-    protected function isEligible($index, $subject)
+    private function isEligible($index, $subject)
     {
         if (!$index instanceof IndexInterface) {
             return false;

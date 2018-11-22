@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Product\Rule\Fetcher;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -22,21 +21,21 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * @var ValidRulesFetcherInterface
      */
-    protected $validRuleFetcher;
+    private $validRuleFetcher;
 
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    private $requestStack;
 
     /**
      * @var array
      */
-    protected $checkedProducts = [];
+    private $checkedProducts = [];
 
     /**
      * @param ValidRulesFetcherInterface $validRuleFetcher
-     * @param RequestStack $requestStack
+     * @param RequestStack               $requestStack
      */
     public function __construct(ValidRulesFetcherInterface $validRuleFetcher, RequestStack $requestStack)
     {

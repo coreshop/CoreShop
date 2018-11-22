@@ -25,7 +25,6 @@ final class OrderPaymentStateConfigurationType extends AbstractType
     {
         $builder
             ->add('orderPaymentState', TextType::class, [
-
             ]);
     }
 

@@ -23,6 +23,7 @@ trait ConditionFormTrait
     /**
      * @param string $class
      * @param string $type
+     *
      * @throws \Exception
      */
     protected function assertConditionForm($class, $type)
@@ -36,7 +37,8 @@ trait ConditionFormTrait
 
     /**
      * @param string $type
-     * @param mixed $data
+     * @param mixed  $data
+     *
      * @return ConditionInterface
      */
     protected function createConditionWithForm($type, $data)
@@ -61,7 +63,9 @@ trait ConditionFormTrait
 
     /**
      * @param string $type
+     *
      * @return FormInterface
+     *
      * @throws \Exception
      */
     protected function getConditionForm($type)
@@ -76,15 +80,15 @@ trait ConditionFormTrait
     /**
      * @return FormTypeRegistryInterface
      */
-    protected abstract function getConditionFormRegistry();
+    abstract protected function getConditionFormRegistry();
 
     /**
      * @return FormFactoryInterface
      */
-    protected abstract function getFormFactory();
+    abstract protected function getFormFactory();
 
     /**
      * @return string
      */
-    protected abstract function getConditionFormClass();
+    abstract protected function getConditionFormClass();
 }

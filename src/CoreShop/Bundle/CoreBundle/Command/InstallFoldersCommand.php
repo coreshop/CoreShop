@@ -26,17 +26,16 @@ final class InstallFoldersCommand extends AbstractInstallCommand
      */
     protected $folderInstaller;
 
-
     /**
-     * @param KernelInterface $kernel
+     * @param KernelInterface         $kernel
      * @param CommandDirectoryChecker $directoryChecker
      * @param FolderInstallerProvider $folderInstaller
      */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
-        FolderInstallerProvider $folderInstaller)
-    {
+        FolderInstallerProvider $folderInstaller
+    ) {
         $this->folderInstaller = $folderInstaller;
 
         parent::__construct($kernel, $directoryChecker);

@@ -29,8 +29,7 @@ final class CategoriesConfigurationType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('recursive', CheckboxType::class)
-        ;
+            ->add('recursive', CheckboxType::class);
     }
 
     /**

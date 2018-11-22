@@ -81,8 +81,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -97,8 +96,7 @@ final class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('locale_provider')->defaultValue('coreshop.translation_locale_provider.pimcore')->cannotBeEmpty()->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -112,8 +110,7 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue([CoreShopResourceBundle::DRIVER_DOCTRINE_ORM])
                     ->prototype('enum')->values(CoreShopResourceBundle::getAvailableDrivers())->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 
     /**

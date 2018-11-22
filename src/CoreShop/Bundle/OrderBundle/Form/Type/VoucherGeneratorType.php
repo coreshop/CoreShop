@@ -33,8 +33,8 @@ final class VoucherGeneratorType extends AbstractResourceType
                 'choices' => [
                     CartPriceRuleVoucherCodeGenerator::FORMAT_ALPHABETIC,
                     CartPriceRuleVoucherCodeGenerator::FORMAT_ALPHANUMERIC,
-                    CartPriceRuleVoucherCodeGenerator::FORMAT_NUMERIC
-                ]
+                    CartPriceRuleVoucherCodeGenerator::FORMAT_NUMERIC,
+                ],
             ])
             ->add('prefix', TextType::class)
             ->add('suffix', TextType::class)

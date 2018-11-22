@@ -23,7 +23,6 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
@@ -51,18 +50,17 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     private $cartManager;
 
     /**
-     * @param CarriersResolverInterface $carriersResolver
+     * @param CarriersResolverInterface          $carriersResolver
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     * @param FormFactoryInterface $formFactory
-     * @param CartManagerInterface $cartManager
+     * @param FormFactoryInterface               $formFactory
+     * @param CartManagerInterface               $cartManager
      */
     public function __construct(
         CarriersResolverInterface $carriersResolver,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->carriersResolver = $carriersResolver;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
@@ -123,6 +121,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
                 $cart = $form->getData();
 
                 $this->cartManager->persistCart($cart);
+
                 return true;
             } else {
                 throw new CheckoutException('Shipping Form is invalid', 'coreshop.ui.error.coreshop_checkout_shipping_form_invalid');
@@ -154,12 +153,13 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     private function getCarriers(CartInterface $cart)
     {
         $carriers = $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
+
         return $carriers;
     }
 
     /**
-     * @param Request $request
-     * @param array $carriers
+     * @param Request       $request
+     * @param array         $carriers
      * @param CartInterface $cart
      *
      * @return \Symfony\Component\Form\FormInterface
@@ -168,7 +168,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     {
         $form = $this->formFactory->createNamed('', CarrierType::class, $cart, [
             'carriers' => $carriers,
-            'cart' => $cart
+            'cart' => $cart,
         ]);
 
         if ($request->isMethod('post')) {

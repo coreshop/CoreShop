@@ -43,17 +43,16 @@ final class ZoneContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $zoneFactory
-     * @param RepositoryInterface $zoneRepository
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $zoneFactory
+     * @param RepositoryInterface    $zoneRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $zoneFactory,
         RepositoryInterface $zoneRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->zoneFactory = $zoneFactory;

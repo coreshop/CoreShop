@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Locale\Context;
 
-
 final class FixedLocaleContext implements LocaleContextInterface
 {
     /**

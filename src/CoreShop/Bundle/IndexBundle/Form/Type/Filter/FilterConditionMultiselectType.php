@@ -29,7 +29,7 @@ final class FilterConditionMultiselectType extends AbstractType
             ->add('preSelects', CollectionType::class, [
                 'allow_add' => true,
                 'allow_delete' => true,
-                'entry_type' => TextType::class
+                'entry_type' => TextType::class,
             ]);
     }
 

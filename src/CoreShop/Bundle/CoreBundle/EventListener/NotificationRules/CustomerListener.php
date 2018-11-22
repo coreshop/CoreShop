@@ -94,7 +94,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             return;
         }
 
-        $user->setNewsletterToken(hash('md5', $user->getId().$user->getEmail().mt_rand().time()));
+        $user->setNewsletterToken(hash('md5', $user->getId() . $user->getEmail() . mt_rand() . time()));
 
         VersionHelper::useVersioning(
             function () use ($user) {
@@ -104,11 +104,10 @@ final class CustomerListener extends AbstractNotificationRuleListener
         );
 
         $confirmLink = $event->getConfirmLink();
-        $confirmLink = $confirmLink.(parse_url(
-                $confirmLink,
-                PHP_URL_QUERY
-            ) ? '&' : '?').'token='.$user->getNewsletterToken();
-
+        $confirmLink = $confirmLink . (parse_url(
+            $confirmLink,
+            PHP_URL_QUERY
+        ) ? '&' : '?') . 'token=' . $user->getNewsletterToken();
 
         $params = $this->prepareCustomerParameters($user);
         $params = array_merge(
@@ -152,6 +151,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
 
     /**
      * @param CustomerInterface $customer
+     *
      * @return array
      */
     private function prepareCustomerParameters(CustomerInterface $customer)

@@ -55,11 +55,11 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
     private $localeContext;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
      * @param PimcoreRepositoryInterface $cartRepository,
      * @param PimcoreRepositoryInterface $customerRepository
-     * @param LocaleContextInterface $localeContext
+     * @param LocaleContextInterface     $localeContext
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -67,8 +67,7 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         PimcoreRepositoryInterface $cartRepository,
         PimcoreRepositoryInterface $customerRepository,
         LocaleContextInterface $localeContext
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->cartRepository = $cartRepository;
@@ -166,8 +165,7 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
 
         $formatter = new \IntlDateFormatter($this->localeContext->getLocaleCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
 
-        foreach ($data as &$entry)
-        {
+        foreach ($data as &$entry) {
             $entry['creationDate'] = $formatter->format($entry['creationDate']);
             $entry['modificationDate'] = $formatter->format($entry['modificationDate']);
         }

@@ -32,7 +32,7 @@ final class OrderExpireCommand extends Command
 
     /**
      * @param ProposalExpirationInterface $orderExpiration
-     * @param int $days
+     * @param int                         $days
      */
     public function __construct(ProposalExpirationInterface $orderExpiration, $days = 0)
     {
@@ -41,7 +41,6 @@ final class OrderExpireCommand extends Command
         $this->orderExpiration = $orderExpiration;
         $this->days = $days;
     }
-
 
     /**
      * configure command.
@@ -52,7 +51,8 @@ final class OrderExpireCommand extends Command
             ->setName('coreshop:cart:expire')
             ->setDescription('Expire abandoned Carts')
             ->addOption(
-                'days', 'days',
+                'days',
+                'days',
                 InputOption::VALUE_OPTIONAL,
                 'Older than'
             );
@@ -61,7 +61,7 @@ final class OrderExpireCommand extends Command
     /**
      * Execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int

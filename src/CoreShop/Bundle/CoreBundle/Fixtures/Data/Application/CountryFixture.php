@@ -57,7 +57,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         return [
             ZoneFixture::class,
             CurrencyFixture::class,
-            StoreFixture::class
+            StoreFixture::class,
         ];
     }
 
@@ -90,7 +90,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 '%DataObject(country,{"method" : "getName"});',
                 '%Text(phone);',
             ],
-            'region' => ''
+            'region' => '',
         ];
         $defaultAddressFormat = "{{recipient}}\n{{street}}\n{{postalcode}} {{city}}\n{{country}}";
         $defaultSalutations = ['mrs', 'mr'];
@@ -145,7 +145,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));
-                    $replaceFrom = '{{'.$replaceKey.'}}';
+                    $replaceFrom = '{{' . $replaceKey . '}}';
 
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }

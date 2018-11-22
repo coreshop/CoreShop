@@ -22,7 +22,7 @@ use Pimcore\Model;
 class StorePrice extends Model\DataObject\ClassDefinition\Data
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
@@ -39,21 +39,21 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     public $defaultValue;
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var string
      */
     public $queryColumnType = null;
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var string
      */
     public $columnType = null;
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
@@ -174,7 +174,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= '* @return ' . $this->getPhpdocType() . "\n";
         $code .= '*/' . "\n";
         $code .= 'public function get' . ucfirst($key) . ' (\CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
-        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
+        $code .= "\t" . '$this->' . $key . ' = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
         $code .= "\t" . 'if (is_null($store)) {' . "\n";
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
@@ -315,6 +315,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 foreach ($storePrices as $searchStorePrice) {
                     if ($searchStorePrice->getStore()->getId() === $storeId) {
                         $storePrice = $searchStorePrice;
+
                         break;
                     }
                 }
@@ -354,7 +355,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
             $storeData[$price->getStore()->getId()] = [
                 'name' => $price->getStore()->getName(),
                 'currencySymbol' => $price->getStore()->getCurrency()->getSymbol(),
-                'price' => $priceValue
+                'price' => $priceValue,
             ];
         }
 
@@ -370,7 +371,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
             $storeData[$store->getId()] = [
                 'name' => $store->getName(),
                 'currencySymbol' => $store->getCurrency()->getSymbol(),
-                'price' => 0
+                'price' => 0,
             ];
         }
 
@@ -392,7 +393,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 continue;
             }
 
-            $validData[$storeId] = (int)round((round($price, 2) * 100), 0);
+            $validData[$storeId] = (int) round((round($price, 2) * 100), 0);
         }
 
         return $validData;
@@ -450,7 +451,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $data = $this->getDataFromObjectParam($object, $params);
 
         if (!is_array($data) || empty($data)) {
-            return "{}";
+            return '{}';
         }
 
         return json_encode($data);
@@ -467,7 +468,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $repo = $this->getProductStorePriceRepository();
         $storeRepo = $this->getStoreRepository();
 
-        $data = $importValue == "" ? [] : json_decode($importValue, true);
+        $data = $importValue == '' ? [] : json_decode($importValue, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \InvalidArgumentException(sprintf('Error decoding Store Price JSON `%s`: %s', $importValue, json_last_error_msg()));
@@ -523,11 +524,11 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     protected function toNumeric($value)
     {
-        if (strpos((string)$value, '.') === false) {
-            return (int)$value;
+        if (strpos((string) $value, '.') === false) {
+            return (int) $value;
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 
     /**

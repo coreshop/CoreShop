@@ -34,7 +34,7 @@ final class IndexCommand extends Command
     protected $indexUpdater;
 
     /**
-     * @param RepositoryInterface $indexRepository
+     * @param RepositoryInterface          $indexRepository
      * @param IndexUpdaterServiceInterface $indexUpdater
      */
     public function __construct(RepositoryInterface $indexRepository, IndexUpdaterServiceInterface $indexUpdater)
@@ -58,7 +58,7 @@ final class IndexCommand extends Command
     /**
      * Execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
@@ -80,7 +80,7 @@ final class IndexCommand extends Command
         foreach ($classesToUpdate as $class) {
             $class = ucfirst($class);
 
-            $list = '\Pimcore\Model\DataObject\\'.$class.'\Listing';
+            $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
@@ -89,17 +89,18 @@ final class IndexCommand extends Command
 
             if (0 === $total) {
                 $output->writeln(sprintf('<info>No Object found for class %s</info>', $class));
+
                 continue;
             }
 
             $output->writeln(sprintf('<info>Processing %s Objects of class "%s"</info>', $total, $class));
             $progress = new ProgressBar($output, $total);
             $progress->setFormat(
-            '%current%/%max% [%bar%] %percent:3s%% (%elapsed:6s%/%estimated:-6s%) %memory:6s%: %message%'
+                '%current%/%max% [%bar%] %percent:3s%% (%elapsed:6s%/%estimated:-6s%) %memory:6s%: %message%'
             );
             $progress->start();
 
-            for ($i=0; $i < (ceil($total / $perLoop)); $i++) {
+            for ($i = 0; $i < (ceil($total / $perLoop)); $i++) {
                 $list->setLimit($perLoop);
                 $list->setOffset($i * $perLoop);
                 $objects = $list->load();

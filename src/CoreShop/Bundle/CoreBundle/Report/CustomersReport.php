@@ -54,9 +54,9 @@ class CustomersReport implements ReportInterface
     private $customerRepository;
 
     /**
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeContext
      * @param PimcoreRepositoryInterface $orderRepository
      * @param PimcoreRepositoryInterface $customerRepository
      */

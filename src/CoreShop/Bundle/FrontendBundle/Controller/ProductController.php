@@ -21,6 +21,7 @@ class ProductController extends FrontendController
 {
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function latestAction(Request $request)
@@ -34,6 +35,7 @@ class ProductController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function detailAction(Request $request)
@@ -47,7 +49,7 @@ class ProductController extends FrontendController
         if (!$product->isPublished() || $product->getActive() !== true) {
             throw new NotFoundHttpException('product not found');
         }
-        
+
         if (!in_array($this->get('coreshop.context.store')->getStore()->getId(), $product->getStores())) {
             throw new NotFoundHttpException('product not found');
         }
@@ -62,6 +64,7 @@ class ProductController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return DataObject\Concrete
      */
     private function getProductByRequest(Request $request)

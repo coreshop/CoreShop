@@ -14,9 +14,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
-use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface;
-use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -47,18 +45,17 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
     private $cartPriceRuleUnProcessor;
 
     /**
-     * @param ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param ProposalCartPriceRuleCalculatorInterface  $proposalCartPriceRuleCalculator
+     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
+     * @param CartPriceRuleUnProcessorInterface         $cartPriceRuleUnProcessor
      */
     public function __construct(
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator,
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
         CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-    )
-    {
+    ) {
         $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
         $this->voucherCodeRepository = $voucherCodeRepository;
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
@@ -83,6 +80,7 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
 
             if (!$item->getCartPriceRule() instanceof CartPriceRuleInterface) {
                 $priceRuleItems->remove($index);
+
                 continue;
             }
 
@@ -106,8 +104,7 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
                     $item->getCartPriceRule(),
                     $voucherCode
                 );
-            }
-            else {
+            } else {
                 $this->cartPriceRuleUnProcessor->unProcess($cart, $item->getCartPriceRule(), $voucherCode);
             }
         }

@@ -50,11 +50,11 @@ final class OrderInvoiceContext implements Context
     private $stateMachineApplier;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface            $sharedStorage
      * @param OrderDocumentTransformerInterface $invoiceTransformer
-     * @param FactoryInterface $orderInvoiceFactory
-     * @param OrderDocumentRepositoryInterface $orderInvoiceRepository
-     * @param StateMachineApplier $stateMachineApplier
+     * @param FactoryInterface                  $orderInvoiceFactory
+     * @param OrderDocumentRepositoryInterface  $orderInvoiceRepository
+     * @param StateMachineApplier               $stateMachineApplier
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -62,8 +62,7 @@ final class OrderInvoiceContext implements Context
         FactoryInterface $orderInvoiceFactory,
         OrderDocumentRepositoryInterface $orderInvoiceRepository,
         StateMachineApplier $stateMachineApplier
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->invoiceTransformer = $invoiceTransformer;
         $this->orderInvoiceFactory = $orderInvoiceFactory;
@@ -83,8 +82,8 @@ final class OrderInvoiceContext implements Context
         $orderInvoice = $this->invoiceTransformer->transform($order, $orderInvoice, [
             [
                 'orderItemId' => $orderItem->getId(),
-                'quantity' => 1
-            ]
+                'quantity' => 1,
+            ],
         ]);
 
         $this->sharedStorage->set('orderInvoice', $orderInvoice);

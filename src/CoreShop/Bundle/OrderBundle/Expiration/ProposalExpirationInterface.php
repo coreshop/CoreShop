@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Expiration;
 interface ProposalExpirationInterface
 {
     /**
-     * @param int $days
+     * @param int   $days
      * @param array $params
      */
     public function expire($days, $params = []);

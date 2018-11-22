@@ -25,7 +25,7 @@ class RequestResetPasswordType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'coreshop.form.customer.email'
+                'label' => 'coreshop.form.customer.email',
             ]);
     }
 

@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\TaxationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
 
 class TaxRuleRepository extends EntityRepository implements TaxRuleRepositoryInterface

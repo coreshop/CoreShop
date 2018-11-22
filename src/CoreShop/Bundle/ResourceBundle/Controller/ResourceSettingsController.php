@@ -20,11 +20,12 @@ class ResourceSettingsController extends AdminController
 {
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function getNicePathAction(Request $request)
     {
-        $targets = $this->decodeJson($request->get("targets"));
+        $targets = $this->decodeJson($request->get('targets'));
         $result = [];
 
         foreach ($targets as $target) {
@@ -35,7 +36,7 @@ class ResourceSettingsController extends AdminController
             }
         }
 
-        return $this->viewHandler->handle(["success" => true, "data" => $result]);
+        return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
     /**
@@ -45,7 +46,7 @@ class ResourceSettingsController extends AdminController
     {
         $config = [
             'classMap' => [],
-            'stack' => []
+            'stack' => [],
         ];
 
         if ($this->container->hasParameter('coreshop.all.pimcore_classes')) {

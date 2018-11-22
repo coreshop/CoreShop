@@ -30,14 +30,13 @@ final class CategoryContext implements Context
     private $categoryRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface      $sharedStorage
      * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CategoryRepositoryInterface $categoryRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->categoryRepository = $categoryRepository;
     }

@@ -32,15 +32,15 @@ final class AddressType extends AbstractResourceType
     private $addressFormatHelper;
 
     /**
-     * @param string $dataClass FQCN
-     * @param string[] $validationGroups
+     * @param string                    $dataClass           FQCN
+     * @param string[]                  $validationGroups
      * @param AddressFormatterInterface $addressFormatHelper
      */
     public function __construct(
         $dataClass,
-        array $validationGroups = [],
-        AddressFormatterInterface $addressFormatHelper)
-    {
+        array $validationGroups,
+        AddressFormatterInterface $addressFormatHelper
+    ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->addressFormatHelper = $addressFormatHelper;
@@ -56,33 +56,33 @@ final class AddressType extends AbstractResourceType
                 'constraints' => [new NotBlank()],
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.shipping',
-                'choice_attr' => function($val, $key, $index) {
+                'choice_attr' => function ($val, $key, $index) {
                     if ($val instanceof AddressInterface) {
                         return [
-                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($val)])
+                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($val)]),
                         ];
                     }
 
                     return [];
                 },
-                'empty_data' => $options['customer']->getDefaultAddress()
+                'empty_data' => $options['customer']->getDefaultAddress(),
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
                 'constraints' => [new NotBlank()],
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.invoice',
-                'choice_attr' => function($val, $key, $index) {
+                'choice_attr' => function ($val, $key, $index) {
                     if ($val instanceof AddressInterface) {
                         return [
-                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($val)])
+                            'data-address' => json_encode(['html' => $this->addressFormatHelper->formatAddress($val)]),
                         ];
                     }
 
                     return [];
                 },
-                'empty_data' => $options['customer']->getDefaultAddress()
+                'empty_data' => $options['customer']->getDefaultAddress(),
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $cart = $event->getData();
                 $checkboxData = true;
                 if ($cart->getShippingAddress() instanceof AddressInterface && $cart->getInvoiceAddress() instanceof AddressInterface) {
@@ -94,10 +94,10 @@ final class AddressType extends AbstractResourceType
                     'required' => false,
                     'mapped' => false,
                     'label' => 'coreshop.form.address.use_invoice_as_shipping',
-                    'data' => $checkboxData
+                    'data' => $checkboxData,
                 ]);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $formData = $event->getData();
                 if (isset($formData['invoiceAddress']) && (isset($formData['useInvoiceAsShipping']) && '1' === $formData['useInvoiceAsShipping'])) {
                     $formData['shippingAddress'] = $formData['invoiceAddress'];

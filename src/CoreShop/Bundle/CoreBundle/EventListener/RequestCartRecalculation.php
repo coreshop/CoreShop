@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -42,18 +41,17 @@ final class RequestCartRecalculation
     private $pimcoreRequestHelper;
 
     /**
-     * @param CartManagerInterface $cartManager
-     * @param ShopperContextInterface $shopperContext
+     * @param CartManagerInterface          $cartManager
+     * @param ShopperContextInterface       $shopperContext
      * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper $pimcoreRequestHelper
+     * @param RequestHelper                 $pimcoreRequestHelper
      */
     public function __construct(
         CartManagerInterface $cartManager,
         ShopperContextInterface $shopperContext,
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper
-    )
-    {
+    ) {
         $this->cartManager = $cartManager;
         $this->shopperContext = $shopperContext;
         $this->configurationService = $configurationService;
@@ -61,7 +59,7 @@ final class RequestCartRecalculation
     }
 
     /**
-     * Force Cart to be recalculated
+     * Force Cart to be recalculated.
      *
      * @param GetResponseEvent $event
      */

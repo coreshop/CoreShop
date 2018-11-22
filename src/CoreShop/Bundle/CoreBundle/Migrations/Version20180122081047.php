@@ -17,6 +17,7 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
      * @throws \Exception
      */
     public function up(Schema $schema)
@@ -25,7 +26,6 @@ class Version20180122081047 extends AbstractPimcoreMigration implements Containe
         \Pimcore\Cache::clearAll();
 
         $this->container->get('coreshop.resource.installer.grid_config')->installResources(new NullOutput(), 'coreshop');
-
     }
 
     /**

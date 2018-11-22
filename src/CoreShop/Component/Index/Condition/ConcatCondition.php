@@ -32,7 +32,7 @@ class ConcatCondition implements ConditionInterface
     /**
      * @param string $fieldName
      * @param string $operator
-     * @param array $conditions
+     * @param array  $conditions
      */
     public function __construct($fieldName, string $operator, array $conditions)
     {

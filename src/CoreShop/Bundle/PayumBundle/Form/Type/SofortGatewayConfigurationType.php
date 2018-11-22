@@ -34,7 +34,7 @@ final class SofortGatewayConfigurationType extends AbstractType
                     ]),
                 ],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();
 
                 $data['payum.http_client'] = '@coreshop.payum.http_client';

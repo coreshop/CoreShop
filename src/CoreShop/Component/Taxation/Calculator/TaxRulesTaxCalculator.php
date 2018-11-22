@@ -28,7 +28,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
 
     /**
      * @param array $taxRates
-     * @param int $computationMethod
+     * @param int   $computationMethod
      */
     public function __construct(array $taxRates = [], $computationMethod = self::COMBINE_METHOD)
     {

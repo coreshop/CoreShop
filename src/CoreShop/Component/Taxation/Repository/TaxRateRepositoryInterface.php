@@ -20,6 +20,7 @@ interface TaxRateRepositoryInterface extends RepositoryInterface
     /**
      * @param string $name
      * @param string $locale
+     *
      * @return TaxRateInterface[]
      */
     public function findByName($name, $locale);

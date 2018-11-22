@@ -14,8 +14,6 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Webmozart\Assert\Assert;
 
 final class IndexConditionContext implements Context
 {
@@ -45,7 +43,7 @@ final class IndexConditionContext implements Context
      */
     public function conditionWithIdentifier($identifier)
     {
-        return $this->sharedStorage->get('index_condition_'.$identifier);
+        return $this->sharedStorage->get('index_condition_' . $identifier);
     }
 
     /**
@@ -58,8 +56,8 @@ final class IndexConditionContext implements Context
         foreach (explode(',', $identifiers) as $identifier) {
             $identifier = trim($identifier);
 
-            if ($this->sharedStorage->has('index_condition_'.$identifier)) {
-                $conditions[] = $this->sharedStorage->get('index_condition_'.$identifier);
+            if ($this->sharedStorage->has('index_condition_' . $identifier)) {
+                $conditions[] = $this->sharedStorage->get('index_condition_' . $identifier);
             }
         }
 

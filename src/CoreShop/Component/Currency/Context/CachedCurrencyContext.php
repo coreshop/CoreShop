@@ -35,7 +35,7 @@ final class CachedCurrencyContext implements CurrencyContextInterface
 
     /**
      * @param CurrencyContextInterface $inner
-     * @param RequestStack $requestStack
+     * @param RequestStack             $requestStack
      */
     public function __construct(CurrencyContextInterface $inner, RequestStack $requestStack)
     {

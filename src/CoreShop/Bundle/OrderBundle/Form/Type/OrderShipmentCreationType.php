@@ -35,7 +35,7 @@ final class OrderShipmentCreationType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'error_bubbling' => false,
-            ]); ;
+            ]);
     }
 
     /**
@@ -44,7 +44,7 @@ final class OrderShipmentCreationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
     }
 

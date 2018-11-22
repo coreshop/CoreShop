@@ -60,7 +60,7 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         }
 
         if (count($conditions) > 0) {
-            return '('.implode(' '.trim($condition->getOperator()).' ', $conditions).')';
+            return '(' . implode(' ' . trim($condition->getOperator()) . ' ', $conditions) . ')';
         }
 
         return '';

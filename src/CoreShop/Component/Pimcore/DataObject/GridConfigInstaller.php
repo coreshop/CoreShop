@@ -27,7 +27,7 @@ class GridConfigInstaller implements GridConfigInstallerInterface
 
         if (count($elements) === 0) {
             $gridConfig = new GridConfig();
-        } else if ($overwrite) {
+        } elseif ($overwrite) {
             $gridConfig = $elements[0];
         } else {
             return;

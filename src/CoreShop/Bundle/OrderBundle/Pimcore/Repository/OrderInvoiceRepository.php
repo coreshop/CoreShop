@@ -16,5 +16,4 @@ use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 
 class OrderInvoiceRepository extends AbstractOrderDocumentRepository implements OrderInvoiceRepositoryInterface
 {
-
 }

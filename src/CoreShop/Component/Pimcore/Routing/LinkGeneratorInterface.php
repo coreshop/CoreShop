@@ -12,16 +12,16 @@
 
 namespace CoreShop\Component\Pimcore\Routing;
 
-use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 interface LinkGeneratorInterface
 {
     /**
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $routeName
-     * @param array $params
-     * @param int $referenceType
+     * @param array  $params
+     * @param int    $referenceType
+     *
      * @return mixed
      */
     public function generate($object, $routeName = null, $params = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH);

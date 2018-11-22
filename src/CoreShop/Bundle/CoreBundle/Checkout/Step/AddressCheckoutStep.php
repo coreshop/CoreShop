@@ -43,16 +43,15 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     private $cartManager;
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface  $formFactory
      * @param TokenStorageInterface $tokenStorage
-     * @param CartManagerInterface $cartManager
+     * @param CartManagerInterface  $cartManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         TokenStorageInterface $tokenStorage,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->tokenStorage = $tokenStorage;
         $this->cartManager = $cartManager;
@@ -118,7 +117,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
 
         return [
             'form' => $this->createForm($request, $cart, $customer)->createView(),
-            'hasShippableItems' => $cart->hasShippableItems()
+            'hasShippableItems' => $cart->hasShippableItems(),
         ];
     }
 
@@ -139,8 +138,8 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     }
 
     /**
-     * @param Request $request
-     * @param CartInterface $cart
+     * @param Request           $request
+     * @param CartInterface     $cart
      * @param CustomerInterface $customer
      *
      * @return \Symfony\Component\Form\FormInterface

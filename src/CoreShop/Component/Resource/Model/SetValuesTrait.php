@@ -33,10 +33,10 @@ trait SetValuesTrait
      */
     public function setValue($key, $value)
     {
-        $method = 'set'.$key;
+        $method = 'set' . $key;
         if (method_exists($this, $method)) {
             $this->$method($value);
-        } elseif (method_exists($this, 'set'.preg_replace('/^o_/', '', $key))) {
+        } elseif (method_exists($this, 'set' . preg_replace('/^o_/', '', $key))) {
             // compatibility mode for objects (they do not have any set_oXyz() methods anymore)
             $this->$method($value);
         }
