@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-$CS_HOME/etc/_scripts/behat
-$CS_HOME/etc/_scripts/phpunit

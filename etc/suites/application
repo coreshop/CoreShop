@@ -1,0 +1,5 @@
+$CS_HOME/etc/_scripts/composer
+$CS_HOME/etc/_scripts/twig
+$CS_HOME/etc/_scripts/yaml
+$CS_HOME/etc/_scripts/behat
+$CS_HOME/etc/_scripts/phpunit
