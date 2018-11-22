@@ -49,6 +49,7 @@ use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -143,6 +144,17 @@ final class ShippingContext implements Context
     public function theSiteHasACarrier($name)
     {
         $this->createCarrier($name);
+    }
+
+    /**
+     * @Given /^the (carrier "[^"]+") has (tax rule group "[^"]+")$/
+     * @Given /^the (carrier) has the (tax rule group "[^"]+")$/
+     */
+    public function theCarrierHasTheTaxRuleGroup(CarrierInterface $carrier, TaxRuleGroupInterface $taxRuleGroup)
+    {
+        $carrier->setTaxRule($taxRuleGroup);
+
+        $this->saveCarrier($carrier);
     }
 
     /**

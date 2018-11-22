@@ -143,6 +143,54 @@ final class OrderContext implements Context
     }
 
     /**
+     * @Then /^(the order) shipping should be "([^"]+)" including tax$/
+     */
+    public function orderShippingShouldBeIncludingTax(OrderInterface $order, $shipping)
+    {
+        Assert::eq(
+            $shipping,
+            $order->getShipping(true),
+            sprintf(
+                'Order shipping is expected to be %s, but it is %s',
+                $shipping,
+                $order->getShipping(true)
+            )
+        );
+    }
+
+    /**
+     * @Then /^(the order) shipping should be "([^"]+)" excluding tax$/
+     */
+    public function orderShippingShouldBeExcludingTax(OrderInterface $order, $shipping)
+    {
+        Assert::eq(
+            $shipping,
+            $order->getShipping(false),
+            sprintf(
+                'Order shipping is expected to be %s, but it is %s',
+                $shipping,
+                $order->getShipping(false)
+            )
+        );
+    }
+
+    /**
+     * @Then /^(the order) shipping tax rate should be "([^"]+)"$/
+     */
+    public function orderShippingTaxShouldBe(OrderInterface $order, $shippingTaxRate)
+    {
+        Assert::eq(
+            $shippingTaxRate,
+            $order->getShippingTaxRate(),
+            sprintf(
+                'Order shipping tax rate is expected to be %s, but it is %s',
+                $shippingTaxRate,
+                $order->getShippingTaxRate()
+            )
+        );
+    }
+
+    /**
      * @Then /^(the order) state should be "([^"]+)"$/
      */
     public function orderStateShouldBeState(OrderInterface $order, $state)

@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 interface ClassUpdateInterface
 {
@@ -52,6 +53,12 @@ interface ClassUpdateInterface
      * @return bool
      */
     public function hasField($fieldName);
+
+    /**
+     * @param string $fieldName
+     * @return Data|null
+     */
+    public function getFieldDefinition($fieldName);
 
     /**
      * Insert Field at the end
