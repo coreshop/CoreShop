@@ -29,7 +29,7 @@ class Cart extends AbstractProposal implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getItemForProduct($product)
+    public function getItemForProduct(StorageListProductInterface $product)
     {
         Assert::isInstanceOf($product, PurchasableInterface::class);
 

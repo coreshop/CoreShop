@@ -32,7 +32,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
     /**
      * {@inheritdoc}
      */
-    public function getItemForProduct($product)
+    public function getItemForProduct(StorageListProductInterface $product)
     {
         foreach ($this->getItems() as $item) {
             if ($item instanceof StorageListItemInterface) {
