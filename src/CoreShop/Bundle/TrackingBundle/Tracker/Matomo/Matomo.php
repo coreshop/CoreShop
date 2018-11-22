@@ -50,12 +50,12 @@ final class Matomo extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix'    => '@CoreShopTracking/Tracking/matomo',
+            'template_prefix' => '@CoreShopTracking/Tracking/matomo',
 
             // by default, a cart add/remove delegates to cart update
             // if you manually trigger cart update on every change you can
             // can set this to false to avoid handling of add/remove
-            'handle_cart_add'    => true,
+            'handle_cart_add' => true,
             'handle_cart_remove' => true,
         ]);
 
@@ -85,7 +85,7 @@ final class Matomo extends AbstractEcommerceTracker
             'setEcommerceView',
             $product['id'],
             $product['name'],
-            $product['category']
+            $product['category'],
         ];
 
         $call[] = $this->filterCategories([$product['categories']]);
@@ -93,7 +93,6 @@ final class Matomo extends AbstractEcommerceTracker
 
         $result = $this->renderCalls([$call]);
         $this->tracker->addCodePart($result, PiwikTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
@@ -132,12 +131,11 @@ final class Matomo extends AbstractEcommerceTracker
         $calls = $this->buildItemCalls($cart['items']);
         $calls[] = [
             'trackEcommerceCartUpdate',
-            $cart['total']
+            $cart['total'],
         ];
 
         $result = $this->renderCalls($calls);
         $this->tracker->addCodePart($result, PiwikTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
@@ -164,7 +162,7 @@ final class Matomo extends AbstractEcommerceTracker
             $order['subtotal'],
             $order['tax'],
             $order['shipping'],
-            $order['discount']
+            $order['discount'],
         ];
 
         $result = $this->renderCalls($calls);
@@ -186,7 +184,7 @@ final class Matomo extends AbstractEcommerceTracker
                 $item['name'],
                 $item['category'],
                 $item['price'],
-                $item['quantity']
+                $item['quantity'],
             ];
         }
 
@@ -195,7 +193,8 @@ final class Matomo extends AbstractEcommerceTracker
 
     /**
      * @param array $categories
-     * @param int $limit
+     * @param int   $limit
+     *
      * @return array|null|string
      */
     private function filterCategories($categories, int $limit = 5)
@@ -212,7 +211,7 @@ final class Matomo extends AbstractEcommerceTracker
 
             $result = [];
             foreach ($categories as $category) {
-                $category = trim((string)$category['name']);
+                $category = trim((string) $category['name']);
                 if (!empty($category)) {
                     $result[] = $category;
                 }
@@ -224,15 +223,15 @@ final class Matomo extends AbstractEcommerceTracker
         return [];
     }
 
-
     /**
      * @param array $calls
+     *
      * @return string
      */
     private function renderCalls(array $calls)
     {
         return $this->renderTemplate('calls', [
-            'calls' => $calls
+            'calls' => $calls,
         ]);
     }
 }
