@@ -31,8 +31,6 @@ class PriceFormatterFactory implements OperatorFactoryInterface
     private $localeService;
 
     /**
-     * OrderState constructor.
-     *
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface $localeService
      */

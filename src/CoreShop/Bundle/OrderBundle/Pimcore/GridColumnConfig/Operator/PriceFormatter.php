@@ -30,8 +30,6 @@ class PriceFormatter extends AbstractOperator
     private $localeService;
 
     /**
-     * OrderState constructor.
-     *
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface $localeService
      * @param \stdClass $config

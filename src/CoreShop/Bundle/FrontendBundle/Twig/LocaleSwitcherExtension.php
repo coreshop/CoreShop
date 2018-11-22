@@ -30,7 +30,6 @@ final class LocaleSwitcherExtension extends \Twig_Extension
     private $shopperContext;
 
     /**
-     * LanguageSwitcherExtension constructor.
      * @param Document\Service        $documentService
      * @param ShopperContextInterface $shopperContext
      */

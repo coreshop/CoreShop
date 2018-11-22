@@ -49,8 +49,6 @@ class CartsReport implements ReportInterface, PortletInterface
     private $cartRepository;
 
     /**
-     * CartsReport constructor.
-     *
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param PimcoreRepositoryInterface $orderRepository,

@@ -60,7 +60,6 @@ final class StoreContext implements Context
     private $fixedStoreContext;
 
     /**
-     * StoreContext constructor.
      * @param SharedStorageInterface $sharedStorage
      * @param EntityManagerInterface $entityManager
      * @param FactoryInterface $storeFactory

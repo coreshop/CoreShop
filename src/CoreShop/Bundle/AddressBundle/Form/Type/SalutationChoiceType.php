@@ -27,8 +27,6 @@ final class SalutationChoiceType extends AbstractType
     private $countryContext;
 
     /**
-     * SalutationChoiceType constructor.
-     *
      * @param CountryContextInterface $countryContext
      */
     public function __construct(CountryContextInterface $countryContext)

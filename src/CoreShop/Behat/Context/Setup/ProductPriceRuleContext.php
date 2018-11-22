@@ -86,7 +86,6 @@ final class ProductPriceRuleContext implements Context
     private $productPriceRuleRepository;
 
     /**
-     * ProductPriceRuleContext constructor.
      * @param SharedStorageInterface $sharedStorage
      * @param ObjectManager $objectManager
      * @param FormFactoryInterface $formFactory

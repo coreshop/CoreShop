@@ -34,7 +34,6 @@ final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocum
     protected $transition;
 
     /**
-     * OrderToInvoiceTransformerWorkflowApplier constructor.
      * @param OrderDocumentTransformerInterface $innerTransformer
      * @param StateMachineManagerInterface $stateMachineManager
      * @param string $initialState

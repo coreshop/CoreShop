@@ -35,8 +35,6 @@ class Dao
     private $lastRecordCount;
 
     /**
-     * Resource constructor.
-     *
      * @param MysqlWorker\Listing $model
      */
     public function __construct(MysqlWorker\Listing $model)

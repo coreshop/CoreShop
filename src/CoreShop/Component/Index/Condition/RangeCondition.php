@@ -30,7 +30,6 @@ class RangeCondition implements ConditionInterface
     private $to;
 
     /**
-     * InCondition constructor.
      * @param string $fieldName
      * @param string $from
      * @param string $to

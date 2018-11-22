@@ -28,8 +28,6 @@ class OrderState extends AbstractOperator
     private $workflowManager;
 
     /**
-     * OrderState constructor.
-     *
      * @param WorkflowStateManagerInterface $workflowManager
      * @param \stdClass $config
      * @param null $context

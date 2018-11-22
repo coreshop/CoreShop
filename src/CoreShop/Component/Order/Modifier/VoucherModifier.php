@@ -32,8 +32,6 @@ class VoucherModifier implements VoucherModifierInterface
     private $voucherCodeRepository;
 
     /**
-     * VoucherModifier constructor.
-     *
      * @param EntityManagerInterface                  $entityManager
      * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
      */

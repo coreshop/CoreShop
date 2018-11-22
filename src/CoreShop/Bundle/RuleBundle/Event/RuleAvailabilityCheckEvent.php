@@ -23,8 +23,6 @@ final class RuleAvailabilityCheckEvent extends Event
     private $available;
 
     /**
-     * RuleAvailabilityCheckEvent constructor.
-     *
      * @param RuleInterface $rule
      * @param string        $ruleType
      * @param bool          $available

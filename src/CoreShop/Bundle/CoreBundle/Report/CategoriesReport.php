@@ -64,8 +64,6 @@ class CategoriesReport implements ReportInterface
     private $orderItemRepository;
 
     /**
-     * CategoriesReport constructor.
-     *
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param MoneyFormatterInterface $moneyFormatter

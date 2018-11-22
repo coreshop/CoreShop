@@ -39,8 +39,6 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     protected $templateExtension;
 
     /**
-     * EcommerceTracker constructor.
-     *
      * @param EngineInterface $templatingEngine
      * @param array           $options
      */

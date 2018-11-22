@@ -45,8 +45,6 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
     /**
-     * Listing constructor.
-     *
      * @param IndexInterface $index
      * @param WorkerInterface $worker
      */

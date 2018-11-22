@@ -24,8 +24,6 @@ class AddressFormatter implements AddressFormatterInterface
     private $translator;
 
     /**
-     * AddressFormatter constructor.
-     *
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)

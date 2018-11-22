@@ -55,8 +55,6 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
     private $localeContext;
 
     /**
-     * AbandonedCartsReport constructor.
-     *
      * @param RepositoryInterface $storeRepository
      * @param Connection $db
      * @param PimcoreRepositoryInterface $cartRepository,

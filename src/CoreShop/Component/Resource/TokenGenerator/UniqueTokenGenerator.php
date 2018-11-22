@@ -20,8 +20,6 @@ final class UniqueTokenGenerator
     private $keyLength;
 
     /**
-     * UniqueTokenGenerator constructor.
-     *
      * @param bool $onlyNumbers
      */
     public function __construct($onlyNumbers = false)

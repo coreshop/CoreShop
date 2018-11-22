@@ -26,8 +26,6 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
     protected $ruleRepository;
 
     /**
-     * RuleAvailabilityAssessor constructor.
-     *
      * @param RuleRepositoryInterface $ruleRepository
      */
     public function __construct(RuleRepositoryInterface $ruleRepository)

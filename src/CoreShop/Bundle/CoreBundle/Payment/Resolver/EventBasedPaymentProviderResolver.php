@@ -31,7 +31,6 @@ class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterf
     private $eventDispatcher;
 
     /**
-     * EventBasedPaymentProviderResolver constructor.
      * @param PaymentProviderResolverInterface $inner
      * @param EventDispatcherInterface $eventDispatcher
      */

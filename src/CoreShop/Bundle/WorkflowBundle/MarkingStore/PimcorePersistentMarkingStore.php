@@ -26,8 +26,6 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     private $originMarkingStore;
 
     /**
-     * OrmPersistentMarkingStore constructor.
-     *
      * @param MarkingStoreInterface $originMarkingStore origin marking store
      */
     public function __construct(MarkingStoreInterface $originMarkingStore)

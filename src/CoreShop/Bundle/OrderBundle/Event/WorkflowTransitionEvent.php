@@ -27,8 +27,6 @@ final class WorkflowTransitionEvent extends Event
     protected $workflowName;
 
     /**
-     * WorkflowTransitionEvent constructor.
-     *
      * @param array $allowedTransitions
      * @param string $workflowName
      */

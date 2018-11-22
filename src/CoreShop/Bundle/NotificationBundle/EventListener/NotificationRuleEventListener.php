@@ -24,8 +24,6 @@ class NotificationRuleEventListener
     private $repository;
 
     /**
-     * NotificationRuleEventListener constructor.
-     *
      * @param NotificationRuleRepositoryInterface $repository
      */
     public function __construct(NotificationRuleRepositoryInterface $repository)

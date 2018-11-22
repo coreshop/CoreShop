@@ -25,8 +25,6 @@ class RelationsHandler
     private $manager;
 
     /**
-     * RelationsHandler constructor.
-     *
      * @param EntityManagerInterface $manager
      */
     public function __construct(EntityManagerInterface $manager)

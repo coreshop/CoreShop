@@ -45,7 +45,6 @@ final class CountryContext implements Context
     private $addressFormatter;
 
     /**
-     * CountryContext constructor.
      * @param SharedStorageInterface $sharedStorage
      * @param CountryRepositoryInterface $countryRepository
      * @param CountryContextInterface $countryContext

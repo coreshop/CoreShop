@@ -42,7 +42,6 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
     private $storeContext;
 
     /**
-     * SessionAndChannelBasedCartContext constructor.
      * @param SessionInterface $session
      * @param string $sessionKeyName
      * @param CartRepositoryInterface $cartRepository

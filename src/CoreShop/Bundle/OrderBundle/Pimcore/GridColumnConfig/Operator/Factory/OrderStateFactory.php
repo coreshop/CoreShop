@@ -26,8 +26,6 @@ class OrderStateFactory implements OperatorFactoryInterface
     private $workflowManager;
 
     /**
-     * OrderState constructor.
-     *
      * @param WorkflowStateManagerInterface $workflowManager
      */
     public function __construct(WorkflowStateManagerInterface $workflowManager)

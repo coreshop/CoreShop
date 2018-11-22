@@ -29,7 +29,6 @@ abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
     protected $tag;
 
     /**
-     * RegisterImplementationLoaderPass constructor.
      * @param string $implementationLoader
      * @param string $tag
      */
@@ -39,6 +38,9 @@ abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
         $this->tag = $tag;
     }
 
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has($this->implementationLoader)) {
