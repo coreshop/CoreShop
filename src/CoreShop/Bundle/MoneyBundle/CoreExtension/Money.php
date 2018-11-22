@@ -202,7 +202,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        return doubleval(sprintf('%0.2f', $data / 100));
+        return round($data / 100, 2);
     }
 
     /**
