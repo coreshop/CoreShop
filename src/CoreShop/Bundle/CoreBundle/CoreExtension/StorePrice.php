@@ -349,7 +349,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
          */
         foreach ($prices as $price) {
             $priceValue = $price->getPrice();
-            $priceValue = doubleval(sprintf('%0.2f', $priceValue / 100));
+            $priceValue = round($priceValue / 100, 2);
 
             $storeData[$price->getStore()->getId()] = [
                 'name' => $price->getStore()->getName(),
