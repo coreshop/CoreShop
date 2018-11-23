@@ -70,3 +70,11 @@ services:
            - '@session'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }
+
+    coreshop.listener.customer_odrer_deletion:
+        class: CoreShop\Bundle\CoreBundle\EventListener\CustomerOrderDeletionListener
+        arguments:
+            - '@coreshop.repository.order'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
+            - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }
