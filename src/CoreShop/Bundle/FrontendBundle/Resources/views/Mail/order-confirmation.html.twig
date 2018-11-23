@@ -14,7 +14,7 @@
                     {% if order.getPaymentProvider %}
                     <p>
                         <strong>{{ 'coreshop.ui.payment_method'|trans }}</strong><br/>
-                        {{ order.paymentProvider.identifier }}
+                        {{ order.paymentProvider.title }}
                     </p>
                     {% endif %}
                     <p>
@@ -30,7 +30,7 @@
                     <columns large="6">
                         <p>
                             <strong>{{ 'coreshop.ui.shipping_method'|trans }}</strong><br/>
-                            {{ order.carrier.name }}<br/>
+                            {{ order.carrier.title }}<br/>
                             {% if order.shippingAddress is defined %}
                                 <strong>{{ 'coreshop.ui.shipping_address'|trans }}</strong><br/>
                                 {{ order.shippingAddress|coreshop_format_address }}
