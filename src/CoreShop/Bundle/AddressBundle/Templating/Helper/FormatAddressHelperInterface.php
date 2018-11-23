@@ -16,7 +16,7 @@ interface FormatAddressHelperInterface
 {
     /**
      * @param string $address
-     * @param bool $asHtml
+     * @param bool   $asHtml
      *
      * @return string
      */

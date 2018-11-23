@@ -16,8 +16,6 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\MailActionProcessor;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreMailActionProcessor implements NotificationRuleProcessorInterface
@@ -58,7 +56,7 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
 
         if (array_key_exists($store->getId(), $mails)) {
             $this->mailActionProcessor->apply($subject, $rule, [
-                'mails' => $mails[$store->getId()]
+                'mails' => $mails[$store->getId()],
             ], $params);
         }
     }

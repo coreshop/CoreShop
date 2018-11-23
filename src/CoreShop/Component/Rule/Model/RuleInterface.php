@@ -26,7 +26,6 @@ interface RuleInterface extends ResourceInterface, TimestampableInterface, Toggl
 
     /**
      * @param string $name
-     *
      */
     public function setName($name);
 

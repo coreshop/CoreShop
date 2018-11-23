@@ -15,7 +15,6 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -53,10 +52,10 @@ final class TaxRuleGroupContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $taxRuleGroupFactory
-     * @param FactoryInterface $taxRuleFactory
-     * @param RepositoryInterface $taxRuleGroupRepository
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $taxRuleGroupFactory
+     * @param FactoryInterface       $taxRuleFactory
+     * @param RepositoryInterface    $taxRuleGroupRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -64,8 +63,7 @@ final class TaxRuleGroupContext implements Context
         FactoryInterface $taxRuleGroupFactory,
         FactoryInterface $taxRuleFactory,
         RepositoryInterface $taxRuleGroupRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRuleGroupFactory = $taxRuleGroupFactory;

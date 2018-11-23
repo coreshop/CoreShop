@@ -39,7 +39,7 @@ final class CoreShopFrontendExtension extends AbstractModelExtension
         $container->setParameter('coreshop.frontend.view_bundle', $config['view_bundle']);
         $container->setParameter('coreshop.frontend.view_suffix', $config['view_suffix']);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }
 }

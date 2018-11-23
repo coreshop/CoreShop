@@ -92,7 +92,7 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
 
     /**
      * @param bool $withTax
-     * @param int $total
+     * @param int  $total
      */
     public function setTotal($total, $withTax = true);
 
@@ -103,18 +103,20 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getSubtotal($withTax = true);
 
     /**
-     * @param int $subtotal
+     * @param int  $subtotal
      * @param bool $withTax
      */
     public function setSubtotal($subtotal, $withTax = true);
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseDiscount($withTax = true);
@@ -126,6 +128,7 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseShipping($withTax = true);
@@ -142,12 +145,13 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseTotal($withTax = true);
 
     /**
-     * @param int $baseTotal
+     * @param int  $baseTotal
      * @param bool $withTax
      */
     public function setBaseTotal($baseTotal, $withTax = true);
@@ -159,12 +163,13 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseSubtotal($withTax = true);
 
     /**
-     * @param int $baseSubtotal
+     * @param int  $baseSubtotal
      * @param bool $withTax
      */
     public function setBaseSubtotal($baseSubtotal, $withTax = true);

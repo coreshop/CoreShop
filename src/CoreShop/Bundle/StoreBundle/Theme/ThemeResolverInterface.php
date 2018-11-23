@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\StoreBundle\Theme;
 interface ThemeResolverInterface
 {
     /**
-     * Resolve Theme and set it to ThemeManager
+     * Resolve Theme and set it to ThemeManager.
      */
     public function resolveTheme();
 }

@@ -41,16 +41,15 @@ final class CartTaxProcessor implements CartProcessorInterface
     private $taxCalculationFactory;
 
     /**
-     * @param TaxCollectorInterface $taxCollector
-     * @param AddressProviderInterface $defaultAddressProvider
+     * @param TaxCollectorInterface         $taxCollector
+     * @param AddressProviderInterface      $defaultAddressProvider
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
      */
     public function __construct(
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
         TaxCalculatorFactoryInterface $taxCalculatorFactory
-    )
-    {
+    ) {
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
         $this->taxCalculationFactory = $taxCalculatorFactory;
@@ -81,10 +80,11 @@ final class CartTaxProcessor implements CartProcessorInterface
 
     /**
      * @param CartInterface $cart
-     * @param array $usedTaxes
+     * @param array         $usedTaxes
+     *
      * @return array
      */
-    protected function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
+    private function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
     {
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return $usedTaxes;

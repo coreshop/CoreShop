@@ -19,14 +19,14 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 class OrmPersistentMarkingStore implements MarkingStoreInterface
 {
     /**
-     * Origin marking store
+     * Origin marking store.
      *
      * @var MarkingStoreInterface
      */
     private $originMarkingStore;
 
     /**
-     * Doctrine registry
+     * Doctrine registry.
      *
      * @var Registry
      */
@@ -34,7 +34,7 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
 
     /**
      * @param MarkingStoreInterface $originMarkingStore origin marking store
-     * @param Registry $doctrineRegistry doctrine registry
+     * @param Registry              $doctrineRegistry   doctrine registry
      */
     public function __construct(MarkingStoreInterface $originMarkingStore, Registry $doctrineRegistry)
     {

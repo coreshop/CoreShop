@@ -62,7 +62,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['type'], $tag['form-type'], $tag['notification-type'])) {
-                    throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type`, `form-type` and `notification-type`` attributes.');
+                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `type`, `form-type` and `notification-type`` attributes.');
                 }
 
                 $type = $tag['notification-type'];
@@ -70,7 +70,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
                 if (!array_key_exists($type, $registries)) {
                     $registries[$type] = new Definition(
                         ServiceRegistry::class,
-                        [ConditionCheckerInterface::class, 'notification-rule-'.$this->type.'-'.$type]
+                        [ConditionCheckerInterface::class, 'notification-rule-' . $this->type . '-' . $type]
                     );
 
                     $formRegistries[$type] = new Definition(
@@ -79,8 +79,8 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
 
                     $types[] = $type;
 
-                    $container->setDefinition($this->registry.'.'.$type, $registries[$type]);
-                    $container->setDefinition($this->formRegistry.'.'.$type, $formRegistries[$type]);
+                    $container->setDefinition($this->registry . '.' . $type, $registries[$type]);
+                    $container->setDefinition($this->formRegistry . '.' . $type, $formRegistries[$type]);
                 }
 
                 $map[$tag['notification-type']][$tag['type']] = $tag['type'];
@@ -98,10 +98,10 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         }
 
         foreach ($map as $type => $realMap) {
-            $container->setParameter($this->parameter.'.'.$type, $realMap);
+            $container->setParameter($this->parameter . '.' . $type, $realMap);
         }
 
-        $container->setParameter($this->parameter.'.types', $types);
+        $container->setParameter($this->parameter . '.types', $types);
         $container->setParameter($this->parameter, $registeredTypes);
     }
 }

@@ -50,7 +50,8 @@ The <info>%command.name%</info> command install Resources. (Like Static Routes o
 EOT
             )
             ->addOption(
-                'application-name', 'a',
+                'application-name',
+                'a',
                 InputOption::VALUE_REQUIRED,
                 'Application Name'
             );

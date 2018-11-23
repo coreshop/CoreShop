@@ -33,7 +33,7 @@ class ObjectService implements ObjectServiceInterface
     {
         /**
          * @var $fromObject Concrete
-         * @var $toObject Concrete
+         * @var $toObject   Concrete
          */
         Assert::isInstanceOf($fromObject, Concrete::class);
         Assert::isInstanceOf($toObject, Concrete::class);
@@ -42,8 +42,8 @@ class ObjectService implements ObjectServiceInterface
         $toFd = $toObject->getClass()->getFieldDefinitions();
 
         foreach ($toFd as $def) {
-            $fromGetter = 'get'.ucfirst($def->getName());
-            $toSetter = 'set'.ucfirst($def->getName());
+            $fromGetter = 'get' . ucfirst($def->getName());
+            $toSetter = 'set' . ucfirst($def->getName());
 
             if (method_exists($fromObject, $fromGetter) && method_exists($toObject, $toSetter)) {
                 $toObject->$toSetter($fromObject->$fromGetter());

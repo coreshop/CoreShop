@@ -18,7 +18,7 @@ interface ConfigurationServiceInterface
 {
     /**
      * @param string $key
-     * @param bool $returnObject
+     * @param bool   $returnObject
      *
      * @return ConfigurationInterface
      */
@@ -26,7 +26,7 @@ interface ConfigurationServiceInterface
 
     /**
      * @param string $key
-     * @param mixed $data
+     * @param mixed  $data
      *
      * @return ConfigurationInterface
      */

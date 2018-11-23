@@ -36,7 +36,7 @@ class Cart extends AbstractProposal implements CartInterface
         foreach ($this->getItems() as $item) {
             if ($item instanceof CartItemInterface) {
                 if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId(
-                    ) === $product->getId()) {
+                ) === $product->getId()) {
                     return $item;
                 }
             }

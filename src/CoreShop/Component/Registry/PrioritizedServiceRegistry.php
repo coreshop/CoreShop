@@ -117,6 +117,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         foreach ($keys as $index => $key) {
             if ($key === $identifier) {
                 $nextIndex = $index + 1;
+
                 break;
             }
         }
@@ -139,6 +140,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         foreach ($keys as $index => $key) {
             if ($key === $identifier) {
                 $nextIndex = $index + 1;
+
                 break;
             }
         }
@@ -159,6 +161,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         foreach ($keys as $index => $key) {
             if ($key == $identifier) {
                 $prevIndex = $index - 1;
+
                 break;
             }
         }
@@ -187,6 +190,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function hasPreviousTo($identifier)
     {
         $prevIndex = $this->getPreviousIndex($identifier);
+
         return $prevIndex >= 0;
     }
 
@@ -201,7 +205,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         if ($prevIndex >= 0) {
             $previousElements = [];
 
-            for ($i = $prevIndex; $i > 0; --$i) {
+            for ($i = $prevIndex; $i > 0; $i--) {
                 $previousElements[] = $this->get($keys[$i]);
             }
 

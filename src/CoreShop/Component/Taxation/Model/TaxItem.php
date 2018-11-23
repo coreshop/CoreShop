@@ -22,7 +22,7 @@ class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
      */
     public function getId()
     {
-        return $this->getObject()->getId().'_tax_item_'.$this->getIndex();
+        return $this->getObject()->getId() . '_tax_item_' . $this->getIndex();
     }
 
     /**
@@ -72,7 +72,6 @@ class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 
     /**
      * {@inheritdoc}

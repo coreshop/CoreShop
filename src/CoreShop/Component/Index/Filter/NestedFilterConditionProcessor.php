@@ -59,7 +59,7 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
         return [
             'type' => 'nested',
             'label' => $condition->getLabel(),
-            'conditions' => $conditionParams
+            'conditions' => $conditionParams,
         ];
     }
 

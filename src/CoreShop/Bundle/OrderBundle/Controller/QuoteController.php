@@ -18,6 +18,7 @@ class QuoteController extends AbstractSaleDetailController
 {
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getFolderConfigurationAction()
@@ -31,7 +32,7 @@ class QuoteController extends AbstractSaleDetailController
         $folderPath = $this->getParameter('coreshop.folder.quote');
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
-        $folder = DataObject::getByPath('/'.$folderPath);
+        $folder = DataObject::getByPath('/' . $folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
@@ -42,7 +43,6 @@ class QuoteController extends AbstractSaleDetailController
         }
 
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
-
     }
 
     /**

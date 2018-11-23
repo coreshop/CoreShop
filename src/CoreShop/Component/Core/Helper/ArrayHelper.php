@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Core\Helper;
 
 use Carbon\Carbon;
-use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection;
 
@@ -27,15 +26,15 @@ class ArrayHelper
         $args = func_get_args();
         $diff = [];
         foreach (array_shift($args) as $key => $val) {
-            for ($i = 0, $j = 0, $tmp = [$val], $count = count($args); $i < $count; ++$i) {
+            for ($i = 0, $j = 0, $tmp = [$val], $count = count($args); $i < $count; $i++) {
                 if (is_array($val)) {
                     if (!isset($args[$i][$key]) || !is_array($args[$i][$key]) || empty($args[$i][$key])) {
-                        ++$j;
+                        $j++;
                     } else {
                         $tmp[] = $args[$i][$key];
                     }
                 } elseif (!array_key_exists($key, $args[$i]) || $args[$i][$key] !== $val) {
-                    ++$j;
+                    $j++;
                 }
             }
             if (is_array($val)) {
@@ -55,7 +54,7 @@ class ArrayHelper
 
     /**
      * @param Concrete $object
-     * @param null $fieldDefintions
+     * @param null     $fieldDefintions
      *
      * @return array|false
      */
@@ -82,7 +81,7 @@ class ArrayHelper
         $collection = [];
         foreach ($fieldDefintions as $fd) {
             $fieldName = $fd->getName();
-            $getter = 'get'.ucfirst($fieldName);
+            $getter = 'get' . ucfirst($fieldName);
             $value = $object->$getter();
 
             switch ($fd->getFieldtype()) {
@@ -94,11 +93,13 @@ class ArrayHelper
                             $collection[$fieldName] = static::objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
                         }
                     }
+
                     break;
 
                 case 'date':
                     /* @var $value \Pimcore\Date */
                     $collection[$fieldName] = ($value instanceof Carbon) ? $value->getTimestamp() : 0;
+
                     break;
                 default:
                     /* @var $value string */

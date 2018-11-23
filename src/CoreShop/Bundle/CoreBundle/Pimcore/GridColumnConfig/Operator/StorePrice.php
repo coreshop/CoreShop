@@ -37,17 +37,16 @@ class StorePrice extends AbstractOperator
 
     /**
      * @param StoreRepositoryInterface $storeRepository
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param \stdClass $config
-     * @param null $context
+     * @param MoneyFormatterInterface  $moneyFormatter
+     * @param \stdClass                $config
+     * @param null                     $context
      */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         MoneyFormatterInterface $moneyFormatter,
         \stdClass $config,
         $context = null
-    )
-    {
+    ) {
         parent::__construct($config, $context);
 
         $this->storeRepository = $storeRepository;
@@ -57,6 +56,7 @@ class StorePrice extends AbstractOperator
 
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
+     *
      * @return null|\stdClass|string
      */
     public function getLabeledValue($element)

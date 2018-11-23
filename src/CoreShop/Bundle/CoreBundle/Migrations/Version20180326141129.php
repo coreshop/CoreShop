@@ -17,6 +17,7 @@ class Version20180326141129 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     public function up(Schema $schema)
@@ -41,6 +42,5 @@ class Version20180326141129 extends AbstractPimcoreMigration implements Containe
      */
     public function down(Schema $schema)
     {
-
     }
 }

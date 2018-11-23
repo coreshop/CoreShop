@@ -19,7 +19,7 @@ interface CheckoutManagerInterface
 {
     /**
      * @param CheckoutStepInterface $step
-     * @param int $priority
+     * @param int                   $priority
      */
     public function addCheckoutStep(CheckoutStepInterface $step, $priority);
 
@@ -72,7 +72,7 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
+     * @param CartInterface         $cart
      *
      * @return mixed
      */
@@ -80,8 +80,8 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
-     * @param Request $request
+     * @param CartInterface         $cart
+     * @param Request               $request
      *
      * @return mixed
      */
@@ -96,8 +96,8 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
-     * @param Request $request
+     * @param CartInterface         $cart
+     * @param Request               $request
      *
      * @return mixed
      */

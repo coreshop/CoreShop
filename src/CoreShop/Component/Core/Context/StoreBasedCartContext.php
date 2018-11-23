@@ -39,7 +39,7 @@ final class StoreBasedCartContext implements CartContextInterface
     private $cart;
 
     /**
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface    $cartContext
      * @param ShopperContextInterface $shopperContext
      */
     public function __construct(CartContextInterface $cartContext, ShopperContextInterface $shopperContext)
@@ -67,7 +67,6 @@ final class StoreBasedCartContext implements CartContextInterface
             $cart->setStore($store);
             $cart->setCurrency($store->getCurrency());
             $cart->setLocaleCode($this->shopperContext->getLocaleCode());
-
         } catch (StoreNotFoundException $exception) {
             throw new CartNotFoundException('CoreShop was not able to prepare the cart.', $exception);
         } catch (CurrencyNotFoundException $exception) {
@@ -86,7 +85,7 @@ final class StoreBasedCartContext implements CartContextInterface
     }
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface     $cart
      * @param CustomerInterface $customer
      */
     private function setCustomerAndAddressOnCart(CartInterface $cart, CustomerInterface $customer)

@@ -32,7 +32,7 @@ class LoadDataFixturesCommand extends Command
     protected $fixtureExecutor;
 
     /**
-     * @param DataFixturesLoader $fixtureLoader
+     * @param DataFixturesLoader            $fixtureLoader
      * @param DataFixturesExecutorInterface $fixtureExecutor
      */
     public function __construct(DataFixturesLoader $fixtureLoader, DataFixturesExecutorInterface $fixtureExecutor)
@@ -83,6 +83,7 @@ class LoadDataFixturesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fixtures = null;
+
         try {
             $fixtures = $this->getFixtures($input, $output);
         } catch (\RuntimeException $ex) {
@@ -99,13 +100,16 @@ class LoadDataFixturesCommand extends Command
                 $this->processFixtures($input, $output, $fixtures);
             }
         }
+
         return 0;
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return array
+     *
      * @throws \RuntimeException if loading of data fixtures should be terminated
      */
     protected function getFixtures(InputInterface $input, OutputInterface $output)
@@ -127,7 +131,7 @@ class LoadDataFixturesCommand extends Command
             if (!empty($excludeBundles) && in_array($bundle->getName(), $excludeBundles)) {
                 continue;
             }
-            $path = $bundle->getPath().$fixtureRelativePath;
+            $path = $bundle->getPath() . $fixtureRelativePath;
             if (is_dir($path)) {
                 $this->fixtureLoader->loadFromDirectory($path);
             }
@@ -137,11 +141,11 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     * Output list of fixtures
+     * Output list of fixtures.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param array $fixtures
+     * @param array           $fixtures
      */
     protected function outputFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -157,11 +161,11 @@ class LoadDataFixturesCommand extends Command
     }
 
     /**
-     * Process fixtures
+     * Process fixtures.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param array $fixtures
+     * @param array           $fixtures
      */
     protected function processFixtures(InputInterface $input, OutputInterface $output, $fixtures)
     {
@@ -173,7 +177,7 @@ class LoadDataFixturesCommand extends Command
         );
 
         $this->fixtureExecutor->setLogger(
-            function($message) use ($output) {
+            function ($message) use ($output) {
                 $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
             }
         );
@@ -182,6 +186,7 @@ class LoadDataFixturesCommand extends Command
 
     /**
      * @param InputInterface $input
+     *
      * @return string
      */
     protected function getTypeOfFixtures(InputInterface $input)
@@ -191,6 +196,7 @@ class LoadDataFixturesCommand extends Command
 
     /**
      * @param InputInterface $input
+     *
      * @return string
      */
     protected function getFixtureRelativePath(InputInterface $input)
@@ -199,6 +205,6 @@ class LoadDataFixturesCommand extends Command
             ? self::DEMO_FIXTURES_PATH
             : self::MAIN_FIXTURES_PATH;
 
-        return str_replace('/', DIRECTORY_SEPARATOR, '/'.$fixtureRelativePath);
+        return str_replace('/', DIRECTORY_SEPARATOR, '/' . $fixtureRelativePath);
     }
 }

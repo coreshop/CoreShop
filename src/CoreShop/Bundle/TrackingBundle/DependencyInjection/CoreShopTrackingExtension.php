@@ -33,7 +33,7 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
     }
 
     /**
-     * @param array $config
+     * @param array            $config
      * @param ContainerBuilder $container
      */
     protected function configureTrackers(array $config, ContainerBuilder $container)

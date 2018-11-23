@@ -15,12 +15,12 @@ namespace CoreShop\Component\Tracking\Tracker;
 interface TrackerInterface
 {
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEnabled();
 
     /**
-     * @param boolean $enabled
+     * @param bool $enabled
      */
     public function setEnabled($enabled);
 
@@ -37,22 +37,22 @@ interface TrackerInterface
     /**
      * @param mixed $cart
      * @param mixed $product
-     * @param int $quantity
+     * @param int   $quantity
      */
     public function trackCartAdd($cart, $product, $quantity = 1);
 
     /**
      * @param mixed $cart
      * @param mixed $product
-     * @param int $quantity
+     * @param int   $quantity
      */
     public function trackCartRemove($cart, $product, $quantity = 1);
 
     /**
      * @param mixed $cart
-     * @param null $stepIdentifier
-     * @param boolean $isFirstStep
-     * @param null $checkoutOption
+     * @param null  $stepIdentifier
+     * @param bool  $isFirstStep
+     * @param null  $checkoutOption
      */
     public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null);
 

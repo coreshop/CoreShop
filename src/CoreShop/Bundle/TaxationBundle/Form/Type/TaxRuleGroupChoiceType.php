@@ -40,14 +40,14 @@ final class TaxRuleGroupChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function(Options $options) {
+                'choices' => function (Options $options) {
                     $taxRuleGroups = $this->taxRuleGroupRepository->findAll();
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($taxRuleGroups, function($a, $b) {
+                    @usort($taxRuleGroups, function ($a, $b) {
                         return $a->getName() < $b->getName() ? -1 : 1;
                     });
 

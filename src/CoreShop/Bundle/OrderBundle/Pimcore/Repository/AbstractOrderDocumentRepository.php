@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
-use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 
 abstract class AbstractOrderDocumentRepository extends PimcoreRepository implements OrderDocumentRepositoryInterface
 {

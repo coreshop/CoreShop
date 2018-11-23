@@ -38,8 +38,8 @@ final class DiscountPercentConfigurationType extends AbstractType
             ->add('applyOn', ChoiceType::class, [
                 'choices' => [
                     'total' => 'total',
-                    'subtotal' => 'subtotal'
-                ]
+                    'subtotal' => 'subtotal',
+                ],
             ]);
     }
 

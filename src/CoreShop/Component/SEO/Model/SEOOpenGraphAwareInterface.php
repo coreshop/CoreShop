@@ -16,12 +16,14 @@ interface SEOOpenGraphAwareInterface
 {
     /**
      * @param null $language
+     *
      * @return string
      */
     public function getOGTitle($language = null);
 
     /**
      * @param null $language
+     *
      * @return string
      */
     public function getOGDescription($language = null);

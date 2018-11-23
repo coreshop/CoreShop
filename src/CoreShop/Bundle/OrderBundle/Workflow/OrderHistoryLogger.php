@@ -78,7 +78,7 @@ final class OrderHistoryLogger
             $message = $this->translator->trans($message, [], 'admin');
         }
 
-        $note->setTitle($this->translator->trans('coreshop_workflow_order_history_logger_prefix', [], 'admin').': '.$message);
+        $note->setTitle($this->translator->trans('coreshop_workflow_order_history_logger_prefix', [], 'admin') . ': ' . $message);
 
         if (!is_null($description)) {
             $note->setDescription($description);

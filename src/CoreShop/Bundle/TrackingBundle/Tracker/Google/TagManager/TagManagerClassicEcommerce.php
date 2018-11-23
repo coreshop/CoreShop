@@ -66,7 +66,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => '@CoreShopTracking/Tracking/gtm/classic'
+            'template_prefix' => '@CoreShopTracking/Tracking/gtm/classic',
         ]);
     }
 
@@ -129,47 +129,48 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->codeTracker->addCodePart($result);
-
     }
 
     /**
-     * Transform ActionData into gtag data array
+     * Transform ActionData into gtag data array.
      *
      * @param array $actionData
+     *
      * @return array
      */
     protected function transformOrder($actionData)
     {
         return [
-            'transactionId'          => $actionData['id'],
+            'transactionId' => $actionData['id'],
             'transactionAffiliation' => $actionData['affiliation'] ?: '',
-            'transactionTotal'       => $actionData['total'],
-            'transactionTax'         => $actionData['totalTax'],
-            'transactionShipping'    => $actionData['shipping'],
-            'transactionCurrency'    => $actionData['currency']
+            'transactionTotal' => $actionData['total'],
+            'transactionTax' => $actionData['totalTax'],
+            'transactionShipping' => $actionData['shipping'],
+            'transactionCurrency' => $actionData['currency'],
         ];
     }
 
     /**
-     * Transform product action into gtag data object
+     * Transform product action into gtag data object.
      *
      * @param array $item
+     *
      * @return array
      */
     protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'id'       => $item['id'],
-            'sku'      => $item['sku'],
-            'name'     => $item['name'],
+            'id' => $item['id'],
+            'sku' => $item['sku'],
+            'name' => $item['name'],
             'category' => $item['category'],
-            'price'    => round($item['price'], 2),
-            'quantity' => $item['quantity']
+            'price' => round($item['price'], 2),
+            'quantity' => $item['quantity'],
         ]);
     }
 
     /**
-     * Makes sure data layer is included once before any call
+     * Makes sure data layer is included once before any call.
      */
     protected function ensureDataLayer()
     {

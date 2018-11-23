@@ -33,8 +33,7 @@ class Version20180410063351 extends AbstractPimcoreMigration implements Containe
 
             if ($order instanceof OrderInterface) {
                 $cart->setLocaleCode($order->getLocaleCode());
-            }
-            else if ($customer instanceof CustomerInterface && null !== $customer->getLocaleCode()) {
+            } elseif ($customer instanceof CustomerInterface && null !== $customer->getLocaleCode()) {
                 $cart->setLocaleCode($customer->getLocaleCode());
             } else {
                 $cart->setLocaleCode(Tool::getDefaultLanguage());
@@ -50,6 +49,5 @@ class Version20180410063351 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

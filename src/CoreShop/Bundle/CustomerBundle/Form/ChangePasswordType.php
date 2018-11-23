@@ -26,8 +26,8 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('current_password', PasswordType::class, [
-            'label'       => 'coreshop.form.customer.current_password',
-            'mapped'      => false,
+            'label' => 'coreshop.form.customer.current_password',
+            'mapped' => false,
             'constraints' => new UserPassword(),
         ]);
 
@@ -36,7 +36,7 @@ class ChangePasswordType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'coreshop.form.customer.password.must_match',
                 'first_options' => ['label' => 'coreshop.form.customer.new_password'],
-                'second_options' => ['label' => 'coreshop.form.customer.new_password_repeat']
+                'second_options' => ['label' => 'coreshop.form.customer.new_password_repeat'],
             ]);
     }
 

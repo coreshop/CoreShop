@@ -47,7 +47,7 @@ final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListen
             'order' => $subject->getOrder(),
             'fromState' => $event->getMarking()->getPlaces(),
             'toState' => $event->getTransition()->getTos(),
-            'transition' => $event->getTransition()->getName()
+            'transition' => $event->getTransition()->getName(),
         ]);
     }
 }

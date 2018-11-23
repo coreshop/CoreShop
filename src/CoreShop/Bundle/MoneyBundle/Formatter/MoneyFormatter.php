@@ -31,6 +31,6 @@ final class MoneyFormatter implements MoneyFormatterInterface
             sprintf('The amount "%s" of type %s cannot be formatted to currency "%s".', $amount, gettype($amount), $currency)
         );
 
-        return $amount >= 0 ? $result : '-'.$result;
+        return $amount >= 0 ? $result : '-' . $result;
     }
 }

@@ -58,7 +58,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
     {
         return [
             CategoryFixture::class,
-            TaxRuleGroupFixture::class
+            TaxRuleGroupFixture::class,
         ];
     }
 
@@ -71,7 +71,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
          * @var KernelInterface $kernel
          */
         $kernel = $this->container->get('kernel');
-        
+
         if (!count($this->container->get('coreshop.repository.product')->findAll())) {
             $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
             $stores = $this->container->get('coreshop.repository.store')->findAll();
@@ -95,8 +95,8 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 for ($j = 0; $j < 3; $j++) {
                     $imagePath = $kernel->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3)));
 
-                    $fileName = 'image'.($i).'_'.($j).'.jpg';
-                    $fullPath = $folder->getFullPath().'/'.$fileName;
+                    $fileName = 'image' . ($i) . '_' . ($j) . '.jpg';
+                    $fullPath = $folder->getFullPath() . '/' . $fileName;
 
                     $existingImage = Asset::getByPath($fullPath);
 
@@ -121,7 +121,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 $product->setName($faker->words(3, true));
                 $product->setSku($faker->ean13);
                 $product->setShortDescription($faker->text());
-                $product->setDescription(implode("<br/>", $faker->paragraphs(3)));
+                $product->setDescription(implode('<br/>', $faker->paragraphs(3)));
                 $product->setEan($faker->ean13);
                 $product->setActive(true);
                 $product->setCategories([$usedCategory]);

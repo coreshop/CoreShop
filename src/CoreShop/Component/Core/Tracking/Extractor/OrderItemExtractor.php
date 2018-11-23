@@ -48,8 +48,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
 
         if ($object instanceof CartItemInterface) {
             $proposal = $object->getCart();
-        }
-        else if ($object instanceof OrderItemInterface) {
+        } elseif ($object instanceof OrderItemInterface) {
             $proposal = $object->getOrder();
         }
 
@@ -60,7 +59,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
             'category' => count($categories) > 0 ? $categories[0]->getName() : '',
             'price' => $object->getTotal() / 100,
             'quantity' => $object->getQuantity(),
-            'currency' => $proposal ? $proposal->getCurrency()->getIsoCode() : ''
+            'currency' => $proposal ? $proposal->getCurrency()->getIsoCode() : '',
         ]);
     }
 }

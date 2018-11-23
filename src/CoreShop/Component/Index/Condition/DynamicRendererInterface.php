@@ -30,6 +30,7 @@ interface DynamicRendererInterface
     /**
      * @param WorkerInterface    $worker
      * @param ConditionInterface $condition
+     *
      * @return bool
      */
     public function supports(WorkerInterface $worker, ConditionInterface $condition);

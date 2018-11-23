@@ -31,7 +31,7 @@ final class StorageBasedCurrencyContext implements CurrencyContextInterface
     private $currencyStorage;
 
     /**
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface    $storeContext
      * @param CurrencyStorageInterface $currencyStorage
      */
     public function __construct(StoreContextInterface $storeContext, CurrencyStorageInterface $currencyStorage)

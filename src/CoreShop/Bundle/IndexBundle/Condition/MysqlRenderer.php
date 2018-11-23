@@ -34,7 +34,7 @@ class MysqlRenderer implements RendererInterface
 
     public function __construct()
     {
-        $this->mysqlWorker = \Pimcore::getContainer()->get('coreshop.index.worker.mysql');;
+        $this->mysqlWorker = \Pimcore::getContainer()->get('coreshop.index.worker.mysql');
         $this->renderer = \Pimcore::getContainer()->get('coreshop.index.condition.renderer');
 
         @trigger_error(

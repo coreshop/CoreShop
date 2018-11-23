@@ -15,7 +15,6 @@ namespace CoreShop\Component\Shipping\Rule\Condition;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
@@ -34,7 +33,7 @@ class ShippingRuleConditionChecker extends AbstractConditionChecker
 
     /**
      * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param RepositoryInterface $shippingRuleRepository
+     * @param RepositoryInterface              $shippingRuleRepository
      */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor, RepositoryInterface $shippingRuleRepository)
     {

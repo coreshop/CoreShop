@@ -39,16 +39,15 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     private $eventDispatcher;
 
     /**
-     * @param ObjectServiceInterface $objectService
-     * @param string $pathForItems
+     * @param ObjectServiceInterface              $objectService
+     * @param string                              $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectServiceInterface $objectService,
         $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -60,8 +59,8 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity)
     {
         /**
-         * @var OrderInvoiceInterface $invoice
-         * @var OrderItemInterface $orderItem
+         * @var OrderInvoiceInterface     $invoice
+         * @var OrderItemInterface        $orderItem
          * @var OrderInvoiceItemInterface $invoiceItem
          */
         Assert::isInstanceOf($orderItem, OrderItemInterface::class);
@@ -70,7 +69,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
 
         $this->eventDispatcher->dispatchPreEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath().'/'.$this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath() . '/' . $this->pathForItems);
 
         $invoiceItem->setKey($orderItem->getKey());
         $invoiceItem->setParent($itemFolder);
@@ -85,7 +84,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
         $invoiceItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
 
-        VersionHelper::useVersioning(function() use ($invoiceItem) {
+        VersionHelper::useVersioning(function () use ($invoiceItem) {
             $invoiceItem->save();
         }, false);
 

@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\AddressBundle\Collector;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
-use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,13 +27,12 @@ final class CountryCollector extends DataCollector
 
     /**
      * @param CountryContextInterface $countryContext
-     * @param bool $countryChangeSupport
+     * @param bool                    $countryChangeSupport
      */
     public function __construct(
         CountryContextInterface $countryContext,
         $countryChangeSupport = false
-    )
-    {
+    ) {
         $this->countryContext = $countryContext;
 
         $this->data = [

@@ -184,7 +184,6 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -280,7 +279,6 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
 
     /**
      * {@inheritdoc}

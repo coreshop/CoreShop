@@ -36,13 +36,12 @@ final class PimcoreClassContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
+     * @param ClassStorageInterface  $classStorage
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
     }

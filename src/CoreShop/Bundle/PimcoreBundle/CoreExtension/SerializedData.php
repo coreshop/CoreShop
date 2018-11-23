@@ -17,28 +17,28 @@ use Pimcore\Model;
 class SerializedData extends Model\DataObject\ClassDefinition\Data
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
     public $fieldtype = 'SerializedData';
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var array
      */
     public $queryColumnType = null;
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var array
      */
     public $columnType = 'LONGBLOB';
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
@@ -169,7 +169,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
      */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
-
     }
 
     /**
@@ -188,7 +187,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
     public function setValues($data = [])
     {
         foreach ($data as $key => $value) {
-            $method = 'set'.$key;
+            $method = 'set' . $key;
             if (method_exists($this, $method)) {
                 $this->$method($value);
             }

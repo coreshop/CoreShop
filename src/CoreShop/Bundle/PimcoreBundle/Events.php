@@ -15,12 +15,12 @@ namespace CoreShop\Bundle\PimcoreBundle;
 final class Events
 {
     /**
-     * Fired before a order mail will be sent
+     * Fired before a order mail will be sent.
      */
     const PRE_MAIL_SEND = 'coreshop.mail.pre_send';
 
     /**
-     * Fired after a order mail has been sent
+     * Fired after a order mail has been sent.
      */
     const POST_MAIL_SEND = 'coreshop.mail.post_send';
 }

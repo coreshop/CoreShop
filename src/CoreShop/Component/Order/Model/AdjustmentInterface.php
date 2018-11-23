@@ -46,6 +46,7 @@ interface AdjustmentInterface extends ResourceInterface
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getAmount($withTax = true);

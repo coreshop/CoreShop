@@ -27,22 +27,22 @@ interface TaxItemInterface extends ResourceInterface
     public function setName($name);
 
     /**
-     * @return integer
+     * @return int
      */
     public function getRate();
 
     /**
-     * @param integer $rate
+     * @param int $rate
      */
     public function setRate($rate);
 
     /**
-     * @return integer
+     * @return int
      */
     public function getAmount();
 
     /**
-     * @param integer $amount
+     * @param int $amount
      */
     public function setAmount($amount);
 }

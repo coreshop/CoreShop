@@ -2,7 +2,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Component\Core\Index\Extensions\ProductClassExtension;;
+use CoreShop\Component\Core\Index\Extensions\ProductClassExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -27,7 +27,7 @@ class RegisterIndexProductExtensionPass implements CompilerPassInterface
                 $definitionId = sprintf('%s.%s', 'coreshop.index.extension.product', strtolower($class));
                 $definition = new Definition(ProductClassExtension::class);
                 $definition->setArguments([
-                    $class
+                    $class,
                 ]);
 
                 $container->setDefinition($definitionId, $definition);

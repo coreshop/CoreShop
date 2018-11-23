@@ -57,8 +57,7 @@ class Version20180825163827 extends AbstractPimcoreMigration implements Containe
                     }
                 }
 
-                if ($sale instanceof CartInterface)
-                {
+                if ($sale instanceof CartInterface) {
                     if ($sale->getPriceRuleItems() instanceof Fieldcollection) {
                         /**
                          * @var $priceRuleItem ProposalCartPriceRuleItem
@@ -76,8 +75,7 @@ class Version20180825163827 extends AbstractPimcoreMigration implements Containe
                             }
                         }
                     }
-                }
-                elseif ($sale instanceof SaleInterface) {
+                } elseif ($sale instanceof SaleInterface) {
                     $sale->removeBaseAdjustments(AdjustmentInterface::SHIPPING);
                     $sale->removeBaseAdjustments(AdjustmentInterface::CART_PRICE_RULE);
 
@@ -135,6 +133,5 @@ class Version20180825163827 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

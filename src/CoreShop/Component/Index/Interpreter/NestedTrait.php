@@ -23,9 +23,10 @@ trait NestedTrait
     protected $interpreterRegistry;
 
     /**
-     * @param mixed $value
-     * @param array $interpreterConfig
+     * @param mixed    $value
+     * @param array    $interpreterConfig
      * @param callable $callback
+     *
      * @return mixed
      */
     protected function loop($value, $interpreterConfig, callable $callback)

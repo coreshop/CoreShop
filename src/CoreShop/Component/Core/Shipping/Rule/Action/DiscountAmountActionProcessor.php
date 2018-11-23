@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
@@ -37,7 +36,7 @@ class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterf
 
     /**
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface $moneyConverter
+     * @param CurrencyConverterInterface  $moneyConverter
      */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {

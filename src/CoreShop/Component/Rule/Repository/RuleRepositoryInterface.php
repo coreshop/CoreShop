@@ -24,12 +24,14 @@ interface RuleRepositoryInterface extends RepositoryInterface
 
     /**
      * @param string $conditionType
+     *
      * @return RuleInterface[]
      */
     public function findWithConditionOfType($conditionType);
 
     /**
      * @param string $actionType
+     *
      * @return RuleInterface[]
      */
     public function findWithActionOfType($actionType);

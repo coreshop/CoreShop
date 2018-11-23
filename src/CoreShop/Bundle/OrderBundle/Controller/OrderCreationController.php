@@ -51,7 +51,7 @@ class OrderCreationController extends AbstractSaleCreationController
                 'coreshop_order_revise',
                 $routeParams,
                 UrlGenerator::ABSOLUTE_URL
-            )
+            ),
         ];
     }
 

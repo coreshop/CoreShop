@@ -33,7 +33,7 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
 
     /**
      * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
-     * @param RepositoryInterface $shippingRuleRepository
+     * @param RepositoryInterface                  $shippingRuleRepository
      */
     public function __construct(ShippingRuleActionProcessorInterface $shippingRuleProcessor, RepositoryInterface $shippingRuleRepository)
     {

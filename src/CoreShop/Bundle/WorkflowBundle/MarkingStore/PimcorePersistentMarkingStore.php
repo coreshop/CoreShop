@@ -19,7 +19,7 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 class PimcorePersistentMarkingStore implements MarkingStoreInterface
 {
     /**
-     * Origin marking store
+     * Origin marking store.
      *
      * @var MarkingStoreInterface
      */

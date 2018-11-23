@@ -24,29 +24,28 @@ final class CartManager implements CartManagerInterface
     /**
      * @var ObjectServiceInterface
      */
-    protected $objectService;
+    private $objectService;
 
     /**
      * @var string
      */
-    protected $cartFolderPath;
+    private $cartFolderPath;
 
     /**
      * @var CartProcessorInterface
      */
-    protected $cartProcessor;
+    private $cartProcessor;
 
     /**
      * @param CartProcessorInterface $cartProcessor
      * @param ObjectServiceInterface $objectService
-     * @param string $cartFolderPath
+     * @param string                 $cartFolderPath
      */
     public function __construct(
         CartProcessorInterface $cartProcessor,
         ObjectServiceInterface $objectService,
         $cartFolderPath
-    )
-    {
+    ) {
         $this->cartProcessor = $cartProcessor;
         $this->objectService = $objectService;
         $this->cartFolderPath = $cartFolderPath;
@@ -59,7 +58,7 @@ final class CartManager implements CartManagerInterface
     {
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
 
-        VersionHelper::useVersioning(function() use ($cart, $cartsFolder) {
+        VersionHelper::useVersioning(function () use ($cart, $cartsFolder) {
             $tempItems = $cart->getItems();
 
             if (!$cart->getId()) {

@@ -22,22 +22,22 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     /**
      * @var array
      */
-    protected $repositories = [];
+    private $repositories = [];
 
     /**
      * @var array
      */
-    protected $modelsToUpdate = [];
+    private $modelsToUpdate = [];
 
     /**
      * @var array
      */
-    protected $modelsToInsert = [];
+    private $modelsToInsert = [];
 
     /**
      * @var array
      */
-    protected $modelsToRemove = [];
+    private $modelsToRemove = [];
 
     /**
      * {@inheritdoc}
@@ -205,9 +205,10 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
 
     /**
      * @param string $resource
+     *
      * @return int
      */
-    protected function getResourceId($resource)
+    private function getResourceId($resource)
     {
         $id = spl_object_hash($resource);
 
@@ -220,9 +221,10 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
 
     /**
      * @param string $resource
+     *
      * @return string
      */
-    protected function getResourceClassName($resource)
+    private function getResourceClassName($resource)
     {
         $className = get_class($resource);
 
@@ -235,9 +237,10 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
 
     /**
      * @param string $resource
+     *
      * @return bool
      */
-    protected function isResourceNew($resource)
+    private function isResourceNew($resource)
     {
         if ($resource instanceof ElementInterface) {
             return is_null($resource->getId()) || $resource->getId() === 0;

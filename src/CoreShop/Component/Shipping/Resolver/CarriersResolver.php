@@ -30,14 +30,13 @@ final class CarriersResolver implements CarriersResolverInterface
     private $shippableCarrierValidator;
 
     /**
-     * @param RepositoryInterface $carrierRepository
+     * @param RepositoryInterface                $carrierRepository
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      */
     public function __construct(
         RepositoryInterface $carrierRepository,
         ShippableCarrierValidatorInterface $shippableCarrierValidator
-    )
-    {
+    ) {
         $this->carrierRepository = $carrierRepository;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
     }

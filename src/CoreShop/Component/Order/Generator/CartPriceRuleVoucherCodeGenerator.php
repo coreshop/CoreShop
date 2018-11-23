@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Generator;
 
-
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -52,18 +51,21 @@ class CartPriceRuleVoucherCodeGenerator
         switch ($generator->getFormat()) {
             case self::FORMAT_ALPHABETIC:
                 $lettersToUse = implode('', range(chr(65), chr(90)));
+
                 break;
             case self::FORMAT_NUMERIC:
                 $lettersToUse = implode('', range(chr(48), chr(57)));
+
                 break;
 
             case self::FORMAT_ALPHANUMERIC:
             default:
-                $lettersToUse = implode('', range(chr(65), chr(90))).implode('', range(chr(48), chr(57)));
+                $lettersToUse = implode('', range(chr(65), chr(90))) . implode('', range(chr(48), chr(57)));
+
                 break;
         }
 
-        for ($i = 0; $i < $generator->getAmount(); ++$i) {
+        for ($i = 0; $i < $generator->getAmount(); $i++) {
             $code = sprintf('%s%s%s', $generator->getPrefix(), self::generateCode($lettersToUse, $generator->getLength()), $generator->getSuffix());
 
             if ($generator->getHyphensOn() > 0) {
@@ -103,8 +105,8 @@ class CartPriceRuleVoucherCodeGenerator
         while ($i <= $length) {
             $num = rand() % 33;
             $tmp = substr($letters, $num, 1);
-            $code = $code.$tmp;
-            ++$i;
+            $code = $code . $tmp;
+            $i++;
         }
 
         return $code;

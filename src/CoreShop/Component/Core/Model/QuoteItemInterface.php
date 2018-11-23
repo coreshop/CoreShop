@@ -16,5 +16,4 @@ use CoreShop\Component\Order\Model\QuoteItemInterface as BaseQuoteItemInterface;
 
 interface QuoteItemInterface extends BaseQuoteItemInterface, SaleItemInterface
 {
-
 }

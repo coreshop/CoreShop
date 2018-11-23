@@ -31,7 +31,7 @@ class ProcessableOrderItems implements ProcessableInterface
 
     /**
      * @param OrderDocumentRepositoryInterface $documentsRepository
-     * @param string $stateCancelled
+     * @param string                           $stateCancelled
      */
     public function __construct(OrderDocumentRepositoryInterface $documentsRepository, $stateCancelled)
     {

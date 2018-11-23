@@ -19,18 +19,18 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 interface FilterProcessorInterface
 {
     /**
-     * @param FilterInterface $filter
+     * @param FilterInterface  $filter
      * @param ListingInterface $list
-     * @param ParameterBag $parameterBag
+     * @param ParameterBag     $parameterBag
      *
      * @return mixed
      */
     public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
 
     /**
-     * @param FilterInterface $filter
+     * @param FilterInterface  $filter
      * @param ListingInterface $list
-     * @param array $currentFilter
+     * @param array            $currentFilter
      *
      * @return mixed
      */

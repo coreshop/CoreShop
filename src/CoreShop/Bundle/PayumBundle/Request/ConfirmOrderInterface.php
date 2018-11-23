@@ -14,5 +14,4 @@ namespace CoreShop\Bundle\PayumBundle\Request;
 
 interface ConfirmOrderInterface
 {
-
 }

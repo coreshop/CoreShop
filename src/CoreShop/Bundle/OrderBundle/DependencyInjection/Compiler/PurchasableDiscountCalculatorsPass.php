@@ -32,7 +32,7 @@ final class PurchasableDiscountCalculatorsPass implements CompilerPassInterface
         $map = [];
         foreach ($container->findTaggedServiceIds('coreshop.order.purchasable.discount_calculator') as $id => $attributes) {
             if (!isset($attributes[0]['priority']) || !isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged PriceCalculator `'.$id.'` needs to have `priority`, `type` attributes.');
+                throw new \InvalidArgumentException('Tagged PriceCalculator `' . $id . '` needs to have `priority`, `type` attributes.');
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];

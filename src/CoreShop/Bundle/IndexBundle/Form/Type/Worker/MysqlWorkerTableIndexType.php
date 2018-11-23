@@ -30,8 +30,8 @@ final class MysqlWorkerTableIndexType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     TableIndex::TABLE_INDEX_TYPE_INDEX,
-                    TableIndex::TABLE_INDEX_TYPE_UNIQUE
-                ]
+                    TableIndex::TABLE_INDEX_TYPE_UNIQUE,
+                ],
             ])
             ->add('columns', TextType::class);
     }

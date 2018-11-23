@@ -27,7 +27,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
     public function transform(ProposalInterface $cart, ProposalInterface $order)
     {
         /**
-         * @var $cart CartInterface
+         * @var $cart  CartInterface
          * @var $order OrderInterface
          */
         Assert::isInstanceOf($cart, CartInterface::class);
@@ -42,7 +42,7 @@ class CartToOrderTransformer extends AbstractCartToSaleTransformer
         if ($cart->getId()) {
             $cart->setOrder($order);
 
-            VersionHelper::useVersioning(function() use ($cart) {
+            VersionHelper::useVersioning(function () use ($cart) {
                 $cart->save();
             }, false);
         }

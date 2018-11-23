@@ -15,7 +15,6 @@ namespace CoreShop\Component\Pimcore\DataObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Element\ElementInterface;
 
-
 interface ObjectServiceInterface
 {
     /**

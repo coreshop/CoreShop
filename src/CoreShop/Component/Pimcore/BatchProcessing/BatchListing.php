@@ -2,8 +2,8 @@
 
 namespace CoreShop\Component\Pimcore\BatchProcessing;
 
-use \Iterator;
-use \Countable;
+use Iterator;
+use Countable;
 use Pimcore\Model\Listing\AbstractListing;
 
 final class BatchListing implements Iterator, Countable
@@ -111,13 +111,14 @@ final class BatchListing implements Iterator, Countable
 
             $this->total = $dao->getTotalCount();
         }
+
         return $this->total;
     }
 
     /**
-     * Load all items based on current state
+     * Load all items based on current state.
      */
-    protected function load()
+    private function load()
     {
         $this->list->setOffset($this->loop * $this->batchSize);
 

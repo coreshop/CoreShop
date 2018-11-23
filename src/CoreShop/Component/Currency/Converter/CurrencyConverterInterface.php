@@ -15,7 +15,7 @@ namespace CoreShop\Component\Currency\Converter;
 interface CurrencyConverterInterface
 {
     /**
-     * @param int $value
+     * @param int    $value
      * @param string $fromCurrencyCode
      * @param string $toCurrencyCode
      *

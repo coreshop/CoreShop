@@ -17,7 +17,6 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,17 +25,17 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     /**
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    private $entityManager;
 
     /**
      * @var ServiceRegistryInterface
      */
-    protected $ruleRegistry;
+    private $ruleRegistry;
 
     /**
      * @param EventDispatcherInterface $eventDispatcher

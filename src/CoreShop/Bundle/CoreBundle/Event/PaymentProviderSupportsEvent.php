@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\Event;
 
-
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -36,7 +35,7 @@ class PaymentProviderSupportsEvent extends Event
 
     /**
      * @param PaymentProviderInterface $paymentProvider
-     * @param ResourceInterface $subject
+     * @param ResourceInterface        $subject
      */
     public function __construct(PaymentProviderInterface $paymentProvider, ResourceInterface $subject = null)
     {

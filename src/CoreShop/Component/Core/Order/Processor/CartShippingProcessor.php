@@ -53,11 +53,11 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $adjustmentFactory;
 
     /**
-     * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
+     * @param TaxedShippingCalculatorInterface   $carrierPriceCalculator
      * @param ShippableCarrierValidatorInterface $carrierValidator
-     * @param DefaultCarrierResolverInterface $defaultCarrierResolver
-     * @param AddressProviderInterface $defaultAddressProvider
-     * @param AdjustmentFactoryInterface $adjustmentFactory
+     * @param DefaultCarrierResolverInterface    $defaultCarrierResolver
+     * @param AddressProviderInterface           $defaultAddressProvider
+     * @param AdjustmentFactoryInterface         $adjustmentFactory
      */
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
@@ -65,8 +65,7 @@ final class CartShippingProcessor implements CartProcessorInterface
         DefaultCarrierResolverInterface $defaultCarrierResolver,
         AddressProviderInterface $defaultAddressProvider,
         AdjustmentFactoryInterface $adjustmentFactory
-    )
-    {
+    ) {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->carrierValidator = $carrierValidator;
         $this->defaultCarrierResolver = $defaultCarrierResolver;
@@ -110,7 +109,7 @@ final class CartShippingProcessor implements CartProcessorInterface
     }
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface    $cart
      * @param AddressInterface $address
      */
     private function resolveDefaultCarrier(CartInterface $cart, AddressInterface $address)
@@ -122,7 +121,6 @@ final class CartShippingProcessor implements CartProcessorInterface
         try {
             $cart->setCarrier($this->defaultCarrierResolver->getDefaultCarrier($cart, $address));
         } catch (UnresolvedDefaultCarrierException $ex) {
-
         }
     }
 }

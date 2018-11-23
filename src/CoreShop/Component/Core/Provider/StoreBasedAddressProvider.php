@@ -32,7 +32,7 @@ class StoreBasedAddressProvider implements AddressProviderInterface
     private $shopperContext;
 
     /**
-     * @param FactoryInterface $addressFactory
+     * @param FactoryInterface        $addressFactory
      * @param ShopperContextInterface $shopperContext
      */
     public function __construct(FactoryInterface $addressFactory, ShopperContextInterface $shopperContext)
@@ -48,13 +48,12 @@ class StoreBasedAddressProvider implements AddressProviderInterface
     {
         if ($cart->getStore() instanceof StoreInterface) {
             $address = $this->addressFactory->createNew();
+
             try {
                 $address->setCountry($this->shopperContext->getCountry());
-            }
-            catch (StoreNotFoundException $ex) {
+            } catch (StoreNotFoundException $ex) {
                 $address->setCountry($cart->getStore()->getBaseCountry());
-            }
-            catch (CountryNotFoundException $ex) {
+            } catch (CountryNotFoundException $ex) {
                 $address->setCountry($cart->getStore()->getBaseCountry());
             }
 

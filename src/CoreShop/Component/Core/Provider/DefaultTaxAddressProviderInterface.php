@@ -13,12 +13,12 @@
 namespace CoreShop\Component\Core\Provider;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 
 interface DefaultTaxAddressProviderInterface
 {
     /**
      * @param array $context
+     *
      * @return AddressInterface|null
      */
     public function getAddress(array $context = []);

@@ -56,7 +56,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => '@CoreShopTracking/Tracking/gtm/enhanced'
+            'template_prefix' => '@CoreShopTracking/Tracking/gtm/enhanced',
         ]);
     }
 
@@ -71,7 +71,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         $actionField = [];
         $actionData = [
             'actionField' => $actionField,
-            'products'    => [$this->transformProductAction($product)]
+            'products' => [$this->transformProductAction($product)],
         ];
 
         $parameters['actionData'] = $actionData;
@@ -89,8 +89,8 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters = [];
         $actionData = [
-            'impressions'  => $this->transformProductAction($product),
-            'currencyCode' => $product['currency']
+            'impressions' => $this->transformProductAction($product),
+            'currencyCode' => $product['currency'],
         ];
 
         $parameters['actionData'] = $actionData;
@@ -135,7 +135,6 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
             if (!is_null($checkoutOption)) {
                 $actionField['option'] = $checkoutOption;
             }
-
         }
 
         if (!empty($cartCoupon)) {
@@ -150,7 +149,6 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->codeTracker->addCodePart($result);
-
     }
 
     /**
@@ -170,7 +168,6 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->codeTracker->addCodePart($result);
-
     }
 
     /**
@@ -196,50 +193,50 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->codeTracker->addCodePart($result);
-
     }
 
     /**
-     * Transform ActionData into gtag data array
+     * Transform ActionData into gtag data array.
      *
      * @param array $actionData
+     *
      * @return array
      */
     protected function transformOrder($actionData)
     {
         return [
-            'id'          => $actionData['id'],
+            'id' => $actionData['id'],
             'affiliation' => $actionData['affiliation'] ?: '',
-            'total'       => $actionData['total'],
-            'tax'         => $actionData['totalTax'],
-            'shipping'    => $actionData['shipping'],
-            'currency'    => $actionData['currency']
+            'total' => $actionData['total'],
+            'tax' => $actionData['totalTax'],
+            'shipping' => $actionData['shipping'],
+            'currency' => $actionData['currency'],
         ];
     }
 
     /**
-     * Transform product action into gtag data object
+     * Transform product action into gtag data object.
      *
      * @param array $item
+     *
      * @return array
      */
     protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'id'            => $item['id'],
-            'name'          => $item['name'],
-            'category'      => $item['category'],
-            'brand'         => $item['brand'],
-            'variant'       => $item['variant'],
-            'price'         => round($item['price'], 2),
-            'quantity'      => $item['quantity'] ?: 1,
-            'list_position' => $item['position']
+            'id' => $item['id'],
+            'name' => $item['name'],
+            'category' => $item['category'],
+            'brand' => $item['brand'],
+            'variant' => $item['variant'],
+            'price' => round($item['price'], 2),
+            'quantity' => $item['quantity'] ?: 1,
+            'list_position' => $item['position'],
         ]);
     }
 
-
     /**
-     * Makes sure data layer is included once before any call
+     * Makes sure data layer is included once before any call.
      */
     protected function ensureDataLayer()
     {

@@ -18,8 +18,9 @@ interface PurchasablePriceCalculatorInterface
 {
     /**
      * @param PurchasableInterface $purchasable
-     * @param array $context
-     * @param bool $includingDiscounts
+     * @param array                $context
+     * @param bool                 $includingDiscounts
+     *
      * @return int
      */
     public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false);

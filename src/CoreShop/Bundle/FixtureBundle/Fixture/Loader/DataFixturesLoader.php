@@ -44,8 +44,7 @@ class DataFixturesLoader extends ContainerAwareLoader
         ContainerInterface $container,
         UpdateDataFixturesFixture $updateDataFixturesFixture,
         DataFixtureRepositoryInterface $dataFixtureRepository
-    )
-    {
+    ) {
         parent::__construct($container);
 
         $this->em = $em;
@@ -54,7 +53,7 @@ class DataFixturesLoader extends ContainerAwareLoader
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFixtures()
     {
@@ -88,7 +87,7 @@ class DataFixturesLoader extends ContainerAwareLoader
     }
 
     /**
-     * Determines whether the given data fixture is already loaded or not
+     * Determines whether the given data fixture is already loaded or not.
      *
      * @param object $fixtureObject
      *

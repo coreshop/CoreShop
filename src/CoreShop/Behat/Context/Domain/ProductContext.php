@@ -50,10 +50,10 @@ final class ProductContext implements Context
     private $taxedProductPriceCalculator;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ShopperContextInterface $shopperContext,
-     * @param ProductRepositoryInterface $productRepository
-     * @param ProductPriceCalculatorInterface $productPriceCalculator
+     * @param SharedStorageInterface               $sharedStorage
+     * @param ShopperContextInterface              $shopperContext,
+     * @param ProductRepositoryInterface           $productRepository
+     * @param ProductPriceCalculatorInterface      $productPriceCalculator
      * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
      */
     public function __construct(
@@ -62,8 +62,7 @@ final class ProductContext implements Context
         ProductRepositoryInterface $productRepository,
         ProductPriceCalculatorInterface $productPriceCalculator,
         TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->shopperContext = $shopperContext;
         $this->productRepository = $productRepository;
@@ -150,5 +149,4 @@ final class ProductContext implements Context
     {
         Assert::eq($product->getTaxRule()->getId(), $taxRuleGroup->getId());
     }
-
 }

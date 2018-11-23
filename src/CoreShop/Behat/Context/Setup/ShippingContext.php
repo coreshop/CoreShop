@@ -104,15 +104,15 @@ final class ShippingContext implements Context
     private $shippingRuleGroupFactory;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FormFactoryInterface $formFactory
-     * @param FormTypeRegistryInterface $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface $actionFormTypeRegistry
+     * @param SharedStorageInterface     $sharedStorage
+     * @param ObjectManager              $objectManager
+     * @param FormFactoryInterface       $formFactory
+     * @param FormTypeRegistryInterface  $conditionFormTypeRegistry
+     * @param FormTypeRegistryInterface  $actionFormTypeRegistry
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param FactoryInterface $carrierFactory
-     * @param FactoryInterface $shippingRuleFactory
-     * @param FactoryInterface $shippingRuleGroupFactory
+     * @param FactoryInterface           $carrierFactory
+     * @param FactoryInterface           $shippingRuleFactory
+     * @param FactoryInterface           $shippingRuleGroupFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -124,8 +124,7 @@ final class ShippingContext implements Context
         FactoryInterface $carrierFactory,
         FactoryInterface $shippingRuleFactory,
         FactoryInterface $shippingRuleGroupFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->formFactory = $formFactory;
@@ -226,7 +225,7 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
-            'maxAmount' => $maxAmount
+            'maxAmount' => $maxAmount,
         ]));
     }
 
@@ -240,7 +239,7 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('postcodes', [
             'postcodes' => $postcodes,
-            'exclusion' => false
+            'exclusion' => false,
         ]));
     }
 
@@ -254,7 +253,7 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('postcodes', [
             'postcodes' => $postcodes,
-            'exclusion' => true
+            'exclusion' => true,
         ]));
     }
 
@@ -268,7 +267,7 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('weight', [
             'minWeight' => $minWeight,
-            'maxWeight' => $maxWeight
+            'maxWeight' => $maxWeight,
         ]));
     }
 
@@ -283,7 +282,7 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('dimension', [
             'width' => $width,
             'height' => $height,
-            'depth' => $depth
+            'depth' => $depth,
         ]));
     }
 
@@ -296,7 +295,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
-            'categories' => [$category->getId()]
+            'categories' => [$category->getId()],
         ]));
     }
 
@@ -310,7 +309,7 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
             'categories' => [$category->getId()],
-            'recursive' => true
+            'recursive' => true,
         ]));
     }
 
@@ -323,7 +322,9 @@ final class ShippingContext implements Context
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
-            'categories' => array_map(function($category) {return $category->getId(); }, $categories)
+            'categories' => array_map(function ($category) {
+                return $category->getId();
+            }, $categories),
         ]));
     }
 
@@ -336,7 +337,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
         $this->addCondition($rule, $this->createConditionWithForm('products', [
-            'products' => [$product->getId()]
+            'products' => [$product->getId()],
         ]));
     }
 
@@ -349,7 +350,9 @@ final class ShippingContext implements Context
         $this->assertConditionForm(ProductsConfigurationType::class, 'products');
 
         $this->addCondition($rule, $this->createConditionWithForm('products', [
-            'products' => array_map(function($product) {return $product->getId(); }, $products)
+            'products' => array_map(function ($product) {
+                return $product->getId();
+            }, $products),
         ]));
     }
 
@@ -362,7 +365,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
         $this->addCondition($rule, $this->createConditionWithForm('countries', [
-            'countries' => [$country->getId()]
+            'countries' => [$country->getId()],
         ]));
     }
 
@@ -375,7 +378,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
-            'customers' => [$customer->getId()]
+            'customers' => [$customer->getId()],
         ]));
     }
 
@@ -388,7 +391,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
-            'customerGroups' => [$customerGroup->getId()]
+            'customerGroups' => [$customerGroup->getId()],
         ]));
     }
 
@@ -401,7 +404,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
         $this->addCondition($rule, $this->createConditionWithForm('zones', [
-            'zones' => [$zone->getId()]
+            'zones' => [$zone->getId()],
         ]));
     }
 
@@ -414,7 +417,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
         $this->addCondition($rule, $this->createConditionWithForm('stores', [
-            'stores' => [$store->getId()]
+            'stores' => [$store->getId()],
         ]));
     }
 
@@ -427,7 +430,7 @@ final class ShippingContext implements Context
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $this->addCondition($rule, $this->createConditionWithForm('currencies', [
-            'currencies' => [$currency->getId()]
+            'currencies' => [$currency->getId()],
         ]));
     }
 
@@ -441,7 +444,7 @@ final class ShippingContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('price', [
             'price' => intval($price),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -455,7 +458,7 @@ final class ShippingContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('additionAmount', [
             'amount' => intval($amount),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -468,7 +471,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
 
         $this->addAction($rule, $this->createActionWithForm('additionPercent', [
-            'percent' => intval($amount)
+            'percent' => intval($amount),
         ]));
     }
 
@@ -482,7 +485,7 @@ final class ShippingContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
             'amount' => intval($amount),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -495,7 +498,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($amount)
+            'percent' => intval($amount),
         ]));
     }
 
@@ -531,7 +534,7 @@ final class ShippingContext implements Context
 
     /**
      * @param ShippingRuleInterface $rule
-     * @param ConditionInterface $condition
+     * @param ConditionInterface    $condition
      */
     private function addCondition(ShippingRuleInterface $rule, ConditionInterface $condition)
     {
@@ -543,7 +546,7 @@ final class ShippingContext implements Context
 
     /**
      * @param ShippingRuleInterface $rule
-     * @param ActionInterface $action
+     * @param ActionInterface       $action
      */
     private function addAction(ShippingRuleInterface $rule, ActionInterface $action)
     {
@@ -552,7 +555,6 @@ final class ShippingContext implements Context
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
     }
-
 
     /**
      * {@inheritdoc}

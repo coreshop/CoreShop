@@ -28,7 +28,7 @@ final class CompositeLocaleContext implements LocaleContextInterface
 
     /**
      * @param LocaleContextInterface $localeContext
-     * @param int $priority
+     * @param int                    $priority
      */
     public function addContext(LocaleContextInterface $localeContext, $priority = 0)
     {

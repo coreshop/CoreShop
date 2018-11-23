@@ -19,9 +19,9 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 interface CarrierPriceCalculatorInterface
 {
     /**
-     * @param CarrierInterface $carrier
+     * @param CarrierInterface   $carrier
      * @param ShippableInterface $shippable
-     * @param AddressInterface $address
+     * @param AddressInterface   $address
      *
      * @return mixed
      */

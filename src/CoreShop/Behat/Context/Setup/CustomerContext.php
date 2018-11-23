@@ -52,11 +52,11 @@ final class CustomerContext implements Context
     private $addressFactory;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $customerFactory
+     * @param SharedStorageInterface      $sharedStorage
+     * @param FactoryInterface            $customerFactory
      * @param CustomerRepositoryInterface $customerRepository
-     * @param FixedCustomerContext $fixedCustomerContext
-     * @param FactoryInterface $addressFactory
+     * @param FixedCustomerContext        $fixedCustomerContext
+     * @param FactoryInterface            $addressFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -64,8 +64,7 @@ final class CustomerContext implements Context
         CustomerRepositoryInterface $customerRepository,
         FixedCustomerContext $fixedCustomerContext,
         FactoryInterface $addressFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerFactory = $customerFactory;
         $this->customerRepository = $customerRepository;
@@ -133,11 +132,12 @@ final class CustomerContext implements Context
 
     /**
      * @param string $email
+     *
      * @return CustomerInterface
      */
     private function createCustomer(string $email)
     {
-        /** @var CustomerInterface $customer*/
+        /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
 
         $customer->setKey(File::getValidFilename($email));

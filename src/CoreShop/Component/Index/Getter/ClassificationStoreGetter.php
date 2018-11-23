@@ -26,7 +26,7 @@ class ClassificationStoreGetter implements GetterInterface
         $columnConfig = $config->getConfiguration();
 
         $classificationStore = $config->getGetterConfig()['classificationStoreField'];
-        $classificationStoreGetter = 'get'.ucfirst($classificationStore);
+        $classificationStoreGetter = 'get' . ucfirst($classificationStore);
 
         if (method_exists($object, $classificationStoreGetter)) {
             $classificationStore = $object->$classificationStoreGetter();

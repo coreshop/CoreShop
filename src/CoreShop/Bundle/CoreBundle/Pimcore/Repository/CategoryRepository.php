@@ -25,7 +25,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
      */
     public function findForStore(StoreInterface $store)
     {
-
         $list = $this->getList();
         $list->setCondition('stores LIKE ?', ['%,' . $store->getId() . ',%']);
         $this->setSortingForListingWithoutCategory($list);
@@ -102,7 +101,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     }
 
     /**
-     * @param Listing $list
+     * @param Listing           $list
      * @param CategoryInterface $category
      */
     private function setSortingForListing(Listing $list, CategoryInterface $category)

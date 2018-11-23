@@ -21,8 +21,8 @@ class UpdateDataFixturesFixture extends AbstractFixture
 
     /**
      * @var array
-     *  key - class name
-     *  value - current loaded version
+     *            key - class name
+     *            value - current loaded version
      */
     protected $dataFixturesClassNames;
 
@@ -36,7 +36,7 @@ class UpdateDataFixturesFixture extends AbstractFixture
     }
 
     /**
-     * Set a list of data fixtures to be updated
+     * Set a list of data fixtures to be updated.
      *
      * @param array $classNames
      */

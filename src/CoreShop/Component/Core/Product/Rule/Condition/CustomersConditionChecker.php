@@ -12,8 +12,6 @@
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
-use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;

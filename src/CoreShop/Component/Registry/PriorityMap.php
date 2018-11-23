@@ -35,9 +35,9 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Add new item to map.
      *
-     * @param string $key name
-     * @param string $value value
-     * @param int $priority priority
+     * @param string $key      name
+     * @param string $value    value
+     * @param int    $priority priority
      *
      * @return PriorityMap
      */
@@ -97,11 +97,12 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get list of keys.
      *
-     * @return integer[]|string[]
+     * @return int[]|string[]
      */
     public function getKeys()
     {
-        uasort($this->list, [$this, $this->order.'SortStrategy']);
+        uasort($this->list, [$this, $this->order . 'SortStrategy']);
+
         return array_keys($this->list);
     }
 
@@ -178,7 +179,7 @@ class PriorityMap implements \Iterator, \Countable
      */
     public function rewind()
     {
-        uasort($this->list, [$this, $this->order.'SortStrategy']);
+        uasort($this->list, [$this, $this->order . 'SortStrategy']);
         reset($this->list);
     }
 

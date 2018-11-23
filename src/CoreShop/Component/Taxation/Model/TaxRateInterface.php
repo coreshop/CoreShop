@@ -21,6 +21,7 @@ interface TaxRateInterface extends ResourceInterface, TranslatableInterface, Tim
 {
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getName($language = null);

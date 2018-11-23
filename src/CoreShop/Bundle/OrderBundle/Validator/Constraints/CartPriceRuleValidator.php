@@ -36,7 +36,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
 
     /**
      * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
      */
     public function __construct(CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {

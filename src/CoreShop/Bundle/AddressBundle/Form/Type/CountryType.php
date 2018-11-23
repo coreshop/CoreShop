@@ -40,7 +40,7 @@ final class CountryType extends AbstractResourceType
             ->add('salutations', CollectionType::class, [
                 'entry_type' => TextType::class,
                 'allow_delete' => true,
-                'allow_add' => true
+                'allow_add' => true,
             ]);
     }
 

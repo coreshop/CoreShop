@@ -5,7 +5,7 @@ namespace CoreShop\Bundle\FixtureBundle\Fixture;
 interface VersionedFixtureInterface
 {
     /**
-     * Return current fixture version
+     * Return current fixture version.
      *
      * @return string
      */

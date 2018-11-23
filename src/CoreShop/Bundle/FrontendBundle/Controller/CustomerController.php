@@ -26,6 +26,7 @@ class CustomerController extends FrontendController
 {
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function headerAction(Request $request)
@@ -76,12 +77,13 @@ class CustomerController extends FrontendController
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/orders.html'), [
             'customer' => $customer,
-            'orders' => $this->get('coreshop.repository.order')->findByCustomer($this->getCustomer())
+            'orders' => $this->get('coreshop.repository.order')->findByCustomer($this->getCustomer()),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function orderDetailAction(Request $request)
@@ -105,7 +107,7 @@ class CustomerController extends FrontendController
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/order_detail.html'), [
             'customer' => $customer,
-            'order' => $order
+            'order' => $order,
         ]);
     }
 
@@ -127,6 +129,7 @@ class CustomerController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addressAction(Request $request)
@@ -174,6 +177,7 @@ class CustomerController extends FrontendController
                 $customer->save();
 
                 $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
+
                 return $this->redirect($handledForm->get('_redirect')->getData() ?: $this->generateCoreShopUrl($customer, 'coreshop_customer_addresses'));
             }
         }
@@ -181,12 +185,13 @@ class CustomerController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/address.html'), [
             'address' => $address,
             'customer' => $customer,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addressDeleteAction(Request $request)
@@ -218,11 +223,13 @@ class CustomerController extends FrontendController
         $address->delete();
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.address_successfully_deleted'));
+
         return $this->redirectToRoute('coreshop_customer_addresses');
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function settingsAction(Request $request)
@@ -235,7 +242,7 @@ class CustomerController extends FrontendController
 
         $form = $this->get('form.factory')->createNamed('', CustomerType::class, $customer, [
             'customer' => $customer->getId(),
-            'allow_default_address' => true
+            'allow_default_address' => true,
         ]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
@@ -253,18 +260,20 @@ class CustomerController extends FrontendController
                 );
 
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.profile_successfully_updated'));
+
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/settings.html'), [
             'customer' => $customer,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function changePasswordAction(Request $request)
@@ -281,7 +290,6 @@ class CustomerController extends FrontendController
             $handledForm = $form->handleRequest($request);
 
             if ($handledForm->isValid()) {
-
                 $formData = $handledForm->getData();
                 $customer->setPassword($formData['password']);
                 $customer->save();
@@ -294,18 +302,20 @@ class CustomerController extends FrontendController
                 );
 
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.customer.password_successfully_changed'));
+
                 return $this->redirectToRoute('coreshop_customer_profile');
             }
         }
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/change_password.html'), [
             'customer' => $customer,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function confirmNewsletterAction(Request $request)
@@ -327,7 +337,7 @@ class CustomerController extends FrontendController
             $customer->setNewsletterConfirmed(true);
             $customer->setNewsletterToken(null);
 
-            VersionHelper::useVersioning(function() use ($customer) {
+            VersionHelper::useVersioning(function () use ($customer) {
                 $customer->save();
             }, false);
 
@@ -345,10 +355,9 @@ class CustomerController extends FrontendController
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Customer/confirm_newsletter.html'), [
             'newsletterUser' => $newsletterUser,
-            'success' => $success
+            'success' => $success,
         ]);
     }
-
 
     /**
      * @return CustomerInterface|null
@@ -358,7 +367,6 @@ class CustomerController extends FrontendController
         try {
             return $this->get('coreshop.context.customer')->getCustomer();
         } catch (\Exception $ex) {
-
         }
 
         return null;

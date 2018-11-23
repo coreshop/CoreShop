@@ -37,8 +37,7 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('send_usage_log')->defaultValue(true)->end()
                 ->scalarNode('checkout_manager_factory')->cannotBeEmpty()->end()
                 ->scalarNode('after_logout_redirect_route')->defaultValue('coreshop_index')->cannotBeEmpty()->end()
-            ->end()
-        ;
+            ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
         $this->addCheckoutConfigurationSection($rootNode);
@@ -73,8 +72,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -132,14 +130,16 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->validate()
-                                ->ifTrue(function($array) {
+                                ->ifTrue(function ($array) {
                                     $notValid = false;
                                     foreach ($array as $key => $value) {
                                         if ($key === 'cart') {
                                             $notValid = true;
+
                                             break;
                                         }
                                     }
+
                                     return $notValid;
                                 })
                                 ->thenInvalid('"cart" is a coreshop reserved checkout step. please use another name.')

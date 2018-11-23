@@ -113,17 +113,17 @@ final class CartPriceRuleContext implements Context
     private $cartPriceRuleVoucherCodeFactory;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FormFactoryInterface $formFactory
-     * @param FormTypeRegistryInterface $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface $actionFormTypeRegistry
-     * @param FactoryInterface $cartPriceRuleFactory
-     * @param CartPriceRuleRepositoryInterface $cartPriceRuleRepository
+     * @param SharedStorageInterface                  $sharedStorage
+     * @param ObjectManager                           $objectManager
+     * @param FormFactoryInterface                    $formFactory
+     * @param FormTypeRegistryInterface               $conditionFormTypeRegistry
+     * @param FormTypeRegistryInterface               $actionFormTypeRegistry
+     * @param FactoryInterface                        $cartPriceRuleFactory
+     * @param CartPriceRuleRepositoryInterface        $cartPriceRuleRepository
      * @param CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository
-     * @param CartPriceRuleProcessorInterface $cartPriceRuleProcessor
-     * @param CartManagerInterface $cartManager
-     * @param FactoryInterface $cartPriceRuleVoucherCodeFactory
+     * @param CartPriceRuleProcessorInterface         $cartPriceRuleProcessor
+     * @param CartManagerInterface                    $cartManager
+     * @param FactoryInterface                        $cartPriceRuleVoucherCodeFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -137,8 +137,7 @@ final class CartPriceRuleContext implements Context
         CartPriceRuleProcessorInterface $cartPriceRuleProcessor,
         CartManagerInterface $cartManager,
         FactoryInterface $cartPriceRuleVoucherCodeFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->formFactory = $formFactory;
@@ -160,7 +159,7 @@ final class CartPriceRuleContext implements Context
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
 
         /**
-         * @var $voucherCode CartPriceRuleVoucherCodeInterface
+         * @var $voucherCode   CartPriceRuleVoucherCodeInterface
          * @var $cartPriceRule CartPriceRuleInterface
          */
         Assert::isInstanceOf($voucherCode, CartPriceRuleVoucherCodeInterface::class);
@@ -260,7 +259,7 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
-            'maxAmount' => $maxAmount
+            'maxAmount' => $maxAmount,
         ]));
     }
 
@@ -274,8 +273,8 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('countries', [
             'countries' => [
-                $country->getId()
-            ]
+                $country->getId(),
+            ],
         ]));
     }
 
@@ -289,8 +288,8 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
             'customers' => [
-                $customer->getId()
-            ]
+                $customer->getId(),
+            ],
         ]));
     }
 
@@ -307,7 +306,7 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('timespan', [
             'dateFrom' => $from->getTimestamp() * 1000,
-            'dateTo' => $to->getTimestamp() * 1000
+            'dateTo' => $to->getTimestamp() * 1000,
         ]));
     }
 
@@ -321,8 +320,8 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
             'customerGroups' => [
-                $group->getId()
-            ]
+                $group->getId(),
+            ],
         ]));
     }
 
@@ -336,8 +335,8 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('stores', [
             'stores' => [
-                $store->getId()
-            ]
+                $store->getId(),
+            ],
         ]));
     }
 
@@ -351,8 +350,8 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('zones', [
             'zones' => [
-                $zone->getId()
-            ]
+                $zone->getId(),
+            ],
         ]));
     }
 
@@ -366,8 +365,8 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('currencies', [
             'currencies' => [
-                $currency->getId()
-            ]
+                $currency->getId(),
+            ],
         ]));
     }
 
@@ -380,7 +379,7 @@ final class CartPriceRuleContext implements Context
         $this->assertConditionForm(CategoriesConfigurationType::class, 'categories');
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
-            'categories' => [$category->getId()]
+            'categories' => [$category->getId()],
         ]));
     }
 
@@ -394,7 +393,7 @@ final class CartPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('categories', [
             'categories' => [$category->getId()],
-            'recursive' => true
+            'recursive' => true,
         ]));
     }
 
@@ -409,8 +408,8 @@ final class CartPriceRuleContext implements Context
 
         $configuration = [
             'products' => [
-                $product->getId()
-            ]
+                $product->getId(),
+            ],
         ];
 
         if (null !== $product2) {
@@ -429,7 +428,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($discount)
+            'percent' => intval($discount),
         ]));
     }
 
@@ -443,7 +442,7 @@ final class CartPriceRuleContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
             'amount' => intval($amount),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -460,7 +459,7 @@ final class CartPriceRuleContext implements Context
 
     /**
      * @param CartPriceRuleInterface $rule
-     * @param ConditionInterface $condition
+     * @param ConditionInterface     $condition
      */
     private function addCondition(CartPriceRuleInterface $rule, ConditionInterface $condition)
     {
@@ -472,7 +471,7 @@ final class CartPriceRuleContext implements Context
 
     /**
      * @param CartPriceRuleInterface $rule
-     * @param ActionInterface $action
+     * @param ActionInterface        $action
      */
     private function addAction(CartPriceRuleInterface $rule, ActionInterface $action)
     {

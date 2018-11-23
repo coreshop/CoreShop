@@ -79,7 +79,7 @@ class OrderController extends FrontendController
                 }
 
                 return $this->redirectToRoute('coreshop_index');
-            } else if ($form->isValid()) {
+            } elseif ($form->isValid()) {
                 $order = $form->getData();
                 $order->save();
 
@@ -90,7 +90,7 @@ class OrderController extends FrontendController
         $args = [
             'order' => $order,
             'payment' => $payment,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
@@ -120,5 +120,3 @@ class OrderController extends FrontendController
         return $this->get('form.factory');
     }
 }
-
-

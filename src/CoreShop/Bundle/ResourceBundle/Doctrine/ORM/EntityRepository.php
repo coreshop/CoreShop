@@ -56,7 +56,7 @@ class EntityRepository extends BaseEntityRepository implements RepositoryInterfa
     protected function getPropertyName($name)
     {
         if (false === strpos($name, '.')) {
-            return 'o'.'.'.$name;
+            return 'o' . '.' . $name;
         }
 
         return $name;

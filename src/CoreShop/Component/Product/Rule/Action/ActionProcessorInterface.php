@@ -14,5 +14,4 @@ namespace CoreShop\Component\Product\Rule\Action;
 
 interface ActionProcessorInterface
 {
-
 }

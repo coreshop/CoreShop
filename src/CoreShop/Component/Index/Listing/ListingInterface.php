@@ -45,7 +45,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
     /**
-     * @param IndexInterface $index
+     * @param IndexInterface  $index
      * @param WorkerInterface $worker
      */
     public function __construct(IndexInterface $index, WorkerInterface $worker);
@@ -63,7 +63,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * and exclude functionality in group by results.
      *
      * @param ConditionInterface $condition
-     * @param string $fieldName
+     * @param string             $fieldName
      */
     public function addCondition(ConditionInterface $condition, $fieldName);
 
@@ -73,7 +73,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * and exclude functionality in group by results.
      *
      * @param ConditionInterface $condition
-     * @param string $fieldName
+     * @param string             $fieldName
      */
     public function addQueryCondition(ConditionInterface $condition, $fieldName);
 
@@ -81,7 +81,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * Adds relation condition to product list.
      *
      * @param ConditionInterface $condition
-     * @param string $fieldName
+     * @param string             $fieldName
      */
     public function addRelationCondition(ConditionInterface $condition, $fieldName);
 
@@ -191,8 +191,8 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * loads group by values based on fieldname either from local variable if prepared or directly from product index.
      *
      * @param string $fieldName
-     * @param bool $countValues
-     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
+     * @param bool   $countValues
+     * @param bool   $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *

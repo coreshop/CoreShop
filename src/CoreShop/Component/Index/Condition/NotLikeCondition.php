@@ -14,5 +14,4 @@ namespace CoreShop\Component\Index\Condition;
 
 class NotLikeCondition extends LikeCondition
 {
-
 }

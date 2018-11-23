@@ -25,8 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
-;
-
 class CheckoutController extends FrontendController
 {
     /**
@@ -124,10 +122,11 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @param Request $request
+     * @param Request               $request
      * @param CheckoutStepInterface $step
-     * @param string $stepIdentifier
-     * @param mixed $dataForStep
+     * @param string                $stepIdentifier
+     * @param mixed                 $dataForStep
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
@@ -139,7 +138,9 @@ class CheckoutController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse
+     *
      * @throws \Exception
      */
     public function doCheckoutAction(Request $request)
@@ -182,6 +183,7 @@ class CheckoutController extends FrontendController
 
         if (0 === $order->getTotal()) {
             $request->getSession()->set('coreshop_order_id', $order->getId());
+
             return $this->redirectToRoute('coreshop_checkout_confirmation');
         }
 
@@ -218,7 +220,7 @@ class CheckoutController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [
             'order' => $order,
             'payments' => $payments,
-            'lastPayment' => $lastPayment
+            'lastPayment' => $lastPayment,
         ]);
     }
 

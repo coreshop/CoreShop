@@ -14,6 +14,7 @@ class Version20171213115150 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     public function up(Schema $schema)

@@ -39,7 +39,7 @@ final class ObjectHelperExtensions extends \Twig_Extension
             }),
             new \Twig_Test('object_hotspot_image', function ($object) {
                 return $object instanceof DataObject\Data\Hotspotimage;
-            })
+            }),
         ];
     }
 
@@ -49,9 +49,9 @@ final class ObjectHelperExtensions extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('object_select_options', function($object, $field) {
+            new \Twig_Function('object_select_options', function ($object, $field) {
                 return DataObject\Service::getOptionsForSelectField($object, $field);
-            })
+            }),
         ];
     }
 
@@ -61,15 +61,15 @@ final class ObjectHelperExtensions extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('object_gallery_images', function(DataObject\Data\ImageGallery $gallery = null) {
+            new \Twig_Filter('object_gallery_images', function (DataObject\Data\ImageGallery $gallery = null) {
                 if (null === $gallery) {
                     return [];
                 }
 
-                return array_map(function(DataObject\Data\Hotspotimage $item) {
+                return array_map(function (DataObject\Data\Hotspotimage $item) {
                     return $item->getImage();
                 }, $gallery->getItems());
-            })
+            }),
         ];
     }
 }

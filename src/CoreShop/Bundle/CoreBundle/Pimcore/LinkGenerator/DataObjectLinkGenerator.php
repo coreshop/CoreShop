@@ -36,8 +36,8 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
     private $urlGenerator;
 
     /**
-     * @param string $type
-     * @param string $routeName
+     * @param string                $type
+     * @param string                $routeName
      * @param UrlGeneratorInterface $urlGenerator
      */
     public function __construct(string $type, string $routeName, UrlGeneratorInterface $urlGenerator)
@@ -66,7 +66,7 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 
         $routeParams = [
             'name' => $this->slugify($name),
-            $this->type => $object->getId()
+            $this->type => $object->getId(),
         ];
 
         if (isset($locale)) {

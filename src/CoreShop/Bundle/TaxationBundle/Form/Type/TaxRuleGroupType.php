@@ -25,13 +25,16 @@ class TaxRuleGroupType extends AbstractResourceType
         $builder
             ->add('name', TextType::class)
             ->add('active', CheckboxType::class)
-            ->add('taxRules',
-                CollectionType::class, [
+            ->add(
+                'taxRules',
+                CollectionType::class,
+                [
                     'entry_type' => TaxRuleType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
-                ]);
+                ]
+            );
     }
 
     public function getBlockPrefix()

@@ -18,8 +18,8 @@ interface ProductDiscountCalculatorInterface
 {
     /**
      * @param ProductInterface $subject
-     * @param array $context
-     * @param int $price
+     * @param array            $context
+     * @param int              $price
      *
      * @return mixed
      */

@@ -54,7 +54,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => '@CoreShopTracking/Tracking/gtag'
+            'template_prefix' => '@CoreShopTracking/Tracking/gtag',
         ]);
     }
 
@@ -69,7 +69,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters = [];
         $actionData = [
-            'items' => [$this->transformProductAction($product)]
+            'items' => [$this->transformProductAction($product)],
         ];
 
         $parameters['actionData'] = $actionData;
@@ -91,7 +91,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters = [];
         $actionData = [
-            'items' => [$this->transformProductAction($product)]
+            'items' => [$this->transformProductAction($product)],
         ];
 
         $parameters['actionData'] = $actionData;
@@ -155,7 +155,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
@@ -180,7 +179,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
@@ -200,50 +198,52 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
-     * Transform ActionData into classic analytics data array
+     * Transform ActionData into classic analytics data array.
      *
      * @param array $actionData
+     *
      * @return array
      */
     protected function transformOrder($actionData)
     {
         return [
-            'id'          => $actionData['id'],
+            'id' => $actionData['id'],
             'affiliation' => $actionData['affiliation'] ?: '',
-            'total'       => $actionData['total'],
-            'tax'         => $actionData['totalTax'],
-            'shipping'    => $actionData['shipping'],
-            'currency'    => $actionData['currency']
+            'total' => $actionData['total'],
+            'tax' => $actionData['totalTax'],
+            'shipping' => $actionData['shipping'],
+            'currency' => $actionData['currency'],
         ];
     }
 
     /**
-     * Transform product action into enhanced data object
+     * Transform product action into enhanced data object.
      *
      * @param array $item
+     *
      * @return array
      */
     protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'id'        => $item['id'],
-            'name'      => $item['name'],
-            'category'  => $item['category'],
-            'brand'     => $item['brand'],
-            'variant'   => $item['variant'],
-            'price'     => round($item['price'], 2),
-            'quantity'  => $item['quantity'] ?: 1,
-            'position'  => $item['position'],
-            'currency' => $item['currency']
+            'id' => $item['id'],
+            'name' => $item['name'],
+            'category' => $item['category'],
+            'brand' => $item['brand'],
+            'variant' => $item['variant'],
+            'price' => round($item['price'], 2),
+            'quantity' => $item['quantity'] ?: 1,
+            'position' => $item['position'],
+            'currency' => $item['currency'],
         ]);
     }
 
     /**
      * @param array $items
+     *
      * @return array
      */
     protected function buildCheckoutCalls(array $items)

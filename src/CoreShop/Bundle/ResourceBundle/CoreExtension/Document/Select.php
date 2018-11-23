@@ -135,11 +135,12 @@ class Select extends Tag
 
     /**
      * @param ResourceInterface $resource
+     *
      * @return mixed
      */
     protected function getResourceName(ResourceInterface $resource)
     {
-        $getter = 'get'.ucfirst($this->nameProperty);
+        $getter = 'get' . ucfirst($this->nameProperty);
 
         if (!method_exists($resource, $getter)) {
             throw new \InvalidArgumentException(

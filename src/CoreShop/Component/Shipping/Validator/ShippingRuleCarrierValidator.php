@@ -29,8 +29,7 @@ class ShippingRuleCarrierValidator implements ShippableCarrierValidatorInterface
      */
     public function __construct(
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
-    )
-    {
+    ) {
         $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
     }
 

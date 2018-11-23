@@ -14,7 +14,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
     /**
      * @var string
      */
-    protected $productClassName;
+    private $productClassName;
 
     /**
      * @param string $productClassName
@@ -40,7 +40,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
         return [
             'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
             'parentCategoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'stores' => IndexColumnInterface::FIELD_TYPE_STRING
+            'stores' => IndexColumnInterface::FIELD_TYPE_STRING,
         ];
     }
 
@@ -79,7 +79,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
             return [
                 'categoryIds' => ',' . implode(',', $categoryIds) . ',',
                 'parentCategoryIds' => ',' . implode(',', $parentCategoryIds) . ',',
-                'stores' => ',' . @implode(',', $indexable->getStores()) . ','
+                'stores' => ',' . @implode(',', $indexable->getStores()) . ',',
             ];
         }
 

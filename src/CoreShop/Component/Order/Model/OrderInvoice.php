@@ -510,11 +510,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
 
     protected function recalculateAfterAdjustmentChange()
     {
-
     }
 
     protected function recalculateBaseAfterAdjustmentChange()
     {
-
     }
 }

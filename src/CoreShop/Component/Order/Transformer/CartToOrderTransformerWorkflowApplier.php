@@ -17,12 +17,12 @@ final class CartToOrderTransformerWorkflowApplier implements ProposalTransformer
     /**
      * @var ProposalTransformerInterface
      */
-    protected $innerCartToOrderTransformer;
+    private $innerCartToOrderTransformer;
 
     /**
      * @var StateMachineApplierInterface
      */
-    protected $stateMachineApplier;
+    private $stateMachineApplier;
 
     /**
      * @param ProposalTransformerInterface $innerCartToOrderTransformer
@@ -31,8 +31,7 @@ final class CartToOrderTransformerWorkflowApplier implements ProposalTransformer
     public function __construct(
         ProposalTransformerInterface $innerCartToOrderTransformer,
         StateMachineApplierInterface $stateMachineApplier
-    )
-    {
+    ) {
         $this->innerCartToOrderTransformer = $innerCartToOrderTransformer;
         $this->stateMachineApplier = $stateMachineApplier;
     }
@@ -40,12 +39,13 @@ final class CartToOrderTransformerWorkflowApplier implements ProposalTransformer
     /**
      * @param ProposalInterface $cart
      * @param ProposalInterface $sale
+     *
      * @return ProposalInterface|mixed
      */
     public function transform(ProposalInterface $cart, ProposalInterface $sale)
     {
         /**
-         * @var CartInterface $cart
+         * @var CartInterface  $cart
          * @var OrderInterface $order
          */
         $sale = $this->innerCartToOrderTransformer->transform($cart, $sale);

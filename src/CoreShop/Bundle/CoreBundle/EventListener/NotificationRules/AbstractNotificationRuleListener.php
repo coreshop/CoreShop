@@ -34,8 +34,7 @@ abstract class AbstractNotificationRuleListener
     public function __construct(
         RulesProcessorInterface $rulesProcessor,
         ShopperContextInterface $shopperContext
-    )
-    {
+    ) {
         $this->rulesProcessor = $rulesProcessor;
         $this->shopperContext = $shopperContext;
     }

@@ -48,11 +48,11 @@ final class ConfirmOrderAction implements ActionInterface
         \Pimcore\Logger::log('ConfirmOrderAction: ' . $payment->getState());
 
         if ($order instanceof OrderInterface) {
-            if (
-                $payment->getState() === PaymentInterface::STATE_COMPLETED ||
+            if ($payment->getState() === PaymentInterface::STATE_COMPLETED ||
                 $payment->getState() === PaymentInterface::STATE_AUTHORIZED
             ) {
                 $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
+
                 return;
             }
 

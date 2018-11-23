@@ -20,7 +20,7 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * @var ServiceRegistryInterface
      */
-    protected $validRuleFetchers;
+    private $validRuleFetchers;
 
     /**
      * @param ServiceRegistryInterface $validRuleFetchers

@@ -22,7 +22,7 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
      */
     public function getId()
     {
-        return $this->getObject()->getId().'_tax_item_'.$this->getIndex();
+        return $this->getObject()->getId() . '_tax_item_' . $this->getIndex();
     }
 
     /**

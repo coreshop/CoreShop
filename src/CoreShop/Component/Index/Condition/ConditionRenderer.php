@@ -20,7 +20,7 @@ final class ConditionRenderer implements ConditionRendererInterface
     /**
      * @var ServiceRegistryInterface
      */
-    protected $registry;
+    private $registry;
 
     /**
      * {@inheritdoc}

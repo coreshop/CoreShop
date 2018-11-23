@@ -57,10 +57,10 @@ class VouchersReport implements ReportInterface, ExportReportInterface
     private $orderRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeContext
      * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
@@ -69,8 +69,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
         PimcoreRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -130,7 +129,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
                 'usedDate' => $date->getTimestamp(),
                 'code' => $result['code'],
                 'rule' => !empty($result['rule']) ? $result['rule'] : '--',
-                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode())
+                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 
@@ -146,14 +145,12 @@ class VouchersReport implements ReportInterface, ExportReportInterface
 
         $formatter = new \IntlDateFormatter($this->localeContext->getLocaleCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
 
-        foreach ($data as &$entry)
-        {
+        foreach ($data as &$entry) {
             $entry['usedDate'] = $formatter->format($entry['usedDate']);
         }
 
         return $data;
     }
-
 
     /**
      * @return int

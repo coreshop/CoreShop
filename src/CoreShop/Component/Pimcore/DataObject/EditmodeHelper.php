@@ -29,7 +29,7 @@ class EditmodeHelper
 
         return [
             'objectData' => $this->objectData,
-            'metaData' => $this->metaData
+            'metaData' => $this->metaData,
         ];
     }
 
@@ -40,8 +40,7 @@ class EditmodeHelper
 
         // relations but not for objectsMetadata, because they have additional data which cannot be loaded directly from the DB
         // nonownerobjects should go in there anyway (regardless if it a version or not), so that the values can be loaded
-        if (
-            (
+        if ((
                 !$objectFromVersion
                 && $fielddefinition instanceof DataObject\ClassDefinition\Data\Relations\AbstractRelations
                 && $fielddefinition->getLazyLoading()
@@ -50,7 +49,6 @@ class EditmodeHelper
             )
             || $fielddefinition instanceof DataObject\ClassDefinition\Data\Nonownerobjects
         ) {
-
             //lazy loading data is fetched from DB differently, so that not every relation object is instantiated
             $refId = null;
 

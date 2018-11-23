@@ -64,10 +64,10 @@ class CategoriesReport implements ReportInterface
     private $orderItemRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeService
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeService
      * @param PimcoreRepositoryInterface $orderRepository,
      * @param PimcoreRepositoryInterface $orderItemRepository
      */
@@ -78,8 +78,7 @@ class CategoriesReport implements ReportInterface
         LocaleContextInterface $localeService,
         PimcoreRepositoryInterface $orderRepository,
         PimcoreRepositoryInterface $orderItemRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -112,7 +111,6 @@ class CategoriesReport implements ReportInterface
             return [];
         }
 
-
         $query = "
             SELECT 
               orderItems.product__id,
@@ -130,8 +128,7 @@ class CategoriesReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $catSales = InheritanceHelper::useInheritedValues(function() use ($productSales) {
-
+        $catSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
             $catSales = [];
             foreach ($productSales as $productSale) {
                 $product = DataObject::getById($productSale['product__id']);
@@ -156,10 +153,9 @@ class CategoriesReport implements ReportInterface
             }
 
             return $catSales;
-
         });
 
-        usort($catSales, function($a, $b) {
+        usort($catSales, function ($a, $b) {
             return $b['orderCount'] <=> $a['orderCount'];
         });
 

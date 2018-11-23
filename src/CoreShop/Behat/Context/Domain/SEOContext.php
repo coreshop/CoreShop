@@ -43,10 +43,10 @@ final class SEOContext implements Context
     private $headMeta;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface   $sharedStorage
      * @param SEOPresentationInterface $seoPresentation
-     * @param HeadTitle $headTitle
-     * @param HeadMeta $headMeta
+     * @param HeadTitle                $headTitle
+     * @param HeadMeta                 $headMeta
      */
     public function __construct(SharedStorageInterface $sharedStorage, SEOPresentationInterface $seoPresentation, HeadTitle $headTitle, HeadMeta $headMeta)
     {
@@ -81,6 +81,7 @@ final class SEOContext implements Context
         foreach ($this->headMeta as $item) {
             if ($item->name === 'description') {
                 $descriptionItem = $item;
+
                 break;
             }
         }

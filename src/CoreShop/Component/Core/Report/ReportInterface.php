@@ -17,18 +17,18 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 interface ReportInterface
 {
     /**
-     * Get data for report
+     * Get data for report.
      *
      * @param ParameterBag $parameterBag
+     *
      * @return array
      */
     public function getReportData(ParameterBag $parameterBag);
 
     /**
-     * Get total amount of found records
+     * Get total amount of found records.
      *
-     * @return integer
+     * @return int
      */
     public function getTotal();
-
 }

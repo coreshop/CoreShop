@@ -68,7 +68,7 @@ final class ORMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 
     /**
      * @param ClassMetadataInfo $metadata
-     * @param Configuration $configuration
+     * @param Configuration     $configuration
      */
     private function setAssociationMappings(ClassMetadataInfo $metadata, $configuration)
     {

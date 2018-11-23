@@ -20,7 +20,7 @@ final class DataFixturesExecutor implements DataFixturesExecutorInterface
     private $logger;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManager            $em
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(EntityManager $em, EventDispatcherInterface $eventDispatcher)

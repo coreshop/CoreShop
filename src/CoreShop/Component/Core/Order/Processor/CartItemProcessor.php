@@ -40,9 +40,9 @@ final class CartItemProcessor implements CartProcessorInterface
     private $defaultAddressProvider;
 
     /**
-     * @param PurchasableCalculatorInterface $productPriceCalculator
+     * @param PurchasableCalculatorInterface       $productPriceCalculator
      * @param ProductTaxCalculatorFactoryInterface $taxCalculator
-     * @param AddressProviderInterface $defaultAddressProvider
+     * @param AddressProviderInterface             $defaultAddressProvider
      */
     public function __construct(
         PurchasableCalculatorInterface $productPriceCalculator,
@@ -52,7 +52,6 @@ final class CartItemProcessor implements CartProcessorInterface
         $this->productPriceCalculator = $productPriceCalculator;
         $this->taxCalculator = $taxCalculator;
         $this->defaultAddressProvider = $defaultAddressProvider;
-
     }
 
     /**
@@ -72,7 +71,7 @@ final class CartItemProcessor implements CartProcessorInterface
             'customer' => $cart->getCustomer() ?: null,
             'currency' => $cart->getCurrency(),
             'country' => $store->getBaseCountry(),
-            'cart' => $cart
+            'cart' => $cart,
         ];
 
         /**
@@ -83,7 +82,7 @@ final class CartItemProcessor implements CartProcessorInterface
 
             $taxCalculator = $this->taxCalculator->getTaxCalculator($product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 
-            $itemPrice = $this->productPriceCalculator->getPrice($product, $context,true);
+            $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);
             $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product, $context);
             $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
             $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
@@ -111,7 +110,6 @@ final class CartItemProcessor implements CartProcessorInterface
 
                     $item->setItemDiscount($itemDiscount, true);
                     $item->setItemDiscount($itemDiscount - $itemDiscountPriceTax, false);
-
                 } else {
                     $totalTaxAmount = $taxCalculator->getTaxesAmount($itemPrice * $item->getQuantity());
                     $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
@@ -134,8 +132,7 @@ final class CartItemProcessor implements CartProcessorInterface
                     $item->setItemDiscount($itemDiscount, false);
                     $item->setItemDiscount($itemDiscount + $itemDiscountPriceTax, true);
                 }
-            }
-            else {
+            } else {
                 $item->setTotal($itemPrice * $item->getQuantity(), false);
                 $item->setTotal($itemPrice * $item->getQuantity(), true);
 

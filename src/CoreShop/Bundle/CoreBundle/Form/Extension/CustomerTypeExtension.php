@@ -27,7 +27,7 @@ final class CustomerTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('salutation', SalutationChoiceType::class, [
-                'label' => 'coreshop.form.customer.salutation'
+                'label' => 'coreshop.form.customer.salutation',
             ]);
 
         if ($options['allow_default_address'] && $options['customer']) {

@@ -20,9 +20,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 abstract class AbstractModelExtension extends AbstractPimcoreExtension
 {
     /**
-     * @param string $applicationName
-     * @param string $driver
-     * @param array $resources
+     * @param string           $applicationName
+     * @param string           $driver
+     * @param array            $resources
      * @param ContainerBuilder $container
      */
     protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container)
@@ -58,8 +58,8 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param string $applicationName
-     * @param array $models
+     * @param string           $applicationName
+     * @param array            $models
      * @param ContainerBuilder $container
      */
     protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container)
@@ -85,8 +85,8 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param string $applicationName
-     * @param array $stack
+     * @param string           $applicationName
+     * @param array            $stack
      * @param ContainerBuilder $container
      */
     public function registerStack($applicationName, $stack, ContainerBuilder $container)

@@ -34,6 +34,7 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
 
     /**
      * @param string $className
+     *
      * @throws ClassDefinitionNotFoundException
      */
     public function __construct($className)
@@ -62,15 +63,14 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         return DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
     }
 
-
     public function renameField($fieldName, $newFieldName)
     {
         $this->findField(
             $fieldName,
-            function (&$foundField, $index, &$parent) use($fieldName, $newFieldName) {
+            function (&$foundField, $index, &$parent) use ($fieldName, $newFieldName) {
                 $this->fieldsToRename[$fieldName] = [
                     'newName' => $newFieldName,
-                    'definition' => $foundField
+                    'definition' => $foundField,
                 ];
             }
         );

@@ -29,8 +29,7 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
 
             if (method_exists($filterCondition, 'getField')) {
                 $config['field'] = $filterCondition->getField();
-            }
-            else {
+            } else {
                 throw new \Exception('Can\'t run Filter Condition Migration casue the installed CoreShop Version is already to far ahead. Please use beta.4 at last and then further update.');
             }
 
@@ -38,7 +37,6 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
 
             $em->persist($filterCondition);
         }
-
 
         $em->flush();
 
@@ -51,6 +49,5 @@ class Version20180206111535 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

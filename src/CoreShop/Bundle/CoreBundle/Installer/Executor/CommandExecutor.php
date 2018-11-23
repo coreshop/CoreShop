@@ -37,9 +37,9 @@ final class CommandExecutor
     private $application;
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param Application $application
+     * @param Application     $application
      */
     public function __construct(InputInterface $input, OutputInterface $output, Application $application)
     {
@@ -49,8 +49,8 @@ final class CommandExecutor
     }
 
     /**
-     * @param string $command
-     * @param array $parameters
+     * @param string               $command
+     * @param array                $parameters
      * @param OutputInterface|null $output
      *
      * @return $this

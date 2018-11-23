@@ -417,6 +417,5 @@ abstract class Sale extends AbstractProposal implements SaleInterface
      */
     protected function recalculateBaseAfterAdjustmentChange()
     {
-
     }
 }

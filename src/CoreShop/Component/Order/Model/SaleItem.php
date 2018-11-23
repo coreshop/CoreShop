@@ -306,7 +306,6 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -632,7 +631,6 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
      */
     protected function recalculateAfterAdjustmentChange()
     {
-
     }
 
     /**
@@ -640,6 +638,5 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
      */
     protected function recalculateBaseAfterAdjustmentChange()
     {
-
     }
 }

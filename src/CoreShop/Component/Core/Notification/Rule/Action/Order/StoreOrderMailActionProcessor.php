@@ -15,8 +15,6 @@ namespace CoreShop\Component\Core\Notification\Rule\Action\Order;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterface

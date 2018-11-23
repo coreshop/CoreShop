@@ -56,12 +56,12 @@ final class TaxRuleGroupContext implements Context
     private $countryContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $addressFactory
-     * @param RepositoryInterface $taxRuleGroupRepository
-     * @param TaxRuleRepositoryInterface $taxRuleRepository
+     * @param SharedStorageInterface        $sharedStorage
+     * @param FactoryInterface              $addressFactory
+     * @param RepositoryInterface           $taxRuleGroupRepository
+     * @param TaxRuleRepositoryInterface    $taxRuleRepository
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param CountryContextInterface $countryContext
+     * @param CountryContextInterface       $countryContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -70,8 +70,7 @@ final class TaxRuleGroupContext implements Context
         TaxRuleRepositoryInterface $taxRuleRepository,
         TaxCalculatorFactoryInterface $taxCalculatorFactory,
         CountryContextInterface $countryContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->addressFactory = $addressFactory;
         $this->taxRuleGroupRepository = $taxRuleGroupRepository;
@@ -79,7 +78,6 @@ final class TaxRuleGroupContext implements Context
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->countryContext = $countryContext;
     }
-
 
     /**
      * @Then /^there should be a tax rule group "([^"]+)" with "([^"]+)" (?:rule|rules)$/

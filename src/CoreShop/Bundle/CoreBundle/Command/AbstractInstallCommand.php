@@ -39,7 +39,7 @@ abstract class AbstractInstallCommand extends Command
     protected $directoryChecker;
 
     /**
-     * @param KernelInterface $kernel
+     * @param KernelInterface         $kernel
      * @param CommandDirectoryChecker $directoryChecker
      */
     public function __construct(KernelInterface $kernel, CommandDirectoryChecker $directoryChecker)
@@ -82,8 +82,8 @@ abstract class AbstractInstallCommand extends Command
     }
 
     /**
-     * @param array $headers
-     * @param array $rows
+     * @param array           $headers
+     * @param array           $rows
      * @param OutputInterface $output
      */
     protected function renderTable(array $headers, array $rows, OutputInterface $output)
@@ -98,7 +98,7 @@ abstract class AbstractInstallCommand extends Command
 
     /**
      * @param OutputInterface $output
-     * @param int $length
+     * @param int             $length
      *
      * @return ProgressBar
      */
@@ -115,10 +115,10 @@ abstract class AbstractInstallCommand extends Command
     }
 
     /**
-     * @param array $commands
+     * @param array           $commands
      * @param OutputInterface $output
-     * @param bool $displayProgress
-     * @param bool $passOutput
+     * @param bool            $displayProgress
+     * @param bool            $passOutput
      */
     protected function runCommands(array $commands, OutputInterface $output, $displayProgress = true, $passOutput = false)
     {
@@ -154,7 +154,7 @@ abstract class AbstractInstallCommand extends Command
     }
 
     /**
-     * @param string $directory
+     * @param string          $directory
      * @param OutputInterface $output
      */
     protected function ensureDirectoryExistsAndIsWritable($directory, OutputInterface $output)

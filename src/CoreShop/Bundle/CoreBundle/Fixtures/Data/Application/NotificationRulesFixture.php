@@ -75,7 +75,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         foreach ($rule['actions'] as &$action) {
                             foreach ($action['configuration']['mails'] as &$mail) {
-                                $document = Document::getByPath('/'.$mail);
+                                $document = Document::getByPath('/' . $mail);
 
                                 if ($document instanceof Document\Email) {
                                     $mail = $document->getId();
@@ -93,7 +93,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         $this->container->get('doctrine.orm.entity_manager')->persist($notificationRule);
 
-                        ++$totalImported;
+                        $totalImported++;
                     } catch (\Exception $ex) {
                         //If some goes wrong, we just ignore it
                     }

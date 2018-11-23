@@ -28,7 +28,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
         $container->addCompilerPass(new ExtractorRegistryServicePass());
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     public function getNiceName()

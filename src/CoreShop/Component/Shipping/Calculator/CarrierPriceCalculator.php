@@ -29,8 +29,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
      */
     public function __construct(
         PrioritizedServiceRegistryInterface $shippingCalculatorRegistry
-    )
-    {
+    ) {
         $this->shippingCalculatorRegistry = $shippingCalculatorRegistry;
     }
 
@@ -49,6 +48,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
 
             if (false !== $price && null !== $price) {
                 $netPrice = $price;
+
                 break;
             }
         }

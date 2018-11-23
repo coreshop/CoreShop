@@ -42,13 +42,12 @@ final class PimcoreClassContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
+     * @param ClassStorageInterface  $classStorage
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
     }
@@ -279,9 +278,9 @@ final class PimcoreClassContext implements Context
         $definitionUpdater = $this->getUpdater($definition);
         $definitionUpdater->setProperty('classDefinitions', [
             [
-                "classname" => $class->getName(),
-                "fieldname" => $field
-            ]
+                'classname' => $class->getName(),
+                'fieldname' => $field,
+            ],
         ]);
         $definitionUpdater->save();
     }
@@ -651,22 +650,26 @@ final class PimcoreClassContext implements Context
             switch ($row['type']) {
                 case 'checkbox':
                     $object->setValue($row['key'], filter_var($row['value'], FILTER_VALIDATE_BOOLEAN));
+
                     break;
 
                 case 'input':
                     $object->setValue($row['key'], $row['value']);
+
                     break;
 
                 case 'href':
                     $object->setValue($row['key'], DataObject::getById($row['value']));
+
                     break;
 
                 case 'localized':
-                    $setter = 'set'.ucfirst($row['key']);
+                    $setter = 'set' . ucfirst($row['key']);
 
                     foreach (Tool::getValidLanguages() as $lang) {
                         $object->$setter($row['value'], $lang);
                     }
+
                     break;
 
                 case 'brick':
@@ -680,8 +683,8 @@ final class PimcoreClassContext implements Context
                         $brickInstance->setValue($key, $value);
                     }
 
+                    $object->{'get' . ucfirst($row['key'])}()->{'set' . ucfirst($type)}($brickInstance);
 
-                    $object->{'get'.ucfirst($row['key'])}()->{'set'.ucfirst($type)}($brickInstance);
                     break;
 
                 case 'collection':
@@ -701,11 +704,13 @@ final class PimcoreClassContext implements Context
                         $items->add($collectionInstance);
                     }
 
-                    $object->{'set'.ucfirst($row['key'])}($items);
+                    $object->{'set' . ucfirst($row['key'])}($items);
+
                     break;
 
                 default:
                     throw new \InvalidArgumentException(sprintf('Type %s not yet supported', $row['type']));
+
                     break;
             }
         }
@@ -716,6 +721,7 @@ final class PimcoreClassContext implements Context
     /**
      * @param string $definition
      * @param string $fieldDefinition
+     *
      * @throws ClassDefinitionNotFoundException
      */
     private function addFieldDefinitionToDefinition($definition, $fieldDefinition)
@@ -727,7 +733,9 @@ final class PimcoreClassContext implements Context
 
     /**
      * @param string $definition
+     *
      * @return BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate
+     *
      * @throws ClassDefinitionNotFoundException
      */
     private function getUpdater($definition)

@@ -30,7 +30,7 @@ final class FixedCollectionType extends AbstractType
             $entryOptions = $options['entry_options']($entry);
 
             $builder->add($entryName, $entryType, array_replace([
-                'property_path' => '['.$entryName.']',
+                'property_path' => '[' . $entryName . ']',
                 'block_name' => 'entry',
             ], $entryOptions));
         }
@@ -51,7 +51,7 @@ final class FixedCollectionType extends AbstractType
         $resolver->setRequired('entry_name');
         $resolver->setAllowedTypes('entry_name', ['callable']);
 
-        $resolver->setDefault('entry_options', function() {
+        $resolver->setDefault('entry_options', function () {
             return [];
         });
         $resolver->setAllowedTypes('entry_options', ['array', 'callable']);
@@ -71,12 +71,12 @@ final class FixedCollectionType extends AbstractType
      */
     private function optionalCallableNormalizer()
     {
-        return function(Options $options, $value) {
+        return function (Options $options, $value) {
             if (is_callable($value)) {
                 return $value;
             }
 
-            return function() use ($value) {
+            return function () use ($value) {
                 return $value;
             };
         };

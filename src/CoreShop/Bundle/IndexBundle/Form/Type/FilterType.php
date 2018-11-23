@@ -31,7 +31,7 @@ class FilterType extends AbstractResourceType
             ->add('orderDirection', ChoiceType::class, [
                 'choices' => array(
                     'ASC' => 'asc',
-                    'DESC' => 'desc'
+                    'DESC' => 'desc',
                 ),
             ])
             ->add('preConditions', FilterConditionCollectionType::class)

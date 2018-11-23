@@ -12,10 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\Collector;
 
-use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Order\Model\CartInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +38,7 @@ final class CartCollector extends DataCollector
     private $pimcoreContext;
 
     /**
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface   $cartContext
      * @param LocaleContextInterface $localeContext
      * @param PimcoreContextResolver $pimcoreContext
      */
@@ -48,8 +46,7 @@ final class CartCollector extends DataCollector
         CartContextInterface $cartContext,
         LocaleContextInterface $localeContext,
         PimcoreContextResolver $pimcoreContext
-    )
-    {
+    ) {
         $this->cartContext = $cartContext;
         $this->localeContext = $localeContext;
         $this->pimcoreContext = $pimcoreContext;
@@ -57,7 +54,7 @@ final class CartCollector extends DataCollector
         $this->data = [
             'cart' => null,
             'locale' => 'en',
-            'admin' => false
+            'admin' => false,
         ];
     }
 
@@ -92,6 +89,7 @@ final class CartCollector extends DataCollector
     {
         if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
             $this->data['admin'] = true;
+
             return;
         }
 

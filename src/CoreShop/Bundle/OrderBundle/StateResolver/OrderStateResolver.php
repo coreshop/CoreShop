@@ -26,16 +26,16 @@ final class OrderStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var bool
      */
-    protected $includeInvoiceStateToComplete;
+    private $includeInvoiceStateToComplete;
 
     /**
      * @param StateMachineManager $stateMachineManager
-     * @param bool $includeInvoiceStateToComplete
+     * @param bool                $includeInvoiceStateToComplete
      */
     public function __construct(StateMachineManager $stateMachineManager, $includeInvoiceStateToComplete)
     {

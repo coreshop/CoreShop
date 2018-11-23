@@ -75,6 +75,7 @@ trait BaseAdjustableTrait
 
     /**
      * @param string|null $type
+     *
      * @return AdjustmentInterface[]
      */
     public function getBaseAdjustments(string $type = null)
@@ -149,11 +150,12 @@ trait BaseAdjustableTrait
         $items = $this->getBaseAdjustmentItems();
 
         if ($items instanceof Fieldcollection) {
-            for ($i = 0, $c = $items->getCount(); $i < $c; ++$i) {
+            for ($i = 0, $c = $items->getCount(); $i < $c; $i++) {
                 $arrayItem = $items->get($i);
 
                 if ($arrayItem === $adjustment) {
                     $items->remove($i);
+
                     break;
                 }
             }
@@ -244,5 +246,5 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    protected abstract function recalculateBaseAfterAdjustmentChange();
+    abstract protected function recalculateBaseAfterAdjustmentChange();
 }

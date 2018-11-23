@@ -59,10 +59,10 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
     private $orderRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeContext
      * @param PimcoreRepositoryInterface $orderRepository,
      */
     public function __construct(
@@ -71,8 +71,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
         PimcoreRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -98,6 +97,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
 
     /**
      * @param ParameterBag $parameterBag
+     *
      * @return array
      */
     protected function getData(ParameterBag $parameterBag)
@@ -131,23 +131,25 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
             case 'day':
                 $dateFormatter = 'd-m-Y';
                 $groupSelector = 'DATE(FROM_UNIXTIME(orders.orderDate))';
+
                 break;
             case 'month':
                 $dateFormatter = 'F Y';
                 $groupSelector = 'MONTH(FROM_UNIXTIME(orders.orderDate))';
+
                 break;
             case 'year':
                 $dateFormatter = 'Y';
                 $groupSelector = 'YEAR(FROM_UNIXTIME(orders.orderDate))';
-                break;
 
+                break;
         }
 
         $sqlQuery = "
               SELECT DATE(FROM_UNIXTIME(orderDate)) AS dayDate, orderDate, SUM(totalGross) AS total 
               FROM object_query_$classId as orders
               WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? 
-              GROUP BY ".$groupSelector;
+              GROUP BY " . $groupSelector;
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
 
@@ -158,7 +160,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
                 'timestamp' => $date->getTimestamp(),
                 'datetext' => $date->format($dateFormatter),
                 'sales' => $result['total'],
-                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode())
+                'salesFormatted' => $this->moneyFormatter->format($result['total'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 
@@ -174,8 +176,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
 
         $formatter = new \IntlDateFormatter($this->localeContext->getLocaleCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
 
-        foreach ($data as &$entry)
-        {
+        foreach ($data as &$entry) {
             $entry['timestamp'] = $formatter->format($entry['timestamp']);
 
             unset($entry['datetext']);

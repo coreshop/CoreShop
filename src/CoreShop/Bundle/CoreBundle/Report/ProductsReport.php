@@ -68,13 +68,13 @@ class ProductsReport implements ReportInterface, ExportReportInterface
     private $orderItemRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeContext
      * @param PimcoreRepositoryInterface $orderRepository,
      * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param StackRepository $productStackRepository
+     * @param StackRepository            $productStackRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -84,8 +84,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         PimcoreRepositoryInterface $orderRepository,
         PimcoreRepositoryInterface $orderItemRepository,
         StackRepository $productStackRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -130,7 +129,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
-                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_'.$id.'_'.$locale;
+                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
             }
 
             $union = join(' UNION ALL ', $unionData);
@@ -151,9 +150,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 WHERE products.o_type = 'object' AND `order`.store = $storeId AND `order`.orderState = '$orderCompleteState' AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
-
         } else {
-
             $productTypeCondition = '1=1';
             if ($objectTypeFilter === 'object') {
                 $productTypeCondition = 'orderItems.mainObjectId = NULL';
@@ -175,7 +172,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
-                INNER JOIN object_localized_query_".$orderItemClassId."_".$locale." AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
+                INNER JOIN object_localized_query_" . $orderItemClassId . '_' . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
@@ -190,7 +187,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['name'] = $sale['productName'].' (Id: '.$sale['productId'].')';
+            $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
         return array_values($productSales);
@@ -200,8 +197,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
     {
         $data = $this->getReportData($parameterBag);
 
-        foreach ($data as &$entry)
-        {
+        foreach ($data as &$entry) {
             unset($entry['salesPrice']);
             unset($entry['sales']);
             unset($entry['profit']);

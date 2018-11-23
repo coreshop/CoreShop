@@ -18,7 +18,6 @@ use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use Webmozart\Assert\Assert;
 
 final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInterface
@@ -34,14 +33,13 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
     private $shippableCarrierValidator;
 
     /**
-     * @param CarrierRepositoryInterface $carrierRepository
+     * @param CarrierRepositoryInterface         $carrierRepository
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         ShippableCarrierValidatorInterface $shippableCarrierValidator
-    )
-    {
+    ) {
         $this->carrierRepository = $carrierRepository;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
     }

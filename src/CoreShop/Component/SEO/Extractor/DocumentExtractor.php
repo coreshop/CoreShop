@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\SEO\Extractor;
 
-use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use Pimcore\Model\Document\Page;
 use Webmozart\Assert\Assert;

@@ -32,7 +32,7 @@ class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterfac
 
     /**
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param PimcoreFactoryInterface $addressFactory
+     * @param PimcoreFactoryInterface       $addressFactory
      */
     public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory, PimcoreFactoryInterface $addressFactory)
     {

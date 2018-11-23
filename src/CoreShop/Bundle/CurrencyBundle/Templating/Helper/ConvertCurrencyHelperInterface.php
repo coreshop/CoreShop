@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\CurrencyBundle\Templating\Helper;
 interface ConvertCurrencyHelperInterface
 {
     /**
-     * @param int $amount
+     * @param int         $amount
      * @param string|null $sourceCurrencyCode
      * @param string|null $targetCurrencyCode
      *

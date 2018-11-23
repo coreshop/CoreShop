@@ -34,13 +34,12 @@ final class PimcoreClassContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
+     * @param ClassStorageInterface  $classStorage
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
     }
@@ -91,9 +90,9 @@ final class PimcoreClassContext implements Context
     {
         if ($definition instanceof Objectbrick\Definition) {
             $field = $definition->getFieldDefinition($name);
-        } else if ($definition instanceof Fieldcollection\Definition) {
+        } elseif ($definition instanceof Fieldcollection\Definition) {
             $field = $definition->getFieldDefinition($name);
-        } else if ($definition instanceof ClassDefinition) {
+        } elseif ($definition instanceof ClassDefinition) {
             $field = $definition->getFieldDefinition($name);
         } else {
             throw new \InvalidArgumentException(sprintf('Definition with type %s is not supported', null !== $definition ? get_class($definition) : 'null'));

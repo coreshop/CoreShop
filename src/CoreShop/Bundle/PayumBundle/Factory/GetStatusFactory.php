@@ -18,7 +18,7 @@ use Payum\Core\Request\GetStatusInterface;
 final class GetStatusFactory implements GetStatusFactoryInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createNewWithModel($model): GetStatusInterface
     {

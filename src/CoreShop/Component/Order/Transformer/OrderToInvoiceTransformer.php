@@ -84,15 +84,15 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
-     * @param ItemKeyTransformerInterface $keyTransformer
-     * @param NumberGeneratorInterface $numberGenerator
-     * @param string $invoiceFolderPath
-     * @param ObjectServiceInterface $objectService
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param PimcoreFactoryInterface $invoiceItemFactory
-     * @param OrderInvoiceRepositoryInterface $invoiceRepository
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param AdjustmentFactoryInterface $adjustmentFactory
+     * @param ItemKeyTransformerInterface           $keyTransformer
+     * @param NumberGeneratorInterface              $numberGenerator
+     * @param string                                $invoiceFolderPath
+     * @param ObjectServiceInterface                $objectService
+     * @param PimcoreRepositoryInterface            $orderItemRepository
+     * @param PimcoreFactoryInterface               $invoiceItemFactory
+     * @param OrderInvoiceRepositoryInterface       $invoiceRepository
+     * @param TransformerEventDispatcherInterface   $eventDispatcher
+     * @param AdjustmentFactoryInterface            $adjustmentFactory
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
@@ -105,8 +105,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         OrderInvoiceRepositoryInterface $invoiceRepository,
         TransformerEventDispatcherInterface $eventDispatcher,
         AdjustmentFactoryInterface $adjustmentFactory
-    )
-    {
+    ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -137,7 +136,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         /**
          * @var OrderInvoiceInterface $invoice
-         * @var OrderInterface $order
+         * @var OrderInterface        $order
          */
         $invoice->setKey($this->keyTransformer->transform($invoiceNumber));
         $invoice->setInvoiceNumber($invoiceNumber);
@@ -148,7 +147,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function() use ($invoice) {
+        VersionHelper::useVersioning(function () use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -169,7 +168,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoice->setItems($items);
 
-        VersionHelper::useVersioning(function() use ($invoice) {
+        VersionHelper::useVersioning(function () use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -192,14 +191,14 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->calculateTotal($invoice, true);
         $this->calculateTotal($invoice, false);
 
-        VersionHelper::useVersioning(function() use ($invoice) {
+        VersionHelper::useVersioning(function () use ($invoice) {
             $invoice->save();
         }, false);
     }
 
     /**
      * @param OrderInvoiceInterface $invoice
-     * @param boolean $base Calculate Subtotal for Base Values
+     * @param bool                  $base    Calculate Subtotal for Base Values
      */
     private function calculateSubtotal(OrderInvoiceInterface $invoice, $base = true)
     {
@@ -229,7 +228,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     }
 
     /**
-     * Calculate all Adjustments for Invoice
+     * Calculate all Adjustments for Invoice.
      *
      * @param OrderInvoiceInterface $invoice
      * @param bool                  $base
@@ -257,7 +256,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * Calculate Total for invoice.
      *
      * @param OrderInvoiceInterface $invoice
-     * @param boolean $base Calculate Totals for Base Values
+     * @param bool                  $base    Calculate Totals for Base Values
      */
     private function calculateTotal(OrderInvoiceInterface $invoice, $base = true)
     {
@@ -292,6 +291,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * @param string         $adjustmentIdentifier
      * @param bool           $withTax
      * @param bool           $base
+     *
      * @return int
      */
     private function getProcessedAdjustmentValue(OrderInterface $order, $adjustmentIdentifier, bool $withTax, bool $base)

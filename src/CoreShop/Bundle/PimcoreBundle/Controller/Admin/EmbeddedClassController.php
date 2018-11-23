@@ -88,7 +88,7 @@ final class EmbeddedClassController extends AdminController
 
         return $this->adminJson([
             'layout' => $layout,
-            'general' => $general
+            'general' => $general,
         ]);
     }
 }

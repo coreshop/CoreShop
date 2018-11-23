@@ -23,6 +23,7 @@ interface RuleAvailabilityAssessorInterface
 
     /**
      * @param RuleInterface $rule
+     *
      * @return bool
      */
     public function isValid(RuleInterface $rule);

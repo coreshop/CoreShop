@@ -60,13 +60,13 @@ final class StoreContext implements Context
     private $fixedStoreContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param EntityManagerInterface $entityManager
-     * @param FactoryInterface $storeFactory
+     * @param SharedStorageInterface   $sharedStorage
+     * @param EntityManagerInterface   $entityManager
+     * @param FactoryInterface         $storeFactory
      * @param StoreRepositoryInterface $storeRepository
-     * @param FactoryInterface $currencyFactory
-     * @param FactoryInterface $countryFactory
-     * @param FixedStoreContext $fixedStoreContext
+     * @param FactoryInterface         $currencyFactory
+     * @param FactoryInterface         $countryFactory
+     * @param FixedStoreContext        $fixedStoreContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -76,8 +76,7 @@ final class StoreContext implements Context
         FactoryInterface $currencyFactory,
         FactoryInterface $countryFactory,
         FixedStoreContext $fixedStoreContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->entityManager = $entityManager;
         $this->storeFactory = $storeFactory;
@@ -138,9 +137,10 @@ final class StoreContext implements Context
     }
 
     /**
-     * @param string $name
+     * @param string                 $name
      * @param CurrencyInterface|null $currency
-     * @param CountryInterface|null $country
+     * @param CountryInterface|null  $country
+     *
      * @return StoreInterface
      */
     private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null, $grossValues = false)

@@ -50,8 +50,7 @@ class MysqlWorker extends AbstractWorker
         FilterGroupHelperInterface $filterGroupHelper,
         ConditionRendererInterface $conditionRenderer,
         Connection $connection
-    )
-    {
+    ) {
         parent::__construct(
             $extensionsRegistry,
             $getterServiceRegistry,
@@ -104,8 +103,10 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
+     *
      * @throws \Exception
      */
     protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -158,8 +159,10 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
+     *
      * @throws \Exception
      */
     protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -206,7 +209,8 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
      */
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -226,6 +230,7 @@ class MysqlWorker extends AbstractWorker
      * Create Localized Views.
      *
      * @param IndexInterface $index
+     *
      * @return array
      */
     protected function createLocalizedViews(IndexInterface $index)
@@ -340,7 +345,7 @@ QUERY;
      * Insert data into mysql-table.
      *
      * @param IndexInterface $index
-     * @param array $data
+     * @param array          $data
      */
     protected function doInsertData(IndexInterface $index, $data)
     {
@@ -367,7 +372,7 @@ QUERY;
      * Insert data into mysql-table.
      *
      * @param IndexInterface $index
-     * @param array $data
+     * @param array          $data
      */
     protected function doInsertLocalizedData(IndexInterface $index, $data)
     {
@@ -415,9 +420,11 @@ QUERY;
         switch ($type) {
             case IndexColumnInterface::FIELD_TYPE_DATE:
                 $doctrineType = 'date';
+
                 break;
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
                 $doctrineType = 'decimal';
+
                 break;
         }
 
@@ -464,7 +471,7 @@ QUERY;
      * get localized view name.
      *
      * @param IndexInterface $index
-     * @param string $language
+     * @param string         $language
      *
      * @return string
      */

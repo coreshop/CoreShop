@@ -17,10 +17,10 @@ use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 interface NotificationRuleProcessorInterface
 {
     /**
-     * @param mixed $subject
+     * @param mixed                     $subject
      * @param NotificationRuleInterface $rule
-     * @param array $configuration
-     * @param array $params
+     * @param array                     $configuration
+     * @param array                     $params
      *
      * @return mixed
      */

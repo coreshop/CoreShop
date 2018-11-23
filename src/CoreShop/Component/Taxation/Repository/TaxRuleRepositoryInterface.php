@@ -20,6 +20,7 @@ interface TaxRuleRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param int $groupId
+     *
      * @return TaxRuleInterface[]
      *
      * @deprecated getByGroupId is deprecated since 2.0.0 and will be removed in 2.1.0. Please use findByGroup instead
@@ -28,6 +29,7 @@ interface TaxRuleRepositoryInterface extends RepositoryInterface
 
     /**
      * @param TaxRuleGroupInterface $group
+     *
      * @return TaxRuleInterface[]
      */
     public function findByGroup(TaxRuleGroupInterface $group);

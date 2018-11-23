@@ -37,7 +37,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
      */
     public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false)
     {
-        list ($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
+        list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 
         return $this->linkGenerator->generate($object, $routeName, $params, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
@@ -47,13 +47,14 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
      */
     public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false)
     {
-        list ($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
+        list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 
         return $this->linkGenerator->generate($object, $routeName, $params, $relative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
      * @param array $arguments
+     *
      * @return array
      */
     protected function prepareParameters($arguments)
@@ -102,7 +103,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
             $object,
             $routeName,
             $params,
-            $relative
+            $relative,
         ];
     }
 

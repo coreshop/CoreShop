@@ -31,7 +31,7 @@ class CustomerType extends AbstractResourceType
     protected $guestValidationGroups = [];
 
     /**
-     * @param string $dataClass FQCN
+     * @param string   $dataClass             FQCN
      * @param string[] $validationGroups
      * @param string[] $guestValidationGroups
      */
@@ -52,20 +52,20 @@ class CustomerType extends AbstractResourceType
                 'label' => 'coreshop.form.customer.gender',
                 'choices' => array(
                     'coreshop.form.customer.gender.male' => 'male',
-                    'coreshop.form.customer.gender.female' => 'female'
+                    'coreshop.form.customer.gender.female' => 'female',
                 ),
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'coreshop.form.customer.firstname'
+                'label' => 'coreshop.form.customer.firstname',
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'coreshop.form.customer.lastname'
+                'label' => 'coreshop.form.customer.lastname',
             ])
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'invalid_message' => 'coreshop.form.customer.email.must_match',
                 'first_options' => ['label' => 'coreshop.form.customer.email'],
-                'second_options' => ['label' => 'coreshop.form.customer.email_repeat']
+                'second_options' => ['label' => 'coreshop.form.customer.email_repeat'],
             ]);
 
         if (!$options['guest'] && $options['allow_password_field']) {
@@ -74,10 +74,9 @@ class CustomerType extends AbstractResourceType
                     'type' => PasswordType::class,
                     'invalid_message' => 'coreshop.form.customer.password.must_match',
                     'first_options' => ['label' => 'coreshop.form.customer.password'],
-                    'second_options' => ['label' => 'coreshop.form.customer.password_repeat']
+                    'second_options' => ['label' => 'coreshop.form.customer.password_repeat'],
                 ]);
         }
-
 
         if (!$options['guest']) {
             $builder
@@ -110,7 +109,6 @@ class CustomerType extends AbstractResourceType
                 return $validationGroups;
             },
         ));
-
     }
 
     /**

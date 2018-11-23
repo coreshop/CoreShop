@@ -83,7 +83,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
         if (is_null($price)) {
             throw new \InvalidArgumentException(
-                sprintf("Could not determine a discount price for Product (%s)", $product->getId())
+                sprintf('Could not determine a discount price for Product (%s)', $product->getId())
             );
         }
 
@@ -121,7 +121,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
         if (is_null($price)) {
             throw new \InvalidArgumentException(
-                sprintf("Could not determine a price for Product (%s)", $product->getId())
+                sprintf('Could not determine a price for Product (%s)', $product->getId())
             );
         }
 
@@ -137,6 +137,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
     /**
      * @param PurchasableInterface $product
      * @param array                $context
+     *
      * @return TaxCalculatorInterface
      */
     protected function getTaxCalculator(PurchasableInterface $product, array $context)
@@ -146,6 +147,7 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
 
     /**
      * @param array $context
+     *
      * @return AddressInterface|null
      */
     protected function getDefaultAddress($context)

@@ -60,7 +60,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
             $fieldName = $field;
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_'.$fieldName;
+                $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
             $list->addCondition(new MatchCondition($field, $value), $fieldName);

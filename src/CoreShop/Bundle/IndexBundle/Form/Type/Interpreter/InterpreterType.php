@@ -43,9 +43,8 @@ final class InterpreterType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-         $builder
-            ->add('type', IndexColumnInterpreterChoiceType::class)
-        ;
+        $builder
+            ->add('type', IndexColumnInterpreterChoiceType::class);
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -72,8 +71,7 @@ final class InterpreterType extends AbstractType
                 }
 
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($data['type'], 'default'));
-            })
-        ;
+            });
     }
 
     /**
@@ -85,8 +83,7 @@ final class InterpreterType extends AbstractType
 
         $resolver
             ->setDefault('configuration_type', null)
-            ->setAllowedTypes('configuration_type', ['string', 'null'])
-        ;
+            ->setAllowedTypes('configuration_type', ['string', 'null']);
     }
 
     /**

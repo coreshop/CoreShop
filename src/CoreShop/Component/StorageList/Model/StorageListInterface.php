@@ -18,6 +18,7 @@ interface StorageListInterface extends ResourceInterface
 {
     /**
      * @param StorageListProductInterface $product
+     *
      * @return StorageListItemInterface|null
      */
     public function getItemForProduct(StorageListProductInterface $product);

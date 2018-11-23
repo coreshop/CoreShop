@@ -49,9 +49,10 @@ final class OrderMailNoteEventListener
 
     /**
      * @param OrderInterface $order
-     * @param Email $emailDocument
-     * @param Mail $mail
-     * @param array $params
+     * @param Email          $emailDocument
+     * @param Mail           $mail
+     * @param array          $params
+     *
      * @return bool
      */
     private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, $params = [])

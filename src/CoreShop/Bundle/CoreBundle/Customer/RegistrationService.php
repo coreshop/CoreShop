@@ -68,13 +68,13 @@ final class RegistrationService implements RegistrationServiceInterface
 
     /**
      * @param CustomerRepositoryInterface $customerRepository
-     * @param ObjectServiceInterface $objectService
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param TokenStorage $securityTokenStorage
-     * @param LocaleContextInterface $localeContext
-     * @param string $customerFolder
-     * @param string $guestFolder
-     * @param string $addressFolder
+     * @param ObjectServiceInterface      $objectService
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param TokenStorage                $securityTokenStorage
+     * @param LocaleContextInterface      $localeContext
+     * @param string                      $customerFolder
+     * @param string                      $guestFolder
+     * @param string                      $addressFolder
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -84,8 +84,8 @@ final class RegistrationService implements RegistrationServiceInterface
         LocaleContextInterface $localeContext,
         $customerFolder,
         $guestFolder,
-        $addressFolder)
-    {
+        $addressFolder
+    ) {
         $this->customerRepository = $customerRepository;
         $this->objectService = $objectService;
         $this->eventDispatcher = $eventDispatcher;
@@ -99,16 +99,24 @@ final class RegistrationService implements RegistrationServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false)
-    {
+    public function registerCustomer(
+        CustomerInterface $customer,
+        AddressInterface $address,
+        $formData,
+        $isGuest = false
+    ) {
         $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
-        
+
         if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();
         }
 
         $customer->setPublished(true);
-        $customer->setParent($this->objectService->createFolderByPath(sprintf('/%s/%s', ($isGuest ? $this->guestFolder : $this->customerFolder), substr($customer->getLastname(), 0, 1))));
+        $customer->setParent($this->objectService->createFolderByPath(sprintf(
+            '/%s/%s',
+            ($isGuest ? $this->guestFolder : $this->customerFolder),
+            substr($customer->getLastname(), 0, 1)
+        )));
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
@@ -117,7 +125,11 @@ final class RegistrationService implements RegistrationServiceInterface
 
         $address->setPublished(true);
         $address->setKey(uniqid());
-        $address->setParent($this->objectService->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->addressFolder)));
+        $address->setParent($this->objectService->createFolderByPath(sprintf(
+            '/%s/%s',
+            $customer->getFullPath(),
+            $this->addressFolder
+        )));
         $address->save();
 
         $customer->setDefaultAddress($address);
@@ -126,9 +138,11 @@ final class RegistrationService implements RegistrationServiceInterface
         $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getRoles());
         $this->securityTokenStorage->setToken($token);
 
-        $this->eventDispatcher->dispatch('coreshop.customer.register', new CustomerRegistrationEvent($customer, $formData));
+        $this->eventDispatcher->dispatch(
+            'coreshop.customer.register',
+            new CustomerRegistrationEvent($customer, $formData)
+        );
 
         $customer->save();
     }
-
 }

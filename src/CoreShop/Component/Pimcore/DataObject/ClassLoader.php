@@ -15,7 +15,7 @@ namespace CoreShop\Component\Pimcore\DataObject;
 class ClassLoader
 {
     /**
-     * Force loads a class, this makes sense if a class is installed and needs to be used in the same request
+     * Force loads a class, this makes sense if a class is installed and needs to be used in the same request.
      *
      * @param string $className
      */
@@ -30,7 +30,7 @@ class ClassLoader
     }
 
     /**
-     * Force loads a field-collection, this makes sense if a class is installed and needs to be used in the same request
+     * Force loads a field-collection, this makes sense if a class is installed and needs to be used in the same request.
      *
      * @param string $fieldCollection
      */
@@ -45,7 +45,7 @@ class ClassLoader
     }
 
     /**
-     * Force loads a bick, this makes sense if a class is installed and needs to be used in the same request
+     * Force loads a bick, this makes sense if a class is installed and needs to be used in the same request.
      *
      * @param string $brickName
      */
@@ -60,7 +60,7 @@ class ClassLoader
     }
 
     /**
-     * Require class
+     * Require class.
      *
      * @param string $fileName
      * @param string $className
@@ -73,14 +73,16 @@ class ClassLoader
     }
 
     /**
-     * Normalize a Pimcore DataObject ClassName
+     * Normalize a Pimcore DataObject ClassName.
      *
      * @param string $className
+     *
      * @return string
      */
     protected static function normalizeClassName($className)
     {
         $classNameExploded = explode('\\', $className);
+
         return ucfirst($classNameExploded[count($classNameExploded) - 1]);
     }
 }

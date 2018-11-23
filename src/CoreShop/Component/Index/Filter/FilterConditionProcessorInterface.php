@@ -26,11 +26,11 @@ interface FilterConditionProcessorInterface
 
     /**
      * @param FilterConditionInterface $condition
-     * @param FilterInterface $filter
-     * @param ListingInterface $list
-     * @param array $currentFilter
-     * @param ParameterBag $parameterBag
-     * @param bool $isPrecondition
+     * @param FilterInterface          $filter
+     * @param ListingInterface         $list
+     * @param array                    $currentFilter
+     * @param ParameterBag             $parameterBag
+     * @param bool                     $isPrecondition
      *
      * @return mixed
      */
@@ -38,9 +38,9 @@ interface FilterConditionProcessorInterface
 
     /**
      * @param FilterConditionInterface $condition
-     * @param FilterInterface $filter
-     * @param ListingInterface $list
-     * @param array $currentFilter
+     * @param FilterInterface          $filter
+     * @param ListingInterface         $list
+     * @param array                    $currentFilter
      *
      * @return array
      */

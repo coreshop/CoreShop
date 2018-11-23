@@ -37,7 +37,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $title
-     * @param null $language
+     * @param null   $language
      */
     public function setTitle($title, $language = null);
 
@@ -50,7 +50,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $description
-     * @param null $language
+     * @param null   $language
      */
     public function setDescription($description, $language = null);
 
@@ -63,7 +63,7 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
 
     /**
      * @param string $instructions
-     * @param null $language
+     * @param null   $language
      */
     public function setInstructions($instructions, $language = null);
 

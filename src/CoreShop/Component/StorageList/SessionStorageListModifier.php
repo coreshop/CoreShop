@@ -24,7 +24,7 @@ class SessionStorageListModifier extends SimpleStorageListModifier
     private $manager;
 
     /**
-     * @param FactoryInterface $storageListItemFactory
+     * @param FactoryInterface            $storageListItemFactory
      * @param StorageListManagerInterface $manager
      */
     public function __construct(FactoryInterface $storageListItemFactory, StorageListManagerInterface $manager)

@@ -30,7 +30,7 @@ final class ProductPriceNestedConfigurationType extends AbstractNestedConfigurat
         $builder
             ->add('conditions', ProductPriceRuleConditionCollectionType::class);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
 
             if (is_array($data)) {

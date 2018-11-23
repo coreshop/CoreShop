@@ -84,12 +84,12 @@ final class ProductSpecificPriceRuleContext implements Context
     private $productSpecificPriceRuleRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FormFactoryInterface $formFactory
-     * @param FormTypeRegistryInterface $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface $actionFormTypeRegistry
-     * @param FactoryInterface $productSpecificPriceRuleFactory
+     * @param SharedStorageInterface                      $sharedStorage
+     * @param ObjectManager                               $objectManager
+     * @param FormFactoryInterface                        $formFactory
+     * @param FormTypeRegistryInterface                   $conditionFormTypeRegistry
+     * @param FormTypeRegistryInterface                   $actionFormTypeRegistry
+     * @param FactoryInterface                            $productSpecificPriceRuleFactory
      * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
      */
     public function __construct(
@@ -100,8 +100,7 @@ final class ProductSpecificPriceRuleContext implements Context
         FormTypeRegistryInterface $actionFormTypeRegistry,
         FactoryInterface $productSpecificPriceRuleFactory,
         ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->formFactory = $formFactory;
@@ -163,8 +162,8 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('countries', [
             'countries' => [
-                $country->getId()
-            ]
+                $country->getId(),
+            ],
         ]));
     }
 
@@ -178,8 +177,8 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
             'customers' => [
-                $customer->getId()
-            ]
+                $customer->getId(),
+            ],
         ]));
     }
 
@@ -196,7 +195,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('timespan', [
             'dateFrom' => $from->getTimestamp() * 1000,
-            'dateTo' => $to->getTimestamp() * 1000
+            'dateTo' => $to->getTimestamp() * 1000,
         ]));
     }
 
@@ -210,8 +209,8 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
             'customerGroups' => [
-                $group->getId()
-            ]
+                $group->getId(),
+            ],
         ]));
     }
 
@@ -225,8 +224,8 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('stores', [
             'stores' => [
-                $store->getId()
-            ]
+                $store->getId(),
+            ],
         ]));
     }
 
@@ -240,8 +239,8 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('zones', [
             'zones' => [
-                $zone->getId()
-            ]
+                $zone->getId(),
+            ],
         ]));
     }
 
@@ -255,8 +254,8 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('currencies', [
             'currencies' => [
-                $currency->getId()
-            ]
+                $currency->getId(),
+            ],
         ]));
     }
 
@@ -269,7 +268,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($discount)
+            'percent' => intval($discount),
         ]));
     }
 
@@ -283,7 +282,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
             'amount' => intval($amount),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -297,7 +296,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
             'price' => intval($price),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -311,7 +310,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
         $this->addAction($rule, $this->createActionWithForm('price', [
             'price' => intval($price),
-            'currency' => $currency->getId()
+            'currency' => $currency->getId(),
         ]));
     }
 
@@ -330,19 +329,19 @@ final class ProductSpecificPriceRuleContext implements Context
                     'type' => 'stores',
                     'configuration' => [
                         'stores' => [
-                            $store1->getId()
-                        ]
-                    ]
+                            $store1->getId(),
+                        ],
+                    ],
                 ],
                 [
                     'type' => 'stores',
                     'configuration' => [
                         'stores' => [
-                            $store2->getId()
-                        ]
-                    ]
-                ]
-            ]
+                            $store2->getId(),
+                        ],
+                    ],
+                ],
+            ],
         ]));
     }
 
@@ -361,25 +360,25 @@ final class ProductSpecificPriceRuleContext implements Context
                     'type' => 'stores',
                     'configuration' => [
                         'stores' => [
-                            $store->getId()
-                        ]
-                    ]
+                            $store->getId(),
+                        ],
+                    ],
                 ],
                 [
                     'type' => 'countries',
                     'configuration' => [
                         'countries' => [
-                            $country->getId()
-                        ]
-                    ]
-                ]
-            ]
+                            $country->getId(),
+                        ],
+                    ],
+                ],
+            ],
         ]));
     }
 
     /**
      * @param ProductSpecificPriceRuleInterface $rule
-     * @param ConditionInterface $condition
+     * @param ConditionInterface                $condition
      */
     private function addCondition(ProductSpecificPriceRuleInterface $rule, ConditionInterface $condition)
     {
@@ -391,7 +390,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
     /**
      * @param ProductSpecificPriceRuleInterface $rule
-     * @param ActionInterface $action
+     * @param ActionInterface                   $action
      */
     private function addAction(ProductSpecificPriceRuleInterface $rule, ActionInterface $action)
     {

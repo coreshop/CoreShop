@@ -27,7 +27,7 @@ final class AvailabilityCheckMaintenanceListener
     /**
      * @var RuleAvailabilityProcessorInterface
      */
-    protected $ruleAvailabilityProcessor;
+    private $ruleAvailabilityProcessor;
 
     /**
      * @param ConfigurationServiceInterface      $configurationService

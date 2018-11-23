@@ -60,25 +60,25 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             'type' => 'amount',
                             'config' => [
                                 'minAmount' => 0,
-                                'maxAmount' => 15000
-                            ]
+                                'maxAmount' => 15000,
+                            ],
                         ],
                         [
                             'type' => 'zones',
                             'config' => [
-                                'zones' => [4]
-                            ]
-                        ]
+                                'zones' => [4],
+                            ],
+                        ],
                     ],
                     'actions' => [
                         [
                             'type' => 'price',
                             'config' => [
                                 'price' => 500,
-                                'currency' => $currency
-                            ]
-                        ]
-                    ]
+                                'currency' => $currency,
+                            ],
+                        ],
+                    ],
                 ],
                 [
                     'name' => 'demo2',
@@ -87,25 +87,25 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             'type' => 'amount',
                             'config' => [
                                 'minAmount' => 15000,
-                                'maxAmount' => 200000
-                            ]
+                                'maxAmount' => 200000,
+                            ],
                         ],
                         [
                             'type' => 'zones',
                             'config' => [
-                                'zones' => [4]
-                            ]
-                        ]
+                                'zones' => [4],
+                            ],
+                        ],
                     ],
                     'actions' => [
                         [
                             'type' => 'price',
                             'config' => [
                                 'price' => 1000,
-                                'currency' => $currency
-                            ]
-                        ]
-                    ]
+                                'currency' => $currency,
+                            ],
+                        ],
+                    ],
                 ],
                 [
                     'name' => 'demo3',
@@ -114,26 +114,26 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             'type' => 'amount',
                             'config' => [
                                 'minAmount' => 200000,
-                                'maxAmount' => 300000
-                            ]
+                                'maxAmount' => 300000,
+                            ],
                         ],
                         [
                             'type' => 'zones',
                             'config' => [
-                                'zones' => [4]
-                            ]
-                        ]
+                                'zones' => [4],
+                            ],
+                        ],
                     ],
                     'actions' => [
                         [
                             'type' => 'price',
                             'config' => [
                                 'price' => 2000,
-                                'currency' => $currency
-                            ]
-                        ]
-                    ]
-                ]
+                                'currency' => $currency,
+                            ],
+                        ],
+                    ],
+                ],
             ];
 
             foreach ($configuration as $index => $config) {
@@ -159,7 +159,7 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
 
                 $manager->persist($rule);
 
-                $this->setReference('shippingRule'.$index, $rule);
+                $this->setReference('shippingRule' . $index, $rule);
             }
 
             $manager->flush();

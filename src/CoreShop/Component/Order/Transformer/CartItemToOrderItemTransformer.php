@@ -12,14 +12,12 @@
 
 namespace CoreShop\Component\Order\Transformer;
 
-
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use Webmozart\Assert\Assert;
-
 
 class CartItemToOrderItemTransformer extends AbstractCartItemToSaleItemTransformer
 {
@@ -29,8 +27,8 @@ class CartItemToOrderItemTransformer extends AbstractCartItemToSaleItemTransform
     public function transform(ProposalInterface $order, ProposalItemInterface $cartItem, ProposalItemInterface $orderItem)
     {
         /**
-         * @var $order OrderInterface
-         * @var $cartItem CartItemInterface
+         * @var $order     OrderInterface
+         * @var $cartItem  CartItemInterface
          * @var $orderItem OrderItemInterface
          */
         Assert::isInstanceOf($cartItem, CartItemInterface::class);

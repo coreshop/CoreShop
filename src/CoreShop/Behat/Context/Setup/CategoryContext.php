@@ -39,8 +39,8 @@ final class CategoryContext implements Context
     private $categoryRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $categoryFactory
+     * @param SharedStorageInterface      $sharedStorage
+     * @param FactoryInterface            $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(SharedStorageInterface $sharedStorage, FactoryInterface $categoryFactory, CategoryRepositoryInterface $categoryRepository)
@@ -84,7 +84,7 @@ final class CategoryContext implements Context
     }
 
     /**
-     * @param string $categoryName
+     * @param string              $categoryName
      * @param StoreInterface|null $store
      *
      * @return CategoryInterface

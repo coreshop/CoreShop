@@ -33,7 +33,7 @@ class CompareRenderer extends AbstractMysqlDynamicRenderer
         $value = $condition->getValue();
         $operator = $condition->getOperator();
 
-        return ''.$this->quoteFieldName($condition->getFieldName(), $prefix).' '.$operator.' '.$this->quote($value);
+        return '' . $this->quoteFieldName($condition->getFieldName(), $prefix) . ' ' . $operator . ' ' . $this->quote($value);
     }
 
     /**

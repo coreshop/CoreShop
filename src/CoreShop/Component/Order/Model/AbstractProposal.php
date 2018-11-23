@@ -42,11 +42,12 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     {
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
                 unset($items[$i]);
+
                 break;
             }
         }
@@ -61,7 +62,7 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
     {
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
@@ -224,7 +225,6 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -246,6 +246,5 @@ abstract class AbstractProposal extends AbstractPimcoreModel implements Proposal
      */
     protected function recalculateAfterAdjustmentChange()
     {
-
     }
 }

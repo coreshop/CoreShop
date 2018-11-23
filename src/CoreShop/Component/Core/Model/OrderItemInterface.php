@@ -16,5 +16,4 @@ use CoreShop\Component\Order\Model\OrderItemInterface as BaseOrderItemInterface;
 
 interface OrderItemInterface extends BaseOrderItemInterface, SaleItemInterface
 {
-
 }

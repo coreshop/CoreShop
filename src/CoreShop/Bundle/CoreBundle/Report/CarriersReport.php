@@ -49,9 +49,9 @@ class CarriersReport implements ReportInterface
     private $orderRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param RepositoryInterface $carrierRepository
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param RepositoryInterface        $carrierRepository
      * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
@@ -59,8 +59,7 @@ class CarriersReport implements ReportInterface
         Connection $db,
         RepositoryInterface $carrierRepository,
         PimcoreRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->carrierRepository = $carrierRepository;
@@ -90,7 +89,7 @@ class CarriersReport implements ReportInterface
             return [];
         }
 
-        $tableName = 'object_query_'.$this->orderRepository->getClassId();
+        $tableName = 'object_query_' . $this->orderRepository->getClassId();
         $sql = "
               SELECT carrier, 
                     COUNT(1) as total, 

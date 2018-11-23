@@ -18,7 +18,7 @@ interface DocumentTagFactoryInterface
 {
     /**
      * @param string $type
-     * @param array $params
+     * @param array  $params
      *
      * @return TagInterface
      */

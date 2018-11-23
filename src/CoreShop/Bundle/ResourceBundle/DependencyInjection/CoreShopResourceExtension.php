@@ -29,7 +29,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
 
@@ -58,7 +58,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             $bodyListener->addTag('kernel.event_listener', [
                 'event' => 'kernel.request',
                 'method' => 'onKernelRequest',
-                'priority' => 10
+                'priority' => 10,
             ]);
 
             $container->setDefinition('coreshop.body_listener', $bodyListener);

@@ -16,12 +16,13 @@ interface OrderInvoiceItemInterface extends OrderDocumentItemInterface
 {
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getTotal($withTax = true);
 
     /**
-     * @param int $total
+     * @param int  $total
      * @param bool $withTax
      */
     public function setTotal($total, $withTax = true);
@@ -33,12 +34,13 @@ interface OrderInvoiceItemInterface extends OrderDocumentItemInterface
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseTotal($withTax = true);
 
     /**
-     * @param int $baseTotal
+     * @param int  $baseTotal
      * @param bool $withTax
      */
     public function setBaseTotal($baseTotal, $withTax = true);

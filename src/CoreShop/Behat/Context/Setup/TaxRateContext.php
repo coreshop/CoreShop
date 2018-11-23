@@ -43,17 +43,16 @@ final class TaxRateContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $taxRateFactory
-     * @param RepositoryInterface $taxRateRepository
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $taxRateFactory
+     * @param RepositoryInterface    $taxRateRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $taxRateFactory,
         RepositoryInterface $taxRateRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRateFactory = $taxRateFactory;

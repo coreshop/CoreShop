@@ -73,6 +73,7 @@ class Dao
         }
         $result = $this->database->executeQuery($queryBuilder->getSQL());
         $this->lastRecordCount = $result->rowCount();
+
         return $result->fetchAll();
     }
 
@@ -80,8 +81,8 @@ class Dao
      * Load Group by values.
      *
      * @param QueryBuilder $queryBuilder
-     * @param string $fieldName
-     * @param bool $countValues
+     * @param string       $fieldName
+     * @param bool         $countValues
      *
      * @return array
      */
@@ -122,8 +123,8 @@ class Dao
      * Load Grouo by Relation values.
      *
      * @param QueryBuilder $queryBuilder
-     * @param string $fieldName
-     * @param bool $countValues
+     * @param string       $fieldName
+     * @param bool         $countValues
      *
      * @return array
      */
@@ -152,7 +153,6 @@ class Dao
             $result = $stmt->fetchAll();
 
             return $result;
-
         } else {
             $queryBuilder->select($this->quoteIdentifier('dest'));
             $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
@@ -194,6 +194,7 @@ class Dao
             $queryBuilder->select('count(*)');
         }
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+
         return $stmt->fetchColumn();
     }
 
@@ -225,7 +226,7 @@ class Dao
      * returns order by statement for similarity calculations based on given fields and object ids.
      *
      * @param array $fields
-     * @param int $objectId
+     * @param int   $objectId
      *
      * @return string
      */
@@ -289,7 +290,7 @@ class Dao
     /**
      * returns where statement for fulltext search index.
      *
-     * @param array $fields
+     * @param array  $fields
      * @param string $searchString
      *
      * @return string

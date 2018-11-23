@@ -13,8 +13,6 @@
 namespace CoreShop\Bundle\NotificationBundle\Processor;
 
 use CoreShop\Bundle\NotificationBundle\Events;
-use CoreShop\Component\Notification\Model\NotificationRuleInterface;
-use CoreShop\Component\Notification\Processor\RuleApplierInterface;
 use CoreShop\Component\Notification\Processor\RulesProcessorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -32,14 +30,13 @@ final class EventedRuleProcessor implements RulesProcessorInterface
     private $eventDispatcher;
 
     /**
-     * @param RulesProcessorInterface $rulesProcessor
+     * @param RulesProcessorInterface  $rulesProcessor
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         RulesProcessorInterface $rulesProcessor,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->rulesProcessor = $rulesProcessor;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -51,7 +48,7 @@ final class EventedRuleProcessor implements RulesProcessorInterface
     {
         $event = new GenericEvent($type, [
             'subject' => $subject,
-            'params' => $params
+            'params' => $params,
         ]);
 
         $this->eventDispatcher->dispatch(Events::PRE_APPLY, $event);

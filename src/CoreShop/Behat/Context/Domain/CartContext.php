@@ -33,13 +33,12 @@ final class CartContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface   $cartContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->cartContext = $cartContext;
     }

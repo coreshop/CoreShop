@@ -19,8 +19,8 @@ interface RuleValidationProcessorInterface
 {
     /**
      * @param ResourceInterface $subject
-     * @param RuleInterface $rule
-     * @param array $params
+     * @param RuleInterface     $rule
+     * @param array             $params
      *
      * @return bool
      */

@@ -35,7 +35,7 @@ final class ValidPriceRulesExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_product_price_rules', [$this->helper, 'getValidRules'])
+            new \Twig_Filter('coreshop_product_price_rules', [$this->helper, 'getValidRules']),
         ];
     }
 }

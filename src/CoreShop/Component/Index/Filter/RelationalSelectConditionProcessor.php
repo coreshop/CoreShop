@@ -70,7 +70,7 @@ class RelationalSelectConditionProcessor implements FilterConditionProcessorInte
             $fieldName = $field;
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_'.$fieldName;
+                $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
             $list->addRelationCondition(new MatchCondition('dest', $value), $fieldName);

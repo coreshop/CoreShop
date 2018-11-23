@@ -20,6 +20,7 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
 {
     /**
      * @param StoreInterface $store
+     *
      * @return CategoryInterface[]
      */
     public function findForStore(StoreInterface $store);
@@ -33,21 +34,23 @@ interface CategoryRepositoryInterface extends BaseCategoryRepositoryInterface
 
     /**
      * @param CategoryInterface $category
-     * @param StoreInterface $store
+     * @param StoreInterface    $store
+     *
      * @return CategoryInterface[]
      */
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store);
 
     /**
      * @param CategoryInterface $category
-     * @param StoreInterface $store
+     * @param StoreInterface    $store
+     *
      * @return int[]
      */
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store);
 
     /**
      * @param CategoryInterface $category
-     * @param StoreInterface $store
+     * @param StoreInterface    $store
      *
      * @return CategoryInterface[]
      */

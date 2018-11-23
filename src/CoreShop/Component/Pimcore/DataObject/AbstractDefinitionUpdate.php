@@ -29,7 +29,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public abstract function save();
+    abstract public function save();
 
     /**
      * {@inheritdoc}
@@ -169,6 +169,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 if ($child['name'] === $fieldName) {
                     $callback($child, $index, $children);
                     $found = true;
+
                     break;
                 } else {
                     if (array_key_exists('childs', $child)) {

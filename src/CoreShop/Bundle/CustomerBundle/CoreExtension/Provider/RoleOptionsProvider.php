@@ -32,7 +32,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      * @var array
      */
     protected $invalidRoles = [
-        'ROLE_PIMCORE_ADMIN'
+        'ROLE_PIMCORE_ADMIN',
     ];
 
     public function __construct()
@@ -43,7 +43,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 
     /**
      * @param array $context
-     * @param Data $fieldDefinition
+     * @param Data  $fieldDefinition
      *
      * @return array
      */
@@ -52,10 +52,9 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
         $roles = [];
 
         /**
-         * Get all unique roles
+         * Get all unique roles.
          */
         foreach ($this->originalRoles as $originalRole => $inheritedRoles) {
-
             foreach ($inheritedRoles as $inheritedRole) {
                 $roles[] = $inheritedRole;
             }
@@ -74,7 +73,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 
     /**
      * @param array $context
-     * @param Data $fieldDefinition
+     * @param Data  $fieldDefinition
      *
      * @return bool
      */
@@ -85,7 +84,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 
     /**
      * @param array $context
-     * @param Data $fieldDefinition
+     * @param Data  $fieldDefinition
      *
      * @return mixed
      */

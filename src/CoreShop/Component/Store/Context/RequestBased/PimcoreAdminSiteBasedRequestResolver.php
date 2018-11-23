@@ -38,15 +38,14 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
 
     /**
      * @param StoreRepositoryInterface $storeRepository
-     * @param RequestHelper $requestHelper
-     * @param Service $documentService
+     * @param RequestHelper            $requestHelper
+     * @param Service                  $documentService
      */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         RequestHelper $requestHelper,
         Service $documentService
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->requestHelper = $requestHelper;
         $this->documentService = $documentService;

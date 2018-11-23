@@ -17,13 +17,10 @@ interface NotificationRuleListenerInterface
     /**
      * @param string $type
      *
-     * @return boolean
+     * @return bool
      */
     public function hasBeenFired($type);
 
-    /**
-     *
-     */
     public function clear();
 
     /**

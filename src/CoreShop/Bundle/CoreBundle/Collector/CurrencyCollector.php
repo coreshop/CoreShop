@@ -29,17 +29,16 @@ final class CurrencyCollector extends DataCollector
 
     /**
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyContextInterface $currencyContext
-     * @param StoreContextInterface $storeContext
-     * @param bool $currencyChangeSupport
+     * @param CurrencyContextInterface    $currencyContext
+     * @param StoreContextInterface       $storeContext
+     * @param bool                        $currencyChangeSupport
      */
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
         $currencyChangeSupport = false
-    )
-    {
+    ) {
         $this->currencyContext = $currencyContext;
 
         try {

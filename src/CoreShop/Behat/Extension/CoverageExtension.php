@@ -25,7 +25,6 @@ class CoverageExtension implements ExtensionInterface
      */
     public function initialize(ExtensionManager $extensionManager)
     {
-
     }
 
     /**
@@ -33,7 +32,6 @@ class CoverageExtension implements ExtensionInterface
      */
     public function load(ContainerBuilder $container, array $config)
     {
-
     }
 
     /**
@@ -41,7 +39,6 @@ class CoverageExtension implements ExtensionInterface
      */
     public function configure(ArrayNodeDefinition $builder)
     {
-
     }
 
     /**

@@ -31,7 +31,7 @@ final class UniqueTokenGenerator
         $this->numbers = implode(range(0, 9));
 
         if ($onlyNumbers === false) {
-            $this->keys = $this->alphabet.$this->numbers;
+            $this->keys = $this->alphabet . $this->numbers;
         } else {
             $this->keys = $this->numbers;
         }
@@ -41,6 +41,7 @@ final class UniqueTokenGenerator
 
     /**
      * @param int $length
+     *
      * @return string
      */
     public function generate($length)
@@ -79,6 +80,6 @@ final class UniqueTokenGenerator
             $rnd = $rnd & $filter;
         } while ($rnd >= $range);
 
-        return ($min + $rnd);
+        return $min + $rnd;
     }
 }

@@ -29,8 +29,7 @@ final class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('checker')->defaultValue('coreshop.inventory.availability_checker.default')->cannotBeEmpty()->end()
-            ->end()
-        ;
+            ->end();
 
         return $treeBuilder;
     }

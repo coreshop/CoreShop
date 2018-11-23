@@ -59,4 +59,3 @@ final class WkhtmlOptionsEvent extends Event
         $this->options = $options;
     }
 }
-

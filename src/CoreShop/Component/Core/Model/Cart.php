@@ -47,6 +47,7 @@ class Cart extends BaseCart implements CartInterface
         foreach ($this->getItems() as $item) {
             if ($item->getDigitalProduct() !== true) {
                 $shippable = true;
+
                 break;
             }
         }

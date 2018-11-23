@@ -33,18 +33,19 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
 
     /**
      * @param CurrencyInterface $currency
+     *
      * @return mixed
      */
     public function setBaseCurrency($currency);
 
     /**
-     * @param int $total
+     * @param int  $total
      * @param bool $withTax
      */
     public function setTotal($total, $withTax = true);
 
     /**
-     * @param int $subtotal
+     * @param int  $subtotal
      * @param bool $withTax
      */
     public function setSubtotal($subtotal, $withTax = true);
@@ -106,6 +107,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
 
     /**
      * @param ProposalCartPriceRuleItemInterface $priceRule
+     *
      * @return bool
      */
     public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
@@ -114,7 +116,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
      * @param CartPriceRuleInterface                 $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
      *
-     * @return boolean
+     * @return bool
      */
     public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 
@@ -125,6 +127,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getShipping($withTax = true);
@@ -134,15 +137,15 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
      */
     public function getShippingTaxRate();
 
-
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseTotal($withTax = true);
 
     /**
-     * @param int $total
+     * @param int  $total
      * @param bool $withTax
      */
     public function setBaseTotal($total, $withTax = true);
@@ -154,12 +157,13 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseSubtotal($withTax = true);
 
     /**
-     * @param int $subtotal
+     * @param int  $subtotal
      * @param bool $withTax
      */
     public function setBaseSubtotal($subtotal, $withTax = true);
@@ -171,6 +175,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseDiscount($withTax = true);
@@ -187,6 +192,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getBaseShipping($withTax = true);

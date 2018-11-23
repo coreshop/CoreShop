@@ -16,5 +16,4 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface ProductRepositoryInterface extends PimcoreRepositoryInterface
 {
-
 }
