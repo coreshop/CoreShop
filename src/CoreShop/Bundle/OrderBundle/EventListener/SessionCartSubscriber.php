@@ -17,6 +17,7 @@ use CoreShop\Component\Order\Context\CartNotFoundException;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -84,10 +85,12 @@ final class SessionCartSubscriber implements EventSubscriberInterface
         if (null !== $cart && 0 !== $cart->getId() && null !== $cart->getStore()) {
             $session = $request->getSession();
 
-            $session->set(
-                sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
-                $cart->getId()
-            );
+            if ($session instanceof SessionInterface) {
+                $session->set(
+                    sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
+                    $cart->getId()
+                );
+            }
         }
     }
 }
