@@ -34,7 +34,7 @@ class OrderStateFactory implements OperatorFactoryInterface
 
     /**
      * @param \stdClass $configElement
-     * @param null      $context
+     * @param mixed     $context
      *
      * @return OperatorInterface
      */

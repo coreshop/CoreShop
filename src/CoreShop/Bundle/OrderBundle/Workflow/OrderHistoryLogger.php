@@ -58,9 +58,9 @@ final class OrderHistoryLogger
     }
 
     /**
-     * @param null $orderId
-     * @param null $message
-     * @param null $description
+     * @param mixed $orderId
+     * @param string $message
+     * @param string $description
      * @param bool $translate
      */
     public function log($orderId = null, $message = null, $description = null, $translate = false)

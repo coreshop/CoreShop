@@ -30,7 +30,7 @@ class OrderState extends AbstractOperator
     /**
      * @param WorkflowStateManagerInterface $workflowManager
      * @param \stdClass                     $config
-     * @param null                          $context
+     * @param mixed                         $context
      */
     public function __construct(WorkflowStateManagerInterface $workflowManager, \stdClass $config, $context = null)
     {

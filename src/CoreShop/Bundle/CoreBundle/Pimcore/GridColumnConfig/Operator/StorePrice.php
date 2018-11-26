@@ -39,7 +39,7 @@ class StorePrice extends AbstractOperator
      * @param StoreRepositoryInterface $storeRepository
      * @param MoneyFormatterInterface  $moneyFormatter
      * @param \stdClass                $config
-     * @param null                     $context
+     * @param mixed                    $context
      */
     public function __construct(
         StoreRepositoryInterface $storeRepository,

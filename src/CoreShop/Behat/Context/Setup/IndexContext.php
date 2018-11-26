@@ -145,7 +145,6 @@ final class IndexContext implements Context
             $index->addColumn($column);
 
             $this->objectManager->persist($column);
-            // $row['name'], $row['email'], $row['phone']
         }
 
         $this->saveIndex($index);

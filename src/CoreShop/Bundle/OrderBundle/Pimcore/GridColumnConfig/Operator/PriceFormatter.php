@@ -33,7 +33,7 @@ class PriceFormatter extends AbstractOperator
      * @param MoneyFormatterInterface $moneyFormatter
      * @param LocaleContextInterface  $localeService
      * @param \stdClass               $config
-     * @param null                    $context
+     * @param mixed                   $context
      */
     public function __construct(
         MoneyFormatterInterface $moneyFormatter,

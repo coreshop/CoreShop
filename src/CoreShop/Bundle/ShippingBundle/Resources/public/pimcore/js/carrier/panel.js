@@ -34,5 +34,11 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
 
     getDefaultGridDisplayColumnName: function() {
         return 'identifier';
+    },
+
+    prepareAdd: function (object) {
+        object['identifier'] = object.name;
+
+        return object;
     }
 });
