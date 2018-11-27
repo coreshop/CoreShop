@@ -103,11 +103,8 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $languageDataProvider = Intl::getLanguageBundle();
 
         foreach ($languages as $lang) {
-            if (strpos($lang, '_')) {
-                $lang = explode('_', $lang)[0];
-            }
-
-            $alpha3CodeMap[$lang] = $languageDataProvider->getAlpha3Code($lang);
+            $langPart = strpos($lang, '_') ? explode('_', $lang)[0] : $lang;
+            $alpha3CodeMap[$lang] = $languageDataProvider->getAlpha3Code($langPart);
         }
 
         foreach ($countries as $country) {
@@ -128,7 +125,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 }
 
                 $newCountry->setIsoCode($country->getIsoAlpha2());
-                $newCountry->setActive($country->getIsoAlpha2() === 'AT');
+                $newCountry->setActive($country->getIsoAlpha2() === 'AT' || $newCountry->getActive());
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
                 $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
 

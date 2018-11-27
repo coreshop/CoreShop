@@ -73,7 +73,10 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
             /**
              * @var CurrencyInterface
              */
-            $currency = $this->container->get('coreshop.factory.currency')->createNew();
+            $currency = $this->container->get('coreshop.repository.currency')->getByCode($iso);
+            if (null === $currency) {
+                $currency = $this->container->get('coreshop.factory.currency')->createNew();
+            }
             $currency->setName($c['iso_4217_name']);
             $currency->setIsoCode($iso);
             $currency->setNumericIsoCode($c['iso_4217_numeric']);
