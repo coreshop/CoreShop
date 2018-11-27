@@ -39,6 +39,7 @@ default:
                 - coreshop.behat.context.setup.shipping
 
                 - coreshop.behat.context.domain.order
+                - coreshop.behat.context.domain.customer
                 - coreshop.behat.context.domain.notification_rule
             filters:
                 tags: "@order"
