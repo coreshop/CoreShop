@@ -77,7 +77,7 @@ class ProductExtractor implements TrackingExtractorInterface
                     'id' => $category->getId(),
                     'name' => $category->getName(),
                 ];
-            }, $categories),
+            }, is_array($categories) ? $categories : []),
         ]);
     }
 }
