@@ -135,9 +135,6 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setDefaultAddress($address);
         $customer->addAddress($address);
 
-        $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getRoles());
-        $this->securityTokenStorage->setToken($token);
-
         $this->eventDispatcher->dispatch(
             'coreshop.customer.register',
             new CustomerRegistrationEvent($customer, $formData)
