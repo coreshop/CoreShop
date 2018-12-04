@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 
-final class ShopCustomerLoginHandler
+final class ShopCustomerLoginListener
 {
     /**
      * @var CustomerLoginServiceInterface

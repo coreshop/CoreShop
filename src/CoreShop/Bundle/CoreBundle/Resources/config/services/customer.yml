@@ -11,12 +11,15 @@ services:
             - '@coreshop.repository.customer'
             - '@coreshop.object_service'
             - '@event_dispatcher'
-            - '@security.token_storage'
             - '@coreshop.context.locale'
             - '%coreshop.folder.customer%'
             - '%coreshop.folder.guest%'
             - '%coreshop.folder.address%'
 
+    coreshop.customer.login_service:
+        class: CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService
+        arguments:
+            - '@security.token_storage'
 
     coreshop.customer.request_newsletter_confirm.listener:
         class: CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener
@@ -27,3 +30,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: coreshop.customer.register, method: checkCustomerNewsletterConfirmation }
             - { name: kernel.event_listener, event: coreshop.customer.update_post, method: checkCustomerNewsletterConfirmation }
+
+    coreshop.customer.login.listener:
+        class: CoreShop\Bundle\CoreBundle\EventListener\ShopCustomerLoginListener
+        arguments:
+            - '@coreshop.customer.login_service'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.customer.register, method: onCustomerRegister }
