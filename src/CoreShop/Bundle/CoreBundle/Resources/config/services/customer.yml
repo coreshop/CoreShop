@@ -32,7 +32,7 @@ services:
             - { name: kernel.event_listener, event: coreshop.customer.update_post, method: checkCustomerNewsletterConfirmation }
 
     coreshop.customer.login.listener:
-        class: CoreShop\Bundle\CoreBundle\EventListener\ShopCustomerLoginListener
+        class: CoreShop\Bundle\CoreBundle\EventListener\CustomerLoginListener
         arguments:
             - '@coreshop.customer.login_service'
         tags:
