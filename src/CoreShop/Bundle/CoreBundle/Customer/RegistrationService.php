@@ -115,7 +115,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setParent($this->objectService->createFolderByPath(sprintf(
             '/%s/%s',
             ($isGuest ? $this->guestFolder : $this->customerFolder),
-            substr($customer->getLastname(), 0, 1)
+            mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
         )));
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
