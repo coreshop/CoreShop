@@ -132,7 +132,7 @@ class CategoryController extends FrontendController
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
-            $filteredList->addCondition(new LikeCondition('stores', 'both', $this->getContext()->getStore()->getId()), 'stores');
+            $filteredList->addCondition(new LikeCondition('stores', 'both', sprintf('%1$s%2$s%1$s', ',', $this->getContext()->getStore()->getId())), 'stores');
             $filteredList->setCategory($category);
 
             $orderDirection = $category->getFilter()->getOrderDirection();
