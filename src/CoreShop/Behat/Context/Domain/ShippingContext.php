@@ -20,6 +20,8 @@ use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use Webmozart\Assert\Assert;
 
@@ -51,24 +53,32 @@ final class ShippingContext implements Context
     private $carrierPriceCalculator;
 
     /**
-     * @param SharedStorageInterface           $sharedStorage
-     * @param CarrierRepositoryInterface       $carrierRepository
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param FactoryInterface                 $addressFactory
-     * @param CarrierPriceCalculatorInterface  $carrierPriceCalculator
+     * @var CarrierShippingRuleCheckerInterface
+     */
+    private $carrierShippingRuleChecker;
+
+    /**
+     * @param SharedStorageInterface              $sharedStorage
+     * @param CarrierRepositoryInterface          $carrierRepository
+     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
+     * @param FactoryInterface                    $addressFactory
+     * @param CarrierPriceCalculatorInterface     $carrierPriceCalculator
+     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         FactoryInterface $addressFactory,
-        CarrierPriceCalculatorInterface $carrierPriceCalculator
+        CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->addressFactory = $addressFactory;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
     }
 
     /**
@@ -121,5 +131,24 @@ final class ShippingContext implements Context
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
         Assert::same(intval($price), $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
+    }
+
+    /**
+     * @Then /^the (carrier "[^"]+") should be valid for (my cart)$/
+     */
+    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, CartInterface $cart)
+    {
+        $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
+
+        $ruleResult = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $cart, $address);
+
+        if ($ruleResult instanceof ShippingRuleGroupInterface) {
+            $ruleResult = true;
+        }
+
+        Assert::true(
+            $ruleResult,
+            sprintf('Asserted that the Carrier %s is valid for my cart, but it is not', $carrier->getTitle('en'))
+        );
     }
 }
