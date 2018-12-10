@@ -42,11 +42,6 @@ final class RegistrationService implements RegistrationServiceInterface
     private $eventDispatcher;
 
     /**
-     * @var TokenStorage
-     */
-    private $securityTokenStorage;
-
-    /**
      * @var LocaleContextInterface
      */
     private $localeContext;
@@ -70,7 +65,6 @@ final class RegistrationService implements RegistrationServiceInterface
      * @param CustomerRepositoryInterface $customerRepository
      * @param ObjectServiceInterface      $objectService
      * @param EventDispatcherInterface    $eventDispatcher
-     * @param TokenStorage                $securityTokenStorage
      * @param LocaleContextInterface      $localeContext
      * @param string                      $customerFolder
      * @param string                      $guestFolder
@@ -80,7 +74,6 @@ final class RegistrationService implements RegistrationServiceInterface
         CustomerRepositoryInterface $customerRepository,
         ObjectServiceInterface $objectService,
         EventDispatcherInterface $eventDispatcher,
-        TokenStorage $securityTokenStorage,
         LocaleContextInterface $localeContext,
         $customerFolder,
         $guestFolder,
@@ -89,7 +82,6 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->customerRepository = $customerRepository;
         $this->objectService = $objectService;
         $this->eventDispatcher = $eventDispatcher;
-        $this->securityTokenStorage = $securityTokenStorage;
         $this->localeContext = $localeContext;
         $this->customerFolder = $customerFolder;
         $this->guestFolder = $guestFolder;
@@ -134,9 +126,6 @@ final class RegistrationService implements RegistrationServiceInterface
 
         $customer->setDefaultAddress($address);
         $customer->addAddress($address);
-
-        $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getRoles());
-        $this->securityTokenStorage->setToken($token);
 
         $this->eventDispatcher->dispatch(
             'coreshop.customer.register',
