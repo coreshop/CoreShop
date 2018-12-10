@@ -28,6 +28,9 @@ final class CustomerLoginService implements CustomerLoginServiceInterface
         $this->securityTokenStorage = $tokenStorage;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function loginCustomer(CustomerInterface $customer)
     {
         $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getRoles());

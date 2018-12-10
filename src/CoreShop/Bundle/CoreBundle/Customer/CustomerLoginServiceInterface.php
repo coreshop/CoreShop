@@ -18,8 +18,6 @@ interface CustomerLoginServiceInterface
 {
     /**
      * @param CustomerInterface $customer
-     *
-     * @return mixed
      */
     public function loginCustomer(CustomerInterface $customer);
 }
