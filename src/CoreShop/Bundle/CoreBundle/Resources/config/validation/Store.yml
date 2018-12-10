@@ -2,4 +2,3 @@ CoreShop\Component\Core\Model\Store:
     properties:
         baseCountry:
             - NotBlank: { groups: [coreshop] }
-            - CoreShop\Bundle\ResourceBundle\Validation\Constraints\Active: { groups: [coreshop] }
