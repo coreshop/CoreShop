@@ -15,7 +15,7 @@ namespace CoreShop\Component\SEO\Model;
 interface LuceneSearchCategoriesAwareInterface
 {
     /**
-     * @return string
+     * @return string|array
      */
     public function getLuceneSearchCategories();
 }
