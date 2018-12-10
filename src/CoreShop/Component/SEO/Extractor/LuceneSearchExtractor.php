@@ -59,7 +59,13 @@ final class LuceneSearchExtractor implements ExtractorInterface
         }
 
         if ($object instanceof LuceneSearchCategoriesAwareInterface) {
-            $seoMetadata->addExtraName('lucene-search:categories', $object->getLuceneSearchCategories());
+            $objectCategories = $object->getLuceneSearchCategories();
+
+            if (is_array($objectCategories)) {
+                $objectCategories = implode(',', $objectCategories);
+            }
+
+            $seoMetadata->addExtraName('lucene-search:categories', $objectCategories);
         }
 
         if ($object instanceof Concrete) {
