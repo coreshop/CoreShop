@@ -110,7 +110,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
         string $orderShippingState
     ): bool {
         $shipmentInStateAmount = $this->countOrderShipmentsInState($order, $shipmentState);
-        $shipmentAmount = count($this->orderShipmentRepository->getDocuments($order));
+        $shipmentAmount = count($this->orderShipmentRepository->getDocumentsNotInState($order, OrderShipmentStates::STATE_CANCELLED));
 
         return $shipmentAmount === $shipmentInStateAmount &&
             $orderShippingState !== $order->getShippingState() &&

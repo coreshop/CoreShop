@@ -110,7 +110,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         string $orderInvoiceState
     ): bool {
         $invoiceInStateAmount = $this->countOrderInvoicesInState($order, $invoiceState);
-        $invoiceAmount = count($this->orderInvoiceRepository->getDocuments($order));
+        $invoiceAmount = count($this->orderInvoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED));
 
         return $invoiceAmount === $invoiceInStateAmount &&
             $orderInvoiceState !== $order->getInvoiceState() &&
