@@ -57,6 +57,8 @@ matrix:
     allow_failures:
         - env:
             - CORESHOP_SUITE=codestyle
+        - env:
+            - PIMCORE_VERSION="dev-master"
     fast_finish: true
 
 cache:
