@@ -12,7 +12,6 @@ env:
         - PIMCORE_VERSION="^5"
         - CORESHOP_TEST=1
         - CORESHOP_SUITE=application
-        - ALLOW_FAILURE=false
 
 matrix:
     include:
@@ -20,7 +19,6 @@ matrix:
           php: 7.1
           env:
             - CORESHOP_SUITE=codestyle
-            - ALLOW_FAILURE=true
 
         - sudo: required
           php: 7.2
@@ -51,16 +49,16 @@ matrix:
           php: 7.1
           env:
             - PIMCORE_VERSION="dev-master"
-            - ALLOW_FAILURE=true
 
         - sudo: required
           php: 7.2
           env:
             - PIMCORE_VERSION="dev-master"
-            - ALLOW_FAILURE=true
     allow_failures:
         - env:
-            - ALLOW_FAILURE=true
+            - CORESHOP_SUITE=codestyle
+        - env:
+            - PIMCORE_VERSION="dev-master"
     fast_finish: true
 
 cache:
