@@ -262,12 +262,11 @@ coreshop.order.sale.list = Class.create({
                 layout.setTitle(t('coreshop_' + this.type + '_manage'));
                 layout.setIconCls('coreshop_icon_' + this.type);
 
-                this.setupContextMenuPlugin();
-
                 searchLayout.onBefore('add', function (item) {
                     var gridQuery = item.query('grid');
                     if (gridQuery.length > 0) {
                         this.setGridPaginator(layout);
+                        this.setupContextMenuPlugin();
                         this.enhanceGridLayout(gridQuery[0]);
                     }
                 }.bind(this));
