@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\CoreBundle\Customer;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpFoundation\RequestStack;
+
 
 final class CustomerLoginService implements CustomerLoginServiceInterface
 {
@@ -23,9 +25,15 @@ final class CustomerLoginService implements CustomerLoginServiceInterface
      */
     private $securityTokenStorage;
 
-    public function __construct(TokenStorage $tokenStorage)
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(TokenStorage $tokenStorage, RequestStack $requestStack)
     {
         $this->securityTokenStorage = $tokenStorage;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -35,5 +43,11 @@ final class CustomerLoginService implements CustomerLoginServiceInterface
     {
         $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getRoles());
         $this->securityTokenStorage->setToken($token);
+    }
+
+    public function logoutCustomer()
+    {
+        $this->securityTokenStorage->setToken(null);
+        $this->requestStack->getCurrentRequest()->getSession()->invalidate();
     }
 }

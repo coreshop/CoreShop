@@ -20,4 +20,6 @@ interface CustomerLoginServiceInterface
      * @param CustomerInterface $customer
      */
     public function loginCustomer(CustomerInterface $customer);
+
+    public function logoutCustomer();
 }
