@@ -12,75 +12,16 @@
 
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Store\Model\StoreInterface;
-use Liip\ThemeBundle\ActiveTheme;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeResolver as NewThemeResolver;
 
-final class ThemeResolver implements ThemeResolverInterface
-{
+if (class_exists(NewThemeResolver::class)) {
+    @trigger_error('Class CoreShop\Bundle\StoreBundle\Theme\ThemeResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeResolver class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var ActiveTheme
+     * @deprecated Class CoreShop\Bundle\StoreBundle\Theme\ThemeResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeResolver class instead.
      */
-    private $activeTheme;
-
-    /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @param ActiveTheme           $activeTheme
-     * @param StoreContextInterface $storeContext
-     * @param RepositoryInterface   $storeRepository
-     */
-    public function __construct(
-        ActiveTheme $activeTheme,
-        StoreContextInterface $storeContext,
-        RepositoryInterface $storeRepository
-    ) {
-        $this->activeTheme = $activeTheme;
-        $this->storeContext = $storeContext;
-        $this->storeRepository = $storeRepository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveTheme()
+    class ThemeResolver
     {
-        $themes = [];
 
-        /**
-         * @var StoreInterface $store
-         */
-        foreach ($this->storeRepository->findAll() as $store) {
-            $storeTheme = $store->getTemplate();
-
-            if ($storeTheme) {
-                $themes[] = $storeTheme;
-            }
-        }
-
-        if (!in_array('standard', $themes)) {
-            $themes[] = 'standard';
-        }
-
-        $this->activeTheme->setThemes($themes);
-
-        try {
-            $store = $this->storeContext->getStore();
-
-            if ($theme = $store->getTemplate()) {
-                $this->activeTheme->setName($theme);
-            }
-        } catch (StoreNotFoundException $exception) {
-        }
     }
 }
