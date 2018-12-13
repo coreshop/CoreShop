@@ -104,5 +104,5 @@ services:
            - '@coreshop.repository.order_invoice'
            - '@coreshop.repository.order_shipment'
            - '@coreshop.renderer.order.pdf'
-           - '@coreshop.store.theme_helper'
+           - '@coreshop.theme.helper'
            - '@coreshop.mail_processor'

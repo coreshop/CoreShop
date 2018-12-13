@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Renderer;
 
 use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
 use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
-use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
