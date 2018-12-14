@@ -2,10 +2,6 @@
 
 **CoreShop 2 - A eCommerce Framework based on Pimcore and Symfony.**
 
-### CoreShop 1
-Looking for the current stable (version 1)?
-See https://github.com/coreshop/CoreShop/tree/coreshop1
-
 [![Join the chat at https://gitter.im/coreshop/coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coreshop/coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis](https://img.shields.io/travis/coreshop/CoreShop.svg)](https://travis-ci.org/coreshop/CoreShop)
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
