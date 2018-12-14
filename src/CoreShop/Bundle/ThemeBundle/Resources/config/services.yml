@@ -14,6 +14,7 @@ services:
             - '@liip_theme.active_theme'
 
     coreshop.theme.listener:
+        class: CoreShop\Bundle\ThemeBundle\EventListener\ThemeRequestListener
         arguments:
             - '@coreshop.theme.resolver'
         tags:
