@@ -1,6 +1,6 @@
 # CoreShop 2 (Development)
 
-**CoreShop 2 - A eCommerce Framework based on Pimcore and Symfony.**
+**CoreShop - Pimcore eCommerce**
 
 [![Join the chat at https://gitter.im/coreshop/coreshop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coreshop/coreshop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis](https://img.shields.io/travis/coreshop/CoreShop.svg)](https://travis-ci.org/coreshop/CoreShop)
@@ -9,7 +9,7 @@
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/coreshop/coreshop.svg)](https://www.scrutinizer-ci.com/g/coreshop/CoreShop/)
 [![Donate](https://img.shields.io/badge/bitcoin-donate-yellow.svg)](https://www.coreshop.org/bitcoin)
 
-CoreShop is a Bundle for [Pimcore](http://www.pimcore.org). It enhances Pimcore with eCommerce features.
+[CoreShop](https://www.coreshop.org) is a eCommerce Platform for [Pimcore](http://www.pimcore.org).
 
 ![CoreShop Interface](docs/img/screenshot5.png)
 
