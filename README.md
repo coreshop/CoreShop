@@ -1,4 +1,4 @@
-# CoreShop 2 (Development)
+# CoreShop 2
 
 **CoreShop - Pimcore eCommerce**
 
