@@ -1,4 +1,4 @@
-CoreShop Sequence Bundle
+CoreShop Theme Bundle
 ==================
 
 CoreShop
@@ -11,7 +11,7 @@ CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled compon
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](: https://www.coreshop.org/docs/2.1.0/Bundles/Sequence_Bundle.html).
+Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.1.0/Bundles/Theme_Bundle.html).
 
 Bug tracking
 ------------
