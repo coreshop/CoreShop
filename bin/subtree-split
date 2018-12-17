@@ -96,6 +96,7 @@ remote inventory-bundle git@github.com:CoreShop/InventoryBundle.git
 remote workflow-bundle git@github.com:CoreShop/WorkflowBundle.git
 remote seo-bundle git@github.com:CoreShop/SEOBundle.git
 remote pimcore-bundle git@github.com:CoreShop/PimcoreBundle.git
+remote theme-bundle git@github.com:CoreShop/ThemeBundle.git
 
 split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
@@ -147,3 +148,4 @@ split 'src/CoreShop/Bundle/InventoryBundle' inventory-bundle
 split 'src/CoreShop/Bundle/WorkflowBundle' workflow-bundle
 split 'src/CoreShop/Bundle/SEOBundle' seo-bundle
 split 'src/CoreShop/Bundle/PimcoreBundle' pimcore-bundle
+split 'src/CoreShop/Bundle/ThemeBundle' theme-bundle

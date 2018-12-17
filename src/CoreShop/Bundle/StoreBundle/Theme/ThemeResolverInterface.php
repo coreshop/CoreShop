@@ -12,10 +12,16 @@
 
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
-interface ThemeResolverInterface
-{
+use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface as NewThemeResolverInterface;
+
+if (interface_exists(NewThemeResolverInterface::class)) {
+    @trigger_error('Interface CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * Resolve Theme and set it to ThemeManager.
+     * @deprecated Interface CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface class instead.
      */
-    public function resolveTheme();
+    interface ThemeResolverInterface
+    {
+
+    }
 }

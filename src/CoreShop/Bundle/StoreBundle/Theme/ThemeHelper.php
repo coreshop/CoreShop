@@ -12,50 +12,16 @@
 
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
-use Liip\ThemeBundle\ActiveTheme;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeHelper as NewThemeHelper;
 
-final class ThemeHelper implements ThemeHelperInterface
-{
+if (class_exists(NewThemeHelper::class)) {
+    @trigger_error('Class CoreShop\Bundle\StoreBundle\Theme\ThemeHelper is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeHelper class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var ThemeResolverInterface
+     * @deprecated Class CoreShop\Bundle\StoreBundle\Theme\ThemeHelper is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeHelper class instead.
      */
-    private $themeResolver;
-
-    /**
-     * @var ActiveTheme
-     */
-    private $activeTheme;
-
-    /**
-     * @param ThemeResolverInterface $themeResolver
-     * @param ActiveTheme            $activeTheme
-     */
-    public function __construct(
-        ThemeResolverInterface $themeResolver,
-        ActiveTheme $activeTheme
-    ) {
-        $this->themeResolver = $themeResolver;
-        $this->activeTheme = $activeTheme;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function useTheme($themeName, \Closure $function)
+    class ThemeHelper
     {
-        $this->themeResolver->resolveTheme();
 
-        $backupTheme = $this->activeTheme->getName();
-        $this->activeTheme->setName($themeName);
-
-        $result = $function();
-
-        if (in_array($backupTheme, $this->activeTheme->getThemes())) {
-            $this->activeTheme->setName($backupTheme);
-        } else {
-            $this->activeTheme->setName('standard');
-        }
-
-        return $result;
     }
 }

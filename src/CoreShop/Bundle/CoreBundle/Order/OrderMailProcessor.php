@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Order;
 
 use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
-use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\InvoiceStates;

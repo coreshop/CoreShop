@@ -217,3 +217,12 @@ services:
             - '@__symfony__.coreshop.cart_price_rule.rule_validation.processor'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.theme:
+        class: CoreShop\Behat\Context\Domain\ThemeContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.theme.resolver'
+            - '@__symfony__.liip_theme.active_theme'
+        tags:
+            - { name: fob.context_service }

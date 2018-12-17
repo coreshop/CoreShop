@@ -62,3 +62,4 @@ split 'src/CoreShop/Bundle/InventoryBundle' inventory-bundle
 split 'src/CoreShop/Bundle/WorkflowBundle' workflow-bundle
 split 'src/CoreShop/Bundle/SEOBundle' seo-bundle
 split 'src/CoreShop/Bundle/PimcoreBundle' pimcore-bundle
+split 'src/CoreShop/Bundle/ThemeBundle' theme-bundle

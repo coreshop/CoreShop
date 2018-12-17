@@ -137,6 +137,16 @@ final class StoreContext implements Context
     }
 
     /**
+     * @Given /^the (store "[^"]+") uses theme "([^"]+)"$/
+     */
+    public function theStoreusesTheme(StoreInterface $store, $template)
+    {
+        $store->setTemplate($template);
+
+        $this->saveStore($store);
+    }
+
+    /**
      * @param string                 $name
      * @param CurrencyInterface|null $currency
      * @param CountryInterface|null  $country

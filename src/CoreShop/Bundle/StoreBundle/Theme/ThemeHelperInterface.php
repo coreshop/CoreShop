@@ -12,13 +12,16 @@
 
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
-interface ThemeHelperInterface
-{
+use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface as NewThemeHelperInterface;
+
+if (interface_exists(NewThemeHelperInterface::class)) {
+    @trigger_error('Interface CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param string   $themeName
-     * @param \Closure $function
-     *
-     * @return mixed
+     * @deprecated Interface CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface class instead.
      */
-    public function useTheme($themeName, \Closure $function);
+    interface ThemeHelperInterface
+    {
+
+    }
 }

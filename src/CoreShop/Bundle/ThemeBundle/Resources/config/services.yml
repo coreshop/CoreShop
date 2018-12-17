@@ -1,0 +1,21 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.theme.resolver:
+        class: CoreShop\Bundle\ThemeBundle\Service\ThemeResolver
+        arguments:
+            - '@liip_theme.active_theme'
+
+    coreshop.theme.helper:
+        class: CoreShop\Bundle\ThemeBundle\Service\ThemeHelper
+        arguments:
+            - '@coreshop.theme.resolver'
+            - '@liip_theme.active_theme'
+
+    coreshop.theme.listener:
+        class: CoreShop\Bundle\ThemeBundle\EventListener\ThemeRequestListener
+        arguments:
+            - '@coreshop.theme.resolver'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

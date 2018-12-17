@@ -14,7 +14,7 @@ services:
             - '@fragment.renderer.inline'
             - '@event_dispatcher'
             - '@coreshop.order.renderer.pdf'
-            - '@coreshop.store.theme_helper'
+            - '@coreshop.theme.helper'
 
     coreshop.renderer.order.pdf.asset:
         class: CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer
