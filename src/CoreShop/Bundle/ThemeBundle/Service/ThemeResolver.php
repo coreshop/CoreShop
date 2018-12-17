@@ -42,7 +42,7 @@ final class ThemeResolver implements ThemeResolverInterface
         $sites = $list->getSites();
 
         /**
-         * @var $site Site
+         * @var Site $site
          */
         foreach ($sites as $site) {
             $themes[] = $site->getRootDocument()->getKey();

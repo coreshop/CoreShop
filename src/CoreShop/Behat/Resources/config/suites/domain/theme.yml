@@ -1,0 +1,20 @@
+default:
+    suites:
+        domain_cart:
+            contexts_services:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.country
+                - coreshop.behat.context.transform.currency
+
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.country
+
+                - coreshop.behat.context.domain.theme
+            filters:
+                tags: "@theme"

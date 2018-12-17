@@ -10,12 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ThemeBundle\Service;
+namespace CoreShop\Behat\Context\Domain;
 
+use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Liip\ThemeBundle\ActiveTheme;
+use Webmozart\Assert\Assert;
 
-final class ThemeHelper implements ThemeHelperInterface
+final class ThemeContext implements Context
 {
+    /**
+     * @var SharedStorageInterface
+     */
+    private $sharedStorage;
+
     /**
      * @var ThemeResolverInterface
      */
@@ -27,39 +36,28 @@ final class ThemeHelper implements ThemeHelperInterface
     private $activeTheme;
 
     /**
+     * ThemeContext constructor.
+     * @param SharedStorageInterface $sharedStorage
      * @param ThemeResolverInterface $themeResolver
      * @param ActiveTheme            $activeTheme
      */
     public function __construct(
+        SharedStorageInterface $sharedStorage,
         ThemeResolverInterface $themeResolver,
         ActiveTheme $activeTheme
     ) {
+        $this->sharedStorage = $sharedStorage;
         $this->themeResolver = $themeResolver;
         $this->activeTheme = $activeTheme;
     }
 
     /**
-     * @param string   $themeName
-     * @param \Closure $function
-     * @return mixed
+     * @Then /^the current theme name should be "([^"]+)"$/
      */
-    public function useTheme($themeName, \Closure $function)
+    public function currentThemeNameIs(string $currentThemeName)
     {
         $this->themeResolver->resolveTheme();
 
-        $backupTheme = $this->activeTheme->getName();
-        $this->activeTheme->setName($themeName);
-
-        $result = $function();
-
-        if (in_array($backupTheme, $this->activeTheme->getThemes())) {
-            $this->activeTheme->setName($backupTheme);
-        } else {
-            $this->activeTheme->setName('standard');
-        }
-
-        return $result;
+        Assert::same($this->activeTheme->getName(), $currentThemeName);
     }
 }
-
-class_alias(ThemeHelper::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeHelper');

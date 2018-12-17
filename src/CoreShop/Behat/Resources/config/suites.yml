@@ -15,3 +15,4 @@ imports:
     - suites/domain/cli.yml
     - suites/domain/filter.yml
     - suites/domain/tracking.yml
+    - suites/domain/theme.yml
