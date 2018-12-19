@@ -64,6 +64,10 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
      */
     public function getCart()
     {
+        if (!$this->session->isStarted()) {
+            throw new CartNotFoundException("Symfony session has not started yet");
+        }
+
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
