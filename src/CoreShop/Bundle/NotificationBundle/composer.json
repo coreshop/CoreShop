@@ -18,9 +18,9 @@
     }
   ],
   "require": {
-    "coreshop/notification": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/rule-bundle": "^2.0",
+    "coreshop/notification": "^2.1",
+    "coreshop/registry": "^2.1",
+    "coreshop/rule-bundle": "^2.1",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {

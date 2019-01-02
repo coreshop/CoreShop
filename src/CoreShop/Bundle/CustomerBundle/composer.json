@@ -18,8 +18,8 @@
     }
   ],
   "require": {
-    "coreshop/customer": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
+    "coreshop/customer": "^2.1",
+    "coreshop/resource-bundle": "^2.1",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {

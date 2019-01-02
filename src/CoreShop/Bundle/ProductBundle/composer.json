@@ -18,11 +18,11 @@
     }
   ],
   "require": {
-    "coreshop/product": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/rule-bundle": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
-    "coreshop/money-bundle": "^2.0",
+    "coreshop/product": "^2.1",
+    "coreshop/registry": "^2.1",
+    "coreshop/rule-bundle": "^2.1",
+    "coreshop/resource-bundle": "^2.1",
+    "coreshop/money-bundle": "^2.1",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {

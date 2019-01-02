@@ -18,9 +18,9 @@
     }
   ],
   "require": {
-    "coreshop/order-bundle": "^2.0",
-    "coreshop/payment-bundle": "^2.0",
-    "coreshop/core": "^2.0",
+    "coreshop/order-bundle": "^2.1",
+    "coreshop/payment-bundle": "^2.1",
+    "coreshop/core": "^2.1",
     "payum/payum-bundle": "^2.2",
     "payum/offline": "^1.4",
     "payum/sofort": "^1.4",

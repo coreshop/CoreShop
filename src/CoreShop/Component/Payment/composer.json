@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "coreshop/currency": "^2.0"
+    "coreshop/currency": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

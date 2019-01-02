@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/locale": "^2.0"
+    "coreshop/locale": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

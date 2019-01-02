@@ -18,9 +18,9 @@
     }
   ],
   "require": {
-    "coreshop/rule": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource": "^2.0"
+    "coreshop/rule": "^2.1",
+    "coreshop/registry": "^2.1",
+    "coreshop/resource": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

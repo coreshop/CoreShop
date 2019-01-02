@@ -18,9 +18,9 @@
     }
   ],
   "require": {
-    "coreshop/index": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
+    "coreshop/index": "^2.1",
+    "coreshop/registry": "^2.1",
+    "coreshop/resource-bundle": "^2.1",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {

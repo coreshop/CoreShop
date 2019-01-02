@@ -18,22 +18,22 @@
     }
   ],
   "require": {
-    "coreshop/configuration": "^2.0",
-    "coreshop/store": "^2.0",
-    "coreshop/resource": "^2.0",
-    "coreshop/address": "^2.0",
-    "coreshop/order": "^2.0",
-    "coreshop/currency": "^2.0",
-    "coreshop/locale": "^2.0",
-    "coreshop/customer": "^2.0",
-    "coreshop/shipping": "^2.0",
-    "coreshop/inventory": "^2.0",
-    "coreshop/product": "^2.0",
-    "coreshop/index": "^2.0",
-    "coreshop/payment": "^2.0",
-    "coreshop/taxation": "^2.0",
-    "coreshop/notification": "^2.0",
-    "coreshop/payum-bundle": "^2.0"
+    "coreshop/configuration": "^2.1",
+    "coreshop/store": "^2.1",
+    "coreshop/resource": "^2.1",
+    "coreshop/address": "^2.1",
+    "coreshop/order": "^2.1",
+    "coreshop/currency": "^2.1",
+    "coreshop/locale": "^2.1",
+    "coreshop/customer": "^2.1",
+    "coreshop/shipping": "^2.1",
+    "coreshop/inventory": "^2.1",
+    "coreshop/product": "^2.1",
+    "coreshop/index": "^2.1",
+    "coreshop/payment": "^2.1",
+    "coreshop/taxation": "^2.1",
+    "coreshop/notification": "^2.1",
+    "coreshop/payum-bundle": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

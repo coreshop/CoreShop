@@ -19,9 +19,9 @@
   ],
   "require": {
     "php": "^7.0",
-    "coreshop/taxation": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
-    "coreshop/money-bundle": "^2.0"
+    "coreshop/taxation": "^2.1",
+    "coreshop/resource-bundle": "^2.1",
+    "coreshop/money-bundle": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

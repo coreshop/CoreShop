@@ -18,15 +18,15 @@
     }
   ],
   "require": {
-    "coreshop/currency-bundle": "^2.0",
-    "coreshop/customer-bundle": "^2.0",
-    "coreshop/payment-bundle": "^2.0",
-    "coreshop/locale-bundle": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/rule-bundle": "^2.0",
-    "coreshop/store-bundle": "^2.0",
-    "coreshop/money-bundle": "^2.0",
-    "coreshop/workflow-bundle": "^2.0",
+    "coreshop/currency-bundle": "^2.1",
+    "coreshop/customer-bundle": "^2.1",
+    "coreshop/payment-bundle": "^2.1",
+    "coreshop/locale-bundle": "^2.1",
+    "coreshop/registry": "^2.1",
+    "coreshop/rule-bundle": "^2.1",
+    "coreshop/store-bundle": "^2.1",
+    "coreshop/money-bundle": "^2.1",
+    "coreshop/workflow-bundle": "^2.1",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {

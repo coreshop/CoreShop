@@ -18,20 +18,20 @@
     }
   ],
   "require": {
-    "coreshop/address": "^2.0",
-    "coreshop/rule": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource": "^2.0",
-    "coreshop/sequence": "^2.0",
-    "coreshop/store": "^2.0",
-    "coreshop/currency": "^2.0",
-    "coreshop/taxation": "^2.0",
-    "coreshop/payment": "^2.0",
-    "coreshop/pimcore": "^2.0",
-    "coreshop/customer": "^2.0",
-    "coreshop/storage-list": "^2.0",
-    "coreshop/locale": "^2.0",
-    "coreshop/workflow-bundle": "^2.0"
+    "coreshop/address": "^2.1",
+    "coreshop/rule": "^2.1",
+    "coreshop/registry": "^2.1",
+    "coreshop/resource": "^2.1",
+    "coreshop/sequence": "^2.1",
+    "coreshop/store": "^2.1",
+    "coreshop/currency": "^2.1",
+    "coreshop/taxation": "^2.1",
+    "coreshop/payment": "^2.1",
+    "coreshop/pimcore": "^2.1",
+    "coreshop/customer": "^2.1",
+    "coreshop/storage-list": "^2.1",
+    "coreshop/locale": "^2.1",
+    "coreshop/workflow-bundle": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

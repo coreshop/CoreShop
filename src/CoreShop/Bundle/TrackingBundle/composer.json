@@ -18,8 +18,8 @@
     }
   ],
   "require": {
-    "coreshop/registry": "^2.0",
-    "coreshop/tracking": "^2.0",
+    "coreshop/registry": "^2.1",
+    "coreshop/tracking": "^2.1",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {
