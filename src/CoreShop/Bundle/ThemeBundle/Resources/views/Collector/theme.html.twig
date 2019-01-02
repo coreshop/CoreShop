@@ -1,0 +1,25 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set status_color = collector.activeTheme is null ? 'red' : '' %}
+
+    {% set icon %}
+        {{ include('@CoreShopTheme/Collector/Icon/theme.svg') }}
+        <span class="sf-toolbar-value">{{ collector.activeTheme|default('Standard') }}</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Themes</b>
+            <span class="sf-toolbar-status {% if collector.themes is empty %}sf-toolbar-status-red{% endif %}">{{ collector.themes|length }}</span>
+        </div>
+
+        {% for theme in collector.themes %}
+            <div class="sf-toolbar-info-piece">
+                <b>{{ theme }}</b>
+            </div>
+        {% endfor %}
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false, status: status_color }) }}
+{% endblock %}

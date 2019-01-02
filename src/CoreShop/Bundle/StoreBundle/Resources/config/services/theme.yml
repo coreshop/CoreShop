@@ -10,8 +10,9 @@ services:
 
     coreshop.theme.store_resolver:
         class: CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver
-        decorates: 'coreshop.theme.resolver'
         arguments:
-            - '@liip_theme.active_theme'
+            - '@coreshop.theme.active_theme'
             - '@coreshop.context.store'
             - '@coreshop.repository.store'
+        tags:
+            - { name: coreshop.theme.resolver, type: coreshop_store, priority: 20 }

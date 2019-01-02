@@ -12,16 +12,17 @@
 
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
+use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Liip\ThemeBundle\ActiveTheme;
 
 final class StoreThemeResolver implements \CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface
 {
     /**
-     * @var ActiveTheme
+     * @var ActiveThemeInterface
      */
     private $activeTheme;
 
@@ -36,12 +37,12 @@ final class StoreThemeResolver implements \CoreShop\Bundle\ThemeBundle\Service\T
     private $storeRepository;
 
     /**
-     * @param ActiveTheme           $activeTheme
+     * @param ActiveThemeInterface  $activeTheme
      * @param StoreContextInterface $storeContext
      * @param RepositoryInterface   $storeRepository
      */
     public function __construct(
-        ActiveTheme $activeTheme,
+        ActiveThemeInterface $activeTheme,
         StoreContextInterface $storeContext,
         RepositoryInterface $storeRepository
     ) {
@@ -53,8 +54,16 @@ final class StoreThemeResolver implements \CoreShop\Bundle\ThemeBundle\Service\T
     /**
      * {@inheritdoc}
      */
-    public function resolveTheme()
+    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/)
     {
+        if (\func_num_args() === 0) {
+            trigger_error('Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
+                E_USER_DEPRECATED);
+            $activeTheme = $this->activeTheme;
+        } else {
+            $activeTheme = func_get_arg(0);
+        }
+
         $themes = [];
 
         /**
@@ -68,19 +77,20 @@ final class StoreThemeResolver implements \CoreShop\Bundle\ThemeBundle\Service\T
             }
         }
 
-        if (!in_array('standard', $themes)) {
-            $themes[] = 'standard';
-        }
-
-        $this->activeTheme->setThemes($themes);
+        $activeTheme->addThemes($themes);
 
         try {
             $store = $this->storeContext->getStore();
 
             if ($theme = $store->getTemplate()) {
-                $this->activeTheme->setName($theme);
+                $activeTheme->setActiveTheme($theme);
+
+                return;
             }
         } catch (StoreNotFoundException $exception) {
+            throw new ThemeNotResolvedException($exception);
         }
+
+        throw new ThemeNotResolvedException();
     }
 }

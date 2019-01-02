@@ -223,6 +223,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.theme.resolver'
-            - '@__symfony__.liip_theme.active_theme'
+            - '@__symfony__.coreshop.theme.active_theme'
         tags:
             - { name: fob.context_service }

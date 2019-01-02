@@ -14,8 +14,8 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
-use Liip\ThemeBundle\ActiveTheme;
 use Webmozart\Assert\Assert;
 
 final class ThemeContext implements Context
@@ -31,7 +31,7 @@ final class ThemeContext implements Context
     private $themeResolver;
 
     /**
-     * @var ActiveTheme
+     * @var ActiveThemeInterface
      */
     private $activeTheme;
 
@@ -39,12 +39,12 @@ final class ThemeContext implements Context
      * ThemeContext constructor.
      * @param SharedStorageInterface $sharedStorage
      * @param ThemeResolverInterface $themeResolver
-     * @param ActiveTheme            $activeTheme
+     * @param ActiveThemeInterface   $activeTheme
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ThemeResolverInterface $themeResolver,
-        ActiveTheme $activeTheme
+        ActiveThemeInterface $activeTheme
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->themeResolver = $themeResolver;
@@ -56,8 +56,8 @@ final class ThemeContext implements Context
      */
     public function currentThemeNameIs(string $currentThemeName)
     {
-        $this->themeResolver->resolveTheme();
+        $this->themeResolver->resolveTheme($this->activeTheme);
 
-        Assert::same($this->activeTheme->getName(), $currentThemeName);
+        Assert::same($this->activeTheme->getActiveTheme(), $currentThemeName);
     }
 }

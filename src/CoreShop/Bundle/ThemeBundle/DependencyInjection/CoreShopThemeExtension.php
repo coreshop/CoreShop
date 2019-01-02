@@ -24,7 +24,17 @@ class CoreShopThemeExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        if (!$config['default_resolvers']['pimcore_site']) {
+            $container->removeDefinition('coreshop.theme.resolver.pimcore_site');
+        }
+
+        if (!$config['default_resolvers']['pimcore_document_property']) {
+            $container->removeDefinition('coreshop.theme.resolver.pimcore_document_property');
+        }
     }
 }

@@ -12,12 +12,13 @@
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
-interface ThemeResolverInterface
+class ThemeNotResolvedException extends \RuntimeException
 {
     /**
-     * Resolve Theme and set it to ThemeManager
+     * {@inheritdoc}
      */
-    public function resolveTheme(/*ActiveTheme $activeTheme*/);
+    public function __construct(\Exception $previousException = null)
+    {
+        parent::__construct('Theme could not be resolved', 0, $previousException);
+    }
 }
-
-class_alias(ThemeResolverInterface::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface');

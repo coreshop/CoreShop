@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "coreshop/registry": "^2.1",
     "liip/theme-bundle": "^1.4",
     "pimcore/pimcore": "^5.4.0"
   },
