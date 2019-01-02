@@ -15,9 +15,9 @@ namespace CoreShop\Bundle\ThemeBundle\Service;
 interface ThemeResolverInterface
 {
     /**
-     * Resolve Theme and set it to ThemeManager
+     * Resolve Themes and ActiveTheme and stores it into ActiveThemeInterface $activeTheme
      */
-    public function resolveTheme(/*ActiveTheme $activeTheme*/);
+    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/);
 }
 
 class_alias(ThemeResolverInterface::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface');

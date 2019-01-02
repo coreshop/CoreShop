@@ -68,5 +68,3 @@ final class PimcoreSiteThemeResolver implements ThemeResolverInterface
         }
     }
 }
-
-class_alias(PimcoreSiteThemeResolver::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolver');

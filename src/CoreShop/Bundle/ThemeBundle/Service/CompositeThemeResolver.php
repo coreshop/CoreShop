@@ -68,3 +68,5 @@ final class CompositeThemeResolver implements ThemeResolverInterface
         }
     }
 }
+
+class_alias(CompositeThemeResolver::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolver');
