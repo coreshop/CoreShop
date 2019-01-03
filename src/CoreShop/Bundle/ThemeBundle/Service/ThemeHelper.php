@@ -12,8 +12,6 @@
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
-use Liip\ThemeBundle\ActiveTheme;
-
 final class ThemeHelper implements ThemeHelperInterface
 {
     /**
@@ -22,17 +20,17 @@ final class ThemeHelper implements ThemeHelperInterface
     private $themeResolver;
 
     /**
-     * @var ActiveTheme
+     * @var ActiveThemeInterface
      */
     private $activeTheme;
 
     /**
      * @param ThemeResolverInterface $themeResolver
-     * @param ActiveTheme            $activeTheme
+     * @param ActiveThemeInterface   $activeTheme
      */
     public function __construct(
         ThemeResolverInterface $themeResolver,
-        ActiveTheme $activeTheme
+        ActiveThemeInterface $activeTheme
     ) {
         $this->themeResolver = $themeResolver;
         $this->activeTheme = $activeTheme;
@@ -45,20 +43,24 @@ final class ThemeHelper implements ThemeHelperInterface
      */
     public function useTheme($themeName, \Closure $function)
     {
-        $this->themeResolver->resolveTheme();
+        try {
+            $this->themeResolver->resolveTheme($this->activeTheme);
 
-        $backupTheme = $this->activeTheme->getName();
-        $this->activeTheme->setName($themeName);
+            $backupTheme = $this->activeTheme->getActiveTheme();
+            $this->activeTheme->setActiveTheme($themeName);
 
-        $result = $function();
+            $result = $function();
 
-        if (in_array($backupTheme, $this->activeTheme->getThemes())) {
-            $this->activeTheme->setName($backupTheme);
-        } else {
-            $this->activeTheme->setName('standard');
+            if (in_array($backupTheme, $this->activeTheme->getThemes())) {
+                $this->activeTheme->setActiveTheme($backupTheme);
+            } else {
+                $this->activeTheme->setActiveTheme('standard');
+            }
+
+            return $result;
+        } catch (ThemeNotResolvedException $exception) {
+            return $function();
         }
-
-        return $result;
     }
 }
 

@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\ThemeBundle\EventListener;
 
+use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
@@ -23,11 +25,18 @@ final class ThemeRequestListener
     private $themeResolver;
 
     /**
-     * @param ThemeResolverInterface $themeResolver
+     * @var ActiveThemeInterface
      */
-    public function __construct(ThemeResolverInterface $themeResolver)
+    private $activeTheme;
+
+    /**
+     * @param ThemeResolverInterface $themeResolver
+     * @param ActiveThemeInterface   $activeTheme
+     */
+    public function __construct(ThemeResolverInterface $themeResolver, ActiveThemeInterface $activeTheme)
     {
         $this->themeResolver = $themeResolver;
+        $this->activeTheme = $activeTheme;
     }
 
     /**
@@ -44,6 +53,10 @@ final class ThemeRequestListener
             }
         }
 
-        $this->themeResolver->resolveTheme();
+        try {
+            $this->themeResolver->resolveTheme($this->activeTheme);
+        } catch (ThemeNotResolvedException $exception) {
+
+        }
     }
 }

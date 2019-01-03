@@ -12,21 +12,20 @@
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
-use Liip\ThemeBundle\ActiveTheme;
 use Pimcore\Model\Site;
 
-final class ThemeResolver implements ThemeResolverInterface
+final class PimcoreSiteThemeResolver implements ThemeResolverInterface
 {
     /**
-     * @var ActiveTheme
+     * @var ActiveThemeInterface
      */
     private $activeTheme;
 
     /**
-     * @param ActiveTheme $activeTheme
+     * @param ActiveThemeInterface $activeTheme
      */
     public function __construct(
-        ActiveTheme $activeTheme
+        ActiveThemeInterface $activeTheme
     ) {
         $this->activeTheme = $activeTheme;
     }
@@ -34,8 +33,16 @@ final class ThemeResolver implements ThemeResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolveTheme()
+    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/)
     {
+        if (\func_num_args() === 0) {
+            trigger_error('Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
+                E_USER_DEPRECATED);
+            $activeTheme = $this->activeTheme;
+        } else {
+            $activeTheme = func_get_arg(0);
+        }
+
         $themes = [];
         $list = new Site\Listing();
         $list->load();
@@ -48,22 +55,16 @@ final class ThemeResolver implements ThemeResolverInterface
             $themes[] = $site->getRootDocument()->getKey();
         }
 
-        if (!in_array('standard', $themes)) {
-            $themes[] = 'standard';
-        }
-
-        $this->activeTheme->setThemes($themes);
+        $activeTheme->addThemes($themes);
 
         try {
             $currentSite = Site::getCurrentSite();
 
             if ($theme = $currentSite->getRootDocument()->getKey()) {
-                $this->activeTheme->setName($theme);
+                $activeTheme->setActiveTheme($theme);
             }
         } catch (\Exception $exception) {
-
+            throw new ThemeNotResolvedException($exception);
         }
     }
 }
-
-class_alias(ThemeResolver::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolver');

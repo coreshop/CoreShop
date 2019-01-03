@@ -12,13 +12,13 @@
 
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
-use CoreShop\Bundle\ThemeBundle\Service\ThemeResolver as NewThemeResolver;
+use CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver;
 
-if (class_exists(NewThemeResolver::class)) {
-    @trigger_error('Class CoreShop\Bundle\StoreBundle\Theme\ThemeResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeResolver class instead.', E_USER_DEPRECATED);
+if (class_exists(CompositeThemeResolver::class)) {
+    @trigger_error('Class CoreShop\Bundle\StoreBundle\Theme\ThemeResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver class instead.', E_USER_DEPRECATED);
 } else {
     /**
-     * @deprecated Class CoreShop\Bundle\StoreBundle\Theme\ThemeResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\ThemeResolver class instead.
+     * @deprecated Class CoreShop\Bundle\StoreBundle\Theme\ThemeResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver class instead.
      */
     class ThemeResolver
     {
