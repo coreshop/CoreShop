@@ -15,6 +15,7 @@ parameters:
         # Ignore cause the file uses external dependencies and will only be used if those dependencies are met
         - 'CoreShop/Component/SEO/Extractor/LuceneSearchExtractor.php'
         - '**/ProcessManager/IndexListener.php'
+        - '**/ProcessManager/IndexProcess.php'
 
     ignoreErrors:
         # Magic calls
